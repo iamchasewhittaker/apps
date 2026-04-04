@@ -335,7 +335,7 @@ After splitting, update ROADMAP.md changelog and mark items 5 and 6 done. Update
 ### Prompt B — Wire Supabase sync into App Forge
 
 ```
-Read /apps/CLAUDE.md and /apps/app-forge/CLAUDE.md before starting.
+Read `/apps/CLAUDE.md` and `portfolio/app-forge/CLAUDE.md` before starting.
 
 Supabase sync is live in Wellness (v15.9) and Job Search (v8.2) using a shared project.
 App Forge is the next app in the rollout.

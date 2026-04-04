@@ -50,10 +50,10 @@
         Field.jsx, AIResult.jsx, ApiKeyModal.jsx,
         AppCard.jsx, AppModal.jsx, ContactCard.jsx,
         ContactModal.jsx, ProfileModal.jsx, PrepModal.jsx
-/apps/             ← still migrating to portfolio/ (see Linear: Portfolio monorepo migration)
   app-forge/
     src/
       App.jsx      ← monolith (not yet refactored)
+/apps/             ← still migrating to portfolio/ (see Linear: Portfolio monorepo migration)
   growth-tracker/
     (retired — moving to portfolio/archive/)
   roller-task-tycoon/

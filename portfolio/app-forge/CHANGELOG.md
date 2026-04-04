@@ -1,5 +1,9 @@
 # App Forge — Changelog
 
+## [Unreleased]
+
+- **Monorepo:** path `portfolio/app-forge`; `PROJECT_INSTRUCTIONS.md` (renamed from `APP_FORGE_PROJECT_INSTRUCTIONS.md`); README, ROADMAP, AGENTS, `docs/*`; Linear links.
+
 ## v8.1 — 2026-03-24
 - Updated `APP_SNAPSHOT_DEFAULTS` with current versions for all apps:
   - Wellness: v11 → v15.9 (Supabase sync live, shared project, configurable meds, backup restore)

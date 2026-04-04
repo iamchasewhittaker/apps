@@ -10,7 +10,7 @@
 
 If starting a session without a recent deploy, upload:
 - `App.jsx`
-- `APP_FORGE_PROJECT_INSTRUCTIONS.md`
+- `PROJECT_INSTRUCTIONS.md`
 
 And say what you want to change.
 
@@ -30,7 +30,7 @@ After every `git push`, a `post-push` hook can run `bash "$(git rev-parse --show
 ### If sync doesn't fire
 Run it manually from inside the app folder:
 ```bash
-cd ~/Documents/apps/app-forge
+cd portfolio/app-forge
 bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 ```
 
@@ -63,7 +63,7 @@ App Forge is Chase's central hub for all apps. It:
 
 **Live URL:** `https://app-forge-fawn.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/app-forge` (private)
-**Local folder:** `~/Documents/apps/app-forge`
+**Local folder:** `portfolio/app-forge`
 **Current file:** `src/App.jsx` (~1065 lines, single file)
 **Current git tag:** `v7`
 
@@ -73,7 +73,7 @@ App Forge is Chase's central hub for all apps. It:
 
 **With Claude Code (preferred):** Claude edits files directly — no Downloads step needed.
 ```bash
-cd ~/Documents/apps/app-forge
+cd portfolio/app-forge
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN description" && git push
@@ -82,11 +82,11 @@ git tag vN && git push origin vN
 
 **Without Claude Code (chat interface):**
 ```bash
-mv ~/Downloads/App.jsx ~/Documents/apps/app-forge/src/App.jsx
-mv ~/Downloads/APP_FORGE_PROJECT_INSTRUCTIONS.md ~/Documents/apps/app-forge/APP_FORGE_PROJECT_INSTRUCTIONS.md
-mv ~/Downloads/CHANGELOG.md ~/Documents/apps/app-forge/CHANGELOG.md
+mv ~/Downloads/App.jsx portfolio/app-forge/src/App.jsx
+mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/app-forge/PROJECT_INSTRUCTIONS.md
+mv ~/Downloads/CHANGELOG.md portfolio/app-forge/CHANGELOG.md
 
-cd ~/Documents/apps/app-forge
+cd portfolio/app-forge
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN description" && git push
@@ -224,9 +224,9 @@ useEffect(() => {
 
 | File | Move command |
 |------|-------------|
-| `App.jsx` | `mv ~/Downloads/App.jsx ~/Documents/apps/app-forge/src/App.jsx` |
-| `APP_FORGE_PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/APP_FORGE_PROJECT_INSTRUCTIONS.md ~/Documents/apps/app-forge/APP_FORGE_PROJECT_INSTRUCTIONS.md` |
-| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md ~/Documents/apps/app-forge/CHANGELOG.md` |
+| `App.jsx` | `mv ~/Downloads/App.jsx portfolio/app-forge/src/App.jsx` |
+| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/app-forge/PROJECT_INSTRUCTIONS.md` |
+| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md portfolio/app-forge/CHANGELOG.md` |
 
 **CHANGELOG rule — always write the full file, not just the new entry.**
 

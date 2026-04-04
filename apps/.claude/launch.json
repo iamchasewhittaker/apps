@@ -16,7 +16,7 @@
     {
       "name": "app-forge",
       "runtimeExecutable": "env",
-      "runtimeArgs": ["PORT=3002", "npm", "--prefix", "/Users/chase/Documents/apps/app-forge", "start"],
+      "runtimeArgs": ["PORT=3002", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/app-forge", "start"],
       "port": 3002
     },
     {

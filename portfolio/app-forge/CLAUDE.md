@@ -1,6 +1,8 @@
 # App Forge — Project Instructions
 
-> See also: `/apps/CLAUDE.md` for portfolio-wide conventions.
+> See also: `/apps/CLAUDE.md` for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
+
+**Project tracking:** [Linear — App Forge](https://linear.app/whittaker/project/app-forge-64221811d236)
 
 ## App Identity
 - **Version:** v8.1
