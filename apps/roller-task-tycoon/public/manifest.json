@@ -1,0 +1,24 @@
+{
+  "short_name": "RollerTask",
+  "name": "RollerTask Tycoon",
+  "description": "Park to-do manager with sync — Roller Coaster Tycoon vibes.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#008080",
+  "background_color": "#008080",
+  "orientation": "portrait-primary"
+}
