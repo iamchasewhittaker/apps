@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | Retired top-level `apps/`: master `CLAUDE.md`, `ROADMAP.md`, `SUNSAMA_MCP_GUIDE.md`, `.claude/launch.json` → **repo root**; `.gitignore` whitelist updated | [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Monorepo: **Growth Tracker** → `portfolio/archive/growth-tracker`; retired docs + launch path; Linear **Growth Tracker** project **Canceled** | https://linear.app/whittaker/project/growth-tracker-9e99390538d6 · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Monorepo migration: RollerTask at `portfolio/roller-task-tycoon` (was `apps/roller-task-tycoon`); cross-doc path + shared sync link updates; Vercel **Root Directory** → `portfolio/roller-task-tycoon` | Linear RollerTask project description updated · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | RollerTask Tycoon | v1.0 | Audit: startup `pull` uses fresh `loadState()` + `hasLoaded` after pull (avoids stale `_syncAt`); notification toasts escape user text (XSS) | `src/main.js`, CHANGELOG, ARCHITECTURE |
@@ -299,7 +300,7 @@ Wellness TasksTab has an Ideas sub-tab, Job Search has none, App Forge has an Id
 ### Prompt A — Split TrackerTab.jsx and HistoryTab.jsx
 
 ```
-Read `/apps/CLAUDE.md` and `portfolio/wellness-tracker/CLAUDE.md` before starting.
+Read `/CLAUDE.md` (repo root) and `portfolio/wellness-tracker/CLAUDE.md` before starting.
 
 Two tabs in Wellness Tracker are too large and need splitting:
 - tabs/TrackerTab.jsx (~78K) — contains morning check-in form, evening check-in form, and PulseCheckModal
@@ -337,7 +338,7 @@ After splitting, update ROADMAP.md changelog and mark items 5 and 6 done. Update
 ### Prompt B — Wire Supabase sync into App Forge
 
 ```
-Read `/apps/CLAUDE.md` and `portfolio/app-forge/CLAUDE.md` before starting.
+Read `/CLAUDE.md` (repo root) and `portfolio/app-forge/CLAUDE.md` before starting.
 
 Supabase sync is live in Wellness (v15.9) and Job Search (v8.2) using a shared project.
 App Forge is the next app in the rollout.
@@ -367,7 +368,7 @@ After wiring, verify login screen appears and sync works. Update ROADMAP.md and 
 ### Prompt C — Cross-app navigation bar
 
 ```
-Read /apps/CLAUDE.md before starting.
+Read `/CLAUDE.md` (repo root) before starting.
 
 All three active apps share the same Supabase auth session (same project: unqtnnxlltiadzbqpyhh).
 A user logged into one app is automatically logged into the others. But there's no UI to navigate between them.

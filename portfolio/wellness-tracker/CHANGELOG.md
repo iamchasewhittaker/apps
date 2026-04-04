@@ -6,7 +6,7 @@
 - **Removed** the previous `navigator.standalone` / `display-mode: standalone` auth bypass so the login gate reflects a real session and `push`/`pull` behave consistently
 - **Login UI:** second step for code entry, resend cooldown (45s), change email; copy explains iPhone PWA vs Safari + link
 - **Supabase (dashboard):** sign-in email template must include the one-time token (e.g. `{{ .Token }}` in the **Magic link** template — default is link-only) so users receive a code to type — see [Supabase passwordless email](https://supabase.com/docs/guides/auth/auth-email-passwordless)
-- **Docs / UX:** `CLAUDE.md` step-by-step + sample HTML for the Magic link template; portfolio `/apps/CLAUDE.md` + `ROADMAP.md` Change Log; login screen explains link-only emails
+- **Docs / UX:** `CLAUDE.md` step-by-step + sample HTML for the Magic link template; portfolio root `CLAUDE.md` + `ROADMAP.md` Change Log; login screen explains link-only emails
 - **Chore:** `.gitignore` — ignore `.claude/*` except `launch.json`
 
 ## [Unreleased]

@@ -8,4 +8,5 @@ Use that project for migration tasks, Vercel root-directory updates, and verific
 
 ## Completed (recent)
 
+- **Top-level `apps/` retired** — master `CLAUDE.md`, `ROADMAP.md`, `SUNSAMA_MCP_GUIDE.md`, and `.claude/launch.json` now at **repo root** (`~/Developer/chase`).
 - **Growth Tracker** → `portfolio/archive/growth-tracker/` · Linear [Growth Tracker](https://linear.app/whittaker/project/growth-tracker-9e99390538d6) (Canceled / retired).

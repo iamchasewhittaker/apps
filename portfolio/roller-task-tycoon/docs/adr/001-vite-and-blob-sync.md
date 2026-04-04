@@ -24,7 +24,7 @@ RollerTask Tycoon started as a single HTML file with inline script. The portfoli
 
 **Negative / risks:**
 
-- Portfolio docs previously said “never `VITE_`” for CRA apps — this app is the **documented exception** in `/apps/CLAUDE.md`.
+- Portfolio docs previously said “never `VITE_`” for CRA apps — this app is the **documented exception** in root `/CLAUDE.md`.
 - Simultaneous edits on two devices can lose one side’s changes (inherent to LWW blob).
 
 ## Alternatives considered

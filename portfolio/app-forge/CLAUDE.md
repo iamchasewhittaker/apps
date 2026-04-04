@@ -1,6 +1,6 @@
 # App Forge — Project Instructions
 
-> See also: `/apps/CLAUDE.md` for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
+> See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
 **Project tracking:** [Linear — App Forge](https://linear.app/whittaker/project/app-forge-64221811d236)
 
@@ -112,4 +112,4 @@ When ready, follow the same pattern: use the shared project `unqtnnxlltiadzbqpyh
 - Don't add a backend — when sync is needed, use the shared Supabase project
 
 ## Roadmap Reference
-See `/apps/ROADMAP.md` for the full priority queue and improvement ideas (items A1–A7).
+See `/ROADMAP.md` (repo root) for the full priority queue and improvement ideas (items A1–A7).

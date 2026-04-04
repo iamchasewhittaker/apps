@@ -1,6 +1,6 @@
 # AGENTS.md — Cursor & coding agents
 
-Read this together with [CLAUDE.md](CLAUDE.md).
+Read this together with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md`](../../CLAUDE.md) (repo root).
 
 ## Scope
 
@@ -27,7 +27,7 @@ Read this together with [CLAUDE.md](CLAUDE.md).
 | Significant technical choice | new file in `docs/adr/` |
 | Milestones shift | `ROADMAP.md` |
 | User-visible release | `CHANGELOG.md` |
-| Portfolio master index | `/apps/CLAUDE.md` + `/apps/ROADMAP.md` Change Log |
+| Portfolio master index | `/CLAUDE.md` + `/ROADMAP.md` (repo root) Change Log |
 
 ## Vite / env
 

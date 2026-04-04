@@ -1,6 +1,6 @@
 # AGENTS.md — Job Search HQ
 
-Read with [CLAUDE.md](CLAUDE.md) and portfolio [`/apps/CLAUDE.md`](../../apps/CLAUDE.md).
+Read with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md`](../../CLAUDE.md) (repo root).
 
 ## Scope
 

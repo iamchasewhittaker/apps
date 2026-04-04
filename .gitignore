@@ -2,17 +2,36 @@
 /*
 !.gitignore
 !/MONOREPO_MIGRATION.md
-!/apps/
-!/apps/**
+!/CLAUDE.md
+!/ROADMAP.md
+!/SUNSAMA_MCP_GUIDE.md
+!/.claude/
+!/.claude/**
 !/portfolio/
 !/portfolio/**
 !/Projects/
 !/Projects/**
 
-# Local / sensitive (still under apps/ or Projects/)
+# Dependencies & build output (all subtrees)
+node_modules/
+dist/
+build/
+
+# Secrets & local env
+.env
+.env.local
+.env.*.local
+
+# OS & tooling
 .DS_Store
 **/.DS_Store
+*.log
+.vercel
 **/.claude/settings.local.json
+
+# Supabase CLI local temp
+**/supabase/.temp/
+
 # Raw statement exports — keep local; do not publish to git hosts
 Projects/Money/*.csv
 # YNAB / Gmail integration secrets (use .env or local config only)

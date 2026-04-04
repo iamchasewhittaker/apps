@@ -1,6 +1,6 @@
 # AGENTS.md — Wellness Tracker
 
-Read with [CLAUDE.md](CLAUDE.md) and portfolio [`/apps/CLAUDE.md`](../../apps/CLAUDE.md) (master; moving to repo root).
+Read with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md`](../../CLAUDE.md) (repo root).
 
 ## Scope
 

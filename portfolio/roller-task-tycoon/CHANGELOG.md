@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Monorepo:** app path is `portfolio/roller-task-tycoon` under `~/Developer/chase`; Vercel **Root Directory** should match. Linear project description updated.
+- Portfolio master instructions moved to repo-root `CLAUDE.md` / `ROADMAP.md` (no `apps/` prefix); in-app doc links updated.
 
 ### Fixed
 

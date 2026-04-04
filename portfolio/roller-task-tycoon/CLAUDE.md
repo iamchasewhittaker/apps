@@ -59,5 +59,5 @@ See [Supabase passwordless email / OTP](https://supabase.com/docs/guides/auth/au
 
 ## References
 
-- Master portfolio: [`/apps/CLAUDE.md`](../CLAUDE.md)
+- Master portfolio: [`/CLAUDE.md`](../../CLAUDE.md) (repo root)
 - Wellness OTP implementation: `wellness-tracker/src/App.jsx` (React; same auth semantics as `src/main.js` here)

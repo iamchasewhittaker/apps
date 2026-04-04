@@ -15,7 +15,7 @@
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
-**Migration tracking:** [MONOREPO_MIGRATION.md](../MONOREPO_MIGRATION.md) · [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37)
+**Migration tracking:** [MONOREPO_MIGRATION.md](MONOREPO_MIGRATION.md) · [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37)
 
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
@@ -57,8 +57,9 @@
     index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
-/apps/             ← still migrating to portfolio/ (see Linear: Portfolio monorepo migration)
 ```
+
+Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo root** (`~/Developer/chase`).
 
 ## Key Conventions
 
@@ -123,10 +124,10 @@ When you **ship or materially extend** an app in this portfolio, **use Linear** 
 > **After every session where any app is modified, Claude must:**
 > 1. Update that app's `CHANGELOG.md` — log what changed under `## [Unreleased]`
 > 2. Update that app's `ROADMAP.md` — mark completed items, add new ideas
-> 3. Update `/apps/ROADMAP.md` Change Log table with a new row
+> 3. Update `/ROADMAP.md` (repo root) Change Log table with a new row
 > 4. Do this without being asked — it is part of every edit, not an optional step
 
 This applies to all apps in the portfolio **and** to AI Dev Mastery at `~/Documents/Projects/ai-dev-mastery/`.
 
 ## Roadmap Reference
-See `/apps/ROADMAP.md` for the full priority queue, per-app suggestions, and decisions log.
+See [ROADMAP.md](ROADMAP.md) for the full priority queue, per-app suggestions, and decisions log.

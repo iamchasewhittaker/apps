@@ -1,6 +1,6 @@
 # Job Search HQ — Project Instructions
 
-> See also: `/apps/CLAUDE.md` for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
+> See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)
 
