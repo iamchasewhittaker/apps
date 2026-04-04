@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | **Handoff docs:** **`CLAUDE.md`** + **`HANDOFF.md`** state canonical routine for **Claude Code / non-Cursor**; **`.cursor/rules`** = Cursor-only mirror (**“Cursor only:”** line) | Avoid implying checklist is Cursor-only |
 | 2026-04-04 | Portfolio | — | **Symlink** **`session-handoff.mdc`** in each **`portfolio/*`** app + **`projects/ai-dev-mastery/`** → monorepo root rule (subfolder Cursor workspaces) | **`CLAUDE.md`** note · relative path `../../../.cursor/rules/session-handoff.mdc` |
 | 2026-04-04 | Portfolio | — | **Quick routine** in **`HANDOFF.md`** (top) + **`CLAUDE.md`** bullets; **`.cursor/rules/session-handoff.mdc`** (`alwaysApply`); **`.gitignore`** `!/.cursor/rules/**` | End session → update HANDOFF; new chat → templates; shipped → Linear + git; HANDOFF = now |
 | 2026-04-04 | Portfolio | — | **`HANDOFF.md`** + **`docs/templates/SESSION_START_*.md`** for multi-agent continuity; **`CLAUDE.md`** link; **`.gitignore`** `!/HANDOFF.md` | Cross-tool session starts + living handoff state |

@@ -8,6 +8,8 @@
 2. **New chat:** Use [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md) or [SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md); fill brackets; paste; say *“Read `CLAUDE.md` and `HANDOFF.md` first.”*
 3. **Shipped work:** **Linear** + **git** = source of truth for what shipped; **`HANDOFF.md`** = where we are *right now*.
 
+**Claude Code and other assistants:** Use this **Quick routine** and repo-root **`CLAUDE.md`** — that is the full process. **`.cursor/rules`** is an optional **Cursor-only** reminder; it is not a separate workflow.
+
 ## When to start a **new** chat (and use this file)
 
 Start a **new** conversation when:

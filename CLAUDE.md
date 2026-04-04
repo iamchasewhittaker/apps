@@ -23,7 +23,9 @@
 - **New chat:** Paste from `docs/templates/SESSION_START_MONOREPO.md` or `SESSION_START_APP_CHANGE.md`; say read `CLAUDE.md` + `HANDOFF.md` first.
 - **Shipped:** Linear + commits = truth; `HANDOFF.md` = current focus.
 
-**Cursor:** Repo root has **`.cursor/rules/session-handoff.mdc`** (`alwaysApply`). Each **`portfolio/*`** app and **`projects/ai-dev-mastery/`** include a **symlink** to that file so opening a subfolder as the workspace still loads the same rule.
+**Claude Code / any non-Cursor assistant:** The **canonical** handoff routine is **`HANDOFF.md` (Quick routine)** plus the bullets above. **`.cursor/rules/session-handoff.mdc`** is **not** read by Claude Code — it only **mirrors** the same habits for Cursor; you do not need `.cursor` to follow this workflow.
+
+**Cursor only:** Repo root has **`.cursor/rules/session-handoff.mdc`** (`alwaysApply`). Each **`portfolio/*`** app and **`projects/ai-dev-mastery/`** include a **symlink** to that file so opening a subfolder as the workspace still loads the same rule.
 
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
