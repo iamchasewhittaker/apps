@@ -15,8 +15,10 @@ struct ParkChecklistApp: App {
 
     var body: some Scene {
         WindowGroup {
+            // Attach SwiftData here (not only on WindowGroup) so @Query and modelContext
+            // reliably receive the container on device; avoids blank first screen.
             ContentView()
+                .modelContainer(sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

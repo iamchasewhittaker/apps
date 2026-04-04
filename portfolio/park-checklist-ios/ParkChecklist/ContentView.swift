@@ -45,6 +45,9 @@ struct ContentView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                 }
+                // NavigationStack does not always give children a bounded max height; without
+                // this, List can collapse and the scene can look like a black/empty window.
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
             .navigationTitle("Park checklist")
             .navigationBarTitleDisplayMode(.inline)
@@ -128,6 +131,8 @@ struct ContentView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.25), value: toastText)
+            // UI uses fixed light palette; in Dark Appearance nav/content can read as empty.
+            .preferredColorScheme(.light)
         }
     }
 

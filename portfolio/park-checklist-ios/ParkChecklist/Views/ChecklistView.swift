@@ -21,6 +21,7 @@ struct ChecklistView: View {
 
             if tasks.isEmpty {
                 emptyState
+                Spacer(minLength: 0)
             } else {
                 List {
                     if !openTasks.isEmpty {
@@ -51,8 +52,10 @@ struct ChecklistView: View {
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 
     private var addRow: some View {

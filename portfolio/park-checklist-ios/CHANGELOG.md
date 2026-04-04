@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Black / empty screen on device:** attach `modelContainer` to `ContentView`, expand root `VStack` and `List` with `frame(maxWidth:maxHeight:)`, add `Spacer` when the list is empty, and force **light** color scheme so fixed palette isn’t invisible in Dark Mode.
+
 ### Changed
 
 - Project path: **`portfolio/park-checklist-ios`** (was `projects/park-checklist-ios`).
