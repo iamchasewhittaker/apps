@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Supabase CLI:** `supabase init` + `supabase link` to project `unqtnnxlltiadzbqpyhh`; committed `supabase/config.toml` and `supabase/.gitignore` (`.temp` / local junk ignored).
+- **Vercel:** production [roller-task-tycoon.vercel.app](https://roller-task-tycoon.vercel.app) — set `VITE_SUPABASE_*` in project settings and redeploy for cloud sync.
 - **Linear** project [RollerTask Tycoon](https://linear.app/whittaker/project/rollertask-tycoon-ca86fd0bf771) with launch/QA/backlog issues; linked from README + AGENTS.
 - Initial **Vite + vanilla JS** scaffold with original RollerTask Tycoon UI (Win95-style windows, taskbar, stats, notifications).
 - **PWA:** `manifest.json`, teal icons (192 / 512 / apple-touch), `apple-mobile-web-app-*` meta, `viewport-fit=cover`, safe-area padding for taskbar and notifications.
