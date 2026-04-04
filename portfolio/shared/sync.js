@@ -1,9 +1,9 @@
 /**
- * /apps/shared/sync.js
+ * /portfolio/shared/sync.js (monorepo)
  * Offline-first Supabase sync layer for all apps.
  *
- * Usage:
- *   import { createSync } from '../../shared/sync.js';
+ * Usage (after copying this file to the app as src/shared/sync.js):
+ *   import { createSync } from './shared/sync.js';  // from src/sync.js (Vite)
  *   export const { push, pull, auth } = createSync(
  *     import.meta.env.VITE_SUPABASE_URL,
  *     import.meta.env.VITE_SUPABASE_ANON_KEY

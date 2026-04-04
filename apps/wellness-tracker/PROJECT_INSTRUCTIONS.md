@@ -18,7 +18,7 @@ And say what you want to change.
 
 ## App Hub — Automatic Sync (set up 2026-03-22)
 
-After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically and:
+After every `git push`, a `post-push` hook can run `bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"` and:
 - Reads App.jsx line count
 - Reads current git tag (version)
 - Extracts new CHANGELOG entries since last sync
@@ -30,8 +30,8 @@ After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically a
 ### If sync doesn't fire
 Run it manually from inside the app folder:
 ```bash
-cd ~/Documents/apps/wellness-tracker
-bash ~/Documents/apps/app-hub/sync.sh
+cd portfolio/wellness-tracker
+bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 ```
 
 ---
@@ -42,7 +42,7 @@ A personal daily wellness tracker. It exists because standard task and wellness 
 
 **Live URL:** `https://wellnes-tracker.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/wellnes-tracker` (private)
-**Local folder:** `~/Documents/apps/wellness-tracker`
+**Local folder (monorepo):** `portfolio/wellness-tracker` under `~/Developer/chase`
 **Current version:** `v15.10`
 **Supabase sign-in email:** Dashboard → Authentication → Email Templates → **Magic link** must include `{{ .Token }}` so OTP works (see `CLAUDE.md`).
 **App.jsx:** ~370 lines (thin shell — state, effects, NavTabs, floating button modals)

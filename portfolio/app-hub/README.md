@@ -7,23 +7,23 @@ Central sync folder for all Chase's apps.
 - `last-sync.json` — tracks last synced version per app
 - `last-audit-*.txt` — last audit results per app (written by each app's audit.sh)
 
-## Setup (run once per app)
+## Setup (monorepo — run from `~/Developer/chase`)
+
+Use one shared `post-push` hook at the **repo root** (not per nested app), or from each `portfolio/<app>` if those folders have their own `.git` (they do not in the monorepo).
+
+Example **root** hook after `git init` at monorepo root is unnecessary — hooks live in `portfolio/<app>/.git` only if you split repos. In this monorepo, run App Hub manually from an app directory:
+
 ```bash
-# Wellness Tracker
-echo 'bash ~/Documents/app-hub/sync.sh' >> ~/Documents/wellness-tracker/.git/hooks/post-push
-chmod +x ~/Documents/wellness-tracker/.git/hooks/post-push
+cd portfolio/wellness-tracker
+bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
+```
 
-# App Forge
-echo 'bash ~/Documents/app-hub/sync.sh' >> ~/Documents/app-forge/.git/hooks/post-push
-chmod +x ~/Documents/app-forge/.git/hooks/post-push
+To run automatically on `git push`, add at **repository root** `.git/hooks/post-push`:
 
-# Growth Tracker
-echo 'bash ~/Documents/app-hub/sync.sh' >> ~/Documents/growth-tracker/.git/hooks/post-push
-chmod +x ~/Documents/growth-tracker/.git/hooks/post-push
-
-# Job Search HQ
-echo 'bash ~/Documents/app-hub/sync.sh' >> ~/Documents/job-search-hq/.git/hooks/post-push
-chmod +x ~/Documents/job-search-hq/.git/hooks/post-push
+```bash
+#!/bin/sh
+ROOT=$(git rev-parse --show-toplevel)
+bash "$ROOT/portfolio/app-hub/sync.sh"
 ```
 
 ## How it works

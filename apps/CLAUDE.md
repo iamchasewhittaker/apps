@@ -13,7 +13,9 @@
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 
-> ⚠️ **AI Dev Mastery lives outside this monorepo** at `~/Documents/Projects/ai-dev-mastery/`. It has its own git repo (GitHub: iamchasewhittaker/ai-dev-mastery). It is a standalone CRA app — not wired to Supabase, no localStorage, pure course viewer.
+> ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
+
+**Migration tracking:** [MONOREPO_MIGRATION.md](../MONOREPO_MIGRATION.md) · [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37)
 
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
@@ -22,9 +24,12 @@
 
 ## Monorepo Layout
 ```
-/apps/
+/portfolio/
   shared/
-    sync.js        ← Supabase offline-first sync (ready to wire in)
+    sync.js        ← Supabase offline-first sync (source of truth; copy into each app)
+  app-hub/
+    sync.sh        ← post-push summaries (paths resolved via script location)
+/apps/             ← migrating to portfolio/ per app (see Linear: Portfolio monorepo migration)
   wellness-tracker/
     src/
       App.jsx      ← shell only (~370 lines)
@@ -78,7 +83,7 @@
 
 > ⚠️ **Wellness, Job Search, and RollerTask share the same Supabase project** (`unqtnnxlltiadzbqpyhh`). Data is separated by `app_key` in the shared `user_data` table. One login covers all three.
 
-- `/apps/shared/sync.js` — `createSync(url, key)` factory, exports `push`, `pull`, `auth`
+- `/portfolio/shared/sync.js` — `createSync(url, key)` factory, exports `push`, `pull`, `auth`
 - `wellness-tracker/src/sync.js` — app adapter, APP_KEY = `'wellness'`
 - `job-search-hq/src/sync.js` — app adapter, APP_KEY = `'job-search'`
 - `roller-task-tycoon/src/sync.js` — app adapter, APP_KEY = `'roller_task_tycoon_v1'`, env `VITE_SUPABASE_*`

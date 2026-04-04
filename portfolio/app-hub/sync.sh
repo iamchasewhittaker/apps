@@ -5,7 +5,7 @@ set -e
 # Runs automatically after git push via post-push hook.
 # Reads App.jsx + CHANGELOG.md + last audit results, builds a Claude summary,
 # copies it to clipboard.
-# Lives at: ~/Documents/apps/app-hub/sync.sh
+# Lives at: <repo>/portfolio/app-hub/sync.sh
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Validate environment ───────────────────────────────────────────────────────
@@ -19,7 +19,7 @@ if ! git rev-parse --git-dir > /dev/null 2>&1; then
   exit 1
 fi
 
-SCRIPT_DIR="$HOME/Documents/apps/app-hub"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LAST_SYNC="$SCRIPT_DIR/last-sync.json"
 APP_DIR="$(pwd)"
 APP_NAME="$(basename "$APP_DIR")"

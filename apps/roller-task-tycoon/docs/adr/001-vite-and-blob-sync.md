@@ -11,7 +11,7 @@ RollerTask Tycoon started as a single HTML file with inline script. The portfoli
 
 1. **Vite 6 + vanilla ES modules** — no React for this small surface area; faster scaffold and smaller conceptual footprint than pulling CRA into an HTML-first toy app.
 2. **`VITE_*` env vars** — idiomatic for Vite; values are **inlined at build time**, same security model as `REACT_APP_*` (anon key + RLS).
-3. **Reuse shared sync** — copy `/apps/shared/sync.js` to `src/shared/sync.js`; `APP_KEY = roller_task_tycoon_v1` so data stays isolated from `wellness` and `job-search` rows in the same Supabase project.
+3. **Reuse shared sync** — copy `/portfolio/shared/sync.js` to `src/shared/sync.js`; `APP_KEY = roller_task_tycoon_v1` so data stays isolated from `wellness` and `job-search` rows in the same Supabase project.
 4. **Whole-blob last-write-wins** — acceptable for a personal todo + fake “cash” counter; avoids migrations and keeps parity with other portfolio apps.
 
 ## Consequences

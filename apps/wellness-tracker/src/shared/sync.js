@@ -1,5 +1,5 @@
 /**
- * /apps/shared/sync.js
+ * /portfolio/shared/sync.js
  * Offline-first Supabase sync layer for all apps.
  *
  * Usage:

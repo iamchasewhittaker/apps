@@ -18,7 +18,7 @@ A **playful park-themed todo list** with Win95-era chrome, installable as a **PW
 
 - **Vite** 6 (vanilla template — no React)
 - **@supabase/supabase-js**
-- **Portfolio copy** of [`/apps/shared/sync.js`](../../shared/sync.js) at `src/shared/sync.js` (real file, not symlink — Vercel-safe)
+- **Portfolio copy** of [`/portfolio/shared/sync.js`](../../portfolio/shared/sync.js) at `src/shared/sync.js` (real file, not symlink — Vercel-safe)
 
 ## Project layout
 
@@ -33,7 +33,7 @@ public/
 src/
   main.js                  — game UI, persistence, auth gate, pull on load
   sync.js                  — APP_KEY + createSync(import.meta.env.VITE_*)
-  shared/sync.js           — copy of apps/shared/sync.js
+  shared/sync.js           — copy of portfolio/shared/sync.js
 docs/
   LEARNING.md, ARCHITECTURE.md, CASE_STUDY.md
   adr/

@@ -15,7 +15,7 @@ Read this together with [CLAUDE.md](CLAUDE.md).
 3. **Learning-friendly:** prefer a short note in [docs/LEARNING.md](docs/LEARNING.md) over long comment blocks in code.
 4. **No drive-by refactors** unrelated to the task.
 5. **Portfolio:** when shipping something visible, update [README.md](README.md) snapshot / “How to run” and [docs/CASE_STUDY.md](docs/CASE_STUDY.md) as appropriate.
-6. **Keep `src/shared/sync.js` in sync** with [`/apps/shared/sync.js`](../shared/sync.js) when the shared layer changes (copy file; do not symlink on Vercel).
+6. **Keep `src/shared/sync.js` in sync** with [`/portfolio/shared/sync.js`](../portfolio/shared/sync.js) when the shared layer changes (copy file; do not symlink on Vercel).
 
 ## Files to touch when…
 

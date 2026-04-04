@@ -98,7 +98,7 @@
 - [ ] Store Supabase URL + anon key in `.env` for each app
 
 #### Phase 2 — Sync Layer (shared code)
-Create `/apps/shared/sync.js`:
+Create `/portfolio/shared/sync.js`:
 ```js
 // save(appKey, data) → upserts to Supabase
 // load(appKey) → fetches from Supabase, falls back to localStorage
@@ -108,7 +108,7 @@ Create `/apps/shared/sync.js`:
 - Conflict resolution: compare `updated_at` timestamps, merge at field level where possible
 
 #### Phase 3 — Auth (shared)
-Create `/apps/shared/auth.js`:
+Create `/portfolio/shared/auth.js`:
 ```js
 // Uses Supabase auth
 // Stores session in localStorage (auto-refreshed)
@@ -200,7 +200,7 @@ Since all apps are PWA-ready (manifest.json exists), these unlock mobile use:
 These are one-time investments that improve all apps:
 
 ```
-/apps/shared/
+/portfolio/shared/
   storage.js     — load/save/sync with localStorage + Supabase fallback
   api.js         — callClaude() wrapper with error handling
   auth.js        — Supabase session management
@@ -228,7 +228,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 | 2026-04-03 | Wellness + Job Search | v15.10 / v8.3 | Email OTP + `verifyOtp`; removed Wellness PWA auth bypass; Magic link template + `{{ .Token }}` (CLAUDE samples, login hints, `.env.example`); CHANGELOG/`[Unreleased]` cleanup; `.claude/` gitignore + launch.json (Job Search); MASTER_FRAMEWORK; removed stale “wire Job Search sync” from Wellness CLAUDE | Dashboard → Authentication → Email Templates → Magic link · [passwordless OTP](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp) |
 | 2026-03-24 | All | — | Created CLAUDE.md files — master + per-app project instructions | `/apps/CLAUDE.md`, each app root |
 | 2026-03-24 | Job Search | v8 | Refactored App.jsx (1,921→279 lines) into modular tabs + components | `tabs/`, `components/`, `constants.js` |
-| 2026-03-24 | Shared | — | Created `/apps/shared/sync.js` — Supabase offline-first sync layer | Ready to wire; SQL schema in file comments |
+| 2026-03-24 | Shared | — | Created `/portfolio/shared/sync.js` — Supabase offline-first sync layer | Ready to wire; SQL schema in file comments |
 | 2026-03-24 | Wellness | v15.8 | `save()` now stamps `_syncAt: Date.now()` for Supabase last-write comparison | `theme.js` |
 | 2026-03-24 | Wellness | — | Created `.env.example` with Supabase env var docs | — |
 | 2026-03-24 | Job Search | — | Created `.env.example` with Supabase env var docs | — |
@@ -272,7 +272,7 @@ Job Search HQ is fully wired: `src/sync.js` created (APP_KEY = 'job-search'), `s
 Wellness Tracker is fully wired: `src/sync.js` created, `push()` wired into save useEffect, `pull()` wired into load useEffect, magic-link auth gate added. `.env.example` fixed from `VITE_` to `REACT_APP_` prefix (this is CRA, not Vite). `@supabase/supabase-js` installed. Fallback mode active (no-op stubs) until `.env` is filled with real Supabase URL + anon key. Job Search HQ sync is next priority.
 
 **2026-03-24 — Supabase sync infrastructure complete, wiring pending**
-`/apps/shared/sync.js` is written and ready. Wellness `save()` already stamps `_syncAt`. Both apps have `.env.example`.
+`/portfolio/shared/sync.js` is written and ready. Wellness `save()` already stamps `_syncAt`. Both apps have `.env.example`.
 
 **2026-03-24 — localStorage-only is the current bottleneck**
 All apps store data in browser localStorage. This means data is lost if the browser is cleared, unavailable on other devices, and can't be shared between apps on different domains. The recommended fix is Supabase as a sync backend. Priority: tackle Wellness first since it has the most daily writes and the most to lose.
@@ -342,7 +342,7 @@ App Forge is the next app in the rollout.
 
 What's already done:
 - Shared Supabase project: unqtnnxlltiadzbqpyhh (wellness-tracker)
-- /apps/shared/sync.js — createSync() factory ✅
+- /portfolio/shared/sync.js — createSync() factory ✅
 - wellness-tracker/src/sync.js and job-search-hq/src/sync.js — wiring examples ✅
 - Both existing apps use APP_KEY to separate data in the shared user_data table ✅
 

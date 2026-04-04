@@ -58,4 +58,4 @@ Recorded in `docs/adr/` (e.g. Vite vs CRA, blob sync vs row-per-task).
 | `index.html` | UI structure; `#authGate`, `#appRoot` |
 | `src/main.js` | All runtime behavior |
 | `src/sync.js` | Env + `APP_KEY` |
-| `src/shared/sync.js` | Keep aligned with `/apps/shared/sync.js` |
+| `src/shared/sync.js` | Keep aligned with `/portfolio/shared/sync.js` |

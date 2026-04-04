@@ -18,7 +18,7 @@
 
 ## App Hub — Automatic Session Sync (set up 2026-03-22)
 
-After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically and:
+After every `git push`, a `post-push` hook can run `bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"` and:
 - Reads App.jsx line count
 - Reads current git tag (version)
 - Extracts new CHANGELOG entries since last sync
@@ -30,14 +30,14 @@ After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically a
 ### If sync doesn't fire
 Run it manually from inside the app folder:
 ```bash
-cd ~/Documents/apps/[app-name]
-bash ~/Documents/apps/app-hub/sync.sh
+cd portfolio/[app-name]
+bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 ```
 
 ### App Hub folder
 ```
-~/Documents/apps/app-hub/
-  sync.sh          ← main script, runs after every git push
+portfolio/app-hub/
+  sync.sh          ← main script (paths resolved from script location)
   last-sync.json   ← tracks last synced version per app
   README.md
   last-audit-*.txt ← saved audit results per app (written by audit.sh)
@@ -300,7 +300,7 @@ mv ~/Downloads/pre-deploy.sh pre-deploy.sh
 mv ~/Downloads/App.jsx src/App.jsx
 
 # 7. Wire up app-hub git hook
-echo 'bash ~/Documents/apps/app-hub/sync.sh' >> .git/hooks/post-push
+printf '%s\n' '#!/bin/sh' 'ROOT=$(git rev-parse --show-toplevel)' 'bash "$ROOT/portfolio/app-hub/sync.sh"' >> .git/hooks/post-push
 chmod +x .git/hooks/post-push
 
 # 8. Test the build

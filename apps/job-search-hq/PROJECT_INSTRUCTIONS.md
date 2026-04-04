@@ -18,7 +18,7 @@ And say what you want to change.
 
 ## App Hub — Automatic Sync (set up 2026-03-22)
 
-After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically and:
+After every `git push`, a `post-push` hook can run `bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"` and:
 - Reads App.jsx line count
 - Reads current git tag (version)
 - Extracts new CHANGELOG entries since last sync
@@ -30,8 +30,8 @@ After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically a
 ### If sync doesn't fire
 Run it manually from inside the app folder:
 ```bash
-cd ~/Documents/apps/job-search-hq
-bash ~/Documents/apps/app-hub/sync.sh
+cd portfolio/job-search-hq
+bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 ```
 
 ---
@@ -42,7 +42,7 @@ A personal job search command center. Tracks applications, contacts, interview p
 
 **Live URL:** `https://job-search-hq.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/job-search-hq` (private)
-**Local folder:** `~/Documents/apps/job-search-hq`
+**Local folder (monorepo):** `portfolio/job-search-hq` under `~/Developer/chase`
 **Current version:** `v8.3` (see `CLAUDE.md` — thin `App.jsx` shell + tabs)
 **Supabase sign-in email:** Shared project with Wellness — **Magic link** template must include `{{ .Token }}` (see Wellness or Job Search `CLAUDE.md`).
 
@@ -73,7 +73,7 @@ These two apps are intentionally separate but connected:
 
 **With Claude Code (preferred):** Claude edits files directly — no Downloads step needed.
 ```bash
-cd ~/Documents/apps/job-search-hq
+cd portfolio/job-search-hq
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN what changed" && git push
@@ -82,11 +82,11 @@ git tag vN && git push origin vN
 
 **Without Claude Code (chat interface):**
 ```bash
-mv ~/Downloads/App.jsx ~/Documents/apps/job-search-hq/src/App.jsx
-mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/job-search-hq/PROJECT_INSTRUCTIONS.md
-mv ~/Downloads/CHANGELOG.md ~/Documents/apps/job-search-hq/CHANGELOG.md
+mv ~/Downloads/App.jsx portfolio/job-search-hq/src/App.jsx
+mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/job-search-hq/PROJECT_INSTRUCTIONS.md
+mv ~/Downloads/CHANGELOG.md portfolio/job-search-hq/CHANGELOG.md
 
-cd ~/Documents/apps/job-search-hq
+cd portfolio/job-search-hq
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN what changed" && git push

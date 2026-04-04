@@ -1,9 +1,11 @@
-# Under ~/Documents, only these top-level trees are version-controlled.
-# Everything else (taxes, Obsidian, etc.) stays local-only.
+# Monorepo root: ~/Developer/chase — only these top-level trees are version-controlled.
 /*
 !.gitignore
+!/MONOREPO_MIGRATION.md
 !/apps/
 !/apps/**
+!/portfolio/
+!/portfolio/**
 !/Projects/
 !/Projects/**
 

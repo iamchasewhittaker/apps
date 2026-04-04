@@ -18,7 +18,7 @@ And say what you want to change.
 
 ## App Hub — Automatic Sync (set up 2026-03-22)
 
-After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically and:
+After every `git push`, a `post-push` hook can run `bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"` and:
 - Reads App.jsx line count
 - Reads current git tag (version)
 - Extracts new CHANGELOG entries since last sync
@@ -31,13 +31,13 @@ After every `git push`, `~/Documents/apps/app-hub/sync.sh` fires automatically a
 Run it manually from inside the app folder:
 ```bash
 cd ~/Documents/apps/app-forge
-bash ~/Documents/apps/app-hub/sync.sh
+bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 ```
 
 ### Audit results in sync
 Add this to the END of `audit.sh`:
 ```bash
-bash audit.sh 2>&1 | tee ~/Documents/apps/app-hub/last-audit-app-forge.txt
+bash audit.sh 2>&1 | tee "$(git rev-parse --show-toplevel)/portfolio/app-hub/last-audit-app-forge.txt"
 ```
 
 ---

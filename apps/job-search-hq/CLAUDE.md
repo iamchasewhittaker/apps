@@ -86,7 +86,7 @@ Model: `claude-sonnet-4-20250514` (hardcoded in constants.js — update when upg
 
 Sync is fully wired. Files involved:
 - `src/sync.js` — calls `createSync()` with `process.env.REACT_APP_*` vars, exports `push`, `pull`, `auth`, `APP_KEY = 'job-search'`
-- `src/shared/sync.js` — real file copy of `/apps/shared/sync.js` (NOT a symlink — symlinks break on Vercel when only the app repo is cloned)
+- `src/shared/sync.js` — real file copy of `/portfolio/shared/sync.js` (NOT a symlink — symlinks break on Vercel when only the app repo is cloned)
 - `src/App.jsx` — auth gate (email OTP + `verifyOtp` LoginScreen), `pull()` in load useEffect, `push()` in save useEffect, `_syncAt` stamped on every save
 - `.env` — `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` (not committed)
 - `.env.example` — template (committed)
