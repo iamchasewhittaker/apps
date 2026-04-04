@@ -31,7 +31,7 @@
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
 - **RollerTask Tycoon** (`portfolio/roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.
-- **Park Checklist** (`projects/park-checklist-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack).
+- **Park Checklist** (`portfolio/park-checklist-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack).
 - No TypeScript, no Redux, no external state libraries (portfolio-wide)
 
 ## Monorepo Layout
@@ -67,10 +67,12 @@
       App.jsx      ← monolith (not yet refactored)
   roller-task-tycoon/
     index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
+  park-checklist-ios/
+    ParkChecklist.xcodeproj, ParkChecklist/  ← SwiftUI + SwiftData; local iOS
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
 /projects/
-  ai-dev-mastery/, park-checklist-ios/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
+  ai-dev-mastery/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
   archive/
     claude-usage-tool/  ← retired fork (Electron menu bar; see README)
 ```

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Project path: **`portfolio/park-checklist-ios`** (was `projects/park-checklist-ios`).
+
 ### Added
 
 - Initial **Park Checklist** iOS app: SwiftUI + SwiftData tasks, open/completed sections, strikethrough for done items.

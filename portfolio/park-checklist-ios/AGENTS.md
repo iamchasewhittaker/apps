@@ -4,7 +4,7 @@ Read this together with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md
 
 ## Scope
 
-- Work from **`projects/park-checklist-ios`** unless a task says otherwise.
+- Work from **`portfolio/park-checklist-ios`** unless a task says otherwise.
 
 ## Conventions
 

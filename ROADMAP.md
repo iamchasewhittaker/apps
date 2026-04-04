@@ -223,7 +223,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
-| 2026-04-04 | Park Checklist (iOS) | v1.0 | New **`projects/park-checklist-ios`**: SwiftUI + SwiftData checklist, park cash + rating, templates sheet, JSON backup share sheet, settings (readable fonts); top toolbar (not desktop chrome) | Open **`ParkChecklist.xcodeproj`**; install iOS Simulator runtime if needed |
+| 2026-04-04 | Park Checklist (iOS) | v1.0 | Moved to **`portfolio/park-checklist-ios`** (was `projects/`); SwiftUI + SwiftData checklist, templates, JSON backup, top toolbar | Open **`portfolio/park-checklist-ios/ParkChecklist.xcodeproj`**; iOS Simulator runtime if needed |
 | 2026-04-04 | Portfolio | — | **Handoff docs:** **`CLAUDE.md`** + **`HANDOFF.md`** state canonical routine for **Claude Code / non-Cursor**; **`.cursor/rules`** = Cursor-only mirror (**“Cursor only:”** line) | Avoid implying checklist is Cursor-only |
 | 2026-04-04 | Portfolio | — | **Symlink** **`session-handoff.mdc`** in each **`portfolio/*`** app + **`projects/ai-dev-mastery/`** → monorepo root rule (subfolder Cursor workspaces) | **`CLAUDE.md`** note · relative path `../../../.cursor/rules/session-handoff.mdc` |
 | 2026-04-04 | Portfolio | — | **Quick routine** in **`HANDOFF.md`** (top) + **`CLAUDE.md`** bullets; **`.cursor/rules/session-handoff.mdc`** (`alwaysApply`); **`.gitignore`** `!/.cursor/rules/**` | End session → update HANDOFF; new chat → templates; shipped → Linear + git; HANDOFF = now |

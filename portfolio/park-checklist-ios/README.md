@@ -2,7 +2,7 @@
 
 **One-liner:** Native **SwiftUI** checklist with a **park / tycoon** theme: open vs completed sections, **+250 park cash** per completion, templates, **JSON backup** via the system share sheet, and **no Win95/desktop window** chrome (iOS navigation + park HUD styling).
 
-**Monorepo:** `projects/park-checklist-ios` under [iamchasewhittaker/apps](https://github.com/iamchasewhittaker/apps).
+**Monorepo:** `portfolio/park-checklist-ios` under [iamchasewhittaker/apps](https://github.com/iamchasewhittaker/apps).
 
 ## Portfolio snapshot
 
