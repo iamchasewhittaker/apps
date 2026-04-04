@@ -1,52 +1,42 @@
-# ~/Documents — old git repo removed (2026-04-04)
+# ~/Documents — git removed + legacy code folders archived
 
 ## What happened
 
-1. **`~/Documents/.git`** was **renamed** to **`.git-documents-archive-20260404`** so `~/Documents` stopped being a git working tree.
-2. That **archive folder** (git object database, refs, config — **not** your normal files) was **deleted** to free ~90MB after this note was written.
+1. **`~/Documents/.git`** was **renamed** to **`.git-documents-archive-20260404`**, then that archive (**git metadata only**, ~90MB) was **deleted** so `~/Documents` stopped being a git working tree.
+2. **2026-04-04 (later same day):** Legacy **`~/Documents/apps`** and **`~/Documents/Projects`** were **moved** (not deleted) into **`~/Documents/_archive_legacy_monorepo_20260404/`** so the live monorepo paths are only under **`~/Developer/chase`**. See **`README.txt`** inside that archive folder.
 
 ## What was **not** deleted
 
-**No documents, apps, or project folders under `~/Documents` were removed.** Only the hidden **`.git-documents-archive-20260404`** directory (metadata used by Git) was deleted.
+- **Normal files** under `~/Documents` (taxes, Obsidian, images, etc.) were not bulk-deleted.
+- The old **`apps`** and **`Projects`** trees still exist **inside** **`_archive_legacy_monorepo_20260404/`** until you remove that folder yourself.
 
-Your files stay exactly where they were: `apps/`, `Projects/`, `Obsidian Vault/`, etc.
+## Snapshot: top-level `~/Documents` (before git archive delete)
 
-## Snapshot: top-level `~/Documents` (before archive delete)
-
-Recorded **2026-04-04** for reference (names only — not a full backup):
+Historical reference (2026-04-04 morning). **`apps/`** and **`Projects/`** have since been moved into **`_archive_legacy_monorepo_20260404/`**.
 
 | Name | Notes |
 |------|--------|
-| `.DS_Store` | macOS |
-| `.git-documents-archive-20260404` | *(was present on snapshot day; deleted same day — git metadata only)* |
-| `.gitignore` | Left in place; optional cleanup later |
-| `.localized` | macOS |
-| `2026 Taxes/` | |
-| `ArcRecoveryPhrase (1).png`, `ArcRecoveryPhrase.png` | |
-| `Codex/`, `Codex Intel/` | |
-| `Job Search 2026/` | |
-| `Obsidian Vault/` | |
-| `Projects/` | May overlap older paths; canonical monorepo code is **`~/Developer/chase`** |
-| `Untitled 2.rtf` | |
-| `Yard/` | |
-| `apps/` | Legacy copy; live portfolio is under **`~/Developer/chase/portfolio/`** |
-| `growth-tracker-old/` | |
-| `wellness-tracker.jsx` | |
+| `apps/` | *(moved to `_archive_legacy_monorepo_20260404/apps`)* |
+| `Projects/` | *(moved to `_archive_legacy_monorepo_20260404/Projects`)* |
+| `Obsidian Vault/`, `2026 Taxes/`, etc. | Unchanged |
 
 Re-list anytime: `ls -la ~/Documents`
 
 ## Canonical codebase
 
 - **Git monorepo:** `~/Developer/chase` → remote `github.com/iamchasewhittaker/apps`
-- Use that path for **Cursor workspace**, `git push` / `git pull`, and deployment workflows.
+- **Portfolio apps:** `~/Developer/chase/portfolio/<app>/`
+- **Other projects:** `~/Developer/chase/projects/<name>/`
+- Use **`~/Developer/chase`** for **Cursor workspace**, `git push` / `git pull`, and deployment workflows.
+- **Term reference:** [docs/GLOSSARY.md](GLOSSARY.md)
 
 ## Recovery
 
-After the archive folder is deleted, **Git history for the old `~/Documents` repo is gone** unless you restore from **Time Machine**, **Backblaze**, or another backup that included **`.git-documents-archive-20260404`** or the original **`.git`**.
-
-If you still have the archive folder on a backup, restore it to `~/Documents/.git` to revive the old repo.
+- **Old `~/Documents` git history:** Gone unless restored from Time Machine / backup (see earlier sections).
+- **Legacy `apps` / `Projects` copy:** Restore by moving folders back from **`~/Documents/_archive_legacy_monorepo_20260404/`** if needed.
 
 ## See also
 
 - [MONOREPO_MIGRATION.md](../MONOREPO_MIGRATION.md) — portfolio / `projects/` layout
-- Short marker file in Documents: **`DOCUMENTS_NOT_A_GIT_REPO.txt`**
+- [GLOSSARY.md](GLOSSARY.md) — common terms
+- Short marker: **`~/Documents/DOCUMENTS_NOT_A_GIT_REPO.txt`**

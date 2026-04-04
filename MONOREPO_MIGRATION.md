@@ -6,7 +6,9 @@ Tracks restructuring this repository to `portfolio/` and `projects/` under `~/De
 
 Use that project for migration tasks, Vercel root-directory updates, and verification checklists.
 
-**Local hygiene:** `~/Documents` is **not** a git repo anymore; the old `.git` archive was removed after [docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md](docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md). A marker file `~/Documents/DOCUMENTS_NOT_A_GIT_REPO.txt` points here.
+**Local hygiene:** `~/Documents` is **not** a git repo anymore; the old `.git` archive was removed after [docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md](docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md). A marker file `~/Documents/DOCUMENTS_NOT_A_GIT_REPO.txt` points here. Legacy **`~/Documents/apps`** and **`~/Documents/Projects`** were moved to **`~/Documents/_archive_legacy_monorepo_20260404/`** (2026-04-04) so only **`~/Developer/chase/portfolio`** and **`~/Developer/chase/projects`** are the active trees.
+
+**Term reference:** [docs/GLOSSARY.md](docs/GLOSSARY.md)
 
 ## Completed (recent)
 
