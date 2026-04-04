@@ -19,7 +19,7 @@
 
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
-- **RollerTask Tycoon** (`roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.
+- **RollerTask Tycoon** (`portfolio/roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.
 - No TypeScript, no Redux, no external state libraries (portfolio-wide)
 
 ## Monorepo Layout
@@ -53,11 +53,11 @@
   app-forge/
     src/
       App.jsx      ← monolith (not yet refactored)
+  roller-task-tycoon/
+    index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
 /apps/             ← still migrating to portfolio/ (see Linear: Portfolio monorepo migration)
   growth-tracker/
     (retired — moving to portfolio/archive/)
-  roller-task-tycoon/
-    index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
 ```
 
 ## Key Conventions
@@ -88,7 +88,7 @@
 - `/portfolio/shared/sync.js` — `createSync(url, key)` factory, exports `push`, `pull`, `auth`
 - `wellness-tracker/src/sync.js` — app adapter, APP_KEY = `'wellness'`
 - `job-search-hq/src/sync.js` — app adapter, APP_KEY = `'job-search'`
-- `roller-task-tycoon/src/sync.js` — app adapter, APP_KEY = `'roller_task_tycoon_v1'`, env `VITE_SUPABASE_*`
+- `portfolio/roller-task-tycoon/src/sync.js` — app adapter, APP_KEY = `'roller_task_tycoon_v1'`, env `VITE_SUPABASE_*`
 - CRA apps copy `shared/sync.js` as `src/shared/sync.js` (real file, not symlink — symlinks break on Vercel). RollerTask does the same.
 - `save()` stamps `_syncAt` · `push()` fires on every save · `pull()` runs on startup
 - Email OTP + `verifyOtp` auth gate: **Wellness** + **Job Search** in `App.jsx`; **RollerTask** in `src/main.js` (vanilla). **Dashboard:** Authentication → Email Templates → **Magic link** — add `{{ .Token }}` to the body (default template is link-only; [Supabase OTP docs](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp)). See each app’s `CLAUDE.md` for a sample template.

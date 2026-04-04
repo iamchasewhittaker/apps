@@ -2,7 +2,7 @@
 
 **One-liner:** A **Windows-95–styled park to-do “tycoon”** you can **install on your iPhone home screen**; tasks and park cash **sync** via the same Supabase stack as Wellness Tracker and Job Search HQ.
 
-**GitHub:** [github.com/iamchasewhittaker/roller-task-tycoon](https://github.com/iamchasewhittaker/roller-task-tycoon) (private)
+**Monorepo:** `portfolio/roller-task-tycoon` under [iamchasewhittaker/apps](https://github.com/iamchasewhittaker/apps) (`~/Developer/chase`).
 
 ## Portfolio snapshot
 
@@ -18,6 +18,7 @@
 | Doc | Purpose |
 |-----|---------|
 | [Linear — RollerTask Tycoon](https://linear.app/whittaker/project/rollertask-tycoon-ca86fd0bf771) | Launch / QA / backlog issues (team Whittaker) |
+| [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) | Path / Vercel root updates for this repo layout |
 | [CLAUDE.md](CLAUDE.md) | Project rules and context for AI assistants |
 | [AGENTS.md](AGENTS.md) | Cursor/agent conventions |
 | [docs/LEARNING.md](docs/LEARNING.md) | Concepts: PWA on iOS, OTP, sync |
@@ -30,7 +31,7 @@
 ## How to run
 
 ```bash
-cd apps/roller-task-tycoon
+cd portfolio/roller-task-tycoon
 npm install
 cp .env.example .env.local   # fill VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY (same as other portfolio apps)
 npm run dev                  # http://localhost:5175
@@ -46,6 +47,8 @@ npm run preview
 ## Deploy (Vercel)
 
 **Production:** [https://roller-task-tycoon.vercel.app](https://roller-task-tycoon.vercel.app)
+
+0. **Monorepo:** set Vercel **Root Directory** to `portfolio/roller-task-tycoon` when deploying from `iamchasewhittaker/apps`.
 
 1. **Environment variables** (Vercel → Project → Settings → Environment Variables): add **`VITE_SUPABASE_URL`** and **`VITE_SUPABASE_ANON_KEY`** for **Production** and **Preview** (same values as Wellness / Job Search), then **Redeploy** so the client bundle includes Supabase.
 2. **Supabase** → Authentication → URL configuration: add `https://roller-task-tycoon.vercel.app` (and preview URLs if needed) to the redirect allowlist; ensure **Magic link** email template includes `{{ .Token }}` (see [CLAUDE.md](CLAUDE.md)).

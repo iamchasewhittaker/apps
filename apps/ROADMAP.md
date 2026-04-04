@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | Monorepo migration: RollerTask at `portfolio/roller-task-tycoon` (was `apps/roller-task-tycoon`); cross-doc path + shared sync link updates; Vercel **Root Directory** → `portfolio/roller-task-tycoon` | Linear RollerTask project description updated · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | RollerTask Tycoon | v1.0 | Audit: startup `pull` uses fresh `loadState()` + `hasLoaded` after pull (avoids stale `_syncAt`); notification toasts escape user text (XSS) | `src/main.js`, CHANGELOG, ARCHITECTURE |
 | 2026-04-04 | Portfolio + RollerTask | — | Linear project **RollerTask Tycoon** + issues WHI-10…13 (Vercel, Supabase OTP, QA, backlog); `apps/CLAUDE.md` “Linear — project tracking”; README/AGENTS link | https://linear.app/whittaker/project/rollertask-tycoon-ca86fd0bf771 |
 | 2026-04-03 | RollerTask Tycoon | v1.0 | New `apps/roller-task-tycoon`: Vite vanilla, Win95 UI, PWA manifest + Apple meta + safe-area, `chase_roller_task_v1` blob, shared Supabase `user_data` + `roller_task_tycoon_v1`, email OTP auth, docs parity (README/CLAUDE/AGENTS/CHANGELOG/ROADMAP/docs/adr), `vercel.json` | Deploy: Vercel root `apps/roller-task-tycoon`, `VITE_SUPABASE_*`; add URL to Supabase redirects · `/apps/CLAUDE.md` updated |

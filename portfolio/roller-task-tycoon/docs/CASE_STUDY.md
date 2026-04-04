@@ -40,4 +40,4 @@ Fill this in as the project progresses. Use it for job applications or your pers
 ## Links
 
 - Live URL: https://roller-task-tycoon.vercel.app
-- Repo path: `apps/roller-task-tycoon`
+- Repo path: `portfolio/roller-task-tycoon` (monorepo root `~/Developer/chase`)

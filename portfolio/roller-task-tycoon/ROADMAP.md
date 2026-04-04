@@ -8,6 +8,7 @@
 - [x] Documentation set (shortcut-reference parity)
 - [x] Deploy to Vercel — **https://roller-task-tycoon.vercel.app**
 - [ ] Add `VITE_SUPABASE_*` on Vercel + redeploy; add URL to Supabase redirect allowlist
+- [ ] Vercel **Root Directory** = `portfolio/roller-task-tycoon` (monorepo deploy)
 
 ## Next
 

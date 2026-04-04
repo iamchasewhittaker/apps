@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Monorepo:** app path is `portfolio/roller-task-tycoon` under `~/Developer/chase`; Vercel **Root Directory** should match. Linear project description updated.
+
 ### Fixed
 
 - **Sync startup:** `pull` now uses a fresh `loadState()` snapshot (and `hasLoaded` is set only after `pull` finishes) so a fast local save is not compared against a stale `_syncAt` and overwritten by older remote data.
