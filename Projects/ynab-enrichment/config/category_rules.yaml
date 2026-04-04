@@ -1,0 +1,147 @@
+# category_rules.yaml
+# Maps item name keywords (case-insensitive) to YNAB category IDs.
+# Enable with AUTO_CATEGORIZE=true in .env
+# Budget: ynab-enrichment (583fdbca-5148-4ebf-8b36-ebb75c3e7d1b)
+
+Electronics:
+  category_id: "45a82253-9685-4964-94ee-204affd854de"  # Entertainment (interim — create Shopping category, then re-run setup_categories.py)
+  keywords:
+    - echo
+    - kindle
+    - airpods
+    - usb
+    - hdmi
+    - cable
+    - charger
+    - adapter
+    - monitor
+    - keyboard
+    - mouse
+    - webcam
+    - headphones
+    - speaker
+    - tablet
+    - ipad
+    - fire tv
+
+Groceries:
+  category_id: "7e77a194-b53d-4de9-b1f8-4d098d239380"  # Frequent > Groceries
+  keywords:
+    - ziploc
+    - paper towel
+    - dish soap
+    - laundry
+    - detergent
+    - toilet paper
+    - tissue
+    - sponge
+    - aluminum foil
+    - plastic wrap
+    - coffee
+    - tea
+    - sugar
+    - flour
+    - olive oil
+
+Household:
+  category_id: "de649809-6a0e-4502-9d8e-9226c8ccdd4f"  # Non-Monthly > Home Maintenance
+  keywords:
+    - lightbulb
+    - batteries
+    - trash bags
+    - vacuum
+    - mop
+    - broom
+    - storage
+    - container
+    - organizer
+    - shelf
+    - hooks
+    - hangers
+    - cleaning
+
+Clothing:
+  category_id: "459a5620-cbf7-45d0-9fef-1a16368b0d77"  # Quality of Life > Hobbies (interim — create Shopping category, then re-run setup_categories.py)
+  keywords:
+    - shirt
+    - pants
+    - jeans
+    - dress
+    - shoes
+    - sneakers
+    - socks
+    - underwear
+    - jacket
+    - coat
+    - sweater
+
+Books & Media:
+  category_id: "45a82253-9685-4964-94ee-204affd854de"  # Quality of Life > Entertainment
+  keywords:
+    - book
+    - audiobook
+    - ebook
+    - magazine
+    - journal
+    - planner
+
+Health Expenses:
+  category_id: "922b3618-96d5-4cda-bbf6-5e79426eebbd"  # Quality of Life > Health & Wellness
+  keywords:
+    - vitamin
+    - supplement
+    - medicine
+    - ibuprofen
+    - tylenol
+    - bandage
+    - first aid
+    - sunscreen
+
+Personal Care:
+  category_id: "922b3618-96d5-4cda-bbf6-5e79426eebbd"  # Quality of Life > Health & Wellness
+  keywords:
+    - lotion
+    - moisturizer
+    - shampoo
+    - conditioner
+    - toothpaste
+    - toothbrush
+    - deodorant
+    - razor
+    - shaving
+    - body wash
+    - face wash
+    - cleanser
+    - toner
+    - serum
+    - makeup
+    - lipstick
+    - mascara
+    - nail polish
+    - perfume
+    - cologne
+
+Kids:
+  category_id: "459a5620-cbf7-45d0-9fef-1a16368b0d77"  # Quality of Life > Hobbies (interim — create Kids Activities category, then re-run setup_categories.py)
+  keywords:
+    - diaper
+    - wipe
+    - formula
+    - baby
+    - toy
+    - lego
+    - puzzle
+    - crayons
+    - backpack
+    - lunchbox
+
+Pets:
+  category_id: "922b3618-96d5-4cda-bbf6-5e79426eebbd"  # Quality of Life > Health & Wellness (interim — create Pets category if needed)
+  keywords:
+    - dog food
+    - cat food
+    - pet
+    - treat
+    - leash
+    - collar
+    - litter

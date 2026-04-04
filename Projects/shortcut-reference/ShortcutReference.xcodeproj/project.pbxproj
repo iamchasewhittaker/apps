@@ -1,0 +1,268 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1B2C3D41E1F202122232425 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F202122232424 /* App.swift */; };
+		A1B2C3D41E1F2021222324B0 /* AccessibilityIntrospectionPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A0 /* AccessibilityIntrospectionPolicy.swift */; };
+		A1B2C3D41E1F2021222324B1 /* ActiveAppObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A1 /* ActiveAppObserver.swift */; };
+		A1B2C3D41E1F2021222324B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A2 /* ContentView.swift */; };
+		A1B2C3D41E1F2021222324B3 /* MenuShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A3 /* MenuShortcut.swift */; };
+		A1B2C3D41E1F2021222324B4 /* MenuShortcutExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A4 /* MenuShortcutExtractor.swift */; };
+		A1B2C3D41E1F2021222324B5 /* ShortcutReferenceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A5 /* ShortcutReferenceModel.swift */; };
+		A1B2C3D41E1F2021222324B6 /* ShortcutReferenceRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A6 /* ShortcutReferenceRootView.swift */; };
+		A1B2C3D41E1F2021222324B7 /* ReferenceWindowConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41E1F2021222324A7 /* ReferenceWindowConfigurator.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A1B2C3D41E1F202122232424 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F202122232428 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B2C3D41E1F202122232429 /* ShortcutReference.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShortcutReference.entitlements; sourceTree = "<group>"; };
+		A1B2C3D41E1F20212223242A /* ShortcutReference.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortcutReference.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D41E1F2021222324A0 /* AccessibilityIntrospectionPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIntrospectionPolicy.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A1 /* ActiveAppObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAppObserver.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A3 /* MenuShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuShortcut.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A4 /* MenuShortcutExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuShortcutExtractor.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A5 /* ShortcutReferenceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutReferenceModel.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A6 /* ShortcutReferenceRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutReferenceRootView.swift; sourceTree = "<group>"; };
+		A1B2C3D41E1F2021222324A7 /* ReferenceWindowConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceWindowConfigurator.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1B2C3D41E1F20212223242B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A1B2C3D41E1F20212223242C = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D41E1F2021222324C0 /* ShortcutReferenceLibrary */,
+				A1B2C3D41E1F20212223242D /* MacApp */,
+				A1B2C3D41E1F20212223242E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A1B2C3D41E1F20212223242D /* MacApp */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D41E1F202122232424 /* App.swift */,
+				A1B2C3D41E1F202122232428 /* Info.plist */,
+				A1B2C3D41E1F202122232429 /* ShortcutReference.entitlements */,
+			);
+			path = MacApp;
+			sourceTree = "<group>";
+		};
+		A1B2C3D41E1F20212223242E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D41E1F20212223242A /* ShortcutReference.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1B2C3D41E1F2021222324C0 /* ShortcutReferenceLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D41E1F2021222324A0 /* AccessibilityIntrospectionPolicy.swift */,
+				A1B2C3D41E1F2021222324A1 /* ActiveAppObserver.swift */,
+				A1B2C3D41E1F2021222324A2 /* ContentView.swift */,
+				A1B2C3D41E1F2021222324A3 /* MenuShortcut.swift */,
+				A1B2C3D41E1F2021222324A4 /* MenuShortcutExtractor.swift */,
+				A1B2C3D41E1F2021222324A5 /* ShortcutReferenceModel.swift */,
+				A1B2C3D41E1F2021222324A6 /* ShortcutReferenceRootView.swift */,
+				A1B2C3D41E1F2021222324A7 /* ReferenceWindowConfigurator.swift */,
+			);
+			path = Sources/ShortcutReferenceLibrary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A1B2C3D41E1F20212223242F /* ShortcutReference */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D41E1F202122232430 /* Build configuration list for PBXNativeTarget "ShortcutReference" */;
+			buildPhases = (
+				A1B2C3D41E1F202122232431 /* Sources */,
+				A1B2C3D41E1F20212223242B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShortcutReference;
+			productName = ShortcutReference;
+			productReference = A1B2C3D41E1F20212223242A /* ShortcutReference.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1B2C3D41E1F202122232432 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A1B2C3D41E1F20212223242F = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A1B2C3D41E1F202122232433 /* Build configuration list for PBXProject "ShortcutReference" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A1B2C3D41E1F20212223242C;
+			productRefGroup = A1B2C3D41E1F20212223242E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A1B2C3D41E1F20212223242F /* ShortcutReference */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1B2C3D41E1F202122232431 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D41E1F2021222324B0 /* AccessibilityIntrospectionPolicy.swift in Sources */,
+				A1B2C3D41E1F2021222324B1 /* ActiveAppObserver.swift in Sources */,
+				A1B2C3D41E1F2021222324B2 /* ContentView.swift in Sources */,
+				A1B2C3D41E1F2021222324B3 /* MenuShortcut.swift in Sources */,
+				A1B2C3D41E1F2021222324B4 /* MenuShortcutExtractor.swift in Sources */,
+				A1B2C3D41E1F2021222324B5 /* ShortcutReferenceModel.swift in Sources */,
+				A1B2C3D41E1F2021222324B6 /* ShortcutReferenceRootView.swift in Sources */,
+				A1B2C3D41E1F2021222324B7 /* ReferenceWindowConfigurator.swift in Sources */,
+				A1B2C3D41E1F202122232425 /* App.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A1B2C3D41E1F202122232435 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A1B2C3D41E1F202122232436 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A1B2C3D41E1F202122232437 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = MacApp/ShortcutReference.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MacApp/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.chase.shortcut-reference;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		A1B2C3D41E1F202122232438 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = MacApp/ShortcutReference.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MacApp/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.chase.shortcut-reference;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1B2C3D41E1F202122232433 /* Build configuration list for PBXProject "ShortcutReference" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D41E1F202122232435 /* Debug */,
+				A1B2C3D41E1F202122232436 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D41E1F202122232430 /* Build configuration list for PBXNativeTarget "ShortcutReference" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D41E1F202122232437 /* Debug */,
+				A1B2C3D41E1F202122232438 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1B2C3D41E1F202122232432 /* Project object */;
+}

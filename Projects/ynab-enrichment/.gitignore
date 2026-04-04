@@ -1,0 +1,23 @@
+# Secrets
+.env
+config/gmail_token.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Output (generated files)
+output/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

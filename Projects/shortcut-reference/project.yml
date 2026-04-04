@@ -1,0 +1,37 @@
+# Optional: regenerate the Xcode project (needs XcodeGen + newer macOS than some Homebrew tiers).
+# The repo ships a hand-written ShortcutReference.xcodeproj so you can build without XcodeGen.
+# xcodegen generate
+name: ShortcutReference
+options:
+  bundleIdPrefix: dev.chase
+  deploymentTarget:
+    macOS: "13.0"
+  createIntermediateGroups: true
+
+targets:
+  ShortcutReference:
+    type: application
+    platform: macOS
+    sources:
+      - path: MacApp
+        excludes:
+          - Info.plist
+      - path: Sources/ShortcutReferenceLibrary
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.chase.shortcut-reference
+        PRODUCT_NAME: ShortcutReference
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: MacApp/Info.plist
+        SWIFT_VERSION: "5.0"
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: MacApp/ShortcutReference.entitlements
+
+schemes:
+  ShortcutReference:
+    build:
+      targets:
+        ShortcutReference: all

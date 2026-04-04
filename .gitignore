@@ -1,0 +1,19 @@
+# Under ~/Documents, only these top-level trees are version-controlled.
+# Everything else (taxes, Obsidian, etc.) stays local-only.
+/*
+!.gitignore
+!/apps/
+!/apps/**
+!/Projects/
+!/Projects/**
+
+# Local / sensitive (still under apps/ or Projects/)
+.DS_Store
+**/.DS_Store
+**/.claude/settings.local.json
+# Raw statement exports — keep local; do not publish to git hosts
+Projects/Money/*.csv
+# YNAB / Gmail integration secrets (use .env or local config only)
+Projects/ynab-enrichment/config/gmail_credentials.json
+Projects/ynab-enrichment/config/*token*.json
+Projects/ynab-enrichment/config/*credentials*.json

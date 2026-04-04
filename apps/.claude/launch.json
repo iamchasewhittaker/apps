@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wellness-tracker",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3000", "npm", "--prefix", "/Users/chase/Documents/apps/wellness-tracker", "start"],
+      "port": 3000
+    },
+    {
+      "name": "job-search-hq",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3001", "npm", "--prefix", "/Users/chase/Documents/apps/job-search-hq", "start"],
+      "port": 3001
+    },
+    {
+      "name": "app-forge",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3002", "npm", "--prefix", "/Users/chase/Documents/apps/app-forge", "start"],
+      "port": 3002
+    },
+    {
+      "name": "growth-tracker",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3003", "npm", "--prefix", "/Users/chase/Documents/apps/growth-tracker", "start"],
+      "port": 3003
+    },
+    {
+      "name": "ai-dev-mastery",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3004", "npm", "--prefix", "/Users/chase/Documents/Projects/ai-dev-mastery", "start"],
+      "port": 3004
+    }
+  ]
+}

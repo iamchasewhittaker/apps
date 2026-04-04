@@ -1,0 +1,10 @@
+node_modules/
+build/
+.env
+.env.local
+.DS_Store
+.vercel
+
+# Claude Code — share launch.json; ignore local-only files
+.claude/*
+!.claude/launch.json
