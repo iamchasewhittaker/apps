@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Sync startup:** `pull` now uses a fresh `loadState()` snapshot (and `hasLoaded` is set only after `pull` finishes) so a fast local save is not compared against a stale `_syncAt` and overwritten by older remote data.
+- **Notifications:** toast HTML escapes user-controlled task text so notification `innerHTML` cannot inject markup.
+
 ### Added
 
 - **Supabase CLI:** `supabase init` + `supabase link` to project `unqtnnxlltiadzbqpyhh`; committed `supabase/config.toml` and `supabase/.gitignore` (`.temp` / local junk ignored).

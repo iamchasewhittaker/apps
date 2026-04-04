@@ -196,10 +196,12 @@ let notifTimeout;
 function notify(icon, msg) {
   clearTimeout(notifTimeout);
   const area = document.getElementById('notificationArea');
+  const safeIcon = escapeHtml(icon);
+  const safeMsg = escapeHtml(msg);
   area.innerHTML = `
       <div class="notification">
-        <span>${icon}</span>
-        <span style="font-size:15px;">${msg}</span>
+        <span>${safeIcon}</span>
+        <span style="font-size:15px;">${safeMsg}</span>
       </div>
     `;
   notifTimeout = setTimeout(() => {
@@ -216,18 +218,21 @@ function updateClock() {
   document.getElementById('clock').textContent = `${h}:${String(m).padStart(2, '0')} ${ampm}`;
 }
 
-async function runPullAfterLoad(stored) {
+async function runPullAfterLoad() {
+  // Fresh read so _syncAt matches any saves that happened while the UI was up; avoids wrongly
+  // treating remote as newer when local was already updated (stale snapshot from startApp).
+  const snap = loadState();
   const localForPull = {
-    tasks: stored.tasks.map((t) => ({ ...t })),
-    cash: stored.cash,
-    _syncAt: stored._syncAt,
+    tasks: snap.tasks.map((t) => ({ ...t })),
+    cash: snap.cash,
+    _syncAt: snap._syncAt,
   };
   const remote = await pull(APP_KEY, localForPull, localForPull._syncAt);
   if (remote !== localForPull) {
     applyBlob(remote);
     persistToStorage();
     renderList();
-    if (hasLoaded) push(APP_KEY, JSON.parse(localStorage.getItem(STORE_KEY)));
+    push(APP_KEY, JSON.parse(localStorage.getItem(STORE_KEY)));
   }
 }
 
@@ -261,8 +266,8 @@ async function startApp() {
   updateClock();
   setInterval(updateClock, 10000);
 
+  await runPullAfterLoad();
   hasLoaded = true;
-  await runPullAfterLoad(stored);
 }
 
 /* ── Auth gate (Wellness parity: email OTP for iOS home-screen PWA) ───────── */

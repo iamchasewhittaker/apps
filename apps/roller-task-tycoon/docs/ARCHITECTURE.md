@@ -29,7 +29,7 @@ flowchart LR
 | **`index.html`** | Static shell: styles, game markup, auth overlay sections, manifest/link tags. |
 | **`src/sync.js`** | Binds `createSync` to `import.meta.env.VITE_SUPABASE_*`, exports `APP_KEY`. |
 | **`src/shared/sync.js`** | Portfolio sync: `push`, `pull`, `auth` (or no-ops if no credentials). |
-| **`src/main.js`** | Todo logic, `loadState` / `saveState`, `renderList`, notifications, clock; `initAuth` + OTP UI; `startApp` + `pull` after load. |
+| **`src/main.js`** | Todo logic, `loadState` / `saveState`, `renderList`, notifications, clock; `initAuth` + OTP UI; `startApp` runs `pull` using a fresh `loadState()` snapshot, then sets `hasLoaded` so `push` does not race stale `_syncAt`. |
 | **`public/manifest.json`** | PWA install metadata. |
 | **`vercel.json`** | Cache-Control headers so clients pick up new builds quickly. |
 
