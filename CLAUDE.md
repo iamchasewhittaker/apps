@@ -23,6 +23,8 @@
 - **New chat:** Paste from `docs/templates/SESSION_START_MONOREPO.md` or `SESSION_START_APP_CHANGE.md`; say read `CLAUDE.md` + `HANDOFF.md` first.
 - **Shipped:** Linear + commits = truth; `HANDOFF.md` = current focus.
 
+**Cursor:** Repo root has **`.cursor/rules/session-handoff.mdc`** (`alwaysApply`). Each **`portfolio/*`** app and **`projects/ai-dev-mastery/`** include a **symlink** to that file so opening a subfolder as the workspace still loads the same rule.
+
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
 - **RollerTask Tycoon** (`portfolio/roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.
