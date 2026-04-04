@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ---
 
 ## [Unreleased]
+- [Changed] Monorepo folder is `~/Developer/chase/projects/ai-dev-mastery/` (was `Projects/` at repo root); `README`, `SETUP-INSTRUCTIONS`, and root `launch.json` paths updated (2026-04-04)
 - [Added] Apple Shortcuts track (track #13, 5 modules: What Are Apple Shortcuts?, Variables Conditionals and Loops, App Integrations and Personal Automations, Advanced Scripting — APIs Dictionaries and Regex, AI-Assisted Shortcut Creation) — inserted before GMAT track (2026-03-25)
 - [Added] Claude Console track (track #2, 5 modules: What is Claude Console?, API Keys & Authentication, The Workbench: Prompt Playground, Usage/Billing/Rate Limits, Organizations & Team Access) — inserted between Claude Code and Cursor tracks (2026-03-25)
 - [Added] Font scale toggle (small/medium/large) in header — persisted to localStorage (2026-03-25)

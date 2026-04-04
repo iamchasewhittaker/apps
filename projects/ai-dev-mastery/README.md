@@ -34,7 +34,7 @@ ai-dev-mastery/
 ```bash
 npx create-react-app temp-runner
 cd temp-runner
-cp ~/Documents/Projects/ai-dev-mastery/src/App.jsx src/App.js
+cp ~/Developer/chase/projects/ai-dev-mastery/src/App.jsx src/App.js
 npm start
 ```
 
@@ -52,7 +52,7 @@ npm start
 
 ### Ongoing development (new tracks, multiple edits)
 ```bash
-cd ~/Documents/Projects/ai-dev-mastery
+cd ~/Developer/chase/projects/ai-dev-mastery
 claude
 ```
 Claude Code reads `CLAUDE.md` automatically — full context from the start.

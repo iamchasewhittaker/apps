@@ -57,6 +57,8 @@
     index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
+/projects/
+  ai-dev-mastery/, claude-usage-tool/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
 ```
 
 Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo root** (`~/Developer/chase`).
@@ -127,7 +129,7 @@ When you **ship or materially extend** an app in this portfolio, **use Linear** 
 > 3. Update `/ROADMAP.md` (repo root) Change Log table with a new row
 > 4. Do this without being asked — it is part of every edit, not an optional step
 
-This applies to all apps in the portfolio **and** to AI Dev Mastery at `~/Documents/Projects/ai-dev-mastery/`.
+This applies to all apps in the portfolio **and** to AI Dev Mastery at `projects/ai-dev-mastery/` (monorepo root `~/Developer/chase`; you may still keep a separate clone under `~/Documents/Projects/ai-dev-mastery/` if you prefer).
 
 ## Roadmap Reference
 See [ROADMAP.md](ROADMAP.md) for the full priority queue, per-app suggestions, and decisions log.

@@ -117,12 +117,12 @@ Payment network descriptors go through three normalization steps:
 
 ## Budget Dashboard
 
-**Location:** `/Users/chase/Documents/Projects/Money/budget_dashboard.html`
-**Script:** `/Users/chase/Documents/Projects/Money/analyze.py`
+**Location:** `~/Developer/chase/projects/Money/budget_dashboard.html`
+**Script:** `~/Developer/chase/projects/Money/analyze.py`
 
 Regenerate after exporting a new CSV from MACU:
 ```bash
-cd /Users/chase/Documents/Projects/Money && python3 analyze.py
+cd ~/Developer/chase/projects/Money && python3 analyze.py
 ```
 
 Data source: `MACU Transaction.csv` (export from MACU online banking).

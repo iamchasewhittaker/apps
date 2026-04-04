@@ -32,22 +32,22 @@ I have these files in my current folder:
 Please set up my project by doing the following:
 
 1. Create this folder structure:
-   ~/Documents/Projects/ai-dev-mastery/
-   ~/Documents/Projects/ai-dev-mastery/src/
-   ~/Documents/Projects/ai-dev-mastery/versions/
+   ~/Developer/chase/projects/ai-dev-mastery/
+   ~/Developer/chase/projects/ai-dev-mastery/src/
+   ~/Developer/chase/projects/ai-dev-mastery/versions/
 
 2. Copy files to their correct locations:
-   ai-dev-course.jsx  →  ~/Documents/Projects/ai-dev-mastery/src/App.jsx
-   CLAUDE.md          →  ~/Documents/Projects/ai-dev-mastery/CLAUDE.md
-   README.md          →  ~/Documents/Projects/ai-dev-mastery/README.md
-   CHANGELOG.md       →  ~/Documents/Projects/ai-dev-mastery/CHANGELOG.md
-   ROADMAP.md         →  ~/Documents/Projects/ai-dev-mastery/ROADMAP.md
+   ai-dev-course.jsx  →  ~/Developer/chase/projects/ai-dev-mastery/src/App.jsx
+   CLAUDE.md          →  ~/Developer/chase/projects/ai-dev-mastery/CLAUDE.md
+   README.md          →  ~/Developer/chase/projects/ai-dev-mastery/README.md
+   CHANGELOG.md       →  ~/Developer/chase/projects/ai-dev-mastery/CHANGELOG.md
+   ROADMAP.md         →  ~/Developer/chase/projects/ai-dev-mastery/ROADMAP.md
 
 3. Create an empty placeholder:
-   ~/Documents/Projects/ai-dev-mastery/versions/.gitkeep
+   ~/Developer/chase/projects/ai-dev-mastery/versions/.gitkeep
 
 4. Initialize Git and make the first commit:
-   cd ~/Documents/Projects/ai-dev-mastery
+   cd ~/Developer/chase/projects/ai-dev-mastery
    git init
    git add .
    git commit -m "v1.0 — initial course, 13 tracks, 68+ modules"
@@ -61,7 +61,7 @@ Please set up my project by doing the following:
 
 **Open the course for editing:**
 ```
-cd ~/Documents/Projects/ai-dev-mastery
+cd ~/Developer/chase/projects/ai-dev-mastery
 claude
 ```
 Claude Code reads CLAUDE.md automatically and knows the full

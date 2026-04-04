@@ -6,7 +6,7 @@
 - Kassie's Gmail is **connected** and **fixed** — now properly authenticated to `kassie.e.whittaker@gmail.com` (was previously the wrong account: `kassiew@kidsvillage.net`)
 - Venmo parser added — enriches "Paid X — memo" and "From X — memo" on Venmo transactions
 - Walmart grocery delivery parser added — handles Kassie's Walmart delivery emails
-- Budget dashboard fully built at `/Users/chase/Documents/Projects/Money/budget_dashboard.html`
+- Budget dashboard fully built at `~/Developer/chase/projects/Money/budget_dashboard.html`
 - 6 subscriptions cancelled since last session — saving **$133.13/mo ($1,597/yr)**
 
 ---
@@ -159,14 +159,14 @@ Until Shopping/Kids categories are created, these route to temporary buckets:
 
 ## Dashboard
 
-**Location:** `/Users/chase/Documents/Projects/Money/budget_dashboard.html`
-**Script:** `/Users/chase/Documents/Projects/Money/analyze.py`
+**Location:** `~/Developer/chase/projects/Money/budget_dashboard.html`
+**Script:** `~/Developer/chase/projects/Money/analyze.py`
 
 ```bash
-cd /Users/chase/Documents/Projects/Money && python3 analyze.py
+cd ~/Developer/chase/projects/Money && python3 analyze.py
 ```
 
-**Data source:** `/Users/chase/Documents/Projects/Money/MACU Transaction.csv`
+**Data source:** `~/Developer/chase/projects/Money/MACU Transaction.csv`
 - 15 months of data (Jan 2025 – Mar 2026)
 - Analysis window: Apr 2025 – Mar 2026 (12 months)
 - Re-export from MACU online banking to refresh
@@ -177,7 +177,7 @@ cd /Users/chase/Documents/Projects/Money && python3 analyze.py
 
 ### Running
 ```bash
-cd /Users/chase/Documents/Projects/ynab-enrichment
+cd ~/Developer/chase/projects/ynab-enrichment
 source .venv/bin/activate
 python src/main.py
 ```

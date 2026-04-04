@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | Monorepo: **`Projects/` → `projects/`** (git mv via temp); root `.gitignore` + Money/YNAB/AI Dev docs and `analyze.py` paths; launch.json → `projects/ai-dev-mastery` | [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Retired top-level `apps/`: master `CLAUDE.md`, `ROADMAP.md`, `SUNSAMA_MCP_GUIDE.md`, `.claude/launch.json` → **repo root**; `.gitignore` whitelist updated | [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Monorepo: **Growth Tracker** → `portfolio/archive/growth-tracker`; retired docs + launch path; Linear **Growth Tracker** project **Canceled** | https://linear.app/whittaker/project/growth-tracker-9e99390538d6 · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Monorepo migration: RollerTask at `portfolio/roller-task-tycoon` (was `apps/roller-task-tycoon`); cross-doc path + shared sync link updates; Vercel **Root Directory** → `portfolio/roller-task-tycoon` | Linear RollerTask project description updated · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |

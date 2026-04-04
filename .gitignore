@@ -9,8 +9,8 @@
 !/.claude/**
 !/portfolio/
 !/portfolio/**
-!/Projects/
-!/Projects/**
+!/projects/
+!/projects/**
 
 # Dependencies & build output (all subtrees)
 node_modules/
@@ -33,8 +33,8 @@ build/
 **/supabase/.temp/
 
 # Raw statement exports — keep local; do not publish to git hosts
-Projects/Money/*.csv
+projects/Money/*.csv
 # YNAB / Gmail integration secrets (use .env or local config only)
-Projects/ynab-enrichment/config/gmail_credentials.json
-Projects/ynab-enrichment/config/*token*.json
-Projects/ynab-enrichment/config/*credentials*.json
+projects/ynab-enrichment/config/gmail_credentials.json
+projects/ynab-enrichment/config/*token*.json
+projects/ynab-enrichment/config/*credentials*.json

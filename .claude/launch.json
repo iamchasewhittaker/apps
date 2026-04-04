@@ -28,7 +28,7 @@
     {
       "name": "ai-dev-mastery",
       "runtimeExecutable": "env",
-      "runtimeArgs": ["PORT=3004", "npm", "--prefix", "/Users/chase/Documents/Projects/ai-dev-mastery", "start"],
+      "runtimeArgs": ["PORT=3004", "npm", "--prefix", "/Users/chase/Developer/chase/projects/ai-dev-mastery", "start"],
       "port": 3004
     }
   ]
