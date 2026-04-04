@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | Monorepo: **Growth Tracker** → `portfolio/archive/growth-tracker`; retired docs + launch path; Linear **Growth Tracker** project **Canceled** | https://linear.app/whittaker/project/growth-tracker-9e99390538d6 · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Monorepo migration: RollerTask at `portfolio/roller-task-tycoon` (was `apps/roller-task-tycoon`); cross-doc path + shared sync link updates; Vercel **Root Directory** → `portfolio/roller-task-tycoon` | Linear RollerTask project description updated · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | RollerTask Tycoon | v1.0 | Audit: startup `pull` uses fresh `loadState()` + `hasLoaded` after pull (avoids stale `_syncAt`); notification toasts escape user text (XSS) | `src/main.js`, CHANGELOG, ARCHITECTURE |
 | 2026-04-04 | Portfolio + RollerTask | — | Linear project **RollerTask Tycoon** + issues WHI-10…13 (Vercel, Supabase OTP, QA, backlog); `apps/CLAUDE.md` “Linear — project tracking”; README/AGENTS link | https://linear.app/whittaker/project/rollertask-tycoon-ca86fd0bf771 |

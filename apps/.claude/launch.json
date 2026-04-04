@@ -22,7 +22,7 @@
     {
       "name": "growth-tracker",
       "runtimeExecutable": "env",
-      "runtimeArgs": ["PORT=3003", "npm", "--prefix", "/Users/chase/Documents/apps/growth-tracker", "start"],
+      "runtimeArgs": ["PORT=3003", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/archive/growth-tracker", "start"],
       "port": 3003
     },
     {

@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+# Growth Tracker (archived)
+
+**Retired** — merged into [Wellness Tracker](https://wellnes-tracker.vercel.app) as the Growth tab (2026-03-23). Data: `chase_wellness_v1.growthLogs`.
+
+**Monorepo path:** `portfolio/archive/growth-tracker/` under `~/Developer/chase`. **Linear:** [Growth Tracker (canceled)](https://linear.app/whittaker/project/growth-tracker-9e99390538d6).
+
+---
+
+## Create React App (historical)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

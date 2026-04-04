@@ -6,6 +6,10 @@
 > This app is no longer actively developed. Do not deploy new versions.
 > Active app: https://wellnes-tracker.vercel.app
 
+## [Unreleased]
+
+- Monorepo: app source moved to `portfolio/archive/growth-tracker/` (`~/Developer/chase`). Linear project set to **Canceled** with archive path.
+
 ---
 
 ## v6 — 2026-03-19

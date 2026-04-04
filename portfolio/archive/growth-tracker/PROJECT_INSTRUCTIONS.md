@@ -37,7 +37,7 @@ After every `git push`, a `post-push` hook can run `bash "$(git rev-parse --show
 ### If sync doesn't fire
 Run it manually from inside the app folder:
 ```bash
-cd ~/Documents/apps/growth-tracker
+cd "$(git rev-parse --show-toplevel)/portfolio/archive/growth-tracker"
 bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 ```
 
@@ -57,7 +57,7 @@ bash audit.sh 2>&1 | tee "$(git rev-parse --show-toplevel)/portfolio/app-hub/las
 **Last deployed version:** v6
 **Live URL (archived):** `https://growth-tracker-rouge.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/growth-tracker` (private, no further development)
-**Local folder:** `~/Documents/apps/growth-tracker`
+**Local folder:** `portfolio/archive/growth-tracker` (monorepo root: `~/Developer/chase`)
 **Replacement:** Wellness Tracker Growth tab — `https://wellnes-tracker.vercel.app`
 
 ---
@@ -65,11 +65,12 @@ bash audit.sh 2>&1 | tee "$(git rev-parse --show-toplevel)/portfolio/app-hub/las
 ## Deploy Workflow
 
 ```bash
-mv ~/Downloads/App.jsx ~/Documents/apps/growth-tracker/src/App.jsx
-mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/growth-tracker/PROJECT_INSTRUCTIONS.md
-mv ~/Downloads/CHANGELOG.md ~/Documents/apps/growth-tracker/CHANGELOG.md
+ROOT="$(git rev-parse --show-toplevel)/portfolio/archive/growth-tracker"
+mv ~/Downloads/App.jsx "$ROOT/src/App.jsx"
+mv ~/Downloads/PROJECT_INSTRUCTIONS.md "$ROOT/PROJECT_INSTRUCTIONS.md"
+mv ~/Downloads/CHANGELOG.md "$ROOT/CHANGELOG.md"
 
-cd ~/Documents/apps/growth-tracker
+cd "$ROOT"
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN what changed" && git push
@@ -138,9 +139,9 @@ document.head.appendChild(_style);
 
 | File | Move command |
 |------|-------------|
-| `App.jsx` | `mv ~/Downloads/App.jsx ~/Documents/apps/growth-tracker/src/App.jsx` |
-| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/growth-tracker/PROJECT_INSTRUCTIONS.md` |
-| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md ~/Documents/apps/growth-tracker/CHANGELOG.md` |
+| `App.jsx` | `mv ~/Downloads/App.jsx "$(git rev-parse --show-toplevel)/portfolio/archive/growth-tracker/src/App.jsx"` |
+| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md "$(git rev-parse --show-toplevel)/portfolio/archive/growth-tracker/PROJECT_INSTRUCTIONS.md"` |
+| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md "$(git rev-parse --show-toplevel)/portfolio/archive/growth-tracker/CHANGELOG.md"` |
 
 **CHANGELOG rule — always write the full file, not just the new entry.**
 

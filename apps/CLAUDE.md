@@ -55,9 +55,9 @@
       App.jsx      ← monolith (not yet refactored)
   roller-task-tycoon/
     index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
+  archive/
+    growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
 /apps/             ← still migrating to portfolio/ (see Linear: Portfolio monorepo migration)
-  growth-tracker/
-    (retired — moving to portfolio/archive/)
 ```
 
 ## Key Conventions
