@@ -58,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				B30201000000000000000001 /* ParkChecklistApp.swift */,
+				B30201000000000000000002 /* ContentView.swift */,
 				B30401000000000000000004 /* Models */,
 				B30401000000000000000005 /* Views */,
 				B30401000000000000000006 /* Theme */,
@@ -86,7 +87,6 @@
 		B30401000000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B30201000000000000000002 /* ContentView.swift */,
 				B30201000000000000000003 /* ChecklistView.swift */,
 				B30201000000000000000004 /* TemplatesView.swift */,
 				B30201000000000000000005 /* SettingsView.swift */,

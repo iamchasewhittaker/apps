@@ -19,8 +19,9 @@ A **native iOS** park-themed checklist: **SwiftUI** + **SwiftData**, **@AppStora
 ParkChecklist.xcodeproj
 ParkChecklist/
   ParkChecklistApp.swift
+  ContentView.swift
   Models/ChecklistTaskItem.swift
-  Views/ContentView.swift, ChecklistView.swift, TemplatesView.swift, SettingsView.swift
+  Views/ChecklistView.swift, TemplatesView.swift, SettingsView.swift
   Theme/ParkTheme.swift
   Data/TemplateLibrary.swift, GameFlavor.swift, BackupSupport.swift
   Assets.xcassets
