@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> **Archived (2026-04-04)** — retired in monorepo at `projects/archive/claude-usage-tool/`. See [README](README.md) banner and [Linear](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688).
+
 ## Project Overview
 macOS menu bar app that tracks Claude Max subscription usage and API costs. Built with Electron + React + TypeScript + Vite.
 

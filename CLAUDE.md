@@ -58,7 +58,9 @@
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
 /projects/
-  ai-dev-mastery/, claude-usage-tool/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
+  ai-dev-mastery/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
+  archive/
+    claude-usage-tool/  ← retired fork (Electron menu bar; see README)
 ```
 
 Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo root** (`~/Developer/chase`).

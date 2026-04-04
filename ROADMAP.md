@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | **Claude Usage Tool** fork → `projects/archive/claude-usage-tool/` (retired); Linear project **Canceled** | https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688 · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | **Vercel Root Directory:** `wellness-tracker` → `portfolio/wellness-tracker`; `growth-tracker` → `portfolio/archive/growth-tracker` (archived app) | [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | **`main` pushed** to `github.com/iamchasewhittaker/apps`; **Vercel Root Directory** → `portfolio/<app>` for wellnes-tracker, job-search-hq, app-forge, roller-task-tycoon | `git config http.postBuffer 524288000` if push 400 · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | Monorepo: **`Projects/` → `projects/`** (git mv via temp); root `.gitignore` + Money/YNAB/AI Dev docs and `analyze.py` paths; launch.json → `projects/ai-dev-mastery` | [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
