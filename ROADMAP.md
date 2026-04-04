@@ -222,6 +222,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-04 | Portfolio | — | **`HANDOFF.md`** + **`docs/templates/SESSION_START_*.md`** for multi-agent continuity; **`CLAUDE.md`** link; **`.gitignore`** `!/HANDOFF.md` | Cross-tool session starts + living handoff state |
 | 2026-04-04 | Portfolio | — | Legacy **`apps`**, **`Projects`**, **`growth-tracker-old`** from Documents → **`projects/archive/from-documents-20260404/`** (gitignored); **`docs/LEGACY_LOCAL_MIRRORS.md`**, **`projects/archive/README.md`**, `.gitignore`, doc refresh | Not on GitHub; see [LEGACY_LOCAL_MIRRORS.md](docs/LEGACY_LOCAL_MIRRORS.md) · [migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) |
 | 2026-04-04 | Portfolio | — | **`~/Documents/apps`** + **`Projects`** moved to **`~/Documents/_archive_legacy_monorepo_20260404/`**; added **`docs/GLOSSARY.md`**; refreshed **DOCUMENTS_GIT_ARCHIVE_REMOVED** + **MONOREPO_MIGRATION** | Active code only under `~/Developer/chase/portfolio` + `projects/` |
 | 2026-04-04 | Portfolio | — | **`~/Documents` git sunset:** deleted `.git-documents-archive-20260404` (~90MB metadata only); documented layout in `docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md` + `~/Documents/DOCUMENTS_NOT_A_GIT_REPO.txt` | Canonical repo: `~/Developer/chase` |

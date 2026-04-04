@@ -2,6 +2,7 @@
 /*
 !.gitignore
 !/MONOREPO_MIGRATION.md
+!/HANDOFF.md
 !/docs/
 !/docs/**
 !/CLAUDE.md

@@ -10,6 +10,8 @@ Use that project for migration tasks, Vercel root-directory updates, and verific
 
 **Term reference:** [docs/GLOSSARY.md](docs/GLOSSARY.md)
 
+**Multi-agent handoff:** [HANDOFF.md](HANDOFF.md) + [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md) / [SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md).
+
 ## Completed (recent)
 
 - **Documents-era legacy bundle** → **`projects/archive/from-documents-20260404/`** (`apps`, `Projects`, `growth-tracker-old`); **`.gitignore`** + [docs/LEGACY_LOCAL_MIRRORS.md](docs/LEGACY_LOCAL_MIRRORS.md) + [projects/archive/README.md](projects/archive/README.md) (2026-04-04).

@@ -23,10 +23,12 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 | **Git LFS** | Large File Storage — optional for big binaries (e.g. large GIFs) so GitHub does not warn about 50MB+ blobs. |
 | **`http.postBuffer`** | Git config; increase if **`git push`** fails with HTTP 400 on a large pack (e.g. **`git config http.postBuffer 524288000`**). |
 | **Local legacy mirror** | **`~/Developer/chase/projects/archive/from-documents-20260404/`** — optional on-disk copy of old **`~/Documents`** **`apps/`**, **`Projects/`**, **`growth-tracker-old/`**; **gitignored**, not in **`git clone`**. See [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md). |
+| **HANDOFF.md** | Repo-root **living** state for the **current thread** (branch, Linear, next steps, blockers). Update when switching agents or pausing; pair with [docs/templates/](templates/) session prompts. |
 
 ## Related files
 
 - [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md) — gitignored **`from-documents-20260404/`** bundle
+- [templates/SESSION_START_MONOREPO.md](templates/SESSION_START_MONOREPO.md) · [templates/SESSION_START_APP_CHANGE.md](templates/SESSION_START_APP_CHANGE.md) — paste into a new chat
 - [CLAUDE.md](../CLAUDE.md) — master instructions for the portfolio
 - [ROADMAP.md](../ROADMAP.md) — cross-app priorities and change log
 - [AGENTS.md](../portfolio/wellness-tracker/AGENTS.md) (per app) — Cursor/agent conventions
