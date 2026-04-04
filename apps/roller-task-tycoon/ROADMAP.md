@@ -6,7 +6,8 @@
 - [x] PWA manifest + Apple meta + safe-area layout
 - [x] Supabase sync + email OTP auth gate
 - [x] Documentation set (shortcut-reference parity)
-- [ ] Deploy to Vercel + add production URL to Supabase redirect allowlist
+- [x] Deploy to Vercel — **https://roller-task-tycoon.vercel.app**
+- [ ] Add `VITE_SUPABASE_*` on Vercel + redeploy; add URL to Supabase redirect allowlist
 
 ## Next
 

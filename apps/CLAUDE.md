@@ -9,7 +9,7 @@
 | Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
-| RollerTask Tycoon | v1.0 | `chase_roller_task_v1` | _(deploy)_ | 🟡 Ready to deploy |
+| RollerTask Tycoon | v1.0 | `chase_roller_task_v1` | roller-task-tycoon.vercel.app | ✅ Deployed (add `VITE_SUPABASE_*` on Vercel for sync) |
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 

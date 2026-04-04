@@ -11,7 +11,7 @@
 | Job Search HQ | v8.3 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
-| RollerTask Tycoon | v1.0 | _(deploy)_ | chase_roller_task_v1 | 🟡 Ready to deploy |
+| RollerTask Tycoon | v1.0 | https://roller-task-tycoon.vercel.app | chase_roller_task_v1 | ✅ Live — set `VITE_SUPABASE_*` for sync |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0 | local (port 3004) | not yet deployed | 🟡 Local |
 
