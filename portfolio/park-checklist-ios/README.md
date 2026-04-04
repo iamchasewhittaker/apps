@@ -13,6 +13,11 @@
 | **Stack** | Xcode 15+, iOS **17+**, Swift 5. |
 | **Status** | **Local** — open in Xcode; add **Development Team** for device builds. |
 
+## Troubleshooting
+
+- **Black screen on launch (real device):** Pull latest; the app forces **light** mode and fixes SwiftData + layout sizing. Delete the app from the phone, **Product → Clean Build Folder**, then run again.
+- If it persists, check **Xcode → Report navigator** for crashes (e.g. SwiftData store).
+
 ## How to run
 
 1. Open **`ParkChecklist.xcodeproj`** in Xcode.
