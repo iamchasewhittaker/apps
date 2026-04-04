@@ -12,6 +12,7 @@
 | RollerTask Tycoon | v1.0 | `chase_roller_task_v1` | roller-task-tycoon.vercel.app | ✅ Deployed (add `VITE_SUPABASE_*` on Vercel for sync) |
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
+| Park Checklist (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_park_checklist_ios_*`) | local Xcode | 🟡 Local |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
@@ -30,6 +31,7 @@
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
 - **RollerTask Tycoon** (`portfolio/roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.
+- **Park Checklist** (`projects/park-checklist-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack).
 - No TypeScript, no Redux, no external state libraries (portfolio-wide)
 
 ## Monorepo Layout
@@ -68,7 +70,7 @@
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
 /projects/
-  ai-dev-mastery/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
+  ai-dev-mastery/, park-checklist-ios/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
   archive/
     claude-usage-tool/  ← retired fork (Electron menu bar; see README)
 ```

@@ -45,10 +45,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` (or fill in) |
 | **Linear** | *(issue URL or “none”)* |
-| **Focus** | *(one line: what we’re doing)* |
-| **Next** | 1. … 2. … 3. … |
-| **Blockers** | *(or “none”)* |
-| **Last touch** | *(date, optional)* |
+| **Focus** | Park Checklist iOS scaffold shipped under `projects/park-checklist-ios`. |
+| **Next** | 1. Open Xcode, set Team, run on simulator/device. 2. Optional: add OFL pixel font + App Icon 1024×1024. 3. Optional: backup import. |
+| **Blockers** | CI host had no iOS Simulator **device** runtime — `xcodebuild` may need Platforms → iOS Simulator installed. |
+| **Last touch** | 2026-04-04 |
 
 ---
 

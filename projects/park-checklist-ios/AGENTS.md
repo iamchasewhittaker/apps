@@ -1,0 +1,19 @@
+# AGENTS.md — Cursor & coding agents
+
+Read this together with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md`](../../CLAUDE.md).
+
+## Scope
+
+- Work from **`projects/park-checklist-ios`** unless a task says otherwise.
+
+## Conventions
+
+1. **Swift / SwiftUI** — match existing patterns; iOS 17+.
+2. **CHANGELOG.md** under `## [Unreleased]` for features, fixes, or notable refactors.
+3. **No drive-by refactors** unrelated to the task.
+4. After meaningful changes: refresh **README.md** snapshot if behavior or setup changes.
+
+## Xcode
+
+- Open **ParkChecklist.xcodeproj**; scheme **ParkChecklist**.
+- Set **Development Team** for device signing.
