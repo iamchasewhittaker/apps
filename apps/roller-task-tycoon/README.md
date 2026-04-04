@@ -2,6 +2,8 @@
 
 **One-liner:** A **Windows-95–styled park to-do “tycoon”** you can **install on your iPhone home screen**; tasks and park cash **sync** via the same Supabase stack as Wellness Tracker and Job Search HQ.
 
+**GitHub:** [github.com/iamchasewhittaker/roller-task-tycoon](https://github.com/iamchasewhittaker/roller-task-tycoon) (private)
+
 ## Portfolio snapshot
 
 | | |
