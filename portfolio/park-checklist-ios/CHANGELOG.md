@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Project path: **`portfolio/park-checklist-ios`** (was `projects/park-checklist-ios`).
+- **Xcode:** `ContentView.swift` referenced under `Views/` in `project.pbxproj` (fixes “Build input file cannot be found”).
 
 ### Added
 

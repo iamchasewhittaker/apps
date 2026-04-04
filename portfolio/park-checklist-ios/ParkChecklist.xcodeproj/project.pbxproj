@@ -58,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				B30201000000000000000001 /* ParkChecklistApp.swift */,
-				B30201000000000000000002 /* ContentView.swift */,
 				B30401000000000000000004 /* Models */,
 				B30401000000000000000005 /* Views */,
 				B30401000000000000000006 /* Theme */,
@@ -87,6 +86,7 @@
 		B30401000000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B30201000000000000000002 /* ContentView.swift */,
 				B30201000000000000000003 /* ChecklistView.swift */,
 				B30201000000000000000004 /* TemplatesView.swift */,
 				B30201000000000000000005 /* SettingsView.swift */,
@@ -323,7 +323,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9XVT527KP3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Park Checklist";
@@ -354,7 +354,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9XVT527KP3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Park Checklist";
