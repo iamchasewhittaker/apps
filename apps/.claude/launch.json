@@ -10,7 +10,7 @@
     {
       "name": "job-search-hq",
       "runtimeExecutable": "env",
-      "runtimeArgs": ["PORT=3001", "npm", "--prefix", "/Users/chase/Documents/apps/job-search-hq", "start"],
+      "runtimeArgs": ["PORT=3001", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/job-search-hq", "start"],
       "port": 3001
     },
     {

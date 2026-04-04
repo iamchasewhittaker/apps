@@ -38,7 +38,6 @@
       tabs/        ← one file per tab
         TrackerTab.jsx, TasksTab.jsx, TimeTrackerTab.jsx,
         BudgetTab.jsx, HistoryTab.jsx, GrowthTab.jsx
-/apps/             ← remaining apps migrating to portfolio/ (see Linear: Portfolio monorepo migration)
   job-search-hq/
     src/
       App.jsx      ← shell only (~280 lines)
@@ -51,9 +50,12 @@
         Field.jsx, AIResult.jsx, ApiKeyModal.jsx,
         AppCard.jsx, AppModal.jsx, ContactCard.jsx,
         ContactModal.jsx, ProfileModal.jsx, PrepModal.jsx
+/apps/             ← still migrating to portfolio/ (see Linear: Portfolio monorepo migration)
   app-forge/
     src/
       App.jsx      ← monolith (not yet refactored)
+  growth-tracker/
+    (retired — moving to portfolio/archive/)
   roller-task-tycoon/
     index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
 ```

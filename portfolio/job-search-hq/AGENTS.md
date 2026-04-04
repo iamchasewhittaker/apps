@@ -1,0 +1,19 @@
+# AGENTS.md — Job Search HQ
+
+Read with [CLAUDE.md](CLAUDE.md) and portfolio [`/apps/CLAUDE.md`](../../apps/CLAUDE.md).
+
+## Scope
+
+Work in **`portfolio/job-search-hq`** unless told otherwise.
+
+## Conventions
+
+1. Prefer adding logic to `constants.js` or tab/components — keep `App.jsx` as shell.
+2. Use `callClaude` / `handleClaudeCall` patterns from `constants.js` for AI calls.
+3. Update [CHANGELOG.md](CHANGELOG.md) under `## [Unreleased]` for shipped changes.
+4. Keep `src/shared/sync.js` aligned with [`portfolio/shared/sync.js`](../shared/sync.js).
+
+## Project tracking
+
+- **App:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)
+- **Monorepo migration:** [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37)

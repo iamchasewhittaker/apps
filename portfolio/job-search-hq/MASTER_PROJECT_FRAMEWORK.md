@@ -9,7 +9,7 @@
 | Project | Repo | Local Folder | Storage Key | Live URL | Current Version |
 |---------|------|-------------|-------------|----------|----------------|
 | Wellness Tracker | wellnes-tracker | ~/Developer/chase/portfolio/wellness-tracker | chase_wellness_v1 | wellnes-tracker.vercel.app | v15.10 |
-| Job Search HQ | job-search-hq | ~/Documents/apps/job-search-hq | chase_job_search_v1 | job-search-hq.vercel.app | v8 |
+| Job Search HQ | job-search-hq | ~/Developer/chase/portfolio/job-search-hq | chase_job_search_v1 | job-search-hq.vercel.app | v8.3 |
 | App Forge | app-forge | ~/Documents/apps/app-forge | chase_forge_v1 | app-forge-fawn.vercel.app | v7 |
 
 > **Growth Tracker retired 2026-03-23** — merged into Wellness Tracker as the 🌱 Growth tab. Storage key `chase_growth_v1` no longer in active use.
@@ -115,7 +115,7 @@ apps/your-app/
 
 **With Claude Code (preferred):** Claude edits files directly — no Downloads step needed.
 ```bash
-cd ~/Documents/apps/your-app
+cd portfolio/your-app
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN what changed" && git push
@@ -124,11 +124,11 @@ git tag vN && git push origin vN
 
 **Without Claude Code (chat interface):**
 ```bash
-mv ~/Downloads/App.jsx ~/Documents/apps/your-app/src/App.jsx
-mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/your-app/PROJECT_INSTRUCTIONS.md
-mv ~/Downloads/CHANGELOG.md ~/Documents/apps/your-app/CHANGELOG.md
+mv ~/Downloads/App.jsx portfolio/your-app/src/App.jsx
+mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/your-app/PROJECT_INSTRUCTIONS.md
+mv ~/Downloads/CHANGELOG.md portfolio/your-app/CHANGELOG.md
 
-cd ~/Documents/apps/your-app
+cd portfolio/your-app
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN what changed" && git push
@@ -148,9 +148,9 @@ git tag vN && git push origin vN
 
 | File | Command |
 |------|---------|
-| `App.jsx` | `mv ~/Downloads/App.jsx ~/Documents/apps/your-app/src/App.jsx` |
-| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/your-app/PROJECT_INSTRUCTIONS.md` |
-| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md ~/Documents/apps/your-app/CHANGELOG.md` |
+| `App.jsx` | `mv ~/Downloads/App.jsx portfolio/your-app/src/App.jsx` |
+| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/your-app/PROJECT_INSTRUCTIONS.md` |
+| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md portfolio/your-app/CHANGELOG.md` |
 
 **CHANGELOG rule — always write the full file, not just the new entry.**
 
@@ -236,7 +236,7 @@ export default function App() {
 ## Rollback to Any Version
 
 ```bash
-cd ~/Documents/apps/your-app
+cd portfolio/your-app
 git tag                          # see all versions
 git checkout v3 -- src/App.jsx  # restore a version
 git add . && git commit -m "rollback to v3" && git push
@@ -259,7 +259,7 @@ git add . && git commit -m "rollback to v3" && git push
 
 ```bash
 # 1. Create the React app
-cd ~/Documents/apps
+cd portfolio
 npx create-react-app your-app-name
 cd your-app-name
 
@@ -325,7 +325,7 @@ npx vercel
 
 ## New Project Checklist
 
-- [ ] `create-react-app` scaffolded inside `~/Documents/apps/`
+- [ ] `create-react-app` scaffolded inside `portfolio/` (monorepo)
 - [ ] `src/App.js` deleted immediately
 - [ ] Default files cleaned
 - [ ] `src/index.js` replaced with minimal version

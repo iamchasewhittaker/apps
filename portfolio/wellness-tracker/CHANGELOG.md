@@ -11,7 +11,7 @@
 
 ## [Unreleased]
 
-_(No entries.)_
+- **Monorepo:** app path is `portfolio/wellness-tracker` under `~/Developer/chase`; README, ROADMAP, AGENTS, `docs/ARCHITECTURE`, `docs/LEARNING`; Linear project linked in docs.
 
 ## v15.9 — 2026-03-24 — Supabase sync live
 

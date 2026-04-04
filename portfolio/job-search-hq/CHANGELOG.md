@@ -10,7 +10,7 @@
 
 ## [Unreleased]
 
-_(No entries.)_
+- **Monorepo:** path `portfolio/job-search-hq`; README, ROADMAP, AGENTS, `docs/*`; Linear links; master doc path updates.
 
 ## v8.2 — 2026-03-24 — Auth fix: wrong Supabase project
 
