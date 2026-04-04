@@ -6,6 +6,8 @@ Tracks restructuring this repository to `portfolio/` and `projects/` under `~/De
 
 Use that project for migration tasks, Vercel root-directory updates, and verification checklists.
 
+**Local hygiene:** `~/Documents` is **not** a git repo anymore; the old `.git` archive was removed after [docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md](docs/DOCUMENTS_GIT_ARCHIVE_REMOVED.md). A marker file `~/Documents/DOCUMENTS_NOT_A_GIT_REPO.txt` points here.
+
 ## Completed (recent)
 
 - **`main` pushed to GitHub** (`iamchasewhittaker/apps`). If `git push` returns HTTP 400, run `git config http.postBuffer 524288000` and retry (large pack). GitHub may warn about files over 50MB (e.g. `projects/archive/claude-usage-tool` GIF) — consider [Git LFS](https://git-lfs.github.com/) later.

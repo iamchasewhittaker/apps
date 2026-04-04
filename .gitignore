@@ -2,6 +2,8 @@
 /*
 !.gitignore
 !/MONOREPO_MIGRATION.md
+!/docs/
+!/docs/**
 !/CLAUDE.md
 !/ROADMAP.md
 !/SUNSAMA_MCP_GUIDE.md
