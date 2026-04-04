@@ -8,7 +8,7 @@
 
 | Project | Repo | Local Folder | Storage Key | Live URL | Current Version |
 |---------|------|-------------|-------------|----------|----------------|
-| Wellness Tracker | wellnes-tracker | ~/Documents/apps/wellness-tracker | chase_wellness_v1 | wellnes-tracker.vercel.app | v15.10 (email OTP auth for iOS PWA) |
+| Wellness Tracker | wellnes-tracker | ~/Developer/chase/portfolio/wellness-tracker | chase_wellness_v1 | wellnes-tracker.vercel.app | v15.10 (email OTP auth for iOS PWA) |
 | Job Search HQ | job-search-hq | ~/Documents/apps/job-search-hq | chase_job_search_v1 | job-search-hq.vercel.app | v8.3 (OTP login + `.claude/launch.json`) |
 | App Forge | app-forge | ~/Documents/apps/app-forge | chase_forge_v1 | app-forge-fawn.vercel.app | v7 |
 

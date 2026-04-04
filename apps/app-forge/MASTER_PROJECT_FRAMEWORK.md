@@ -8,7 +8,7 @@
 
 | Project | Repo | Local Folder | Storage Key | Live URL | Current Version |
 |---------|------|-------------|-------------|----------|----------------|
-| Wellness Tracker | wellnes-tracker | ~/Documents/apps/wellness-tracker | chase_wellness_v1 | wellnes-tracker.vercel.app | v15.6 (split — App.jsx ~349 lines + 6 tab files) |
+| Wellness Tracker | wellnes-tracker | ~/Developer/chase/portfolio/wellness-tracker | chase_wellness_v1 | wellnes-tracker.vercel.app | v15.10 |
 | Job Search HQ | job-search-hq | ~/Documents/apps/job-search-hq | chase_job_search_v1 | job-search-hq.vercel.app | v7 |
 | App Forge | app-forge | ~/Documents/apps/app-forge | chase_forge_v1 | app-forge-fawn.vercel.app | v7 |
 

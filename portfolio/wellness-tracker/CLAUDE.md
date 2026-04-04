@@ -1,6 +1,8 @@
 # Wellness Tracker — Project Instructions
 
-> See also: `/apps/CLAUDE.md` for portfolio-wide conventions.
+> See also: `/apps/CLAUDE.md` for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
+
+**Project tracking:** [Linear — Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7)
 
 ## App Identity
 - **Version:** v15.10

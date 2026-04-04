@@ -297,7 +297,7 @@ Wellness TasksTab has an Ideas sub-tab, Job Search has none, App Forge has an Id
 ### Prompt A — Split TrackerTab.jsx and HistoryTab.jsx
 
 ```
-Read /apps/CLAUDE.md and /apps/wellness-tracker/CLAUDE.md before starting.
+Read `/apps/CLAUDE.md` and `portfolio/wellness-tracker/CLAUDE.md` before starting.
 
 Two tabs in Wellness Tracker are too large and need splitting:
 - tabs/TrackerTab.jsx (~78K) — contains morning check-in form, evening check-in form, and PulseCheckModal

@@ -29,7 +29,6 @@
     sync.js        ← Supabase offline-first sync (source of truth; copy into each app)
   app-hub/
     sync.sh        ← post-push summaries (paths resolved via script location)
-/apps/             ← migrating to portfolio/ per app (see Linear: Portfolio monorepo migration)
   wellness-tracker/
     src/
       App.jsx      ← shell only (~370 lines)
@@ -39,6 +38,7 @@
       tabs/        ← one file per tab
         TrackerTab.jsx, TasksTab.jsx, TimeTrackerTab.jsx,
         BudgetTab.jsx, HistoryTab.jsx, GrowthTab.jsx
+/apps/             ← remaining apps migrating to portfolio/ (see Linear: Portfolio monorepo migration)
   job-search-hq/
     src/
       App.jsx      ← shell only (~280 lines)

@@ -4,7 +4,7 @@
     {
       "name": "wellness-tracker",
       "runtimeExecutable": "env",
-      "runtimeArgs": ["PORT=3000", "npm", "--prefix", "/Users/chase/Documents/apps/wellness-tracker", "start"],
+      "runtimeArgs": ["PORT=3000", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/wellness-tracker", "start"],
       "port": 3000
     },
     {

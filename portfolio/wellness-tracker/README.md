@@ -1,0 +1,33 @@
+# Wellness Tracker
+
+Personal daily wellness PWA (Create React App). One localStorage blob + optional Supabase sync (`app_key` `wellness`).
+
+## Run locally
+
+```bash
+cd portfolio/wellness-tracker
+cp .env.example .env   # add REACT_APP_SUPABASE_* for sync
+npm install
+npm start              # http://localhost:3000
+npm run build
+```
+
+## Monorepo
+
+Path from repo root: **`portfolio/wellness-tracker`**. Copy of shared sync lives in `src/shared/sync.js` — keep aligned with `portfolio/shared/sync.js`.
+
+## Docs
+
+- [CLAUDE.md](CLAUDE.md) — app-specific behavior and file map
+- [PROJECT_INSTRUCTIONS.md](PROJECT_INSTRUCTIONS.md) — session starter for AI
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/LEARNING.md](docs/LEARNING.md)
+
+## Project tracking
+
+[Linear — Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7)
+
+[Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37)
+
+## Deploy
+
+Production: **https://wellnes-tracker.vercel.app** — set Vercel **Root Directory** to `portfolio/wellness-tracker` when deploying from this monorepo.

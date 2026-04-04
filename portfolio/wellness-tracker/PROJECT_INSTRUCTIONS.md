@@ -55,7 +55,7 @@ A personal daily wellness tracker. It exists because standard task and wellness 
 ## Repo Structure
 
 ```
-apps/wellness-tracker/
+portfolio/wellness-tracker/
   src/
     App.jsx                    ← thin shell: state, effects, NavTabs, floating modals (~365 lines)
     ErrorBoundary.jsx          ← class component; wraps each tab — isolates crashes per tab
@@ -89,7 +89,7 @@ apps/wellness-tracker/
 
 **With Claude Code (preferred):** Claude edits files directly — no Downloads step needed.
 ```bash
-cd ~/Documents/apps/wellness-tracker
+cd portfolio/wellness-tracker
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN description" && git push
@@ -98,12 +98,12 @@ git tag vN && git push origin vN
 
 **Without Claude Code (chat interface):**
 ```bash
-mv ~/Downloads/App.jsx ~/Documents/apps/wellness-tracker/src/App.jsx
+mv ~/Downloads/App.jsx portfolio/wellness-tracker/src/App.jsx
 # (move any updated tab files from Downloads as needed)
-mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/wellness-tracker/PROJECT_INSTRUCTIONS.md
-mv ~/Downloads/CHANGELOG.md ~/Documents/apps/wellness-tracker/CHANGELOG.md
+mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/wellness-tracker/PROJECT_INSTRUCTIONS.md
+mv ~/Downloads/CHANGELOG.md portfolio/wellness-tracker/CHANGELOG.md
 
-cd ~/Documents/apps/wellness-tracker
+cd portfolio/wellness-tracker
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN description" && git push
@@ -363,21 +363,21 @@ useEffect(() => {
 
 | File | Move command |
 |------|-------------|
-| `App.jsx` | `mv ~/Downloads/App.jsx ~/Documents/apps/wellness-tracker/src/App.jsx` |
-| `ErrorBoundary.jsx` | `mv ~/Downloads/ErrorBoundary.jsx ~/Documents/apps/wellness-tracker/src/ErrorBoundary.jsx` |
-| `tabs/TrackerTab.jsx` | `mv ~/Downloads/TrackerTab.jsx ~/Documents/apps/wellness-tracker/src/tabs/TrackerTab.jsx` |
-| `tabs/TasksTab.jsx` | `mv ~/Downloads/TasksTab.jsx ~/Documents/apps/wellness-tracker/src/tabs/TasksTab.jsx` |
-| `tabs/TimeTrackerTab.jsx` | `mv ~/Downloads/TimeTrackerTab.jsx ~/Documents/apps/wellness-tracker/src/tabs/TimeTrackerTab.jsx` |
-| `tabs/BudgetTab.jsx` | `mv ~/Downloads/BudgetTab.jsx ~/Documents/apps/wellness-tracker/src/tabs/BudgetTab.jsx` |
-| `tabs/GrowthTab.jsx` | `mv ~/Downloads/GrowthTab.jsx ~/Documents/apps/wellness-tracker/src/tabs/GrowthTab.jsx` |
-| `tabs/HistoryTab.jsx` | `mv ~/Downloads/HistoryTab.jsx ~/Documents/apps/wellness-tracker/src/tabs/HistoryTab.jsx` |
-| `theme.js` | `mv ~/Downloads/theme.js ~/Documents/apps/wellness-tracker/src/theme.js` |
-| `ui.jsx` | `mv ~/Downloads/ui.jsx ~/Documents/apps/wellness-tracker/src/ui.jsx` |
-| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md ~/Documents/apps/wellness-tracker/PROJECT_INSTRUCTIONS.md` |
-| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md ~/Documents/apps/wellness-tracker/CHANGELOG.md` |
+| `App.jsx` | `mv ~/Downloads/App.jsx portfolio/wellness-tracker/src/App.jsx` |
+| `ErrorBoundary.jsx` | `mv ~/Downloads/ErrorBoundary.jsx portfolio/wellness-tracker/src/ErrorBoundary.jsx` |
+| `tabs/TrackerTab.jsx` | `mv ~/Downloads/TrackerTab.jsx portfolio/wellness-tracker/src/tabs/TrackerTab.jsx` |
+| `tabs/TasksTab.jsx` | `mv ~/Downloads/TasksTab.jsx portfolio/wellness-tracker/src/tabs/TasksTab.jsx` |
+| `tabs/TimeTrackerTab.jsx` | `mv ~/Downloads/TimeTrackerTab.jsx portfolio/wellness-tracker/src/tabs/TimeTrackerTab.jsx` |
+| `tabs/BudgetTab.jsx` | `mv ~/Downloads/BudgetTab.jsx portfolio/wellness-tracker/src/tabs/BudgetTab.jsx` |
+| `tabs/GrowthTab.jsx` | `mv ~/Downloads/GrowthTab.jsx portfolio/wellness-tracker/src/tabs/GrowthTab.jsx` |
+| `tabs/HistoryTab.jsx` | `mv ~/Downloads/HistoryTab.jsx portfolio/wellness-tracker/src/tabs/HistoryTab.jsx` |
+| `theme.js` | `mv ~/Downloads/theme.js portfolio/wellness-tracker/src/theme.js` |
+| `ui.jsx` | `mv ~/Downloads/ui.jsx portfolio/wellness-tracker/src/ui.jsx` |
+| `PROJECT_INSTRUCTIONS.md` | `mv ~/Downloads/PROJECT_INSTRUCTIONS.md portfolio/wellness-tracker/PROJECT_INSTRUCTIONS.md` |
+| `CHANGELOG.md` | `mv ~/Downloads/CHANGELOG.md portfolio/wellness-tracker/CHANGELOG.md` |
 
 ```bash
-cd ~/Documents/apps/wellness-tracker
+cd portfolio/wellness-tracker
 bash audit.sh
 bash pre-deploy.sh
 git add . && git commit -m "vN description" && git push
