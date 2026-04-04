@@ -40,3 +40,6 @@ projects/Money/*.csv
 projects/ynab-enrichment/config/gmail_credentials.json
 projects/ynab-enrichment/config/*token*.json
 projects/ynab-enrichment/config/*credentials*.json
+
+# Local legacy mirror from ~/Documents (large duplicates; not in remote — see docs/LEGACY_LOCAL_MIRRORS.md)
+projects/archive/from-documents-20260404/

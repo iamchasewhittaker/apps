@@ -1,6 +1,6 @@
 # Glossary — Chase monorepo & apps
 
-Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. For layout and migration history see [MONOREPO_MIGRATION.md](../MONOREPO_MIGRATION.md) and [DOCUMENTS_GIT_ARCHIVE_REMOVED.md](DOCUMENTS_GIT_ARCHIVE_REMOVED.md).
+Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. For layout and migration history see [MONOREPO_MIGRATION.md](../MONOREPO_MIGRATION.md), [DOCUMENTS_GIT_ARCHIVE_REMOVED.md](DOCUMENTS_GIT_ARCHIVE_REMOVED.md), and [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md).
 
 | Term | Meaning |
 |------|--------|
@@ -22,10 +22,11 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 | **Retired / archive** | **`portfolio/archive/growth-tracker`**, **`projects/archive/claude-usage-tool`** — kept for reference; Linear projects often **Canceled**. |
 | **Git LFS** | Large File Storage — optional for big binaries (e.g. large GIFs) so GitHub does not warn about 50MB+ blobs. |
 | **`http.postBuffer`** | Git config; increase if **`git push`** fails with HTTP 400 on a large pack (e.g. **`git config http.postBuffer 524288000`**). |
-| **Documents archive** | **`~/Documents/_archive_legacy_monorepo_20260404/`** — old **`apps/`** and **`Projects/`** trees moved out of the way 2026-04-04; not part of git. |
+| **Local legacy mirror** | **`~/Developer/chase/projects/archive/from-documents-20260404/`** — optional on-disk copy of old **`~/Documents`** **`apps/`**, **`Projects/`**, **`growth-tracker-old/`**; **gitignored**, not in **`git clone`**. See [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md). |
 
 ## Related files
 
+- [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md) — gitignored **`from-documents-20260404/`** bundle
 - [CLAUDE.md](../CLAUDE.md) — master instructions for the portfolio
 - [ROADMAP.md](../ROADMAP.md) — cross-app priorities and change log
 - [AGENTS.md](../portfolio/wellness-tracker/AGENTS.md) (per app) — Cursor/agent conventions
