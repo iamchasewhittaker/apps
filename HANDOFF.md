@@ -2,6 +2,12 @@
 
 **Living file.** Keep the **State** block short and current so Cursor, Claude Code, Codex, or another chat can resume without re-reading the whole thread.
 
+### Quick routine (read every session)
+
+1. **End of session or switch agent:** Update **State** (and **Notes** if useful) in this file.
+2. **New chat:** Use [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md) or [SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md); fill brackets; paste; say *“Read `CLAUDE.md` and `HANDOFF.md` first.”*
+3. **Shipped work:** **Linear** + **git** = source of truth for what shipped; **`HANDOFF.md`** = where we are *right now*.
+
 ## When to start a **new** chat (and use this file)
 
 Start a **new** conversation when:

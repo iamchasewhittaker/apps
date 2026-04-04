@@ -19,6 +19,10 @@
 
 **Multi-session / multi-agent:** Read **[HANDOFF.md](HANDOFF.md)** when continuing work or opening a **new** chat; copy a starter from [docs/templates/](docs/templates/).
 
+- **End / switch agent:** Update **State** (and **Notes**) in `HANDOFF.md`.
+- **New chat:** Paste from `docs/templates/SESSION_START_MONOREPO.md` or `SESSION_START_APP_CHANGE.md`; say read `CLAUDE.md` + `HANDOFF.md` first.
+- **Shipped:** Linear + commits = truth; `HANDOFF.md` = current focus.
+
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
 - **RollerTask Tycoon** (`portfolio/roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.

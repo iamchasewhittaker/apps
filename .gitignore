@@ -10,6 +10,9 @@
 !/SUNSAMA_MCP_GUIDE.md
 !/.claude/
 !/.claude/**
+!/.cursor/
+!/.cursor/rules/
+!/.cursor/rules/**
 !/portfolio/
 !/portfolio/**
 !/projects/
