@@ -43,10 +43,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | Field | Value |
 |--------|--------|
 | **Workspace** | `~/Developer/chase` |
-| **Branch** | `main` (or fill in) |
-| **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Wellness Tracker (iOS)** Phase 1 at `portfolio/wellness-tracker-ios`. **RollerTask Tycoon (iOS)** — **Park Operations Console** implemented at `portfolio/roller-task-tycoon-ios` (five tabs, ledger, backup v2, `docs/PARK_OPERATIONS_*.md`). Web PWA archived at `portfolio/archive/roller-task-tycoon`. |
-| **Next** | **Wellness iOS:** device QA, Supabase OTP + sync, App Icon. **RollerTask:** run **`RollerTaskTycoonTests`** on Simulator (⌘U); track **Park Operations Console** in [WHI-20](https://linear.app/whittaker/issue/WHI-20/park-operations-console-v1-spec-implementation) (spec docs linked in issue); TestFlight [WHI-19](https://linear.app/whittaker/issue/WHI-19) when ready. |
+| **Branch** | `chore/archive-rtt-web-rebrand-ios` |
+| **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) — [WHI-21](https://linear.app/whittaker/issue/WHI-21) native iOS Phase 1 (local-only) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| **Focus** | **Wellness Tracker (iOS)** Phase 1 landed at `portfolio/wellness-tracker-ios` (`WellnessTracker.xcodeproj`). **RollerTask Tycoon (iOS)** at `portfolio/roller-task-tycoon-ios`; archived web PWA at `portfolio/archive/roller-task-tycoon`. |
+| **Next** | **Wellness iOS:** device QA (local-only; no cloud). **RollerTask:** `RollerTaskTycoonTests` + [WHI-19](https://linear.app/whittaker/issue/WHI-19) TestFlight when ready. |
 | **Blockers** | CI host had no iOS Simulator **device** runtime — `xcodebuild` may need Platforms → iOS Simulator installed. |
 | **Last touch** | 2026-04-05 |
 
