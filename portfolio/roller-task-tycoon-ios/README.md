@@ -1,6 +1,6 @@
 # RollerTask Tycoon (iOS)
 
-**One-liner:** Native **SwiftUI** checklist with a **park / tycoon** theme: open vs completed sections, **+250 park cash** per completion, templates, **JSON backup** via the system share sheet, and **no Win95/desktop window** chrome (iOS navigation + park HUD styling).
+**One-liner:** Native **SwiftUI** **park operations console**: attractions with **Open / Testing / Broken Down / Closed**, zones & staff roles, **variable rewards** + **profit ledger**, five-tab dashboard (**Overview**, **Attractions**, **Staff**, **Finances**, **Map**), templates, and **JSON backup** (schema **v2**, still imports **v1**).
 
 **Monorepo:** `portfolio/roller-task-tycoon-ios` under [iamchasewhittaker/apps](https://github.com/iamchasewhittaker/apps).
 
@@ -11,7 +11,7 @@
 | | |
 |---|---|
 | **Problem** | Fun themed todos on device with exportable backup. |
-| **Approach** | SwiftUI + SwiftData (`ChecklistTaskItem`); `@AppStorage` for cash + readable-font toggle; share sheet for `RollerTaskTycoon-backup-YYYY-MM-DD.json`. |
+| **Approach** | SwiftUI + SwiftData (`ChecklistTaskItem`, `SubtaskItem`, `ProfitLedgerEntry`); `@AppStorage` for cash + readable-font toggle; tab shell + board/list attractions; share sheet for `RollerTaskTycoon-backup-YYYY-MM-DD.json` (v2). |
 | **Stack** | Xcode **current enough for your phone’s iOS** (15+ minimum for the project); app targets iOS **17+**; Swift 5. |
 | **Status** | **Local** — open in Xcode; add **Development Team** for device builds. |
 
@@ -52,12 +52,16 @@ Pull latest; the app forces **light** mode and fixes SwiftData + layout sizing. 
 |-----|---------|
 | `chase_roller_task_tycoon_ios_cash` | Park cash (default 1000); migrated once from `chase_park_checklist_ios_cash` if present |
 | `chase_roller_task_tycoon_ios_readable` | Use system fonts for readability; migrated from `chase_park_checklist_ios_readable` if present |
+| `chase_roller_task_tycoon_ios_board` | Attractions default to **Board** (`true`) vs **List** |
+| `chase_roller_task_tycoon_ios_migrated_v2_fields` | One-time flag after legacy `isDone` → status migration |
 
-SwiftData store: app container (tasks).
+SwiftData store: app container (attractions, subtasks, ledger).
 
 ## Backup format
 
-Exported JSON includes `schemaVersion`, `exportedAt` (ISO8601), `cash`, and `tasks[]` with `id`, `text`, `isDone`, `createdAt`. **Import** (toolbar): pick a `.json` file; only **schema version 1**; confirms **replace all** tasks and park cash before applying.
+**Export (current):** `schemaVersion` **2**, `exportedAt`, `cash`, `tasks[]` (status, zone, staff, priority, reward, due, details, `closedAt`, nested `subtasks[]`), and `ledger[]` (profit events including manual “Log profit”).
+
+**Import:** **v1** (`isDone` + legacy fields) or **v2**; confirms **replace all** attractions, subtasks, ledger, and park cash.
 
 **Tests:** In Xcode, run **RollerTaskTycoonTests** (`BackupImporter` decode/validation). **CI:** Web apps use repo [`.github/workflows/portfolio-web-build.yml`](../../.github/workflows/portfolio-web-build.yml) (`npm run build` per app).
 
@@ -71,6 +75,8 @@ Exported JSON includes `schemaVersion`, `exportedAt` (ISO8601), `cash`, and `tas
 | [ROADMAP.md](ROADMAP.md) | Next ideas |
 | [iOS App Starter Kit](../../docs/ios-app-starter-kit/README.md) | Reusable product / PRD / release planning templates |
 | [Planning](docs/planning/README.md) | Filled brief, PRD, flow, technical design, backlog, QA, release + [`PLANNING_WORKFLOW.md`](docs/planning/PLANNING_WORKFLOW.md) |
+| [Park Operations spec](docs/PARK_OPERATIONS_CONSOLE.md) | Product / design narrative for the console + roadmap hints |
+| [Park Operations key](docs/PARK_OPERATIONS_KEY.md) | What every control and metric means + step-by-step usage |
 | [Linear — Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) | Project + backlog issues (WHI-15…19) |
 
 ## License

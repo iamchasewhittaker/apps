@@ -7,6 +7,7 @@
 | App | Version | Storage Key | URL | Status |
 |-----|---------|-------------|-----|--------|
 | Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active |
+| Wellness Tracker (iOS) | Phase 1 | `chase_wellness_ios_v1` (+ draft, meds keys); **local-only** (no Supabase) | local Xcode | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
 | RollerTask Tycoon (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
@@ -30,7 +31,7 @@
 
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
-- **RollerTask Tycoon** (`portfolio/roller-task-tycoon-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack). **Archived** Vite PWA: [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) (**`VITE_*`** + `import.meta.env` when building that tree).
+- **RollerTask Tycoon** (`portfolio/roller-task-tycoon-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack). **Wellness Tracker** (`portfolio/wellness-tracker-ios/`): **SwiftUI** check-in, **local-only** (UserDefaults). **Archived** Vite PWA: [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) (**`VITE_*`** + `import.meta.env` when building that tree).
 - No TypeScript, no Redux, no external state libraries (portfolio-wide)
 
 ## Monorepo Layout
@@ -66,6 +67,8 @@
       App.jsx      ← monolith (not yet refactored)
   roller-task-tycoon-ios/
     RollerTaskTycoon.xcodeproj, RollerTaskTycoon/  ← SwiftUI + SwiftData; local iOS (bundle id still com.chasewhittaker.ParkChecklist)
+  wellness-tracker-ios/
+    WellnessTracker.xcodeproj, WellnessTracker/  ← SwiftUI Phase 1 check-in; bundle com.chasewhittaker.WellnessTracker
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
     roller-task-tycoon/  ← retired Vite PWA; APP_KEY roller_task_tycoon_v1 (historical Supabase rows may remain)
@@ -98,7 +101,7 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 
 ## Supabase Sync — Status
 
-**Wellness Tracker: LIVE ✅** | **Job Search HQ: LIVE ✅** | **RollerTask Tycoon (iOS):** local-first (no Supabase in app yet) | **RollerTask Tycoon (archived web):** historical `roller_task_tycoon_v1` rows may still exist | App Forge: later
+**Wellness Tracker: LIVE ✅** | **Wellness Tracker (iOS):** local-only (no cloud sync) | **Job Search HQ: LIVE ✅** | **RollerTask Tycoon (iOS):** local-first (no Supabase in app yet) | **RollerTask Tycoon (archived web):** historical `roller_task_tycoon_v1` rows may still exist | App Forge: later
 
 > ⚠️ **Wellness and Job Search** share the same Supabase project (`unqtnnxlltiadzbqpyhh`). The **retired Vite PWA** used the same project with `app_key = roller_task_tycoon_v1` (see archived app’s `CLAUDE.md`).
 

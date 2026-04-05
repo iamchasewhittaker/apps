@@ -11,8 +11,8 @@ A **native iOS** park-themed checklist branded **RollerTask Tycoon**: **SwiftUI*
 ## Behavior rules
 
 1. **Local-first:** Tasks live in SwiftData; cash in `UserDefaults` via `@AppStorage`.
-2. **Completing** a task leaves it on the list with **strikethrough** (completed section).
-3. **Backup** export/import: document `schemaVersion` when changing the envelope.
+2. **Attractions** use statuses **Open → Testing → Broken Down → Closed**; closing adds **reward** to park cash and the **profit ledger**.
+3. **Backup** export/import: **schema v2** (tasks + subtasks + ledger); still imports **v1** (`isDone` only). Document `schemaVersion` when changing the envelope.
 4. **Do not** add Win95 window chrome or Start-menu metaphors; keep **iOS-native** navigation patterns.
 
 ## Layout
@@ -22,10 +22,13 @@ RollerTaskTycoon.xcodeproj
 RollerTaskTycoon/
   RollerTaskTycoonApp.swift
   ContentView.swift
-  Models/ChecklistTaskItem.swift
-  Views/ChecklistView.swift, TemplatesView.swift, SettingsView.swift
+  Models/ChecklistTaskItem.swift, SubtaskItem.swift, ProfitLedgerEntry.swift
+  Views/OverviewConsoleView, ParkAttractionsView, AttractionDetailView, AttractionEditorView,
+       LogProfitSheet, StaffFinancesMapViews, TemplatesView.swift, SettingsView.swift
   Theme/ParkTheme.swift
-  Data/TemplateLibrary.swift, GameFlavor.swift, BackupSupport.swift, PreferencesMigration.swift
+  Data/ParkDomain.swift, LegacyTaskMigration.swift, ParkStatusTransitions.swift, ParkFinance.swift,
+       ParkDataImport.swift, TemplateLibrary.swift, GameFlavor.swift, BackupSupport.swift, PreferencesMigration.swift
+  docs/PARK_OPERATIONS_CONSOLE.md, docs/PARK_OPERATIONS_KEY.md
   Assets.xcassets
 ```
 

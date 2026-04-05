@@ -11,7 +11,7 @@ struct SettingsView: View {
                     Toggle("Readable fonts (system)", isOn: $readableFonts)
                 }
                 Section("About") {
-                    Text("RollerTask Tycoon — a park tycoon-style task list. Data stays on this device unless you export a backup. Import replaces all tasks and park cash from a JSON backup (schema v1 only).")
+                    Text("RollerTask Tycoon — park operations console for your real life. Data stays on this device unless you export a backup. Import replaces attractions, subtasks, ledger entries, and park cash from JSON (schema v1 or v2).")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }

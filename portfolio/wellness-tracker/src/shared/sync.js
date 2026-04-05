@@ -26,6 +26,9 @@
  *     begin new.updated_at = now(); return new; end; $$;
  *   create trigger user_data_updated_at before update on user_data
  *     for each row execute function set_updated_at();
+ *
+ * Known app_key values in this monorepo include: wellness (CRA web), job-search,
+ * roller_task_tycoon_v1 (archived web).
  */
 
 import { createClient } from '@supabase/supabase-js';

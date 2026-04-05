@@ -7,9 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B30101000000000000000020 /* ParkDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000020 /* ParkDomain.swift */; };
+		B30101000000000000000021 /* LegacyTaskMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000021 /* LegacyTaskMigration.swift */; };
+		B30101000000000000000022 /* ParkStatusTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000022 /* ParkStatusTransitions.swift */; };
+		B30101000000000000000023 /* ParkFinance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000023 /* ParkFinance.swift */; };
+		B30101000000000000000024 /* ParkDataImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000024 /* ParkDataImport.swift */; };
+		B30101000000000000000025 /* SubtaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000025 /* SubtaskItem.swift */; };
+		B30101000000000000000026 /* ProfitLedgerEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000026 /* ProfitLedgerEntry.swift */; };
+		B30101000000000000000027 /* OverviewConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000027 /* OverviewConsoleView.swift */; };
+		B30101000000000000000028 /* ParkAttractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000028 /* ParkAttractionsView.swift */; };
+		B30101000000000000000029 /* AttractionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000029 /* AttractionDetailView.swift */; };
+		B3010100000000000000002A /* AttractionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000002A /* AttractionEditorView.swift */; };
+		B3010100000000000000002B /* LogProfitSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000002B /* LogProfitSheet.swift */; };
+		B3010100000000000000002C /* StaffFinancesMapViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000002C /* StaffFinancesMapViews.swift */; };
 		B30101000000000000000001 /* RollerTaskTycoonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000001 /* RollerTaskTycoonApp.swift */; };
 		B30101000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000002 /* ContentView.swift */; };
-		B30101000000000000000003 /* ChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000003 /* ChecklistView.swift */; };
 		B30101000000000000000004 /* TemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000004 /* TemplatesView.swift */; };
 		B30101000000000000000005 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000005 /* SettingsView.swift */; };
 		B30101000000000000000006 /* ChecklistTaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000006 /* ChecklistTaskItem.swift */; };
@@ -23,9 +35,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B30201000000000000000020 /* ParkDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkDomain.swift; sourceTree = "<group>"; };
+		B30201000000000000000021 /* LegacyTaskMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTaskMigration.swift; sourceTree = "<group>"; };
+		B30201000000000000000022 /* ParkStatusTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkStatusTransitions.swift; sourceTree = "<group>"; };
+		B30201000000000000000023 /* ParkFinance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkFinance.swift; sourceTree = "<group>"; };
+		B30201000000000000000024 /* ParkDataImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkDataImport.swift; sourceTree = "<group>"; };
+		B30201000000000000000025 /* SubtaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskItem.swift; sourceTree = "<group>"; };
+		B30201000000000000000026 /* ProfitLedgerEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitLedgerEntry.swift; sourceTree = "<group>"; };
+		B30201000000000000000027 /* OverviewConsoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewConsoleView.swift; sourceTree = "<group>"; };
+		B30201000000000000000028 /* ParkAttractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkAttractionsView.swift; sourceTree = "<group>"; };
+		B30201000000000000000029 /* AttractionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionDetailView.swift; sourceTree = "<group>"; };
+		B3020100000000000000002A /* AttractionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractionEditorView.swift; sourceTree = "<group>"; };
+		B3020100000000000000002B /* LogProfitSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogProfitSheet.swift; sourceTree = "<group>"; };
+		B3020100000000000000002C /* StaffFinancesMapViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffFinancesMapViews.swift; sourceTree = "<group>"; };
 		B30201000000000000000001 /* RollerTaskTycoonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollerTaskTycoonApp.swift; sourceTree = "<group>"; };
 		B30201000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		B30201000000000000000003 /* ChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistView.swift; sourceTree = "<group>"; };
 		B30201000000000000000004 /* TemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatesView.swift; sourceTree = "<group>"; };
 		B30201000000000000000005 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B30201000000000000000006 /* ChecklistTaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistTaskItem.swift; sourceTree = "<group>"; };
@@ -102,6 +126,8 @@
 			isa = PBXGroup;
 			children = (
 				B30201000000000000000006 /* ChecklistTaskItem.swift */,
+				B30201000000000000000025 /* SubtaskItem.swift */,
+				B30201000000000000000026 /* ProfitLedgerEntry.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -109,9 +135,14 @@
 		B30401000000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B30201000000000000000003 /* ChecklistView.swift */,
 				B30201000000000000000004 /* TemplatesView.swift */,
 				B30201000000000000000005 /* SettingsView.swift */,
+				B30201000000000000000027 /* OverviewConsoleView.swift */,
+				B30201000000000000000028 /* ParkAttractionsView.swift */,
+				B30201000000000000000029 /* AttractionDetailView.swift */,
+				B3020100000000000000002A /* AttractionEditorView.swift */,
+				B3020100000000000000002B /* LogProfitSheet.swift */,
+				B3020100000000000000002C /* StaffFinancesMapViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -131,6 +162,11 @@
 				B30201000000000000000009 /* GameFlavor.swift */,
 				B3020100000000000000000A /* BackupSupport.swift */,
 				B3020100000000000000000F /* PreferencesMigration.swift */,
+				B30201000000000000000020 /* ParkDomain.swift */,
+				B30201000000000000000021 /* LegacyTaskMigration.swift */,
+				B30201000000000000000022 /* ParkStatusTransitions.swift */,
+				B30201000000000000000023 /* ParkFinance.swift */,
+				B30201000000000000000024 /* ParkDataImport.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -247,7 +283,6 @@
 			files = (
 				B30101000000000000000001 /* RollerTaskTycoonApp.swift in Sources */,
 				B30101000000000000000002 /* ContentView.swift in Sources */,
-				B30101000000000000000003 /* ChecklistView.swift in Sources */,
 				B30101000000000000000004 /* TemplatesView.swift in Sources */,
 				B30101000000000000000005 /* SettingsView.swift in Sources */,
 				B30101000000000000000006 /* ChecklistTaskItem.swift in Sources */,
@@ -256,6 +291,19 @@
 				B30101000000000000000009 /* GameFlavor.swift in Sources */,
 				B3010100000000000000000A /* BackupSupport.swift in Sources */,
 				B3010100000000000000000D /* PreferencesMigration.swift in Sources */,
+				B30101000000000000000020 /* ParkDomain.swift in Sources */,
+				B30101000000000000000021 /* LegacyTaskMigration.swift in Sources */,
+				B30101000000000000000022 /* ParkStatusTransitions.swift in Sources */,
+				B30101000000000000000023 /* ParkFinance.swift in Sources */,
+				B30101000000000000000024 /* ParkDataImport.swift in Sources */,
+				B30101000000000000000025 /* SubtaskItem.swift in Sources */,
+				B30101000000000000000026 /* ProfitLedgerEntry.swift in Sources */,
+				B30101000000000000000027 /* OverviewConsoleView.swift in Sources */,
+				B30101000000000000000028 /* ParkAttractionsView.swift in Sources */,
+				B30101000000000000000029 /* AttractionDetailView.swift in Sources */,
+				B3010100000000000000002A /* AttractionEditorView.swift in Sources */,
+				B3010100000000000000002B /* LogProfitSheet.swift in Sources */,
+				B3010100000000000000002C /* StaffFinancesMapViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

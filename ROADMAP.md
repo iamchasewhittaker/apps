@@ -8,6 +8,7 @@
 | App | Version | URL | Storage Key | Status |
 |-----|---------|-----|-------------|--------|
 | Wellness Tracker | v15.10 | https://wellnes-tracker.vercel.app | chase_wellness_v1 | ✅ Active |
+| Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.3 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
@@ -223,6 +224,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-05 | Wellness Tracker (iOS) | Phase 1 | **New** `portfolio/wellness-tracker-ios` — SwiftUI daily check-in (morning/evening), `chase_wellness_ios_*` UserDefaults, **local-only** (no Supabase/OTP); optional **Past days** read-only; sunrise app icon; `WellnessTracker` scheme + tests | Bundle `com.chasewhittaker.WellnessTracker`; see `CLAUDE.md` |
 | 2026-04-05 | Portfolio + RollerTask Tycoon | — | **Web PWA archived** to `portfolio/archive/roller-task-tycoon`; **iOS** product path `portfolio/roller-task-tycoon-ios`, Xcode **RollerTaskTycoon** / **RollerTaskTycoonTests**, display name RollerTask Tycoon, bundle id `com.chasewhittaker.ParkChecklist` unchanged; `UserDefaults` keys `chase_roller_task_tycoon_ios_*` + one-time migration from `chase_park_checklist_ios_*`; backup export `RollerTaskTycoon-backup-*.json`; root **`.gitignore`** whitelists **`.github/workflows/**`** so **`.github/workflows/portfolio-web-build.yml`** is versioned | **CI** builds Wellness, Job Search, App Forge only; disable Vercel for retired PWA if desired |
 | 2026-04-05 | Park Checklist (iOS) | v1.0 | **README:** troubleshooting for physical-device **debugger attach** failures (Xcode vs iOS, signing, scheme diagnostics, crash logs) | e.g. iOS 26 device + older Xcode |
 | 2026-04-05 | Portfolio | — | **GitHub Actions** [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) — `npm ci && npm run build` for Wellness, Job Search, App Forge on path-scoped push/PR | iOS still local Xcode |

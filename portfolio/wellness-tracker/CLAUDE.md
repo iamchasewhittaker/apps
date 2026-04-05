@@ -9,6 +9,7 @@
 - **Storage key:** `chase_wellness_v1` (main) · `chase_wellness_draft_v1` (draft) · `chase_wellness_meds_v1` (meds)
 - **URL:** wellnes-tracker.vercel.app
 - **Entry:** `src/App.jsx`
+- **Native iOS (Phase 1):** [`../wellness-tracker-ios`](../wellness-tracker-ios) — SwiftUI check-in, **device-local only** (no Supabase; separate UserDefaults keys — see that `CLAUDE.md`)
 
 ## File Structure
 ```

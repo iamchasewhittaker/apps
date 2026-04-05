@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- **Park Operations Console:** five-tab shell (**Overview**, **Attractions**, **Staff**, **Finances**, **Map**) with retro panel styling; **attractions** use statuses **Open / Testing / Broken Down / Closed**, plus **zone**, **staff role**, **priority**, **reward**, optional **due date**, **description**, and **subtasks**.
+- **Overview** dashboard: park rating %, profit today (ledger), guest count, alerts; cards for status, guest thoughts, top priorities, quick actions (**Add**, **Testing**, **Log profit**, **Repair**).
+- **Attractions:** horizontal **board** (four columns) and **list** toggle; **detail** “ride panel” with status actions, edit sheet, subtask checkoffs, delete.
+- **Profit ledger** (`ProfitLedgerEntry`) + variable **reward on close**; **Log profit** sheet for manual dollars (ledger + cash).
+- **Staff** panel (Operator, Janitor, Mechanic, Entertainer) with heuristic assignment display; **Map** = zone list → filtered Attractions.
+- **Backup schema v2** (tasks + subtasks + **ledger**); import still accepts **v1** (`isDone`); [`ParkDataImport`](RollerTaskTycoon/Data/ParkDataImport.swift) replace-all restore.
+- **Docs:** [`docs/PARK_OPERATIONS_CONSOLE.md`](docs/PARK_OPERATIONS_CONSOLE.md) (product spec), [`docs/PARK_OPERATIONS_KEY.md`](docs/PARK_OPERATIONS_KEY.md) (definitions + how-to).
+- SwiftData models **`SubtaskItem`**, **`ProfitLedgerEntry`**; **[`ParkDomain`](RollerTaskTycoon/Data/ParkDomain.swift)** enums; one-time **[`LegacyTaskMigration`](RollerTaskTycoon/Data/LegacyTaskMigration.swift)** from legacy `isDone`.
+
+### Removed
+
+- **ChecklistView** (replaced by Attractions board/list + detail flow). **V1:** no completion sound effect (previous checklist “ding” removed).
+
 ### Changed
 
 - **App icon:** single **1024×1024** `AppIcon.png` in `AppIcon.appiconset` (park green gradient, simple coaster silhouette + gold accent); center-cropped to square and scaled for App Store sizing; wired in `Contents.json`.

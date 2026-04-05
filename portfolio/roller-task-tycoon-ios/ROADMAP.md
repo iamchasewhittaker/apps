@@ -1,10 +1,11 @@
 # RollerTask Tycoon — roadmap (iOS)
 
-## Done (v1 scaffold)
+## Done (v1 — Park Operations Console)
 
-- SwiftData persistence, checklist UX, templates, backup export, settings toggle.
-- Layout polish: toolbar cash/rating stack, multiline banner and task text, safe-area padding above home indicator.
-- Rebrand: Xcode **RollerTaskTycoon** / **RollerTaskTycoonTests**, `UserDefaults` keys `chase_roller_task_tycoon_ios_*` + migration from Park Checklist keys; backup filenames **RollerTaskTycoon-backup-*.json**.
+- Five-tab shell, Overview dashboard, Attractions board/list + detail, Staff/Finances/Map, floating **New Attraction**.
+- Four statuses, zones, staff roles, priority, reward, due date, description, subtasks; profit **ledger** + close/manual profit.
+- Backup **schema v2** (+ v1 import); docs **[`docs/PARK_OPERATIONS_CONSOLE.md`](docs/PARK_OPERATIONS_CONSOLE.md)** + **[`docs/PARK_OPERATIONS_KEY.md`](docs/PARK_OPERATIONS_KEY.md)**.
+- Rebrand + keys: Xcode **RollerTaskTycoon** / **RollerTaskTycoonTests**, `chase_roller_task_tycoon_ios_*` + Park Checklist migration; backup **RollerTaskTycoon-backup-*.json**.
 
 ## Planning
 
@@ -14,7 +15,9 @@
 
 ## Next ideas
 
-- **Import merge mode** (by task `id`) — optional follow-up; v1 shipped **replace-all** only.
-- **Pixel font** asset (OFL) + optional tiled grass background art (CC0).
-- **Widgets** / Siri (add task, show open count).
+- **Kanban:** drag-and-drop between columns; swipe on cards to change status.
+- **Completion feedback:** optional sound + light coin/rating animation (currently no sound in V1).
+- **Import merge mode** (by task `id`) — optional; still **replace-all** today.
+- **Pixel font** asset (OFL) + optional tiled grass / map art (CC0).
+- **Widgets** / Siri (add attraction, show open count).
 - **CloudKit** or shared sync (align with portfolio Supabase apps if desired).

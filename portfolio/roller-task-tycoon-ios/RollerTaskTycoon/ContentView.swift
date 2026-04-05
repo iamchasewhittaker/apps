@@ -9,14 +9,20 @@ private struct SharePayload: Identifiable {
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \ChecklistTaskItem.createdAt, order: .reverse)
-    private var tasks: [ChecklistTaskItem]
+    @Query(sort: \ChecklistTaskItem.createdAt, order: .reverse) private var tasks: [ChecklistTaskItem]
+    @Query(sort: \ProfitLedgerEntry.createdAt, order: .reverse) private var ledger: [ProfitLedgerEntry]
 
     @AppStorage("chase_roller_task_tycoon_ios_cash") private var parkCash = 1000
     @AppStorage("chase_roller_task_tycoon_ios_readable") private var readableFonts = false
 
+    @State private var selectedTab = 0
+    @State private var attractionsStatusFocus: AttractionStatus?
+    @State private var attractionsZoneFilter: ParkZone?
+
     @State private var showTemplates = false
     @State private var showSettings = false
+    @State private var showAddAttraction = false
+    @State private var showLogProfit = false
     @State private var sharePayload: SharePayload?
     @State private var exportError: String?
     @State private var showImportPicker = false
@@ -24,203 +30,170 @@ struct ContentView: View {
     @State private var pendingImport: BackupEnvelope?
     @State private var importError: String?
     @State private var toastText: String?
-
-    private var rating: GameFlavor.Rating {
-        let total = tasks.count
-        let done = tasks.filter(\.isDone).count
-        return GameFlavor.rating(total: total, done: done)
-    }
+    @State private var didRunLegacyMigration = false
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                ParkTheme.parkBackground
-                    .ignoresSafeArea()
+        ZStack {
+            TabView(selection: $selectedTab) {
+                OverviewConsoleView(
+                    tasks: tasks,
+                    ledger: ledger,
+                    selectedTab: $selectedTab,
+                    attractionsStatusFocus: $attractionsStatusFocus,
+                    attractionsZoneFilter: $attractionsZoneFilter,
+                    readableFonts: readableFonts,
+                    onAddAttraction: { showAddAttraction = true },
+                    onLogProfit: { showLogProfit = true },
+                    onTemplates: { showTemplates = true },
+                    onExport: { exportBackup() },
+                    onImport: { showImportPicker = true },
+                    onSettings: { showSettings = true }
+                )
+                .tabItem { Label("Overview", systemImage: "rectangle.grid.2x2") }
+                .tag(0)
 
-                VStack(spacing: 0) {
-                    statusBanner
-                        .padding(.horizontal, 16)
-                        .padding(.top, 8)
+                ParkAttractionsView(
+                    tasks: tasks,
+                    parkCash: $parkCash,
+                    statusFocus: $attractionsStatusFocus,
+                    zoneFilter: $attractionsZoneFilter,
+                    readableFonts: readableFonts,
+                    onToast: showToast
+                )
+                .tabItem { Label("Attractions", systemImage: "square.stack.3d.up") }
+                .tag(1)
 
-                    ChecklistView(
-                        tasks: tasks,
-                        parkCash: $parkCash,
-                        readableFonts: readableFonts,
-                        onToast: showToast
-                    )
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .safeAreaPadding(.bottom, 6)
-                }
-                // NavigationStack does not always give children a bounded max height; without
-                // this, List can collapse and the scene can look like a black/empty window.
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            }
-            .navigationTitle("RollerTask Tycoon")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(ParkTheme.woodLight.opacity(0.95), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.light, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    // Two lines: narrow phones clip a single wide HStack next to three trailing buttons.
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("$\(parkCash.formatted())")
-                            .font(ParkTheme.bodyFont(readable: readableFonts).weight(.bold))
-                            .foregroundStyle(ParkTheme.gold)
-                            .monospacedDigit()
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.75)
-                        Text("\(rating.emoji) \(rating.label)")
-                            .font(ParkTheme.bodyFont(readable: readableFonts).weight(.semibold))
-                            .foregroundStyle(ParkTheme.ink)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.55)
-                    }
-                }
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button {
-                        showTemplates = true
-                    } label: {
-                        Image(systemName: "list.bullet.rectangle")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(ParkTheme.ink)
-                    }
-                    .accessibilityLabel("Templates")
+                StaffPanelView(tasks: tasks, readableFonts: readableFonts)
+                    .tabItem { Label("Staff", systemImage: "person.3") }
+                    .tag(2)
 
-                    Button {
-                        exportBackup()
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(ParkTheme.ink)
-                    }
-                    .accessibilityLabel("Export backup")
+                FinancesView(tasks: tasks, ledger: ledger, readableFonts: readableFonts)
+                    .tabItem { Label("Finances", systemImage: "dollarsign.circle") }
+                    .tag(3)
 
-                    Button {
-                        showImportPicker = true
-                    } label: {
-                        Image(systemName: "square.and.arrow.down")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(ParkTheme.ink)
+                ParkMapZonesView(
+                    tasks: tasks,
+                    selectedTab: $selectedTab,
+                    attractionsZoneFilter: $attractionsZoneFilter,
+                    readableFonts: readableFonts
+                )
+                .tabItem { Label("Map", systemImage: "map") }
+                .tag(4)
+            }
+            .tint(ParkTheme.wood)
+            .onAppear {
+                if !didRunLegacyMigration {
+                    LegacyTaskMigration.runIfNeeded(context: modelContext)
+                    didRunLegacyMigration = true
+                }
+            }
+            .safeAreaInset(edge: .bottom) {
+                Button {
+                    showAddAttraction = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "plus.circle.fill")
+                        Text("New Attraction")
+                            .font(ParkTheme.bodyFont(readable: readableFonts).weight(.heavy))
                     }
-                    .accessibilityLabel("Import backup")
-
-                    Button {
-                        showSettings = true
-                    } label: {
-                        Image(systemName: "gearshape")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(ParkTheme.ink)
-                    }
-                    .accessibilityLabel("Settings")
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 12)
+                    .background(ParkTheme.gold)
+                    .foregroundStyle(ParkTheme.ink)
+                    .clipShape(Capsule())
+                    .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
                 }
+                .buttonStyle(.plain)
+                .padding(.bottom, 52)
             }
-            .sheet(isPresented: $showTemplates) {
-                TemplatesView(readableFonts: readableFonts) {
-                    showToast("📋 Added from template")
-                }
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
-            .sheet(item: $sharePayload) { payload in
-                ActivityShareView(items: [payload.url])
-            }
-            .fileImporter(
-                isPresented: $showImportPicker,
-                allowedContentTypes: [.json],
-                allowsMultipleSelection: false
-            ) { result in
-                Task { @MainActor in
-                    switch result {
-                    case .success(let urls):
-                        guard let url = urls.first else { return }
-                        do {
-                            let env = try BackupImporter.loadFromFile(url: url)
-                            pendingImport = env
-                            showImportConfirm = true
-                        } catch {
-                            importError = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
-                        }
-                    case .failure(let err):
-                        importError = err.localizedDescription
-                    }
-                }
-            }
-            .alert("Replace all data?", isPresented: $showImportConfirm) {
-                Button("Replace", role: .destructive) {
-                    if let env = pendingImport {
-                        applyImport(envelope: env)
-                    }
-                    pendingImport = nil
-                }
-                Button("Cancel", role: .cancel) {
-                    pendingImport = nil
-                }
-            } message: {
-                Text("This removes every task and your park cash, then loads the backup. You can’t undo this.")
-            }
-            .alert("Export failed", isPresented: Binding(
-                get: { exportError != nil },
-                set: { if !$0 { exportError = nil } }
-            )) {
-                Button("OK", role: .cancel) { exportError = nil }
-            } message: {
-                Text(exportError ?? "")
-            }
-            .alert("Import failed", isPresented: Binding(
-                get: { importError != nil },
-                set: { if !$0 { importError = nil } }
-            )) {
-                Button("OK", role: .cancel) { importError = nil }
-            } message: {
-                Text(importError ?? "")
-            }
-            .overlay(alignment: .bottom) {
-                if let toastText {
-                    Text(toastText)
-                        .font(ParkTheme.bodyFont(readable: readableFonts).weight(.medium))
-                        .foregroundStyle(ParkTheme.ink)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                        .background(ParkTheme.plaque.opacity(0.95))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
-                        .padding(.bottom, 28)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-            }
-            .animation(.easeInOut(duration: 0.25), value: toastText)
-            // UI uses fixed light palette; in Dark Appearance nav/content can read as empty.
-            .preferredColorScheme(.light)
         }
-    }
-
-    private var statusBanner: some View {
-        let total = tasks.count
-        let done = tasks.filter(\.isDone).count
-        let line: String
-        if total == 0 {
-            line = "Park open — waiting for visitors"
-        } else if done == total {
-            line = "🏆 All tasks complete! Tycoon status!"
-        } else {
-            line = "\(total - done) task(s) remaining in the park · \(done)/\(total) complete"
+        .preferredColorScheme(.light)
+        .sheet(isPresented: $showTemplates) {
+            TemplatesView(readableFonts: readableFonts) {
+                showToast("📋 Added from template")
+            }
         }
-        return Text(line)
-            .font(ParkTheme.bodyFont(readable: readableFonts))
-            .foregroundStyle(ParkTheme.ink)
-            .multilineTextAlignment(.leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(12)
-            .background(ParkTheme.plaque.opacity(0.92))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(ParkTheme.wood.opacity(0.5), lineWidth: 2)
-            )
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
+        .sheet(isPresented: $showAddAttraction) {
+            AttractionEditorView(existing: nil, readableFonts: readableFonts) {
+                showToast("🎢 New attraction added")
+            }
+        }
+        .sheet(isPresented: $showLogProfit) {
+            LogProfitSheet(parkCash: $parkCash, readableFonts: readableFonts) {
+                showToast("💰 Profit logged")
+            }
+        }
+        .sheet(item: $sharePayload) { payload in
+            ActivityShareView(items: [payload.url])
+        }
+        .fileImporter(
+            isPresented: $showImportPicker,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: false
+        ) { result in
+            Task { @MainActor in
+                switch result {
+                case .success(let urls):
+                    guard let url = urls.first else { return }
+                    do {
+                        let env = try BackupImporter.loadFromFile(url: url)
+                        pendingImport = env
+                        showImportConfirm = true
+                    } catch {
+                        importError = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+                    }
+                case .failure(let err):
+                    importError = err.localizedDescription
+                }
+            }
+        }
+        .alert("Replace all data?", isPresented: $showImportConfirm) {
+            Button("Replace", role: .destructive) {
+                if let env = pendingImport {
+                    applyImport(envelope: env)
+                }
+                pendingImport = nil
+            }
+            Button("Cancel", role: .cancel) {
+                pendingImport = nil
+            }
+        } message: {
+            Text("This removes every attraction, subtask, ledger entry, and your park cash, then loads the backup. You can’t undo this.")
+        }
+        .alert("Export failed", isPresented: Binding(
+            get: { exportError != nil },
+            set: { if !$0 { exportError = nil } }
+        )) {
+            Button("OK", role: .cancel) { exportError = nil }
+        } message: {
+            Text(exportError ?? "")
+        }
+        .alert("Import failed", isPresented: Binding(
+            get: { importError != nil },
+            set: { if !$0 { importError = nil } }
+        )) {
+            Button("OK", role: .cancel) { importError = nil }
+        } message: {
+            Text(importError ?? "")
+        }
+        .overlay(alignment: .bottom) {
+            if let toastText {
+                Text(toastText)
+                    .font(ParkTheme.bodyFont(readable: readableFonts).weight(.medium))
+                    .foregroundStyle(ParkTheme.ink)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .background(ParkTheme.plaque.opacity(0.95))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+                    .padding(.bottom, 120)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: toastText)
     }
 
     private func showToast(_ message: String) {
@@ -233,7 +206,7 @@ struct ContentView: View {
     }
 
     private func exportBackup() {
-        let envelope = BackupExporter.buildEnvelope(cash: parkCash, items: tasks)
+        let envelope = BackupExporter.buildEnvelope(cash: parkCash, items: tasks, ledger: ledger)
         do {
             let url = try BackupExporter.writeJSONFile(envelope: envelope)
             sharePayload = SharePayload(url: url)
@@ -243,21 +216,8 @@ struct ContentView: View {
     }
 
     private func applyImport(envelope: BackupEnvelope) {
-        let iso = ISO8601DateFormatter()
-        iso.formatOptions = [.withInternetDateTime]
-        let toRemove = Array(tasks)
-        for item in toRemove {
-            modelContext.delete(item)
-        }
-        for row in envelope.tasks {
-            guard let id = UUID(uuidString: row.id),
-                  let created = iso.date(from: row.createdAt) else { continue }
-            let newItem = ChecklistTaskItem(id: id, text: row.text, isDone: row.isDone, createdAt: created)
-            modelContext.insert(newItem)
-        }
-        parkCash = max(0, envelope.cash)
         do {
-            try modelContext.save()
+            parkCash = try ParkDataImport.replaceAll(envelope: envelope, modelContext: modelContext)
             showToast("Restored from backup")
         } catch {
             importError = error.localizedDescription
