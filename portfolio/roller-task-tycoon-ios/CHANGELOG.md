@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- **App icon:** single **1024×1024** `AppIcon.png` in `AppIcon.appiconset` (park green gradient, simple coaster silhouette + gold accent); center-cropped to square and scaled for App Store sizing; wired in `Contents.json`.
+
 - **Rebrand** to **RollerTask Tycoon:** monorepo path **`portfolio/roller-task-tycoon-ios`**; Xcode project **RollerTaskTycoon** / targets **RollerTaskTycoon**, **RollerTaskTycoonTests**; **`RollerTaskTycoonApp`** entry; display name **RollerTask Tycoon**; bundle id **`com.chasewhittaker.ParkChecklist`** unchanged.
 - **`UserDefaults`:** keys **`chase_roller_task_tycoon_ios_cash`** and **`chase_roller_task_tycoon_ios_readable`** with one-time migration from `chase_park_checklist_ios_*` via **`PreferencesMigration`**.
 - **Backup export** filename **`RollerTaskTycoon-backup-YYYY-MM-DD.json`**; import error copy updated.
