@@ -14,4 +14,12 @@ final class ChecklistTaskItem {
         self.isDone = false
         self.createdAt = Date()
     }
+
+    /// Restore from backup JSON (`BackupTaskRow`); preserves id and timestamps.
+    init(id: UUID, text: String, isDone: Bool, createdAt: Date) {
+        self.id = id
+        self.text = text
+        self.isDone = isDone
+        self.createdAt = createdAt
+    }
 }

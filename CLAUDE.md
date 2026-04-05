@@ -12,7 +12,7 @@
 | RollerTask Tycoon | v1.0 | `chase_roller_task_v1` | roller-task-tycoon.vercel.app | ✅ Deployed (add `VITE_SUPABASE_*` on Vercel for sync) |
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
-| Park Checklist (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_park_checklist_ios_*`) | local Xcode | 🟡 Local |
+| Park Checklist (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_park_checklist_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
@@ -132,6 +132,10 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 - Don't create new localStorage keys without updating the storage key table above
 - Don't change existing `STORE` constant names in shipped apps — existing user data depends on them
 - Don't add arbitrary backends — offline-first; **Supabase** (shared sync) is the only cloud data path
+
+## CI — portfolio web builds
+
+GitHub Actions **`.github/workflows/portfolio-web-build.yml`** runs **`npm ci && npm run build`** for **Wellness**, **Job Search**, **App Forge**, and **RollerTask** when those paths change (push to `main` / `master` or PR). **Park Checklist (iOS)** is not in that workflow — use Xcode (**⌘B** / **⌘U** for `ParkChecklistTests`).
 
 ## Linear — project tracking (PM-style)
 

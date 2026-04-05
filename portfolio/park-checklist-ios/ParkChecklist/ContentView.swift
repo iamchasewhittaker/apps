@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import UniformTypeIdentifiers
 
 private struct SharePayload: Identifiable {
     let id = UUID()
@@ -7,6 +8,7 @@ private struct SharePayload: Identifiable {
 }
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \ChecklistTaskItem.createdAt, order: .reverse)
     private var tasks: [ChecklistTaskItem]
 
@@ -17,6 +19,10 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var sharePayload: SharePayload?
     @State private var exportError: String?
+    @State private var showImportPicker = false
+    @State private var showImportConfirm = false
+    @State private var pendingImport: BackupEnvelope?
+    @State private var importError: String?
     @State private var toastText: String?
 
     private var rating: GameFlavor.Rating {
@@ -44,6 +50,7 @@ struct ContentView: View {
                     )
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
+                    .safeAreaPadding(.bottom, 6)
                 }
                 // NavigationStack does not always give children a bounded max height; without
                 // this, List can collapse and the scene can look like a black/empty window.
@@ -56,16 +63,19 @@ struct ContentView: View {
             .toolbarColorScheme(.light, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 10) {
-                        Text("\(rating.emoji) \(rating.label)")
-                            .font(ParkTheme.bodyFont(readable: readableFonts).weight(.semibold))
-                            .foregroundStyle(ParkTheme.ink)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
+                    // Two lines: narrow phones clip a single wide HStack next to three trailing buttons.
+                    VStack(alignment: .leading, spacing: 2) {
                         Text("$\(parkCash.formatted())")
                             .font(ParkTheme.bodyFont(readable: readableFonts).weight(.bold))
                             .foregroundStyle(ParkTheme.gold)
                             .monospacedDigit()
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
+                        Text("\(rating.emoji) \(rating.label)")
+                            .font(ParkTheme.bodyFont(readable: readableFonts).weight(.semibold))
+                            .foregroundStyle(ParkTheme.ink)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.55)
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
@@ -88,6 +98,15 @@ struct ContentView: View {
                     .accessibilityLabel("Export backup")
 
                     Button {
+                        showImportPicker = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.down")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(ParkTheme.ink)
+                    }
+                    .accessibilityLabel("Import backup")
+
+                    Button {
                         showSettings = true
                     } label: {
                         Image(systemName: "gearshape")
@@ -108,6 +127,40 @@ struct ContentView: View {
             .sheet(item: $sharePayload) { payload in
                 ActivityShareView(items: [payload.url])
             }
+            .fileImporter(
+                isPresented: $showImportPicker,
+                allowedContentTypes: [.json],
+                allowsMultipleSelection: false
+            ) { result in
+                Task { @MainActor in
+                    switch result {
+                    case .success(let urls):
+                        guard let url = urls.first else { return }
+                        do {
+                            let env = try BackupImporter.loadFromFile(url: url)
+                            pendingImport = env
+                            showImportConfirm = true
+                        } catch {
+                            importError = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+                        }
+                    case .failure(let err):
+                        importError = err.localizedDescription
+                    }
+                }
+            }
+            .alert("Replace all data?", isPresented: $showImportConfirm) {
+                Button("Replace", role: .destructive) {
+                    if let env = pendingImport {
+                        applyImport(envelope: env)
+                    }
+                    pendingImport = nil
+                }
+                Button("Cancel", role: .cancel) {
+                    pendingImport = nil
+                }
+            } message: {
+                Text("This removes every task and your park cash, then loads the backup. You can’t undo this.")
+            }
             .alert("Export failed", isPresented: Binding(
                 get: { exportError != nil },
                 set: { if !$0 { exportError = nil } }
@@ -115,6 +168,14 @@ struct ContentView: View {
                 Button("OK", role: .cancel) { exportError = nil }
             } message: {
                 Text(exportError ?? "")
+            }
+            .alert("Import failed", isPresented: Binding(
+                get: { importError != nil },
+                set: { if !$0 { importError = nil } }
+            )) {
+                Button("OK", role: .cancel) { importError = nil }
+            } message: {
+                Text(importError ?? "")
             }
             .overlay(alignment: .bottom) {
                 if let toastText {
@@ -150,6 +211,8 @@ struct ContentView: View {
         return Text(line)
             .font(ParkTheme.bodyFont(readable: readableFonts))
             .foregroundStyle(ParkTheme.ink)
+            .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(12)
             .background(ParkTheme.plaque.opacity(0.92))
@@ -176,6 +239,28 @@ struct ContentView: View {
             sharePayload = SharePayload(url: url)
         } catch {
             exportError = error.localizedDescription
+        }
+    }
+
+    private func applyImport(envelope: BackupEnvelope) {
+        let iso = ISO8601DateFormatter()
+        iso.formatOptions = [.withInternetDateTime]
+        let toRemove = Array(tasks)
+        for item in toRemove {
+            modelContext.delete(item)
+        }
+        for row in envelope.tasks {
+            guard let id = UUID(uuidString: row.id),
+                  let created = iso.date(from: row.createdAt) else { continue }
+            let newItem = ChecklistTaskItem(id: id, text: row.text, isDone: row.isDone, createdAt: created)
+            modelContext.insert(newItem)
+        }
+        parkCash = max(0, envelope.cash)
+        do {
+            try modelContext.save()
+            showToast("Restored from backup")
+        } catch {
+            importError = error.localizedDescription
         }
     }
 }

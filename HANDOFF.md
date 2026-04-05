@@ -44,16 +44,17 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 |--------|--------|
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` (or fill in) |
-| **Linear** | *(issue URL or “none”)* |
-| **Focus** | Park Checklist iOS lives under `portfolio/park-checklist-ios`. |
-| **Next** | 1. Open Xcode, set Team, run on simulator/device. 2. Optional: add OFL pixel font + App Icon 1024×1024. 3. Optional: backup import. |
+| **Linear** | [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) — **WHI-15** import shipped; next e.g. [WHI-19](https://linear.app/whittaker/issue/WHI-19) TestFlight |
+| **Focus** | Park Checklist: **backup import** (replace-all, schema 1) + **ParkChecklistTests**; web portfolio: **`.github/workflows/portfolio-web-build.yml`**. |
+| **Next** | 1. Run **⌘U** for `ParkChecklistTests` + manual QA import ([`docs/planning/QA_CHECKLIST.md`](portfolio/park-checklist-ios/docs/planning/QA_CHECKLIST.md)). 2. **WHI-19** when ready for TestFlight. |
 | **Blockers** | CI host had no iOS Simulator **device** runtime — `xcodebuild` may need Platforms → iOS Simulator installed. |
-| **Last touch** | 2026-04-04 |
+| **Last touch** | 2026-04-05 |
 
 ---
 
 ## Notes (optional, human + long-lived context)
 
+- **iOS planning templates** live at **`docs/ios-app-starter-kit/`** (v3). **Filled** Park docs + **`PLANNING_WORKFLOW.md`** under **`portfolio/park-checklist-ios/docs/planning/`**. **Linear** project [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) (WHI-15…19). Kit **`HANDOFF_TEMPLATE.md`** ≠ repo-root session **`HANDOFF.md`**.
 - *(Decisions, links to PRs/commits, “parked” ideas.)*
 
 ---

@@ -11,7 +11,7 @@ struct SettingsView: View {
                     Toggle("Readable fonts (system)", isOn: $readableFonts)
                 }
                 Section("About") {
-                    Text("Park Checklist — a tycoon-style task list. Data stays on this device unless you export a backup.")
+                    Text("Park Checklist — a tycoon-style task list. Data stays on this device unless you export a backup. Import replaces all tasks and park cash from a JSON backup (schema v1 only).")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }

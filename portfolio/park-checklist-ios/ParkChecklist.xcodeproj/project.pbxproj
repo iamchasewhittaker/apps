@@ -18,6 +18,7 @@
 		B30101000000000000000009 /* GameFlavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000009 /* GameFlavor.swift */; };
 		B3010100000000000000000A /* BackupSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000A /* BackupSupport.swift */; };
 		B3010100000000000000000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000B /* Assets.xcassets */; };
+		B3010100000000000000000C /* BackupImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000E /* BackupImporterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,10 +34,19 @@
 		B3020100000000000000000A /* BackupSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSupport.swift; sourceTree = "<group>"; };
 		B3020100000000000000000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3020100000000000000000C /* ParkChecklist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParkChecklist.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3020100000000000000000D /* ParkChecklistTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParkChecklistTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3020100000000000000000E /* BackupImporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupImporterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B30301000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B30301000000000000000003 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -50,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				B30401000000000000000002 /* ParkChecklist */,
+				B30401000000000000000009 /* ParkChecklistTests */,
 				B30401000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,8 +83,17 @@
 			isa = PBXGroup;
 			children = (
 				B3020100000000000000000C /* ParkChecklist.app */,
+				B3020100000000000000000D /* ParkChecklistTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B30401000000000000000009 /* ParkChecklistTests */ = {
+			isa = PBXGroup;
+			children = (
+				B3020100000000000000000E /* BackupImporterTests.swift */,
+			);
+			path = ParkChecklistTests;
 			sourceTree = "<group>";
 		};
 		B30401000000000000000004 /* Models */ = {
@@ -132,7 +152,43 @@
 			productReference = B3020100000000000000000C /* ParkChecklist.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B30501000000000000000010 /* ParkChecklistTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B30601000000000000000004 /* Build configuration list for PBXNativeTarget "ParkChecklistTests" */;
+			buildPhases = (
+				B30501000000000000000011 /* Sources */,
+				B30301000000000000000003 /* Frameworks */,
+				B30501000000000000000012 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B30801000000000000000002 /* PBXTargetDependency */,
+			);
+			name = ParkChecklistTests;
+			productName = ParkChecklistTests;
+			productReference = B3020100000000000000000D /* ParkChecklistTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		B30801000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B30601000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B30501000000000000000001;
+			remoteInfo = ParkChecklist;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		B30801000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B30501000000000000000001 /* ParkChecklist */;
+			targetProxy = B30801000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXProject section */
 		B30601000000000000000001 /* Project object */ = {
@@ -144,6 +200,10 @@
 				TargetAttributes = {
 					B30501000000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					B30501000000000000000010 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = B30501000000000000000001;
 					};
 				};
 			};
@@ -161,6 +221,7 @@
 			projectRoot = "";
 			targets = (
 				B30501000000000000000001 /* ParkChecklist */,
+				B30501000000000000000010 /* ParkChecklistTests */,
 			);
 		};
 /* End PBXProject section */
@@ -194,7 +255,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B30501000000000000000011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3010100000000000000000C /* BackupImporterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B30501000000000000000012 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
 		B30701000000000000000001 /* Debug */ = {
@@ -378,6 +457,44 @@
 			};
 			name = Release;
 		};
+		B30701000000000000000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ParkChecklistTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ParkChecklist.app/ParkChecklist";
+			};
+			name = Debug;
+		};
+		B30701000000000000000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ParkChecklistTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ParkChecklist.app/ParkChecklist";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -395,6 +512,15 @@
 			buildConfigurations = (
 				B30701000000000000000004 /* Debug */,
 				B30701000000000000000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B30601000000000000000004 /* Build configuration list for PBXNativeTarget "ParkChecklistTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B30701000000000000000006 /* Debug */,
+				B30701000000000000000007 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

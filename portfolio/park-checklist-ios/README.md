@@ -10,13 +10,33 @@
 |---|---|
 | **Problem** | Fun themed todos on device with exportable backup. |
 | **Approach** | SwiftUI + SwiftData (`ChecklistTaskItem`); `@AppStorage` for cash + readable-font toggle; share sheet for `ParkChecklist-backup-YYYY-MM-DD.json`. |
-| **Stack** | Xcode 15+, iOS **17+**, Swift 5. |
+| **Stack** | Xcode **current enough for your phone’s iOS** (15+ minimum for the project); app targets iOS **17+**; Swift 5. |
 | **Status** | **Local** — open in Xcode; add **Development Team** for device builds. |
 
 ## Troubleshooting
 
-- **Black screen on launch (real device):** Pull latest; the app forces **light** mode and fixes SwiftData + layout sizing. Delete the app from the phone, **Product → Clean Build Folder**, then run again.
-- If it persists, check **Xcode → Report navigator** for crashes (e.g. SwiftData store).
+### “Could not attach to pid” / `IDEDebugSessionErrorDomain` Code 7 (physical iPhone)
+
+Usually the app **never stays running** long enough for the debugger to attach, or the **toolchain doesn’t match the phone’s iOS**.
+
+1. **Xcode vs iOS on the phone (most common)**  
+   If the iPhone is on a **much newer iOS** than your Xcode supports for *debugging* (e.g. **Xcode 15.2** with an **iOS 26** device), install the **latest Xcode** from the Mac App Store or [developer.apple.com/download](https://developer.apple.com/download/) so it includes device support for that OS. Until then, use an **iOS Simulator** or a device whose OS is within the range your Xcode version documents.
+
+2. **Signing**  
+   In Xcode: target **ParkChecklist** → **Signing & Capabilities** → select your **Team**, no red errors. On the iPhone: **Settings → General → VPN & Device Management** → trust your developer certificate if prompted.
+
+3. **Launch crash (looks like an attach failure)**  
+   **Xcode → Report navigator** (⌘9) → latest **Run** / **Crashes**. On the Mac, **Console.app** → select the iPhone → clear → Run in Xcode → filter for **ParkChecklist** or **crash**.
+
+4. **Diagnostics interfering with attach**  
+   **Product → Scheme → Edit Scheme… → Run → Diagnostics** — temporarily turn **off** options such as **View Debugging** (injecting a dylib on launch can break attach on some device/OS combos). Run again.
+
+5. **Clean reinstall**  
+   Delete **Park Checklist** from the phone → **Product → Clean Build Folder** → Run (⌘R).
+
+### Black screen on launch (real device)
+
+Pull latest; the app forces **light** mode and fixes SwiftData + layout sizing. If it still happens after the steps above, treat it as a **crash on launch** (see step 3).
 
 ## How to run
 
@@ -35,7 +55,9 @@ SwiftData store: app container (tasks).
 
 ## Backup format
 
-Exported JSON includes `schemaVersion`, `exportedAt` (ISO8601), `cash`, and `tasks[]` with `id`, `text`, `isDone`, `createdAt`. **Import/restore** is not implemented yet; keep the file for safekeeping or manual merge.
+Exported JSON includes `schemaVersion`, `exportedAt` (ISO8601), `cash`, and `tasks[]` with `id`, `text`, `isDone`, `createdAt`. **Import** (toolbar): pick a `.json` file; only **schema version 1**; confirms **replace all** tasks and park cash before applying.
+
+**Tests:** In Xcode, run **ParkChecklistTests** (`BackupImporter` decode/validation). **CI:** Web apps use repo [`.github/workflows/portfolio-web-build.yml`](../../.github/workflows/portfolio-web-build.yml) (`npm run build` per app).
 
 ## Docs
 
@@ -45,6 +67,9 @@ Exported JSON includes `schemaVersion`, `exportedAt` (ISO8601), `cash`, and `tas
 | [AGENTS.md](AGENTS.md) | Agent conventions |
 | [CHANGELOG.md](CHANGELOG.md) | Release notes |
 | [ROADMAP.md](ROADMAP.md) | Next ideas |
+| [iOS App Starter Kit](../../docs/ios-app-starter-kit/README.md) | Reusable product / PRD / release planning templates |
+| [Planning](docs/planning/README.md) | Filled brief, PRD, flow, technical design, backlog, QA, release + [`PLANNING_WORKFLOW.md`](docs/planning/PLANNING_WORKFLOW.md) |
+| [Linear — Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) | Project + backlog issues (WHI-15…19) |
 
 ## License
 

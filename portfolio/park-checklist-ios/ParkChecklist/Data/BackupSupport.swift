@@ -3,7 +3,10 @@ import SwiftData
 import SwiftUI
 import UIKit
 
-private let backupSchemaVersion = 1
+/// Current backup JSON `schemaVersion` (export and import).
+enum BackupFormat {
+    static let schemaVersion = 1
+}
 
 struct BackupEnvelope: Codable {
     let schemaVersion: Int
@@ -19,6 +22,71 @@ struct BackupTaskRow: Codable {
     let createdAt: String
 }
 
+enum BackupImportError: LocalizedError, Equatable {
+    case invalidJSON
+    case unsupportedSchema(Int)
+    case invalidTaskUUID(String)
+    case invalidTaskDate(id: String)
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidJSON:
+            return "This file isn’t valid Park Checklist backup JSON."
+        case .unsupportedSchema(let v):
+            if v > BackupFormat.schemaVersion {
+                return "This backup needs a newer version of the app (schema \(v))."
+            }
+            return "This backup format isn’t supported (schema \(v))."
+        case .invalidTaskUUID:
+            return "This backup has a task with an invalid id."
+        case .invalidTaskDate(let id):
+            return "This backup has an invalid date for task \(id)."
+        }
+    }
+}
+
+enum BackupImporter {
+    private static let isoParser: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime]
+        return f
+    }()
+
+    /// Decodes backup data and validates schema and task rows. No SwiftData writes.
+    static func decodeAndValidate(data: Data) throws -> BackupEnvelope {
+        let envelope: BackupEnvelope
+        do {
+            envelope = try JSONDecoder().decode(BackupEnvelope.self, from: data)
+        } catch {
+            throw BackupImportError.invalidJSON
+        }
+        guard envelope.schemaVersion == BackupFormat.schemaVersion else {
+            throw BackupImportError.unsupportedSchema(envelope.schemaVersion)
+        }
+        for row in envelope.tasks {
+            guard UUID(uuidString: row.id) != nil else {
+                throw BackupImportError.invalidTaskUUID(row.id)
+            }
+            guard isoParser.date(from: row.createdAt) != nil else {
+                throw BackupImportError.invalidTaskDate(id: row.id)
+            }
+        }
+        return envelope
+    }
+
+    /// Reads file URL (security-scoped when needed) and returns validated envelope.
+    static func loadFromFile(url: URL) throws -> BackupEnvelope {
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer {
+            if accessing {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+        let data = try Data(contentsOf: url)
+        return try decodeAndValidate(data: data)
+    }
+}
+
 enum BackupExporter {
     static func buildEnvelope(cash: Int, items: [ChecklistTaskItem]) -> BackupEnvelope {
         let iso = ISO8601DateFormatter()
@@ -32,7 +100,7 @@ enum BackupExporter {
             )
         }
         return BackupEnvelope(
-            schemaVersion: backupSchemaVersion,
+            schemaVersion: BackupFormat.schemaVersion,
             exportedAt: iso.string(from: Date()),
             cash: cash,
             tasks: rows

@@ -17,3 +17,4 @@ Read this together with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md
 
 - Open **ParkChecklist.xcodeproj**; scheme **ParkChecklist**.
 - Set **Development Team** for device signing.
+- After changing **`BackupSupport`** / import-export: run **ParkChecklistTests** (**⌘U**) or `xcodebuild test -scheme ParkChecklist`.

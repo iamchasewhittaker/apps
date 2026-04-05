@@ -101,19 +101,21 @@ struct ChecklistView: View {
     }
 
     private func taskRow(_ item: ChecklistTaskItem) -> some View {
-        HStack(alignment: .center, spacing: 12) {
+        HStack(alignment: .top, spacing: 12) {
             Image(systemName: item.isDone ? "checkmark.circle.fill" : "circle")
                 .font(.title3)
                 .foregroundStyle(item.isDone ? ParkTheme.grassTop : ParkTheme.ink.opacity(0.35))
                 .accessibilityLabel(item.isDone ? "Completed" : "Not completed")
+                .padding(.top, 2)
 
             Text(item.text)
                 .font(ParkTheme.bodyFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
                 .strikethrough(item.isDone, color: ParkTheme.ink.opacity(0.4))
                 .opacity(item.isDone ? 0.65 : 1)
-
-            Spacer(minLength: 0)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .contentShape(Rectangle())
         .onTapGesture {
