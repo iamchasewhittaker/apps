@@ -24,7 +24,7 @@ Copy everything below into a **new** chat, fill the brackets, then send.
 
 **Constraints:**
 
-- [e.g. CRA only / Vite env `VITE_*` only for RollerTask]
+- [e.g. CRA only / archived Vite RollerTask at `portfolio/archive/roller-task-tycoon` uses `VITE_*`]
 - [e.g. keep `src/shared/sync.js` aligned with `portfolio/shared/sync.js` if this app uses sync]
 
 **Files / areas already touched (if continuing):**

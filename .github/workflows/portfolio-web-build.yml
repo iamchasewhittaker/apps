@@ -1,0 +1,63 @@
+# Compile-check CRA apps under portfolio/ on push/PR (catches broken deps and build errors). Archived Vite RollerTask PWA is not built here.
+name: Portfolio web builds
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "portfolio/wellness-tracker/**"
+      - "portfolio/job-search-hq/**"
+      - "portfolio/app-forge/**"
+      - ".github/workflows/portfolio-web-build.yml"
+  pull_request:
+    paths:
+      - "portfolio/wellness-tracker/**"
+      - "portfolio/job-search-hq/**"
+      - "portfolio/app-forge/**"
+      - ".github/workflows/portfolio-web-build.yml"
+
+jobs:
+  wellness-tracker:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portfolio/wellness-tracker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: portfolio/wellness-tracker/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  job-search-hq:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portfolio/job-search-hq
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: portfolio/job-search-hq/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  app-forge:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portfolio/app-forge
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: portfolio/app-forge/package-lock.json
+      - run: npm ci
+      - run: npm run build

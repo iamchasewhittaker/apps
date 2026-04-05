@@ -17,6 +17,9 @@
 !/portfolio/**
 !/projects/
 !/projects/**
+!/.github/
+!/.github/workflows/
+!/.github/workflows/**
 
 # Dependencies & build output (all subtrees)
 node_modules/

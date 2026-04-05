@@ -9,10 +9,10 @@
 | Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
-| RollerTask Tycoon | v1.0 | `chase_roller_task_v1` | roller-task-tycoon.vercel.app | ✅ Deployed (add `VITE_SUPABASE_*` on Vercel for sync) |
+| RollerTask Tycoon (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| RollerTask Tycoon (web PWA) | v1.0 | `chase_roller_task_v1` (historical) | (optional Vercel) | 🗄️ Retired — [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) |
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
-| Park Checklist (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_park_checklist_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
@@ -30,8 +30,7 @@
 
 ## Tech Stack (all apps)
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
-- **RollerTask Tycoon** (`portfolio/roller-task-tycoon/`): **Vite 6** + vanilla JS + same Supabase blob sync — uses **`VITE_*`** env vars (`import.meta.env`), not `REACT_APP_*`.
-- **Park Checklist** (`portfolio/park-checklist-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack).
+- **RollerTask Tycoon** (`portfolio/roller-task-tycoon-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack). **Archived** Vite PWA: [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) (**`VITE_*`** + `import.meta.env` when building that tree).
 - No TypeScript, no Redux, no external state libraries (portfolio-wide)
 
 ## Monorepo Layout
@@ -65,12 +64,11 @@
   app-forge/
     src/
       App.jsx      ← monolith (not yet refactored)
-  roller-task-tycoon/
-    index.html, src/main.js, src/sync.js, src/shared/sync.js  ← Vite + vanilla; APP_KEY roller_task_tycoon_v1
-  park-checklist-ios/
-    ParkChecklist.xcodeproj, ParkChecklist/  ← SwiftUI + SwiftData; local iOS
+  roller-task-tycoon-ios/
+    RollerTaskTycoon.xcodeproj, RollerTaskTycoon/  ← SwiftUI + SwiftData; local iOS (bundle id still com.chasewhittaker.ParkChecklist)
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
+    roller-task-tycoon/  ← retired Vite PWA; APP_KEY roller_task_tycoon_v1 (historical Supabase rows may remain)
 /projects/
   ai-dev-mastery/, shortcut-reference/, ynab-enrichment/, Money/  ← non-portfolio worktrees
   archive/
@@ -100,20 +98,20 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 
 ## Supabase Sync — Status
 
-**Wellness Tracker: LIVE ✅** | **Job Search HQ: LIVE ✅** | **RollerTask Tycoon:** wire on deploy | App Forge: later
+**Wellness Tracker: LIVE ✅** | **Job Search HQ: LIVE ✅** | **RollerTask Tycoon (iOS):** local-first (no Supabase in app yet) | **RollerTask Tycoon (archived web):** historical `roller_task_tycoon_v1` rows may still exist | App Forge: later
 
-> ⚠️ **Wellness, Job Search, and RollerTask share the same Supabase project** (`unqtnnxlltiadzbqpyhh`). Data is separated by `app_key` in the shared `user_data` table. One login covers all three.
+> ⚠️ **Wellness and Job Search** share the same Supabase project (`unqtnnxlltiadzbqpyhh`). The **retired Vite PWA** used the same project with `app_key = roller_task_tycoon_v1` (see archived app’s `CLAUDE.md`).
 
 - `/portfolio/shared/sync.js` — `createSync(url, key)` factory, exports `push`, `pull`, `auth`
 - `wellness-tracker/src/sync.js` — app adapter, APP_KEY = `'wellness'`
 - `job-search-hq/src/sync.js` — app adapter, APP_KEY = `'job-search'`
-- `portfolio/roller-task-tycoon/src/sync.js` — app adapter, APP_KEY = `'roller_task_tycoon_v1'`, env `VITE_SUPABASE_*`
-- CRA apps copy `shared/sync.js` as `src/shared/sync.js` (real file, not symlink — symlinks break on Vercel). RollerTask does the same.
+- `portfolio/archive/roller-task-tycoon/src/sync.js` — **archived** app adapter, APP_KEY = `'roller_task_tycoon_v1'`, env `VITE_SUPABASE_*`
+- CRA apps copy `shared/sync.js` as `src/shared/sync.js` (real file, not symlink — symlinks break on Vercel). The archived RollerTask PWA did the same.
 - `save()` stamps `_syncAt` · `push()` fires on every save · `pull()` runs on startup
-- Email OTP + `verifyOtp` auth gate: **Wellness** + **Job Search** in `App.jsx`; **RollerTask** in `src/main.js` (vanilla). **Dashboard:** Authentication → Email Templates → **Magic link** — add `{{ .Token }}` to the body (default template is link-only; [Supabase OTP docs](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp)). See each app’s `CLAUDE.md` for a sample template.
-- `.env` in CRA apps uses `REACT_APP_SUPABASE_*`. **RollerTask** uses **`VITE_SUPABASE_URL`** and **`VITE_SUPABASE_ANON_KEY`** (Vite inlines at build).
+- Email OTP + `verifyOtp` auth gate: **Wellness** + **Job Search** in `App.jsx`; archived **RollerTask web** used `src/main.js` (vanilla). **Dashboard:** Authentication → Email Templates → **Magic link** — add `{{ .Token }}` to the body (default template is link-only; [Supabase OTP docs](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp)). See each app’s `CLAUDE.md` for a sample template.
+- `.env` in CRA apps uses `REACT_APP_SUPABASE_*`. **Archived RollerTask web** uses **`VITE_SUPABASE_URL`** and **`VITE_SUPABASE_ANON_KEY`** when you build that tree.
 
-> ⚠️ **Env prefixes:** CRA apps → `REACT_APP_*` + `process.env`. **RollerTask Tycoon only** → `VITE_*` + `import.meta.env`.
+> ⚠️ **Env prefixes:** CRA apps → `REACT_APP_*` + `process.env`. **Archived Vite RollerTask only** → `VITE_*` + `import.meta.env`.
 
 **To activate sync on an app:**
 1. Create Supabase project at supabase.com (explain: org, project name, region, free tier limits)
@@ -127,7 +125,7 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 
 ## What NOT to Do
 - Don't add TypeScript — these apps use plain JS
-- Don't install component libraries (MUI, Chakra, etc.) — all UI is inline styles (RollerTask uses `<style>` in `index.html`, not a shared `s` object)
+- Don't install component libraries (MUI, Chakra, etc.) — all web UI is inline styles (archived RollerTask PWA used `<style>` in `index.html`, not a shared `s` object)
 - Don't split the Job Search / Wellness styles `s` / `T` into CSS files without a deliberate refactor — it works across Vercel deploys
 - Don't create new localStorage keys without updating the storage key table above
 - Don't change existing `STORE` constant names in shipped apps — existing user data depends on them
@@ -135,7 +133,7 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 
 ## CI — portfolio web builds
 
-GitHub Actions **`.github/workflows/portfolio-web-build.yml`** runs **`npm ci && npm run build`** for **Wellness**, **Job Search**, **App Forge**, and **RollerTask** when those paths change (push to `main` / `master` or PR). **Park Checklist (iOS)** is not in that workflow — use Xcode (**⌘B** / **⌘U** for `ParkChecklistTests`).
+GitHub Actions **`.github/workflows/portfolio-web-build.yml`** runs **`npm ci && npm run build`** for **Wellness**, **Job Search**, and **App Forge** when those paths change (push to `main` / `master` or PR). **RollerTask Tycoon (iOS)** is not in that workflow — use Xcode (**⌘B** / **⌘U** for `RollerTaskTycoonTests`).
 
 ## Linear — project tracking (PM-style)
 
