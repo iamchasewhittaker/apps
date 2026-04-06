@@ -9,7 +9,7 @@ struct ParkAttractionsView: View {
     var readableFonts: Bool
     var onToast: (String) -> Void
 
-    @AppStorage("chase_roller_task_tycoon_ios_board") private var useBoard = true
+    @AppStorage("chase_roller_task_tycoon_ios_board") private var useBoard = false
     @Environment(\.modelContext) private var modelContext
 
     @State private var staffFilter: StaffRole?

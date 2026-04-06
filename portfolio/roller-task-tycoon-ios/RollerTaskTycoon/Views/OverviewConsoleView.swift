@@ -28,18 +28,20 @@ struct OverviewConsoleView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    headerMetrics
-                    parkStatusCard
-                    guestThoughtsCard
+            VStack(spacing: 10) {
+                headerMetrics
+                parkStatusCard
+                guestThoughtBanner
+                HStack(alignment: .top, spacing: 10) {
                     priorityCard
                     alertsCard
-                    quickActions
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 12)
+                quickActions
+                Spacer(minLength: 0)
             }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(ParkTheme.parkBackground.ignoresSafeArea())
             .navigationTitle("Park Operations")
             .navigationBarTitleDisplayMode(.inline)
@@ -69,19 +71,13 @@ struct OverviewConsoleView: View {
     // MARK: - Header
 
     private var headerMetrics: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Park Operations Console")
-                .font(ParkTheme.displayFont(readable: readableFonts))
-                .foregroundStyle(ParkTheme.ink)
-            HStack(spacing: 10) {
-                metricChip(title: "Rating", value: "\(ratingPct)%", emoji: "⭐")
-                metricChip(title: "Profit", value: "$\(profitToday)", emoji: "💰")
-                metricChip(title: "Guests", value: "\(GameFlavor.guestCount(tasks: tasks))", emoji: "🧍")
-                metricChip(title: "Alerts", value: "\(alerts.count)", emoji: "🔔")
-            }
-            .font(ParkTheme.captionFont(readable: readableFonts).weight(.semibold))
+        HStack(spacing: 10) {
+            metricChip(title: "Rating", value: "\(ratingPct)%", emoji: "⭐")
+            metricChip(title: "Profit", value: "$\(profitToday)", emoji: "💰")
+            metricChip(title: "Guests", value: "\(GameFlavor.guestCount(tasks: tasks))", emoji: "🧍")
+            metricChip(title: "Alerts", value: "\(alerts.count)", emoji: "🔔")
         }
-        .padding(12)
+        .font(ParkTheme.captionFont(readable: readableFonts).weight(.semibold))
         .parkPanel(readable: readableFonts)
     }
 
@@ -136,20 +132,19 @@ struct OverviewConsoleView: View {
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(ParkTheme.wood.opacity(0.35), lineWidth: 1))
     }
 
-    // MARK: - Guest Thoughts (rotating)
+    // MARK: - Guest Thoughts (rotating banner)
 
-    private var guestThoughtsCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Guest thoughts")
-                .font(ParkTheme.titleFont(readable: readableFonts))
-                .foregroundStyle(ParkTheme.ink)
-            ForEach(visibleThoughts, id: \.self) { line in
-                Text("\u{201C}\(line)\u{201D}")
-                    .font(ParkTheme.bodyFont(readable: readableFonts).italic())
-                    .foregroundStyle(ParkTheme.ink)
-            }
-        }
-        .parkPanel(readable: readableFonts)
+    private var guestThoughtBanner: some View {
+        Text(visibleThoughts.first.map { "\u{201C}\($0)\u{201D}" } ?? "")
+            .font(ParkTheme.bodyFont(readable: readableFonts).italic())
+            .foregroundStyle(ParkTheme.ink.opacity(0.85))
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .background(ParkTheme.plaque.opacity(0.6))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
     private func startThoughtRotation() {
@@ -165,45 +160,51 @@ struct OverviewConsoleView: View {
     // MARK: - Priority Attractions
 
     private var priorityCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Priority attractions")
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Priority")
                 .font(ParkTheme.titleFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
-            let top = GameFlavor.priorityAttractions(tasks: tasks, limit: 3)
+            let top = GameFlavor.priorityAttractions(tasks: tasks, limit: 2)
             if top.isEmpty {
-                Text("Nothing queued — add an attraction.")
-                    .font(ParkTheme.bodyFont(readable: readableFonts))
+                Text("All clear.")
+                    .font(ParkTheme.captionFont(readable: readableFonts))
                     .foregroundStyle(ParkTheme.ink.opacity(0.75))
             } else {
                 ForEach(Array(top.enumerated()), id: \.offset) { idx, t in
                     Text("\(idx + 1). \(t.staffRole.emoji) \(t.text)")
-                        .font(ParkTheme.bodyFont(readable: readableFonts))
+                        .font(ParkTheme.captionFont(readable: readableFonts))
                         .foregroundStyle(ParkTheme.ink)
+                        .lineLimit(2)
                 }
             }
+            Spacer(minLength: 0)
         }
+        .frame(maxWidth: .infinity, minHeight: 90, alignment: .topLeading)
         .parkPanel(readable: readableFonts)
     }
 
     // MARK: - Alerts
 
     private var alertsCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             Text("Alerts")
                 .font(ParkTheme.titleFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.alertRed)
             if alerts.isEmpty {
-                Text("No incidents on the radio.")
-                    .font(ParkTheme.bodyFont(readable: readableFonts))
+                Text("No incidents.")
+                    .font(ParkTheme.captionFont(readable: readableFonts))
                     .foregroundStyle(ParkTheme.ink.opacity(0.75))
             } else {
-                ForEach(alerts) { a in
+                ForEach(Array(alerts.prefix(2).enumerated()), id: \.offset) { _, a in
                     Text("• \(a.message)")
-                        .font(ParkTheme.bodyFont(readable: readableFonts))
+                        .font(ParkTheme.captionFont(readable: readableFonts))
                         .foregroundStyle(ParkTheme.ink)
+                        .lineLimit(2)
                 }
             }
+            Spacer(minLength: 0)
         }
+        .frame(maxWidth: .infinity, minHeight: 90, alignment: .topLeading)
         .parkPanel(readable: readableFonts)
     }
 

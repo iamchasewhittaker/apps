@@ -8,6 +8,14 @@ private struct SharePayload: Identifiable {
 }
 
 struct ContentView: View {
+    init() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(ParkTheme.woodLight)
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ChecklistTaskItem.createdAt, order: .reverse) private var tasks: [ChecklistTaskItem]
     @Query(sort: \ProfitLedgerEntry.createdAt, order: .reverse) private var ledger: [ProfitLedgerEntry]
