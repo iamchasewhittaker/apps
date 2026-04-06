@@ -12,14 +12,19 @@ struct ParkAttractionsView: View {
     @AppStorage("chase_roller_task_tycoon_ios_board") private var useBoard = true
     @Environment(\.modelContext) private var modelContext
 
+    @State private var staffFilter: StaffRole?
+
     private var visible: [ChecklistTaskItem] {
-        guard let z = zoneFilter else { return tasks }
-        return tasks.filter { $0.zone == z }
+        tasks.filter { item in
+            if let z = zoneFilter, item.zone != z { return false }
+            if let s = staffFilter, item.staffRole != s { return false }
+            return true
+        }
     }
 
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 6) {
                 filterBar
                 Picker("Layout", selection: $useBoard) {
                     Text("Board").tag(true)
@@ -53,34 +58,55 @@ struct ParkAttractionsView: View {
         }
     }
 
+    // MARK: - Filter bar
+
     private var filterBar: some View {
-        HStack {
-            if let z = zoneFilter {
-                Text("\(z.emoji) \(z.displayTitle)")
-                    .font(ParkTheme.captionFont(readable: readableFonts).weight(.semibold))
-                    .foregroundStyle(ParkTheme.ink)
-                Spacer()
-                Button("Clear zone") {
-                    zoneFilter = nil
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                if zoneFilter != nil || staffFilter != nil || statusFocus != nil {
+                    filterChip("Clear all", isActive: true, color: ParkTheme.alertRed) {
+                        zoneFilter = nil
+                        staffFilter = nil
+                        statusFocus = nil
+                    }
                 }
-                .font(ParkTheme.captionFont(readable: readableFonts).weight(.bold))
-            } else if let s = statusFocus {
-                Text("Focus: \(s.displayTitle)")
-                    .font(ParkTheme.captionFont(readable: readableFonts).weight(.semibold))
-                    .foregroundStyle(ParkTheme.ink)
-                Spacer()
-                Button("Clear focus") {
-                    statusFocus = nil
+
+                ForEach(ParkZone.allCases) { zone in
+                    let active = zoneFilter == zone
+                    filterChip("\(zone.emoji) \(zone.displayTitle)", isActive: active, color: ParkTheme.wood) {
+                        zoneFilter = active ? nil : zone
+                    }
                 }
-                .font(ParkTheme.captionFont(readable: readableFonts).weight(.bold))
-            } else {
-                Text("All attractions")
-                    .font(ParkTheme.captionFont(readable: readableFonts))
-                    .foregroundStyle(ParkTheme.ink.opacity(0.8))
-                Spacer()
+
+                Divider().frame(height: 20)
+
+                ForEach(StaffRole.allCases) { role in
+                    let active = staffFilter == role
+                    filterChip("\(role.emoji) \(role.displayTitle)", isActive: active, color: ParkTheme.grassTop) {
+                        staffFilter = active ? nil : role
+                    }
+                }
             }
+            .padding(.horizontal, 4)
+            .padding(.vertical, 2)
         }
     }
+
+    private func filterChip(_ label: String, isActive: Bool, color: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(label)
+                .font(ParkTheme.captionFont(readable: readableFonts).weight(isActive ? .bold : .regular))
+                .foregroundStyle(isActive ? ParkTheme.plaque : ParkTheme.ink)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(isActive ? color : ParkTheme.plaque.opacity(0.85))
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(color.opacity(0.5), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Board
 
     private var board: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -121,6 +147,8 @@ struct ParkAttractionsView: View {
                 .stroke(highlight ? ParkTheme.accent : ParkTheme.wood.opacity(0.45), lineWidth: highlight ? 2 : 1)
         )
     }
+
+    // MARK: - List
 
     private var listView: some View {
         List {

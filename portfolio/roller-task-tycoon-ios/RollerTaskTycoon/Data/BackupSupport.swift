@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 import UIKit
 
-/// Current backup JSON `schemaVersion` (export and import).
+/// Current backup JSON `schemaVersion`.
 enum BackupFormat {
     static let schemaVersion = 2
 }
@@ -13,24 +13,13 @@ struct BackupEnvelope: Codable {
     let exportedAt: String
     let cash: Int
     let tasks: [BackupTaskRow]
-    /// Present in schema 2; omitted or empty in schema 1 imports.
     let ledger: [BackupLedgerRow]?
-}
-
-struct BackupSubtaskRow: Codable {
-    let id: String
-    let text: String
-    let sortIndex: Int
-    let isDone: Bool
 }
 
 struct BackupTaskRow: Codable {
     let id: String
     let text: String
     let createdAt: String
-    /// Schema 1 only.
-    let isDone: Bool?
-    /// Schema 2 fields (optional for decoding older files).
     let statusRaw: String?
     let zoneRaw: String?
     let staffTypeRaw: String?
@@ -39,7 +28,6 @@ struct BackupTaskRow: Codable {
     let dueDate: String?
     let details: String?
     let closedAt: String?
-    let subtasks: [BackupSubtaskRow]?
 }
 
 struct BackupLedgerRow: Codable {
@@ -61,12 +49,12 @@ enum BackupImportError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .invalidJSON:
-            return "This file isn’t valid RollerTask Tycoon backup JSON."
+            return "This file isn't valid RollerTask Tycoon backup JSON."
         case .unsupportedSchema(let v):
             if v > BackupFormat.schemaVersion {
                 return "This backup needs a newer version of the app (schema \(v))."
             }
-            return "This backup format isn’t supported (schema \(v))."
+            return "This backup format isn't supported (schema \(v))."
         case .invalidTaskUUID:
             return "This backup has a task with an invalid id."
         case .invalidTaskDate(let id):
@@ -86,7 +74,6 @@ enum BackupImporter {
         return f
     }()
 
-    /// Decodes backup data and validates schema and rows. No SwiftData writes.
     static func decodeAndValidate(data: Data) throws -> BackupEnvelope {
         let envelope: BackupEnvelope
         do {
@@ -94,7 +81,7 @@ enum BackupImporter {
         } catch {
             throw BackupImportError.invalidJSON
         }
-        guard envelope.schemaVersion == 1 || envelope.schemaVersion == BackupFormat.schemaVersion else {
+        guard envelope.schemaVersion == BackupFormat.schemaVersion else {
             throw BackupImportError.unsupportedSchema(envelope.schemaVersion)
         }
         for row in envelope.tasks {
@@ -104,21 +91,8 @@ enum BackupImporter {
             guard isoParser.date(from: row.createdAt) != nil else {
                 throw BackupImportError.invalidTaskDate(id: row.id)
             }
-            if envelope.schemaVersion == 1 {
-                guard row.isDone != nil else {
-                    throw BackupImportError.invalidJSON
-                }
-            } else {
-                guard row.statusRaw != nil else {
-                    throw BackupImportError.invalidJSON
-                }
-            }
-            if let subs = row.subtasks {
-                for s in subs {
-                    guard UUID(uuidString: s.id) != nil else {
-                        throw BackupImportError.invalidTaskUUID(s.id)
-                    }
-                }
+            guard row.statusRaw != nil else {
+                throw BackupImportError.invalidJSON
             }
         }
         if let ledger = envelope.ledger {
@@ -142,9 +116,7 @@ enum BackupImporter {
     static func loadFromFile(url: URL) throws -> BackupEnvelope {
         let accessing = url.startAccessingSecurityScopedResource()
         defer {
-            if accessing {
-                url.stopAccessingSecurityScopedResource()
-            }
+            if accessing { url.stopAccessingSecurityScopedResource() }
         }
         let data = try Data(contentsOf: url)
         return try decodeAndValidate(data: data)
@@ -156,32 +128,18 @@ enum BackupExporter {
         let iso = ISO8601DateFormatter()
         iso.formatOptions = [.withInternetDateTime]
         let rows = items.map { item in
-            let due = item.dueDate.map { iso.string(from: $0) }
-            let closed = item.closedAt.map { iso.string(from: $0) }
-            let subs: [BackupSubtaskRow] = item.subtasks
-                .sorted { $0.sortIndex < $1.sortIndex }
-                .map {
-                    BackupSubtaskRow(
-                        id: $0.id.uuidString,
-                        text: $0.text,
-                        sortIndex: $0.sortIndex,
-                        isDone: $0.isDone
-                    )
-                }
-            return BackupTaskRow(
+            BackupTaskRow(
                 id: item.id.uuidString,
                 text: item.text,
                 createdAt: iso.string(from: item.createdAt),
-                isDone: nil,
                 statusRaw: item.statusRaw,
                 zoneRaw: item.zoneRaw,
                 staffTypeRaw: item.staffTypeRaw,
                 priorityRaw: item.priorityRaw,
                 rewardDollars: item.rewardDollars,
-                dueDate: due,
+                dueDate: item.dueDate.map { iso.string(from: $0) },
                 details: item.details,
-                closedAt: closed,
-                subtasks: subs.isEmpty ? nil : subs
+                closedAt: item.closedAt.map { iso.string(from: $0) }
             )
         }
         let led = ledger.map { e in
@@ -208,8 +166,7 @@ enum BackupExporter {
         let data = try encoder.encode(envelope)
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        let day = formatter.string(from: Date())
-        let name = "RollerTaskTycoon-backup-\(day).json"
+        let name = "RollerTaskTycoon-backup-\(formatter.string(from: Date())).json"
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(name)
         try data.write(to: url, options: [.atomic])
         return url

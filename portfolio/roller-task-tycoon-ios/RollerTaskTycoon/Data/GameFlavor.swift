@@ -8,7 +8,7 @@ enum GameFlavor {
         "The maintenance crew got to work!",
         "Park inspector gave a thumbs up!",
         "Ride queue is getting shorter!",
-        "Peep: ‘This park is AMAZING!’",
+        "Peep: 'This park is AMAZING!'",
     ]
 
     static let deleteLines = [
@@ -55,7 +55,7 @@ enum GameFlavor {
         return min(100, max(0, score))
     }
 
-    /// Playful “guest count” — scales with open attractions.
+    /// Playful "guest count" — scales with open attractions.
     static func guestCount(tasks: [ChecklistTaskItem]) -> Int {
         let openCount = tasks.filter { $0.status == .open }.count
         return max(1, 1 + openCount)
@@ -89,37 +89,95 @@ enum GameFlavor {
         return out
     }
 
+    // MARK: - Guest Thoughts (expanded rotating pool)
+
+    private static let thoughtsGeneral = [
+        "This park is improving!",
+        "Nice vibe today — keep it up!",
+        "I could spend all afternoon here.",
+        "Really well organised for a change.",
+        "Management seems on top of things.",
+        "The atmosphere is great today.",
+        "I'm impressed — everything is running smoothly.",
+        "This feels like a five-star park.",
+        "Love the energy here today.",
+        "The staff look busy — in a good way!",
+    ]
+
+    private static let thoughtsBrokenMany = [
+        "Too many rides are broken down!",
+        "I'm not coming back until things get fixed.",
+        "Half the park seems closed today.",
+        "Really? Three broken rides at once?",
+        "Management needs to sort this out fast.",
+    ]
+
+    private static let thoughtsBrokenOne = [
+        "I heard one of the rides is down today.",
+        "Hope they fix that attraction soon.",
+        "Minor hiccup — happens at every park.",
+    ]
+
+    private static let thoughtsOverdue = [
+        "I'm getting overwhelmed…",
+        "This park feels behind schedule.",
+        "Things seem to be piling up here.",
+        "A few rides have been 'coming soon' for too long.",
+    ]
+
+    private static let thoughtsTesting = [
+        "Lots of rides are under construction today.",
+        "Half the attractions are in testing — exciting!",
+        "They've got big plans, I can tell.",
+    ]
+
+    private static let thoughtsAllClear = [
+        "This park is really organised!",
+        "Everything looks shipshape.",
+        "Not a single thing out of place — impressive.",
+        "Best managed park I've visited this year.",
+    ]
+
+    private static let thoughtsEmpty = [
+        "Welcome to the park! Add your first attraction.",
+        "The gates are open — what's the first ride?",
+    ]
+
+    /// Returns 2 rotating thoughts based on the current park state.
     static func guestThoughts(tasks: [ChecklistTaskItem], calendar: Calendar = .current, now: Date = Date()) -> [String] {
+        if tasks.isEmpty {
+            return Array(thoughtsEmpty.shuffled().prefix(1))
+        }
+
         let broken = tasks.filter { $0.status == .brokenDown }.count
         let overdue = tasks.filter { $0.isOverdue(now: now, calendar: calendar) }.count
         let testing = tasks.filter { $0.status == .testing }.count
         let open = tasks.filter { $0.status == .open }.count
+
         var pool: [String] = []
+
         if broken >= 2 {
-            pool += [
-                "Too many rides are broken down!",
-                "I’m not coming back until things get fixed.",
-            ]
+            pool += thoughtsBrokenMany
+        } else if broken == 1 {
+            pool += thoughtsBrokenOne
         }
+
         if overdue >= 3 {
-            pool += ["I’m getting overwhelmed…", "This park feels behind schedule."]
+            pool += thoughtsOverdue
         }
+
         if testing >= 4 {
-            pool += ["Lots of rides are under construction today."]
+            pool += thoughtsTesting
         }
-        if open == 0, testing == 0, broken == 0, !tasks.isEmpty {
-            pool += ["This park is really organized!", "Everything looks shipshape."]
+
+        if open == 0, testing == 0, broken == 0 {
+            pool += thoughtsAllClear
         }
-        pool += [
-            "This park is improving!",
-            "Nice vibe today — keep it up!",
-            "I could spend all afternoon here.",
-        ]
-        if pool.isEmpty {
-            pool = ["Welcome to the park!"]
-        }
-        let pick = Array(Set(pool)).shuffled()
-        return Array(pick.prefix(2))
+
+        pool += thoughtsGeneral
+
+        let shuffled = Array(Set(pool)).shuffled()
+        return Array(shuffled.prefix(2))
     }
 
     static func priorityAttractions(tasks: [ChecklistTaskItem], limit: Int = 3, calendar: Calendar = .current, now: Date = Date()) -> [ChecklistTaskItem] {

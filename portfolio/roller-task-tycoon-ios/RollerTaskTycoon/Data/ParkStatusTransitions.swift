@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 enum ParkStatusTransitions {
-    /// Applies a new status, updates legacy `isDone`, adjusts `parkCash`, and writes ledger on close.
+    /// Applies a new status, adjusts parkCash, and writes ledger entry on close.
     static func apply(
         _ newStatus: AttractionStatus,
         to item: ChecklistTaskItem,
@@ -25,6 +25,5 @@ enum ParkStatusTransitions {
         }
 
         item.status = newStatus
-        item.isDone = (newStatus == .closed)
     }
 }

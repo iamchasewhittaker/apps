@@ -6,14 +6,39 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- **Park Operations Console:** five-tab shell (**Overview**, **Attractions**, **Staff**, **Finances**, **Map**) with retro panel styling; **attractions** use statuses **Open / Testing / Broken Down / Closed**, plus **zone**, **staff role**, **priority**, **reward**, optional **due date**, **description**, and **subtasks**.
-- **Overview** dashboard: park rating %, profit today (ledger), guest count, alerts; cards for status, guest thoughts, top priorities, quick actions (**Add**, **Testing**, **Log profit**, **Repair**).
-- **Attractions:** horizontal **board** (four columns) and **list** toggle; **detail** “ride panel” with status actions, edit sheet, subtask checkoffs, delete.
-- **Profit ledger** (`ProfitLedgerEntry`) + variable **reward on close**; **Log profit** sheet for manual dollars (ledger + cash).
-- **Staff** panel (Operator, Janitor, Mechanic, Entertainer) with heuristic assignment display; **Map** = zone list → filtered Attractions.
-- **Backup schema v2** (tasks + subtasks + **ledger**); import still accepts **v1** (`isDone`); [`ParkDataImport`](RollerTaskTycoon/Data/ParkDataImport.swift) replace-all restore.
+- **V1 simplification:** Reduced from 5 tabs → **3 tabs** (Overview / Attractions / Finances). Staff and Map functionality merged into Attractions as **filter chips** (zone + staff role filters in a horizontal scroll bar).
+- **In-app Park Guide** (`ParkGuideView`) accessible from Overview toolbar (book icon) — explains statuses, zones, staff roles, park rating, profit system, and best-use tips.
+- **Rotating guest thoughts** — expanded phrase pool to 30+ sayings across mood buckets (general, broken, overdue, testing, all-clear); rotates every 10 seconds via timer in Overview.
+- **Zone + Staff filter chips** on Attractions screen — horizontal scroll bar replaces dedicated Staff and Map tabs.
+- **Backup in Settings** — export/import moved from Overview toolbar to Settings sheet; cleaner toolbar (guide + settings only).
+- **Product docs:** [`docs/PRD.md`](docs/PRD.md) (product requirements), [`docs/APP_FLOW.md`](docs/APP_FLOW.md) (screen-by-screen navigation + empty/error states).
+
+### Removed
+
+- **Subtasks** (`SubtaskItem` model, relationship, all subtask UI) — moved to V2. Simplifies data model and detail view.
+- **Manual profit logging** (`LogProfitSheet`) — profit now comes exclusively from closing attractions. Cleaner reward loop.
+- **Templates** (`TemplateLibrary`, `TemplatesView`) — moved to V2.
+- **Legacy migration code** (`LegacyTaskMigration`) — clean slate for V1, no `isDone` compatibility needed.
+- **Staff tab** and **Map tab** — replaced by filter chips on Attractions.
+- **Backup v1 schema compatibility** — import now requires schema v2; drops `isDone`-only import path.
+- **`isDone` field** on `ChecklistTaskItem` — removed; `statusRaw` is authoritative.
+
+### Changed
+
+- **Overview quick actions** updated: Add, Testing, Repair, All open (replaced Log Profit with All Open shortcut).
+- **`try? modelContext.save()`** replaced with `do/catch` in `AttractionDetailView` and `AttractionEditorView` — errors now surface as toasts or alerts instead of failing silently.
+- **`StaffFinancesMapViews.swift`** renamed to `FinancesView.swift`; Staff and Map views deleted.
+- **`SettingsView`** now accepts `onExport` + `onImport` callbacks; backup section added.
+- **`ChecklistTaskItem`** restore initializer updated: removed `isDone` and `subtasks` parameters.
+
+### Added (Park Operations Console — prior session)
+
+- **Park Operations Console:** five-tab shell with retro panel styling; attractions use statuses **Open / Testing / Broken Down / Closed**, plus zone, staff role, priority, reward, optional due date, description.
+- **Overview** dashboard: park rating %, profit today (ledger), guest count, alerts; cards for status, guest thoughts, top priorities, quick actions.
+- **Attractions:** horizontal board (four columns) and list toggle; detail “ride panel” with status actions, edit sheet, delete.
+- **Profit ledger** (`ProfitLedgerEntry`) + variable reward on close.
+- **Backup schema v2** (tasks + ledger); [`ParkDataImport`](RollerTaskTycoon/Data/ParkDataImport.swift) replace-all restore.
 - **Docs:** [`docs/PARK_OPERATIONS_CONSOLE.md`](docs/PARK_OPERATIONS_CONSOLE.md) (product spec), [`docs/PARK_OPERATIONS_KEY.md`](docs/PARK_OPERATIONS_KEY.md) (definitions + how-to).
-- SwiftData models **`SubtaskItem`**, **`ProfitLedgerEntry`**; **[`ParkDomain`](RollerTaskTycoon/Data/ParkDomain.swift)** enums; one-time **[`LegacyTaskMigration`](RollerTaskTycoon/Data/LegacyTaskMigration.swift)** from legacy `isDone`.
 
 ### Removed
 

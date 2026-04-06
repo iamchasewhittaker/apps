@@ -8,11 +8,11 @@ struct OverviewConsoleView: View {
     @Binding var attractionsZoneFilter: ParkZone?
     var readableFonts: Bool
     var onAddAttraction: () -> Void
-    var onLogProfit: () -> Void
-    var onTemplates: () -> Void
-    var onExport: () -> Void
-    var onImport: () -> Void
     var onSettings: () -> Void
+
+    @State private var showGuide = false
+    @State private var visibleThoughts: [String] = []
+    @State private var thoughtTimer: Timer?
 
     private var ratingPct: Int {
         GameFlavor.parkRatingPercent(tasks: tasks)
@@ -24,10 +24,6 @@ struct OverviewConsoleView: View {
 
     private var alerts: [GameFlavor.ParkAlert] {
         GameFlavor.parkAlerts(tasks: tasks, ratingPercent: ratingPct)
-    }
-
-    private var guestLines: [String] {
-        GameFlavor.guestThoughts(tasks: tasks)
     }
 
     var body: some View {
@@ -52,26 +48,25 @@ struct OverviewConsoleView: View {
             .toolbarColorScheme(.light, for: .navigationBar)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button { onTemplates() } label: {
-                        Image(systemName: "list.bullet.rectangle").foregroundStyle(ParkTheme.ink)
+                    Button { showGuide = true } label: {
+                        Image(systemName: "book.closed").foregroundStyle(ParkTheme.ink)
                     }
-                    .accessibilityLabel("Templates")
-                    Button { onExport() } label: {
-                        Image(systemName: "square.and.arrow.up").foregroundStyle(ParkTheme.ink)
-                    }
-                    .accessibilityLabel("Export backup")
-                    Button { onImport() } label: {
-                        Image(systemName: "square.and.arrow.down").foregroundStyle(ParkTheme.ink)
-                    }
-                    .accessibilityLabel("Import backup")
+                    .accessibilityLabel("Park guide")
                     Button { onSettings() } label: {
                         Image(systemName: "gearshape").foregroundStyle(ParkTheme.ink)
                     }
                     .accessibilityLabel("Settings")
                 }
             }
+            .sheet(isPresented: $showGuide) {
+                ParkGuideView(readableFonts: readableFonts)
+            }
+            .onAppear { startThoughtRotation() }
+            .onDisappear { thoughtTimer?.invalidate(); thoughtTimer = nil }
         }
     }
+
+    // MARK: - Header
 
     private var headerMetrics: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -100,6 +95,8 @@ struct OverviewConsoleView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+
+    // MARK: - Park Status
 
     private var parkStatusCard: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -139,19 +136,33 @@ struct OverviewConsoleView: View {
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(ParkTheme.wood.opacity(0.35), lineWidth: 1))
     }
 
+    // MARK: - Guest Thoughts (rotating)
+
     private var guestThoughtsCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Guest thoughts")
                 .font(ParkTheme.titleFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
-            ForEach(guestLines, id: \.self) { line in
-                Text("“\(line)”")
+            ForEach(visibleThoughts, id: \.self) { line in
+                Text(""\(line)"")
                     .font(ParkTheme.bodyFont(readable: readableFonts).italic())
                     .foregroundStyle(ParkTheme.ink)
             }
         }
         .parkPanel(readable: readableFonts)
     }
+
+    private func startThoughtRotation() {
+        visibleThoughts = GameFlavor.guestThoughts(tasks: tasks)
+        thoughtTimer?.invalidate()
+        thoughtTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
+            withAnimation(.easeInOut(duration: 0.4)) {
+                visibleThoughts = GameFlavor.guestThoughts(tasks: tasks)
+            }
+        }
+    }
+
+    // MARK: - Priority Attractions
 
     private var priorityCard: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -174,6 +185,8 @@ struct OverviewConsoleView: View {
         .parkPanel(readable: readableFonts)
     }
 
+    // MARK: - Alerts
+
     private var alertsCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Alerts")
@@ -194,6 +207,8 @@ struct OverviewConsoleView: View {
         .parkPanel(readable: readableFonts)
     }
 
+    // MARK: - Quick Actions
+
     private var quickActions: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Quick actions")
@@ -208,10 +223,14 @@ struct OverviewConsoleView: View {
                 }
             }
             HStack(spacing: 8) {
-                qaButton("Log profit") { onLogProfit() }
                 qaButton("Repair") {
                     attractionsZoneFilter = nil
                     attractionsStatusFocus = .brokenDown
+                    selectedTab = 1
+                }
+                qaButton("All open") {
+                    attractionsZoneFilter = nil
+                    attractionsStatusFocus = .open
                     selectedTab = 1
                 }
             }

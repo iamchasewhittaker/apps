@@ -17,7 +17,7 @@ struct AttractionEditorView: View {
     @State private var hasDue = false
     @State private var dueDate = Date()
     @State private var details: String = ""
-    @State private var subLines: [String] = [""]
+    @State private var saveError: String?
 
     var body: some View {
         NavigationStack {
@@ -54,14 +54,6 @@ struct AttractionEditorView: View {
                     TextField("Details (optional)", text: $details, axis: .vertical)
                         .lineLimit(3...8)
                 }
-                Section("Subtasks") {
-                    ForEach(subLines.indices, id: \.self) { i in
-                        TextField("Subtask", text: $subLines[i])
-                    }
-                    Button("Add subtask line") {
-                        subLines.append("")
-                    }
-                }
             }
             .navigationTitle(existing == nil ? "New attraction" : "Edit attraction")
             .navigationBarTitleDisplayMode(.inline)
@@ -73,6 +65,11 @@ struct AttractionEditorView: View {
                     Button("Save") { save() }
                         .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
+            }
+            .alert("Save failed", isPresented: Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })) {
+                Button("OK", role: .cancel) { saveError = nil }
+            } message: {
+                Text(saveError ?? "")
             }
             .onAppear {
                 guard let e = existing else { return }
@@ -86,9 +83,6 @@ struct AttractionEditorView: View {
                     hasDue = true
                     dueDate = d
                 }
-                let sorted = e.subtasks.sorted { $0.sortIndex < $1.sortIndex }
-                let lines = sorted.map(\.text)
-                subLines = lines.isEmpty ? [""] : lines
             }
         }
     }
@@ -109,27 +103,15 @@ struct AttractionEditorView: View {
         item.priority = priority
         item.rewardDollars = max(0, reward)
         item.details = details
-        item.dueDate = hasDue ? calendarStartOfDay(dueDate) : nil
+        item.dueDate = hasDue ? Calendar.current.startOfDay(for: dueDate) : nil
 
-        let cleaned = subLines.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
-        if existing != nil {
-            for s in item.subtasks {
-                modelContext.delete(s)
-            }
-            item.subtasks.removeAll()
+        do {
+            try modelContext.save()
+        } catch {
+            saveError = error.localizedDescription
+            return
         }
-        for (idx, line) in cleaned.enumerated() {
-            let sub = SubtaskItem(text: line, sortIndex: idx, parent: item)
-            modelContext.insert(sub)
-            item.subtasks.append(sub)
-        }
-
-        try? modelContext.save()
         onDone()
         dismiss()
-    }
-
-    private func calendarStartOfDay(_ d: Date) -> Date {
-        Calendar.current.startOfDay(for: d)
     }
 }

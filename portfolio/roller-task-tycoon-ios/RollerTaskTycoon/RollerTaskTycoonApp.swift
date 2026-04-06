@@ -10,7 +10,6 @@ struct RollerTaskTycoonApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             ChecklistTaskItem.self,
-            SubtaskItem.self,
             ProfitLedgerEntry.self,
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

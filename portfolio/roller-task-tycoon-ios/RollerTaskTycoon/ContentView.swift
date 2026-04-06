@@ -19,10 +19,8 @@ struct ContentView: View {
     @State private var attractionsStatusFocus: AttractionStatus?
     @State private var attractionsZoneFilter: ParkZone?
 
-    @State private var showTemplates = false
     @State private var showSettings = false
     @State private var showAddAttraction = false
-    @State private var showLogProfit = false
     @State private var sharePayload: SharePayload?
     @State private var exportError: String?
     @State private var showImportPicker = false
@@ -30,7 +28,6 @@ struct ContentView: View {
     @State private var pendingImport: BackupEnvelope?
     @State private var importError: String?
     @State private var toastText: String?
-    @State private var didRunLegacyMigration = false
 
     var body: some View {
         ZStack {
@@ -43,10 +40,6 @@ struct ContentView: View {
                     attractionsZoneFilter: $attractionsZoneFilter,
                     readableFonts: readableFonts,
                     onAddAttraction: { showAddAttraction = true },
-                    onLogProfit: { showLogProfit = true },
-                    onTemplates: { showTemplates = true },
-                    onExport: { exportBackup() },
-                    onImport: { showImportPicker = true },
                     onSettings: { showSettings = true }
                 )
                 .tabItem { Label("Overview", systemImage: "rectangle.grid.2x2") }
@@ -63,30 +56,11 @@ struct ContentView: View {
                 .tabItem { Label("Attractions", systemImage: "square.stack.3d.up") }
                 .tag(1)
 
-                StaffPanelView(tasks: tasks, readableFonts: readableFonts)
-                    .tabItem { Label("Staff", systemImage: "person.3") }
-                    .tag(2)
-
                 FinancesView(tasks: tasks, ledger: ledger, readableFonts: readableFonts)
                     .tabItem { Label("Finances", systemImage: "dollarsign.circle") }
-                    .tag(3)
-
-                ParkMapZonesView(
-                    tasks: tasks,
-                    selectedTab: $selectedTab,
-                    attractionsZoneFilter: $attractionsZoneFilter,
-                    readableFonts: readableFonts
-                )
-                .tabItem { Label("Map", systemImage: "map") }
-                .tag(4)
+                    .tag(2)
             }
             .tint(ParkTheme.wood)
-            .onAppear {
-                if !didRunLegacyMigration {
-                    LegacyTaskMigration.runIfNeeded(context: modelContext)
-                    didRunLegacyMigration = true
-                }
-            }
             .safeAreaInset(edge: .bottom) {
                 Button {
                     showAddAttraction = true
@@ -108,22 +82,12 @@ struct ContentView: View {
             }
         }
         .preferredColorScheme(.light)
-        .sheet(isPresented: $showTemplates) {
-            TemplatesView(readableFonts: readableFonts) {
-                showToast("📋 Added from template")
-            }
-        }
         .sheet(isPresented: $showSettings) {
-            SettingsView()
+            SettingsView(onExport: exportBackup, onImport: { showImportPicker = true })
         }
         .sheet(isPresented: $showAddAttraction) {
             AttractionEditorView(existing: nil, readableFonts: readableFonts) {
                 showToast("🎢 New attraction added")
-            }
-        }
-        .sheet(isPresented: $showLogProfit) {
-            LogProfitSheet(parkCash: $parkCash, readableFonts: readableFonts) {
-                showToast("💰 Profit logged")
             }
         }
         .sheet(item: $sharePayload) { payload in
@@ -152,29 +116,19 @@ struct ContentView: View {
         }
         .alert("Replace all data?", isPresented: $showImportConfirm) {
             Button("Replace", role: .destructive) {
-                if let env = pendingImport {
-                    applyImport(envelope: env)
-                }
+                if let env = pendingImport { applyImport(envelope: env) }
                 pendingImport = nil
             }
-            Button("Cancel", role: .cancel) {
-                pendingImport = nil
-            }
+            Button("Cancel", role: .cancel) { pendingImport = nil }
         } message: {
-            Text("This removes every attraction, subtask, ledger entry, and your park cash, then loads the backup. You can’t undo this.")
+            Text("This removes every attraction, ledger entry, and your park cash, then loads the backup. You can't undo this.")
         }
-        .alert("Export failed", isPresented: Binding(
-            get: { exportError != nil },
-            set: { if !$0 { exportError = nil } }
-        )) {
+        .alert("Export failed", isPresented: Binding(get: { exportError != nil }, set: { if !$0 { exportError = nil } })) {
             Button("OK", role: .cancel) { exportError = nil }
         } message: {
             Text(exportError ?? "")
         }
-        .alert("Import failed", isPresented: Binding(
-            get: { importError != nil },
-            set: { if !$0 { importError = nil } }
-        )) {
+        .alert("Import failed", isPresented: Binding(get: { importError != nil }, set: { if !$0 { importError = nil } })) {
             Button("OK", role: .cancel) { importError = nil }
         } message: {
             Text(importError ?? "")
@@ -199,9 +153,7 @@ struct ContentView: View {
     private func showToast(_ message: String) {
         toastText = message
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.6) {
-            if toastText == message {
-                toastText = nil
-            }
+            if toastText == message { toastText = nil }
         }
     }
 
@@ -220,7 +172,7 @@ struct ContentView: View {
             parkCash = try ParkDataImport.replaceAll(envelope: envelope, modelContext: modelContext)
             showToast("Restored from backup")
         } catch {
-            importError = error.localizedDescription
+            importError = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
         }
     }
 }

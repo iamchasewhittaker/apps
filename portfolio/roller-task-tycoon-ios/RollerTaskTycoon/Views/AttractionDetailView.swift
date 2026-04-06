@@ -37,8 +37,6 @@ struct AttractionDetailView: View {
                     .parkPanel(readable: readableFonts)
                 }
 
-                subtasksSection
-
                 actions
             }
             .padding(16)
@@ -76,39 +74,6 @@ struct AttractionDetailView: View {
         .padding(.vertical, 4)
     }
 
-    private var subtasksSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Subtasks")
-                .font(ParkTheme.titleFont(readable: readableFonts))
-                .foregroundStyle(ParkTheme.ink)
-            let sorted = task.subtasks.sorted { $0.sortIndex < $1.sortIndex }
-            if sorted.isEmpty {
-                Text("No subtasks yet — add them in Edit.")
-                    .font(ParkTheme.captionFont(readable: readableFonts))
-                    .foregroundStyle(ParkTheme.ink.opacity(0.75))
-            } else {
-                ForEach(sorted) { sub in
-                    Button {
-                        sub.isDone.toggle()
-                        try? modelContext.save()
-                    } label: {
-                        HStack(alignment: .top, spacing: 10) {
-                            Image(systemName: sub.isDone ? "checkmark.square.fill" : "square")
-                                .foregroundStyle(sub.isDone ? ParkTheme.grassTop : ParkTheme.ink.opacity(0.35))
-                            Text(sub.text)
-                                .font(ParkTheme.bodyFont(readable: readableFonts))
-                                .strikethrough(sub.isDone)
-                                .foregroundStyle(ParkTheme.ink)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-        .parkPanel(readable: readableFonts)
-    }
-
     private var actions: some View {
         VStack(spacing: 10) {
             statusButton("Start testing", to: .testing, allowed: task.status != .testing && task.status != .closed)
@@ -116,7 +81,12 @@ struct AttractionDetailView: View {
             statusButton("Close attraction", to: .closed, allowed: task.status != .closed)
             Button(role: .destructive) {
                 modelContext.delete(task)
-                try? modelContext.save()
+                do {
+                    try modelContext.save()
+                } catch {
+                    onToast("⚠️ Delete failed — try again")
+                    return
+                }
                 onToast("🗑️ \(GameFlavor.randomDeleteLine())")
                 dismiss()
             } label: {
@@ -133,7 +103,12 @@ struct AttractionDetailView: View {
     private func statusButton(_ title: String, to status: AttractionStatus, allowed: Bool) -> some View {
         Button {
             ParkStatusTransitions.apply(status, to: task, parkCash: &parkCash, context: modelContext)
-            try? modelContext.save()
+            do {
+                try modelContext.save()
+            } catch {
+                onToast("⚠️ Save failed — try again")
+                return
+            }
             onToast("🎢 Status: \(status.displayTitle)")
         } label: {
             Text(title)

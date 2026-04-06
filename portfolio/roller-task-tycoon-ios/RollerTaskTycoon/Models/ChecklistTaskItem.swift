@@ -5,8 +5,6 @@ import SwiftData
 final class ChecklistTaskItem {
     var id: UUID
     var text: String
-    /// Legacy field — kept for lightweight migration; UI uses `status`.
-    var isDone: Bool
     var createdAt: Date
 
     var statusRaw: String = AttractionStatus.open.rawValue
@@ -18,13 +16,9 @@ final class ChecklistTaskItem {
     var details: String = ""
     var closedAt: Date?
 
-    @Relationship(deleteRule: .cascade, inverse: \SubtaskItem.parent)
-    var subtasks: [SubtaskItem] = []
-
     init(text: String) {
         self.id = UUID()
         self.text = text
-        self.isDone = false
         self.createdAt = Date()
         self.statusRaw = AttractionStatus.open.rawValue
         self.zoneRaw = ParkZone.home.rawValue
@@ -33,14 +27,12 @@ final class ChecklistTaskItem {
         self.rewardDollars = 5
         self.details = ""
         self.closedAt = nil
-        self.subtasks = []
     }
 
     /// Restore from backup JSON; preserves id and timestamps.
     init(
         id: UUID,
         text: String,
-        isDone: Bool,
         createdAt: Date,
         statusRaw: String,
         zoneRaw: String,
@@ -53,7 +45,6 @@ final class ChecklistTaskItem {
     ) {
         self.id = id
         self.text = text
-        self.isDone = isDone
         self.createdAt = createdAt
         self.statusRaw = statusRaw
         self.zoneRaw = zoneRaw
@@ -63,6 +54,5 @@ final class ChecklistTaskItem {
         self.dueDate = dueDate
         self.details = details
         self.closedAt = closedAt
-        self.subtasks = []
     }
 }
