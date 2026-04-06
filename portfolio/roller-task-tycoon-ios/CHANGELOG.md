@@ -25,6 +25,11 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- **Tab bar** — darkened to `woodDark` (deep brown); selected tab items gold, unselected items beige; persists on scroll and across all tabs.
+- **Floating "+" button** — gold circle fixed bottom-right above tab bar (all tabs); opens Add Attraction sheet from anywhere in the app.
+- **Overview quick actions** updated to 4 status-filter shortcuts: **Open / Testing / Broken / Closed** — each jumps to Attractions filtered to that status.
+- **Priority & Alerts cards** — removed forced `minHeight` so they shrink to fit content instead of taking up half the screen.
+- **Finances layout** — Today's profit and Weekly profit now sit side-by-side in an `HStack`; top earners card spans full width below them; both use matching `.parkPanel` style.
 - **Overview quick actions** updated: Add, Testing, Repair, All open (replaced Log Profit with All Open shortcut).
 - **`try? modelContext.save()`** replaced with `do/catch` in `AttractionDetailView` and `AttractionEditorView` — errors now surface as toasts or alerts instead of failing silently.
 - **`StaffFinancesMapViews.swift`** renamed to `FinancesView.swift`; Staff and Map views deleted.

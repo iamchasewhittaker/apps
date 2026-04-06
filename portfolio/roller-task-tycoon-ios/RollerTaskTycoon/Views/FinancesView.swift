@@ -9,8 +9,10 @@ struct FinancesView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    financeBlock("Today’s profit", "$\(ParkFinance.profitToday(entries: ledger))")
-                    financeBlock("Weekly profit", "$\(ParkFinance.profitThisWeek(entries: ledger))")
+                    HStack(spacing: 14) {
+                        financeBlock("Today's profit", "$\(ParkFinance.profitToday(entries: ledger))")
+                        financeBlock("Weekly profit", "$\(ParkFinance.profitThisWeek(entries: ledger))")
+                    }
 
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Top earning attractions")
@@ -27,6 +29,7 @@ struct FinancesView: View {
                                     Text(row.title)
                                         .font(ParkTheme.bodyFont(readable: readableFonts))
                                         .foregroundStyle(ParkTheme.ink)
+                                        .lineLimit(1)
                                     Spacer()
                                     Text("$\(row.amount)")
                                         .font(ParkTheme.bodyFont(readable: readableFonts).weight(.bold))
@@ -36,8 +39,8 @@ struct FinancesView: View {
                             }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .parkPanel(readable: readableFonts)
-
                 }
                 .padding(14)
             }
@@ -53,7 +56,7 @@ struct FinancesView: View {
     private func financeBlock(_ title: String, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(ParkTheme.titleFont(readable: readableFonts))
+                .font(ParkTheme.captionFont(readable: readableFonts).weight(.semibold))
                 .foregroundStyle(ParkTheme.ink)
             Text(value)
                 .font(ParkTheme.displayFont(readable: readableFonts))

@@ -37,11 +37,10 @@ struct OverviewConsoleView: View {
                     alertsCard
                 }
                 quickActions
-                Spacer(minLength: 0)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(ParkTheme.parkBackground.ignoresSafeArea())
             .navigationTitle("Park Operations")
             .navigationBarTitleDisplayMode(.inline)
@@ -160,9 +159,9 @@ struct OverviewConsoleView: View {
     // MARK: - Priority Attractions
 
     private var priorityCard: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 4) {
             Text("Priority")
-                .font(ParkTheme.titleFont(readable: readableFonts))
+                .font(ParkTheme.captionFont(readable: readableFonts).weight(.bold))
                 .foregroundStyle(ParkTheme.ink)
             let top = GameFlavor.priorityAttractions(tasks: tasks, limit: 2)
             if top.isEmpty {
@@ -174,21 +173,20 @@ struct OverviewConsoleView: View {
                     Text("\(idx + 1). \(t.staffRole.emoji) \(t.text)")
                         .font(ParkTheme.captionFont(readable: readableFonts))
                         .foregroundStyle(ParkTheme.ink)
-                        .lineLimit(2)
+                        .lineLimit(1)
                 }
             }
-            Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, minHeight: 90, alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .parkPanel(readable: readableFonts)
     }
 
     // MARK: - Alerts
 
     private var alertsCard: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 4) {
             Text("Alerts")
-                .font(ParkTheme.titleFont(readable: readableFonts))
+                .font(ParkTheme.captionFont(readable: readableFonts).weight(.bold))
                 .foregroundStyle(ParkTheme.alertRed)
             if alerts.isEmpty {
                 Text("No incidents.")
@@ -199,41 +197,37 @@ struct OverviewConsoleView: View {
                     Text("• \(a.message)")
                         .font(ParkTheme.captionFont(readable: readableFonts))
                         .foregroundStyle(ParkTheme.ink)
-                        .lineLimit(2)
+                        .lineLimit(1)
                 }
             }
-            Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, minHeight: 90, alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .parkPanel(readable: readableFonts)
     }
 
     // MARK: - Quick Actions
 
     private var quickActions: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Quick actions")
-                .font(ParkTheme.titleFont(readable: readableFonts))
-                .foregroundStyle(ParkTheme.ink)
-            HStack(spacing: 8) {
-                qaButton("Add") { onAddAttraction() }
-                qaButton("Testing") {
-                    attractionsZoneFilter = nil
-                    attractionsStatusFocus = .testing
-                    selectedTab = 1
-                }
+        HStack(spacing: 8) {
+            qaButton("Open") {
+                attractionsZoneFilter = nil
+                attractionsStatusFocus = .open
+                selectedTab = 1
             }
-            HStack(spacing: 8) {
-                qaButton("Repair") {
-                    attractionsZoneFilter = nil
-                    attractionsStatusFocus = .brokenDown
-                    selectedTab = 1
-                }
-                qaButton("All open") {
-                    attractionsZoneFilter = nil
-                    attractionsStatusFocus = .open
-                    selectedTab = 1
-                }
+            qaButton("Testing") {
+                attractionsZoneFilter = nil
+                attractionsStatusFocus = .testing
+                selectedTab = 1
+            }
+            qaButton("Broken") {
+                attractionsZoneFilter = nil
+                attractionsStatusFocus = .brokenDown
+                selectedTab = 1
+            }
+            qaButton("Closed") {
+                attractionsZoneFilter = nil
+                attractionsStatusFocus = .closed
+                selectedTab = 1
             }
         }
         .parkPanel(readable: readableFonts)
@@ -242,9 +236,9 @@ struct OverviewConsoleView: View {
     private func qaButton(_ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
-                .font(ParkTheme.bodyFont(readable: readableFonts).weight(.bold))
+                .font(ParkTheme.captionFont(readable: readableFonts).weight(.bold))
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
+                .padding(.vertical, 8)
                 .background(ParkTheme.wood)
                 .foregroundStyle(ParkTheme.plaque)
                 .clipShape(RoundedRectangle(cornerRadius: 8))

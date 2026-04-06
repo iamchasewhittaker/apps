@@ -4,6 +4,7 @@ enum ParkTheme {
     static let grassTop = Color(red: 0.35, green: 0.62, blue: 0.32)
     static let grassBottom = Color(red: 0.22, green: 0.45, blue: 0.24)
     static let wood = Color(red: 0.55, green: 0.38, blue: 0.22)
+    static let woodDark = Color(red: 0.30, green: 0.20, blue: 0.12)
     static let woodLight = Color(red: 0.72, green: 0.55, blue: 0.35)
     static let plaque = Color(red: 0.94, green: 0.88, blue: 0.72)
     static let ink = Color(red: 0.15, green: 0.12, blue: 0.1)

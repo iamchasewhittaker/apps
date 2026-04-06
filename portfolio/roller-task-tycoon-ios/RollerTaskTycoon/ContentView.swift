@@ -11,7 +11,22 @@ struct ContentView: View {
     init() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(ParkTheme.woodLight)
+        appearance.backgroundColor = UIColor(ParkTheme.woodDark)
+
+        let selected = UITabBarItemAppearance()
+        selected.normal.iconColor = UIColor(ParkTheme.plaque)
+        selected.normal.titleTextAttributes = [.foregroundColor: UIColor(ParkTheme.plaque)]
+        selected.selected.iconColor = UIColor(ParkTheme.gold)
+        selected.selected.titleTextAttributes = [.foregroundColor: UIColor(ParkTheme.gold)]
+
+        let unselected = UITabBarItemAppearance()
+        unselected.normal.iconColor = UIColor(ParkTheme.plaque.opacity(0.55))
+        unselected.normal.titleTextAttributes = [.foregroundColor: UIColor(ParkTheme.plaque.opacity(0.55))]
+
+        appearance.stackedLayoutAppearance = selected
+        appearance.inlineLayoutAppearance = selected
+        appearance.compactInlineLayoutAppearance = selected
+
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }
@@ -68,25 +83,20 @@ struct ContentView: View {
                     .tabItem { Label("Finances", systemImage: "dollarsign.circle") }
                     .tag(2)
             }
-            .tint(ParkTheme.wood)
-            .safeAreaInset(edge: .bottom) {
-                Button {
-                    showAddAttraction = true
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "plus.circle.fill")
-                        Text("New Attraction")
-                            .font(ParkTheme.bodyFont(readable: readableFonts).weight(.heavy))
-                    }
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 12)
-                    .background(ParkTheme.gold)
-                    .foregroundStyle(ParkTheme.ink)
-                    .clipShape(Capsule())
-                    .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
+            .tint(ParkTheme.gold)
+            .overlay(alignment: .bottomTrailing) {
+                Button { showAddAttraction = true } label: {
+                    Image(systemName: "plus")
+                        .font(.title2.weight(.bold))
+                        .foregroundStyle(ParkTheme.ink)
+                        .frame(width: 52, height: 52)
+                        .background(ParkTheme.gold)
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.25), radius: 6, y: 3)
                 }
                 .buttonStyle(.plain)
-                .padding(.bottom, 52)
+                .padding(.trailing, 18)
+                .padding(.bottom, 60)
             }
         }
         .preferredColorScheme(.light)
