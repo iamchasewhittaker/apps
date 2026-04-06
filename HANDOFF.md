@@ -43,12 +43,12 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | Field | Value |
 |--------|--------|
 | **Workspace** | `~/Developer/chase` |
-| **Branch** | `chore/archive-rtt-web-rebrand-ios` |
-| **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) — [WHI-21](https://linear.app/whittaker/issue/WHI-21) native iOS Phase 1 (local-only) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Wellness Tracker (iOS)** Phase 1 landed at `portfolio/wellness-tracker-ios` (`WellnessTracker.xcodeproj`). **RollerTask Tycoon (iOS)** at `portfolio/roller-task-tycoon-ios`; archived web PWA at `portfolio/archive/roller-task-tycoon`. |
-| **Next** | **Wellness iOS:** device QA (local-only; no cloud). **RollerTask:** `RollerTaskTycoonTests` + [WHI-19](https://linear.app/whittaker/issue/WHI-19) TestFlight when ready. |
-| **Blockers** | CI host had no iOS Simulator **device** runtime — `xcodebuild` may need Platforms → iOS Simulator installed. |
-| **Last touch** | 2026-04-05 |
+| **Branch** | `feat/rtt-ios-v1-simplify` |
+| **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| **Focus** | **RollerTask Tycoon (iOS)** — V1 simplify pass on `feat/rtt-ios-v1-simplify`. 3-tab layout (Overview / Attractions / Finances), floating "+" FAB, dark tab bar, compact overview cards, side-by-side finance blocks. Needs Xcode ⌘B + ⌘U before merging to `main`. |
+| **Next** | 1) ⌘B verify build clean · 2) ⌘U run `RollerTaskTycoonTests` · 3) Manual smoke: add attraction → close → confirm profit shows · 4) Merge `feat/rtt-ios-v1-simplify` → `main` · 5) TestFlight [WHI-19](https://linear.app/whittaker/issue/WHI-19) when ready. |
+| **Blockers** | *(none)* |
+| **Last touch** | 2026-04-06 |
 
 ---
 
