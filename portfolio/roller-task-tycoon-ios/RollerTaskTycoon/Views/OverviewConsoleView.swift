@@ -144,7 +144,7 @@ struct OverviewConsoleView: View {
                 .font(ParkTheme.titleFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
             ForEach(visibleThoughts, id: \.self) { line in
-                Text(""\(line)"")
+                Text("\u{201C}\(line)\u{201D}")
                     .font(ParkTheme.bodyFont(readable: readableFonts).italic())
                     .foregroundStyle(ParkTheme.ink)
             }
