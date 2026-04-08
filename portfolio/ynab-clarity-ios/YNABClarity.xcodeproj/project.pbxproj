@@ -1,0 +1,604 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AC010000000000000000001 /* YNABClarityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000001 /* YNABClarityApp.swift */; };
+		AC010000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000002 /* ContentView.swift */; };
+		AC010000000000000000003 /* ClarityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000003 /* ClarityTheme.swift */; };
+		AC010000000000000000004 /* CategoryMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000004 /* CategoryMapping.swift */; };
+		AC010000000000000000005 /* IncomeSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000005 /* IncomeSource.swift */; };
+		AC010000000000000000006 /* YNABClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000006 /* YNABClient.swift */; };
+		AC010000000000000000007 /* YNABModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000007 /* YNABModels.swift */; };
+		AC010000000000000000008 /* MetricsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000008 /* MetricsEngine.swift */; };
+		AC010000000000000000009 /* CashFlowEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000009 /* CashFlowEngine.swift */; };
+		AC01000000000000000000A /* SetupFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000000A /* SetupFlowView.swift */; };
+		AC01000000000000000000B /* TokenStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000000B /* TokenStepView.swift */; };
+		AC01000000000000000000C /* BudgetStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000000C /* BudgetStepView.swift */; };
+		AC01000000000000000000D /* CategorySetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000000D /* CategorySetupView.swift */; };
+		AC01000000000000000000E /* IncomeSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000000E /* IncomeSetupView.swift */; };
+		AC01000000000000000000F /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000000F /* DashboardView.swift */; };
+		AC010000000000000000010 /* BillsPlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000010 /* BillsPlannerView.swift */; };
+		AC010000000000000000011 /* IncomeGapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000011 /* IncomeGapView.swift */; };
+		AC010000000000000000012 /* CashFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000012 /* CashFlowView.swift */; };
+		AC010000000000000000013 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000013 /* KeychainHelper.swift */; };
+		AC010000000000000000014 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000014 /* AppState.swift */; };
+		AC010000000000000000015 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000015 /* MockData.swift */; };
+		AC010000000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000016 /* Assets.xcassets */; };
+		AC010000000000000000019 /* MetricsEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000019 /* MetricsEngineTests.swift */; };
+		AC01000000000000000001A /* CashFlowEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001A /* CashFlowEngineTests.swift */; };
+		AC01000000000000000001B /* FunMoneyHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001B /* FunMoneyHelpView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AC080000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC060000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC050000000000000000001;
+			remoteInfo = YNABClarity;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AC020000000000000000001 /* YNABClarityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABClarityApp.swift; sourceTree = "<group>"; };
+		AC020000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AC020000000000000000003 /* ClarityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityTheme.swift; sourceTree = "<group>"; };
+		AC020000000000000000004 /* CategoryMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryMapping.swift; sourceTree = "<group>"; };
+		AC020000000000000000005 /* IncomeSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeSource.swift; sourceTree = "<group>"; };
+		AC020000000000000000006 /* YNABClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABClient.swift; sourceTree = "<group>"; };
+		AC020000000000000000007 /* YNABModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABModels.swift; sourceTree = "<group>"; };
+		AC020000000000000000008 /* MetricsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsEngine.swift; sourceTree = "<group>"; };
+		AC020000000000000000009 /* CashFlowEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowEngine.swift; sourceTree = "<group>"; };
+		AC02000000000000000000A /* SetupFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupFlowView.swift; sourceTree = "<group>"; };
+		AC02000000000000000000B /* TokenStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStepView.swift; sourceTree = "<group>"; };
+		AC02000000000000000000C /* BudgetStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetStepView.swift; sourceTree = "<group>"; };
+		AC02000000000000000000D /* CategorySetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySetupView.swift; sourceTree = "<group>"; };
+		AC02000000000000000000E /* IncomeSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeSetupView.swift; sourceTree = "<group>"; };
+		AC02000000000000000000F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		AC020000000000000000010 /* BillsPlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillsPlannerView.swift; sourceTree = "<group>"; };
+		AC020000000000000000011 /* IncomeGapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeGapView.swift; sourceTree = "<group>"; };
+		AC020000000000000000012 /* CashFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowView.swift; sourceTree = "<group>"; };
+		AC020000000000000000013 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		AC020000000000000000014 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		AC020000000000000000015 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		AC020000000000000000016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AC020000000000000000017 /* YNABClarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YNABClarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC020000000000000000018 /* YNABClarityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YNABClarityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC020000000000000000019 /* MetricsEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsEngineTests.swift; sourceTree = "<group>"; };
+		AC02000000000000000001A /* CashFlowEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowEngineTests.swift; sourceTree = "<group>"; };
+		AC02000000000000000001B /* FunMoneyHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunMoneyHelpView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AC030000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC030000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AC040000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				AC040000000000000000002 /* YNABClarity */,
+				AC040000000000000000009 /* YNABClarityTests */,
+				AC040000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AC040000000000000000002 /* YNABClarity */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000001 /* YNABClarityApp.swift */,
+				AC020000000000000000002 /* ContentView.swift */,
+				AC040000000000000000004 /* Theme */,
+				AC040000000000000000005 /* Models */,
+				AC040000000000000000006 /* YNAB */,
+				AC040000000000000000007 /* Engine */,
+				AC040000000000000000008 /* Setup */,
+				AC04000000000000000000A /* Views */,
+				AC04000000000000000000B /* Shared */,
+				AC020000000000000000016 /* Assets.xcassets */,
+			);
+			path = YNABClarity;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000017 /* YNABClarity.app */,
+				AC020000000000000000018 /* YNABClarityTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000004 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000003 /* ClarityTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000004 /* CategoryMapping.swift */,
+				AC020000000000000000005 /* IncomeSource.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000006 /* YNAB */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000006 /* YNABClient.swift */,
+				AC020000000000000000007 /* YNABModels.swift */,
+			);
+			path = YNAB;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000007 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000008 /* MetricsEngine.swift */,
+				AC020000000000000000009 /* CashFlowEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000008 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				AC02000000000000000000A /* SetupFlowView.swift */,
+				AC02000000000000000000B /* TokenStepView.swift */,
+				AC02000000000000000000C /* BudgetStepView.swift */,
+				AC02000000000000000000D /* CategorySetupView.swift */,
+				AC02000000000000000000E /* IncomeSetupView.swift */,
+			);
+			path = Setup;
+			sourceTree = "<group>";
+		};
+		AC040000000000000000009 /* YNABClarityTests */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000019 /* MetricsEngineTests.swift */,
+				AC02000000000000000001A /* CashFlowEngineTests.swift */,
+			);
+			path = YNABClarityTests;
+			sourceTree = "<group>";
+		};
+		AC04000000000000000000A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AC02000000000000000000F /* DashboardView.swift */,
+				AC020000000000000000010 /* BillsPlannerView.swift */,
+				AC020000000000000000011 /* IncomeGapView.swift */,
+				AC020000000000000000012 /* CashFlowView.swift */,
+				AC02000000000000000001B /* FunMoneyHelpView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AC04000000000000000000B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AC020000000000000000013 /* KeychainHelper.swift */,
+				AC020000000000000000014 /* AppState.swift */,
+				AC020000000000000000015 /* MockData.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AC050000000000000000001 /* YNABClarity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC060000000000000000003 /* Build configuration list for PBXNativeTarget "YNABClarity" */;
+			buildPhases = (
+				AC050000000000000000002 /* Sources */,
+				AC030000000000000000001 /* Frameworks */,
+				AC050000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YNABClarity;
+			productName = YNABClarity;
+			productReference = AC020000000000000000017 /* YNABClarity.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AC050000000000000000010 /* YNABClarityTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC060000000000000000004 /* Build configuration list for PBXNativeTarget "YNABClarityTests" */;
+			buildPhases = (
+				AC050000000000000000011 /* Sources */,
+				AC030000000000000000002 /* Frameworks */,
+				AC050000000000000000012 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AC080000000000000000002 /* PBXTargetDependency */,
+			);
+			name = YNABClarityTests;
+			productName = YNABClarityTests;
+			productReference = AC020000000000000000018 /* YNABClarityTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AC060000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					AC050000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					AC050000000000000000010 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = AC050000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = AC060000000000000000002 /* Build configuration list for PBXProject "YNABClarity" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AC040000000000000000001;
+			productRefGroup = AC040000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AC050000000000000000001 /* YNABClarity */,
+				AC050000000000000000010 /* YNABClarityTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AC050000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC010000000000000000016 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC050000000000000000012 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AC050000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC010000000000000000001 /* YNABClarityApp.swift in Sources */,
+				AC010000000000000000002 /* ContentView.swift in Sources */,
+				AC010000000000000000003 /* ClarityTheme.swift in Sources */,
+				AC010000000000000000004 /* CategoryMapping.swift in Sources */,
+				AC010000000000000000005 /* IncomeSource.swift in Sources */,
+				AC010000000000000000006 /* YNABClient.swift in Sources */,
+				AC010000000000000000007 /* YNABModels.swift in Sources */,
+				AC010000000000000000008 /* MetricsEngine.swift in Sources */,
+				AC010000000000000000009 /* CashFlowEngine.swift in Sources */,
+				AC01000000000000000000A /* SetupFlowView.swift in Sources */,
+				AC01000000000000000000B /* TokenStepView.swift in Sources */,
+				AC01000000000000000000C /* BudgetStepView.swift in Sources */,
+				AC01000000000000000000D /* CategorySetupView.swift in Sources */,
+				AC01000000000000000000E /* IncomeSetupView.swift in Sources */,
+				AC01000000000000000000F /* DashboardView.swift in Sources */,
+				AC010000000000000000010 /* BillsPlannerView.swift in Sources */,
+				AC010000000000000000011 /* IncomeGapView.swift in Sources */,
+				AC010000000000000000012 /* CashFlowView.swift in Sources */,
+				AC010000000000000000013 /* KeychainHelper.swift in Sources */,
+				AC010000000000000000014 /* AppState.swift in Sources */,
+				AC010000000000000000015 /* MockData.swift in Sources */,
+				AC01000000000000000001B /* FunMoneyHelpView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC050000000000000000011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC010000000000000000019 /* MetricsEngineTests.swift in Sources */,
+				AC01000000000000000001A /* CashFlowEngineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AC080000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC050000000000000000001 /* YNABClarity */;
+			targetProxy = AC080000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AC070000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AC070000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AC070000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "YNAB Clarity";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AC070000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "YNAB Clarity";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AC070000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarityTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YNABClarity.app/YNABClarity";
+			};
+			name = Debug;
+		};
+		AC070000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarityTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YNABClarity.app/YNABClarity";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AC060000000000000000002 /* Build configuration list for PBXProject "YNABClarity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC070000000000000000001 /* Debug */,
+				AC070000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AC060000000000000000003 /* Build configuration list for PBXNativeTarget "YNABClarity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC070000000000000000003 /* Debug */,
+				AC070000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AC060000000000000000004 /* Build configuration list for PBXNativeTarget "YNABClarityTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC070000000000000000005 /* Debug */,
+				AC070000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AC060000000000000000001 /* Project object */;
+}

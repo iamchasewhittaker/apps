@@ -1,0 +1,32 @@
+# Xcode user state (never commit)
+*.xcuserstate
+xcuserdata/
+DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+# macOS
+.DS_Store
+
+# iOS build artifacts
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Credentials and secrets
+# (belt-and-suspenders: the token is stored in Keychain only,
+#  never in any file — but list these anyway to prevent accidents)
+*.p12
+*.mobileprovision
+.env
+*.env.*
+config/secrets*
+*credentials*
+*token*.json
