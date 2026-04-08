@@ -1,6 +1,13 @@
 import SwiftData
 import SwiftUI
 
+private struct IncomeSheetConfig: Identifiable {
+    let id = UUID()
+    var name: String
+    var amount: String
+    var frequency: IncomeFrequency
+}
+
 struct IncomeSetupView: View {
     var onNext: () -> Void
 
@@ -8,8 +15,7 @@ struct IncomeSetupView: View {
     @EnvironmentObject private var appState: AppState
     @Query(sort: \IncomeSource.sortOrder) private var sources: [IncomeSource]
 
-    @State private var showAddSheet = false
-    @State private var prefilledHint: (name: String, amount: String, frequency: IncomeFrequency)? = nil
+    @State private var activeSheet: IncomeSheetConfig? = nil
     @State private var ynabIncomeHint: Double? = nil
 
     var body: some View {
@@ -28,12 +34,11 @@ struct IncomeSetupView: View {
             }
         }
         .task { await fetchIncomeHint() }
-        .sheet(isPresented: $showAddSheet) {
-            let hint = prefilledHint
+        .sheet(item: $activeSheet) { config in
             IncomeSourceFormView(
-                prefilledName: hint?.name ?? "",
-                prefilledAmount: hint?.amount ?? "",
-                prefilledFrequency: hint?.frequency ?? .biweekly
+                prefilledName: config.name,
+                prefilledAmount: config.amount,
+                prefilledFrequency: config.frequency
             ) { source in
                 source.sortOrder = sources.count
                 modelContext.insert(source)
@@ -93,12 +98,11 @@ struct IncomeSetupView: View {
 
     private func ynabSuggestionBanner(amount: Double) -> some View {
         Button {
-            prefilledHint = (
+            activeSheet = IncomeSheetConfig(
                 name: "Monthly Income",
                 amount: "\(Int(amount))",
                 frequency: .monthly
             )
-            showAddSheet = true
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "wand.and.stars")
@@ -129,8 +133,7 @@ struct IncomeSetupView: View {
     private var buttons: some View {
         VStack(spacing: 12) {
             Button {
-                prefilledHint = nil
-                showAddSheet = true
+                activeSheet = IncomeSheetConfig(name: "", amount: "", frequency: .biweekly)
             } label: {
                 Label("Add Income Source", systemImage: "plus")
                     .font(ClarityTheme.headlineFont)
