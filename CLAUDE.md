@@ -10,6 +10,7 @@
 | Wellness Tracker (iOS) | Phase 1 | `chase_wellness_ios_v1` (+ draft, meds keys); **local-only** (no Supabase) | local Xcode | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
+| YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | RollerTask Tycoon (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | `chase_roller_task_v1` (historical) | (optional Vercel) | 🗄️ Retired — [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) |
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |

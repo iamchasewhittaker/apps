@@ -45,10 +45,11 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `feat/rtt-ios-v1-simplify` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **RollerTask Tycoon (iOS)** — V1 simplify pass on `feat/rtt-ios-v1-simplify`. 3-tab layout (Overview / Attractions / Finances), floating "+" FAB, dark tab bar, compact overview cards, side-by-side finance blocks. Needs Xcode ⌘B + ⌘U before merging to `main`. |
-| **Next** | 1) ⌘B verify build clean · 2) ⌘U run `RollerTaskTycoonTests` · 3) Manual smoke: add attraction → close → confirm profit shows · 4) Merge `feat/rtt-ios-v1-simplify` → `main` · 5) TestFlight [WHI-19](https://linear.app/whittaker/issue/WHI-19) when ready. |
+| **Focus** | **YNAB Clarity (iOS)** — `portfolio/ynab-clarity-ios`. All 5 views written and committed. Income prefill bug fixed. Docs fully updated. **Next:** ⌘Shift+K Clean Build → ⌘B → ⌘R in Xcode to verify clean build and black screen is gone. Then complete setup flow with real YNAB token and smoke-test all 4 tabs. |
+| **Also on branch** | **RollerTask Tycoon (iOS)** V1 simplify pass — needs ⌘B + ⌘U before merge to `main` (see prior HANDOFF state for detail). |
+| **Next** | 1) Xcode Clean Build + Run (⌘Shift+K → ⌘B → ⌘R) for YNAB Clarity · 2) Smoke-test setup flow (token → budget → categories → income) · 3) Verify all 4 tabs render with live YNAB data · 4) Merge `feat/rtt-ios-v1-simplify` → `main` after RTT ⌘U passes |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-06 |
+| **Last touch** | 2026-04-08 |
 
 ---
 

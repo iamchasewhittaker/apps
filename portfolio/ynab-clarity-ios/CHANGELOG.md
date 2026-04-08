@@ -11,6 +11,13 @@
   instead of locking in that default permanently
 - Mortgage and fixed bills paid early in the month (balance = $0) now correctly show as
   covered — `isCovered` checks whether a payment went out, not just whether balance > 0
+- Income setup YNAB suggestion banner now correctly pre-fills the form when tapped —
+  replaced `isPresented` + separate state with `sheet(item:)` using `IncomeSheetConfig:
+  Identifiable` to eliminate a SwiftUI timing race where the sheet evaluated its closure
+  before the prefill state update propagated
+- All 5 view files recreated after accidental deletion from disk (Views/ directory was
+  removed when trying to fix an Xcode project navigator issue); project is now committed
+  to git so this cannot cause permanent data loss again
 
 ### Added
 - "Re-suggest All" button in category setup resets all role selections to fresh
@@ -18,6 +25,14 @@
 - Fun Money help sheet — tap ⓘ on the Safe to Spend card to see what should and
   shouldn't come out of personal fun money vs. shared family categories
 - `activityDollars` computed property on `YNABMonthCategory` for downstream use
+- All 4 main tab views written and registered in Xcode project:
+  `DashboardView`, `BillsPlannerView`, `IncomeGapView`, `CashFlowView`
+- `FunMoneyHelpView` — full dos/don'ts help sheet with Chase ($250/mo) and
+  Kassie ($200/mo) fun money budgets, redirect rules, and rule-of-thumb callout
+- `SettingsSheet` embedded in DashboardView — tax rate slider, budget name display,
+  token re-entry, and reset setup action
+- Initial commit of entire project to monorepo git — `portfolio/ynab-clarity-ios/`
+  was previously untracked, making file recovery impossible
 
 ---
 
