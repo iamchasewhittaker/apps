@@ -15,7 +15,7 @@
 - **`YNABClient.updateCategoryBudgeted`** — PATCH assigned amount; **`AppState.fundCategory`** refreshes after write
 - **Fund** flow on Bills tab: shortfall rows open a confirmation sheet (`sheet(item:)`), then PATCH to goal target in milliunits
 - **Cash Flow:** `.todayMarker` event, divider in UI; bill rows show Covered or dollar shortfall; timeline uses `dueDay` with role-based fallback (mortgage day 1, else day 5)
-- Unit tests: `testBuildBalances_usesGoalTargetWhenPresent`, `testBuildBalances_fallsToBudgetedWhenNoGoal`, `testSafeToSpend_includesToBeBudgeted`, `testObligationsCoverageFraction_matchesOverallRequired`, `testOutflowSpending_sumsNegativeAmountsInRange`
+- Unit tests: `testBuildBalances_usesGoalTargetWhenPresent`, `testBuildBalances_fallsToBudgetedWhenNoGoal`, `testSafeToSpend_includesToBeBudgeted`, `testObligationsCoverageFraction_matchesOverallRequired`, `testObligationsCoverageFraction_clampedWhenCategoryDeeplyNegative`, `testOutflowSpending_sumsNegativeAmountsInRange`
 
 ### Changed
 - **Safe to spend:** discretionary pool is all mapped categories except mortgage/bill/essential (not only `.flexible`), plus **Ready to Assign** dollars, minus required shortfall
@@ -29,6 +29,7 @@
 - **`CLAUDE.md`:** goal vs budgeted data flow, API write rules, architecture updates
 
 ### Fixed
+- **`ProgressView` runtime warnings:** clamp coverage to `0...1` when YNAB `available` is negative so `funded / target` never goes below zero; `ClarityTheme.clampedProgressFraction` + defensive `progressColor` clamp
 - **`YNABClient.patchRequest`:** discard PATCH response body with `_` instead of unused `let data` — clears compiler warning (and builds with “Treat Warnings as Errors”)
 - **$0 metrics** when YNAB assigned (`budgeted`) was $0 but monthly goals were set — root cause was using assigned amount as `monthlyTarget` without reading `goal_target`
 

@@ -118,7 +118,7 @@ struct DashboardView: View {
                     .foregroundStyle(uncovered.isEmpty ? ClarityTheme.safe : ClarityTheme.danger)
             }
 
-            ProgressView(value: fraction)
+            ProgressView(value: ClarityTheme.clampedProgressFraction(fraction))
                 .tint(ClarityTheme.progressColor(fraction: fraction))
 
             if requiredItems.isEmpty {

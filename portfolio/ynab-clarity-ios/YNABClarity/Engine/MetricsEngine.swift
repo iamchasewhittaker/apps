@@ -98,7 +98,7 @@ enum MetricsEngine {
         let target = m.reduce(0) { $0 + $1.monthlyTarget }
         guard target > 0 else { return 1.0 }
         let funded = m.reduce(0) { $0 + min($1.available, $1.monthlyTarget) }
-        return min(1.0, funded / target)
+        return min(1.0, max(0, funded / target))
     }
 
     // MARK: Bills (non-mortgage required)
@@ -108,7 +108,7 @@ enum MetricsEngine {
         let target = b.reduce(0) { $0 + $1.monthlyTarget }
         guard target > 0 else { return 1.0 }
         let funded = b.reduce(0) { $0 + min($1.available, $1.monthlyTarget) }
-        return min(1.0, funded / target)
+        return min(1.0, max(0, funded / target))
     }
 
     /// Mortgage + bills + essentials combined coverage (for the unified dashboard card).
@@ -117,7 +117,7 @@ enum MetricsEngine {
         let target = slice.reduce(0) { $0 + $1.monthlyTarget }
         guard target > 0 else { return 1.0 }
         let funded = slice.reduce(0) { $0 + min($1.available, $1.monthlyTarget) }
-        return min(1.0, funded / target)
+        return min(1.0, max(0, funded / target))
     }
 
     // MARK: Safe to spend

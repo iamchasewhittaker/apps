@@ -168,7 +168,7 @@ struct BillsPlannerView: View {
             }
 
             if b.monthlyTarget > 0 {
-                ProgressView(value: b.coverageFraction)
+                ProgressView(value: ClarityTheme.clampedProgressFraction(b.coverageFraction))
                     .tint(ClarityTheme.progressColor(fraction: b.coverageFraction))
 
                 HStack {

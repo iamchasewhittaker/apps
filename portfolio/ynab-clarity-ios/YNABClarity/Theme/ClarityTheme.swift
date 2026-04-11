@@ -24,10 +24,18 @@ enum ClarityTheme {
     static let monoFont     : Font = .system(.body,        design: .monospaced)
 
     // MARK: - Progress color by coverage fraction
+    /// `ProgressView(value:)` requires 0...1; clamp here so colors stay consistent if callers pass raw ratios.
     static func progressColor(fraction: Double) -> Color {
-        if fraction >= 0.85 { return safe }
-        if fraction >= 0.50 { return caution }
+        let f = fraction.isFinite ? min(1.0, max(0, fraction)) : 0
+        if f >= 0.85 { return safe }
+        if f >= 0.50 { return caution }
         return danger
+    }
+
+    /// Clamps to `[0, 1]` for `ProgressView(value:)` (avoids runtime warnings when YNAB balances go negative).
+    static func clampedProgressFraction(_ value: Double) -> Double {
+        guard value.isFinite else { return 0 }
+        return min(1.0, max(0, value))
     }
 
     // MARK: - Currency formatting

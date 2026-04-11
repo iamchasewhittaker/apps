@@ -68,7 +68,7 @@ struct CashFlowView: View {
             .filter { $0.kind == .paycheck }
             .reduce(0) { $0 + $1.amount }
         let required = MetricsEngine.totalRequired(balances)
-        let fraction = required > 0 ? min(1.0, totalIncome / required) : 1.0
+        let fraction = required > 0 ? min(1.0, max(0, totalIncome / required)) : 1.0
 
         return VStack(alignment: .leading, spacing: 12) {
             Text("This Month")
@@ -101,7 +101,7 @@ struct CashFlowView: View {
                 .frame(maxWidth: .infinity)
             }
 
-            ProgressView(value: fraction)
+            ProgressView(value: ClarityTheme.clampedProgressFraction(fraction))
                 .tint(ClarityTheme.progressColor(fraction: fraction))
         }
         .clarityCard()

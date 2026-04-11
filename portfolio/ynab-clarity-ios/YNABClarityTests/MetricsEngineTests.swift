@@ -106,7 +106,18 @@ final class MetricsEngineTests: XCTestCase {
         let frac = MetricsEngine.obligationsCoverageFraction(balances)
         let required = MetricsEngine.totalRequired(balances)
         let funded = MetricsEngine.totalFunded(balances)
-        XCTAssertEqual(frac, min(1.0, funded / required), accuracy: 0.001)
+        XCTAssertEqual(frac, min(1.0, max(0, funded / required)), accuracy: 0.001)
+    }
+
+    func testObligationsCoverageFraction_clampedWhenCategoryDeeplyNegative() {
+        let cats = [
+            YNABMonthCategory(id: "b", name: "Bill", budgeted: 100_000, activity: -500_000, balance: -400_000, hidden: false, deleted: false, goalTarget: 100_000, goalType: nil, goalPercentageComplete: nil),
+        ]
+        let maps = [CategoryMapping(ynabCategoryID: "b", ynabCategoryName: "Bill", role: .bill)]
+        let b = MetricsEngine.buildBalances(monthCategories: cats, mappings: maps)
+        let frac = MetricsEngine.obligationsCoverageFraction(b)
+        XCTAssertGreaterThanOrEqual(frac, 0)
+        XCTAssertLessThanOrEqual(frac, 1.0)
     }
 
     func testOutflowSpending_sumsNegativeAmountsInRange() {

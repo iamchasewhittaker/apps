@@ -63,8 +63,8 @@ struct IncomeGapView: View {
                 metricBlock(label: "Required Expenses", value: ClarityTheme.currency(totalRequired), color: ClarityTheme.caution)
             }
 
-            let fraction = totalRequired > 0 ? min(1.0, expectedIncome / totalRequired) : 1.0
-            ProgressView(value: fraction)
+            let fraction = totalRequired > 0 ? min(1.0, max(0, expectedIncome / totalRequired)) : 1.0
+            ProgressView(value: ClarityTheme.clampedProgressFraction(fraction))
                 .tint(ClarityTheme.progressColor(fraction: fraction))
 
             if !sources.isEmpty {
