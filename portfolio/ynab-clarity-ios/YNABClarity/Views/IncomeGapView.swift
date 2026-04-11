@@ -6,12 +6,15 @@ struct IncomeGapView: View {
     @Query private var mappings: [CategoryMapping]
     @Query(sort: \IncomeSource.sortOrder) private var sources: [IncomeSource]
 
+    @State private var showIncomeSources = false
+
     private var balances: [CategoryBalance] { appState.buildBalances(mappings: mappings) }
     private var currentMonth: Date { Date() }
 
     private var totalRequired: Double   { MetricsEngine.totalRequired(balances) }
     private var expectedIncome: Double  { MetricsEngine.expectedIncomeThisMonth(sources: sources, month: currentMonth) }
     private var gap: Double             { MetricsEngine.incomeGap(balances: balances, sources: sources, month: currentMonth) }
+    private var surplus: Double         { max(0, expectedIncome - totalRequired) }
     private var grossNeeded: Double     { MetricsEngine.grossAnnualNeeded(netMonthlyNeeded: totalRequired, taxRate: appState.taxRate) }
 
     var body: some View {
@@ -24,10 +27,13 @@ struct IncomeGapView: View {
                 } else {
                     ScrollView {
                         VStack(spacing: 16) {
+                            TipBanner(
+                                message: "Required expenses come from your YNAB goal targets. Income sources are configured during setup.",
+                                storageKey: "chase_ynab_clarity_ios_tip_dismissed_income"
+                            )
                             incomeVsRequiredCard
-                            gapCard
+                            gapOrSurplusCard
                             salaryTargetCard
-                            if !sources.isEmpty { incomeSourcesCard }
                         }
                         .padding(16)
                     }
@@ -36,12 +42,12 @@ struct IncomeGapView: View {
                     }
                 }
             }
-            .navigationTitle("Salary")
+            .navigationTitle("Income")
             .navigationBarTitleDisplayMode(.large)
         }
     }
 
-    // MARK: - Income vs Required
+    // MARK: - Income vs Required (with expandable sources)
 
     private var incomeVsRequiredCard: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -60,32 +66,87 @@ struct IncomeGapView: View {
             let fraction = totalRequired > 0 ? min(1.0, expectedIncome / totalRequired) : 1.0
             ProgressView(value: fraction)
                 .tint(ClarityTheme.progressColor(fraction: fraction))
+
+            if !sources.isEmpty {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.25)) { showIncomeSources.toggle() }
+                } label: {
+                    HStack {
+                        Text("\(sources.count) income source\(sources.count == 1 ? "" : "s")")
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.accent)
+                        Image(systemName: showIncomeSources ? "chevron.up" : "chevron.down")
+                            .font(.caption2)
+                            .foregroundStyle(ClarityTheme.accent)
+                        Spacer()
+                    }
+                }
+                .buttonStyle(.plain)
+
+                if showIncomeSources {
+                    VStack(spacing: 10) {
+                        ForEach(sources) { source in
+                            let count = source.occurrencesInMonth(currentMonth).count
+                            let monthlyTotal = source.amountDollars * Double(count)
+                            HStack {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(source.name)
+                                        .font(ClarityTheme.bodyFont)
+                                        .foregroundStyle(ClarityTheme.text)
+                                    Text("\(source.frequency.displayName) · \(count)× this month")
+                                        .font(ClarityTheme.captionFont)
+                                        .foregroundStyle(ClarityTheme.muted)
+                                }
+                                Spacer()
+                                VStack(alignment: .trailing, spacing: 2) {
+                                    Text(ClarityTheme.currency(monthlyTotal))
+                                        .font(ClarityTheme.headlineFont)
+                                        .foregroundStyle(ClarityTheme.safe)
+                                    Text(ClarityTheme.currency(source.amountDollars) + "/check")
+                                        .font(ClarityTheme.captionFont)
+                                        .foregroundStyle(ClarityTheme.muted)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.top, 4)
+                }
+            }
         }
         .clarityCard()
     }
 
-    // MARK: - Gap card
+    // MARK: - Gap or surplus card
 
-    private var gapCard: some View {
+    private var gapOrSurplusCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Label(
-                    "Income Gap",
-                    systemImage: gap > 0 ? "exclamationmark.triangle.fill" : "checkmark.seal.fill"
-                )
-                .font(ClarityTheme.titleFont)
-                .foregroundStyle(gap > 0 ? ClarityTheme.danger : ClarityTheme.safe)
-                Spacer()
-                Text(gap > 0 ? ClarityTheme.currency(gap) + " short" : "Covered")
-                    .font(ClarityTheme.headlineFont)
-                    .foregroundStyle(gap > 0 ? ClarityTheme.danger : ClarityTheme.safe)
+            if gap > 0 {
+                HStack {
+                    Label("Income Gap", systemImage: "exclamationmark.triangle.fill")
+                        .font(ClarityTheme.titleFont)
+                        .foregroundStyle(ClarityTheme.danger)
+                    Spacer()
+                    Text(ClarityTheme.currency(gap) + " short")
+                        .font(ClarityTheme.headlineFont)
+                        .foregroundStyle(ClarityTheme.danger)
+                }
+                Text("Income falls short of required expenses by \(ClarityTheme.currency(gap)) this month.")
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+            } else {
+                HStack {
+                    Label("Monthly Surplus", systemImage: "checkmark.seal.fill")
+                        .font(ClarityTheme.titleFont)
+                        .foregroundStyle(ClarityTheme.safe)
+                    Spacer()
+                    Text("+" + ClarityTheme.currency(surplus))
+                        .font(ClarityTheme.headlineFont)
+                        .foregroundStyle(ClarityTheme.safe)
+                }
+                Text("Expected income covers all required expenses with \(ClarityTheme.currency(surplus)) remaining.")
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
             }
-
-            Text(gap > 0
-                 ? "Income falls short of required expenses by \(ClarityTheme.currency(gap)) this month."
-                 : "Expected income covers all required expenses this month.")
-                .font(ClarityTheme.captionFont)
-                .foregroundStyle(ClarityTheme.muted)
         }
         .clarityCard()
     }
@@ -118,59 +179,9 @@ struct IncomeGapView: View {
                 }
             }
 
-            HStack(spacing: 6) {
-                Image(systemName: "percent")
-                    .font(.caption)
-                    .foregroundStyle(ClarityTheme.muted)
-                Text("Tax rate: \(Int(appState.taxRate * 100))% — adjust in Settings")
-                    .font(ClarityTheme.captionFont)
-                    .foregroundStyle(ClarityTheme.muted)
-            }
-        }
-        .clarityCard()
-    }
-
-    // MARK: - Income sources card
-
-    private var incomeSourcesCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text("Income Sources")
-                .font(ClarityTheme.titleFont)
-                .foregroundStyle(ClarityTheme.text)
-
-            VStack(spacing: 12) {
-                ForEach(sources) { source in
-                    let count = source.occurrencesInMonth(currentMonth).count
-                    let monthlyTotal = source.amountDollars * Double(count)
-
-                    VStack(spacing: 0) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(source.name)
-                                    .font(ClarityTheme.bodyFont)
-                                    .foregroundStyle(ClarityTheme.text)
-                                Text("\(source.frequency.displayName) · \(count)× this month")
-                                    .font(ClarityTheme.captionFont)
-                                    .foregroundStyle(ClarityTheme.muted)
-                            }
-                            Spacer()
-                            VStack(alignment: .trailing, spacing: 2) {
-                                Text(ClarityTheme.currency(monthlyTotal))
-                                    .font(ClarityTheme.headlineFont)
-                                    .foregroundStyle(ClarityTheme.safe)
-                                Text(ClarityTheme.currency(source.amountDollars) + "/check")
-                                    .font(ClarityTheme.captionFont)
-                                    .foregroundStyle(ClarityTheme.muted)
-                            }
-                        }
-                        if source.id != sources.last?.id {
-                            Divider()
-                                .background(ClarityTheme.border)
-                                .padding(.top, 12)
-                        }
-                    }
-                }
-            }
+            Text("Based on \(ClarityTheme.currency(totalRequired))/mo in required expenses and a \(Int(appState.taxRate * 100))% tax rate. Adjust the rate in Settings.")
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
         }
         .clarityCard()
     }

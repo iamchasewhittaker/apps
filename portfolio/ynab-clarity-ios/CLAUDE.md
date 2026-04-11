@@ -4,12 +4,16 @@
 
 ## What this app does
 
-A read-only YNAB companion app. Answers 4 questions the YNAB UI answers poorly:
+A YNAB companion app for iOS. Answers 4 questions the YNAB UI answers poorly:
 
 1. Are my bills / mortgage covered this month?
 2. How much am I short — and what income gap does that create?
 3. How much can I safely spend today / this week / this month?
 4. When will my mortgage be fully funded based on my paycheck schedule?
+
+**Read + write:** The app reads YNAB data via the API. It can also **write** budgeted
+(assigned) amounts back via `PATCH /v1/budgets/{id}/months/{month}/categories/{cat_id}`.
+Writes require user confirmation and are equivalent to the user manually assigning money in YNAB.
 
 ## Tech stack
 
@@ -33,31 +37,47 @@ ContentView.swift            — TabView (4 tabs) + setup gate, refresh on launc
 Theme/
   ClarityTheme.swift         — dark palette, semantic colors, card modifier, currency formatter
 Models/
-  CategoryMapping.swift      — @Model: ynabCategoryID, name, ynabGroupName, roleRaw
+  CategoryMapping.swift      — @Model: ynabCategoryID, name, ynabGroupName, roleRaw, dueDay
   IncomeSource.swift         — @Model: name, amountCents, frequencyRaw, nextPayDate, sortOrder
 YNAB/
-  YNABModels.swift           — Decodable response types (convertFromSnakeCase); budgetedDollars/activityDollars/balanceDollars computed props
-  YNABClient.swift           — URLSession, 3 methods: fetchBudgets/fetchCategories/fetchMonth
+  YNABModels.swift           — Decodable response types (convertFromSnakeCase); goalTarget/budgeted/activity/balance dollar computed props
+  YNABClient.swift           — URLSession; fetchBudgets/fetchCategories/fetchMonth (read) + updateCategoryBudgeted (write)
 Engine/
-  MetricsEngine.swift        — pure static functions, no SwiftUI; CategoryBalance value type; all formulas
-  CashFlowEngine.swift       — buildTimeline() → [CashFlowEvent]; mortgage-covered marker
+  MetricsEngine.swift        — pure static functions, no SwiftUI; CategoryBalance + GoalStatus value types; all formulas
+  CashFlowEngine.swift       — buildTimeline() → [CashFlowEvent]; mortgage-covered marker; today marker
 Setup/
   SetupFlowView.swift        — 4-step onboarding coordinator (token → budget → categories → income)
   TokenStepView.swift        — Keychain token entry + verification against YNAB API
   BudgetStepView.swift       — budget picker; calls fetchBudgets
-  CategorySetupView.swift    — role picker per YNAB category; suggestRole() auto-classification
+  CategorySetupView.swift    — role picker per YNAB category; suggestRole() auto-classification; dueDay picker
   IncomeSetupView.swift      — income source list; YNAB monthly income hint banner
 Views/
-  DashboardView.swift        — "Overview" tab; mortgage card, bills card, safe-to-spend chips, SettingsSheet
-  BillsPlannerView.swift     — "Bills" tab; sectioned list with progress bars + Covered/Partial/Shortfall badges
-  IncomeGapView.swift        — "Salary" tab; income vs required, gap indicator, gross annual salary target
-  CashFlowView.swift         — "Cash Flow" tab; chronological timeline from CashFlowEngine
+  DashboardView.swift        — "Overview" tab; safe-to-spend → budget health → mortgage → bills → underfunded goals; SettingsSheet
+  BillsPlannerView.swift     — "Bills" tab; sections by coverage status (Needs Attention / Partial / Covered)
+  IncomeGapView.swift        — "Income" tab; income vs required, gap/surplus, gross annual salary target
+  CashFlowView.swift         — "Cash Flow" tab; chronological timeline with today marker from CashFlowEngine
   FunMoneyHelpView.swift     — help sheet (dos/don'ts for personal fun money vs shared categories)
+  Components/
+    TipBanner.swift          — dismissible first-visit contextual help banner (one per tab)
 Shared/
   KeychainHelper.swift       — SecItem read/write, device-only storage
-  AppState.swift             — @MainActor ObservableObject; in-memory YNAB cache; buildBalances() wrapper
+  AppState.swift             — @MainActor ObservableObject; in-memory YNAB cache; buildBalances() wrapper; fundCategory()
   MockData.swift             — static preview/test data (no real IDs or tokens)
 ```
+
+## Critical data flow: goal_target vs budgeted
+
+YNAB categories have two dollar amounts that matter:
+- **`budgeted`** (milliunits) — the amount the user has **assigned** this month. Can be $0 early in the month.
+- **`goal_target`** (milliunits) — the user's **monthly goal** for that category. Persistent across months.
+
+`MetricsEngine.buildBalances()` sets `monthlyTarget` to `goalTargetDollars ?? budgetedDollars`.
+This means the app prefers goal targets (which reflect what the user *needs*) and falls back to
+assigned amounts only when no goal is set. Every downstream metric — `totalRequired`, `shortfall`,
+`safeToSpend`, `incomeGap`, `grossAnnualNeeded`, the cash flow timeline — depends on this value.
+
+**If `monthlyTarget` is $0 everywhere**, the root cause is that `YNABMonthCategory` is not
+decoding `goal_target` from the API response, or the user's YNAB categories don't have goals set.
 
 ## Key conventions
 
@@ -69,6 +89,8 @@ Shared/
 - YNAB amounts are in milliunits → divide by 1000 for dollars
 - `CategoryBalance` is a value type (struct) — not stored, always recomputed via `MetricsEngine.buildBalances`
 - `MetricsEngine` and `CashFlowEngine` are pure enums (no state, no SwiftUI imports) — keep them that way
+- Bills tab sections are organized by **coverage status** (Needs Attention / Partial / Covered), not by role
+- Overview tab card order: Safe to Spend → Budget Health → Mortgage → Bills → Underfunded Goals
 
 ## Sheet pattern — always use `sheet(item:)` for pre-filled forms
 
@@ -109,10 +131,32 @@ activeSheet = MySheetConfig(name: "Pre-filled", amount: "100")
 - Month format: `YYYY-MM-01`
 - Active budget ID: AppStorage key `chase_ynab_clarity_ios_budget_id` (runtime only, never hardcoded)
 
+### Read endpoints (existing)
+- `GET /budgets` — budget list (setup)
+- `GET /budgets/{id}/categories` — category groups (setup)
+- `GET /budgets/{id}/months/{month}` — monthly detail with categories
+
+### Write endpoint
+- `PATCH /budgets/{id}/months/{month}/categories/{cat_id}` — update assigned amount
+- Body: `{"category": {"budgeted": <milliunits>}}`
+- Only `budgeted` can be updated; goals/targets are read-only
+- Always show a confirmation dialog before writing
+- Refresh data immediately after a successful write
+
+### Key response fields on `YNABMonthCategory`
+| Field | Type | Description |
+|-------|------|-------------|
+| `budgeted` | Int (milliunits) | Assigned this month |
+| `activity` | Int (milliunits) | Spending (negative = outflow) |
+| `balance` | Int (milliunits) | Available after activity |
+| `goal_target` | Int? (milliunits) | Monthly goal amount (nil if no goal) |
+| `goal_type` | String? | "MF" (monthly funding), "TB" (target balance), "TBD" (target by date) |
+| `goal_percentage_complete` | Int? | YNAB's own goal completion percentage |
+
 ## SwiftData schema migration rules
 
 To add a new field to `CategoryMapping` or `IncomeSource`:
-1. Add with a default value: `var dueDay: Int = 1`
+1. Add with a default value: `var dueDay: Int = 0`
 2. Test by running on an existing simulator install (do **not** delete the app first)
 3. If the app crashes on launch, the migration is broken — investigate before proceeding
 4. Never rename or remove existing `@Model` properties
@@ -148,4 +192,5 @@ Both test targets compile without network access. No mocking of external APIs ne
 
 - `projects/ynab-enrichment/` — Python tool that enriches YNAB transaction memos (separate, read-write)
 - Monorepo CLAUDE.md: `~/Developer/chase/CLAUDE.md`
+- Plan: `.cursor/plans/ynab_clarity_rethink_*.plan.md`
 - Linear: (add project link when created)

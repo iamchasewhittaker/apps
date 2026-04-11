@@ -27,7 +27,7 @@ enum YNABClientError: LocalizedError {
 
 // MARK: - YNABClient
 
-/// Read-only YNAB API client. Accepts a plain token string so the caller controls
+/// YNAB API client. Accepts a plain token string so the caller controls
 /// where the token comes from — enabling a future OAuth swap without changing this class.
 final class YNABClient {
     private let baseURL = URL(string: "https://api.ynab.com/v1")!
@@ -58,6 +58,19 @@ final class YNABClient {
             path: "/budgets/\(budgetID)/months/\(monthStr)"
         )
         return response.data.month
+    }
+
+    /// Update the assigned (budgeted) amount for a single category in a given month.
+    func updateCategoryBudgeted(
+        budgetID: String,
+        month: Date,
+        categoryID: String,
+        budgetedMilliunits: Int
+    ) async throws {
+        let monthStr = Self.monthString(from: month)
+        let path = "/budgets/\(budgetID)/months/\(monthStr)/categories/\(categoryID)"
+        let body: [String: [String: Int]] = ["category": ["budgeted": budgetedMilliunits]]
+        try await patchRequest(path: path, body: body)
     }
 
     // MARK: - Private
@@ -100,6 +113,41 @@ final class YNABClient {
             return try decoder.decode(T.self, from: data)
         } catch {
             throw YNABClientError.decodingError(underlying: error)
+        }
+    }
+
+    private func patchRequest<T: Encodable>(path: String, body: T) async throws {
+        guard let url = URLComponents(
+            url: baseURL.appendingPathComponent(path),
+            resolvingAgainstBaseURL: false
+        )?.url else { throw YNABClientError.invalidURL }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 15
+        request.httpBody = try JSONEncoder().encode(body)
+
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await URLSession.shared.data(for: request)
+        } catch {
+            throw YNABClientError.networkError(underlying: error)
+        }
+
+        guard let http = response as? HTTPURLResponse else {
+            throw YNABClientError.httpError(statusCode: 0)
+        }
+
+        switch http.statusCode {
+        case 200:
+            break
+        case 401:
+            throw YNABClientError.unauthorized
+        default:
+            throw YNABClientError.httpError(statusCode: http.statusCode)
         }
     }
 

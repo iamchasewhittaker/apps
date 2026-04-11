@@ -31,6 +31,13 @@ struct CashFlowView: View {
                 } else {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 0) {
+                            TipBanner(
+                                message: "Shows when paychecks arrive relative to when bills are due.",
+                                storageKey: "chase_ynab_clarity_ios_tip_dismissed_cashflow"
+                            )
+                            .padding(.horizontal, 16)
+                            .padding(.top, 16)
+
                             summaryCard
                                 .padding(.horizontal, 16)
                                 .padding(.top, 16)
@@ -105,6 +112,8 @@ struct CashFlowView: View {
     @ViewBuilder
     private func eventRow(_ event: CashFlowEvent) -> some View {
         switch event.kind {
+        case .todayMarker:
+            todayMarkerRow
         case .mortgageCoveredMarker:
             mortgageMarkerRow(event)
         case .paycheck:
@@ -118,14 +127,17 @@ struct CashFlowView: View {
                 subtitle: ClarityTheme.currency(event.cumulativeIncome) + " received so far"
             )
         case .bill:
+            let statusText = event.isCovered
+                ? "Covered"
+                : (event.shortfall > 0 ? ClarityTheme.currency(event.shortfall) + " short" : nil)
             timelineRow(
                 date: shortDateFormat.string(from: event.date),
                 icon: "arrow.up.circle.fill",
-                iconColor: ClarityTheme.caution,
+                iconColor: event.isCovered ? ClarityTheme.safe : ClarityTheme.caution,
                 label: event.label,
                 amount: event.amount > 0 ? ClarityTheme.currency(event.amount) : "",
                 amountColor: ClarityTheme.muted,
-                subtitle: nil
+                subtitle: statusText
             )
         }
     }
@@ -177,6 +189,23 @@ struct CashFlowView: View {
                 .frame(height: 1)
                 .padding(.leading, 78)
         }
+    }
+
+    // MARK: - Today marker
+
+    private var todayMarkerRow: some View {
+        HStack(spacing: 8) {
+            Rectangle()
+                .fill(ClarityTheme.accent)
+                .frame(height: 2)
+            Text("Today")
+                .font(ClarityTheme.captionFont.weight(.semibold))
+                .foregroundStyle(ClarityTheme.accent)
+            Rectangle()
+                .fill(ClarityTheme.accent)
+                .frame(height: 2)
+        }
+        .padding(.vertical, 8)
     }
 
     // MARK: - Mortgage covered marker

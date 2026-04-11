@@ -26,9 +26,15 @@ struct DashboardView: View {
                             if let error = appState.loadError {
                                 errorBanner(error)
                             }
+                            TipBanner(
+                                message: "Your spendable money after all bills are accounted for. Pull down to refresh from YNAB.",
+                                storageKey: "chase_ynab_clarity_ios_tip_dismissed_overview"
+                            )
+                            safeToSpendCard
+                            budgetHealthRow
                             mortgageCard
                             billsCard
-                            safeToSpendCard
+                            underfundedGoalsCard
                             lastRefreshedLabel
                         }
                         .padding(16)
@@ -51,6 +57,42 @@ struct DashboardView: View {
             .sheet(isPresented: $showSettings) { SettingsSheet() }
             .sheet(isPresented: $showFunMoneyHelp) { FunMoneyHelpView() }
         }
+    }
+
+    // MARK: - Budget health row
+
+    private var budgetHealthRow: some View {
+        let b = balances
+        let required = MetricsEngine.totalRequired(b)
+        let funded = MetricsEngine.totalFunded(b)
+        let shortfall = MetricsEngine.currentShortfall(b)
+
+        return HStack(spacing: 0) {
+            budgetHealthMetric(label: "Required", value: ClarityTheme.currency(required), color: ClarityTheme.text)
+            Rectangle().fill(ClarityTheme.border).frame(width: 1, height: 36)
+            budgetHealthMetric(label: "Funded", value: ClarityTheme.currency(funded), color: ClarityTheme.safe)
+            Rectangle().fill(ClarityTheme.border).frame(width: 1, height: 36)
+            budgetHealthMetric(
+                label: "Shortfall",
+                value: shortfall > 0 ? ClarityTheme.currency(shortfall) : "None",
+                color: shortfall > 0 ? ClarityTheme.danger : ClarityTheme.safe
+            )
+        }
+        .clarityCard()
+    }
+
+    private func budgetHealthMetric(label: String, value: String, color: Color) -> some View {
+        VStack(spacing: 3) {
+            Text(label)
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+            Text(value)
+                .font(ClarityTheme.headlineFont)
+                .foregroundStyle(color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     // MARK: - Mortgage card
@@ -192,6 +234,61 @@ struct DashboardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
+    // MARK: - Underfunded goals card
+
+    private var underfundedGoalsCard: some View {
+        let goals: [GoalStatus] = {
+            guard let month = appState.monthDetail else { return [] }
+            return MetricsEngine.underfundedGoals(monthCategories: month.categories, mappings: mappings)
+        }()
+
+        return Group {
+            if goals.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    Label("Goals", systemImage: "target")
+                        .font(ClarityTheme.titleFont)
+                        .foregroundStyle(ClarityTheme.safe)
+                    Text("All category goals are fully funded this month.")
+                        .font(ClarityTheme.captionFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                }
+                .clarityCard()
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack {
+                        Label("Underfunded Goals", systemImage: "target")
+                            .font(ClarityTheme.titleFont)
+                            .foregroundStyle(ClarityTheme.caution)
+                        Spacer()
+                        Text("\(goals.count) underfunded")
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.caution)
+                    }
+
+                    VStack(spacing: 8) {
+                        ForEach(goals) { goal in
+                            HStack {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(goal.categoryName)
+                                        .font(ClarityTheme.bodyFont)
+                                        .foregroundStyle(ClarityTheme.text)
+                                    Text("Goal: " + ClarityTheme.currency(goal.goalTarget) + " · Assigned: " + ClarityTheme.currency(goal.assigned))
+                                        .font(ClarityTheme.captionFont)
+                                        .foregroundStyle(ClarityTheme.muted)
+                                }
+                                Spacer()
+                                Text(ClarityTheme.currency(goal.gap) + " needed")
+                                    .font(ClarityTheme.captionFont.weight(.semibold))
+                                    .foregroundStyle(ClarityTheme.caution)
+                            }
+                        }
+                    }
+                }
+                .clarityCard()
+            }
+        }
+    }
+
     // MARK: - Last refreshed
 
     private var lastRefreshedLabel: some View {
@@ -232,6 +329,7 @@ private struct SettingsSheet: View {
     @EnvironmentObject private var appState: AppState
     @Environment(\.dismiss) private var dismiss
     @State private var showTokenEntry = false
+    @State private var showHowItWorks = false
 
     var body: some View {
         NavigationStack {
@@ -257,6 +355,8 @@ private struct SettingsSheet: View {
                     }
 
                     Section {
+                        Button("How It Works") { showHowItWorks = true }
+                            .foregroundStyle(ClarityTheme.accent)
                         Button("Re-enter YNAB Token") { showTokenEntry = true }
                             .foregroundStyle(ClarityTheme.accent)
                         Button("Reset Setup", role: .destructive) {
@@ -282,6 +382,9 @@ private struct SettingsSheet: View {
                 showTokenEntry = false
             })
             .preferredColorScheme(.dark)
+        }
+        .sheet(isPresented: $showHowItWorks) {
+            HowItWorksView()
         }
     }
 }

@@ -185,6 +185,7 @@ private struct IncomeSourceFormView: View {
     @State private var amountText: String
     @State private var frequency: IncomeFrequency
     @State private var nextPayDate: Date = Date()
+    @State private var secondPayDay: Int = 20
 
     init(
         prefilledName: String = "",
@@ -236,8 +237,17 @@ private struct IncomeSourceFormView: View {
                         }
                         .foregroundStyle(ClarityTheme.text)
 
-                        DatePicker("Next pay date", selection: $nextPayDate, displayedComponents: .date)
-                            .foregroundStyle(ClarityTheme.text)
+                        DatePicker(
+                            frequency == .semimonthly ? "1st pay date" : "Next pay date",
+                            selection: $nextPayDate,
+                            displayedComponents: .date
+                        )
+                        .foregroundStyle(ClarityTheme.text)
+
+                        if frequency == .semimonthly {
+                            Stepper("2nd pay date: Day \(secondPayDay)", value: $secondPayDay, in: 1...31)
+                                .foregroundStyle(ClarityTheme.text)
+                        }
                     } header: {
                         Text("Schedule").foregroundStyle(ClarityTheme.muted)
                     }
@@ -259,7 +269,8 @@ private struct IncomeSourceFormView: View {
                             name: name.trimmingCharacters(in: .whitespaces),
                             amountCents: cents,
                             frequency: frequency,
-                            nextPayDate: nextPayDate
+                            nextPayDate: nextPayDate,
+                            secondPayDay: secondPayDay
                         )
                         onSave(source)
                         dismiss()

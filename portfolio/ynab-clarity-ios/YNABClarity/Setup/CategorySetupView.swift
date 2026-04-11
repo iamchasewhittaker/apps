@@ -8,8 +8,9 @@ struct CategorySetupView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var existingMappings: [CategoryMapping]
 
-    /// Local editing state: category ID → chosen role
+    /// Local editing state: category ID → chosen role / due day
     @State private var roleSelections: [String: CategoryRole] = [:]
+    @State private var dueDaySelections: [String: Int] = [:]
     @State private var isSaving = false
     @State private var wasAutoSuggested = false
 
@@ -80,22 +81,45 @@ struct CategorySetupView: View {
     }
 
     private func categoryRow(category: YNABCategory, groupName: String) -> some View {
-        HStack {
-            Text(category.name)
-                .font(ClarityTheme.bodyFont)
-                .foregroundStyle(ClarityTheme.text)
-            Spacer()
-            Picker("", selection: Binding(
-                get: { roleSelections[category.id] ?? .ignore },
-                set: { roleSelections[category.id] = $0 }
-            )) {
-                ForEach(CategoryRole.allCases) { role in
-                    Text(role.displayName).tag(role)
+        let selectedRole = roleSelections[category.id] ?? .ignore
+        let isRequired = selectedRole == .mortgage || selectedRole == .bill || selectedRole == .essential
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(category.name)
+                    .font(ClarityTheme.bodyFont)
+                    .foregroundStyle(ClarityTheme.text)
+                Spacer()
+                Picker("", selection: Binding(
+                    get: { roleSelections[category.id] ?? .ignore },
+                    set: { roleSelections[category.id] = $0 }
+                )) {
+                    ForEach(CategoryRole.allCases) { role in
+                        Text(role.displayName).tag(role)
+                    }
+                }
+                .pickerStyle(.menu)
+                .tint(roleColor(selectedRole))
+                .labelsHidden()
+            }
+            if isRequired {
+                HStack {
+                    Text("Due day:")
+                        .font(ClarityTheme.captionFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                    Picker("", selection: Binding(
+                        get: { dueDaySelections[category.id] ?? 0 },
+                        set: { dueDaySelections[category.id] = $0 }
+                    )) {
+                        Text("Auto").tag(0)
+                        ForEach(1...31, id: \.self) { day in
+                            Text("\(day)").tag(day)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .tint(ClarityTheme.accent)
+                    Spacer()
                 }
             }
-            .pickerStyle(.menu)
-            .tint(roleColor(roleSelections[category.id] ?? .ignore))
-            .labelsHidden()
         }
         .listRowBackground(ClarityTheme.surface)
     }
@@ -135,8 +159,7 @@ struct CategorySetupView: View {
     }
 
     private func initializeSelections() {
-        // Only trust existing non-ignore mappings — .ignore means "never classified",
-        // not "intentionally ignored". Re-run suggestions for anything saved as ignore.
+        let existingByID = Dictionary(uniqueKeysWithValues: existingMappings.map { ($0.ynabCategoryID, $0) })
         let existing = Dictionary(uniqueKeysWithValues:
             existingMappings.compactMap { m -> (String, CategoryRole)? in
                 m.role == .ignore ? nil : (m.ynabCategoryID, m.role)
@@ -144,13 +167,16 @@ struct CategorySetupView: View {
         )
         let isFirstRun = existingMappings.isEmpty
         var selections: [String: CategoryRole] = [:]
+        var dueDays: [String: Int] = [:]
         for group in visibleGroups {
             for category in group.categories where !category.hidden && !category.deleted {
                 selections[category.id] = existing[category.id]
                     ?? Self.suggestRole(categoryName: category.name, groupName: group.name)
+                dueDays[category.id] = existingByID[category.id]?.dueDay ?? 0
             }
         }
         roleSelections = selections
+        dueDaySelections = dueDays
         if isFirstRun { wasAutoSuggested = true }
     }
 
@@ -214,18 +240,19 @@ struct CategorySetupView: View {
         for group in visibleGroups {
             for category in group.categories where !category.hidden && !category.deleted {
                 let chosenRole = roleSelections[category.id] ?? .ignore
+                let chosenDueDay = dueDaySelections[category.id] ?? 0
                 if let existing = existingByID[category.id] {
-                    // Update existing mapping in-place.
                     existing.role = chosenRole
                     existing.ynabCategoryName = category.name
                     existing.ynabGroupName = group.name
+                    existing.dueDay = chosenDueDay
                 } else {
-                    // Insert new mapping.
                     let mapping = CategoryMapping(
                         ynabCategoryID: category.id,
                         ynabCategoryName: category.name,
                         ynabGroupName: group.name,
-                        role: chosenRole
+                        role: chosenRole,
+                        dueDay: chosenDueDay
                     )
                     modelContext.insert(mapping)
                 }

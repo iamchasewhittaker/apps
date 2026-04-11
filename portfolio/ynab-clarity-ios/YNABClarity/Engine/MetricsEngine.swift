@@ -7,12 +7,14 @@ struct CategoryBalance {
     let ynabCategoryID: String
     let name: String
     let role: CategoryRole
-    /// Monthly target (dollars) — from YNAB "budgeted/assigned" field.
+    /// Monthly target (dollars) — from YNAB goal target, falling back to budgeted/assigned.
     let monthlyTarget: Double
     /// Available balance (dollars) — from YNAB "balance" field.
     let available: Double
     /// Spending activity (dollars, negative = outflow) — from YNAB "activity" field.
     let activityDollars: Double
+    /// Day of month the bill is due (0 = not set).
+    let dueDay: Int
 }
 
 extension CategoryBalance {
@@ -56,9 +58,10 @@ enum MetricsEngine {
                 ynabCategoryID: cat.id,
                 name: cat.name,
                 role: role,
-                monthlyTarget: cat.budgetedDollars,
+                monthlyTarget: cat.goalTargetDollars ?? cat.budgetedDollars,
                 available: cat.balanceDollars,
-                activityDollars: cat.activityDollars
+                activityDollars: cat.activityDollars,
+                dueDay: mapping.dueDay
             )
         }
     }
@@ -162,4 +165,38 @@ enum MetricsEngine {
         let today = calendar.component(.day, from: date)
         return max(1, range.count - today + 1)
     }
+
+    // MARK: Underfunded goals
+
+    static func underfundedGoals(
+        monthCategories: [YNABMonthCategory],
+        mappings: [CategoryMapping]
+    ) -> [GoalStatus] {
+        let roleByID = Dictionary(uniqueKeysWithValues: mappings.map { ($0.ynabCategoryID, $0) })
+        return monthCategories.compactMap { cat -> GoalStatus? in
+            guard !cat.hidden, !cat.deleted else { return nil }
+            guard let mapping = roleByID[cat.id], mapping.role != .ignore else { return nil }
+            guard let target = cat.goalTargetDollars, target > 0 else { return nil }
+            let assigned = cat.budgetedDollars
+            let gap = target - assigned
+            guard gap > 0.01 else { return nil }
+            return GoalStatus(
+                categoryName: cat.name,
+                goalTarget: target,
+                assigned: assigned,
+                gap: gap
+            )
+        }
+        .sorted { $0.gap > $1.gap }
+    }
+}
+
+// MARK: - GoalStatus
+
+struct GoalStatus: Identifiable {
+    let id = UUID()
+    let categoryName: String
+    let goalTarget: Double
+    let assigned: Double
+    let gap: Double
 }

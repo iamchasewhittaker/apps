@@ -32,17 +32,21 @@ final class CategoryMapping {
     var ynabGroupName: String
     /// Raw value of CategoryRole — never store as enum directly in SwiftData.
     var roleRaw: String
+    /// Day of month the bill is due (1-31). 0 means "not set" — uses default.
+    var dueDay: Int = 0
 
     init(
         ynabCategoryID: String,
         ynabCategoryName: String,
         ynabGroupName: String = "",
-        role: CategoryRole = .ignore
+        role: CategoryRole = .ignore,
+        dueDay: Int = 0
     ) {
         self.ynabCategoryID = ynabCategoryID
         self.ynabCategoryName = ynabCategoryName
         self.ynabGroupName = ynabGroupName
         self.roleRaw = role.rawValue
+        self.dueDay = dueDay
     }
 }
 

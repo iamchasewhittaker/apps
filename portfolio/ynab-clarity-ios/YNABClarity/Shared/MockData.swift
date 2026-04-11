@@ -9,14 +9,14 @@ enum MockData {
         month: "2026-04-01",
         income: nil,
         categories: [
-            YNABMonthCategory(id: "cat-mortgage",  name: "Mortgage",    budgeted: 2_150_000, activity: 0,         balance: 1_400_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-electric",  name: "Electric",    budgeted:   150_000, activity: 0,         balance:   150_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-internet",  name: "Internet",    budgeted:    80_000, activity: 0,         balance:         0, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-insurance", name: "Insurance",   budgeted:   210_000, activity: 0,         balance:   210_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-groceries", name: "Groceries",   budgeted:   600_000, activity: -200_000,  balance:   400_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-gas",       name: "Gas",         budgeted:   150_000, activity:  -50_000,  balance:   100_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-dining",    name: "Dining Out",  budgeted:   300_000, activity:  -50_000,  balance:   250_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "cat-fun",       name: "Fun Money",   budgeted:   200_000, activity:       0,   balance:   200_000, hidden: false, deleted: false),
+            YNABMonthCategory(id: "cat-mortgage",  name: "Mortgage",    budgeted: 2_150_000, activity: 0,         balance: 1_400_000, hidden: false, deleted: false, goalTarget: 2_150_000, goalType: "MF", goalPercentageComplete: 65),
+            YNABMonthCategory(id: "cat-electric",  name: "Electric",    budgeted:   150_000, activity: 0,         balance:   150_000, hidden: false, deleted: false, goalTarget:   150_000, goalType: "MF", goalPercentageComplete: 100),
+            YNABMonthCategory(id: "cat-internet",  name: "Internet",    budgeted:    80_000, activity: 0,         balance:         0, hidden: false, deleted: false, goalTarget:    80_000, goalType: "MF", goalPercentageComplete: 0),
+            YNABMonthCategory(id: "cat-insurance", name: "Insurance",   budgeted:   210_000, activity: 0,         balance:   210_000, hidden: false, deleted: false, goalTarget:   210_000, goalType: "MF", goalPercentageComplete: 100),
+            YNABMonthCategory(id: "cat-groceries", name: "Groceries",   budgeted:   600_000, activity: -200_000,  balance:   400_000, hidden: false, deleted: false, goalTarget:   600_000, goalType: "MF", goalPercentageComplete: 67),
+            YNABMonthCategory(id: "cat-gas",       name: "Gas",         budgeted:   150_000, activity:  -50_000,  balance:   100_000, hidden: false, deleted: false, goalTarget:   150_000, goalType: "MF", goalPercentageComplete: 67),
+            YNABMonthCategory(id: "cat-dining",    name: "Dining Out",  budgeted:   300_000, activity:  -50_000,  balance:   250_000, hidden: false, deleted: false, goalTarget:   300_000, goalType: "MF", goalPercentageComplete: 83),
+            YNABMonthCategory(id: "cat-fun",       name: "Fun Money",   budgeted:   200_000, activity:       0,   balance:   200_000, hidden: false, deleted: false, goalTarget:   200_000, goalType: "MF", goalPercentageComplete: 100),
         ]
     )
 

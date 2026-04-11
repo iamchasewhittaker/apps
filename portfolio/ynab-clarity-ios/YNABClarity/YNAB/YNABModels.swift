@@ -59,9 +59,20 @@ struct YNABMonthCategory: Decodable, Identifiable {
     let hidden: Bool
     let deleted: Bool
 
+    /// Monthly goal amount in milliunits (nil if no goal is set).
+    let goalTarget: Int?
+    /// Goal type: "MF" (monthly funding), "TB" (target balance), "TBD" (target by date), etc.
+    let goalType: String?
+    /// YNAB's own goal completion percentage (0–100).
+    let goalPercentageComplete: Int?
+
     var budgetedDollars: Double  { Double(budgeted)  / 1000.0 }
     var activityDollars: Double  { Double(activity)  / 1000.0 }
     var balanceDollars: Double   { Double(balance)   / 1000.0 }
+    var goalTargetDollars: Double? {
+        guard let gt = goalTarget else { return nil }
+        return Double(gt) / 1000.0
+    }
 }
 
 struct YNABMonthResponse: Decodable {

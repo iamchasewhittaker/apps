@@ -47,6 +47,27 @@ final class AppState: ObservableObject {
         }
     }
 
+    // MARK: - Fund a category (write to YNAB)
+
+    func fundCategory(
+        categoryID: String,
+        budgetedMilliunits: Int,
+        categoryMappings: [CategoryMapping],
+        incomeSources: [IncomeSource]
+    ) async throws {
+        guard let token = KeychainHelper.readToken(), !activeBudgetID.isEmpty else {
+            throw YNABClientError.unauthorized
+        }
+        let client = YNABClient(token: token)
+        try await client.updateCategoryBudgeted(
+            budgetID: activeBudgetID,
+            month: Date(),
+            categoryID: categoryID,
+            budgetedMilliunits: budgetedMilliunits
+        )
+        await refresh(categoryMappings: categoryMappings, incomeSources: incomeSources)
+    }
+
     // MARK: - Category groups (for setup — not cached between launches)
 
     func fetchCategoryGroups() async -> [YNABCategoryGroup] {

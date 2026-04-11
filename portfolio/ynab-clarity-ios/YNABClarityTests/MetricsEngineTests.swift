@@ -83,8 +83,8 @@ final class MetricsEngineTests: XCTestCase {
     func testSafeToSpend_withFullyFundedRequired() {
         // Build a scenario where all required categories are funded
         let fullyFunded: [YNABMonthCategory] = [
-            YNABMonthCategory(id: "m", name: "Mortgage", budgeted: 2_000_000, activity: 0, balance: 2_000_000, hidden: false, deleted: false),
-            YNABMonthCategory(id: "f", name: "Fun",      budgeted:   300_000, activity: 0, balance:   300_000, hidden: false, deleted: false),
+            YNABMonthCategory(id: "m", name: "Mortgage", budgeted: 2_000_000, activity: 0, balance: 2_000_000, hidden: false, deleted: false, goalTarget: 2_000_000, goalType: nil, goalPercentageComplete: nil),
+            YNABMonthCategory(id: "f", name: "Fun",      budgeted:   300_000, activity: 0, balance:   300_000, hidden: false, deleted: false, goalTarget:   300_000, goalType: nil, goalPercentageComplete: nil),
         ]
         let localMappings = [
             CategoryMapping(ynabCategoryID: "m", ynabCategoryName: "Mortgage", role: .mortgage),
@@ -123,6 +123,26 @@ final class MetricsEngineTests: XCTestCase {
     func testGrossAnnualNeeded_taxRateAtOrAbove1_returnsMonthlyTimes12() {
         let gross = MetricsEngine.grossAnnualNeeded(netMonthlyNeeded: 5000, taxRate: 1.0)
         XCTAssertEqual(gross, 60_000.0, accuracy: 0.01)
+    }
+
+    // MARK: - goalTarget preference
+
+    func testBuildBalances_usesGoalTargetWhenPresent() {
+        let cats = [
+            YNABMonthCategory(id: "x", name: "Test", budgeted: 0, activity: 0, balance: 0, hidden: false, deleted: false, goalTarget: 500_000, goalType: "MF", goalPercentageComplete: 0),
+        ]
+        let maps = [CategoryMapping(ynabCategoryID: "x", ynabCategoryName: "Test", role: .bill)]
+        let b = MetricsEngine.buildBalances(monthCategories: cats, mappings: maps)
+        XCTAssertEqual(b.first?.monthlyTarget ?? 0, 500.0, accuracy: 0.01)
+    }
+
+    func testBuildBalances_fallsToBudgetedWhenNoGoal() {
+        let cats = [
+            YNABMonthCategory(id: "x", name: "Test", budgeted: 200_000, activity: 0, balance: 100_000, hidden: false, deleted: false, goalTarget: nil, goalType: nil, goalPercentageComplete: nil),
+        ]
+        let maps = [CategoryMapping(ynabCategoryID: "x", ynabCategoryName: "Test", role: .bill)]
+        let b = MetricsEngine.buildBalances(monthCategories: cats, mappings: maps)
+        XCTAssertEqual(b.first?.monthlyTarget ?? 0, 200.0, accuracy: 0.01)
     }
 
     // MARK: - daysRemainingInMonth

@@ -5,14 +5,16 @@ import SwiftData
 
 enum IncomeFrequency: String, CaseIterable, Identifiable {
     case monthly
+    case semimonthly
     case biweekly
 
     var id: String { rawValue }
 
     var displayName: String {
         switch self {
-        case .monthly:   return "Monthly"
-        case .biweekly:  return "Biweekly (every 2 weeks)"
+        case .monthly:      return "Monthly"
+        case .semimonthly:  return "Twice a month (semi-monthly)"
+        case .biweekly:     return "Biweekly (every 2 weeks)"
         }
     }
 }
@@ -29,6 +31,8 @@ final class IncomeSource {
     var frequencyRaw: String
     /// The next expected pay date; used as the anchor for projecting future occurrences.
     var nextPayDate: Date
+    /// Day-of-month for the second payday — only used when frequency is .semimonthly.
+    var secondPayDay: Int = 20
     var sortOrder: Int
 
     init(
@@ -36,6 +40,7 @@ final class IncomeSource {
         amountCents: Int,
         frequency: IncomeFrequency,
         nextPayDate: Date,
+        secondPayDay: Int = 20,
         sortOrder: Int = 0
     ) {
         self.id = UUID()
@@ -43,6 +48,7 @@ final class IncomeSource {
         self.amountCents = amountCents
         self.frequencyRaw = frequency.rawValue
         self.nextPayDate = nextPayDate
+        self.secondPayDay = secondPayDay
         self.sortOrder = sortOrder
     }
 }
@@ -73,6 +79,18 @@ extension IncomeSource {
             dc.day = clampedDay
             if let d = calendar.date(from: dc) { return [d] }
             return []
+
+        case .semimonthly:
+            let day1 = calendar.component(.day, from: nextPayDate)
+            let daysInMonth = monthRange.count
+            var result: [Date] = []
+            for day in [day1, secondPayDay] {
+                let clamped = min(day, daysInMonth)
+                var dc = components
+                dc.day = clamped
+                if let d = calendar.date(from: dc) { result.append(d) }
+            }
+            return result.sorted()
 
         case .biweekly:
             // Walk from nextPayDate in 14-day steps and collect dates inside this month.

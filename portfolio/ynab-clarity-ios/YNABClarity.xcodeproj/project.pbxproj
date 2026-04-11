@@ -32,6 +32,8 @@
 		AC010000000000000000019 /* MetricsEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000019 /* MetricsEngineTests.swift */; };
 		AC01000000000000000001A /* CashFlowEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001A /* CashFlowEngineTests.swift */; };
 		AC01000000000000000001B /* FunMoneyHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001B /* FunMoneyHelpView.swift */; };
+		AC01000000000000000001C /* TipBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001C /* TipBanner.swift */; };
+		AC01000000000000000001D /* HowItWorksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001D /* HowItWorksView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		AC020000000000000000019 /* MetricsEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsEngineTests.swift; sourceTree = "<group>"; };
 		AC02000000000000000001A /* CashFlowEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowEngineTests.swift; sourceTree = "<group>"; };
 		AC02000000000000000001B /* FunMoneyHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunMoneyHelpView.swift; sourceTree = "<group>"; };
+		AC02000000000000000001C /* TipBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipBanner.swift; sourceTree = "<group>"; };
+		AC02000000000000000001D /* HowItWorksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowItWorksView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,13 +190,23 @@
 		AC04000000000000000000A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AC04000000000000000000C /* Components */,
 				AC02000000000000000000F /* DashboardView.swift */,
 				AC020000000000000000010 /* BillsPlannerView.swift */,
 				AC020000000000000000011 /* IncomeGapView.swift */,
 				AC020000000000000000012 /* CashFlowView.swift */,
 				AC02000000000000000001B /* FunMoneyHelpView.swift */,
+				AC02000000000000000001D /* HowItWorksView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		AC04000000000000000000C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AC02000000000000000001C /* TipBanner.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		AC04000000000000000000B /* Shared */ = {
@@ -326,6 +340,8 @@
 				AC010000000000000000014 /* AppState.swift in Sources */,
 				AC010000000000000000015 /* MockData.swift in Sources */,
 				AC01000000000000000001B /* FunMoneyHelpView.swift in Sources */,
+				AC01000000000000000001C /* TipBanner.swift in Sources */,
+				AC01000000000000000001D /* HowItWorksView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

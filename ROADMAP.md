@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-05 (RollerTask Tycoon iOS rebrand; web PWA archived) | Maintained by Chase
+> Last updated: 2026-04-11 (YNAB Clarity iOS layout rethink + goal_target fix) | Maintained by Chase
 
 ---
 
@@ -225,6 +225,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **Rethink:** decode `goal_target` / use goal for `monthlyTarget` (fixes $0 when unassigned); Overview reorder + Budget Health + Underfunded Goals; Bills by coverage + optional **Fund** (PATCH `budgeted`); `dueDay` on `CategoryMapping`; Income tab surplus + inline sources; Cash Flow today marker + bill status; `TipBanner` + `HowItWorksView`; `YNABClient.updateCategoryBudgeted` | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
+| 2026-04-08 | YNAB Clarity (iOS) | v0.1 | **Income:** added `semimonthly` frequency (5th + 20th pattern); `secondPayDay` property on `IncomeSource`; form stepper for 2nd pay date | SwiftData-safe default; `occurrencesInMonth` handles new case |
 | 2026-04-08 | YNAB Clarity (iOS) | v0.1 | **New** `portfolio/ynab-clarity-ios` — read-only YNAB companion; 4 tabs (Overview, Bills, Salary, Cash Flow); SwiftData + Keychain token; auto-categorization, mortgage isCovered fix, Fun Money help sheet, SettingsSheet; `IncomeSetupView` pre-fill bug fixed (`sheet(item:)`); initial git commit (was previously untracked) | Bundle `com.chasewhittaker.YNABClarity`; `chase_ynab_clarity_ios_*` AppStorage keys; see `portfolio/ynab-clarity-ios/CLAUDE.md` |
 | 2026-04-05 | Wellness Tracker (iOS) | Phase 1 | **New** `portfolio/wellness-tracker-ios` — SwiftUI daily check-in (morning/evening), `chase_wellness_ios_*` UserDefaults, **local-only** (no Supabase/OTP); optional **Past days** read-only; sunrise app icon; `WellnessTracker` scheme + tests | Bundle `com.chasewhittaker.WellnessTracker`; see `CLAUDE.md` |
 | 2026-04-05 | Portfolio + RollerTask Tycoon | — | **Web PWA archived** to `portfolio/archive/roller-task-tycoon`; **iOS** product path `portfolio/roller-task-tycoon-ios`, Xcode **RollerTaskTycoon** / **RollerTaskTycoonTests**, display name RollerTask Tycoon, bundle id `com.chasewhittaker.ParkChecklist` unchanged; `UserDefaults` keys `chase_roller_task_tycoon_ios_*` + one-time migration from `chase_park_checklist_ios_*`; backup export `RollerTaskTycoon-backup-*.json`; root **`.gitignore`** whitelists **`.github/workflows/**`** so **`.github/workflows/portfolio-web-build.yml`** is versioned | **CI** builds Wellness, Job Search, App Forge only; disable Vercel for retired PWA if desired |

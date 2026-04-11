@@ -7,6 +7,7 @@ struct CashFlowEvent: Identifiable {
         case paycheck
         case bill
         case mortgageCoveredMarker
+        case todayMarker
     }
 
     let id = UUID()
@@ -19,6 +20,10 @@ struct CashFlowEvent: Identifiable {
     var cumulativeIncome: Double = 0
     /// totalRequired at the time this was computed — for displaying "X / Y funded".
     var totalRequired: Double = 0
+    /// Coverage status for bill events (true = fully funded).
+    var isCovered: Bool = false
+    /// Shortfall amount for bill events.
+    var shortfall: Double = 0
 }
 
 extension CashFlowEvent {
@@ -33,10 +38,8 @@ extension CashFlowEvent {
 enum CashFlowEngine {
 
     /// Build a chronological timeline of income and bill events for `month`.
-    ///
-    /// Phase 1 limitation: bill due dates default to day 1 (mortgage) or day 5 (other required).
-    /// When `CategoryMapping.dueDay` is added in a future schema migration, this method will
-    /// read that value instead of the hardcoded defaults.
+    /// Bill due dates come from `CategoryBalance.dueDay`; defaults to day 1 (mortgage) or 5 (other)
+    /// when the user hasn't set one.
     static func buildTimeline(
         sources: [IncomeSource],
         balances: [CategoryBalance],
@@ -58,19 +61,21 @@ enum CashFlowEngine {
             }
         }
 
-        // Bill due-date events (Phase 1: hardcoded due days)
         let monthComps = calendar.dateComponents([.year, .month], from: month)
         for balance in balances where balance.role == .mortgage || balance.role == .bill || balance.role == .essential {
-            let dueDay = balance.role == .mortgage ? 1 : 5
+            let dueDay = balance.dueDay > 0 ? balance.dueDay : (balance.role == .mortgage ? 1 : 5)
             var dc = monthComps
             dc.day = dueDay
             if let dueDate = calendar.date(from: dc) {
-                events.append(CashFlowEvent(
+                var event = CashFlowEvent(
                     date: dueDate,
                     kind: .bill,
                     label: balance.name,
                     amount: balance.monthlyTarget
-                ))
+                )
+                event.isCovered = balance.isCovered
+                event.shortfall = balance.shortfall
+                events.append(event)
             }
         }
 
@@ -112,6 +117,26 @@ enum CashFlowEngine {
             event.cumulativeIncome = cumulativeIncome
             event.totalRequired = required
             result.append(event)
+        }
+
+        // Insert a "Today" marker at the current date
+        let today = calendar.startOfDay(for: Date())
+        let todayComps = calendar.dateComponents([.year, .month], from: today)
+        if todayComps.year == monthComps.year && todayComps.month == monthComps.month {
+            var marker = CashFlowEvent(
+                date: today,
+                kind: .todayMarker,
+                label: "Today",
+                amount: 0
+            )
+            marker.totalRequired = required
+            if let idx = result.firstIndex(where: { $0.date > today }) {
+                marker.cumulativeIncome = idx > 0 ? result[idx - 1].cumulativeIncome : 0
+                result.insert(marker, at: idx)
+            } else {
+                marker.cumulativeIncome = result.last?.cumulativeIncome ?? 0
+                result.append(marker)
+            }
         }
 
         return result

@@ -1,21 +1,23 @@
 # Roadmap — YNAB Clarity iOS
 
-> Local iOS app. No Vercel, no Supabase (read-only YNAB API only).
+> Local iOS app. Reads YNAB via API; can PATCH assigned amounts with confirmation.
 > Run in Xcode: ⌘B to build, ⌘R to run, ⌘U for tests.
 
-## Current state — v0.1 (in progress)
+## Current state — v0.1
 
 | Area | Status |
 |------|--------|
 | Setup flow (token → budget → categories → income) | ✅ Done |
 | Auto-categorization (`suggestRole`) | ✅ Done |
-| Mortgage isCovered fix (paid early in month) | ✅ Done |
-| Dashboard (Overview tab) | ✅ Done |
-| Bills Planner tab | ✅ Done |
-| Salary / Income Gap tab | ✅ Done |
-| Cash Flow timeline tab | ✅ Done |
-| Fun Money help sheet | ✅ Done |
-| Settings sheet (tax rate, token re-entry, reset) | ✅ Done |
+| Mortgage `isCovered` fix (paid early in month) | ✅ Done |
+| Goal target decoding + `monthlyTarget` = goal ?? budgeted | ✅ Done |
+| Overview: Safe to Spend first, Budget Health, Underfunded Goals | ✅ Done |
+| Bills tab by coverage status + Fund shortfall (PATCH) | ✅ Done |
+| `dueDay` on categories + cash flow timeline | ✅ Done |
+| Income tab: surplus, inline sources, renamed tab | ✅ Done |
+| Cash Flow: today marker, bill coverage subtitles | ✅ Done |
+| Tip banners + How It Works | ✅ Done |
+| Settings sheet (tax rate, token, reset, help link) | ✅ Done |
 | Committed to git | ✅ Done |
 | Unit tests (MetricsEngine, CashFlowEngine) | ✅ Done |
 
@@ -25,15 +27,16 @@
 
 | # | Priority | Task | Why |
 |---|----------|------|-----|
-| 1 | 🔴 High | Add `dueDay` field to `CategoryMapping` — let user set actual bill due dates | CashFlowEngine currently hardcodes day 1 (mortgage) and day 5 (all bills); real due dates make timeline accurate |
-| 2 | 🔴 High | Category Setup: persist group name alongside category ID on save | `suggestRole()` uses group name at classify time but if the user re-enters setup, old mappings lose group context |
+| 1 | 🔴 High | Category Setup: persist group name alongside category ID on save | `suggestRole()` uses group name at classify time but if the user re-enters setup, old mappings lose group context |
+| 2 | 🔴 High | Fund from Underfunded Goals card on Overview (same PATCH flow as Bills) | Parity with Bills tab; plan called for both surfaces |
 | 3 | 🟡 Medium | Refresh indicator — show spinner overlay on cards while `isLoading` is true (not just on first load) | Pull-to-refresh currently shows no loading state on subsequent refreshes |
-| 4 | 🟡 Medium | Edit income sources from the Salary tab (not just setup) | Currently only editable during onboarding |
+| 4 | 🟡 Medium | Edit income sources from the Income tab (not just setup) | Currently only editable during onboarding |
 | 5 | 🟡 Medium | "Next paycheck" date display on Cash Flow — show days until next income event | Makes the timeline more actionable at a glance |
 | 6 | 🟡 Medium | Empty state on Dashboard when no categories mapped | Currently shows zero-value cards with no guidance |
-| 7 | 🟢 Low | Haptic feedback on pull-to-refresh complete | Small polish |
-| 8 | 🟢 Low | App icon — custom icon for homescreen | Currently default |
-| 9 | 🟢 Low | Category setup: allow reordering role suggestions by priority | Cosmetic |
+| 7 | 🟡 Medium | Surface PATCH errors to user (toast / banner) if `fundCategory` fails | Today failures are silent (`try?`) |
+| 8 | 🟢 Low | Haptic feedback on pull-to-refresh complete | Small polish |
+| 9 | 🟢 Low | App icon — custom icon for homescreen | Currently default |
+| 10 | 🟢 Low | Category setup: allow reordering role suggestions by priority | Cosmetic |
 
 ---
 
@@ -51,13 +54,11 @@
 
 ---
 
-## Known limitations (Phase 1)
+## Known limitations
 
-- Bill due dates are hardcoded: mortgage = day 1, all other bills = day 5
-  → Fix: add `dueDay: Int` to `CategoryMapping` (V1 backlog item #1)
-- Cash Flow tab shows all bills on the same day (no per-bill due dates)
+- Semi-monthly income sources don't support editing after setup without re-running flow (same gap as other sources → V1 backlog item #4)
 - Income sources are set manually — YNAB hint is monthly total only, not per-source
-- No edit/reorder for income sources after setup without resetting
+- Fund action assigns to full **goal target** in milliunits (not incremental shortfall only) — confirm UX matches user expectations
 
 ---
 
@@ -65,6 +66,8 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-11 | Layout rethink: `goal_target` decoding; Overview reorder + Budget Health + Underfunded Goals; Bills by status + Fund PATCH; `dueDay`; Income tab improvements; Cash Flow today marker + bill status; TipBanner; HowItWorksView; `YNABClient` PATCH; Xcode project includes new Swift files |
+| 2026-04-08 | `IncomeFrequency`: added `semimonthly` case + `secondPayDay` on `IncomeSource`; form shows 2nd pay date stepper when selected |
 | 2026-04-08 | `IncomeSetupView`: fixed YNAB suggestion banner pre-fill using `sheet(item:)` |
 | 2026-04-08 | All 5 view files recreated after accidental deletion; project committed to git |
 | 2026-04-08 | `DashboardView`, `BillsPlannerView`, `IncomeGapView`, `CashFlowView`, `FunMoneyHelpView` written |

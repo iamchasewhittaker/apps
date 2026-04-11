@@ -34,7 +34,7 @@ struct ContentView: View {
                 .tabItem { Label("Bills", systemImage: "list.bullet.rectangle") }
                 .tag(1)
             IncomeGapView()
-                .tabItem { Label("Salary", systemImage: "dollarsign.circle.fill") }
+                .tabItem { Label("Income", systemImage: "dollarsign.circle.fill") }
                 .tag(2)
             CashFlowView()
                 .tabItem { Label("Cash Flow", systemImage: "arrow.left.arrow.right.circle.fill") }
