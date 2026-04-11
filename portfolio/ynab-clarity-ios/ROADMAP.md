@@ -11,7 +11,9 @@
 | Auto-categorization (`suggestRole`) | ✅ Done |
 | Mortgage `isCovered` fix (paid early in month) | ✅ Done |
 | Goal target decoding + `monthlyTarget` = goal ?? budgeted | ✅ Done |
-| Overview: Safe to Spend first, Budget Health, Underfunded Goals | ✅ Done |
+| Overview: Safe to Spend first, Budget Health, Bills & Essentials (incl. mortgage), Spending card, Underfunded Goals | ✅ Done |
+| Safe to spend uses non-required mapped categories + Ready to Assign (`to_be_budgeted`) | ✅ Done |
+| Transactions fetch + stale refresh banner (24h, `last_refreshed_epoch`) | ✅ Done |
 | Bills tab by coverage status + Fund shortfall (PATCH) | ✅ Done |
 | `dueDay` on categories + cash flow timeline | ✅ Done |
 | Income tab: surplus, inline sources, renamed tab | ✅ Done |
@@ -20,6 +22,7 @@
 | Settings sheet (tax rate, token, reset, help link) | ✅ Done |
 | Committed to git | ✅ Done |
 | Unit tests (MetricsEngine, CashFlowEngine) | ✅ Done |
+| `YNABClient.patchRequest` unused `data` binding (warnings-as-errors) | ✅ Done |
 
 ---
 

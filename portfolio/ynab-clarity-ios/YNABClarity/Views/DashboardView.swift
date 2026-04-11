@@ -26,14 +26,17 @@ struct DashboardView: View {
                             if let error = appState.loadError {
                                 errorBanner(error)
                             }
+                            if appState.isDataStale {
+                                staleSyncBanner
+                            }
                             TipBanner(
                                 message: "Your spendable money after all bills are accounted for. Pull down to refresh from YNAB.",
                                 storageKey: "chase_ynab_clarity_ios_tip_dismissed_overview"
                             )
                             safeToSpendCard
                             budgetHealthRow
-                            mortgageCard
-                            billsCard
+                            billsAndEssentialsCard
+                            spendingSummaryCard
                             underfundedGoalsCard
                             lastRefreshedLabel
                         }
@@ -95,59 +98,14 @@ struct DashboardView: View {
         .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Mortgage card
+    // MARK: - Bills & essentials (includes mortgage)
 
-    private var mortgageCard: some View {
+    private var billsAndEssentialsCard: some View {
         let b = balances
-        let fraction = MetricsEngine.mortgageCoveredFraction(b)
-        let mortgageItems = b.filter { $0.role == .mortgage }
-        let allCovered = mortgageItems.allSatisfy { $0.isCovered }
-        let shortfall = MetricsEngine.mortgageShortfall(b)
-
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Label("Mortgage", systemImage: "house.fill")
-                    .font(ClarityTheme.titleFont)
-                    .foregroundStyle(ClarityTheme.mortgage)
-                Spacer()
-                Text(allCovered ? "Covered" : ClarityTheme.currency(shortfall) + " short")
-                    .font(ClarityTheme.headlineFont)
-                    .foregroundStyle(allCovered ? ClarityTheme.safe : ClarityTheme.danger)
-            }
-
-            ProgressView(value: fraction)
-                .tint(ClarityTheme.progressColor(fraction: fraction))
-
-            if !mortgageItems.isEmpty {
-                ForEach(mortgageItems, id: \.ynabCategoryID) { item in
-                    HStack {
-                        Text(item.name)
-                            .font(ClarityTheme.captionFont)
-                            .foregroundStyle(ClarityTheme.muted)
-                        Spacer()
-                        Text(item.isCovered
-                             ? "Covered"
-                             : ClarityTheme.currency(max(0, item.available)) + " / " + ClarityTheme.currency(item.monthlyTarget))
-                            .font(ClarityTheme.captionFont)
-                            .foregroundStyle(item.isCovered ? ClarityTheme.safe : ClarityTheme.caution)
-                    }
-                }
-            } else {
-                Text("No mortgage categories tagged")
-                    .font(ClarityTheme.captionFont)
-                    .foregroundStyle(ClarityTheme.muted)
-            }
-        }
-        .clarityCard()
-    }
-
-    // MARK: - Bills card
-
-    private var billsCard: some View {
-        let b = balances
-        let fraction = MetricsEngine.billsCoverageFraction(b)
-        let billItems = b.filter { $0.role == .bill || $0.role == .essential }
-        let uncovered = billItems.filter { !$0.isCovered }
+        let fraction = MetricsEngine.obligationsCoverageFraction(b)
+        let requiredItems = b.filter { $0.role == .mortgage || $0.role == .bill || $0.role == .essential }
+        let uncovered = requiredItems.filter { !$0.isCovered }
+        let shortAll = MetricsEngine.currentShortfall(b)
 
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -155,7 +113,7 @@ struct DashboardView: View {
                     .font(ClarityTheme.titleFont)
                     .foregroundStyle(ClarityTheme.text)
                 Spacer()
-                Text(uncovered.isEmpty ? "All Covered" : "\(uncovered.count) Uncovered")
+                Text(uncovered.isEmpty ? "All Covered" : ClarityTheme.currency(shortAll) + " short")
                     .font(ClarityTheme.headlineFont)
                     .foregroundStyle(uncovered.isEmpty ? ClarityTheme.safe : ClarityTheme.danger)
             }
@@ -163,13 +121,17 @@ struct DashboardView: View {
             ProgressView(value: fraction)
                 .tint(ClarityTheme.progressColor(fraction: fraction))
 
-            if !uncovered.isEmpty {
+            if requiredItems.isEmpty {
+                Text("No mortgage, bills, or essentials tagged in setup.")
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+            } else if !uncovered.isEmpty {
                 VStack(spacing: 6) {
                     ForEach(uncovered, id: \.ynabCategoryID) { item in
                         HStack {
                             Text(item.name)
                                 .font(ClarityTheme.captionFont)
-                                .foregroundStyle(ClarityTheme.muted)
+                                .foregroundStyle(item.role == .mortgage ? ClarityTheme.mortgage : ClarityTheme.muted)
                             Spacer()
                             Text(ClarityTheme.currency(max(0, item.available))
                                  + " / " + ClarityTheme.currency(item.monthlyTarget))
@@ -183,13 +145,60 @@ struct DashboardView: View {
         .clarityCard()
     }
 
+    // MARK: - Spending summary (transactions)
+
+    private var spendingSummaryCard: some View {
+        let tx = appState.transactions
+        let yesterday = MetricsEngine.spendingYesterday(transactions: tx)
+        let week = MetricsEngine.spendingThisWeek(transactions: tx)
+        let month = MetricsEngine.spendingThisMonth(transactions: tx)
+
+        return VStack(alignment: .leading, spacing: 12) {
+            Label("Spending", systemImage: "cart.fill")
+                .font(ClarityTheme.titleFont)
+                .foregroundStyle(ClarityTheme.text)
+
+            Text("Outflows from your budget (excludes transfers).")
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+
+            HStack(spacing: 10) {
+                spendingAmountChip(label: "Yesterday", amount: yesterday)
+                spendingAmountChip(label: "This Week", amount: week)
+                spendingAmountChip(label: "This Month", amount: month)
+            }
+        }
+        .clarityCard()
+    }
+
+    private func spendingAmountChip(label: String, amount: Double) -> some View {
+        VStack(spacing: 4) {
+            Text(label)
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+            Text(ClarityTheme.currency(amount))
+                .font(ClarityTheme.titleFont)
+                .foregroundStyle(ClarityTheme.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .padding(.horizontal, 6)
+        .background(ClarityTheme.bg)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
     // MARK: - Safe to spend card
 
     private var safeToSpendCard: some View {
         let b = balances
-        let total = MetricsEngine.safeToSpend(balances: b)
-        let perDay = MetricsEngine.safePerDay(balances: b, daysRemaining: daysRemaining)
-        let perWeek = MetricsEngine.safePerWeek(balances: b, daysRemaining: daysRemaining)
+        let tbb = appState.monthDetail?.toBeBudgetedDollars ?? 0
+        let total = MetricsEngine.safeToSpend(balances: b, toBeBudgeted: tbb)
+        let perDay = MetricsEngine.safePerDay(balances: b, daysRemaining: daysRemaining, toBeBudgeted: tbb)
+        let perWeek = MetricsEngine.safePerWeek(balances: b, daysRemaining: daysRemaining, toBeBudgeted: tbb)
 
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -300,6 +309,26 @@ struct DashboardView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }
+    }
+
+    // MARK: - Stale sync banner
+
+    private var staleSyncBanner: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "clock.fill")
+                .foregroundStyle(ClarityTheme.caution)
+            Text("You haven't refreshed in over 24 hours. Pull down to sync with YNAB — reconcile accounts in YNAB regularly so balances stay accurate.")
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.text)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(ClarityTheme.caution.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(ClarityTheme.caution.opacity(0.35), lineWidth: 1)
+        )
     }
 
     // MARK: - Error banner

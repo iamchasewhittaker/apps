@@ -8,6 +8,7 @@ enum MockData {
     static let monthDetail = YNABMonthDetail(
         month: "2026-04-01",
         income: nil,
+        toBeBudgeted: 50_000,
         categories: [
             YNABMonthCategory(id: "cat-mortgage",  name: "Mortgage",    budgeted: 2_150_000, activity: 0,         balance: 1_400_000, hidden: false, deleted: false, goalTarget: 2_150_000, goalType: "MF", goalPercentageComplete: 65),
             YNABMonthCategory(id: "cat-electric",  name: "Electric",    budgeted:   150_000, activity: 0,         balance:   150_000, hidden: false, deleted: false, goalTarget:   150_000, goalType: "MF", goalPercentageComplete: 100),

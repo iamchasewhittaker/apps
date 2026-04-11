@@ -84,13 +84,14 @@ decoding `goal_target` from the API response, or the user's YNAB categories don'
 - SwiftData `@Model` properties must never be renamed or removed (lightweight migration only)
 - New `@Model` properties must have default values so existing installs don't crash on launch
 - `amountCents: Int` — whole cents, not Double, to avoid float rounding
-- AppStorage keys prefixed `chase_ynab_clarity_ios_`
+- AppStorage keys prefixed `chase_ynab_clarity_ios_` (includes `last_refreshed_epoch` for stale-data banner)
 - `YNABClient` takes token as `init(token: String)` — future OAuth just changes the caller
 - YNAB amounts are in milliunits → divide by 1000 for dollars
 - `CategoryBalance` is a value type (struct) — not stored, always recomputed via `MetricsEngine.buildBalances`
 - `MetricsEngine` and `CashFlowEngine` are pure enums (no state, no SwiftUI imports) — keep them that way
 - Bills tab sections are organized by **coverage status** (Needs Attention / Partial / Covered), not by role
-- Overview tab card order: Safe to Spend → Budget Health → Mortgage → Bills → Underfunded Goals
+- Overview tab card order: Safe to Spend → Budget Health → Bills & Essentials (mortgage + bills + essentials) → Spending (transactions) → Underfunded Goals
+- **Safe to spend:** sums positive available on mapped categories that are **not** mortgage/bill/essential (same pool as “Flexible” in practice), **plus** YNAB month `to_be_budgeted` (Ready to Assign), minus `currentShortfall` on required categories; floored at $0
 
 ## Sheet pattern — always use `sheet(item:)` for pre-filled forms
 
@@ -134,7 +135,8 @@ activeSheet = MySheetConfig(name: "Pre-filled", amount: "100")
 ### Read endpoints (existing)
 - `GET /budgets` — budget list (setup)
 - `GET /budgets/{id}/categories` — category groups (setup)
-- `GET /budgets/{id}/months/{month}` — monthly detail with categories
+- `GET /budgets/{id}/months/{month}` — monthly detail with categories (includes `to_be_budgeted`)
+- `GET /budgets/{id}/transactions?since_date=YYYY-MM-DD` — transactions for spending summaries
 
 ### Write endpoint
 - `PATCH /budgets/{id}/months/{month}/categories/{cat_id}` — update assigned amount

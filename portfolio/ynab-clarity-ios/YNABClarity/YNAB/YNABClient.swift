@@ -60,6 +60,16 @@ final class YNABClient {
         return response.data.month
     }
 
+    /// Transactions on or after `sinceDate` (inclusive), for spending summaries.
+    func fetchTransactions(budgetID: String, sinceDate: Date) async throws -> [YNABTransaction] {
+        let dateStr = Self.calendarDateString(from: sinceDate)
+        let response: YNABTransactionsResponse = try await request(
+            path: "/budgets/\(budgetID)/transactions",
+            queryItems: [URLQueryItem(name: "since_date", value: dateStr)]
+        )
+        return response.data.transactions.filter { !$0.deleted }
+    }
+
     /// Update the assigned (budgeted) amount for a single category in a given month.
     func updateCategoryBudgeted(
         budgetID: String,
@@ -129,10 +139,9 @@ final class YNABClient {
         request.timeoutInterval = 15
         request.httpBody = try JSONEncoder().encode(body)
 
-        let data: Data
         let response: URLResponse
         do {
-            (data, response) = try await URLSession.shared.data(for: request)
+            (_, response) = try await URLSession.shared.data(for: request)
         } catch {
             throw YNABClientError.networkError(underlying: error)
         }
@@ -159,5 +168,14 @@ final class YNABClient {
         let year  = comps.year  ?? 2026
         let month = comps.month ?? 1
         return String(format: "%04d-%02d-01", year, month)
+    }
+
+    /// Formats a Date as "YYYY-MM-DD" for transaction `since_date` queries.
+    static func calendarDateString(from date: Date, calendar: Calendar = .current) -> String {
+        let comps = calendar.dateComponents([.year, .month, .day], from: date)
+        let year  = comps.year  ?? 2026
+        let month = comps.month ?? 1
+        let day   = comps.day   ?? 1
+        return String(format: "%04d-%02d-%02d", year, month, day)
     }
 }

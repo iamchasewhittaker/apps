@@ -45,9 +45,9 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `feat/rtt-ios-v1-simplify` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **YNAB Clarity (iOS)** — `portfolio/ynab-clarity-ios`. **Layout rethink shipped** in this branch: `goal_target` decoding + metrics fix, Overview/Bills/Income/Cash Flow UX, `dueDay`, tip banners, How It Works, PATCH fund flow, Underfunded Goals. Docs: `CHANGELOG.md`, `ROADMAP.md`, `CLAUDE.md`. |
+| **Focus** | **YNAB Clarity (iOS)** — `portfolio/ynab-clarity-ios`. **Latest:** merged mortgage into Bills & Essentials on Overview; Spending card (transactions `since_date`); safe-to-spend includes `to_be_budgeted` + non-required mapped categories; 24h stale refresh banner + `chase_ynab_clarity_ios_last_refreshed_epoch`. |
 | **Also on branch** | **RollerTask Tycoon (iOS)** V1 simplify pass — needs ⌘B + ⌘U before merge to `main`. |
-| **Next** | 1) Xcode **⌘B** / **⌘U** on YNAB Clarity (verify new `TipBanner.swift`, `HowItWorksView.swift` in target) · 2) Smoke-test with live YNAB (goals set, Fund flow) · 3) Optional: Fund from Underfunded Goals card (`portfolio/ynab-clarity-ios/ROADMAP.md` V1 #2) · 4) Merge branch when RTT + YNAB checks pass |
+| **Next** | 1) Xcode **⌘B** / **⌘U** on YNAB Clarity (transactions decode against live API) · 2) Smoke-test Overview (spending totals, TBB, stale banner after 24h) · 3) Optional: Fund from Underfunded Goals (`portfolio/ynab-clarity-ios/ROADMAP.md` V1 #2) · 4) Merge when RTT + YNAB checks pass |
 | **Blockers** | *(none)* |
 | **Last touch** | 2026-04-11 |
 
@@ -57,6 +57,7 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 
 - **iOS planning templates** live at **`docs/ios-app-starter-kit/`** (v3). **Filled** product docs + **`PLANNING_WORKFLOW.md`** under **`portfolio/roller-task-tycoon-ios/docs/planning/`**. **Linear** project [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) (WHI-15…19). Kit **`HANDOFF_TEMPLATE.md`** ≠ repo-root session **`HANDOFF.md`**.
 - **YNAB Clarity (2026-04-11):** Implemented full rethink plan — `goal_target` on `YNABMonthCategory`, `monthlyTarget` prefers goal; Bills by coverage; `dueDay`; Income tab rename + surplus; Cash Flow today marker; `TipBanner`, `HowItWorksView`, `YNABClient` PATCH + Bills **Fund** sheet; Xcode `project.pbxproj` includes `Views/Components/TipBanner.swift` and `HowItWorksView.swift`.
+- **YNAB Clarity (same session, follow-up):** `fetchTransactions` + spending chips; `toBeBudgeted` on month; safe-to-spend formula; unified bills card; stale sync banner (persisted epoch).
 - **YNAB API write:** `PATCH` updates `budgeted` (assigned) only; confirmation before Fund.
 - *(Decisions, links to PRs/commits, "parked" ideas.)*
 

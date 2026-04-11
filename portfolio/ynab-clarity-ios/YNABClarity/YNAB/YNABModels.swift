@@ -44,7 +44,14 @@ struct YNABMonthDetail: Decodable {
     let month: String
     /// Total income for the month in milliunits (divide by 1000 for dollars).
     let income: Int?
+    /// Ready to Assign (milliunits). Money not yet assigned to categories this month.
+    let toBeBudgeted: Int?
     let categories: [YNABMonthCategory]
+
+    var toBeBudgetedDollars: Double {
+        guard let tbb = toBeBudgeted else { return 0 }
+        return Double(tbb) / 1000.0
+    }
 }
 
 struct YNABMonthCategory: Decodable, Identifiable {
@@ -78,6 +85,40 @@ struct YNABMonthCategory: Decodable, Identifiable {
 struct YNABMonthResponse: Decodable {
     struct DataWrapper: Decodable {
         let month: YNABMonthDetail
+    }
+    let data: DataWrapper
+}
+
+// MARK: - Transactions
+
+struct YNABTransaction: Decodable, Identifiable {
+    let id: String
+    let date: String
+    /// Milliunits; negative = outflow from the budget.
+    let amount: Int
+    let payeeName: String?
+    let categoryName: String?
+    let deleted: Bool
+    let transferAccountId: String?
+
+    var amountDollars: Double { Double(amount) / 1000.0 }
+
+    var parsedDate: Date? {
+        let parts = date.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return nil }
+        var c = DateComponents()
+        c.year = parts[0]
+        c.month = parts[1]
+        c.day = parts[2]
+        return Calendar(identifier: .gregorian).date(from: c)
+    }
+
+    var isTransfer: Bool { transferAccountId != nil }
+}
+
+struct YNABTransactionsResponse: Decodable {
+    struct DataWrapper: Decodable {
+        let transactions: [YNABTransaction]
     }
     let data: DataWrapper
 }

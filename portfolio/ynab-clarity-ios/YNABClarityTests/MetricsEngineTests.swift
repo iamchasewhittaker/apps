@@ -91,9 +91,36 @@ final class MetricsEngineTests: XCTestCase {
             CategoryMapping(ynabCategoryID: "f", ynabCategoryName: "Fun",      role: .flexible),
         ]
         let b = MetricsEngine.buildBalances(monthCategories: fullyFunded, mappings: localMappings)
-        let safe = MetricsEngine.safeToSpend(balances: b)
+        let safe = MetricsEngine.safeToSpend(balances: b, toBeBudgeted: 0)
         // All required funded, flexible = $300, shortfall = 0 → safe = $300
         XCTAssertEqual(safe, 300.0, accuracy: 0.01)
+    }
+
+    func testSafeToSpend_includesToBeBudgeted() {
+        let safe = MetricsEngine.safeToSpend(balances: balances, toBeBudgeted: 700)
+        // Discretionary flexible: 250 + 200 = 450; TBB 700; shortfall 1080 → max(0, 450+700-1080) = 70
+        XCTAssertEqual(safe, 70.0, accuracy: 0.01)
+    }
+
+    func testObligationsCoverageFraction_matchesOverallRequired() {
+        let frac = MetricsEngine.obligationsCoverageFraction(balances)
+        let required = MetricsEngine.totalRequired(balances)
+        let funded = MetricsEngine.totalFunded(balances)
+        XCTAssertEqual(frac, min(1.0, funded / required), accuracy: 0.001)
+    }
+
+    func testOutflowSpending_sumsNegativeAmountsInRange() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let mid = cal.date(from: DateComponents(year: 2026, month: 4, day: 10))!
+        let txs = [
+            YNABTransaction(id: "a", date: "2026-04-10", amount: -50_000, payeeName: "Store", categoryName: "Groceries", deleted: false, transferAccountId: nil),
+            YNABTransaction(id: "b", date: "2026-04-10", amount: 100_000, payeeName: "Income", categoryName: nil, deleted: false, transferAccountId: nil),
+            YNABTransaction(id: "c", date: "2026-04-09", amount: -25_000, payeeName: "Gas", categoryName: nil, deleted: false, transferAccountId: nil),
+            YNABTransaction(id: "d", date: "2026-04-10", amount: -10_000, payeeName: "Xfer", categoryName: nil, deleted: false, transferAccountId: "other-acct"),
+        ]
+        let spent = MetricsEngine.outflowSpending(transactions: txs, rangeStart: mid, rangeEndInclusive: mid, calendar: cal)
+        XCTAssertEqual(spent, 50.0, accuracy: 0.01)
     }
 
     // MARK: - incomeGap

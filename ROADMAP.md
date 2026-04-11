@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-11 (YNAB Clarity iOS layout rethink + goal_target fix) | Maintained by Chase
+> Last updated: 2026-04-11 (YNAB Clarity iOS Overview refresh) | Maintained by Chase
 
 ---
 
@@ -225,6 +225,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **Overview:** merged mortgage into Bills & Essentials; Spending card (yesterday / week / month from transactions API); safe-to-spend includes Ready to Assign + all non-required mapped categories; 24h stale-sync banner + persisted `chase_ynab_clarity_ios_last_refreshed_epoch` | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
+| 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **`YNABClient.patchRequest`:** use `(_, response)` instead of unused `data` from `URLSession` — removes compiler warning / unblocks strict builds | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
 | 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **Rethink:** decode `goal_target` / use goal for `monthlyTarget` (fixes $0 when unassigned); Overview reorder + Budget Health + Underfunded Goals; Bills by coverage + optional **Fund** (PATCH `budgeted`); `dueDay` on `CategoryMapping`; Income tab surplus + inline sources; Cash Flow today marker + bill status; `TipBanner` + `HowItWorksView`; `YNABClient.updateCategoryBudgeted` | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
 | 2026-04-08 | YNAB Clarity (iOS) | v0.1 | **Income:** added `semimonthly` frequency (5th + 20th pattern); `secondPayDay` property on `IncomeSource`; form stepper for 2nd pay date | SwiftData-safe default; `occurrencesInMonth` handles new case |
 | 2026-04-08 | YNAB Clarity (iOS) | v0.1 | **New** `portfolio/ynab-clarity-ios` — read-only YNAB companion; 4 tabs (Overview, Bills, Salary, Cash Flow); SwiftData + Keychain token; auto-categorization, mortgage isCovered fix, Fun Money help sheet, SettingsSheet; `IncomeSetupView` pre-fill bug fixed (`sheet(item:)`); initial git commit (was previously untracked) | Bundle `com.chasewhittaker.YNABClarity`; `chase_ynab_clarity_ios_*` AppStorage keys; see `portfolio/ynab-clarity-ios/CLAUDE.md` |

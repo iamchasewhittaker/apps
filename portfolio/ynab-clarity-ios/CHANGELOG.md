@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Added
+- **Overview — Spending card:** yesterday / this week / this month outflow totals from `GET .../transactions?since_date=` (excludes transfers); `YNABTransaction` model + `YNABClient.fetchTransactions`
+- **Overview — stale sync banner:** when last successful refresh was over 24 hours ago (or never), show a caution banner; refresh timestamp persisted as `chase_ynab_clarity_ios_last_refreshed_epoch` (AppStorage)
+- **`YNABMonthDetail.toBeBudgeted`** — Ready to Assign (milliunits) decoded from month response for safe-to-spend
 - **YNAB goal targets:** `YNABMonthCategory` decodes `goal_target`, `goal_type`, and `goal_percentage_complete`; `MetricsEngine.buildBalances()` uses `goalTargetDollars ?? budgetedDollars` so metrics reflect monthly goals when assigned dollars are still $0
 - **Budget Health** row on Overview: Required / Funded / Shortfall at a glance
 - **Underfunded Goals** card on Overview: categories where goal exceeds assigned this month, sorted by gap; green state when all goals are funded (`MetricsEngine.underfundedGoals`, `GoalStatus`)
@@ -12,10 +15,13 @@
 - **`YNABClient.updateCategoryBudgeted`** — PATCH assigned amount; **`AppState.fundCategory`** refreshes after write
 - **Fund** flow on Bills tab: shortfall rows open a confirmation sheet (`sheet(item:)`), then PATCH to goal target in milliunits
 - **Cash Flow:** `.todayMarker` event, divider in UI; bill rows show Covered or dollar shortfall; timeline uses `dueDay` with role-based fallback (mortgage day 1, else day 5)
-- Unit tests: `testBuildBalances_usesGoalTargetWhenPresent`, `testBuildBalances_fallsToBudgetedWhenNoGoal`
+- Unit tests: `testBuildBalances_usesGoalTargetWhenPresent`, `testBuildBalances_fallsToBudgetedWhenNoGoal`, `testSafeToSpend_includesToBeBudgeted`, `testObligationsCoverageFraction_matchesOverallRequired`, `testOutflowSpending_sumsNegativeAmountsInRange`
 
 ### Changed
-- **Overview** card order: Safe to Spend first, then Budget Health, Mortgage, Bills, Underfunded Goals
+- **Safe to spend:** discretionary pool is all mapped categories except mortgage/bill/essential (not only `.flexible`), plus **Ready to Assign** dollars, minus required shortfall
+- **Overview:** single **Bills & Essentials** card includes mortgage with combined progress; mortgage rows use purple label in the uncovered list
+- **`AppState.refresh`:** loads month + transactions in parallel; `transactions` published for the Spending card
+- **Overview** card order: Safe to Spend → Budget Health → Bills & Essentials (with mortgage) → Spending → Underfunded Goals (replaces separate Mortgage + Bills cards)
 - **Bills** tab: sections by coverage — Needs Attention (under 50% funded), Partially Funded (half or more but not covered), Fully Covered (collapsible)
 - **Income** tab (renamed from Salary in tab bar): surplus when income exceeds required; expandable income sources inside “This Month”; Salary Target card explains tax rate and required monthly base
 - **`MockData`:** all month categories include matching `goalTarget` for tests and previews
@@ -23,6 +29,7 @@
 - **`CLAUDE.md`:** goal vs budgeted data flow, API write rules, architecture updates
 
 ### Fixed
+- **`YNABClient.patchRequest`:** discard PATCH response body with `_` instead of unused `let data` — clears compiler warning (and builds with “Treat Warnings as Errors”)
 - **$0 metrics** when YNAB assigned (`budgeted`) was $0 but monthly goals were set — root cause was using assigned amount as `monthlyTarget` without reading `goal_target`
 
 ### Added (earlier in this release train)
