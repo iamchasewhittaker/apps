@@ -6,7 +6,8 @@ enum ClarityTheme {
     static let surface = Color(red: 0.102, green: 0.118, blue: 0.149)
     static let border  = Color(red: 0.173, green: 0.196, blue: 0.243)
     static let text    = Color(red: 0.918, green: 0.929, blue: 0.941)
-    static let muted   = Color(red: 0.420, green: 0.443, blue: 0.490)
+    /// Secondary text — higher contrast than before for low vision / long reading.
+    static let muted   = Color(red: 0.62, green: 0.66, blue: 0.74)
 
     // MARK: - Semantic status colors
     static let safe     = Color(red: 0.239, green: 0.718, blue: 0.478)  // green — funded
@@ -20,6 +21,8 @@ enum ClarityTheme {
     static let titleFont    : Font = .system(.title3,      design: .rounded).weight(.semibold)
     static let headlineFont : Font = .system(.headline,    design: .rounded)
     static let bodyFont     : Font = .system(.body,        design: .default)
+    /// Explanatory copy (tips, card blurbs) — larger minimum than `.caption` for readability.
+    static let supportingFont: Font = .subheadline
     static let captionFont  : Font = .system(.caption,     design: .default)
     static let monoFont     : Font = .system(.body,        design: .monospaced)
 

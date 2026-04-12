@@ -90,7 +90,7 @@ struct CashFlowView: View {
                 .foregroundStyle(ClarityTheme.text)
 
             if let age = appState.ageOfMoney {
-                let (label, color) = ageLabel(days: age)
+                let (label, color, symbol) = ageLabel(days: age)
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text("\(age)")
                         .font(ClarityTheme.displayFont)
@@ -99,15 +99,22 @@ struct CashFlowView: View {
                         .font(ClarityTheme.titleFont)
                         .foregroundStyle(ClarityTheme.muted)
                 }
-                Text(label)
-                    .font(ClarityTheme.captionFont)
-                    .foregroundStyle(color)
+                HStack(alignment: .center, spacing: 8) {
+                    Image(systemName: symbol)
+                        .font(ClarityTheme.headlineFont)
+                        .foregroundStyle(color)
+                        .accessibilityHidden(true)
+                    Text(label)
+                        .font(ClarityTheme.supportingFont.weight(.semibold))
+                        .foregroundStyle(ClarityTheme.text)
+                }
+                .accessibilityElement(children: .combine)
                 Text(nextMilestoneMessage(currentDays: age))
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
             } else {
                 Text("YNAB will show age of money once it has enough history. Keep assigning and reconciling — the metric appears automatically.")
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
             }
         }
@@ -123,12 +130,16 @@ struct CashFlowView: View {
         return "Next milestone: \(next) days (\(remaining) day\(remaining == 1 ? "" : "s") to go). Each step means you’re separating spending from this week’s paycheck."
     }
 
-    private func ageLabel(days: Int) -> (String, Color) {
+    private func ageLabel(days: Int) -> (String, Color, String) {
         switch days {
-        case ..<10:  return ("Paycheck to paycheck", ClarityTheme.danger)
-        case 10..<20: return ("Building a buffer", ClarityTheme.caution)
-        case 20..<30: return ("Getting ahead", ClarityTheme.safe)
-        default:      return ("Money is aging well", ClarityTheme.accent)
+        case ..<10:
+            return ("Paycheck to paycheck — spending is tied to your most recent deposits.", ClarityTheme.danger, "exclamationmark.octagon.fill")
+        case 10..<20:
+            return ("Building a buffer — you’re separating spending from the last paycheck.", ClarityTheme.caution, "exclamationmark.triangle.fill")
+        case 20..<30:
+            return ("Getting ahead — a cushion is forming before bills hit.", ClarityTheme.safe, "checkmark.circle.fill")
+        default:
+            return ("Money is aging well — strong separation from paycheck timing.", ClarityTheme.accent, "sparkles")
         }
     }
 
@@ -150,7 +161,7 @@ struct CashFlowView: View {
 
             if appState.ageOfMoney == nil {
                 Text("Milestones unlock once YNAB reports your age of money.")
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
             } else {
                 VStack(alignment: .leading, spacing: 10) {
@@ -163,7 +174,7 @@ struct CashFlowView: View {
                                     .font(ClarityTheme.bodyFont.weight(.semibold))
                                     .foregroundStyle(ClarityTheme.text)
                                 Text(row.blurb)
-                                    .font(ClarityTheme.captionFont)
+                                    .font(ClarityTheme.supportingFont)
                                     .foregroundStyle(ClarityTheme.muted)
                             }
                         }
@@ -197,7 +208,7 @@ struct CashFlowView: View {
             Text("•")
                 .foregroundStyle(ClarityTheme.accent)
             Text(text)
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
     }
@@ -208,7 +219,7 @@ struct CashFlowView: View {
                 .font(ClarityTheme.headlineFont)
                 .foregroundStyle(ClarityTheme.text)
             Text("Paychecks vs obligations this month — helpful timing, separate from the age-of-money score.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
     }
@@ -219,7 +230,7 @@ struct CashFlowView: View {
                 .font(ClarityTheme.headlineFont)
                 .foregroundStyle(ClarityTheme.muted)
             Text("Add income sources in Setup and map bill categories with due days to see when money lands vs when bills go out.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

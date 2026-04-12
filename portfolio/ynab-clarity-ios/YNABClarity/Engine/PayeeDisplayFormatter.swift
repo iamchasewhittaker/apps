@@ -9,8 +9,9 @@ enum PayeeDisplayFormatter {
             return "Unknown Payee"
         }
 
-        let normalized = s.replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
-        let lower = normalized.lowercased()
+        let normalized = collapseWhitespace(s)
+        let bankStripped = stripLeadingBankNoise(normalized)
+        let lower = bankStripped.lowercased()
 
         if amazonLike(lower) { return "Amazon" }
         if lower.contains("walmart") || lower.contains("wal-mart") || lower.contains("wm supercenter") {
@@ -32,7 +33,7 @@ enum PayeeDisplayFormatter {
         if lower.contains("shell") && lower.contains("oil") { return "Shell" }
         if lower.contains("chevron") { return "Chevron" }
 
-        var cleaned = stripNoise(normalized)
+        var cleaned = stripNoise(bankStripped)
         cleaned = cleaned.trimmingCharacters(in: .whitespacesAndNewlines)
         if cleaned.isEmpty { return "Unknown Payee" }
 
@@ -44,16 +45,39 @@ enum PayeeDisplayFormatter {
         return cleaned
     }
 
+    /// True when the raw payee (after bank noise stripping) looks like Amazon / AMZN.
+    static func isAmazonMerchant(_ raw: String?) -> Bool {
+        guard let s = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !s.isEmpty else { return false }
+        let normalized = collapseWhitespace(s)
+        let bankStripped = stripLeadingBankNoise(normalized)
+        return amazonLike(bankStripped.lowercased())
+    }
+
     /// Single-line memo preview for subtitles (nil when empty).
     static func memoPreview(_ memo: String?, maxLength: Int = 90) -> String? {
         guard var m = memo?.trimmingCharacters(in: .whitespacesAndNewlines), !m.isEmpty else { return nil }
-        m = m.replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
+        m = collapseWhitespace(m)
         if m.count <= maxLength { return m }
         let idx = m.index(m.startIndex, offsetBy: maxLength - 1)
         return String(m[..<idx]) + "…"
     }
 
+    /// Subtitle for item / memo context in transaction rows (Amazon-specific fallback when memo is empty).
+    static func itemContextSubtitle(payeeRaw: String?, memo: String?) -> String? {
+        if let preview = memoPreview(memo), !preview.isEmpty {
+            return "Item: \(preview)"
+        }
+        if isAmazonMerchant(payeeRaw) {
+            return "No item details in YNAB memo yet. Add a memo in YNAB or use Spend Clarity to enrich."
+        }
+        return nil
+    }
+
     // MARK: - Private
+
+    private static func collapseWhitespace(_ s: String) -> String {
+        s.replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
+    }
 
     private static func amazonLike(_ lower: String) -> Bool {
         if lower.contains("amazon") { return true }
@@ -62,6 +86,41 @@ enum PayeeDisplayFormatter {
         if lower.contains("audible") && lower.contains("amzn") { return true }
         return false
     }
+
+    /// Strips repeated leading bank / ACH / card boilerplate so merchant tokens surface.
+    private static func stripLeadingBankNoise(_ s: String) -> String {
+        var out = s
+        let maxPasses = 8
+        for _ in 0..<maxPasses {
+            let before = out
+            for pattern in leadingBankNoisePatterns {
+                out = out.replacingOccurrences(
+                    of: pattern,
+                    with: "",
+                    options: [.regularExpression, .caseInsensitive]
+                )
+            }
+            out = out.trimmingCharacters(in: .whitespacesAndNewlines)
+            if out == before { break }
+        }
+        return out
+    }
+
+    /// Ordered patterns applied repeatedly (leading anchor).
+    private static let leadingBankNoisePatterns: [String] = [
+        // Withdrawal / ACH / transfer verbs
+        #"^(withdrawal|wd|ach|eft|transfer|xfer)\s+"#,
+        #"^(online|web)\s+(payment|transfer|bill\s*pay|bill\s*payment)\s+"#,
+        #"^(bill\s*pay(?:ment)?|recurring\s+ach|direct\s+debit|auto\s*pay|autopay)\s+"#,
+        #"^(debit|credit)\s+(card\s+)?(purchase|payment|pmt|txn)?\s*"#,
+        #"^(pos|point\s+of\s+sale|purchase|purch)\s+"#,
+        #"^(electronic|digital)\s+(payment|funds\s+transfer|transfer)\s+"#,
+        // ACH subtypes often prefix the merchant
+        #"^ach\s*[-–]\s*\w+\s+"#,
+        #"^ach\s+(credit|debit|payment|withdrawal)\s+"#,
+        #"^(ppd|ccd|web|tel)\s+(ach\s+)?"#,
+        #"^(checking|savings|chk|sv)\s+"#,
+    ]
 
     /// Removes trailing reference / location noise often appended by processors.
     private static func stripNoise(_ s: String) -> String {

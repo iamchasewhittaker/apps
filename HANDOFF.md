@@ -79,10 +79,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **RollerTask Tycoon iOS V1 shipped.** ⌘B ✓ · ⌘U 9/9 ✓ · `feat/rtt-ios-v1-simplify` merged to `main` · CHANGELOG promoted to [1.0.0]. |
-| **Next** | 1) Fill in Step 6 Learn notes for Wellness Tracker + Job Search HQ (`portfolio/audits/`) · 2) Archive App Forge, AI Dev Mastery, Shortcut Reference · 3) Draw MoSCoW line on YNAB Clarity v1 backlog · 4) Get WIP = 1 (YNAB Clarity is natural next focus) |
+| **Focus** | **Wellness Tracker iOS Phase 2 foundation shipped.** Native tab shell (`Check-in`, `Tasks`, `Time`, `Capture`) is live with first daily parity slice (Tasks + Time + quick Win/Pulse), plus draft/navigation test coverage and explicit companion-first scope docs. |
+| **Next** | 1) Expand Tasks parity (top-3 triage + one-thing) in `portfolio/wellness-tracker-ios` · 2) Expand Time parity to active timer/session controls · 3) Keep History analytics/export/AI deferred until Phase 2 workflows are stable · 4) Revisit auth/sync only if iOS replacement criteria are met |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-12 |
+| **Last touch** | 2026-04-12 (Wellness Tracker iOS) |
 
 ---
 

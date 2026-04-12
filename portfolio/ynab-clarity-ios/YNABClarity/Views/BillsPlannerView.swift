@@ -7,7 +7,7 @@ struct BillsPlannerView: View {
     @Query(sort: \IncomeSource.sortOrder) private var sources: [IncomeSource]
 
     @State private var showCovered = false
-    @State private var fundSheet: FundSheetConfig? = nil
+    @State private var fundSheet: FundCategorySheetConfig? = nil
     @State private var isFunding = false
     @State private var reviewSheet: CategoryReviewConfig? = nil
     @State private var isAssigning = false
@@ -75,7 +75,20 @@ struct BillsPlannerView: View {
             .navigationTitle("Bills")
             .navigationBarTitleDisplayMode(.large)
             .sheet(item: $fundSheet) { config in
-                fundConfirmationSheet(config)
+                FundCategoryConfirmationSheet(
+                    config: config,
+                    isFunding: $isFunding,
+                    onConfirm: {
+                        try? await appState.fundCategory(
+                            categoryID: config.categoryID,
+                            budgetedMilliunits: config.targetMilliunits,
+                            categoryMappings: mappings,
+                            incomeSources: sources
+                        )
+                        fundSheet = nil
+                    },
+                    onCancel: { fundSheet = nil }
+                )
             }
             .sheet(item: $reviewSheet) { config in
                 AssignCategorySheet(
@@ -169,11 +182,11 @@ struct BillsPlannerView: View {
                         .font(ClarityTheme.bodyFont)
                         .foregroundStyle(ClarityTheme.text)
                         .lineLimit(2)
-                    if let memo = PayeeDisplayFormatter.memoPreview(txn.memo) {
-                        Text(memo)
-                            .font(ClarityTheme.captionFont)
+                    if let itemLine = PayeeDisplayFormatter.itemContextSubtitle(payeeRaw: txn.payeeName, memo: txn.memo) {
+                        Text(itemLine)
+                            .font(ClarityTheme.supportingFont)
                             .foregroundStyle(ClarityTheme.muted)
-                            .lineLimit(2)
+                            .lineLimit(3)
                     }
                     Text(txn.date)
                         .font(ClarityTheme.captionFont)
@@ -276,7 +289,7 @@ struct BillsPlannerView: View {
                 if !b.isCovered && b.shortfall > 0 {
                     Button {
                         let milliunits = Int(b.monthlyTarget * 1000)
-                        fundSheet = FundSheetConfig(
+                        fundSheet = FundCategorySheetConfig(
                             categoryID: b.ynabCategoryID,
                             categoryName: b.name,
                             shortfall: b.shortfall,
@@ -328,71 +341,6 @@ struct BillsPlannerView: View {
             .padding(.vertical, 3)
             .background(color.opacity(0.15))
             .clipShape(Capsule())
-    }
-
-    // MARK: - Fund confirmation sheet
-
-    private func fundConfirmationSheet(_ config: FundSheetConfig) -> some View {
-        NavigationStack {
-            ZStack {
-                ClarityTheme.bg.ignoresSafeArea()
-                VStack(spacing: 20) {
-                    Image(systemName: "dollarsign.arrow.circlepath")
-                        .font(.system(size: 40))
-                        .foregroundStyle(ClarityTheme.accent)
-
-                    Text("Fund \(config.categoryName)?")
-                        .font(ClarityTheme.titleFont)
-                        .foregroundStyle(ClarityTheme.text)
-
-                    Text("This will assign \(ClarityTheme.currency(config.shortfall)) to fully fund this category's goal in YNAB.")
-                        .font(ClarityTheme.bodyFont)
-                        .foregroundStyle(ClarityTheme.muted)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 20)
-
-                    Button {
-                        Task {
-                            isFunding = true
-                            defer { isFunding = false }
-                            try? await appState.fundCategory(
-                                categoryID: config.categoryID,
-                                budgetedMilliunits: config.targetMilliunits,
-                                categoryMappings: mappings,
-                                incomeSources: sources
-                            )
-                            fundSheet = nil
-                        }
-                    } label: {
-                        HStack {
-                            if isFunding {
-                                ProgressView().tint(ClarityTheme.bg)
-                            } else {
-                                Text("Assign " + ClarityTheme.currency(config.shortfall))
-                                    .font(ClarityTheme.headlineFont)
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(ClarityTheme.accent)
-                        .foregroundStyle(ClarityTheme.text)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-                    .disabled(isFunding)
-                    .padding(.horizontal, 20)
-                }
-                .padding(24)
-            }
-            .navigationTitle("Fund Category")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Cancel") { fundSheet = nil }
-                        .foregroundStyle(ClarityTheme.accent)
-                }
-            }
-        }
-        .preferredColorScheme(.dark)
     }
 
     // MARK: - Empty state
@@ -486,9 +434,12 @@ private struct AssignCategorySheet: View {
                                 Text(ClarityTheme.currency(-transaction.amountDollars) + " · " + transaction.date)
                                     .font(ClarityTheme.captionFont)
                                     .foregroundStyle(ClarityTheme.muted)
-                                if let memo = PayeeDisplayFormatter.memoPreview(transaction.memo) {
-                                    Label(memo, systemImage: "note.text")
-                                        .font(ClarityTheme.captionFont)
+                                if let itemLine = PayeeDisplayFormatter.itemContextSubtitle(
+                                    payeeRaw: transaction.payeeName,
+                                    memo: transaction.memo
+                                ) {
+                                    Label(itemLine, systemImage: "note.text")
+                                        .font(ClarityTheme.supportingFont)
                                         .foregroundStyle(ClarityTheme.accent)
                                         .labelStyle(.titleAndIcon)
                                 }
@@ -550,7 +501,6 @@ private struct AssignCategorySheet: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
     }
 
     @ViewBuilder
@@ -633,14 +583,6 @@ private struct CategoryReviewConfig: Identifiable {
     let id = UUID()
     let transaction: YNABTransaction
     let suggestions: [CategorySuggestion]
-}
-
-private struct FundSheetConfig: Identifiable {
-    let id = UUID()
-    let categoryID: String
-    let categoryName: String
-    let shortfall: Double
-    let targetMilliunits: Int
 }
 
 #Preview {

@@ -111,8 +111,7 @@ struct CheckinFlowView: View {
         HStack(spacing: 12) {
             if store.sectionIdx > 0 {
                 Button("Back") {
-                    store.sectionIdx -= 1
-                    store.saveDraft()
+                    store.goToPreviousSection()
                 }
                 .buttonStyle(.bordered)
                 .tint(WellnessTheme.border)
@@ -120,8 +119,7 @@ struct CheckinFlowView: View {
             Spacer()
             if store.sectionIdx < store.activeSections.count - 1 {
                 Button("Next") {
-                    store.sectionIdx += 1
-                    store.saveDraft()
+                    store.goToNextSection()
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(WellnessTheme.accent)

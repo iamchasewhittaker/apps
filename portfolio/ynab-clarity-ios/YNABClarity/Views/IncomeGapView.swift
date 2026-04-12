@@ -7,6 +7,8 @@ struct IncomeGapView: View {
     @Query(sort: \IncomeSource.sortOrder) private var sources: [IncomeSource]
 
     @State private var showIncomeSources = false
+    @State private var fundSheet: FundCategorySheetConfig? = nil
+    @State private var isFundingGoal = false
 
     private var balances: [CategoryBalance] { appState.buildBalances(mappings: mappings) }
     private var currentMonth: Date { Date() }
@@ -46,6 +48,22 @@ struct IncomeGapView: View {
             }
             .navigationTitle("Adjust")
             .navigationBarTitleDisplayMode(.large)
+            .sheet(item: $fundSheet) { config in
+                FundCategoryConfirmationSheet(
+                    config: config,
+                    isFunding: $isFundingGoal,
+                    onConfirm: {
+                        try? await appState.fundCategory(
+                            categoryID: config.categoryID,
+                            budgetedMilliunits: config.targetMilliunits,
+                            categoryMappings: mappings,
+                            incomeSources: sources
+                        )
+                        fundSheet = nil
+                    },
+                    onCancel: { fundSheet = nil }
+                )
+            }
         }
     }
 
@@ -100,7 +118,7 @@ struct IncomeGapView: View {
                         .font(ClarityTheme.titleFont)
                         .foregroundStyle(ClarityTheme.safe)
                     Text("Every mapped category with a YNAB goal has enough assigned this month to meet that goal target (or has no goal).")
-                        .font(ClarityTheme.captionFont)
+                        .font(ClarityTheme.supportingFont)
                         .foregroundStyle(ClarityTheme.muted)
                 }
                 .clarityCard()
@@ -116,26 +134,42 @@ struct IncomeGapView: View {
                             .foregroundStyle(ClarityTheme.caution)
                     }
                     Text(
-                        "This compares each category’s goal target to how much you’ve assigned in YNAB this month — not “available” after spending. Assign more in YNAB (or use Bills → Fund) to close a gap."
+                        "This compares each category’s goal target to how much you’ve assigned in YNAB this month — not “available” after spending. Tap a row to assign the gap in YNAB, or use Bills → Fund."
                     )
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
                     VStack(spacing: 8) {
                         ForEach(goals) { goal in
-                            HStack {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(goal.categoryName)
-                                        .font(ClarityTheme.bodyFont)
-                                        .foregroundStyle(ClarityTheme.text)
-                                    Text("Goal: " + ClarityTheme.currency(goal.goalTarget) + " · Assigned: " + ClarityTheme.currency(goal.assigned))
+                            Button {
+                                let milliunits = Int(goal.goalTarget * 1000)
+                                fundSheet = FundCategorySheetConfig(
+                                    categoryID: goal.ynabCategoryID,
+                                    categoryName: goal.categoryName,
+                                    shortfall: goal.gap,
+                                    targetMilliunits: milliunits
+                                )
+                            } label: {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(goal.categoryName)
+                                            .font(ClarityTheme.bodyFont)
+                                            .foregroundStyle(ClarityTheme.text)
+                                        Text("Goal: " + ClarityTheme.currency(goal.goalTarget) + " · Assigned: " + ClarityTheme.currency(goal.assigned))
+                                            .font(ClarityTheme.supportingFont)
+                                            .foregroundStyle(ClarityTheme.muted)
+                                    }
+                                    Spacer()
+                                    Text(ClarityTheme.currency(goal.gap) + " to assign")
+                                        .font(ClarityTheme.supportingFont.weight(.semibold))
+                                        .foregroundStyle(ClarityTheme.caution)
+                                    Image(systemName: "chevron.right")
                                         .font(ClarityTheme.captionFont)
                                         .foregroundStyle(ClarityTheme.muted)
                                 }
-                                Spacer()
-                                Text(ClarityTheme.currency(goal.gap) + " to assign")
-                                    .font(ClarityTheme.captionFont.weight(.semibold))
-                                    .foregroundStyle(ClarityTheme.caution)
                             }
+                            .buttonStyle(.plain)
+                            .accessibilityElement(children: .combine)
+                            .accessibilityHint("Opens confirmation to assign this gap in YNAB.")
                         }
                     }
                 }
@@ -228,7 +262,7 @@ struct IncomeGapView: View {
                         .foregroundStyle(ClarityTheme.danger)
                 }
                 Text("Income falls short of required expenses by \(ClarityTheme.currency(gap)) this month.")
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
             } else {
                 HStack {
@@ -241,7 +275,7 @@ struct IncomeGapView: View {
                         .foregroundStyle(ClarityTheme.safe)
                 }
                 Text("Expected income covers all required expenses with \(ClarityTheme.currency(surplus)) remaining.")
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
             }
         }
@@ -277,7 +311,7 @@ struct IncomeGapView: View {
             }
 
             Text("Based on \(ClarityTheme.currency(totalRequired))/mo in required expenses and a \(Int(appState.taxRate * 100))% tax rate. Adjust the rate in Settings.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
         .clarityCard()

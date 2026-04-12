@@ -252,6 +252,7 @@ enum MetricsEngine {
             let gap = target - assigned
             guard gap > 0.01 else { return nil }
             return GoalStatus(
+                ynabCategoryID: cat.id,
                 categoryName: cat.name,
                 goalTarget: target,
                 assigned: assigned,
@@ -265,9 +266,11 @@ enum MetricsEngine {
 // MARK: - GoalStatus
 
 struct GoalStatus: Identifiable {
-    let id = UUID()
+    let ynabCategoryID: String
     let categoryName: String
     let goalTarget: Double
     let assigned: Double
     let gap: Double
+
+    var id: String { ynabCategoryID }
 }

@@ -20,6 +20,12 @@
 
 ## Entries
 
+### 2026-04-12 — CLI tests may hang after build
+**What happened:** `xcodebuild test` from CLI built successfully but stalled during simulator test execution in this environment.
+**Root cause:** Simulator/runtime conditions can block test execution even when code compiles, especially with signing/simulator state mismatches.
+**Fix / lesson:** Use `xcodebuild build-for-testing ... CODE_SIGNING_ALLOWED=NO` as a reliable CI-style compile check, then run full tests in Xcode when simulator state is healthy.
+**Tags:** xcode, testing, swift
+
 ### 2026-04-11 — Code lost after accidental Xcode deletion
 **What happened:** Code was accidentally deleted in Xcode with no recent commit to recover from. Recovery required reverting to an older version, losing recent work.
 **Root cause:** No habit of committing before manual editing sessions. Xcode's undo does not survive file closes or app restarts, and there was no git safety net.
