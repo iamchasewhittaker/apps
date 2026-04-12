@@ -2,6 +2,10 @@
 
 Last updated: 2026-04-12
 
+## Branding
+
+Shared **W + sunrise** mark with web; spec and web asset map: [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md). iOS: `WellnessTracker/Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
+
 ## Product intent
 
 Deliver a high-quality native iOS Wellness Tracker experience in phased slices, prioritizing daily-use workflows before full analytics parity.

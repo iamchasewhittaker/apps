@@ -36,6 +36,10 @@ bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 
 ---
 
+## Branding
+
+PWA / favicon assets and the canonical icon spec: **`docs/BRANDING.md`** and **`public/manifest.json`**. Native iOS uses the same mark in `../wellness-tracker-ios/.../AppIcon.appiconset/`.
+
 ## What This App Is
 
 A personal daily wellness tracker. It exists because standard task and wellness tools don't account for day-to-day cognitive variability. Used daily on Safari on iPhone. Deployed on Vercel.

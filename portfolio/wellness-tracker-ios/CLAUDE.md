@@ -12,7 +12,7 @@ Instructions for AI assistants and humans working in this directory.
 
 **Bundle ID:** `com.chasewhittaker.WellnessTracker`
 
-**Branding:** Display name **Wellness Tracker**. App icon: sunrise / horizon in `Assets.xcassets/AppIcon.appiconset/`.
+**Branding:** Display name **Wellness Tracker**. App icon: unified **W + sunrise** mark on app canvas `#0d0d0f`, sage horizon — master `AppIcon.png` in `Assets.xcassets/AppIcon.appiconset/` (same concept as web; see web [docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md)).
 
 **Storage (UserDefaults):**
 

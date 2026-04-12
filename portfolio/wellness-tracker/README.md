@@ -16,6 +16,10 @@ npm run build
 
 Path from repo root: **`portfolio/wellness-tracker`**. Copy of shared sync lives in `src/shared/sync.js` — keep aligned with `portfolio/shared/sync.js`.
 
+## Branding
+
+Logo and icon specs: [docs/BRANDING.md](docs/BRANDING.md). Favicon, Apple touch icon, and PWA manifest live in `public/`.
+
 ## Docs
 
 - [CLAUDE.md](CLAUDE.md) — app-specific behavior and file map

@@ -8,6 +8,7 @@
 - **Version:** v15.10
 - **Storage key:** `chase_wellness_v1` (main) · `chase_wellness_draft_v1` (draft) · `chase_wellness_meds_v1` (meds)
 - **URL:** wellnes-tracker.vercel.app
+- **Branding / icon:** Unified W + sunrise mark on `#0d0d0f`; PWA icons + manifest in `public/` — see [docs/BRANDING.md](docs/BRANDING.md).
 - **Entry:** `src/App.jsx`
 - **Native iOS (Phase 1):** [`../wellness-tracker-ios`](../wellness-tracker-ios) — SwiftUI check-in, **device-local only** (no Supabase; separate UserDefaults keys — see that `CLAUDE.md`)
 

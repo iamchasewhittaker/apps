@@ -3,7 +3,8 @@
 ## Now
 
 - [x] Supabase sync + email OTP (iOS PWA)
-- [x] Native iOS Phase 1 — check-in + sync (`portfolio/wellness-tracker-ios`)
+- [x] Unified **W + sunrise** branding — web `public/` + `manifest.json` + `docs/BRANDING.md`; iOS `AppIcon` (`portfolio/wellness-tracker-ios`)
+- [x] Native iOS — local check-in app (`portfolio/wellness-tracker-ios`; no cloud sync)
 - [ ] Vercel root directory: `portfolio/wellness-tracker` after monorepo migration
 
 ## Next

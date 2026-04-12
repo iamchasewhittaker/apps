@@ -11,6 +11,7 @@
 
 ## [Unreleased]
 
+- **Branding / PWA:** unified **W + sunrise** app mark on `#0d0d0f`; added `public/logo-1024.png`, `logo192.png`, `logo512.png`, `apple-touch-icon.png`, `favicon-32.png`, `manifest.json`; linked icons + manifest from `public/index.html`; `theme-color` aligned to `#0d0d0f`. Specs in `docs/BRANDING.md`.
 - **Monorepo:** app path is `portfolio/wellness-tracker` under `~/Developer/chase`; README, ROADMAP, AGENTS, `docs/ARCHITECTURE`, `docs/LEARNING`; Linear project linked in docs.
 - **Native iOS (Phase 1):** companion app at [`portfolio/wellness-tracker-ios`](../wellness-tracker-ios) — morning/evening check-in, **`chase_wellness_ios_*`** UserDefaults, **no cloud sync**; see that folder’s `CLAUDE.md` / `README.md`.
 - **Docs:** `src/shared/sync.js` header lists known `app_key` values (kept in sync with `portfolio/shared/sync.js`).

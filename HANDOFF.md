@@ -79,10 +79,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Wellness Tracker iOS Phase 2 foundation shipped.** Native tab shell (`Check-in`, `Tasks`, `Time`, `Capture`) is live with first daily parity slice (Tasks + Time + quick Win/Pulse), plus draft/navigation test coverage and explicit companion-first scope docs. |
+| **Focus** | **Wellness Tracker branding shipped (web + iOS).** Unified W + sunrise mark on `#0d0d0f`; web `public/` icons + `manifest.json` + `docs/BRANDING.md`; iOS `AppIcon.appiconset/AppIcon.png` replaced. (Phase 2 tab shell + daily parity slice remains as prior shipped work.) |
 | **Next** | 1) Expand Tasks parity (top-3 triage + one-thing) in `portfolio/wellness-tracker-ios` · 2) Expand Time parity to active timer/session controls · 3) Keep History analytics/export/AI deferred until Phase 2 workflows are stable · 4) Revisit auth/sync only if iOS replacement criteria are met |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-12 (Wellness Tracker iOS) |
+| **Last touch** | 2026-04-12 (Wellness Tracker web + iOS branding) |
 
 ---
 
