@@ -5,6 +5,187 @@
 
 ---
 
+## New Project or Idea? Start Here First
+
+> If you're working on an **existing app**, skip to "The 9 Steps" below.
+> If you have a **new idea or new app**, read this section first.
+
+---
+
+### The Golden Rule
+
+**No coding until you've answered 3 questions in writing:**
+1. What is this? (one sentence)
+2. Who is it for and what problem does it solve?
+3. What does V1 look like — and what's NOT in V1?
+
+If you skip this, you'll build the wrong thing, or build too much, and waste days. This isn't bureaucracy — it's protection.
+
+---
+
+### Phase 1 — Define the idea (do this yourself, 10 minutes)
+
+Before opening any AI tool, answer these 5 questions. Write them down anywhere — Notes app, paper, doesn't matter.
+
+```
+App summary:    This app helps ___ do ___.
+Target user:    Who specifically? (be specific — "me" is fine)
+Pain point:     What's failing for them today?
+Core value:     What does this do better than the current solution?
+V1 scope:       What's the smallest useful version? (3–5 bullet points max)
+```
+
+**Example — a real filled-in version:**
+```
+App summary:    This app helps Chase see what he actually spent on Amazon each month.
+Target user:    Me — I use YNAB but transactions just say "AMAZON" with no detail.
+Pain point:     I have no idea what I bought. I can't cut spending I can't see.
+Core value:     Pulls item names from receipt emails and puts them in the YNAB memo.
+V1 scope:
+  - Parse Amazon receipt emails from Gmail
+  - Match to YNAB transactions by amount + date
+  - Write item name into the memo field
+  - Dry-run mode (preview before writing)
+```
+
+**Why this matters:** If you can't fill this in, the idea isn't ready yet. Keep it in your notes and come back when it's clearer.
+
+---
+
+### Phase 2 — Write the PRD (with AI help, 20 minutes)
+
+A PRD (Product Requirements Doc) turns your idea into a buildable plan. You do this WITH the AI — not in code, just in words.
+
+**What to tell the AI:**
+```
+I have a new app idea. Help me write a simple PRD.
+Here's what I know so far: [paste your Phase 1 answers]
+Ask me questions until we have: problem, users, user stories, 
+V1 features, what's NOT in V1, and how we'll know it worked.
+```
+
+**What comes out:** A short document that answers:
+- What problem are we solving?
+- Who is this for?
+- What can the user DO in V1? (user stories: "As a user, I want to...")
+- What is explicitly NOT in V1? (this list is just as important)
+- How do we know V1 succeeded?
+
+**Example "Not in V1" list:**
+```
+Not in V1:
+- No web UI
+- No automatic scheduling (run manually only)
+- No Apple or Privacy.com parsing yet (Amazon only)
+- No category assignment
+```
+Cutting scope on paper is free. Cutting it after you've coded it costs days.
+
+---
+
+### Phase 3 — Map the UX flow (with AI help, 15 minutes)
+
+Before any code, map out what the user actually experiences. Even for a CLI tool, this matters.
+
+**What to tell the AI:**
+```
+Now help me map the UX flow. 
+What's the first thing the user sees/does?
+What's the main action?
+What happens when it works? What happens when it fails?
+What does an empty state look like?
+```
+
+**For a visual app (iOS, web), answer:**
+- What is the first screen?
+- What does the user tap first?
+- How many taps to complete the main action?
+- What shows when there's no data?
+- What shows when something goes wrong?
+
+**For a CLI tool (like Spend Clarity), answer:**
+- What does the user type to run it?
+- What does a successful run look like in the terminal?
+- What does an error look like? Is it clear what to do?
+- What's the dry-run output vs. the live output?
+
+---
+
+### Phase 4+ — Architecture, milestones, and coding
+
+Only after Phases 1–3 are written down do you move to:
+- **Phase 4** — How will it be built? (tech stack, folder structure)
+- **Phase 5** — Break it into milestones (never "build the app" — always "build milestone 1")
+- **Phase 6** — Ship, then learn
+
+See `PRODUCT_BUILD_FRAMEWORK.md` at the repo root for full details on Phases 4–6.
+
+---
+
+### Setting up the new project folder
+
+Once you're ready to code (Phases 1–3 done), tell the AI to scaffold the project:
+
+```
+I'm ready to start coding. 
+App name: [name]
+Folder: portfolio/[app-folder-name]
+Stack: [iOS SwiftUI / React web / Python CLI]
+
+Please:
+1. Create the portfolio/[app-folder-name]/ folder
+2. Create CLAUDE.md, HANDOFF.md, LEARNINGS.md, CHANGELOG.md, ROADMAP.md
+3. Add the app to the master CLAUDE.md portfolio table
+4. Create the .cursor/rules/ symlink for Cursor
+5. Add a row to the root ROADMAP.md change log
+```
+
+**What gets created automatically:**
+
+| File | What it's for |
+|------|--------------|
+| `CLAUDE.md` | Rules and conventions for this app |
+| `HANDOFF.md` | Session state — where you left off |
+| `LEARNINGS.md` | Mistakes and lessons (starts empty) |
+| `CHANGELOG.md` | History of every change |
+| `ROADMAP.md` | What's planned and what's done |
+| `.cursor/rules/` symlink | So Cursor auto-loads handoff rules |
+
+---
+
+### New project checklist
+
+```
+Before touching any code:
+[ ] Phase 1 written — app summary, user, pain point, V1 scope
+[ ] Phase 2 written — PRD with features + explicit cut list
+[ ] Phase 3 written — UX flow, screens, empty states
+
+Setting up:
+[ ] checkpoint (always first)
+[ ] Folder created under portfolio/
+[ ] All 5 docs created (CLAUDE.md, HANDOFF.md, LEARNINGS.md, CHANGELOG.md, ROADMAP.md)
+[ ] Added to master CLAUDE.md portfolio table
+[ ] Cursor symlink created
+[ ] Root ROADMAP.md updated
+
+Then use the normal 9-step session flow for all coding sessions.
+```
+
+---
+
+### New project vs. existing app — at a glance
+
+| Situation | What to do |
+|-----------|-----------|
+| Brand new idea, haven't thought it through | Do Phase 1 yourself (10 min, no AI needed) |
+| Have a clear idea, need to flesh it out | Phases 1–3 with AI help before any code |
+| Ready to build, need the folder set up | Ask AI to scaffold the project folder |
+| Project exists, adding a feature | Use the normal 9-step session flow |
+| Project exists, fixing a bug | Use the normal 9-step session flow |
+
+---
+
 ## The 9 Steps at a Glance
 
 | # | Step | When |
