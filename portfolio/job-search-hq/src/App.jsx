@@ -230,6 +230,27 @@ export default function JobSearchTracker() {
     } catch (e) {}
     hasLoaded.current = true;
 
+    // Bookmarklet import — check for Sales Navigator contact data in URL params
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("importContact") === "1") {
+      const imported = {
+        ...blankContact(),
+        name: params.get("name") || "",
+        role: params.get("role") || "",
+        company: params.get("company") || "",
+        linkedin: params.get("linkedin") || "",
+        companySize: params.get("companySize") || "",
+        industry: params.get("industry") || "",
+        isHiring: params.get("isHiring") === "true",
+        source: "sales_navigator",
+        type: "other",
+        outreachStatus: "none",
+      };
+      setContactModal({ mode: "new", contact: imported });
+      setTab("contacts");
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+
     // Pull from Supabase — if remote is newer, re-hydrate and update localStorage
     pull(APP_KEY, stored, stored._syncAt).then(remote => {
       if (remote === stored) return; // no change (same reference = local wins)
@@ -418,6 +439,7 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
         <ContactsTab
           contacts={data.contacts} applications={data.applications}
           setContactModal={setContactModal} deleteContact={deleteContact}
+          saveContact={saveContact} setTab={setTab}
         />
       )}
       {tab === "ai" && (

@@ -76,6 +76,21 @@ export const STAGE_COLORS = {
   "Rejected": "#ef4444", "Withdrawn": "#9ca3af",
 };
 
+// ── CONTACT TYPES & OUTREACH STATUSES ────────────────────────────────────────
+export const CONTACT_TYPES = [
+  { value: "hiring_manager", label: "Hiring Manager", color: "#3b82f6" },
+  { value: "recruiter",      label: "Recruiter",       color: "#8b5cf6" },
+  { value: "alumni",         label: "Alumni",          color: "#10b981" },
+  { value: "other",          label: "Other",           color: "#6b7280" },
+];
+export const OUTREACH_STATUSES = [
+  { value: "none",       label: "No Outreach", color: "#4b5563" },
+  { value: "sent",       label: "Sent",        color: "#f59e0b" },
+  { value: "replied",    label: "Replied",     color: "#3b82f6" },
+  { value: "meeting",    label: "Meeting",     color: "#10b981" },
+  { value: "intro_made", label: "Intro Made",  color: "#8b5cf6" },
+];
+
 // ── JOB SEARCH ────────────────────────────────────────────────────────────────
 export const JOB_SEARCH_QUERIES = [
   "Implementation Specialist fintech payments remote",
@@ -248,7 +263,13 @@ export function blankApp() {
   return { id: generateId(), company: "", title: "", stage: "Interested", appliedDate: "", url: "", nextStep: "", jobDescription: "", notes: "", prepNotes: "" };
 }
 export function blankContact() {
-  return { id: generateId(), name: "", company: "", role: "", email: "", linkedin: "", lastContact: "", notes: "", appIds: [] };
+  return {
+    id: generateId(), name: "", company: "", role: "", email: "", linkedin: "",
+    lastContact: "", notes: "", appIds: [],
+    // v8.4 networking fields
+    type: "other", outreachStatus: "none", outreachDate: "",
+    source: "linkedin", companySize: "", industry: "", isHiring: false,
+  };
 }
 
 // ── DAILY FOCUS BLOCKS ────────────────────────────────────────────────────────
@@ -426,6 +447,23 @@ export const s = {
   contactCard: { background: "#1a1f2e", border: "1px solid #1f2937", borderRadius: 12, padding: 16 },
   contactCardTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
   contactNotes: { fontSize: 13, color: "#9ca3af", marginTop: 4 },
+  // Networking stats bar
+  statsBar: { display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" },
+  statBox: { background: "#1a1f2e", border: "1px solid #1f2937", borderRadius: 10, padding: "10px 14px", flex: "1 1 120px", minWidth: 100 },
+  statNum: { fontSize: 20, fontWeight: 700, color: "#f3f4f6" },
+  statLabel: { fontSize: 11, color: "#6b7280", marginTop: 2 },
+  // Contact filters
+  filterRow: { display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap", alignItems: "center" },
+  filterLabel: { fontSize: 12, color: "#6b7280", fontWeight: 500, flexShrink: 0 },
+  filterChip: { padding: "4px 12px", borderRadius: 20, border: "1px solid #374151", background: "transparent", color: "#9ca3af", cursor: "pointer", fontSize: 12 },
+  filterChipActive: { background: "#1e3a5f", borderColor: "#3b82f6", color: "#60a5fa" },
+  // Contact card badges & intel
+  contactTypeBadge: { fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500 },
+  outreachBadge: { fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500 },
+  companyIntel: { fontSize: 12, color: "#6b7280", display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 },
+  // Quick action row on contact cards
+  quickActions: { display: "flex", gap: 6, marginTop: 8, alignItems: "center" },
+  quickActionDraft: { background: "#1a2744", border: "none", color: "#60a5fa", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer", flexShrink: 0 },
   link: { color: "#60a5fa", textDecoration: "none" },
   warnBanner: { background: "#451a03", border: "1px solid #78350f", borderRadius: 10, padding: "10px 16px", fontSize: 13, color: "#fbbf24", display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" },
   warnBtn: { background: "#78350f", border: "none", color: "#fbbf24", borderRadius: 6, padding: "4px 12px", fontSize: 12, cursor: "pointer" },

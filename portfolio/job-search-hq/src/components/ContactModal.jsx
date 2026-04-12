@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { s } from "../constants";
+import { s, CONTACT_TYPES, OUTREACH_STATUSES } from "../constants";
 import Field from "./Field";
 
 export default function ContactModal({ modal, apps, onSave, onClose }) {
   const [c, setC] = useState(modal.contact);
   const set = (k, v) => setC(x => ({ ...x, [k]: v }));
   const toggleApp = id => set("appIds", c.appIds?.includes(id) ? c.appIds.filter(x => x !== id) : [...(c.appIds || []), id]);
+
   return (
     <div style={s.overlay} onClick={onClose}>
       <div style={s.modal} onClick={e => e.stopPropagation()}>
@@ -14,6 +15,7 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
           <button style={s.closeBtn} onClick={onClose}>✕</button>
         </div>
         <div style={s.modalBody}>
+          {/* Basic info */}
           <div style={s.formRow}>
             <Field label="Name" value={c.name} onChange={v => set("name", v)} placeholder="Jane Smith" />
             <Field label="Company" value={c.company} onChange={v => set("company", v)} placeholder="Stripe" />
@@ -25,6 +27,71 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
           <Field label="Email" value={c.email} onChange={v => set("email", v)} placeholder="jane@company.com" />
           <Field label="LinkedIn URL" value={c.linkedin} onChange={v => set("linkedin", v)} placeholder="https://linkedin.com/in/..." />
           <Field label="How we connected / Notes" type="textarea" rows={3} value={c.notes} onChange={v => set("notes", v)} placeholder="Met via LinkedIn, referred by…" />
+
+          {/* Contact type */}
+          <div style={s.fieldGroup}>
+            <label style={s.fieldLabel}>Contact Type</label>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {CONTACT_TYPES.map(t => (
+                <button key={t.value}
+                  style={{ ...s.appToggleChip, ...((c.type || "other") === t.value ? { background: t.color + "22", borderColor: t.color, color: t.color } : {}) }}
+                  onClick={() => set("type", t.value)}>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Outreach status */}
+          <div style={s.fieldGroup}>
+            <label style={s.fieldLabel}>Outreach Status</label>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {OUTREACH_STATUSES.map(st => (
+                <button key={st.value}
+                  style={{ ...s.appToggleChip, ...((c.outreachStatus || "none") === st.value ? { background: st.color + "22", borderColor: st.color, color: st.color } : {}) }}
+                  onClick={() => set("outreachStatus", st.value)}>
+                  {st.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Outreach date + source */}
+          <div style={s.formRow}>
+            <Field label="Outreach Date" type="date" value={c.outreachDate} onChange={v => set("outreachDate", v)} />
+            <div style={s.fieldGroup}>
+              <label style={s.fieldLabel}>Source</label>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {[
+                  { value: "sales_navigator", label: "Sales Nav" },
+                  { value: "linkedin", label: "LinkedIn" },
+                  { value: "referral", label: "Referral" },
+                  { value: "other", label: "Other" },
+                ].map(src => (
+                  <button key={src.value}
+                    style={{ ...s.appToggleChip, ...((c.source || "linkedin") === src.value ? s.appToggleChipActive : {}) }}
+                    onClick={() => set("source", src.value)}>
+                    {src.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Company intel */}
+          <div style={s.profileSectionLabel}>Company Intel</div>
+          <div style={s.formRow}>
+            <Field label="Company Size" value={c.companySize} onChange={v => set("companySize", v)} placeholder="e.g. 500–1,000" />
+            <Field label="Industry" value={c.industry} onChange={v => set("industry", v)} placeholder="e.g. Fintech, Payments" />
+          </div>
+          <div style={s.fieldGroup}>
+            <label style={{ ...s.fieldLabel, display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={!!c.isHiring} onChange={e => set("isHiring", e.target.checked)} />
+              Company is currently hiring
+            </label>
+          </div>
+
+          {/* Link to applications */}
           {apps.length > 0 && (
             <div style={s.fieldGroup}>
               <label style={s.fieldLabel}>Link to Application(s)</label>
