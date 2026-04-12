@@ -539,3 +539,295 @@ checkpoint "what you built"
 | App lessons | `portfolio/[app]/LEARNINGS.md` | Mistakes and fixes per app |
 | App changelog | `portfolio/[app]/CHANGELOG.md` | History of changes |
 | App roadmap | `portfolio/[app]/ROADMAP.md` | What's done and what's next |
+
+---
+
+## Starting Conversations by Tool
+
+> Each tool is different. Some read your project files automatically. Some need you to paste everything manually.
+> This section shows exactly what to type — by tool and by app type.
+
+---
+
+### Why conversations look different per tool
+
+| Tool | What it loads automatically | What you still need to paste |
+|------|-----------------------------|------------------------------|
+| **Claude Code** | `CLAUDE.md` at startup | The template + goal |
+| **Cursor** | `.cursor/rules/session-handoff.mdc` | The template + goal |
+| **Antigravity (VS Code)** | `CLAUDE.md` when folder is open | The template + goal |
+| **Codex (OpenAI)** | Nothing | `CLAUDE.md` intro + `HANDOFF.md` state + template + goal |
+| **Xcode (no AI)** | Nothing | Just run `checkpoint` — no conversation needed |
+
+The more a tool auto-loads, the shorter your opening message can be.
+The less it auto-loads, the more context you need to paste upfront.
+
+---
+
+### Claude Code — how to start
+
+**How it works:**
+- You're already in the terminal inside the repo
+- It reads `CLAUDE.md` automatically when it starts
+- Just paste the template and add your goal
+
+**Opening message — iOS app (e.g. YNAB Clarity):**
+```
+Read CLAUDE.md, portfolio/ynab-clarity-ios/CLAUDE.md, HANDOFF.md, 
+and portfolio/ynab-clarity-ios/LEARNINGS.md first.
+
+App: portfolio/ynab-clarity-ios
+Goal: Add a 6-month spending chart to the Overview tab
+Done when:
+- [ ] Bar chart shows last 6 months of spending
+- [ ] Each bar is color-coded by top spending category
+- [ ] Tapping a bar shows a category breakdown sheet
+Not in scope: Bills tab, Income tab, Settings
+Constraints: SwiftUI only, no new Swift packages, keep dark theme
+Files already touched: none — fresh start
+```
+
+**Opening message — React web app (e.g. Wellness Tracker):**
+```
+Read CLAUDE.md, portfolio/wellness-tracker/CLAUDE.md, HANDOFF.md,
+and portfolio/wellness-tracker/LEARNINGS.md first.
+
+App: portfolio/wellness-tracker
+Goal: Add a weekly summary card to the History tab
+Done when:
+- [ ] Card shows avg mood, avg sleep, and top habit for the week
+- [ ] Appears above the existing log list
+Not in scope: TrackerTab, BudgetTab, any sync changes
+Constraints: CRA only, inline styles using T tokens, no new npm packages
+Files already touched: none — fresh start
+```
+
+**Opening message — Python CLI (e.g. Spend Clarity):**
+```
+Read CLAUDE.md, portfolio/spend-clarity/CLAUDE.md, HANDOFF.md,
+and portfolio/spend-clarity/LEARNINGS.md first.
+
+App: portfolio/spend-clarity
+Goal: Add support for parsing Walmart receipt emails
+Done when:
+- [ ] walmart.py parser handles Walmart order confirmation emails
+- [ ] Receipts match to YNAB transactions by amount + date
+- [ ] Dry-run output shows matched Walmart transactions with item names
+Not in scope: Amazon parser, Privacy.com client, YNAB write logic
+Constraints: DRY_RUN=true default, never overwrite existing memos, add tests
+Files already touched: none — fresh start
+```
+
+---
+
+### Cursor — how to start
+
+**How it works:**
+- Open the app folder as your workspace (e.g. open `portfolio/ynab-clarity-ios/` in Cursor)
+- The `.cursor/rules/session-handoff.mdc` file auto-loads in every chat
+- Paste the template in the chat panel on the right
+
+**Opening message — iOS app:**
+```
+Read CLAUDE.md (repo root), this app's CLAUDE.md, HANDOFF.md, 
+and LEARNINGS.md first.
+
+App: portfolio/ynab-clarity-ios
+Goal: Add a 6-month spending chart to the Overview tab
+Done when:
+- [ ] Bar chart shows last 6 months of spending
+- [ ] Tapping a bar shows category breakdown
+Not in scope: Bills tab, Income tab, Settings
+Constraints: SwiftUI only, no new packages, dark theme
+Files already touched: none — fresh start
+```
+
+**Opening message — React web app:**
+```
+Read CLAUDE.md (repo root), this app's CLAUDE.md, HANDOFF.md,
+and LEARNINGS.md first.
+
+App: portfolio/wellness-tracker
+Goal: Add a weekly summary card to the History tab
+Done when:
+- [ ] Shows avg mood, avg sleep, top habit for the week
+- [ ] Appears above existing log list
+Not in scope: TrackerTab, BudgetTab
+Constraints: CRA, inline styles with T tokens, no new packages
+Files already touched: none — fresh start
+```
+
+**Tip for Cursor:** The chat panel sees your whole file tree. You can say "open OverviewView.swift" and it will pull it up. You don't need to paste file contents manually.
+
+---
+
+### Antigravity (VS Code) — how to start
+
+**How it works:**
+- Open the project folder in VS Code with Antigravity installed
+- It reads `CLAUDE.md` automatically
+- Paste the template in the Antigravity chat panel
+
+**Opening message — iOS app:**
+```
+Read CLAUDE.md, portfolio/ynab-clarity-ios/CLAUDE.md, HANDOFF.md,
+and portfolio/ynab-clarity-ios/LEARNINGS.md first.
+
+App: portfolio/ynab-clarity-ios
+Goal: Add a 6-month spending chart to the Overview tab
+Done when:
+- [ ] Chart shows last 6 months, color-coded by category
+- [ ] Tap to drill down into category
+Not in scope: Bills tab, Income tab
+Constraints: SwiftUI, no new packages, dark theme
+Files already touched: none
+```
+
+**Opening message — Python CLI:**
+```
+Read CLAUDE.md, portfolio/spend-clarity/CLAUDE.md, HANDOFF.md,
+and portfolio/spend-clarity/LEARNINGS.md first.
+
+App: portfolio/spend-clarity
+Goal: Add Walmart receipt email parsing
+Done when:
+- [ ] Parser handles Walmart order confirmation emails
+- [ ] Dry-run shows matched items
+Not in scope: Amazon parser, YNAB write logic
+Constraints: DRY_RUN=true default, add tests for the parser
+Files already touched: none
+```
+
+---
+
+### Codex (OpenAI) — how to start
+
+**How it works:**
+- Codex loads nothing automatically — you need to paste the context manually
+- This means a longer opening message, but it's a one-time copy-paste
+- After the first message it has full context and works like any other tool
+
+**Opening message — iOS app:**
+
+Paste ALL of this:
+```
+I'm working on an iOS app in a portfolio monorepo. Here's the context:
+
+REPO RULES (from CLAUDE.md):
+- SwiftUI + SwiftData for iOS apps
+- No TypeScript, no component libraries
+- Run checkpoint before and after every session
+- After session: update CHANGELOG.md, ROADMAP.md, HANDOFF.md, LEARNINGS.md
+
+APP RULES (from portfolio/ynab-clarity-ios/CLAUDE.md):
+- SwiftData + AppStorage for persistence
+- YNAB token stored in Keychain
+- DRY_RUN=true default — never write to YNAB without confirmation
+- Never overwrite existing data
+
+WHERE WE LEFT OFF (from HANDOFF.md):
+- Branch: feat/rtt-ios-v1-simplify
+- Last worked on: Overview tab spending card + stale sync banner
+- Next: test transactions decode against live API
+
+---
+
+App: portfolio/ynab-clarity-ios
+Goal: Add a 6-month spending chart to the Overview tab
+Done when:
+- [ ] Bar chart shows last 6 months of spending
+- [ ] Color-coded by top spending category
+- [ ] Tapping a bar shows category breakdown
+Not in scope: Bills tab, Income tab, Settings
+Constraints: SwiftUI only, no new packages, dark theme
+Files already touched: none — fresh start
+```
+
+**Opening message — React web app:**
+```
+I'm working on a React web app in a portfolio monorepo. Here's the context:
+
+REPO RULES (from CLAUDE.md):
+- React (Create React App) + localStorage, no TypeScript
+- Inline styles only — no CSS files, no Tailwind, no component libraries
+- Supabase for sync (already wired up)
+- Run checkpoint before and after every session
+- After session: update CHANGELOG.md, ROADMAP.md, HANDOFF.md, LEARNINGS.md
+
+APP RULES (from portfolio/wellness-tracker/CLAUDE.md):
+- Storage key: chase_wellness_v1
+- App.jsx is the shell — tabs are dumb components
+- Styles use T tokens from theme.js
+- save() stamps _syncAt for Supabase sync
+
+WHERE WE LEFT OFF (from HANDOFF.md):
+[paste the current State table from HANDOFF.md]
+
+---
+
+App: portfolio/wellness-tracker
+Goal: Add a weekly summary card to the History tab
+Done when:
+- [ ] Shows avg mood, avg sleep, top habit for the week
+- [ ] Appears above existing log list
+Not in scope: TrackerTab, BudgetTab, sync changes
+Constraints: CRA only, T tokens for styles, no new npm packages
+Files already touched: none
+```
+
+**Tip for Codex:** Copy the current State table from HANDOFF.md and paste it under "WHERE WE LEFT OFF" — it's only a few lines and it tells Codex exactly where things stand.
+
+---
+
+### Xcode only (no AI) — how to start
+
+**How it works:**
+- You're editing Swift files directly in Xcode
+- No AI involved — just you and the code
+- The only rule: **checkpoint before you touch anything**
+
+**Steps:**
+```
+1. Open Terminal
+2. Run: checkpoint
+3. Open Xcode
+4. Make your changes
+5. Build: Cmd+B
+6. Run tests: Cmd+U
+7. Go back to Terminal
+8. Run: checkpoint "what I changed"
+```
+
+**If something breaks:**
+```
+restore          ← shows your save points
+restore 1        ← goes back to just before you started
+```
+
+---
+
+### Side-by-side comparison
+
+| | Claude Code | Cursor | Antigravity | Codex | Xcode only |
+|---|---|---|---|---|---|
+| Auto-loads CLAUDE.md | Yes | Partial (rules file) | Yes | No | N/A |
+| Auto-loads HANDOFF.md | No — say it | No — say it | No — say it | No — paste it | N/A |
+| File tree access | Yes (terminal) | Yes (sidebar) | Yes (sidebar) | No | Yes |
+| Edits files directly | Yes | Yes | Yes | Suggests code | You do it |
+| Runs terminal commands | Yes | Yes (with permission) | Yes (with permission) | No | You do it |
+| How much to paste | Template + goal | Template + goal | Template + goal | Full context block | Nothing |
+| Best for | Full sessions, CLI work | iOS + web with file browsing | VS Code users | Quick questions, code review | Manual edits only |
+
+---
+
+### The one thing that never changes
+
+No matter which tool you use:
+
+```
+1. checkpoint (before you start)
+2. Tell the tool: what app, what goal, what's done when, what's off-limits
+3. checkpoint (when you're done)
+```
+
+The tool changes. The pattern doesn't.
