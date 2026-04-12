@@ -52,8 +52,18 @@
 - **Fund** flow on Bills tab: shortfall rows open a confirmation sheet (`sheet(item:)`), then PATCH to goal target in milliunits
 - **Cash Flow:** `.todayMarker` event, divider in UI; bill rows show Covered or dollar shortfall; timeline uses `dueDay` with role-based fallback (mortgage day 1, else day 5)
 - Unit tests: `testBuildBalances_usesGoalTargetWhenPresent`, `testBuildBalances_fallsToBudgetedWhenNoGoal`, `testSafeToSpend_includesToBeBudgeted`, `testObligationsCoverageFraction_matchesOverallRequired`, `testObligationsCoverageFraction_clampedWhenCategoryDeeplyNegative`, `testOutflowSpending_sumsNegativeAmountsInRange`
+- **`FundCategoryConfirmationSheet.swift`** — shared fund confirmation sheet for Bills and Adjust tabs
+- **`GoalStatus.ynabCategoryID`** — stable identity + funding target wiring from Adjust tab goal gaps
+- **Unit tests** for `PayeeDisplayFormatter` (ACH / withdrawal noise, Amazon memo subtitle) and `underfundedGoals` category ID
 
 ### Changed
+- **App icon** — replaced `AppIcon.png` with higher-contrast artwork (1024×1024); `Contents.json` includes `ios-marketing` 1024 entry alongside universal
+- **`PayeeDisplayFormatter`** — strips leading bank / ACH / bill-pay noise before merchant shortcuts so payees like “Withdrawal ACH … AMZN …” resolve to **Amazon**
+- **`PayeeDisplayFormatter.itemContextSubtitle`** — memo lines prefixed with `Item:`; Amazon-specific hint when memo is empty
+- **Adjust tab** — underfunded goal rows are tappable; confirmation sheet assigns gap via existing `fundCategory` YNAB write
+- **Low vision** — `ClarityTheme.muted` brightened; `supportingFont` (subheadline) for tips and long explanatory copy across Overview, Assign, Bills, Adjust, Age Money, How It Works, `TipBanner`
+- **Age of Money** — status row pairs SF Symbol + descriptive text (not color-only); extended blurbs in `ageLabel`
+- **Removed global / sheet `preferredColorScheme(.dark)`** — app follows system appearance while keeping dark-themed surfaces
 - **5 tabs:** Overview → Assign → Bills → Adjust → Age Money (`ContentView.swift`)
 - **Assign tab** (`DashboardView.swift`) — Ready to Assign, obligations funded progress, next-step copy (no longer hosts Safe to Spend / Spending)
 - **Bills** — categorization rows use cleaned payee + optional memo subtitle; `CategorySuggestionEngine` returns all role matches / all flexibles (no arbitrary cap of 3)
@@ -61,7 +71,6 @@
 - **Age Money** (`CashFlowView`) — milestones card, coaching actions, supporting-context header for paycheck/required + timeline; timeline optional when empty
 - **`YNABTransaction.memo: String?`** — decoded for memo display in Bills
 - **`HowItWorksView`** — copy aligned to five tabs
-- **App icon catalog** — explicit `scale: 1x` on 1024 universal entry
 - **Safe to spend:** discretionary pool is all mapped categories except mortgage/bill/essential (not only `.flexible`), plus **Ready to Assign** dollars, minus required shortfall
 - **Overview:** single **Bills & Essentials** card includes mortgage with combined progress; mortgage rows use purple label in the uncovered list
 - **`AppState.refresh`:** loads month + transactions in parallel; `transactions` published for the Spending card
@@ -73,6 +82,7 @@
 - **`CLAUDE.md`:** goal vs budgeted data flow, API write rules, architecture updates
 
 ### Fixed
+- **`YNABClarity.xcodeproj`** — `FundCategoryConfirmationSheet.swift` added to **Components** group and app target **Sources**
 - **`ProgressView` runtime warnings:** clamp coverage to `0...1` when YNAB `available` is negative so `funded / target` never goes below zero; `ClarityTheme.clampedProgressFraction` + defensive `progressColor` clamp
 - **`YNABClient.patchRequest`:** discard PATCH response body with `_` instead of unused `let data` — clears compiler warning (and builds with “Treat Warnings as Errors”)
 - **$0 metrics** when YNAB assigned (`budgeted`) was $0 but monthly goals were set — root cause was using assigned amount as `monthlyTarget` without reading `goal_target`

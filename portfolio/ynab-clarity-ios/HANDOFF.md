@@ -8,41 +8,28 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | UX realignment: Overview + 4 rules tabs, Bills categorization polish, Funding gaps copy, Age Money coaching, AppIcon metadata |
-| **Status** | Implemented; `xcodebuild` + `YNABClarityTests` green on simulator |
+| **Focus** | UX + accessibility pass complete: app icon, payee cleanup, Amazon memo hints, Adjust tap-to-fund, low-vision typography |
+| **Status** | `xcodebuild` + `YNABClarityTests` green on iPhone 15 simulator (`id=5E8F2054-8B78-4A09-9C98-A9F72CCB07FC`) |
 | **Last touch** | 2026-04-12 |
-| **Next** | ⌘R in Xcode to eyeball tabs + Assign Category sheet; ship commit when ready |
+| **Next** | ⌘R in Xcode on device; optional: add full App Icon size slots in asset catalog to silence actool warnings |
 
 ---
 
 ## What was done (this session)
 
-| File | Change |
+| Area | Detail |
 |------|--------|
-| `ContentView.swift` | 5 tabs: Overview, Assign, Bills, Adjust, Age Money |
-| `Views/OverviewView.swift` | **NEW** — Safe to Spend, Spending, errors/stale banners, Settings |
-| `Views/SettingsSheetView.swift` | **NEW** — settings sheet extracted for Overview + Assign |
-| `Views/DashboardView.swift` | Assign tab: Ready to Assign, obligations funded progress, next steps |
-| `Views/BillsPlannerView.swift` | PayeeDisplayFormatter + memo on rows; `AssignCategorySheet` with search + full mapped categories + suggested section |
-| `Engine/PayeeDisplayFormatter.swift` | **NEW** — merchant normalization + memo preview |
-| `Engine/CategorySuggestionEngine.swift` | Return all keyword-role matches / all flexibles (no `prefix(3)`) |
-| `YNAB/YNABModels.swift` | `YNABTransaction.memo: String?` |
-| `Views/IncomeGapView.swift` | “Funding gaps” card + explanation (goal target vs assigned this month) |
-| `Views/CashFlowView.swift` | Age Money: milestones, coaching actions, supporting context for timeline |
-| `Views/HowItWorksView.swift` | Copy matches five tabs |
-| `Assets.xcassets/AppIcon.appiconset/Contents.json` | `scale: 1x` on 1024 universal icon entry |
-| `YNABClarity.xcodeproj/project.pbxproj` | Added OverviewView, SettingsSheetView, PayeeDisplayFormatter |
-| `YNABClarityTests/MetricsEngineTests.swift` | `memo: nil` on `YNABTransaction` fixtures |
+| **App icon** | `AppIcon.png` 1024×1024; `Contents.json` universal + `ios-marketing` |
+| **PayeeDisplayFormatter** | Leading ACH / withdrawal / bill-pay noise stripping; `itemContextSubtitle` for Bills rows + Assign sheet |
+| **Adjust** | `GoalStatus.ynabCategoryID`; rows open `FundCategoryConfirmationSheet` → `fundCategory` |
+| **Shared sheet** | `Views/Components/FundCategoryConfirmationSheet.swift`; Bills uses same component |
+| **Theme / a11y** | Brighter `muted`, `supportingFont`, Age Money symbol + text; removed forced dark color scheme app-wide |
+| **Tests** | `MetricsEngineTests` — payee + subtitle + `underfundedGoals` id |
+| **Xcode** | `FundCategoryConfirmationSheet.swift` registered in `project.pbxproj` |
 
 ---
 
 ## Notes
 
-- **Memos:** YNAB returns `memo` on transactions; Amazon line items from Spend Clarity enrichment will show once written to YNAB memos.
-- **Assign Category:** Search filters mapped categories only (non–`ignore` roles). Suggested rows duplicate allowed in search results when query non-empty (acceptable).
-
----
-
-## Immediate next step
-
-Run the app in Simulator and confirm tab order, Bills row layout, and category sheet search. No manual `pbxproj` file-add steps pending — new files are in the project.
+- **actool** may still warn about missing 60×60@2x etc. when only 1024 assets are present; build and tests still succeed. Add generated sizes in Xcode if you want a clean asset compile.
+- **Tests:** pass `-destination 'platform=iOS Simulator,id=…'` if a physical iPhone is connected and locked (xcodebuild can pick the wrong destination).

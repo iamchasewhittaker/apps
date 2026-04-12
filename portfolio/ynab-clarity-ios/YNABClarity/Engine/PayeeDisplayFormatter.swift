@@ -5,7 +5,7 @@ enum PayeeDisplayFormatter {
 
     /// Friendly merchant label for UI (never empty — returns `"Unknown Payee"` when missing).
     static func displayPayee(_ raw: String?) -> String {
-        guard var s = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !s.isEmpty else {
+        guard let s = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !s.isEmpty else {
             return "Unknown Payee"
         }
 
