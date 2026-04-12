@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B30101000000000000000001 /* WellnessTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000001 /* WellnessTrackerApp.swift */; };
 		B30101000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000002 /* ContentView.swift */; };
+		B3010100000000000000000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000B /* Assets.xcassets */; };
+		B3010100000000000000000C /* WellnessBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000E /* WellnessBlobTests.swift */; };
 		D30101000000000000000003 /* WellnessBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000003 /* WellnessBlob.swift */; };
 		D30101000000000000000004 /* WellnessConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000004 /* WellnessConfig.swift */; };
 		D30101000000000000000008 /* WellnessStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000008 /* WellnessStore.swift */; };
@@ -21,13 +23,25 @@
 		D3010100000000000000000F /* TasksTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000010 /* TasksTabView.swift */; };
 		D30101000000000000000010 /* TimeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000011 /* TimeTabView.swift */; };
 		D30101000000000000000011 /* CaptureTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000012 /* CaptureTabView.swift */; };
-		B3010100000000000000000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000B /* Assets.xcassets */; };
-		B3010100000000000000000C /* WellnessBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000E /* WellnessBlobTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B30801000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B30601000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B30501000000000000000001;
+			remoteInfo = WellnessTracker;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B30201000000000000000001 /* WellnessTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessTrackerApp.swift; sourceTree = "<group>"; };
 		B30201000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B3020100000000000000000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B3020100000000000000000C /* WellnessTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WellnessTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3020100000000000000000D /* WellnessTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WellnessTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3020100000000000000000E /* WellnessBlobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessBlobTests.swift; sourceTree = "<group>"; };
 		D30201000000000000000003 /* WellnessBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessBlob.swift; sourceTree = "<group>"; };
 		D30201000000000000000004 /* WellnessConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessConfig.swift; sourceTree = "<group>"; };
 		D30201000000000000000008 /* WellnessStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessStore.swift; sourceTree = "<group>"; };
@@ -37,14 +51,10 @@
 		D3020100000000000000000C /* CheckinSectionsHealthEnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinSectionsHealthEnd.swift; sourceTree = "<group>"; };
 		D3020100000000000000000D /* CheckinFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinFlowView.swift; sourceTree = "<group>"; };
 		D3020100000000000000000E /* PastDaysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastDaysView.swift; sourceTree = "<group>"; };
+		D3020100000000000000000F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D30201000000000000000010 /* TasksTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTabView.swift; sourceTree = "<group>"; };
 		D30201000000000000000011 /* TimeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTabView.swift; sourceTree = "<group>"; };
 		D30201000000000000000012 /* CaptureTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureTabView.swift; sourceTree = "<group>"; };
-		D3020100000000000000000F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B3020100000000000000000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B3020100000000000000000C /* WellnessTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WellnessTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3020100000000000000000D /* WellnessTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WellnessTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3020100000000000000000E /* WellnessBlobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessBlobTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,24 +236,6 @@
 		};
 /* End PBXNativeTarget section */
 
-/* Begin PBXContainerItemProxy section */
-		B30801000000000000000001 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B30601000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B30501000000000000000001;
-			remoteInfo = WellnessTracker;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXTargetDependency section */
-		B30801000000000000000002 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B30501000000000000000001 /* WellnessTracker */;
-			targetProxy = B30801000000000000000001 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXProject section */
 		B30601000000000000000001 /* Project object */ = {
 			isa = PBXProject;
@@ -289,6 +281,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B30501000000000000000012 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -323,15 +322,13 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXResourcesBuildPhase section */
-		B30501000000000000000012 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+/* Begin PBXTargetDependency section */
+		B30801000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B30501000000000000000001 /* WellnessTracker */;
+			targetProxy = B30801000000000000000001 /* PBXContainerItemProxy */;
 		};
-/* End PBXResourcesBuildPhase section */
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B30701000000000000000001 /* Debug */ = {
@@ -460,6 +457,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = WellnessTracker/Info.plist;
@@ -485,6 +483,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = WellnessTracker/Info.plist;

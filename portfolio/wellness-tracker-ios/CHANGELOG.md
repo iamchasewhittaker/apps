@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **App icon:** fixed **1024×1024** square requirement (was 1376×768; Xcode “no applicable content”); `Contents.json` now includes `universal` + `ios-marketing` slots. Web `public/logo-*.png` re-synced from corrected master.
 - **App icon:** `AppIcon.appiconset/AppIcon.png` — **W + sunrise** on Clarity-family `#0e1015` (see web `docs/BRANDING.md`). Added [HANDOFF.md](./HANDOFF.md) for iOS session notes.
 - **Phase 2 foundation:** replaced single-screen root with native `TabView` shell (`Check-in`, `Tasks`, `Time`, `Capture`) so daily workflows can expand incrementally from a stable app structure.
 - **First parity slice shipped:** added native `Tasks`, `Time`, and quick `Win`/`Pulse` capture tabs backed by `WellnessStore` mutations and existing blob persistence.

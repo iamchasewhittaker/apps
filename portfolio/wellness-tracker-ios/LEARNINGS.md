@@ -20,6 +20,12 @@
 
 ## Entries
 
+### 2026-04-12 — AppIcon must be exactly 1024×1024
+**What happened:** Xcode reported *AppIcon … did not have any applicable content* and Swift compile failed.
+**Root cause:** `AppIcon.png` was **1376×768** (non-square). iOS asset catalogs reject that for the single-size icon slot.
+**Fix / lesson:** `sips -Z 1024` then `sips -p 1024 1024` to letterbox/pad to a square; add **`ios-marketing`** 1024 entry alongside **`universal`** in `Contents.json`. See `docs/BRANDING.md` on web mirror.
+**Tags:** xcode, assets
+
 ### 2026-04-12 — App icon palette = Clarity family, not Spend Clarity raster
 **What happened:** Branding asked to match “Spend Clarity” logo colors; Spend Clarity has no logo file in git.
 **Root cause:** Clarify toolchain: **YNAB Clarity** owns the consumer visual tokens (`ClarityTheme.swift`).

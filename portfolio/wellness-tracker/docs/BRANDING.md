@@ -34,3 +34,5 @@ Unified logo for **web (PWA)** and **native iOS**:
 ## Regenerating or editing
 
 Design iterations may live under the Cursor workspace `assets/` folder during exploration; when a new canonical mark is chosen, export **1024×1024** and replace the paths above, then re-run `sips` (or your tool) to refresh `logo192` / `logo512` / `apple-touch-icon` / `favicon-32` from the new master.
+
+**Xcode requirement:** `AppIcon.png` must be **exactly 1024×1024** (square). Non-square exports cause *“AppIcon … did not have any applicable content”*. If the source is widescreen, scale with longest edge 1024 then **pad** to 1024×1024 (e.g. `sips -Z 1024` then `sips -p 1024 1024`). `Contents.json` should include both **`universal`** and **`ios-marketing`** 1024×1024 entries (same file is fine).
