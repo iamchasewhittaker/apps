@@ -1,0 +1,60 @@
+#!/bin/bash
+# checkpoint — save everything right now. One command. No git knowledge needed.
+#
+# Usage:
+#   checkpoint           → auto-generates message with timestamp
+#   checkpoint "my note" → uses your note as the message
+#
+# Works from anywhere inside the repo — always commits to the repo root.
+
+set -e
+
+# Resolve repo root regardless of where the terminal is sitting
+REPO_ROOT="$(git -C "$(dirname "$0")/.." rev-parse --show-toplevel 2>/dev/null)"
+if [ -z "$REPO_ROOT" ]; then
+  # Also try from current directory (if called via PATH alias)
+  REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+fi
+if [ -z "$REPO_ROOT" ]; then
+  echo "Error: not inside the chase monorepo"
+  exit 1
+fi
+cd "$REPO_ROOT"
+
+# Check if there's anything to save
+if ! git status --porcelain | grep -q .; then
+  echo "Nothing to save — no changes since last checkpoint."
+  exit 0
+fi
+
+# Auto-detect which app(s) changed for a readable commit message
+CHANGED_APPS=$(git status --porcelain | grep -oE 'portfolio/[^/]+' | sort -u | sed 's|portfolio/||' | paste -sd ', ' - 2>/dev/null)
+if [ -z "$CHANGED_APPS" ]; then
+  CHANGED_APPS=$(git status --porcelain | grep -oE 'projects/[^/]+' | sort -u | sed 's|projects/||' | paste -sd ', ' - 2>/dev/null)
+fi
+if [ -z "$CHANGED_APPS" ]; then
+  CHANGED_APPS=$(git status --porcelain | grep -oE 'scripts/[^/]+' | sort -u | sed 's|scripts/||' | paste -sd ', ' - 2>/dev/null)
+fi
+if [ -z "$CHANGED_APPS" ]; then
+  CHANGED_APPS="monorepo"
+fi
+
+# Build commit message
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M')
+if [ -n "$1" ]; then
+  MSG="checkpoint ($CHANGED_APPS): $1 [$TIMESTAMP]"
+else
+  MSG="checkpoint ($CHANGED_APPS) [$TIMESTAMP]"
+fi
+
+# Stage and commit everything
+git add -A
+git commit -m "$MSG"
+
+echo ""
+echo "Saved! → $MSG"
+echo ""
+echo "Changed files:"
+git diff --stat HEAD~1 HEAD
+echo ""
+echo "To undo this checkpoint, run: restore 1"

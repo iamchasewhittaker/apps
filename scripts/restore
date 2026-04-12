@@ -1,0 +1,88 @@
+#!/bin/bash
+# restore — see recent checkpoints and go back to one. No git knowledge needed.
+#
+# Usage:
+#   restore        → shows last 15 saves, lets you pick a number
+#   restore 3      → go back to save #3 from the list
+#
+# SAFE: always auto-saves your current work before reverting.
+# You can undo a restore with: restore 2
+
+set -e
+
+# Resolve repo root
+REPO_ROOT="$(git -C "$(dirname "$0")/.." rev-parse --show-toplevel 2>/dev/null)"
+if [ -z "$REPO_ROOT" ]; then
+  REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+fi
+if [ -z "$REPO_ROOT" ]; then
+  echo "Error: not inside the chase monorepo"
+  exit 1
+fi
+cd "$REPO_ROOT"
+
+echo ""
+echo "=== Recent saves (newest first) ==="
+echo ""
+
+# Show last 15 commits numbered
+git log --oneline -15 | nl -ba -v0 | awk '{
+  num = $1; $1 = ""
+  if (num == 0) printf "  [current]\t%s\n", $0
+  else          printf "  [%d]\t\t%s\n", num, $0
+}'
+echo ""
+
+# No argument — just show the list
+if [ -z "$1" ]; then
+  echo "To go back, run:  restore <number>"
+  echo "Example:          restore 3"
+  echo ""
+  echo "Your current work will be auto-saved before any restore."
+  echo "Nothing is ever lost."
+  echo ""
+  exit 0
+fi
+
+# Validate the number
+NUMBER=$1
+if ! [[ "$NUMBER" =~ ^[0-9]+$ ]] || [ "$NUMBER" -eq 0 ]; then
+  echo "Error: pick a number from [1] to [15] in the list above"
+  exit 1
+fi
+
+# Get the commit hash for that number
+TARGET_HASH=$(git log --oneline -15 | sed -n "${NUMBER}p" | awk '{print $1}')
+TARGET_MSG=$(git log --oneline -1 "$TARGET_HASH" 2>/dev/null)
+
+if [ -z "$TARGET_HASH" ] || [ -z "$TARGET_MSG" ]; then
+  echo "Error: no save at number [$NUMBER]"
+  exit 1
+fi
+
+echo "You picked: $TARGET_MSG"
+echo ""
+
+# Safety: auto-save current state first so nothing is ever lost
+if git status --porcelain | grep -q .; then
+  echo "Auto-saving your current changes first..."
+  git add -A
+  git commit -m "checkpoint (auto-save before restore) [$(date '+%Y-%m-%d %H:%M')]"
+  echo ""
+fi
+
+# Restore: check out all files from that commit into the working tree,
+# then create a NEW forward commit. Never uses reset --hard or detached HEAD.
+echo "Restoring to: $TARGET_MSG"
+echo ""
+git checkout "$TARGET_HASH" -- .
+git add -A
+git commit -m "restore: back to [$TARGET_MSG] [$(date '+%Y-%m-%d %H:%M')]"
+
+echo ""
+echo "Done. Your code is now back to:"
+echo "  $TARGET_MSG"
+echo ""
+echo "Your previous work was saved just above it in the history."
+echo "To undo this restore, run: restore 2"
+echo ""

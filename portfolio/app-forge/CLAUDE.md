@@ -113,3 +113,7 @@ When ready, follow the same pattern: use the shared project `unqtnnxlltiadzbqpyh
 
 ## Roadmap Reference
 See `/ROADMAP.md` (repo root) for the full priority queue and improvement ideas (items A1–A7).
+
+## Learnings
+Read `LEARNINGS.md` at session start for project-specific gotchas.
+After a session where something unexpected happened or was learned, append an entry.

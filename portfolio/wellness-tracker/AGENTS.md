@@ -4,7 +4,7 @@ Read with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md`](../../CLAUD
 
 ## Scope
 
-Work in **`portfolio/wellness-tracker`** unless a task says otherwise.
+Work in **`portfolio/wellness-tracker`** unless a task says otherwise. **Native iOS** lives in [`../wellness-tracker-ios`](../wellness-tracker-ios) (SwiftUI; read its `CLAUDE.md`).
 
 ## Conventions
 

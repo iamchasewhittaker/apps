@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-04 (Park Checklist iOS: SwiftUI + SwiftData scaffold) | Maintained by Chase
+> Last updated: 2026-04-11 (YNAB Clarity iOS Overview refresh) | Maintained by Chase
 
 ---
 
@@ -8,13 +8,15 @@
 | App | Version | URL | Storage Key | Status |
 |-----|---------|-----|-------------|--------|
 | Wellness Tracker | v15.10 | https://wellnes-tracker.vercel.app | chase_wellness_v1 | ✅ Active |
+| Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.3 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
+| YNAB Clarity (iOS) | v0.1 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
-| RollerTask Tycoon | v1.0 | https://roller-task-tycoon.vercel.app | chase_roller_task_v1 | ✅ Live — set `VITE_SUPABASE_*` for sync |
+| RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0 | local (port 3004) | not yet deployed | 🟡 Local |
-| Park Checklist (iOS) | v1.0 | local Xcode | SwiftData + `chase_park_checklist_ios_*` | 🟡 Local |
 
 ---
 
@@ -223,8 +225,16 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-11 | Portfolio | — | **New app: Spend Clarity** — consolidated `projects/ynab-enrichment/` (working Python CLI) + `projects/Money/` (Transaction Enricher + Budget Dashboard) into `portfolio/spend-clarity/`; Money files archived to `portfolio/archive/money/`; Downloads CLAUDE.md + HANDOFF.md set as source of truth; master CLAUDE.md + ROADMAP.md updated | Python CLI; YNAB + Gmail + Privacy.com APIs; local only |
+| 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **Overview:** merged mortgage into Bills & Essentials; Spending card (yesterday / week / month from transactions API); safe-to-spend includes Ready to Assign + all non-required mapped categories; 24h stale-sync banner + persisted `chase_ynab_clarity_ios_last_refreshed_epoch` | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
+| 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **`YNABClient.patchRequest`:** use `(_, response)` instead of unused `data` from `URLSession` — removes compiler warning / unblocks strict builds | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
+| 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **Rethink:** decode `goal_target` / use goal for `monthlyTarget` (fixes $0 when unassigned); Overview reorder + Budget Health + Underfunded Goals; Bills by coverage + optional **Fund** (PATCH `budgeted`); `dueDay` on `CategoryMapping`; Income tab surplus + inline sources; Cash Flow today marker + bill status; `TipBanner` + `HowItWorksView`; `YNABClient.updateCategoryBudgeted` | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
+| 2026-04-08 | YNAB Clarity (iOS) | v0.1 | **Income:** added `semimonthly` frequency (5th + 20th pattern); `secondPayDay` property on `IncomeSource`; form stepper for 2nd pay date | SwiftData-safe default; `occurrencesInMonth` handles new case |
+| 2026-04-08 | YNAB Clarity (iOS) | v0.1 | **New** `portfolio/ynab-clarity-ios` — read-only YNAB companion; 4 tabs (Overview, Bills, Salary, Cash Flow); SwiftData + Keychain token; auto-categorization, mortgage isCovered fix, Fun Money help sheet, SettingsSheet; `IncomeSetupView` pre-fill bug fixed (`sheet(item:)`); initial git commit (was previously untracked) | Bundle `com.chasewhittaker.YNABClarity`; `chase_ynab_clarity_ios_*` AppStorage keys; see `portfolio/ynab-clarity-ios/CLAUDE.md` |
+| 2026-04-05 | Wellness Tracker (iOS) | Phase 1 | **New** `portfolio/wellness-tracker-ios` — SwiftUI daily check-in (morning/evening), `chase_wellness_ios_*` UserDefaults, **local-only** (no Supabase/OTP); optional **Past days** read-only; sunrise app icon; `WellnessTracker` scheme + tests | Bundle `com.chasewhittaker.WellnessTracker`; see `CLAUDE.md` |
+| 2026-04-05 | Portfolio + RollerTask Tycoon | — | **Web PWA archived** to `portfolio/archive/roller-task-tycoon`; **iOS** product path `portfolio/roller-task-tycoon-ios`, Xcode **RollerTaskTycoon** / **RollerTaskTycoonTests**, display name RollerTask Tycoon, bundle id `com.chasewhittaker.ParkChecklist` unchanged; `UserDefaults` keys `chase_roller_task_tycoon_ios_*` + one-time migration from `chase_park_checklist_ios_*`; backup export `RollerTaskTycoon-backup-*.json`; root **`.gitignore`** whitelists **`.github/workflows/**`** so **`.github/workflows/portfolio-web-build.yml`** is versioned | **CI** builds Wellness, Job Search, App Forge only; disable Vercel for retired PWA if desired |
 | 2026-04-05 | Park Checklist (iOS) | v1.0 | **README:** troubleshooting for physical-device **debugger attach** failures (Xcode vs iOS, signing, scheme diagnostics, crash logs) | e.g. iOS 26 device + older Xcode |
-| 2026-04-05 | Portfolio | — | **GitHub Actions** [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) — `npm ci && npm run build` for Wellness, Job Search, App Forge, RollerTask on path-scoped push/PR | iOS still local Xcode |
+| 2026-04-05 | Portfolio | — | **GitHub Actions** [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) — `npm ci && npm run build` for Wellness, Job Search, App Forge on path-scoped push/PR | iOS still local Xcode |
 | 2026-04-05 | Park Checklist (iOS) | v1.0 | **Import:** replace-all JSON restore (`schemaVersion` 1), confirm dialog, `BackupImporter` + tests target **ParkChecklistTests**; PRD addendum; **WHI-15** done | Merge import = backlog idea |
 | 2026-04-05 | Park Checklist (iOS) | v1.0 | **Planning:** `docs/planning/` filled docs + `PLANNING_WORKFLOW.md`; kit README/CLAUDE cross-links; **Linear** [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) + backlog WHI-16…19 | See row above for WHI-15 import |
 | 2026-04-04 | Park Checklist (iOS) | v1.0 | **`docs/planning/README.md`** — home for filled Park-specific planning copies; README + ROADMAP point at kit + this folder | Templates remain in **`docs/ios-app-starter-kit/`** |

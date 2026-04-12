@@ -8,6 +8,7 @@
 !/CLAUDE.md
 !/ROADMAP.md
 !/SUNSAMA_MCP_GUIDE.md
+!/PRODUCT_BUILD_FRAMEWORK.md
 !/.claude/
 !/.claude/**
 !/.cursor/
@@ -17,6 +18,11 @@
 !/portfolio/**
 !/projects/
 !/projects/**
+!/scripts/
+!/scripts/**
+!/.github/
+!/.github/workflows/
+!/.github/workflows/**
 
 # Dependencies & build output (all subtrees)
 node_modules/
@@ -39,11 +45,8 @@ build/
 **/supabase/.temp/
 
 # Raw statement exports — keep local; do not publish to git hosts
-projects/Money/*.csv
-# YNAB / Gmail integration secrets (use .env or local config only)
-projects/ynab-enrichment/config/gmail_credentials.json
-projects/ynab-enrichment/config/*token*.json
-projects/ynab-enrichment/config/*credentials*.json
+# (projects/Money removed — see portfolio/archive/money/)
+# YNAB / Gmail integration secrets now live in portfolio/spend-clarity/config/ (gitignored by that app's .gitignore)
 
 # Local legacy mirror from ~/Documents (large duplicates; not in remote — see docs/LEGACY_LOCAL_MIRRORS.md)
 projects/archive/from-documents-20260404/

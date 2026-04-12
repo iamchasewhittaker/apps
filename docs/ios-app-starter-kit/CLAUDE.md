@@ -2,7 +2,7 @@
 
 **Scope:** Planning discipline and gates for **greenfield or major-scope** iOS work. This is **not** the implementation guide for a specific app.
 
-**Park Checklist (this monorepo):** When editing **`portfolio/park-checklist-ios/`**, read **[`portfolio/park-checklist-ios/CLAUDE.md`](../../portfolio/park-checklist-ios/CLAUDE.md)** first. Filled product docs live in **[`portfolio/park-checklist-ios/docs/planning/`](../../portfolio/park-checklist-ios/docs/planning/README.md)** (workflow: `PLANNING_WORKFLOW.md`).
+**RollerTask Tycoon (iOS, this monorepo):** When editing **`portfolio/roller-task-tycoon-ios/`**, read **[`portfolio/roller-task-tycoon-ios/CLAUDE.md`](../../portfolio/roller-task-tycoon-ios/CLAUDE.md)** first. Filled product docs live in **[`portfolio/roller-task-tycoon-ios/docs/planning/`](../../portfolio/roller-task-tycoon-ios/docs/planning/README.md)** (workflow: `PLANNING_WORKFLOW.md`).
 
 **Session handoff (multi-agent):** Repo root **[`HANDOFF.md`](../../HANDOFF.md)** is monorepo session state — not the same as **[`HANDOFF_TEMPLATE.md`](HANDOFF_TEMPLATE.md)** in this kit.
 

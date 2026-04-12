@@ -6,7 +6,7 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 |------|--------|
 | **Canonical repo** | **`~/Developer/chase`** — the git checkout you `push`/`pull`; remote **`github.com/iamchasewhittaker/apps`**. Open this folder as your Cursor workspace. |
 | **Monorepo** | One git repository holding many apps and side projects (portfolio PWAs + `projects/*`), instead of a separate repo per app. |
-| **`portfolio/`** | Deployable / product web apps: **`shared/`** (sync layer), **`app-hub/`**, **`wellness-tracker`**, **`job-search-hq`**, **`app-forge`**, **`roller-task-tycoon`**, **`archive/`** (retired **growth-tracker**). |
+| **`portfolio/`** | Deployable web apps: **`shared/`** (sync layer), **`app-hub/`**, **`wellness-tracker`**, **`job-search-hq`**, **`app-forge`**; native **RollerTask Tycoon** at **`roller-task-tycoon-ios/`**; **`archive/`** (retired **growth-tracker**, archived **roller-task-tycoon** Vite PWA). |
 | **`projects/`** | Lowercase. Non-portfolio worktrees: **AI Dev Mastery**, **ynab-enrichment**, **shortcut-reference**, **Money**, **`archive/`** (e.g. retired **claude-usage-tool**). Not the old **`~/Documents/Projects`** spelling. |
 | **Root Directory** | Vercel project setting: subdirectory of the repo that contains **`package.json`** for that deploy (e.g. **`portfolio/wellness-tracker`**). Must match after a monorepo move. |
 | **`APP_KEY` / `app_key`** | String that identifies which blob in Supabase **`user_data`** belongs to which app (e.g. **`roller_task_tycoon_v1`**, **`wellness`**, **`job-search`**). |

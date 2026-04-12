@@ -12,6 +12,8 @@
 ## [Unreleased]
 
 - **Monorepo:** app path is `portfolio/wellness-tracker` under `~/Developer/chase`; README, ROADMAP, AGENTS, `docs/ARCHITECTURE`, `docs/LEARNING`; Linear project linked in docs.
+- **Native iOS (Phase 1):** companion app at [`portfolio/wellness-tracker-ios`](../wellness-tracker-ios) — morning/evening check-in, **`chase_wellness_ios_*`** UserDefaults, **no cloud sync**; see that folder’s `CLAUDE.md` / `README.md`.
+- **Docs:** `src/shared/sync.js` header lists known `app_key` values (kept in sync with `portfolio/shared/sync.js`).
 
 ## v15.9 — 2026-03-24 — Supabase sync live
 

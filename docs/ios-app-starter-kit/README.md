@@ -4,7 +4,7 @@
 
 This starter kit is designed for small-to-medium iOS apps, especially when a junior developer needs a clear path from idea to release.
 
-**In use:** [Park Checklist (iOS)](../../portfolio/park-checklist-ios/docs/planning/README.md) keeps **filled** copies under `portfolio/park-checklist-ios/docs/planning/`.
+**In use:** [RollerTask Tycoon (iOS)](../../portfolio/roller-task-tycoon-ios/docs/planning/README.md) keeps **filled** copies under `portfolio/roller-task-tycoon-ios/docs/planning/`.
 
 ## Recommended order
 1. PRODUCT_BUILD_FRAMEWORK.md
