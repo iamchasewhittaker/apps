@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-11 (YNAB Clarity iOS Overview refresh) | Maintained by Chase
+> Last updated: 2026-04-12 (RollerTask Tycoon iOS V1 shipped) | Maintained by Chase
 
 ---
 
@@ -13,7 +13,7 @@
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | YNAB Clarity (iOS) | v0.1 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
-| RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0 | local (port 3004) | not yet deployed | 🟡 Local |

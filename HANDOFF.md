@@ -77,13 +77,12 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | Field | Value |
 |--------|--------|
 | **Workspace** | `~/Developer/chase` |
-| **Branch** | `feat/rtt-ios-v1-simplify` |
+| **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Portfolio housekeeping complete.** Created `portfolio/spend-clarity/` (YNAB enrichment Python CLI); archived `projects/Money/`; added `scripts/checkpoint` + `scripts/restore`; added `LEARNINGS.md` to all 7 apps; updated all CLAUDE.md files + HANDOFF.md with 3-step session flow + Antigravity/Codex; fixed all Cursor symlinks. |
-| **Also on branch** | **YNAB Clarity (iOS)** + **RollerTask Tycoon (iOS)** — both still on `feat/rtt-ios-v1-simplify`, need Xcode ⌘B / ⌘U before merge to `main`. |
-| **Next** | 1) Open new terminal → `source ~/.zshrc` to activate `checkpoint` + `restore` commands · 2) Xcode ⌘B / ⌘U on YNAB Clarity + RollerTask · 3) Merge `feat/rtt-ios-v1-simplify` → `main` when builds pass |
+| **Focus** | **RollerTask Tycoon iOS V1 shipped.** ⌘B ✓ · ⌘U 9/9 ✓ · `feat/rtt-ios-v1-simplify` merged to `main` · CHANGELOG promoted to [1.0.0]. |
+| **Next** | 1) Fill in Step 6 Learn notes for Wellness Tracker + Job Search HQ (`portfolio/audits/`) · 2) Archive App Forge, AI Dev Mastery, Shortcut Reference · 3) Draw MoSCoW line on YNAB Clarity v1 backlog · 4) Get WIP = 1 (YNAB Clarity is natural next focus) |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-11 |
+| **Last touch** | 2026-04-12 |
 
 ---
 
