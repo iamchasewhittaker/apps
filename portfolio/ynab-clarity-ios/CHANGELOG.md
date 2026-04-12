@@ -1,8 +1,44 @@
 # Changelog — YNAB Clarity iOS
 
+## [v0.2] — 2026-04-12
+
+### Added
+- **4-Rules redesign:** tabs restructured around YNAB's 4 rules — Assign (Give Every Dollar a Job), Bills (Embrace True Expenses), Adjust (Roll With the Punches), Age Money (Age Your Money)
+- **Categorization Review section (Bills tab):** surfaces uncategorized transactions with payee-name keyword suggestions; tap any row to open `CategoryReviewSheet` showing top 3 category options; confirm writes back to YNAB via `PATCH /budgets/{id}/transactions`; section shows badge count or green "All Categorized" row
+- **`CategorySuggestionEngine`** (`Engine/CategorySuggestionEngine.swift`) — pure Swift enum; `payeeRules` maps 25+ lowercase payee patterns to `CategoryRole`; `suggest()` returns `[CategorySuggestion]` ranked by confidence; `needsReview()` filters: not deleted, not transfer, outflow only, no category or "Uncategorized"
+- **`CategorySuggestion`** struct — `mapping: CategoryMapping`, `confidence: Double`, `matchedKeyword: String`
+- **Age of Money card (Age Money tab):** pulls `ageOfMoney` from YNAB `GET /budgets/{id}`; color-coded label: < 10 days = "Paycheck to paycheck" (danger), 10–19 = "Building a buffer" (caution), 20–29 = "Getting ahead" (safe), ≥ 30 = "Money is aging well" (accent)
+- **`YNABBudgetDetail` + `YNABBudgetDetailResponse`** — decodable structs for `GET /budgets/{id}` response; extracts `ageOfMoney: Int?`
+- **`YNABBulkTransactionUpdate`** — encodable body for `PATCH /budgets/{id}/transactions`; sends `[{id, categoryId}]`
+- **`YNABClient.fetchBudgetDetail(budgetID:)`** — `GET /budgets/{id}` → `YNABBudgetDetail`
+- **`YNABClient.updateTransactionCategory(budgetID:transactionID:categoryID:)`** — bulk PATCH endpoint; accepts HTTP 209
+- **`AppState.ageOfMoney: Int?`** published property; fetched in parallel with existing `fetchMonth` + `fetchTransactions` calls
+- **`AppState.updateTransactionCategory(transactionID:categoryID:categoryMappings:incomeSources:)`** — calls client, then refreshes
+- **`YNABTransaction.categoryId: String?`** — decoded from existing `category_id` field in transactions API response
+- Budget health row + underfunded goals card moved to **Adjust tab** (was Overview/Dashboard)
+- **TipBanner messages updated** per rule: Assign → "Give every dollar a job…", Bills → "Embrace your true expenses…", Adjust → "Roll with the punches…", Age Money → "Age your money…"
+- **`label:Receipt` pre-filter** added to `spend-clarity/src/gmail_client.py` `search_emails()` — aligns with Inbox Zero Gmail filter taxonomy
+
+### Fixed
+- **`MetricsEngineTests`:** added `categoryId: nil` to all 4 `YNABTransaction` memberwise initializers — new field added to the struct broke the test build
+
+### Changed
+- **Tab 1 "Assign"** (`DashboardView`): simplified to Safe to Spend + Spending cards only; budget health + underfunded goals moved to Adjust tab
+- **Tab 2 "Bills"** (`BillsPlannerView`): categorization review section inserted above existing bill sections; navigation title unchanged
+- **Tab 3 "Adjust"** (`IncomeGapView`): navigation title → "Adjust"; added `budgetHealthRow` + `underfundedGoalsCard` at top; TipBanner → Rule 3 message
+- **Tab 4 "Age Money"** (`CashFlowView`): navigation title → "Age Money"; age of money card inserted above summary + timeline cards; TipBanner → Rule 4 message
+- **`patchRequest`** now accepts HTTP 200, 201, and 209 — YNAB bulk transaction PATCH returns 209, which previously caused a runtime error
+- **`ContentView`** tab labels and icons updated to 4-rules naming
+
+---
+
 ## [Unreleased]
 
 ### Added
+- **Overview tab** (`OverviewView.swift`) — Safe to Spend + Spending + stale/error banners; first tab in `TabView`
+- **`SettingsSheetView.swift`** — settings extracted for reuse from Overview
+- **`PayeeDisplayFormatter.swift`** — merchant-friendly payee labels + memo preview for Bills review
+- **Assign Category sheet** — searchable list of all non-ignored mapped categories, grouped by role, with “Suggested” section; memo line on header when present
 - **Overview — Spending card:** yesterday / this week / this month outflow totals from `GET .../transactions?since_date=` (excludes transfers); `YNABTransaction` model + `YNABClient.fetchTransactions`
 - **Overview — stale sync banner:** when last successful refresh was over 24 hours ago (or never), show a caution banner; refresh timestamp persisted as `chase_ynab_clarity_ios_last_refreshed_epoch` (AppStorage)
 - **`YNABMonthDetail.toBeBudgeted`** — Ready to Assign (milliunits) decoded from month response for safe-to-spend
@@ -18,6 +54,14 @@
 - Unit tests: `testBuildBalances_usesGoalTargetWhenPresent`, `testBuildBalances_fallsToBudgetedWhenNoGoal`, `testSafeToSpend_includesToBeBudgeted`, `testObligationsCoverageFraction_matchesOverallRequired`, `testObligationsCoverageFraction_clampedWhenCategoryDeeplyNegative`, `testOutflowSpending_sumsNegativeAmountsInRange`
 
 ### Changed
+- **5 tabs:** Overview → Assign → Bills → Adjust → Age Money (`ContentView.swift`)
+- **Assign tab** (`DashboardView.swift`) — Ready to Assign, obligations funded progress, next-step copy (no longer hosts Safe to Spend / Spending)
+- **Bills** — categorization rows use cleaned payee + optional memo subtitle; `CategorySuggestionEngine` returns all role matches / all flexibles (no arbitrary cap of 3)
+- **Adjust** — “Underfunded Goals” renamed to **Funding gaps** with clearer copy (goal target vs assigned this month)
+- **Age Money** (`CashFlowView`) — milestones card, coaching actions, supporting-context header for paycheck/required + timeline; timeline optional when empty
+- **`YNABTransaction.memo: String?`** — decoded for memo display in Bills
+- **`HowItWorksView`** — copy aligned to five tabs
+- **App icon catalog** — explicit `scale: 1x` on 1024 universal entry
 - **Safe to spend:** discretionary pool is all mapped categories except mortgage/bill/essential (not only `.flexible`), plus **Ready to Assign** dollars, minus required shortfall
 - **Overview:** single **Bills & Essentials** card includes mortgage with combined progress; mortgage rows use purple label in the uncovered list
 - **`AppState.refresh`:** loads month + transactions in parallel; `transactions` published for the Spending card

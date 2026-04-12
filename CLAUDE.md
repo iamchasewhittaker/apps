@@ -16,6 +16,7 @@
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 | Spend Clarity | v0.1 | none (Python CLI; no localStorage); YNAB token in `.env`; Gmail OAuth tokens in `config/` | local Python | 🟡 Local · [`portfolio/spend-clarity`](portfolio/spend-clarity) |
+| Knowledge Base | v1.0 | `chase_knowledge_base_v1` | not yet deployed | 🟡 Local · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
@@ -104,6 +105,7 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 /scripts/
   checkpoint   ← run before editing; saves a git snapshot (one command, no git knowledge needed)
   restore      ← run to roll back to any prior checkpoint
+  new-app      ← scaffold a new portfolio app (one command: new-app my-app "description")
 ```
 
 > Each active `portfolio/*` app contains: `CLAUDE.md`, `HANDOFF.md`, `LEARNINGS.md`, `CHANGELOG.md`, `ROADMAP.md`.

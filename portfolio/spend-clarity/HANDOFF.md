@@ -1,75 +1,84 @@
-# YNAB Enrichment Tool — Handoff
+# HANDOFF — Spend Clarity
+
+> Current session state for Claude Code / Cursor. Update before ending a session.
+
+---
+
+## State
+
+| Field | Value |
+|-------|-------|
+| **Focus** | Python CLI: YNAB + Gmail + Privacy.com transaction enrichment |
+| **Status** | Working CLI; Gmail client updated with `label:Receipt` pre-filter |
+| **Last touch** | 2026-04-12 |
+| **Next** | Phase 2 iteration: test `label:Receipt` filter on real Gmail data; add Privacy.com client |
+
+---
 
 ## What this is
-A **standalone Python CLI** Chase is building to enrich YNAB transactions with item-level detail parsed from receipt emails (Amazon, Apple) and merchant data from Privacy.com's API. Runs locally (or via `launchd`/cron) on Chase's machine. Not a plugin, not a service — a personal tool that talks to external APIs.
 
-## Why
-Goal is genuine clarity on household finances: income vs expenses, spending leaks, a realistic monthly target. Clean enriched transaction data is the foundation. Secondary goal: a weekly glanceable digest for Chase's partner, who doesn't use YNAB directly.
+Standalone Python CLI that enriches YNAB transactions with item-level detail from Gmail receipt emails (Amazon, Apple) and merchant data from Privacy.com. Personal tool, runs locally. Not a plugin, not a service.
 
-## Architecture (one repo, one CLI)
+Run: `python src/main.py`
+
+---
+
+## Recent changes (2026-04-12)
+
+**`src/gmail_client.py` — `search_emails()` updated:**
+- Query is now prefixed with `label:Receipt` before the sender filter
+- Old: `from:{sender} after:{since_str}`
+- New: `label:Receipt from:{sender} after:{since_str}`
+- Why: aligns with Inbox Zero's Gmail filter taxonomy (`portfolio/inbox-zero/`), which applies the `Receipt` label to all known receipt senders via XML filters
+- Benefit: faster, more accurate queries; Gmail indexes labels efficiently; pre-filtered before any sender matching
+
+---
+
+## Architecture (current)
+
 ```
-ynab-enrich/
-├── src/ynab_enrich/
-│   ├── cli.py              # entry point: `ynab-enrich run|digest`
-│   ├── config.py           # env loading, budget resolution
-│   ├── ynab_client.py      # YNAB API wrapper
-│   ├── gmail_client.py     # Gmail API + OAuth
-│   ├── privacy_client.py   # Privacy.com REST API (NEW — see below)
-│   ├── parsers/
-│   │   ├── amazon.py       # BeautifulSoup on ship-confirm emails
-│   │   └── apple.py        # Apple receipt emails
-│   ├── matcher.py          # amount + date (±1 day) → YNAB txn
-│   └── writer.py           # memo updates, respects DRY_RUN
-├── CLAUDE.md
-├── PROMPT.md
-└── pyproject.toml
+portfolio/spend-clarity/
+  src/
+    main.py            — entry point
+    gmail_client.py    — Gmail API + OAuth (UPDATED: label:Receipt pre-filter)
+    receipt_parser.py  — extract transaction data from email HTML/text
+    matcher.py         — match receipts to YNAB transactions (amount ± $0.01, date ± 1 day)
+    ynab_client.py     — YNAB API reads + memo writes
+  config/
+    category_rules.yaml  — category keyword rules
+    gmail_token.json     — OAuth token (gitignored)
+    gmail_credentials.json — OAuth client (gitignored)
+  tests/               — pytest suite
+  .env                 — YNAB_TOKEN, YNAB_BUDGET_ID (gitignored)
+  requirements.txt
 ```
 
-## Current state
-- Scaffolding phase. No repo, no Gmail creds yet.
-- `CLAUDE.md` and `PROMPT.md` bootstrap files exist (regenerated — see alongside this doc).
-- Next concrete step: set up Gmail API OAuth in Google Cloud Console, then start a fresh Claude Code session with `PROMPT.md`.
+---
 
-## Key decisions already made
-- **No web scraping of Amazon.** Gmail parsing only. Fragility + CAPTCHA + TOS.
-- **Firecrawl evaluated and rejected** for v1. Gmail + Privacy.com API cover the named merchants. Revisit only if a future merchant has stub emails and no API.
-- **Privacy.com uses its REST API**, not email parsing. Returns real merchant behind each virtual card as JSON — better than any scraper.
-- **Budget resolution is automatic.** Default to YNAB's `last-used` budget ID; optionally resolve by name via `YNAB_BUDGET` env var; log the resolved budget name + ID on every run so it's never ambiguous which budget got touched.
-- **Safety defaults:** `DRY_RUN=true`, never overwrite existing memos, skip ambiguous matches, idempotent by design.
-- **Match rule:** amount + date with ±1 day tolerance.
+## Key decisions
 
-## How it runs
-Batch CLI, not a daemon. Progression:
-1. **Manual dry-runs** for 1–2 weeks to verify parsers on real receipts.
-2. **`launchd` daily job, still dry-run**, logs to `~/Library/Logs/ynab-enrich.log`. Shadow mode.
-3. **Flip `DRY_RUN=false`** once the log looks clean for a week.
-4. **Add weekly digest job** (separate launchd entry, Sunday evening) once enrichment is trusted.
+- **`label:Receipt` as pre-filter:** Inbox Zero manages which senders get the Receipt label. Spend Clarity trusts that taxonomy rather than maintaining its own sender list.
+- **Dry run default:** `DRY_RUN=true` — never writes to YNAB without explicit opt-in.
+- **No Privacy.com yet:** client is planned, not implemented. Gmail-only for now.
+- **Match rule:** amount (exact) + date (± 1 day). Ambiguous matches are skipped + logged.
+- **YNAB_BUDGET_ID:** set manually in `.env` — auto-detection from YNAB's `last-used` is a V2 item.
 
-The CLI must stay idempotent: `--since 7d` bounds the work, memo-preservation makes re-runs safe.
+---
 
-## Three-phase roadmap
-1. **Enrich** — parse, match, write memos/categories.
-2. **Audit** — use enriched data to diagnose spending patterns.
-3. **Digest** — weekly summary for partner (separate CLI command, same package).
+## Relationship to Inbox Zero
 
-## Open questions for the new chat
-- Do we add Privacy.com as a first-class client *before* or *after* Amazon/Apple parsers land? (Recommendation: before — it's simpler and de-risks the virtual-card matching problem.)
-- Partner digest delivery: email, Slack DM, or static HTML page? Not decided.
-- How far back to backfill on first run? Memory says 6–12 months; confirm with Chase.
+`portfolio/inbox-zero/` maintains `gmail-filters.xml` — the XML that applies `Receipt` label in Gmail.
+All known receipt senders (Apple, PayPal, Costco, Target, Uber, DoorDash, Spotify, Google Play, Rocky Mountain Power, Chewy, Enbridge Gas, FASTEL, Nike, and more) are already in the XML as of Apr 12, 2026 (68 total filters).
 
-## Secrets handling (decided)
-- **macOS Keychain via Python `keyring`** for `YNAB_TOKEN` and `PRIVACY_API_KEY`. Never in `.env`, never in the repo.
-- **Gmail OAuth files** in `~/.config/ynab-enrich/` (`chmod 700` dir, `chmod 600` files). Outside the repo.
-- **`.gitignore` from commit 1**: `.env`, `secrets/`, `*.json` at root, `.venv/`, `*.log`.
-- **`gitleaks` pre-commit hook** installed before first commit. Non-optional.
-- **Redacting log formatter** strips `Bearer \S+` and token patterns before anything hits disk. Log file `chmod 600`.
-- First-time setup is two `keyring set` commands + one `mkdir` + dropping the Gmail client JSON. Full commands are in CLAUDE.md.
-- Env vars are ONLY for non-secret config (`YNAB_BUDGET`, `DRY_RUN`, `LOG_PATH`, Gmail file paths). No fallback to env for tokens — defeats the point.
+When a new receipt sender is found that doesn't have a `Receipt` label, the workflow is:
+1. Add a filter to `inbox-zero/gmail-filters.xml`
+2. Import updated XML in Gmail
+3. The sender will then appear in `label:Receipt` queries
 
-## Reference repos
-- `GraysonCAdams/amazon-ynab-sync` — top-ranked, Gmail/IMAP fuzzy matching
-- `DanielKarp/YNAmazon` — memo formatting, split-order handling
-- `troylar/ynab-a-day` — digest use case
+---
 
-## First message to paste into the new chat
-> I'm building a standalone Python CLI to enrich YNAB transactions with data from Amazon/Apple receipt emails and the Privacy.com API. Read HANDOFF.md and CLAUDE.md (both attached). I haven't set up Gmail OAuth yet — walk me through that, then we'll start the Claude Code session with PROMPT.md.
+## Related
+
+- Inbox Zero: `portfolio/inbox-zero/` — source of truth for Receipt label filters
+- YNAB Clarity (iOS): `portfolio/ynab-clarity-ios/` — V2 will add Gmail-based categorization to iOS (deferred; iOS V1 uses keyword matching only)
+- Monorepo CLAUDE.md: `~/Developer/chase/CLAUDE.md`

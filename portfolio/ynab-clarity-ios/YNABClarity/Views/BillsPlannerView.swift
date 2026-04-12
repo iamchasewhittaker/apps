@@ -9,6 +9,8 @@ struct BillsPlannerView: View {
     @State private var showCovered = false
     @State private var fundSheet: FundSheetConfig? = nil
     @State private var isFunding = false
+    @State private var reviewSheet: CategoryReviewConfig? = nil
+    @State private var isAssigning = false
 
     private var balances: [CategoryBalance] { appState.buildBalances(mappings: mappings) }
 
@@ -36,9 +38,10 @@ struct BillsPlannerView: View {
                     ScrollView {
                         VStack(spacing: 20) {
                             TipBanner(
-                                message: "Red = needs attention. Green = fully funded this month.",
+                                message: "Embrace your true expenses. Every dollar that comes in should go somewhere specific — review and confirm what YNAB categorized.",
                                 storageKey: "chase_ynab_clarity_ios_tip_dismissed_bills"
                             )
+                            categorizationReviewSection
                             if !needsAttention.isEmpty {
                                 billSection(
                                     title: "Needs Attention",
@@ -74,7 +77,132 @@ struct BillsPlannerView: View {
             .sheet(item: $fundSheet) { config in
                 fundConfirmationSheet(config)
             }
+            .sheet(item: $reviewSheet) { config in
+                AssignCategorySheet(
+                    transaction: config.transaction,
+                    suggestions: config.suggestions,
+                    mappings: mappings,
+                    isAssigning: $isAssigning,
+                    onAssign: { mapping in
+                        try? await appState.updateTransactionCategory(
+                            transactionID: config.transaction.id,
+                            categoryID: mapping.ynabCategoryID,
+                            categoryMappings: mappings,
+                            incomeSources: sources
+                        )
+                        reviewSheet = nil
+                    },
+                    onDismiss: { reviewSheet = nil }
+                )
+            }
         }
+    }
+
+    // MARK: - Categorization review
+
+    private var uncategorizedTransactions: [YNABTransaction] {
+        appState.transactions.filter { CategorySuggestionEngine.needsReview($0) }
+    }
+
+    private var categorizationReviewSection: some View {
+        let items = uncategorizedTransactions
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Label("Categorization Review", systemImage: "tag.fill")
+                    .font(ClarityTheme.headlineFont)
+                    .foregroundStyle(ClarityTheme.text)
+                Spacer()
+                if items.isEmpty {
+                    Text("All Clear")
+                        .font(ClarityTheme.captionFont.weight(.semibold))
+                        .foregroundStyle(ClarityTheme.safe)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(ClarityTheme.safe.opacity(0.15))
+                        .clipShape(Capsule())
+                } else {
+                    Text("\(items.count) to review")
+                        .font(ClarityTheme.captionFont.weight(.semibold))
+                        .foregroundStyle(ClarityTheme.caution)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(ClarityTheme.caution.opacity(0.15))
+                        .clipShape(Capsule())
+                }
+            }
+            .padding(.horizontal, 4)
+
+            if items.isEmpty {
+                HStack(spacing: 8) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(ClarityTheme.safe)
+                    Text("All transactions have categories assigned.")
+                        .font(ClarityTheme.captionFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                }
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(ClarityTheme.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .overlay(RoundedRectangle(cornerRadius: 14).stroke(ClarityTheme.border, lineWidth: 1))
+            } else {
+                VStack(spacing: 1) {
+                    ForEach(items) { txn in
+                        let suggestions = CategorySuggestionEngine.suggest(for: txn, from: mappings)
+                        reviewRow(txn: txn, suggestions: suggestions)
+                    }
+                }
+                .background(ClarityTheme.border.opacity(0.3))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .overlay(RoundedRectangle(cornerRadius: 14).stroke(ClarityTheme.border, lineWidth: 1))
+            }
+        }
+    }
+
+    private func reviewRow(txn: YNABTransaction, suggestions: [CategorySuggestion]) -> some View {
+        Button {
+            reviewSheet = CategoryReviewConfig(transaction: txn, suggestions: suggestions)
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(PayeeDisplayFormatter.displayPayee(txn.payeeName))
+                        .font(ClarityTheme.bodyFont)
+                        .foregroundStyle(ClarityTheme.text)
+                        .lineLimit(2)
+                    if let memo = PayeeDisplayFormatter.memoPreview(txn.memo) {
+                        Text(memo)
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.muted)
+                            .lineLimit(2)
+                    }
+                    Text(txn.date)
+                        .font(ClarityTheme.captionFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                }
+                Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(ClarityTheme.currency(-txn.amountDollars))
+                        .font(ClarityTheme.bodyFont.weight(.semibold))
+                        .foregroundStyle(ClarityTheme.text)
+                    if let top = suggestions.first {
+                        Text(top.mapping.ynabCategoryName)
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.accent)
+                            .lineLimit(1)
+                    } else {
+                        Text("No match")
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.muted)
+                    }
+                }
+                Image(systemName: "chevron.right")
+                    .font(.caption2)
+                    .foregroundStyle(ClarityTheme.muted)
+            }
+            .padding(12)
+            .background(ClarityTheme.surface)
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Covered section (collapsible)
@@ -288,7 +416,224 @@ struct BillsPlannerView: View {
     }
 }
 
-// MARK: - Fund sheet configuration
+// MARK: - Assign category sheet (suggestions + full mapped list + search)
+
+private struct AssignCategorySheet: View {
+    let transaction: YNABTransaction
+    let suggestions: [CategorySuggestion]
+    let mappings: [CategoryMapping]
+    @Binding var isAssigning: Bool
+    let onAssign: (CategoryMapping) async -> Void
+    let onDismiss: () -> Void
+
+    @State private var query = ""
+
+    private let roleOrder: [CategoryRole] = [.mortgage, .bill, .essential, .flexible]
+
+    private var suggestedIDs: Set<String> {
+        Set(suggestions.map(\.mapping.ynabCategoryID))
+    }
+
+    private var assignableMappings: [CategoryMapping] {
+        mappings
+            .filter { $0.role != .ignore }
+            .sorted { lhs, rhs in
+                let lr = roleRank(lhs.role)
+                let rr = roleRank(rhs.role)
+                if lr != rr { return lr < rr }
+                return lhs.ynabCategoryName.localizedCaseInsensitiveCompare(rhs.ynabCategoryName) == .orderedAscending
+            }
+    }
+
+    private func roleRank(_ role: CategoryRole) -> Int {
+        roleOrder.firstIndex(of: role) ?? 99
+    }
+
+    private func matchesQuery(_ m: CategoryMapping) -> Bool {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return true }
+        let l = trimmed.lowercased()
+        return m.ynabCategoryName.lowercased().contains(l)
+            || m.ynabGroupName.lowercased().contains(l)
+    }
+
+    private var searchResults: [CategoryMapping] {
+        assignableMappings.filter(matchesQuery)
+    }
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                ClarityTheme.bg.ignoresSafeArea()
+                if assignableMappings.isEmpty {
+                    VStack(spacing: 12) {
+                        Text("No mapped categories")
+                            .font(ClarityTheme.titleFont)
+                            .foregroundStyle(ClarityTheme.text)
+                        Text("Open Settings → Category Setup to map YNAB categories, then try again.")
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.muted)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                    }
+                } else {
+                    List {
+                        Section {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(PayeeDisplayFormatter.displayPayee(transaction.payeeName))
+                                    .font(ClarityTheme.titleFont)
+                                    .foregroundStyle(ClarityTheme.text)
+                                Text(ClarityTheme.currency(-transaction.amountDollars) + " · " + transaction.date)
+                                    .font(ClarityTheme.captionFont)
+                                    .foregroundStyle(ClarityTheme.muted)
+                                if let memo = PayeeDisplayFormatter.memoPreview(transaction.memo) {
+                                    Label(memo, systemImage: "note.text")
+                                        .font(ClarityTheme.captionFont)
+                                        .foregroundStyle(ClarityTheme.accent)
+                                        .labelStyle(.titleAndIcon)
+                                }
+                            }
+                            .listRowBackground(ClarityTheme.surface)
+                        }
+
+                        if isAssigning {
+                            Section {
+                                HStack {
+                                    Spacer()
+                                    ProgressView("Saving to YNAB…")
+                                        .tint(ClarityTheme.accent)
+                                    Spacer()
+                                }
+                                .listRowBackground(ClarityTheme.bg)
+                            }
+                        }
+
+                        if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            if !suggestions.isEmpty {
+                                Section("Suggested") {
+                                    ForEach(suggestions) { suggestion in
+                                        categoryRow(suggestion: suggestion, showSuggestedBadge: true)
+                                    }
+                                }
+                            }
+                            ForEach(roleOrder, id: \.self) { role in
+                                let rows = assignableMappings.filter {
+                                    $0.role == role && !suggestedIDs.contains($0.ynabCategoryID)
+                                }
+                                if !rows.isEmpty {
+                                    Section(role.displayName) {
+                                        ForEach(rows, id: \.ynabCategoryID) { mapping in
+                                            plainCategoryRow(mapping)
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            Section("Matching categories") {
+                                ForEach(searchResults, id: \.ynabCategoryID) { mapping in
+                                    plainCategoryRow(mapping)
+                                }
+                            }
+                        }
+                    }
+                    .scrollContentBackground(.hidden)
+                    .listStyle(.insetGrouped)
+                }
+            }
+            .navigationTitle("Assign Category")
+            .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $query, prompt: "Search mapped categories")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Cancel", action: onDismiss)
+                        .foregroundStyle(ClarityTheme.accent)
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
+    }
+
+    @ViewBuilder
+    private func categoryRow(suggestion: CategorySuggestion, showSuggestedBadge: Bool) -> some View {
+        Button {
+            Task {
+                isAssigning = true
+                defer { isAssigning = false }
+                await onAssign(suggestion.mapping)
+            }
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(suggestion.mapping.ynabCategoryName)
+                        .font(ClarityTheme.bodyFont)
+                        .foregroundStyle(ClarityTheme.text)
+                    Text(suggestion.mapping.role.displayName)
+                        .font(ClarityTheme.captionFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                }
+                Spacer()
+                if showSuggestedBadge, suggestion.confidence >= 0.8, !suggestion.matchedKeyword.isEmpty {
+                    Text("Suggested")
+                        .font(ClarityTheme.captionFont.weight(.semibold))
+                        .foregroundStyle(ClarityTheme.accent)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(ClarityTheme.accent.opacity(0.15))
+                        .clipShape(Capsule())
+                }
+                Image(systemName: "chevron.right")
+                    .font(.caption2)
+                    .foregroundStyle(ClarityTheme.muted)
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(isAssigning)
+        .listRowBackground(ClarityTheme.surface)
+    }
+
+    @ViewBuilder
+    private func plainCategoryRow(_ mapping: CategoryMapping) -> some View {
+        Button {
+            Task {
+                isAssigning = true
+                defer { isAssigning = false }
+                await onAssign(mapping)
+            }
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(mapping.ynabCategoryName)
+                        .font(ClarityTheme.bodyFont)
+                        .foregroundStyle(ClarityTheme.text)
+                    if !mapping.ynabGroupName.isEmpty {
+                        Text(mapping.ynabGroupName)
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.muted)
+                    } else {
+                        Text(mapping.role.displayName)
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.muted)
+                    }
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption2)
+                    .foregroundStyle(ClarityTheme.muted)
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(isAssigning)
+        .listRowBackground(ClarityTheme.surface)
+    }
+}
+
+// MARK: - Sheet configuration types
+
+private struct CategoryReviewConfig: Identifiable {
+    let id = UUID()
+    let transaction: YNABTransaction
+    let suggestions: [CategorySuggestion]
+}
 
 private struct FundSheetConfig: Identifiable {
     let id = UUID()

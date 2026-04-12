@@ -28,11 +28,13 @@ struct IncomeGapView: View {
                     ScrollView {
                         VStack(spacing: 16) {
                             TipBanner(
-                                message: "Required expenses come from your YNAB goal targets. Income sources are configured during setup.",
+                                message: "Roll with the punches. Move money between categories when life changes — what matters is keeping your budget honest.",
                                 storageKey: "chase_ynab_clarity_ios_tip_dismissed_income"
                             )
+                            budgetHealthRow
                             incomeVsRequiredCard
                             gapOrSurplusCard
+                            underfundedGoalsCard
                             salaryTargetCard
                         }
                         .padding(16)
@@ -42,8 +44,103 @@ struct IncomeGapView: View {
                     }
                 }
             }
-            .navigationTitle("Income")
+            .navigationTitle("Adjust")
             .navigationBarTitleDisplayMode(.large)
+        }
+    }
+
+    // MARK: - Budget health (Required / Funded / Shortfall)
+
+    private var budgetHealthRow: some View {
+        let b = balances
+        let required = MetricsEngine.totalRequired(b)
+        let funded = MetricsEngine.totalFunded(b)
+        let shortfall = MetricsEngine.currentShortfall(b)
+
+        return HStack(spacing: 0) {
+            budgetHealthMetric(label: "Required", value: ClarityTheme.currency(required), color: ClarityTheme.text)
+            Rectangle().fill(ClarityTheme.border).frame(width: 1, height: 36)
+            budgetHealthMetric(label: "Funded", value: ClarityTheme.currency(funded), color: ClarityTheme.safe)
+            Rectangle().fill(ClarityTheme.border).frame(width: 1, height: 36)
+            budgetHealthMetric(
+                label: "Shortfall",
+                value: shortfall > 0 ? ClarityTheme.currency(shortfall) : "None",
+                color: shortfall > 0 ? ClarityTheme.danger : ClarityTheme.safe
+            )
+        }
+        .clarityCard()
+    }
+
+    private func budgetHealthMetric(label: String, value: String, color: Color) -> some View {
+        VStack(spacing: 3) {
+            Text(label)
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+            Text(value)
+                .font(ClarityTheme.headlineFont)
+                .foregroundStyle(color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Funding gaps (goal target vs assigned this month)
+
+    private var underfundedGoalsCard: some View {
+        let goals: [GoalStatus] = {
+            guard let month = appState.monthDetail else { return [] }
+            return MetricsEngine.underfundedGoals(monthCategories: month.categories, mappings: mappings)
+        }()
+
+        return Group {
+            if goals.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    Label("Funding gaps", systemImage: "target")
+                        .font(ClarityTheme.titleFont)
+                        .foregroundStyle(ClarityTheme.safe)
+                    Text("Every mapped category with a YNAB goal has enough assigned this month to meet that goal target (or has no goal).")
+                        .font(ClarityTheme.captionFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                }
+                .clarityCard()
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack {
+                        Label("Funding gaps", systemImage: "target")
+                            .font(ClarityTheme.titleFont)
+                            .foregroundStyle(ClarityTheme.caution)
+                        Spacer()
+                        Text("\(goals.count) categories")
+                            .font(ClarityTheme.captionFont)
+                            .foregroundStyle(ClarityTheme.caution)
+                    }
+                    Text(
+                        "This compares each category’s goal target to how much you’ve assigned in YNAB this month — not “available” after spending. Assign more in YNAB (or use Bills → Fund) to close a gap."
+                    )
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+                    VStack(spacing: 8) {
+                        ForEach(goals) { goal in
+                            HStack {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(goal.categoryName)
+                                        .font(ClarityTheme.bodyFont)
+                                        .foregroundStyle(ClarityTheme.text)
+                                    Text("Goal: " + ClarityTheme.currency(goal.goalTarget) + " · Assigned: " + ClarityTheme.currency(goal.assigned))
+                                        .font(ClarityTheme.captionFont)
+                                        .foregroundStyle(ClarityTheme.muted)
+                                }
+                                Spacer()
+                                Text(ClarityTheme.currency(goal.gap) + " to assign")
+                                    .font(ClarityTheme.captionFont.weight(.semibold))
+                                    .foregroundStyle(ClarityTheme.caution)
+                            }
+                        }
+                    }
+                }
+                .clarityCard()
+            }
         }
     }
 

@@ -34,6 +34,10 @@
 		AC01000000000000000001B /* FunMoneyHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001B /* FunMoneyHelpView.swift */; };
 		AC01000000000000000001C /* TipBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001C /* TipBanner.swift */; };
 		AC01000000000000000001D /* HowItWorksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001D /* HowItWorksView.swift */; };
+		AC01000000000000000001E /* CategorySuggestionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001E /* CategorySuggestionEngine.swift */; };
+		AC01000000000000000001F /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001F /* OverviewView.swift */; };
+		AC010000000000000000020 /* SettingsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000020 /* SettingsSheetView.swift */; };
+		AC010000000000000000021 /* PayeeDisplayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000021 /* PayeeDisplayFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,10 @@
 		AC02000000000000000001B /* FunMoneyHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunMoneyHelpView.swift; sourceTree = "<group>"; };
 		AC02000000000000000001C /* TipBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipBanner.swift; sourceTree = "<group>"; };
 		AC02000000000000000001D /* HowItWorksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowItWorksView.swift; sourceTree = "<group>"; };
+		AC02000000000000000001E /* CategorySuggestionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySuggestionEngine.swift; sourceTree = "<group>"; };
+		AC02000000000000000001F /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		AC020000000000000000020 /* SettingsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheetView.swift; sourceTree = "<group>"; };
+		AC020000000000000000021 /* PayeeDisplayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeDisplayFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +170,8 @@
 			children = (
 				AC020000000000000000008 /* MetricsEngine.swift */,
 				AC020000000000000000009 /* CashFlowEngine.swift */,
+				AC02000000000000000001E /* CategorySuggestionEngine.swift */,
+				AC020000000000000000021 /* PayeeDisplayFormatter.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -191,6 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				AC04000000000000000000C /* Components */,
+				AC02000000000000000001F /* OverviewView.swift */,
+				AC020000000000000000020 /* SettingsSheetView.swift */,
 				AC02000000000000000000F /* DashboardView.swift */,
 				AC020000000000000000010 /* BillsPlannerView.swift */,
 				AC020000000000000000011 /* IncomeGapView.swift */,
@@ -342,6 +354,10 @@
 				AC01000000000000000001B /* FunMoneyHelpView.swift in Sources */,
 				AC01000000000000000001C /* TipBanner.swift in Sources */,
 				AC01000000000000000001D /* HowItWorksView.swift in Sources */,
+				AC01000000000000000001E /* CategorySuggestionEngine.swift in Sources */,
+				AC01000000000000000001F /* OverviewView.swift in Sources */,
+				AC010000000000000000020 /* SettingsSheetView.swift in Sources */,
+				AC010000000000000000021 /* PayeeDisplayFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

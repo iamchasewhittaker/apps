@@ -233,3 +233,4 @@ No phase skips. No coding before phase 3 is documented.
 | Wellness Tracker (iOS) | — | — | portfolio/wellness-tracker-ios/CLAUDE.md |
 | Job Search HQ | — | — | portfolio/job-search-hq/CLAUDE.md |
 | App Forge | — | — | portfolio/app-forge/CLAUDE.md |
+| Knowledge Base | [docs/PRODUCT_BRIEF.md](portfolio/knowledge-base/docs/PRODUCT_BRIEF.md) | [docs/APP_FLOW.md](portfolio/knowledge-base/docs/APP_FLOW.md) | portfolio/knowledge-base/CLAUDE.md |

@@ -1,0 +1,787 @@
+#!/bin/bash
+# new-app — scaffold a new portfolio app with the Product Build Framework.
+#
+# Usage:
+#   new-app                              (interactive — walks you through everything)
+#   new-app my-app "Description"         (quick mode — defaults to React CRA)
+#   new-app my-app "Description" --type react|swift|python
+#
+# What it does:
+#   1. Asks which tech stack to use (React CRA, SwiftUI, Python CLI)
+#   2. Scaffolds the project with the right boilerplate
+#   3. Generates Phase 1-3 doc stubs (Product Brief, PRD, App Flow)
+#   4. Wires up CI, root CLAUDE.md, Cursor symlink
+#   5. Prints the MVP checklist so you know what to fill out before coding
+#
+# After running:
+#   React:  cd portfolio/<app> && npm install && npm start
+#   Swift:  open portfolio/<app> in Xcode
+#   Python: cd portfolio/<app> && pip install -r requirements.txt
+
+set -e
+
+# --- Colors ---
+BOLD='\033[1m'
+DIM='\033[2m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
+# --- Resolve repo root ---
+REPO_ROOT="$(git -C "$(dirname "$0")/.." rev-parse --show-toplevel 2>/dev/null)"
+if [ -z "$REPO_ROOT" ]; then
+  REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+fi
+if [ -z "$REPO_ROOT" ]; then
+  echo "Error: not inside the chase monorepo"
+  exit 1
+fi
+
+# --- Parse args ---
+APP_NAME="$1"
+DESCRIPTION="$2"
+APP_TYPE=""
+
+# Check for --type flag
+for arg in "$@"; do
+  case "$arg" in
+    --type) shift; APP_TYPE="$1"; shift ;;
+    react|swift|python)
+      if [ "$(eval echo \$$((OPTIND-1)))" = "--type" ] 2>/dev/null || [ -z "$APP_TYPE" -a "$arg" != "$APP_NAME" -a "$arg" != "$DESCRIPTION" ]; then
+        APP_TYPE="$arg"
+      fi
+      ;;
+  esac
+done
+
+# Parse --type from positional args more reliably
+for arg in "$@"; do
+  if [ "$arg" = "--type" ]; then
+    continue
+  fi
+  case "$arg" in
+    react|swift|python)
+      APP_TYPE="$arg"
+      ;;
+  esac
+done
+
+# --- Interactive mode if missing args ---
+if [ -z "$APP_NAME" ]; then
+  echo ""
+  echo -e "${BOLD}New Portfolio App${NC}"
+  echo -e "${DIM}Product Build Framework — guided setup${NC}"
+  echo ""
+  echo -e "What's the app name? ${DIM}(kebab-case, e.g. habit-tracker)${NC}"
+  read -r -p "> " APP_NAME
+  if [ -z "$APP_NAME" ]; then
+    echo "Error: app name is required."
+    exit 1
+  fi
+fi
+
+if [ -z "$DESCRIPTION" ]; then
+  echo ""
+  echo -e "One-line description:"
+  read -r -p "> " DESCRIPTION
+  if [ -z "$DESCRIPTION" ]; then
+    echo "Error: description is required."
+    exit 1
+  fi
+fi
+
+# --- Tech stack selection ---
+if [ -z "$APP_TYPE" ]; then
+  echo ""
+  echo -e "${BOLD}Which tech stack?${NC}"
+  echo ""
+  echo -e "  ${CYAN}1) react${NC}   — React CRA + localStorage + inline styles + Vercel"
+  echo -e "             ${DIM}Best for: web tools, dashboards, data viewers, PWAs${NC}"
+  echo -e "             ${DIM}Examples: Wellness Tracker, Job Search HQ, App Forge, Knowledge Base${NC}"
+  echo ""
+  echo -e "  ${CYAN}2) swift${NC}   — SwiftUI + SwiftData + Xcode project"
+  echo -e "             ${DIM}Best for: native iOS apps, offline-first mobile, App Store distribution${NC}"
+  echo -e "             ${DIM}Examples: RollerTask Tycoon, YNAB Clarity, Wellness Tracker iOS${NC}"
+  echo ""
+  echo -e "  ${CYAN}3) python${NC}  — Python CLI + argparse + pytest"
+  echo -e "             ${DIM}Best for: automation scripts, API integrations, data pipelines, CLI tools${NC}"
+  echo -e "             ${DIM}Examples: Spend Clarity${NC}"
+  echo ""
+  read -r -p "Pick [1/2/3]: " TYPE_CHOICE
+  case "$TYPE_CHOICE" in
+    1|react)  APP_TYPE="react" ;;
+    2|swift)  APP_TYPE="swift" ;;
+    3|python) APP_TYPE="python" ;;
+    *)
+      echo "Invalid choice. Use 1, 2, or 3."
+      exit 1
+      ;;
+  esac
+fi
+
+# --- Validate ---
+APP_DIR="$REPO_ROOT/portfolio/$APP_NAME"
+if [ -d "$APP_DIR" ]; then
+  echo "Error: portfolio/$APP_NAME already exists"
+  exit 1
+fi
+
+# --- Derived values ---
+TITLE=$(echo "$APP_NAME" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
+STORE_KEY="chase_$(echo "$APP_NAME" | tr '-' '_')_v1"
+TODAY=$(date '+%Y-%m-%d')
+
+echo ""
+echo -e "${GREEN}Creating ${BOLD}$TITLE${NC}${GREEN} at portfolio/$APP_NAME${NC}"
+echo -e "  Type:      $APP_TYPE"
+echo -e "  Store key: $STORE_KEY"
+echo ""
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  Phase 1-3 docs (generated for ALL app types)                   ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+mkdir -p "$APP_DIR/docs" "$APP_DIR/.cursor/rules"
+
+# --- docs/PRODUCT_BRIEF.md (Phase 1) ---
+cat > "$APP_DIR/docs/PRODUCT_BRIEF.md" << BRIEFEOF
+# Product Brief — $TITLE
+
+> Phase 1: Product Definition. Fill this out before writing any code.
+> See [PRODUCT_BUILD_FRAMEWORK.md](/PRODUCT_BUILD_FRAMEWORK.md) for guidance.
+
+## App summary
+<!-- One sentence: "This app helps ___ do ___." -->
+$DESCRIPTION
+
+## Target user
+<!-- Who specifically is this for? -->
+
+
+## Main pain point
+<!-- What is failing for them today? -->
+
+
+## Core value
+<!-- What does this app do better than the current solution? -->
+
+
+## V1 scope (3-5 bullets)
+<!-- What is the smallest useful version? -->
+-
+-
+-
+BRIEFEOF
+
+# --- docs/PRD.md (Phase 2) ---
+cat > "$APP_DIR/docs/PRD.md" << PRDEOF
+# Product Requirements — $TITLE
+
+> Phase 2: PRD. Turn the idea into something buildable.
+> See [PRODUCT_BUILD_FRAMEWORK.md](/PRODUCT_BUILD_FRAMEWORK.md) for guidance.
+
+## Problem
+<!-- What are we solving? -->
+
+
+## Users
+<!-- Who is this for? -->
+
+
+## User stories
+<!-- "As a user, I want to ___" -->
+- As a user, I want to ___
+- As a user, I want to ___
+
+## V1 features
+<!-- The list — keep it short -->
+-
+-
+
+## Not in V1
+<!-- The explicit cut list (this is critical) -->
+-
+-
+
+## Success metrics
+<!-- How do you know V1 worked? -->
+- User can complete primary flow in under ___ seconds
+-
+PRDEOF
+
+# --- docs/APP_FLOW.md (Phase 3) ---
+cat > "$APP_DIR/docs/APP_FLOW.md" << FLOWEOF
+# App Flow — $TITLE
+
+> Phase 3: UX / App Flow. Map the experience before coding.
+> See [PRODUCT_BUILD_FRAMEWORK.md](/PRODUCT_BUILD_FRAMEWORK.md) for guidance.
+
+## First screen
+<!-- What does the user see on launch? -->
+
+
+## Main action
+<!-- What is the single most important thing the user does? -->
+
+
+## Primary flow
+1.
+2.
+3.
+
+## Screens
+<!-- List every screen / tab / view -->
+-
+-
+
+## Empty states
+<!-- What appears when there is no data? -->
+- [Screen]: "[message]"
+
+## Error states
+<!-- What happens when something goes wrong? -->
+- [Trigger]: "[message]"
+FLOWEOF
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  Shared docs (generated for ALL app types)                      ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# --- LEARNINGS.md ---
+cat > "$APP_DIR/LEARNINGS.md" << LRNEOF
+# Learnings — $TITLE
+
+> Mistakes, fixes, and "aha" moments captured from real sessions.
+> **AI tools:** read this at session start alongside CLAUDE.md for project-specific gotchas.
+> **Chase:** append an entry any time something goes wrong or clicks.
+
+---
+
+## Format
+
+### YYYY-MM-DD — Short title
+**What happened:** 1-2 sentences describing the problem or discovery.
+**Root cause:** Why it happened — the non-obvious part.
+**Fix / lesson:** What was done, or what to do differently next time.
+**Tags:** gotcha | react | swift | python | git | deploy | supabase | ...
+
+---
+
+## Entries
+
+*(No entries yet — add the first one after something surprising happens.)*
+LRNEOF
+
+# --- Cursor symlink ---
+ln -s ../../../../.cursor/rules/session-handoff.mdc "$APP_DIR/.cursor/rules/session-handoff.mdc"
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  Tech-specific scaffold                                         ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+if [ "$APP_TYPE" = "react" ]; then
+  # ── React CRA ──────────────────────────────────────────────────
+  mkdir -p "$APP_DIR/public" "$APP_DIR/src"
+
+  cat > "$APP_DIR/package.json" << PACKAGEEOF
+{
+  "name": "chase-$APP_NAME",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "lucide-react": "^0.460.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  }
+}
+PACKAGEEOF
+
+  cat > "$APP_DIR/public/index.html" << HTMLEOF
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#09090b" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>$TITLE</title>
+  </head>
+  <body style="margin:0; background:#09090b;">
+    <div id="root"></div>
+  </body>
+</html>
+HTMLEOF
+
+  cat > "$APP_DIR/src/index.js" << 'INDEXEOF'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+INDEXEOF
+
+  cat > "$APP_DIR/src/constants.js" << CONSTEOF
+// Storage
+export const STORE = "$STORE_KEY";
+export const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || null; } catch { return null; } };
+export const save = (data) => { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch {} };
+
+// Inline styles
+export const s = {
+  root: { minHeight: "100vh", background: "#09090b", color: "#f4f4f5", padding: 16, fontFamily: "system-ui, -apple-system, sans-serif" },
+  container: { maxWidth: 896, margin: "0 auto" },
+  header: { marginBottom: 24 },
+  headerTitle: { fontSize: 30, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 },
+  headerSub: { fontSize: 14, color: "#a1a1aa" },
+};
+
+// CSS for hover effects (can't do inline)
+export const css = \`
+* { box-sizing: border-box; margin: 0; padding: 0; }
+\`;
+CONSTEOF
+
+  cat > "$APP_DIR/src/ErrorBoundary.jsx" << 'EBEOF'
+import React from "react";
+
+export default class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(err) { return { error: err }; }
+  render() {
+    if (this.state.error) return (
+      <div style={{ padding: 24, color: "#f87171", fontFamily: "system-ui, sans-serif" }}>
+        <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 15 }}>Something went wrong in {this.props.name}</div>
+        <div style={{ fontSize: 12, color: "#71717a", marginBottom: 16 }}>{this.state.error.message}</div>
+        <button onClick={() => this.setState({ error: null })}
+          style={{ padding: "8px 16px", borderRadius: 8, background: "#27272a",
+            border: "1px solid #3f3f46", color: "#d4d4d8", cursor: "pointer", fontFamily: "inherit" }}>
+          Try again
+        </button>
+      </div>
+    );
+    return this.props.children;
+  }
+}
+EBEOF
+
+  cat > "$APP_DIR/src/App.jsx" << APPEOF
+import { useState, useEffect } from "react";
+import { load, save, s, css } from "./constants";
+import ErrorBoundary from "./ErrorBoundary";
+
+export default function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const stored = load();
+    setData(stored || {});
+  }, []);
+
+  if (!data) return null;
+
+  return (
+    <ErrorBoundary name="$TITLE">
+      <div style={s.root}>
+        <style>{css}</style>
+        <div style={s.container}>
+          <header style={s.header}>
+            <h1 style={s.headerTitle}>$TITLE</h1>
+            <p style={s.headerSub}>$DESCRIPTION</p>
+          </header>
+          <p style={{ color: "#71717a", fontSize: 14 }}>Ready to build. Edit src/App.jsx to get started.</p>
+        </div>
+      </div>
+    </ErrorBoundary>
+  );
+}
+APPEOF
+
+  cat > "$APP_DIR/.gitignore" << 'GIEOF'
+node_modules/
+build/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+GIEOF
+
+  TECH_LABEL="React CRA"
+  ENTRY_FILE="src/App.jsx"
+  STORE_LABEL="\`$STORE_KEY\` (localStorage)"
+  COMMANDS="- \`npm start\` — dev server\n- \`npm run build\` — production build"
+  RUN_CMD="cd portfolio/$APP_NAME && npm install && npm start"
+
+  # Add to CI workflow
+  WORKFLOW="$REPO_ROOT/.github/workflows/portfolio-web-build.yml"
+  if [ -f "$WORKFLOW" ]; then
+    sed -i '' "/\"\.github\/workflows\/portfolio-web-build\.yml\"/i\\
+\\      - \"portfolio/$APP_NAME/**\"
+" "$WORKFLOW"
+  fi
+
+elif [ "$APP_TYPE" = "swift" ]; then
+  # ── SwiftUI ────────────────────────────────────────────────────
+  SWIFT_NAME=$(echo "$TITLE" | tr -d ' ')
+  BUNDLE_ID="com.chasewhittaker.$SWIFT_NAME"
+
+  mkdir -p "$APP_DIR/$SWIFT_NAME/Models" "$APP_DIR/$SWIFT_NAME/Views" "$APP_DIR/$SWIFT_NAME/Theme" "$APP_DIR/$SWIFT_NAME/Data"
+
+  # App entry point
+  cat > "$APP_DIR/$SWIFT_NAME/${SWIFT_NAME}App.swift" << SWIFTAPPEOF
+import SwiftUI
+import SwiftData
+
+@main
+struct ${SWIFT_NAME}App: App {
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            // Add your @Model types here
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+        .modelContainer(sharedModelContainer)
+    }
+}
+SWIFTAPPEOF
+
+  # ContentView
+  cat > "$APP_DIR/$SWIFT_NAME/Views/ContentView.swift" << CONTENTEOF
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 16) {
+                Text("$TITLE")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Text("$DESCRIPTION")
+                    .foregroundStyle(.secondary)
+            }
+            .padding()
+        }
+    }
+}
+
+#Preview {
+    ContentView()
+}
+CONTENTEOF
+
+  cat > "$APP_DIR/.gitignore" << 'GIEOF'
+.DS_Store
+*.xcuserdata/
+xcuserdata/
+DerivedData/
+.build/
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+GIEOF
+
+  TECH_LABEL="SwiftUI + SwiftData"
+  ENTRY_FILE="$SWIFT_NAME/${SWIFT_NAME}App.swift"
+  STORE_LABEL="SwiftData + \`@AppStorage\` (\`$STORE_KEY\`)"
+  COMMANDS="- Open in Xcode (Cmd+B to build, Cmd+R to run)\n- Tests: Cmd+U"
+  RUN_CMD="open portfolio/$APP_NAME in Xcode"
+
+elif [ "$APP_TYPE" = "python" ]; then
+  # ── Python CLI ─────────────────────────────────────────────────
+  mkdir -p "$APP_DIR/src" "$APP_DIR/tests" "$APP_DIR/config" "$APP_DIR/output"
+
+  cat > "$APP_DIR/src/main.py" << 'PYMAINEOF'
+"""
+__TITLE__ — __DESCRIPTION__
+
+Usage:
+    python src/main.py
+    python src/main.py --dry-run
+"""
+
+import argparse
+import logging
+import sys
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
+
+Path("output").mkdir(exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-8s  %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler("output/run.log"),
+    ],
+)
+log = logging.getLogger(__name__)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="__DESCRIPTION__")
+    parser.add_argument("--dry-run", action="store_true", help="Preview changes without writing")
+    args = parser.parse_args()
+
+    log.info("Starting %s (dry_run=%s)", "__TITLE__", args.dry_run)
+
+    # TODO: implement core logic here
+
+    log.info("Done.")
+
+
+if __name__ == "__main__":
+    main()
+PYMAINEOF
+
+  # Replace placeholders (can't use heredoc variables inside 'single-quoted' heredoc)
+  sed -i '' "s/__TITLE__/$TITLE/g" "$APP_DIR/src/main.py"
+  sed -i '' "s/__DESCRIPTION__/$DESCRIPTION/g" "$APP_DIR/src/main.py"
+
+  cat > "$APP_DIR/requirements.txt" << 'REQEOF'
+python-dotenv>=1.0.0
+requests>=2.31.0
+REQEOF
+
+  cat > "$APP_DIR/.env.example" << 'ENVEOF'
+# Copy to .env and fill in values
+# API_KEY=your_key_here
+ENVEOF
+
+  cat > "$APP_DIR/tests/__init__.py" << 'INITEOF'
+INITEOF
+
+  cat > "$APP_DIR/tests/test_main.py" << 'TESTEOF'
+"""Starter test file."""
+
+
+def test_placeholder():
+    assert True
+TESTEOF
+
+  cat > "$APP_DIR/.gitignore" << 'GIEOF'
+__pycache__/
+*.pyc
+.env
+output/
+config/*.json
+*.egg-info/
+dist/
+build/
+.venv/
+GIEOF
+
+  TECH_LABEL="Python CLI"
+  ENTRY_FILE="src/main.py"
+  STORE_LABEL="none (Python CLI; no localStorage)"
+  COMMANDS="- \`python src/main.py\` — run\n- \`python src/main.py --dry-run\` — preview mode\n- \`pytest\` — run tests"
+  RUN_CMD="cd portfolio/$APP_NAME && pip install -r requirements.txt && python src/main.py"
+fi
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  CLAUDE.md, ROADMAP.md, HANDOFF.md, CHANGELOG.md (all types)   ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# --- CLAUDE.md ---
+cat > "$APP_DIR/CLAUDE.md" << CLAUDEEOF
+# $TITLE — Project Instructions
+
+> See also: \`/CLAUDE.md\` (repo root) for portfolio-wide conventions (monorepo root: \`~/Developer/chase\`).
+
+## App Identity
+- **Version:** v0.1
+- **Storage key:** $STORE_LABEL
+- **URL:** not yet deployed
+- **Entry:** \`$ENTRY_FILE\`
+
+## Purpose
+$DESCRIPTION
+
+## Tech Stack
+$TECH_LABEL
+
+## Commands
+$(echo -e "$COMMANDS")
+
+## Constraints
+- Dark mode only (\`#09090b\` base) for web apps
+- No TypeScript (React apps), no CSS modules, no Tailwind
+- One feature per iteration. Ship, test, then move on.
+
+## How to Extend
+1. Read the ROADMAP.md before adding anything new.
+2. Fill out docs/PRODUCT_BRIEF.md, docs/PRD.md, docs/APP_FLOW.md before building features.
+3. If a feature changes the data shape, migrate existing data.
+CLAUDEEOF
+
+# --- ROADMAP.md ---
+cat > "$APP_DIR/ROADMAP.md" << ROADEOF
+# Roadmap — $TITLE
+
+MVP-first. Ship one slice at a time.
+
+## Vision
+$DESCRIPTION
+
+## v0.1 — Now
+- [ ] Complete Phase 1-3 docs (Product Brief, PRD, App Flow)
+- [ ] Define core data shape
+- [ ] Build primary UI / core flow
+
+## Later — Ideas parking lot
+*(Add ideas here as they come up.)*
+
+## Out of scope (for now)
+*(List things you've explicitly decided not to build yet.)*
+
+## Definition of done (for any item)
+1. Works on first run with no prior state
+2. Works on subsequent runs with existing data
+3. Doesn't break existing features
+4. Builds / runs cleanly
+ROADEOF
+
+# --- HANDOFF.md ---
+cat > "$APP_DIR/HANDOFF.md" << HANDEOF
+# Handoff — $TITLE
+
+## Session info
+- **Date:** $TODAY
+- **Session #:** 1
+- **Working on version:** v0.1
+
+## What shipped this session
+- **Project scaffolded** — $TECH_LABEL app created via \`scripts/new-app\`
+
+## What's broken or half-done
+- Nothing — clean scaffold.
+- Phase 1-3 docs need to be filled out before building features.
+
+## Decisions made
+- Tech stack: $TECH_LABEL
+- Storage key: \`$STORE_KEY\`
+
+## Next session — start here
+**Next action:** Fill out docs/PRODUCT_BRIEF.md (Phase 1), then docs/PRD.md (Phase 2), then docs/APP_FLOW.md (Phase 3). No coding until those are done.
+
+## Notes for future Claude
+- This app lives in the monorepo at \`portfolio/$APP_NAME/\`.
+- Read \`CLAUDE.md\` + \`HANDOFF.md\` at session start.
+- User prefers MVP thinking. Ship one thing at a time.
+- Dark mode is non-negotiable (web apps).
+- **No coding before Phase 3 is documented.** See PRODUCT_BUILD_FRAMEWORK.md.
+
+---
+
+### Quick-start prompt for next session
+> I'm starting work on $TITLE. It lives at \`portfolio/$APP_NAME/\` in my apps monorepo (\`~/Developer/chase\`). Read \`CLAUDE.md\`, \`ROADMAP.md\`, and \`HANDOFF.md\` in that folder. Help me fill out the Phase 1-3 docs before we start building.
+HANDEOF
+
+# --- CHANGELOG.md ---
+cat > "$APP_DIR/CHANGELOG.md" << CHGEOF
+# Changelog
+
+## [Unreleased]
+
+## v0.1 — $TODAY — Initial scaffold
+- $TECH_LABEL project created via \`scripts/new-app\`
+- Phase 1-3 doc stubs generated
+CHGEOF
+
+# --- Add to root CLAUDE.md portfolio table ---
+ROOT_CLAUDE="$REPO_ROOT/CLAUDE.md"
+if [ -f "$ROOT_CLAUDE" ]; then
+  sed -i '' "/| Knowledge Base /a\\
+| $TITLE | v0.1 | \`$STORE_KEY\` | not yet deployed | 🟡 Local · [\`portfolio/$APP_NAME\`](portfolio/$APP_NAME) |
+" "$ROOT_CLAUDE"
+fi
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  Output                                                         ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+echo ""
+echo -e "${GREEN}Done!${NC} Created portfolio/$APP_NAME/ ($TECH_LABEL)"
+echo ""
+echo -e "  ${BOLD}Code${NC}"
+if [ "$APP_TYPE" = "react" ]; then
+  echo "  src/App.jsx              Main component"
+  echo "  src/constants.js         Storage helpers + styles"
+  echo "  src/ErrorBoundary.jsx    Error boundary"
+  echo "  src/index.js             CRA entry"
+  echo "  package.json             Dependencies"
+  echo "  public/index.html        HTML shell"
+elif [ "$APP_TYPE" = "swift" ]; then
+  echo "  $SWIFT_NAME/             App source"
+  echo "    ${SWIFT_NAME}App.swift  Entry point"
+  echo "    Views/                 UI components"
+  echo "    Models/                SwiftData models"
+  echo "    Theme/                 Colors + fonts"
+  echo "    Data/                  Domain logic"
+elif [ "$APP_TYPE" = "python" ]; then
+  echo "  src/main.py              Entry point + CLI"
+  echo "  tests/                   pytest suite"
+  echo "  config/                  Configuration"
+  echo "  requirements.txt         Dependencies"
+  echo "  .env.example             Env template"
+fi
+echo ""
+echo -e "  ${BOLD}Docs (fill these out before coding)${NC}"
+echo "  docs/PRODUCT_BRIEF.md    Phase 1: What is this app?"
+echo "  docs/PRD.md              Phase 2: What does it do?"
+echo "  docs/APP_FLOW.md         Phase 3: How does it flow?"
+echo ""
+echo -e "  ${BOLD}Project${NC}"
+echo "  CLAUDE.md                Project instructions"
+echo "  ROADMAP.md               Feature pipeline"
+echo "  HANDOFF.md               Session continuity"
+echo "  CHANGELOG.md             Version history"
+echo "  LEARNINGS.md             Mistakes + discoveries"
+echo ""
+echo -e "${YELLOW}═══════════════════════════════════════════════════${NC}"
+echo -e "${BOLD}  MVP Checklist — Product Build Framework${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════${NC}"
+echo ""
+echo -e "  ${DIM}No coding until steps 1-3 are done.${NC}"
+echo ""
+echo -e "  [ ] 1. ${BOLD}Product Brief${NC} (docs/PRODUCT_BRIEF.md)"
+echo -e "        Who is this for? What pain does it solve?"
+echo -e "        What's the smallest useful V1?"
+echo ""
+echo -e "  [ ] 2. ${BOLD}PRD${NC} (docs/PRD.md)"
+echo -e "        User stories, V1 feature list, explicit cut list"
+echo ""
+echo -e "  [ ] 3. ${BOLD}App Flow${NC} (docs/APP_FLOW.md)"
+echo -e "        Screens, primary flow, empty states, error states"
+echo ""
+echo -e "  [ ] 4. ${BOLD}Build V1${NC}"
+echo -e "        $RUN_CMD"
+echo ""
+echo -e "  [ ] 5. ${BOLD}Ship + learn${NC}"
+echo -e "        Deploy, use it for a week, then decide V2"
+echo ""

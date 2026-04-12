@@ -10,28 +10,34 @@ struct HowItWorksView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         section(
-                            icon: "checkmark.seal.fill",
-                            color: ClarityTheme.safe,
-                            title: "Are my bills covered?",
-                            body: "The Overview tab shows your mortgage and bills coverage at a glance. Each category is checked against its YNAB goal target — if you've assigned enough to meet the goal, it's marked Covered. The Bills tab groups everything by status so you can focus on what still needs funding."
+                            icon: "square.grid.2x2.fill",
+                            color: ClarityTheme.accent,
+                            title: "Overview",
+                            body: "Safe to Spend and spending pace (yesterday / this week / this month). Pull to refresh to sync with YNAB."
                         )
                         section(
                             icon: "dollarsign.circle.fill",
                             color: ClarityTheme.caution,
-                            title: "How much can I safely spend?",
-                            body: "Safe to Spend takes your flexible category balances (dining, fun money, etc.) and subtracts any shortfall from required bills. The result is what's truly available — split into daily, weekly, and monthly views so you can pace your spending."
+                            title: "Assign",
+                            body: "Ready to Assign from YNAB and how fully your mapped obligations are funded. Use YNAB to assign dollars; use Bills to fund category shortfalls."
                         )
                         section(
-                            icon: "arrow.up.arrow.down.circle.fill",
+                            icon: "list.bullet.rectangle",
+                            color: ClarityTheme.safe,
+                            title: "Bills",
+                            body: "Categorization review for uncategorized spending, plus bill funding by status (needs attention, partial, covered). Each row uses your category roles and goal targets."
+                        )
+                        section(
+                            icon: "arrow.triangle.2.circlepath",
                             color: ClarityTheme.danger,
-                            title: "Do I earn enough?",
-                            body: "The Income tab compares your expected paychecks against total required expenses. If there's a gap, it tells you how much short you are. The Salary Target shows the gross annual income you'd need to cover all obligations after taxes."
+                            title: "Adjust",
+                            body: "Expected income vs required expenses, income gap or surplus, funding gaps on goals, and salary target after your tax rate in Settings."
                         )
                         section(
-                            icon: "arrow.left.arrow.right.circle.fill",
-                            color: ClarityTheme.accent,
-                            title: "When does money arrive vs. leave?",
-                            body: "Cash Flow builds a chronological timeline of paychecks and bill due dates. A \"Today\" marker shows where you are in the month. The mortgage-covered marker tells you which paycheck fully funds your housing. Set due days in category setup for accurate timing."
+                            icon: "hourglass",
+                            color: ClarityTheme.muted,
+                            title: "Age Money",
+                            body: "YNAB age of money and guidance on building a buffer. Supporting context shows how paychecks stack against obligations over the month."
                         )
 
                         Divider().background(ClarityTheme.border)

@@ -3,7 +3,7 @@
 > Local iOS app. Reads YNAB via API; can PATCH assigned amounts with confirmation.
 > Run in Xcode: ⌘B to build, ⌘R to run, ⌘U for tests.
 
-## Current state — v0.1
+## Current state — v0.2+ (Overview + 4 rules)
 
 | Area | Status |
 |------|--------|
@@ -11,8 +11,6 @@
 | Auto-categorization (`suggestRole`) | ✅ Done |
 | Mortgage `isCovered` fix (paid early in month) | ✅ Done |
 | Goal target decoding + `monthlyTarget` = goal ?? budgeted | ✅ Done |
-| Overview: Safe to Spend first, Budget Health, Bills & Essentials (incl. mortgage), Spending card, Underfunded Goals | ✅ Done |
-| Safe to spend uses non-required mapped categories + Ready to Assign (`to_be_budgeted`) | ✅ Done |
 | Transactions fetch + stale refresh banner (24h, `last_refreshed_epoch`) | ✅ Done |
 | Bills tab by coverage status + Fund shortfall (PATCH) | ✅ Done |
 | `dueDay` on categories + cash flow timeline | ✅ Done |
@@ -23,6 +21,17 @@
 | Committed to git | ✅ Done |
 | Unit tests (MetricsEngine, CashFlowEngine) | ✅ Done |
 | `YNABClient.patchRequest` unused `data` binding (warnings-as-errors) | ✅ Done |
+| **5-tab layout** (Overview + Assign / Bills / Adjust / Age Money) | ✅ Done |
+| **Categorization Review** — payee cleanup, memo preview, full mapped category picker + search + suggestions | ✅ Done |
+| **Funding gaps** (Adjust) — renamed + explained vs “available” | ✅ Done |
+| **Age Money** — milestones + coaching; timeline as supporting context | ✅ Done |
+| **4-Rules tab redesign** (Assign / Bills / Adjust / Age Money) | ✅ Done (superseded by Overview-first) |
+| **Categorization Review section** — uncategorized transactions + keyword suggestions + YNAB write-back | ✅ Done |
+| **`CategorySuggestionEngine`** — payee keyword rules → `CategoryRole` → ranked suggestions | ✅ Done |
+| **Age of Money card** — `GET /budgets/{id}` → `ageOfMoney` → color-coded days display | ✅ Done |
+| **`YNABClient.updateTransactionCategory`** — bulk PATCH `/transactions` (HTTP 209) | ✅ Done |
+| **Spend Clarity `label:Receipt` pre-filter** — `gmail_client.py` aligned with Inbox Zero taxonomy | ✅ Done |
+| `CategorySuggestionEngine.swift` — added to `.pbxproj` (Engine group + Sources phase) | ✅ Done |
 
 ---
 
@@ -69,6 +78,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-12 | **4-Rules redesign (v0.2):** tabs → Assign / Bills / Adjust / Age Money; Categorization Review on Bills tab with `CategorySuggestionEngine` + YNAB PATCH write-back; Age of Money card from `GET /budgets/{id}`; budget health + underfunded goals moved to Adjust; `patchRequest` accepts 209; `label:Receipt` pre-filter in Spend Clarity `gmail_client.py` |
 | 2026-04-11 | Layout rethink: `goal_target` decoding; Overview reorder + Budget Health + Underfunded Goals; Bills by status + Fund PATCH; `dueDay`; Income tab improvements; Cash Flow today marker + bill status; TipBanner; HowItWorksView; `YNABClient` PATCH; Xcode project includes new Swift files |
 | 2026-04-08 | `IncomeFrequency`: added `semimonthly` case + `secondPayDay` on `IncomeSource`; form shows 2nd pay date stepper when selected |
 | 2026-04-08 | `IncomeSetupView`: fixed YNAB suggestion banner pre-fill using `sheet(item:)` |

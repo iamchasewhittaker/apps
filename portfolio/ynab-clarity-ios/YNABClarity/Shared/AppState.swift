@@ -8,6 +8,7 @@ final class AppState: ObservableObject {
 
     @Published private(set) var monthDetail: YNABMonthDetail? = nil
     @Published private(set) var transactions: [YNABTransaction] = []
+    @Published private(set) var ageOfMoney: Int? = nil
     @Published private(set) var isLoading = false
     @Published private(set) var loadError: String? = nil
 
@@ -53,9 +54,11 @@ final class AppState: ObservableObject {
         do {
             async let monthTask = client.fetchMonth(budgetID: activeBudgetID, month: Date())
             async let txTask = client.fetchTransactions(budgetID: activeBudgetID, sinceDate: startOfMonth)
-            let (month, tx) = try await (monthTask, txTask)
+            async let budgetTask = client.fetchBudgetDetail(budgetID: activeBudgetID)
+            let (month, tx, budget) = try await (monthTask, txTask, budgetTask)
             self.monthDetail = month
             self.transactions = tx
+            self.ageOfMoney = budget.ageOfMoney
             self.lastRefreshedEpoch = Date().timeIntervalSince1970
         } catch YNABClientError.unauthorized {
             // Token is invalid — clear it so the user is prompted to re-enter.
@@ -84,6 +87,26 @@ final class AppState: ObservableObject {
             month: Date(),
             categoryID: categoryID,
             budgetedMilliunits: budgetedMilliunits
+        )
+        await refresh(categoryMappings: categoryMappings, incomeSources: incomeSources)
+    }
+
+    // MARK: - Assign a category to a transaction (write to YNAB)
+
+    func updateTransactionCategory(
+        transactionID: String,
+        categoryID: String,
+        categoryMappings: [CategoryMapping],
+        incomeSources: [IncomeSource]
+    ) async throws {
+        guard let token = KeychainHelper.readToken(), !activeBudgetID.isEmpty else {
+            throw YNABClientError.unauthorized
+        }
+        let client = YNABClient(token: token)
+        try await client.updateTransactionCategory(
+            budgetID: activeBudgetID,
+            transactionID: transactionID,
+            categoryID: categoryID
         )
         await refresh(categoryMappings: categoryMappings, incomeSources: incomeSources)
     }

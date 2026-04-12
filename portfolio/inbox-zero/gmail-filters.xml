@@ -1,0 +1,648 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+  <title>Mail Filters</title>
+
+  <!-- ═══════════════════════════════════════════
+       WHITELIST — JOB SEARCH (Never Archive)
+       Action: Keep in Inbox, Never Spam
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - Greenhouse Applications</title>
+    <apps:property name='from' value='greenhouse-mail.io'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - Lever Applications</title>
+    <apps:property name='from' value='lever.co'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - Workday Applications</title>
+    <apps:property name='from' value='myworkday.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - ZipRecruiter (Whitelist)</title>
+    <apps:property name='from' value='ziprecruiter.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - LinkedIn Job Alerts</title>
+    <apps:property name='from' value='jobs-listings@linkedin.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - LinkedIn InMail</title>
+    <apps:property name='from' value='inmail@linkedin.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <!-- ═══════════════════════════════════════════
+       NEWSLETTERS (Substack via iCloud alias)
+       Action: Skip Inbox + Apply label "Newsletter"
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - All Substack (ashen alias)</title>
+    <apps:property name='to' value='ashen-35.packet@icloud.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Substack domain catchall</title>
+    <apps:property name='from' value='substack.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Readwise</title>
+    <apps:property name='from' value='hello@readwise.io'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - The Marginalian</title>
+    <apps:property name='from' value='newsletter@themarginalian.org'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - The Hustle</title>
+    <apps:property name='from' value='thehustle.co'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Polymarket Polygraph</title>
+    <apps:property name='from' value='polymarket.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Product Hunt</title>
+    <apps:property name='from' value='digest.producthunt.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - TLDR Suite</title>
+    <apps:property name='from' value='dan@tldrnewsletter.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Word Smarts</title>
+    <apps:property name='from' value='hello@wordsmarts.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - The Athletic Golf</title>
+    <apps:property name='from' value='e1.theathletic.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - The Masters</title>
+    <apps:property name='from' value='email.masters.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - John Hilton III (BYU)</title>
+    <apps:property name='from' value='johnhiltoniii@byu.edu'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - John Hilton III (personal)</title>
+    <apps:property name='from' value='john@johnhiltoniii.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Daily Crossword Links</title>
+    <apps:property name='to' value='pipe.evasive_9z@icloud.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Weekly Sporcle</title>
+    <apps:property name='from' value='sporcle.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - The Twist Riddle</title>
+    <apps:property name='from' value='thetwistriddle.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Farnam Street (Shane Parrish)</title>
+    <apps:property name='from' value='farnamstreetblog.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Daily Stoic</title>
+    <apps:property name='from' value='dailystoic.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Puzzmo</title>
+    <apps:property name='from' value='mailer.puzzmo.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Superhuman / Zain Kahn</title>
+    <apps:property name='from' value='mail.joinsuperhuman.ai'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Church of Jesus Christ</title>
+    <apps:property name='from' value='churchofjesuschrist.org'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Missionary Updates (Vineyard Grove Park)</title>
+    <apps:property name='from' value='missionary.org'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Newsletter - Natia Kurdadze</title>
+    <apps:property name='from' value='natia@space-leads.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Newsletter'/>
+  </entry>
+
+  <!-- ═══════════════════════════════════════════
+       NOTIFICATIONS (Services & Automated)
+       Action: Skip Inbox + Apply label "Notification"
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - Amazon Orders</title>
+    <apps:property name='from' value='amazon.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - LinkedIn Invitations</title>
+    <apps:property name='from' value='invitations@linkedin.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - LinkedIn Messages</title>
+    <apps:property name='from' value='messages-noreply@linkedin.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - USPS Informed Delivery</title>
+    <apps:property name='from' value='USPSInformeddelivery@email.informeddelivery.usps.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - ESPN Fantasy</title>
+    <apps:property name='from' value='fantasy@espnmail.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - Backblaze</title>
+    <apps:property name='from' value='no-reply@backblaze.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - Sunsama</title>
+    <apps:property name='from' value='no-reply@sunsama.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - iCloud Hide My Email</title>
+    <apps:property name='from' value='noreply@email.apple.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - Mesh Weekly Digest</title>
+    <apps:property name='from' value='notify@me.sh'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - Obsidian</title>
+    <apps:property name='from' value='obsidian.md'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Notification - Supabase</title>
+    <apps:property name='from' value='mail.app.supabase.io'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Notification'/>
+  </entry>
+
+  <!-- ═══════════════════════════════════════════
+       CALENDAR (Appointment Reminders)
+       Action: Skip Inbox + Apply label "Calendar"
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Calendar - PEAK ENT Appointment Reminders</title>
+    <apps:property name='from' value='phreesia-mail.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Calendar'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Calendar - Kassi Hair Co.</title>
+    <apps:property name='from' value='messaging.squareup.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Calendar'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Calendar - Dental / Weave Appointments</title>
+    <apps:property name='from' value='mail.sg.getweave.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Calendar'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Calendar - Luma Events</title>
+    <apps:property name='from' value='luma-mail.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Calendar'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Calendar - Google Calendar Notifications</title>
+    <apps:property name='from' value='calendar-notification@google.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Calendar'/>
+  </entry>
+
+  <!-- ═══════════════════════════════════════════
+       SECURITY (Account Alerts)
+       Action: Skip Inbox + Apply label "Security"
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Security - Google Account Alerts</title>
+    <apps:property name='from' value='accounts.google.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Security'/>
+  </entry>
+
+  <!-- ═══════════════════════════════════════════
+       RECEIPTS (Financial Transactions)
+       Action: Skip Inbox + Apply label "Receipt"
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Venmo</title>
+    <apps:property name='from' value='venmo@venmo.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Privacy.com Transactions</title>
+    <apps:property name='from' value='support@privacy.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Anthropic</title>
+    <apps:property name='from' value='mail.anthropic.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Citi / ThankYou</title>
+    <apps:property name='from' value='citi.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Safeco Insurance</title>
+    <apps:property name='from' value='safeco.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Apple</title>
+    <apps:property name='from' value='no_reply@email.apple.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - PayPal</title>
+    <apps:property name='from' value='paypal.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Costco</title>
+    <apps:property name='from' value='online.costco.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Target</title>
+    <apps:property name='from' value='target.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Uber / Uber Eats</title>
+    <apps:property name='from' value='uber.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - DoorDash</title>
+    <apps:property name='from' value='doordash.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Spotify</title>
+    <apps:property name='from' value='spotify.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Google Play</title>
+    <apps:property name='from' value='googleplay-noreply@google.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Rocky Mountain Power</title>
+    <apps:property name='from' value='accountnotices@rockymountainpower.net'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Chewy</title>
+    <apps:property name='from' value='chewy.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Enbridge Gas</title>
+    <apps:property name='from' value='domenergyuteb.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - FASTEL</title>
+    <apps:property name='from' value='billing.fastel.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Receipt - Nike</title>
+    <apps:property name='from' value='nike.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Receipt'/>
+  </entry>
+
+  <!-- ═══════════════════════════════════════════
+       MARKETING
+       Action: Skip Inbox + Apply label "Marketing"
+  ═══════════════════════════════════════════ -->
+
+  <entry>
+    <category term='filter'></category>
+    <title>Marketing - Buck Mason</title>
+    <apps:property name='from' value='buckmason.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Marketing'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Marketing - We Are OLLIN</title>
+    <apps:property name='from' value='weareollin.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Marketing'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Marketing - NOCD</title>
+    <apps:property name='from' value='hello.treatmyocd.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Marketing'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Marketing - Lakeview</title>
+    <apps:property name='from' value='lakeview.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Marketing'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Marketing - Jack Carr</title>
+    <apps:property name='from' value='officialjackcarr.com'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+    <apps:property name='label' value='Marketing'/>
+  </entry>
+
+</feed>

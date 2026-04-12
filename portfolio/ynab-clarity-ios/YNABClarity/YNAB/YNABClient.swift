@@ -70,6 +70,25 @@ final class YNABClient {
         return response.data.transactions.filter { !$0.deleted }
     }
 
+    /// Full budget detail — includes `age_of_money` which is not on the month endpoint.
+    func fetchBudgetDetail(budgetID: String) async throws -> YNABBudgetDetail {
+        let response: YNABBudgetDetailResponse = try await request(path: "/budgets/\(budgetID)")
+        return response.data.budget
+    }
+
+    /// Update the category assigned to a transaction (write-back to YNAB).
+    /// Uses the bulk PATCH endpoint with a single-item array so only `category_id` is changed.
+    func updateTransactionCategory(
+        budgetID: String,
+        transactionID: String,
+        categoryID: String
+    ) async throws {
+        let body = YNABBulkTransactionUpdate(
+            transactions: [.init(id: transactionID, categoryId: categoryID)]
+        )
+        try await patchRequest(path: "/budgets/\(budgetID)/transactions", body: body)
+    }
+
     /// Update the assigned (budgeted) amount for a single category in a given month.
     func updateCategoryBudgeted(
         budgetID: String,
@@ -151,7 +170,7 @@ final class YNABClient {
         }
 
         switch http.statusCode {
-        case 200:
+        case 200, 201, 209:
             break
         case 401:
             throw YNABClientError.unauthorized

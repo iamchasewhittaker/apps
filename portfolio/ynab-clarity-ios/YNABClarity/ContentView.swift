@@ -27,18 +27,21 @@ struct ContentView: View {
 
     private var mainTabs: some View {
         TabView(selection: $selectedTab) {
-            DashboardView()
-                .tabItem { Label("Overview", systemImage: "chart.bar.fill") }
+            OverviewView()
+                .tabItem { Label("Overview", systemImage: "square.grid.2x2.fill") }
                 .tag(0)
+            DashboardView()
+                .tabItem { Label("Assign", systemImage: "dollarsign.circle.fill") }
+                .tag(1)
             BillsPlannerView()
                 .tabItem { Label("Bills", systemImage: "list.bullet.rectangle") }
-                .tag(1)
-            IncomeGapView()
-                .tabItem { Label("Income", systemImage: "dollarsign.circle.fill") }
                 .tag(2)
-            CashFlowView()
-                .tabItem { Label("Cash Flow", systemImage: "arrow.left.arrow.right.circle.fill") }
+            IncomeGapView()
+                .tabItem { Label("Adjust", systemImage: "arrow.triangle.2.circlepath") }
                 .tag(3)
+            CashFlowView()
+                .tabItem { Label("Age Money", systemImage: "hourglass") }
+                .tag(4)
         }
         .tint(ClarityTheme.accent)
     }

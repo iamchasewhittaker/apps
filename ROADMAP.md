@@ -11,7 +11,7 @@
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.3 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
-| YNAB Clarity (iOS) | v0.1 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
+| YNAB Clarity (iOS) | v0.2 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
 | RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
@@ -225,6 +225,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-12 | YNAB Clarity (iOS) | v0.2 | **4-Rules redesign:** tabs → Assign / Bills / Adjust / Age Money; Categorization Review on Bills tab (`CategorySuggestionEngine` + YNAB bulk PATCH write-back); Age of Money card from `GET /budgets/{id}`; budget health + underfunded goals moved to Adjust tab; `patchRequest` accepts HTTP 209; `label:Receipt` pre-filter in `spend-clarity/src/gmail_client.py`; fixed `MetricsEngineTests` memberwise init for new `categoryId` field | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
+| 2026-04-12 | Inbox Zero | — | **New project: Inbox Zero** — Gmail XML filter system (60 filters); Security label; ZipRecruiter domain whitelist; LinkedIn messages unarchived for job search; Spend Clarity integration designed; CLAUDE.md + HANDOFF.md + LEARNINGS.md + CHANGELOG.md created; moved to `portfolio/inbox-zero/` | Free tool, no paid services; daily Claude report workflow |
 | 2026-04-11 | Portfolio | — | **New app: Spend Clarity** — consolidated `projects/ynab-enrichment/` (working Python CLI) + `projects/Money/` (Transaction Enricher + Budget Dashboard) into `portfolio/spend-clarity/`; Money files archived to `portfolio/archive/money/`; Downloads CLAUDE.md + HANDOFF.md set as source of truth; master CLAUDE.md + ROADMAP.md updated | Python CLI; YNAB + Gmail + Privacy.com APIs; local only |
 | 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **Overview:** merged mortgage into Bills & Essentials; Spending card (yesterday / week / month from transactions API); safe-to-spend includes Ready to Assign + all non-required mapped categories; 24h stale-sync banner + persisted `chase_ynab_clarity_ios_last_refreshed_epoch` | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |
 | 2026-04-11 | YNAB Clarity (iOS) | v0.1 | **`YNABClient.patchRequest`:** use `(_, response)` instead of unused `data` from `URLSession` — removes compiler warning / unblocks strict builds | See `portfolio/ynab-clarity-ios/CHANGELOG.md` |

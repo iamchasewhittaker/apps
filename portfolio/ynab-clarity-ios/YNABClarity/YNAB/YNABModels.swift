@@ -97,6 +97,9 @@ struct YNABTransaction: Decodable, Identifiable {
     /// Milliunits; negative = outflow from the budget.
     let amount: Int
     let payeeName: String?
+    /// User or import memo (e.g. Amazon line items from enrichment).
+    let memo: String?
+    let categoryId: String?
     let categoryName: String?
     let deleted: Bool
     let transferAccountId: String?
@@ -121,6 +124,31 @@ struct YNABTransactionsResponse: Decodable {
         let transactions: [YNABTransaction]
     }
     let data: DataWrapper
+}
+
+// MARK: - Budget detail (for age of money)
+
+struct YNABBudgetDetail: Decodable {
+    /// Age of money in days (nil if not enough data yet).
+    let ageOfMoney: Int?
+    let ageOfMoneyCalculationDate: String?
+}
+
+struct YNABBudgetDetailResponse: Decodable {
+    struct DataWrapper: Decodable {
+        let budget: YNABBudgetDetail
+    }
+    let data: DataWrapper
+}
+
+// MARK: - Bulk transaction update (for category write-back)
+
+struct YNABBulkTransactionUpdate: Encodable {
+    struct TransactionPatch: Encodable {
+        let id: String
+        let categoryId: String
+    }
+    let transactions: [TransactionPatch]
 }
 
 // MARK: - API error wrapper

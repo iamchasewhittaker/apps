@@ -26,26 +26,46 @@ struct CashFlowView: View {
 
                 if appState.isLoading && appState.monthDetail == nil {
                     ProgressView().tint(ClarityTheme.accent)
-                } else if timeline.isEmpty {
-                    emptyState
                 } else {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 0) {
                             TipBanner(
-                                message: "Shows when paychecks arrive relative to when bills are due.",
+                                message: "Rule 4: Age your money. Higher age means you’re spending from older income — the antidote to living paycheck-to-paycheck.",
                                 storageKey: "chase_ynab_clarity_ios_tip_dismissed_cashflow"
                             )
                             .padding(.horizontal, 16)
                             .padding(.top, 16)
 
-                            summaryCard
+                            ageOfMoneyCard
                                 .padding(.horizontal, 16)
                                 .padding(.top, 16)
-                                .padding(.bottom, 16)
 
-                            ForEach(timeline) { event in
-                                eventRow(event)
+                            ageMilestonesCard
+                                .padding(.horizontal, 16)
+                                .padding(.top, 16)
+
+                            ageMoneyActionsCard
+                                .padding(.horizontal, 16)
+                                .padding(.top, 16)
+
+                            if !timeline.isEmpty {
+                                supportingSectionHeader
                                     .padding(.horizontal, 16)
+                                    .padding(.top, 24)
+                                    .padding(.bottom, 8)
+
+                                summaryCard
+                                    .padding(.horizontal, 16)
+                                    .padding(.bottom, 8)
+
+                                ForEach(timeline) { event in
+                                    eventRow(event)
+                                        .padding(.horizontal, 16)
+                                }
+                            } else {
+                                timelineEmptyHint
+                                    .padding(.horizontal, 16)
+                                    .padding(.top, 24)
                             }
 
                             Spacer(minLength: 24)
@@ -56,12 +76,163 @@ struct CashFlowView: View {
                     }
                 }
             }
-            .navigationTitle("Cash Flow")
+            .navigationTitle("Age Money")
             .navigationBarTitleDisplayMode(.large)
         }
     }
 
-    // MARK: - Summary card
+    // MARK: - Age of money card
+
+    private var ageOfMoneyCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("Age of Money", systemImage: "hourglass")
+                .font(ClarityTheme.titleFont)
+                .foregroundStyle(ClarityTheme.text)
+
+            if let age = appState.ageOfMoney {
+                let (label, color) = ageLabel(days: age)
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text("\(age)")
+                        .font(ClarityTheme.displayFont)
+                        .foregroundStyle(color)
+                    Text("days")
+                        .font(ClarityTheme.titleFont)
+                        .foregroundStyle(ClarityTheme.muted)
+                }
+                Text(label)
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(color)
+                Text(nextMilestoneMessage(currentDays: age))
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+            } else {
+                Text("YNAB will show age of money once it has enough history. Keep assigning and reconciling — the metric appears automatically.")
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+            }
+        }
+        .clarityCard()
+    }
+
+    private func nextMilestoneMessage(currentDays: Int) -> String {
+        let thresholds = [10, 20, 30, 60]
+        guard let next = thresholds.first(where: { $0 > currentDays }) else {
+            return "You’re past common milestones — keep steady habits to maintain a high age."
+        }
+        let remaining = next - currentDays
+        return "Next milestone: \(next) days (\(remaining) day\(remaining == 1 ? "" : "s") to go). Each step means you’re separating spending from this week’s paycheck."
+    }
+
+    private func ageLabel(days: Int) -> (String, Color) {
+        switch days {
+        case ..<10:  return ("Paycheck to paycheck", ClarityTheme.danger)
+        case 10..<20: return ("Building a buffer", ClarityTheme.caution)
+        case 20..<30: return ("Getting ahead", ClarityTheme.safe)
+        default:      return ("Money is aging well", ClarityTheme.accent)
+        }
+    }
+
+    // MARK: - Milestones
+
+    private var ageMilestonesCard: some View {
+        let age = appState.ageOfMoney ?? 0
+        let rows: [(days: Int, blurb: String)] = [
+            (10, "Spending is less tied to the last deposit."),
+            (20, "A cushion is forming before bills hit."),
+            (30, "Often described as “one month ahead” territory."),
+            (60, "Strong separation from paycheck timing.")
+        ]
+
+        return VStack(alignment: .leading, spacing: 12) {
+            Label("Milestones", systemImage: "flag.checkered")
+                .font(ClarityTheme.titleFont)
+                .foregroundStyle(ClarityTheme.text)
+
+            if appState.ageOfMoney == nil {
+                Text("Milestones unlock once YNAB reports your age of money.")
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(rows, id: \.days) { row in
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(systemName: age >= row.days ? "checkmark.circle.fill" : "circle")
+                                .foregroundStyle(age >= row.days ? ClarityTheme.safe : ClarityTheme.muted)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(row.days)+ days")
+                                    .font(ClarityTheme.bodyFont.weight(.semibold))
+                                    .foregroundStyle(ClarityTheme.text)
+                                Text(row.blurb)
+                                    .font(ClarityTheme.captionFont)
+                                    .foregroundStyle(ClarityTheme.muted)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .clarityCard()
+    }
+
+    // MARK: - Actions (coaching)
+
+    private var ageMoneyActionsCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("Ways to raise it", systemImage: "lightbulb.fill")
+                .font(ClarityTheme.titleFont)
+                .foregroundStyle(ClarityTheme.accent)
+
+            VStack(alignment: .leading, spacing: 8) {
+                actionLine("Assign every inflow in YNAB before spending discretionary money.")
+                actionLine("Build a one-month buffer in checking so bills don’t force instant spending.")
+                actionLine("Roll with the punches without undoing assigned essentials — keeps aging honest.")
+                actionLine("Use Overview → Safe to Spend to pace flex spending as age climbs.")
+            }
+        }
+        .clarityCard()
+    }
+
+    private func actionLine(_ text: String) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Text("•")
+                .foregroundStyle(ClarityTheme.accent)
+            Text(text)
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+        }
+    }
+
+    private var supportingSectionHeader: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Supporting context")
+                .font(ClarityTheme.headlineFont)
+                .foregroundStyle(ClarityTheme.text)
+            Text("Paychecks vs obligations this month — helpful timing, separate from the age-of-money score.")
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+        }
+    }
+
+    private var timelineEmptyHint: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("No paycheck / bill timeline yet")
+                .font(ClarityTheme.headlineFont)
+                .foregroundStyle(ClarityTheme.muted)
+            Text("Add income sources in Setup and map bill categories with due days to see when money lands vs when bills go out.")
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(ClarityTheme.surface.opacity(0.6))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(ClarityTheme.border.opacity(0.5), lineWidth: 1)
+        )
+    }
+
+    // MARK: - Summary card (supporting)
 
     private var summaryCard: some View {
         let totalIncome = timeline
@@ -71,7 +242,7 @@ struct CashFlowView: View {
         let fraction = required > 0 ? min(1.0, max(0, totalIncome / required)) : 1.0
 
         return VStack(alignment: .leading, spacing: 12) {
-            Text("This Month")
+            Text("This month (cash timing)")
                 .font(ClarityTheme.titleFont)
                 .foregroundStyle(ClarityTheme.text)
 
@@ -228,24 +399,6 @@ struct CashFlowView: View {
                 .stroke(ClarityTheme.mortgage.opacity(0.25), lineWidth: 1)
         )
         .padding(.vertical, 6)
-    }
-
-    // MARK: - Empty state
-
-    private var emptyState: some View {
-        VStack(spacing: 14) {
-            Image(systemName: "arrow.left.arrow.right.circle")
-                .font(.system(size: 44))
-                .foregroundStyle(ClarityTheme.muted)
-            Text("No timeline yet")
-                .font(ClarityTheme.titleFont)
-                .foregroundStyle(ClarityTheme.muted)
-            Text("Add income sources in Setup and categorize your bills to see the cash flow timeline.")
-                .font(ClarityTheme.captionFont)
-                .foregroundStyle(ClarityTheme.muted)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-        }
     }
 }
 

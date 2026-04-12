@@ -61,7 +61,7 @@ class GmailClient:
             raise RuntimeError("Call authenticate() first")
 
         since_str = since_date.strftime("%Y/%m/%d")
-        query = f"from:{sender} after:{since_str}"
+        query = f"label:Receipt from:{sender} after:{since_str}"
         log.debug(f"Gmail query: {query}")
 
         messages = []

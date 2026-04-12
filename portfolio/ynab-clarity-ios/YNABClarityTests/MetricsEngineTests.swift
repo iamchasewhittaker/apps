@@ -125,10 +125,10 @@ final class MetricsEngineTests: XCTestCase {
         cal.timeZone = TimeZone(identifier: "UTC")!
         let mid = cal.date(from: DateComponents(year: 2026, month: 4, day: 10))!
         let txs = [
-            YNABTransaction(id: "a", date: "2026-04-10", amount: -50_000, payeeName: "Store", categoryName: "Groceries", deleted: false, transferAccountId: nil),
-            YNABTransaction(id: "b", date: "2026-04-10", amount: 100_000, payeeName: "Income", categoryName: nil, deleted: false, transferAccountId: nil),
-            YNABTransaction(id: "c", date: "2026-04-09", amount: -25_000, payeeName: "Gas", categoryName: nil, deleted: false, transferAccountId: nil),
-            YNABTransaction(id: "d", date: "2026-04-10", amount: -10_000, payeeName: "Xfer", categoryName: nil, deleted: false, transferAccountId: "other-acct"),
+            YNABTransaction(id: "a", date: "2026-04-10", amount: -50_000, payeeName: "Store", memo: nil, categoryId: nil, categoryName: "Groceries", deleted: false, transferAccountId: nil),
+            YNABTransaction(id: "b", date: "2026-04-10", amount: 100_000, payeeName: "Income", memo: nil, categoryId: nil, categoryName: nil, deleted: false, transferAccountId: nil),
+            YNABTransaction(id: "c", date: "2026-04-09", amount: -25_000, payeeName: "Gas", memo: nil, categoryId: nil, categoryName: nil, deleted: false, transferAccountId: nil),
+            YNABTransaction(id: "d", date: "2026-04-10", amount: -10_000, payeeName: "Xfer", memo: nil, categoryId: nil, categoryName: nil, deleted: false, transferAccountId: "other-acct"),
         ]
         let spent = MetricsEngine.outflowSpending(transactions: txs, rangeStart: mid, rangeEndInclusive: mid, calendar: cal)
         XCTAssertEqual(spent, 50.0, accuracy: 0.01)

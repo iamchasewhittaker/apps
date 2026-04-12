@@ -8,12 +8,14 @@ on:
       - "portfolio/wellness-tracker/**"
       - "portfolio/job-search-hq/**"
       - "portfolio/app-forge/**"
+      - "portfolio/knowledge-base/**"
       - ".github/workflows/portfolio-web-build.yml"
   pull_request:
     paths:
       - "portfolio/wellness-tracker/**"
       - "portfolio/job-search-hq/**"
       - "portfolio/app-forge/**"
+      - "portfolio/knowledge-base/**"
       - ".github/workflows/portfolio-web-build.yml"
 
 jobs:
@@ -44,6 +46,21 @@ jobs:
           node-version: "20"
           cache: npm
           cache-dependency-path: portfolio/job-search-hq/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  knowledge-base:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portfolio/knowledge-base
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: portfolio/knowledge-base/package-lock.json
       - run: npm ci
       - run: npm run build
 
