@@ -82,6 +82,7 @@
 - **`CLAUDE.md`:** goal vs budgeted data flow, API write rules, architecture updates
 
 ### Fixed
+- **App Icon asset catalog** — removed duplicate `ios-marketing` + `universal` 1024 entries (same file) that triggered Xcode “unassigned child” on `AppIcon`
 - **`YNABClarity.xcodeproj`** — `FundCategoryConfirmationSheet.swift` added to **Components** group and app target **Sources**
 - **`ProgressView` runtime warnings:** clamp coverage to `0...1` when YNAB `available` is negative so `funded / target` never goes below zero; `ClarityTheme.clampedProgressFraction` + defensive `progressColor` clamp
 - **`YNABClient.patchRequest`:** discard PATCH response body with `_` instead of unused `let data` — clears compiler warning (and builds with “Treat Warnings as Errors”)
