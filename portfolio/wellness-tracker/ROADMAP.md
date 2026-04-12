@@ -9,6 +9,7 @@
 
 ## Next
 
+- [ ] **UI palette parity (next release):** align in-app colors in `src/theme.js` to **YNAB Clarity** `ClarityTheme` tokens (same as logo / `docs/BRANDING.md`) so chrome matches icon + PWA `theme_color` — optional scope: floating buttons, nav, cards only (full tab-by-tab later).
 - [ ] Split oversized tabs (`TrackerTab`, `HistoryTab`) per portfolio ROADMAP
 - [ ] Wellness iOS Phase 2+ — tab bar, richer history, export, parity with web modals/tabs (when scoped)
 

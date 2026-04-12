@@ -2,6 +2,10 @@
 
 Last updated: 2026-04-12
 
+## Next release
+
+- [ ] **UI palette parity:** align `WellnessTracker/Theme/WellnessTheme.swift` to **YNAB Clarity** `ClarityTheme` (see `../wellness-tracker/docs/BRANDING.md`) so in-app chrome matches `AppIcon` + web direction.
+
 ## Branding
 
 Shared **W + sunrise** mark with web; palette matches **YNAB Clarity** `ClarityTheme` (Spend Clarity = CLI, no logo — see BRANDING). Spec: [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md). Asset: `WellnessTracker/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. Session: [HANDOFF.md](./HANDOFF.md).
