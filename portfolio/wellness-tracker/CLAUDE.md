@@ -107,3 +107,7 @@ See [Passwordless email — With OTP](https://supabase.com/docs/guides/auth/auth
 ## Pending Work (from ROADMAP)
 - Split `TrackerTab.jsx` (78K) into morning/evening sub-components
 - Split `HistoryTab.jsx` (58K) into analytics, export, AI summary
+
+## Learnings
+Read `LEARNINGS.md` at session start for project-specific gotchas.
+After a session where something unexpected happened or was learned, append an entry.

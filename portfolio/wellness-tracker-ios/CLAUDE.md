@@ -30,3 +30,7 @@ Instructions for AI assistants and humans working in this directory.
 ## References
 
 - Portfolio master: [`/CLAUDE.md`](../../CLAUDE.md)
+
+## Learnings
+Read `LEARNINGS.md` at session start for project-specific gotchas.
+After a session where something unexpected happened or was learned, append an entry.

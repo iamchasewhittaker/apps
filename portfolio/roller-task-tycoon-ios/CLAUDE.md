@@ -41,3 +41,7 @@ RollerTaskTycoon/
 
 - Portfolio master: [`/CLAUDE.md`](../../CLAUDE.md)
 - **Archived** Win95-style web PWA (historical): [`/portfolio/archive/roller-task-tycoon`](../archive/roller-task-tycoon)
+
+## Learnings
+Read `LEARNINGS.md` at session start for project-specific gotchas.
+After a session where something unexpected happened or was learned, append an entry.

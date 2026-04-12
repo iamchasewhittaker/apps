@@ -109,3 +109,7 @@ Sync is fully wired. Files involved:
 
 ## Pending Work (from ROADMAP)
 - AITab is 636 lines — could split into sub-components per tool if it grows further
+
+## Learnings
+Read `LEARNINGS.md` at session start for project-specific gotchas.
+After a session where something unexpected happened or was learned, append an entry.

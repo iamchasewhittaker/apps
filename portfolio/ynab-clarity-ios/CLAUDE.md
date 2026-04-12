@@ -196,3 +196,7 @@ Both test targets compile without network access. No mocking of external APIs ne
 - Monorepo CLAUDE.md: `~/Developer/chase/CLAUDE.md`
 - Plan: `.cursor/plans/ynab_clarity_rethink_*.plan.md`
 - Linear: (add project link when created)
+
+## Learnings
+Read `LEARNINGS.md` at session start for project-specific gotchas.
+After a session where something unexpected happened or was learned, append an entry.

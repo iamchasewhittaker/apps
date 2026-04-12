@@ -1,14 +1,48 @@
 # Handoff — multi-agent / multi-session work
 
-**Living file.** Keep the **State** block short and current so Cursor, Claude Code, Codex, or another chat can resume without re-reading the whole thread.
+**Living file.** Keep the **State** block short and current so any tool (Claude Code, Cursor, Codex, Antigravity) can resume without re-reading the whole thread.
 
-### Quick routine (read every session)
+---
 
-1. **End of session or switch agent:** Update **State** (and **Notes** if useful) in this file.
-2. **New chat:** Use [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md) or [SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md); fill brackets; paste; say *"Read `CLAUDE.md` and `HANDOFF.md` first."*
-3. **Shipped work:** **Linear** + **git** = source of truth for what shipped; **`HANDOFF.md`** = where we are *right now*.
+## Every Session — 3 Steps
 
-**Claude Code and other assistants:** Use this **Quick routine** and repo-root **`CLAUDE.md`** — that is the full process. **`.cursor/rules`** is an optional **Cursor-only** reminder; it is not a separate workflow.
+### 1. CHECKPOINT first
+Run `checkpoint` in Terminal before touching anything.
+This saves a git snapshot so you can always get back to where you started.
+
+### 2. Tell the tool what you're doing
+
+| Tool | How to start |
+|------|-------------|
+| **Claude Code** | Paste `docs/templates/SESSION_START_APP_CHANGE.md` (one app) or `SESSION_START_MONOREPO.md` (cross-cutting). Say: *"Read CLAUDE.md and HANDOFF.md first."* |
+| **Cursor** | Open the project folder — `.cursor/rules/session-handoff.mdc` auto-loads. Still paste the template for goal context. |
+| **Antigravity (VS Code)** | Open the project folder — reads `CLAUDE.md` automatically. Paste the template for goal context. |
+| **Codex (OpenAI)** | Paste `CLAUDE.md` intro + this file's **State** table into the prompt, then paste the template. |
+| **Xcode only** | Just run `checkpoint` — that's your safety net. No template needed for Xcode-only edits. |
+
+### 3. Checkpoint when done
+Run `checkpoint` again when you stop (or let AI tools do it).
+
+**AI session deliverables** (AI tools handle these automatically):
+- [ ] Code committed via `checkpoint` or explicit commit
+- [ ] App `CHANGELOG.md` updated under `## [Unreleased]`
+- [ ] App `ROADMAP.md` updated (mark done, add ideas)
+- [ ] Root `ROADMAP.md` Change Log row added
+- [ ] `HANDOFF.md` State table updated (Focus, Next, Last touch)
+- [ ] App `LEARNINGS.md` updated if something went wrong or was learned
+
+**Xcode-only session:** run `checkpoint` — that's the minimum.
+
+---
+
+## Recovery — if something breaks
+```
+restore          # shows your last 15 saves, numbered
+restore 3        # go back to save #3 (auto-saves current state first — nothing is lost)
+restore 2        # undo a restore
+```
+
+---
 
 ## When to start a **new** chat (and use this file)
 
