@@ -164,6 +164,20 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 - Don't create new localStorage keys without updating the storage key table above
 - Don't change existing `STORE` constant names in shipped apps — existing user data depends on them
 - Don't add arbitrary backends — offline-first; **Supabase** (shared sync) is the only cloud data path
+- Don't commit real financial data, income figures, account balances, or employer names — this repo is public (see "Sensitive Data" section below)
+
+## Sensitive Data — Never Commit
+
+> **This repo is PUBLIC on GitHub.** Treat every tracked file as world-readable.
+
+- **Never commit real financial data** — income amounts, account balances, spending history, budget figures, debt amounts
+- **Never commit real names in a financial context** — employer names with salary figures, family members with financial details
+- **Never commit API tokens, passwords, or secrets** — use `.env` (gitignored) or macOS Keychain
+- **Never commit bank/lender names tied to real account details** (e.g., "Citibank balance $X")
+- **Archive folder safety net:** `portfolio/archive/.gitignore` blocks `.py`, `.html`, `.csv`, `.xlsx` — only `.md`, `.jsx`, `.js`, `.ts` are tracked
+- **When in doubt, don't commit it.** Ask first.
+
+If you discover sensitive data already in a tracked file, **stop and flag it immediately** — do not commit, push, or continue until it's resolved.
 
 ## CI — portfolio web builds
 

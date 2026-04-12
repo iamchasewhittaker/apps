@@ -1,0 +1,13 @@
+# Block files that could contain sensitive data
+*.py
+*.html
+*.csv
+*.xlsx
+*.xls
+
+# Allow docs and code
+!*.md
+!*.jsx
+!*.js
+!*.ts
+!.gitignore
