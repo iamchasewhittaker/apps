@@ -279,7 +279,6 @@ private struct IncomeSourceFormView: View {
                     .foregroundStyle(isValid ? ClarityTheme.accent : ClarityTheme.muted)
                 }
             }
-            .preferredColorScheme(.dark)
         }
     }
 }

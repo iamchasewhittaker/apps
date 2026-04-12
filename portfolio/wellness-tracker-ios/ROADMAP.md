@@ -52,3 +52,7 @@ Deliver a high-quality native iOS Wellness Tracker experience in phased slices, 
 - If replacement decision is accepted: implement auth + sync strategy
 - If companion decision remains: keep local-first and skip cloud complexity
 
+## Backlog — repo hygiene (optional)
+
+- **Split Wellness iOS into its own commit line:** A session `checkpoint` once bundled `portfolio/wellness-tracker-ios/` with unrelated `portfolio/ynab-clarity-ios/` changes in a single commit. That is fine for day-to-day work. If you later want a clean history for bisect, release notes, or iOS-only reviewers, you can split on a **branch copy**: e.g. `git reset --soft` to the parent of the mixed commit, `git reset` to unstage, then stage and commit `portfolio/wellness-tracker-ios/` (and only the root `HANDOFF.md` / `ROADMAP.md` lines that belong to Wellness) separately from YNAB paths—or use interactive rebase. **Defer until** commit archaeology matters; no product impact.
+

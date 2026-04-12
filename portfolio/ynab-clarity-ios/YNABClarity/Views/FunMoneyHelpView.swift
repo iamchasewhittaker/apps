@@ -83,7 +83,6 @@ struct FunMoneyHelpView: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
     }
 
     private func ruleSection(icon: String, color: Color, title: String, items: [String]) -> some View {

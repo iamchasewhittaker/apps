@@ -76,7 +76,7 @@ struct DashboardView: View {
                         ? "You’ve assigned more than you have (overspent Ready to Assign). Reconcile in YNAB."
                         : "Every dollar is assigned for this month."
             )
-            .font(ClarityTheme.captionFont)
+            .font(ClarityTheme.supportingFont)
             .foregroundStyle(ClarityTheme.muted)
         }
         .clarityCard()
@@ -125,7 +125,7 @@ struct DashboardView: View {
                 .tint(ClarityTheme.progressColor(fraction: fraction))
 
             Text("Mortgage, bills, and essentials you mapped in Setup.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
         .clarityCard()
@@ -137,7 +137,7 @@ struct DashboardView: View {
                 .font(ClarityTheme.titleFont)
                 .foregroundStyle(ClarityTheme.accent)
             Text("Use the Bills tab to fund shortfalls and fix uncategorized spending. Overview shows Safe to Spend after obligations.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
         .clarityCard()

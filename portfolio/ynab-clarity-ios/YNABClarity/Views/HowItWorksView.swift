@@ -31,7 +31,7 @@ struct HowItWorksView: View {
                             icon: "arrow.triangle.2.circlepath",
                             color: ClarityTheme.danger,
                             title: "Adjust",
-                            body: "Expected income vs required expenses, income gap or surplus, funding gaps on goals, and salary target after your tax rate in Settings."
+                            body: "Expected income vs required expenses, income gap or surplus, funding gaps on goals (tap a gap to assign in YNAB), and salary target after your tax rate in Settings."
                         )
                         section(
                             icon: "hourglass",
@@ -47,7 +47,7 @@ struct HowItWorksView: View {
                                 .font(ClarityTheme.headlineFont)
                                 .foregroundStyle(ClarityTheme.text)
                             Text("Make sure your YNAB categories have monthly goals set. This app reads goal targets to determine required amounts. If a category has no goal, it falls back to whatever you've assigned this month — which may be $0 early in the month.")
-                                .font(ClarityTheme.bodyFont)
+                                .font(ClarityTheme.supportingFont)
                                 .foregroundStyle(ClarityTheme.muted)
                         }
 
@@ -74,7 +74,6 @@ struct HowItWorksView: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
     }
 
     private func section(icon: String, color: Color, title: String, body: String) -> some View {
@@ -83,7 +82,7 @@ struct HowItWorksView: View {
                 .font(ClarityTheme.headlineFont)
                 .foregroundStyle(color)
             Text(body)
-                .font(ClarityTheme.bodyFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
         }
     }
@@ -97,7 +96,7 @@ struct HowItWorksView: View {
                     .font(ClarityTheme.bodyFont.weight(.semibold))
                     .foregroundStyle(ClarityTheme.text)
                 Text(description)
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
             }
         }

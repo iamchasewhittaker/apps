@@ -20,6 +20,12 @@
 
 ## Entries
 
+### 2026-04-12 — Checkpoint bundled two apps in one commit
+**What happened:** End-of-session `checkpoint` committed Wellness Tracker (iOS) changes in the same commit as YNAB Clarity (iOS) work.
+**Root cause:** `checkpoint` snapshots every dirty path in the monorepo when more than one app has local edits.
+**Fix / lesson:** Before `checkpoint`, stash or commit per app if you want atomic commits; or leave as-is and split history later if needed (see **Backlog — repo hygiene** in `ROADMAP.md`).
+**Tags:** git, monorepo
+
 ### 2026-04-12 — CLI tests may hang after build
 **What happened:** `xcodebuild test` from CLI built successfully but stalled during simulator test execution in this environment.
 **Root cause:** Simulator/runtime conditions can block test execution even when code compiles, especially with signing/simulator state mismatches.

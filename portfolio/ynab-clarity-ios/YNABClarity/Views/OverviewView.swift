@@ -74,7 +74,7 @@ struct OverviewView: View {
                 .foregroundStyle(ClarityTheme.text)
 
             Text("Outflows from your budget (excludes transfers).")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
 
             HStack(spacing: 10) {
@@ -162,7 +162,7 @@ struct OverviewView: View {
         Group {
             if let date = appState.lastRefreshed {
                 Text("Updated " + date.formatted(.relative(presentation: .named)))
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.muted)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
@@ -174,7 +174,7 @@ struct OverviewView: View {
             Image(systemName: "clock.fill")
                 .foregroundStyle(ClarityTheme.caution)
             Text("You haven't refreshed in over 24 hours. Pull down to sync with YNAB — reconcile accounts in YNAB regularly so balances stay accurate.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.text)
         }
         .padding(12)

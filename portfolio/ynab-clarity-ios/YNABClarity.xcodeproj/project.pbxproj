@@ -38,6 +38,7 @@
 		AC01000000000000000001F /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02000000000000000001F /* OverviewView.swift */; };
 		AC010000000000000000020 /* SettingsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000020 /* SettingsSheetView.swift */; };
 		AC010000000000000000021 /* PayeeDisplayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000021 /* PayeeDisplayFormatter.swift */; };
+		AC010000000000000000022 /* FundCategoryConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000022 /* FundCategoryConfirmationSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		AC02000000000000000001F /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
 		AC020000000000000000020 /* SettingsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheetView.swift; sourceTree = "<group>"; };
 		AC020000000000000000021 /* PayeeDisplayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeDisplayFormatter.swift; sourceTree = "<group>"; };
+		AC020000000000000000022 /* FundCategoryConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundCategoryConfirmationSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				AC02000000000000000001C /* TipBanner.swift */,
+				AC020000000000000000022 /* FundCategoryConfirmationSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -358,6 +361,7 @@
 				AC01000000000000000001F /* OverviewView.swift in Sources */,
 				AC010000000000000000020 /* SettingsSheetView.swift in Sources */,
 				AC010000000000000000021 /* PayeeDisplayFormatter.swift in Sources */,
+				AC010000000000000000022 /* FundCategoryConfirmationSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

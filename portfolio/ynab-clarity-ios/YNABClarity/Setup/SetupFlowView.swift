@@ -33,7 +33,6 @@ struct SetupFlowView: View {
             .toolbarBackground(ClarityTheme.surface, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
         }
-        .preferredColorScheme(.dark)
     }
 
     @ViewBuilder

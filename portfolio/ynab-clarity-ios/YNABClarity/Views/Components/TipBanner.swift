@@ -17,7 +17,7 @@ struct TipBanner: View {
                     .foregroundStyle(ClarityTheme.accent)
                     .font(.subheadline)
                 Text(message)
-                    .font(ClarityTheme.captionFont)
+                    .font(ClarityTheme.supportingFont)
                     .foregroundStyle(ClarityTheme.text)
                 Spacer()
                 Button {

@@ -51,12 +51,10 @@ struct SettingsSheetView: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
         .sheet(isPresented: $showTokenEntry) {
             TokenStepView(onNext: { _ in
                 showTokenEntry = false
             })
-            .preferredColorScheme(.dark)
         }
         .sheet(isPresented: $showHowItWorks) {
             HowItWorksView()

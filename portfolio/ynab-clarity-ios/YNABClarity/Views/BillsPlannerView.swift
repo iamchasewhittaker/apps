@@ -150,7 +150,7 @@ struct BillsPlannerView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(ClarityTheme.safe)
                     Text("All transactions have categories assigned.")
-                        .font(ClarityTheme.captionFont)
+                        .font(ClarityTheme.supportingFont)
                         .foregroundStyle(ClarityTheme.muted)
                 }
                 .padding(12)
@@ -354,7 +354,7 @@ struct BillsPlannerView: View {
                 .font(ClarityTheme.titleFont)
                 .foregroundStyle(ClarityTheme.muted)
             Text("Open Settings → Category Setup to tag your YNAB categories as Bills or Essentials.")
-                .font(ClarityTheme.captionFont)
+                .font(ClarityTheme.supportingFont)
                 .foregroundStyle(ClarityTheme.muted)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)

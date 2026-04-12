@@ -200,4 +200,55 @@ final class MetricsEngineTests: XCTestCase {
         let days = MetricsEngine.daysRemainingInMonth(from: lastOfApril, calendar: cal)
         XCTAssertEqual(days, 1)
     }
+
+    // MARK: - PayeeDisplayFormatter
+
+    func testDisplayPayee_stripsWithdrawalACHBeforeAmazon() {
+        XCTAssertEqual(
+            PayeeDisplayFormatter.displayPayee("WITHDRAWAL ACH AMZN MKTP US*AB12CD34EF"),
+            "Amazon"
+        )
+    }
+
+    func testDisplayPayee_stripsOnlineBillPayNoise() {
+        let p = PayeeDisplayFormatter.displayPayee("ONLINE PAYMENT TO TARGET ON 04-01")
+        XCTAssertTrue(p.localizedCaseInsensitiveContains("Target"))
+    }
+
+    func testItemContextSubtitle_prefixesMemoWithItem() {
+        let s = PayeeDisplayFormatter.itemContextSubtitle(payeeRaw: "Amazon", memo: "Widget A, Widget B")
+        XCTAssertNotNil(s)
+        XCTAssertTrue(s!.hasPrefix("Item:"))
+        XCTAssertTrue(s!.localizedCaseInsensitiveContains("Widget"))
+    }
+
+    func testItemContextSubtitle_amazonFallbackWhenMemoEmpty() {
+        let s = PayeeDisplayFormatter.itemContextSubtitle(payeeRaw: "ACH DEBIT AMZN MKTP US", memo: nil)
+        XCTAssertNotNil(s)
+        XCTAssertTrue(s!.localizedCaseInsensitiveContains("memo"))
+    }
+
+    // MARK: - underfundedGoals
+
+    func testUnderfundedGoals_includesCategoryIdForFunding() {
+        let cats = [
+            YNABMonthCategory(
+                id: "cat-goal-1",
+                name: "Electric",
+                budgeted: 50_000,
+                activity: 0,
+                balance: 50_000,
+                hidden: false,
+                deleted: false,
+                goalTarget: 150_000,
+                goalType: "MF",
+                goalPercentageComplete: 33
+            ),
+        ]
+        let maps = [CategoryMapping(ynabCategoryID: "cat-goal-1", ynabCategoryName: "Electric", role: .bill)]
+        let goals = MetricsEngine.underfundedGoals(monthCategories: cats, mappings: maps)
+        XCTAssertEqual(goals.count, 1)
+        XCTAssertEqual(goals.first?.ynabCategoryID, "cat-goal-1")
+        XCTAssertEqual(goals.first?.gap ?? 0, 100.0, accuracy: 0.01)
+    }
 }
