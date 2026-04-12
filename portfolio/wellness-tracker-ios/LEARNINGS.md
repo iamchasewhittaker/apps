@@ -20,6 +20,12 @@
 
 ## Entries
 
+### 2026-04-12 — App icon palette = Clarity family, not Spend Clarity raster
+**What happened:** Branding asked to match “Spend Clarity” logo colors; Spend Clarity has no logo file in git.
+**Root cause:** Clarify toolchain: **YNAB Clarity** owns the consumer visual tokens (`ClarityTheme.swift`).
+**Fix / lesson:** Wellness `AppIcon` + web mark use those RGB approximations; document in `../wellness-tracker/docs/BRANDING.md`.
+**Tags:** branding, docs
+
 ### 2026-04-12 — Checkpoint bundled two apps in one commit
 **What happened:** End-of-session `checkpoint` committed Wellness Tracker (iOS) changes in the same commit as YNAB Clarity (iOS) work.
 **Root cause:** `checkpoint` snapshots every dirty path in the monorepo when more than one app has local edits.

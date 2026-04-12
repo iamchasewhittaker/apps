@@ -4,7 +4,7 @@ Last updated: 2026-04-12
 
 ## Branding
 
-Shared **W + sunrise** mark with web; spec and web asset map: [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md). iOS: `WellnessTracker/Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
+Shared **W + sunrise** mark with web; palette matches **YNAB Clarity** `ClarityTheme` (Spend Clarity = CLI, no logo — see BRANDING). Spec: [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md). Asset: `WellnessTracker/Assets.xcassets/AppIcon.appiconset/AppIcon.png`. Session: [HANDOFF.md](./HANDOFF.md).
 
 ## Product intent
 

@@ -2,7 +2,7 @@
 
 Native **SwiftUI** **Wellness Tracker**: morning/evening check-in and optional **Past days**. Data lives in **UserDefaults** on the device only — **no account, no OTP, no Supabase.**
 
-**App icon:** W + sunrise mark on `#0d0d0f` (matches web). Specs and asset map: [Wellness Tracker web — docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md).
+**App icon:** W + sunrise on **Clarity family** `#0e1015` (see [BRANDING.md](../wellness-tracker/docs/BRANDING.md)). Session: [HANDOFF.md](./HANDOFF.md).
 
 ## Product direction
 
@@ -46,7 +46,7 @@ open portfolio/wellness-tracker-ios/WellnessTracker.xcodeproj
 - **[CLAUDE.md](./CLAUDE.md)**
 - **[CHANGELOG.md](./CHANGELOG.md)**
 - **[ROADMAP.md](./ROADMAP.md)**
-- **Branding (shared with web):** [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md)
+- **Branding (shared with web):** [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md) · [HANDOFF.md](./HANDOFF.md)
 
 ## Linear
 

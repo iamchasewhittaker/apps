@@ -6,7 +6,7 @@
 
 | App | Version | Storage Key | URL | Status |
 |-----|---------|-------------|-----|--------|
-| Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active · W+sunrise branding (`public/`, `docs/BRANDING.md`) |
+| Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active · W+sunrise · Clarity palette · [`HANDOFF.md`](portfolio/wellness-tracker/HANDOFF.md) |
 | Wellness Tracker (iOS) | Phase 2 shell | `chase_wellness_ios_v1` (+ draft, meds keys); **local-only** (no Supabase) | local Xcode | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) · same mark in `AppIcon` |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |

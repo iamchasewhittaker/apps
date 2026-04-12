@@ -38,7 +38,7 @@ bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 
 ## Branding
 
-PWA / favicon assets and the canonical icon spec: **`docs/BRANDING.md`** and **`public/manifest.json`**. Native iOS uses the same mark in `../wellness-tracker-ios/.../AppIcon.appiconset/`.
+PWA / favicon assets and the canonical icon spec: **`docs/BRANDING.md`** and **`public/manifest.json`**. Palette = **YNAB Clarity** `ClarityTheme` (Spend Clarity CLI has no logo — see BRANDING). Native iOS: `../wellness-tracker-ios/.../AppIcon.appiconset/`. Session continuity: **`HANDOFF.md`** (this app) + repo-root **`HANDOFF.md`**.
 
 ## What This App Is
 

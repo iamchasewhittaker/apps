@@ -4,6 +4,8 @@ All notable changes to this project will be documented here.
 
 ## [Unreleased]
 
+- **Docs:** `HANDOFF.md` — note that Wellness Tracker branding references **YNAB Clarity** `ClarityTheme` (this CLI ships no logo asset).
+
 ## [0.1.2] — 2026-03-30
 
 ### Added

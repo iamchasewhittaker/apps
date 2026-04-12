@@ -79,15 +79,16 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Wellness Tracker branding shipped (web + iOS).** Unified W + sunrise mark on `#0d0d0f`; web `public/` icons + `manifest.json` + `docs/BRANDING.md`; iOS `AppIcon.appiconset/AppIcon.png` replaced. (Phase 2 tab shell + daily parity slice remains as prior shipped work.) |
-| **Next** | 1) Expand Tasks parity (top-3 triage + one-thing) in `portfolio/wellness-tracker-ios` · 2) Expand Time parity to active timer/session controls · 3) Keep History analytics/export/AI deferred until Phase 2 workflows are stable · 4) Revisit auth/sync only if iOS replacement criteria are met |
+| **Focus** | **Wellness Tracker branding — Clarity palette.** Logo + PWA + iOS `AppIcon` recolored to match **YNAB Clarity** `ClarityTheme` (Spend Clarity is CLI-only; see `portfolio/wellness-tracker/docs/BRANDING.md`). New per-app handoffs: `portfolio/wellness-tracker/HANDOFF.md`, `portfolio/wellness-tracker-ios/HANDOFF.md`. |
+| **Next** | 1) Optional: align in-app `theme.js` / iOS `WellnessTheme` to Clarity tokens for full UI parity · 2) Wellness iOS Tasks/Time parity per app ROADMAP · 3) Keep History analytics deferred until daily workflows stable |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-12 (Wellness Tracker web + iOS branding) |
+| **Last touch** | 2026-04-12 (Wellness branding + handoff docs) |
 
 ---
 
 ## Notes (optional, human + long-lived context)
 
+- **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web + shared branding) and `portfolio/wellness-tracker-ios/HANDOFF.md` (native). Use alongside this file for Wellness-only session starts.
 - **iOS planning templates** live at **`docs/ios-app-starter-kit/`** (v3). **Filled** product docs + **`PLANNING_WORKFLOW.md`** under **`portfolio/roller-task-tycoon-ios/docs/planning/`**. **Linear** project [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) (WHI-15…19). Kit **`HANDOFF_TEMPLATE.md`** ≠ repo-root session **`HANDOFF.md`**.
 - **YNAB Clarity (2026-04-11):** Implemented full rethink plan — `goal_target` on `YNABMonthCategory`, `monthlyTarget` prefers goal; Bills by coverage; `dueDay`; Income tab rename + surplus; Cash Flow today marker; `TipBanner`, `HowItWorksView`, `YNABClient` PATCH + Bills **Fund** sheet; Xcode `project.pbxproj` includes `Views/Components/TipBanner.swift` and `HowItWorksView.swift`.
 - **YNAB Clarity (same session, follow-up):** `fetchTransactions` + spending chips; `toBeBudgeted` on month; safe-to-spend formula; unified bills card; stale sync banner (persisted epoch).

@@ -18,4 +18,8 @@
 
 ## Entries
 
-*(No entries yet — add the first one after something surprising happens.)*
+### 2026-04-12 — “Spend Clarity logo” has no repo asset
+**What happened:** Wellness branding was asked to match Spend Clarity; Spend Clarity is a Python CLI with no checked-in logo raster.
+**Root cause:** Product naming overlap (“Clarity” family vs Spend Clarity CLI).
+**Fix / lesson:** Document palette source as **YNAB Clarity** `ClarityTheme.swift` in `docs/BRANDING.md` and Spend Clarity `HANDOFF.md`; regenerate Wellness mark from those tokens.
+**Tags:** branding, docs, monorepo

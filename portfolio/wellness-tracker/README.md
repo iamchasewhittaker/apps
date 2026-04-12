@@ -18,10 +18,15 @@ Path from repo root: **`portfolio/wellness-tracker`**. Copy of shared sync lives
 
 ## Branding
 
-Logo and icon specs: [docs/BRANDING.md](docs/BRANDING.md). Favicon, Apple touch icon, and PWA manifest live in `public/`.
+Logo and icon specs: [docs/BRANDING.md](docs/BRANDING.md). Favicon, Apple touch icon, and PWA manifest live in `public/`. Palette aligns with **YNAB Clarity** `ClarityTheme` (Spend Clarity is CLI-only — see BRANDING for rationale).
+
+## Handoff (this app)
+
+[HANDOFF.md](HANDOFF.md) — Wellness web + iOS session state; use with repo-root [`HANDOFF.md`](../../HANDOFF.md) for monorepo-wide continuity.
 
 ## Docs
 
+- [HANDOFF.md](HANDOFF.md) — per-app session state (web + iOS branding + assets)
 - [CLAUDE.md](CLAUDE.md) — app-specific behavior and file map
 - [PROJECT_INSTRUCTIONS.md](PROJECT_INSTRUCTIONS.md) — session starter for AI
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/LEARNING.md](docs/LEARNING.md)

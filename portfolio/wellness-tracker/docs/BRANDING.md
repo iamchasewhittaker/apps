@@ -1,11 +1,27 @@
 # Wellness Tracker — branding
 
+## Palette source (Spend Clarity / Clarity family)
+
+**Spend Clarity** (`portfolio/spend-clarity/`) is a **Python CLI** — there is **no logo raster** checked into that repo.
+
+For a **consistent visual family** with the YNAB + receipts toolchain, the Wellness mark uses the same **RGB tokens as YNAB Clarity (iOS)** — see [`portfolio/ynab-clarity-ios/YNABClarity/Theme/ClarityTheme.swift`](../../ynab-clarity-ios/YNABClarity/Theme/ClarityTheme.swift).
+
+| Token (Clarity) | Approx hex | Use on Wellness mark |
+|-----------------|-------------|----------------------|
+| `bg` | `#0e1015` | Logo canvas / PWA `theme_color` + `background_color` |
+| `text` | `#eaedf0` | Letter **W** (negative space / cutout) |
+| `accent` | `#4f92f2` | Horizon arc (interactive blue) |
+| `caution` | `#e8bb32` | Sun gradient (amber → gold) |
+| `safe` | `#3cb77c` | Optional small accent only |
+
+Hex values are **approximations** from `SwiftUI.Color` components; source of truth remains `ClarityTheme.swift`.
+
 ## App mark (2026)
 
 Unified logo for **web (PWA)** and **native iOS**:
 
-- **Concept:** Large sunrise / sun disk on the app canvas background (`#0d0d0f`), with a cream **W** integrated as negative space in the sun, and a sage horizon line (`#3d9970`) — aligned with `theme.js` / `WellnessTheme` colors.
-- **Master raster (1024×1024):** `public/logo-1024.png` in the web app (same file used as the iOS `AppIcon.appiconset/AppIcon.png` source of truth for the repo).
+- **Concept:** Large sunrise / sun disk on **Clarity `bg`**, cream **W** integrated into the sun, **accent** blue horizon — aligned to the table above.
+- **Master raster (1024×1024):** `public/logo-1024.png` (same bytes as iOS `AppIcon.png` in-repo).
 
 ## Where assets live
 

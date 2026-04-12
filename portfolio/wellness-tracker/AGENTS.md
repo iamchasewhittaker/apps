@@ -11,7 +11,7 @@ Work in **`portfolio/wellness-tracker`** unless a task says otherwise. **Native 
 1. Match existing CRA + inline-style patterns.
 2. Update [CHANGELOG.md](CHANGELOG.md) under `## [Unreleased]` for user-visible changes.
 3. Keep `src/shared/sync.js` aligned with [`portfolio/shared/sync.js`](../shared/sync.js) (real file copy, not symlink).
-4. App icon / PWA assets: see [docs/BRANDING.md](docs/BRANDING.md) and `public/manifest.json`.
+4. App icon / PWA assets: see [docs/BRANDING.md](docs/BRANDING.md), [HANDOFF.md](HANDOFF.md), and `public/manifest.json` (Clarity-family palette per BRANDING).
 
 ## Project tracking
 

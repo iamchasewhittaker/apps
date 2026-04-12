@@ -19,6 +19,8 @@
 
 Standalone Python CLI that enriches YNAB transactions with item-level detail from Gmail receipt emails (Amazon, Apple) and merchant data from Privacy.com. Personal tool, runs locally. Not a plugin, not a service.
 
+**Note:** This repo has **no logo asset**. **Wellness Tracker** branding intentionally uses **YNAB Clarity** `ClarityTheme` colors for cross-tool visual consistency; see `portfolio/wellness-tracker/docs/BRANDING.md`.
+
 Run: `python src/main.py`
 
 ---
