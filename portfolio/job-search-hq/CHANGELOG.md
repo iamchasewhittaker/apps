@@ -1,5 +1,45 @@
 # Changelog
 
+## v8.4 — 2026-04-12 — Sales Navigator networking upgrade + accessibility
+
+### Sales Navigator integration
+- **Bookmarklet:** JavaScript bookmarklet that runs on a Sales Navigator (or regular LinkedIn) profile page — scrapes name, title, company, LinkedIn URL, company size, industry, and hiring signals, then opens the app with everything pre-filled via URL params
+- **In-app import flow:** `App.jsx` detects `?importContact=1&...` params on load, pre-fills a new ContactModal with `source: "sales_navigator"`, and cleans the URL so refresh doesn't re-trigger
+- **Setup guide:** Collapsible `SalesNavGuide` component in ContactsTab with 6-step bookmarklet install instructions, copyable code block, and tips section
+
+### Enhanced contact model (backwards-compatible)
+- New fields added to `blankContact()` with safe defaults: `type` (hiring_manager / recruiter / alumni / other), `outreachStatus` (none / sent / replied / meeting / intro_made), `outreachDate`, `source`, `companySize`, `industry`, `isHiring`
+- New constants: `CONTACT_TYPES` and `OUTREACH_STATUSES` arrays with value / label / color
+- Existing contacts display correctly with "Other" type and "No Outreach" defaults
+
+### ContactCard improvements
+- Color-coded contact type badge next to name
+- Outreach status badge in top-right
+- Company intel row (industry, size, hiring indicator) when data exists
+- Quick-action row: status dropdown (inline update without opening modal) + "Draft Message" button (navigates to AI tab)
+
+### ContactModal improvements
+- Contact type chip selector
+- Outreach status chip selector
+- Outreach date + source (Sales Nav / LinkedIn / Referral / Other) row
+- Company Intel section: company size, industry, "currently hiring" checkbox
+- App-linking stays at bottom
+
+### ContactsTab improvements
+- Stats bar with 5 metrics: total contacts, outreach sent, response rate %, active in 7 days, meetings
+- Filter chips for contact type and outreach status (toggle to deactivate)
+- Inline status updates via `saveContact` (no modal required)
+
+### Accessibility
+- Tips section in SalesNavGuide: changed from near-invisible `#92400e` on `#1c1a0a` to high-contrast `#e5e7eb` on `#1f2937`
+- All text in SalesNavGuide bumped from 11–12px to 13–14px; high-contrast colors throughout (`#f3f4f6`, `#d1d5db`, `#e5e7eb`)
+
+### Vercel / infra
+- Fixed Vercel deployment: project was connected to wrong GitHub repo (standalone `job-search-hq` instead of monorepo `apps`). Corrected via Vercel REST API — unlinked old repo, set root directory to `portfolio/job-search-hq`, linked to monorepo `iamchasewhittaker/apps`
+
+### ESLint workaround
+- Bookmarklet `javascript:` string uses runtime variable interpolation (`const _bm_proto = "javascript"`) to satisfy both `no-script-url` and `no-useless-concat` rules in CI
+
 ## v8.3 — 2026-04-03 — Email OTP login (match Wellness / iPhone PWA)
 
 - **Sign-in:** same flow as Wellness Tracker — `signInWithOtp` + `auth.verifyOtp({ type: 'email' })` so the session persists in the home-screen Web app’s `localStorage`

@@ -35,12 +35,12 @@ function SalesNavGuide() {
         <div style={{ padding: "0 16px 16px", borderTop: "1px solid #1f2937" }}>
 
           {/* How it works */}
-          <div style={{ fontSize: 12, color: "#6b7280", marginTop: 14, marginBottom: 10, lineHeight: 1.6 }}>
+          <div style={{ fontSize: 14, color: "#d1d5db", marginTop: 14, marginBottom: 12, lineHeight: 1.7 }}>
             The bookmarklet runs in your browser while you're viewing a Sales Navigator profile. One click — it grabs their name, title, company, industry, and size, then opens this app with everything pre-filled in a new contact form.
           </div>
 
           {/* Steps */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
             {[
               ["1", "Copy the bookmarklet code below"],
               ["2", "In Chrome, press ⌘D (or right-click the bookmarks bar → Add page)"],
@@ -49,34 +49,34 @@ function SalesNavGuide() {
               ["5", "Save the bookmark"],
               ["6", "Open a Sales Navigator profile, click the bookmark — done"],
             ].map(([num, text]) => (
-              <div key={num} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <div style={{ background: "#1e3a5f", color: "#60a5fa", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>{num}</div>
-                <div style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.5 }}>{text}</div>
+              <div key={num} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <div style={{ background: "#1e3a5f", color: "#93c5fd", borderRadius: "50%", width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>{num}</div>
+                <div style={{ fontSize: 14, color: "#f3f4f6", lineHeight: 1.6 }}>{text}</div>
               </div>
             ))}
           </div>
 
           {/* Bookmarklet code */}
-          <div style={{ background: "#0f1117", border: "1px solid #374151", borderRadius: 8, overflow: "hidden" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", borderBottom: "1px solid #374151" }}>
-              <span style={{ fontSize: 11, color: "#6b7280", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Bookmarklet code</span>
-              <button onClick={copyBookmarklet} style={{ background: copied ? "#14532d" : "#1f2937", border: "none", color: copied ? "#6ee7b7" : "#9ca3af", borderRadius: 6, padding: "3px 10px", fontSize: 12, cursor: "pointer" }}>
+          <div style={{ background: "#0f1117", border: "1px solid #4b5563", borderRadius: 8, overflow: "hidden" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #4b5563" }}>
+              <span style={{ fontSize: 13, color: "#d1d5db", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Bookmarklet code</span>
+              <button onClick={copyBookmarklet} style={{ background: copied ? "#14532d" : "#374151", border: "none", color: copied ? "#6ee7b7" : "#f3f4f6", borderRadius: 6, padding: "5px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                 {copied ? "✓ Copied!" : "Copy"}
               </button>
             </div>
-            <div style={{ padding: "10px 12px", fontSize: 11, color: "#6b7280", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.5, maxHeight: 80, overflowY: "auto" }}>
+            <div style={{ padding: "12px 14px", fontSize: 12, color: "#9ca3af", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.6, maxHeight: 80, overflowY: "auto" }}>
               {BOOKMARKLET}
             </div>
           </div>
 
           {/* Tips */}
-          <div style={{ marginTop: 12, background: "#1c1a0a", border: "1px solid #78350f", borderRadius: 8, padding: "8px 12px" }}>
-            <div style={{ fontSize: 12, color: "#fbbf24", fontWeight: 600, marginBottom: 4 }}>Tips</div>
-            <div style={{ fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
-              • The bookmarklet opens the app in a new tab — log in if prompted, the form will still appear.<br />
-              • Sales Navigator's layout changes occasionally. If data doesn't fill in, edit the contact manually after import.<br />
-              • The "Hiring" flag is detected from keywords on the page — not always accurate. Verify before reaching out.<br />
-              • The bookmarklet works on both Sales Navigator profile pages and regular LinkedIn profiles.
+          <div style={{ marginTop: 14, background: "#1f2937", border: "1px solid #4b5563", borderRadius: 8, padding: "12px 16px" }}>
+            <div style={{ fontSize: 14, color: "#f3f4f6", fontWeight: 700, marginBottom: 8 }}>Tips</div>
+            <div style={{ fontSize: 14, color: "#e5e7eb", lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 6 }}>
+              <div>• The bookmarklet opens the app in a new tab — log in if prompted, the form will still appear.</div>
+              <div>• Sales Navigator's layout changes occasionally. If data doesn't fill in, edit the contact manually after import.</div>
+              <div>• The "Hiring" flag is detected from keywords on the page — not always accurate. Verify before reaching out.</div>
+              <div>• The bookmarklet works on both Sales Navigator profile pages and regular LinkedIn profiles.</div>
             </div>
           </div>
         </div>
