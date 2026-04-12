@@ -79,9 +79,9 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `feat/rtt-ios-v1-simplify` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **YNAB Clarity (iOS)** — `portfolio/ynab-clarity-ios`. **Latest:** merged mortgage into Bills & Essentials on Overview; Spending card (transactions `since_date`); safe-to-spend includes `to_be_budgeted` + non-required mapped categories; 24h stale refresh banner + `chase_ynab_clarity_ios_last_refreshed_epoch`. |
-| **Also on branch** | **RollerTask Tycoon (iOS)** V1 simplify pass — needs ⌘B + ⌘U before merge to `main`. |
-| **Next** | 1) Xcode **⌘B** / **⌘U** on YNAB Clarity (transactions decode against live API) · 2) Smoke-test Overview (spending totals, TBB, stale banner after 24h) · 3) Optional: Fund from Underfunded Goals (`portfolio/ynab-clarity-ios/ROADMAP.md` V1 #2) · 4) Merge when RTT + YNAB checks pass |
+| **Focus** | **Portfolio housekeeping complete.** Created `portfolio/spend-clarity/` (YNAB enrichment Python CLI); archived `projects/Money/`; added `scripts/checkpoint` + `scripts/restore`; added `LEARNINGS.md` to all 7 apps; updated all CLAUDE.md files + HANDOFF.md with 3-step session flow + Antigravity/Codex; fixed all Cursor symlinks. |
+| **Also on branch** | **YNAB Clarity (iOS)** + **RollerTask Tycoon (iOS)** — both still on `feat/rtt-ios-v1-simplify`, need Xcode ⌘B / ⌘U before merge to `main`. |
+| **Next** | 1) Open new terminal → `source ~/.zshrc` to activate `checkpoint` + `restore` commands · 2) Xcode ⌘B / ⌘U on YNAB Clarity + RollerTask · 3) Merge `feat/rtt-ios-v1-simplify` → `main` when builds pass |
 | **Blockers** | *(none)* |
 | **Last touch** | 2026-04-11 |
 
