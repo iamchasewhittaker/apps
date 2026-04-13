@@ -57,7 +57,7 @@
   <entry>
     <category term='filter'></category>
     <title>Newsletter - All Substack (ashen alias)</title>
-    <apps:property name='to' value='ashen-35.packet@icloud.com'/>
+    <apps:property name='to' value='[SUBSTACK-ALIAS]@icloud.com'/>
     <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
@@ -174,7 +174,7 @@
   <entry>
     <category term='filter'></category>
     <title>Newsletter - Daily Crossword Links</title>
-    <apps:property name='to' value='pipe.evasive_9z@icloud.com'/>
+    <apps:property name='to' value='[CROSSWORD-ALIAS]@icloud.com'/>
     <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>

@@ -53,11 +53,11 @@ const APP_SNAPSHOT_DEFAULTS = {
   wellness: {
     version: "v15.9",
     lastUpdated: "2026-03-24",
-    summary: "Supabase sync live: magic-link auth, push/pull wired. Shared project with Job Search (unqtnnxlltiadzbqpyhh). Configurable meds list, backup restore UI.",
+    summary: "Supabase sync live: magic-link auth, push/pull wired. Shared project with Job Search (shared-supabase-project). Configurable meds list, backup restore UI.",
     liveUrl: "https://wellnes-tracker.vercel.app",
     storageKey: "chase_wellness_v1",
     localFolder: "~/Documents/wellness-tracker",
-    notes: "Auth: magic-link only. Supabase project: unqtnnxlltiadzbqpyhh (shared with Job Search).",
+    notes: "Auth: magic-link only. Supabase project: shared-supabase-project (shared with Job Search).",
   },
   growth: {
     version: "v6",
@@ -75,7 +75,7 @@ const APP_SNAPSHOT_DEFAULTS = {
     liveUrl: "https://job-search-hq.vercel.app",
     storageKey: "chase_job_search_v1",
     localFolder: "~/Documents/job-search-hq",
-    notes: "Auth: magic-link only, shared Supabase project (unqtnnxlltiadzbqpyhh). Anthropic key stored separately under chase_anthropic_key.",
+    notes: "Auth: magic-link only, shared Supabase project (shared-supabase-project). Anthropic key stored separately under chase_anthropic_key.",
   },
   appforge: {
     version: "v8.1",

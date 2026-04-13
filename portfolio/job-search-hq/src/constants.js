@@ -104,7 +104,7 @@ export const JOB_SEARCH_QUERIES = [
 export const CHASE_CONTEXT = `CANDIDATE BACKGROUND (always use this):
 Name: Chase Whittaker
 Location: Vineyard, UT — remote only (cannot drive due to vision impairment)
-Salary Target: $75,000–$95,000
+Salary Target: [see profile]
 Years Experience: 6+ years in digital payments
 
 STRONGEST EXPERIENCE — always lead with this:
@@ -118,7 +118,7 @@ AVOID: Do not frame Chase as a cold-outbound SDR or pure quota-driven salesperso
 
 // ── RESUME TEMPLATES ──────────────────────────────────────────────────────────
 export const RESUME_TEMPLATE_PM = `CHASE WHITTAKER
-chase.t.whittaker@gmail.com  |  801-960-0082  |  Vineyard, UT (Remote)  |  linkedin.com/in/chase-whittaker
+chase.t.whittaker@gmail.com  |  [PHONE]  |  Vineyard, UT (Remote)  |  linkedin.com/in/chase-whittaker
 
 [TARGET ROLE]  |  [TARGET COMPANY]
 
@@ -160,7 +160,7 @@ Bachelor of Business Administration & Technology Management — Utah Valley Univ
 Sandler Sales Training — Certified  |  Visa Bronze Certified  |  Google Project Management Certificate (in progress)  |  Asana Academy (in progress)`;
 
 export const RESUME_TEMPLATE_AE = `CHASE WHITTAKER
-chase.t.whittaker@gmail.com  |  801-960-0082  |  Vineyard, UT (Remote)  |  linkedin.com/in/chase-whittaker
+chase.t.whittaker@gmail.com  |  [PHONE]  |  Vineyard, UT (Remote)  |  linkedin.com/in/chase-whittaker
 
 [TARGET ROLE]  |  [TARGET COMPANY]
 
@@ -208,14 +208,14 @@ export const defaultData = {
   profile: {
     name: "Chase Whittaker",
     email: "chase.t.whittaker@gmail.com",
-    phone: "801-960-0082",
+    phone: "",
     linkedin: "linkedin.com/in/chase-whittaker",
     location: "Vineyard, UT (Remote Only)",
     targetRoles: "Implementation Specialist, Customer Success Manager, Account Executive (inbound)",
     targetIndustries: "Fintech, Payments, SaaS, B2B",
     yearsExp: "6",
     topAchievements: "• Onboarded ~200 merchants/month at Authorize.Net — guided each from application through first live transaction\n• 98% integration issue resolution rate — resolved the vast majority without escalation\n• Exceeded KPI targets 10–15% consistently across four-plus years\n• Built onboarding docs and process guides adopted by the full team\n• Managed both SMB accounts solo and larger deals up to $100K alongside AEs",
-    salaryTarget: "$75,000–$95,000",
+    salaryTarget: "",
     notes: "6+ years digital payments. Strongest experience: Authorize.Net merchant onboarding and implementation (inbound, 98% resolution rate). Remote only. Looking for implementation, CS, or inbound AE roles — NOT cold outbound SDR.",
   },
 };

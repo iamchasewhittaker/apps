@@ -1,6 +1,8 @@
-# Secrets
+# Secrets — never commit any of these
 .env
 config/gmail_token.json
+config/gmail_credentials.json
+config/*.json
 
 # Python
 __pycache__/

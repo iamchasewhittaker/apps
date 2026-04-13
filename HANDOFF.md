@@ -79,19 +79,21 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Wellness Tracker branding — Clarity palette.** Logo + PWA + iOS `AppIcon` recolored to match **YNAB Clarity** `ClarityTheme` (Spend Clarity is CLI-only; see `portfolio/wellness-tracker/docs/BRANDING.md`). New per-app handoffs: `portfolio/wellness-tracker/HANDOFF.md`, `portfolio/wellness-tracker-ios/HANDOFF.md`. |
-| **Next** | 1) Optional: align in-app `theme.js` / iOS `WellnessTheme` to Clarity tokens for full UI parity · 2) Wellness iOS Tasks/Time parity per app ROADMAP · 3) Keep History analytics deferred until daily workflows stable |
-| **Blockers** | *(none)* |
-| **Last touch** | 2026-04-12 (Wellness branding + handoff docs) |
+| **Focus** | **Clarity iOS family — Phase 0+1 complete.** Split monolithic wellness-tracker-ios into 5 focused apps. `portfolio/clarity-ui/` Swift package built (palette, typography, metrics, components, QuoteBanner, StorageHelpers). `portfolio/clarity-checkin-ios/` Swift source files written (CheckinBlob, CheckinStore, CheckinFlowView, Quotes). **Manual Xcode step pending** — see clarity-checkin-ios/HANDOFF.md. Security audit complete (SEC-001–008 all fixed). |
+| **Next** | 1) Chase: open Xcode → New Project → ClarityCheckin → save to `portfolio/clarity-checkin-ios/` → add ClarityUI local package from `../../clarity-ui` → add existing .swift files to target · 2) Phase 2: Clarity Triage (`portfolio/clarity-triage-ios/`) · 3) Phase 3–5: Time, Budget, Growth |
+| **Blockers** | Manual Xcode project creation required before clarity-checkin-ios can build |
+| **Last touch** | 2026-04-12 (ClarityUI + Check-in source, security fixes SEC-001–008) |
 
 ---
 
 ## Notes (optional, human + long-lived context)
 
-- **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web + shared branding) and `portfolio/wellness-tracker-ios/HANDOFF.md` (native). Use alongside this file for Wellness-only session starts.
-- **iOS planning templates** live at **`docs/ios-app-starter-kit/`** (v3). **Filled** product docs + **`PLANNING_WORKFLOW.md`** under **`portfolio/roller-task-tycoon-ios/docs/planning/`**. **Linear** project [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) (WHI-15…19). Kit **`HANDOFF_TEMPLATE.md`** ≠ repo-root session **`HANDOFF.md`**.
-- **YNAB Clarity (2026-04-11):** Implemented full rethink plan — `goal_target` on `YNABMonthCategory`, `monthlyTarget` prefers goal; Bills by coverage; `dueDay`; Income tab rename + surplus; Cash Flow today marker; `TipBanner`, `HowItWorksView`, `YNABClient` PATCH + Bills **Fund** sheet; Xcode `project.pbxproj` includes `Views/Components/TipBanner.swift` and `HowItWorksView.swift`.
-- **YNAB Clarity (same session, follow-up):** `fetchTransactions` + spending chips; `toBeBudgeted` on month; safe-to-spend formula; unified bills card; stale sync banner (persisted epoch).
+- **Clarity iOS split plan:** `~/.claude/plans/stateful-wondering-puppy.md` — 5 apps + ClarityUI, build order, accessibility requirements, quotes per app.
+- **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
+- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — documents the manual Xcode step and "done when" checklist.
+- **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
+- **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
+- **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.
 - **YNAB API write:** `PATCH` updates `budgeted` (assigned) only; confirmation before Fund.
 - *(Decisions, links to PRs/commits, "parked" ideas.)*
 

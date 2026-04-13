@@ -123,7 +123,7 @@ When Chase identifies a new sender to filter:
 
 - Domain-level matching preferred over sender-specific (e.g., `substack.com` not individual addresses)
 - **Natia Kurdadze** (natia@space-leads.com) → Newsletter (not Cold Email)
-- **Daily Crossword Links** → Newsletter (matched via `to: pipe.evasive_9z@icloud.com` alias)
+- **Daily Crossword Links** → Newsletter (matched via iCloud Hide My Email alias — see local copy of gmail-filters.xml for actual value)
 - Job search senders are whitelisted only — no label, no archive — they stay in inbox naturally
 - **ZipRecruiter** is whitelisted at domain level (`ziprecruiter.com`) — catches Phil, alerts, and all ZipRecruiter addresses
 - **LinkedIn Messages** (`messages-noreply@linkedin.com`) are labeled Notification but NOT archived — stay in inbox during job search

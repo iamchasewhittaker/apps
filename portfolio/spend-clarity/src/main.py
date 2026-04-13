@@ -143,7 +143,8 @@ def main():
         if not kassie_token_file:
             log.error("KASSIE_GMAIL_TOKEN_FILE not set in .env")
             return
-        kassie_gmail = GmailClient(credentials_file=credentials_file, token_file=kassie_token_file, login_hint="kassie.e.whittaker@gmail.com")
+        kassie_login_hint = os.getenv("KASSIE_GMAIL_LOGIN_HINT", "")
+        kassie_gmail = GmailClient(credentials_file=credentials_file, token_file=kassie_token_file, login_hint=kassie_login_hint)
         kassie_gmail.authenticate()
         log.info("Gmail authentication complete (Kassie). Token saved.")
         return
