@@ -14,7 +14,7 @@
 | **Stack** | SwiftUI iOS 17 + `ClarityUI` |
 | **Bundle ID** | `com.chasewhittaker.ClarityTime` |
 | **Storage key** | `chase_time_ios_v1` |
-| **Primary ritual** (center glyph concept) | Time sessions + scripture streak — **arc with tick marks** (segments of focus + rhythm) |
+| **Primary ritual** (center glyph concept) | Time sessions + scripture streak — **analog clock** on the navy tile: white outer ring, light-blue inner ring, **two white hands**, **blue progress arc** on the ring (timer / segment of focus) + suite **check badge** |
 
 ---
 
@@ -30,12 +30,13 @@
 | `Contents.json` — `"filename": "AppIcon.png"` on universal iOS slot | ✅ |
 | Icon uses shared shell + unique center glyph per spec | ✅ |
 | `AccentColor.colorset` aligned with badge | ✅ (suite blue) |
-| Wide mockup in `docs/design/` | ✅ `app-icon-mockup-wide.png` |
+| Wide mockup in `docs/design/` | ✅ `app-icon-mockup-wide.png` (1376×768, user mark centered on `#E6E7EB` field) |
 
 | Asset | Path |
 |-------|------|
 | Shipped icon | `ClarityTime/Assets.xcassets/AppIcon.appiconset/AppIcon.png` |
 | Wide reference | `docs/design/app-icon-mockup-wide.png` |
+| User-provided 1024 master (provenance) | `docs/design/app-icon-source-user-1024.png` |
 
 ---
 
@@ -44,3 +45,4 @@
 | Date | Change |
 |------|--------|
 | 2026-04-13 | Shipped AppIcon from wide mockup; `docs/BRANDING.md`; linked from `CLAUDE.md`. |
+| 2026-04-13 | **Canonical mark:** user-supplied 1024 clock + progress arc + check badge → `AppIcon.png`; wide slide asset rebuilt from that master on gray canvas. |

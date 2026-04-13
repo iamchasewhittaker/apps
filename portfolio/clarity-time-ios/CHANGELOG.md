@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-- **App icon:** `docs/design/app-icon-mockup-wide.png` (timer arc + ticks) → `AppIcon.appiconset/AppIcon.png` (1024×1024) via `sips` pad `#E6E7EB` + scale; `Contents.json` filename on universal iOS slot
+- **App icon:** **User-selected** clock mark (`docs/design/app-icon-source-user-1024.png`) → `AppIcon.appiconset/AppIcon.png` (1024×1024); `docs/design/app-icon-mockup-wide.png` = same art centered on `#E6E7EB` 1376×768 for decks; `Contents.json` universal iOS slot unchanged
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) (from portfolio template); `CLAUDE.md` links branding + shared icon spec
 
 ## v0.1 — 2026-04-12 — Phase 3 MVP
