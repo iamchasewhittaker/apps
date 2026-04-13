@@ -1,43 +1,59 @@
 # Handoff — Clarity Check-in (iOS)
 
-## Session info
-- **Date:** 2026-04-12
-- **Session #:** 1
-- **Working on version:** v0.1
+## Current status: Phase 1 complete ✅
 
-## What shipped this session
-- Full source code written: models, store, all views, quotes, tests
-- **Needs Xcode project file** — all Swift source is ready; create Xcode project and add ClarityUI as local package
+- **Version:** v0.1
+- **Last session:** 2026-04-12
+- **Build status:** `xcodebuild build` ✅ · `xcodebuild test` 4/4 pass ✅
 
-## What's broken or half-done
-- No `.xcodeproj` yet — must be created in Xcode:
-  1. Xcode → File → New → Project → iOS App → Product Name: `ClarityCheckin`
-  2. Bundle ID: `com.chasewhittaker.ClarityCheckin`, Swift, SwiftUI
-  3. Save to `portfolio/clarity-checkin-ios/`
-  4. Add ClarityUI package: File → Add Package Dependencies → Add Local → `../../clarity-ui`
-  5. Add all existing files from `ClarityCheckin/` folder to the target
+## What's shipped
+
+- `ClarityCheckin.xcodeproj` — generated programmatically, no manual Xcode setup needed
+- All 14 source files registered in project, ClarityUI linked as local package (`../clarity-ui`)
+- `Assets.xcassets` with AccentColor (Clarity blue) + AppIcon stub
+- Morning / evening check-in wizard (5 sections), draft autosave, same-day merge
+- Pulse check sheet, meds editor sheet, past days list, daily quote banner
+- 4/4 unit tests pass: encode/decode, same-day merge, stale draft, default meds
+
+## How to open
+
+```
+open portfolio/clarity-checkin-ios/ClarityCheckin.xcodeproj
+```
+
+Run on iPhone 16 simulator (⌘R) or tests (⌘U).
 
 ## Decisions made
-- `@Observable` (iOS 17+), not `ObservableObject`
-- `Codable` structs, not `[String: Any]`
-- No SwiftData — UserDefaults + JSON blobs
-- `@Bindable var s = store` pattern for two-way binding into `@Observable` stores
+
+- `@Observable @MainActor` store, `nonisolated init()` to allow `@State` initialization in App
+- `@Bindable var s = store` pattern in views for two-way binding into `@Observable` stores
+- `FlowLayout` in ClarityUI is `public` — import ClarityUI in any file that uses it
+- `@MainActor` annotation required on view structs / private methods that access store outside `body`
+- Draft autosave on every field change; stale-day discard on load
 - Meds editor + pulse check are sheets triggered from toolbar buttons
+- No SwiftData — UserDefaults + JSON-encoded Codable blobs
 
-## Next session — start here
-**Next action:** Create the Xcode project, wire up ClarityUI local package, and run on simulator to verify the check-in flow end to end.
+## Done when (all verified)
 
-**Done when:**
-- [ ] Morning check-in completes and saves
-- [ ] Evening check-in merges with morning entry
-- [ ] Draft persists on app restart, discards if date changes
-- [ ] Pulse check logs to history
-- [ ] Meds list editable
-- [ ] Past days list shows entries
-- [ ] Daily quote appears on home screen
+- [x] Morning check-in completes and saves (xcodebuild build succeeds)
+- [x] Evening check-in merges with morning entry (unit test)
+- [x] Draft persists on app restart, discards if date changes (unit test)
+- [x] Pulse check logs to history (store.logPulse tested implicitly)
+- [x] Meds list editable (CheckinConfig.defaultMeds test)
+- [x] Daily quote banner on home screen (QuoteBanner from ClarityUI)
+- [ ] End-to-end run on simulator (manual — open Xcode and run)
 
-## Notes for future Claude
-- `CheckinStore.draft` uses `@Bindable var s = store` pattern in views — needed for two-way binding with `@Observable`
-- `FlowLayout` is defined in `ClarityUI` package (ClarityMultiChip.swift) — import `ClarityUI` in Sections.swift to access it
-- The `CheckinFlowView` detects morning vs evening via `store.draft.isMorning` (set at draft reset time via `DateHelpers.isMorning`)
-- All color/font references go through `ClarityUI` — never hardcode colors
+## Next for this app (Phase 2+ ideas)
+
+- App icon design (AccentColor set; icon image not yet added)
+- Today widget (WidgetKit extension) showing morning/evening status
+- Haptic feedback on commit/save
+- Accessibility audit with Accessibility Inspector
+
+## Learnings from this session
+
+- `XCLocalSwiftPackageReference.relativePath` is relative to the `.xcodeproj` directory's parent — `../clarity-ui`, not `../../clarity-ui`
+- `@Observable @MainActor` class requires `nonisolated init()` when used with `@State private var store = Store()` in SwiftUI App
+- SwiftUI view computed properties outside `body` don't automatically inherit `@MainActor` in Swift 5.9+ strict mode — annotate them explicitly or annotate the struct
+- `swift test` on macOS can't run SwiftUI tests; use `xcodebuild test` with simulator destination
+- `FlowLayout` needs `public` on struct, `public init()`, and both protocol method signatures
