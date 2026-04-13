@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
-*(nothing yet)*
+- **App icon:** `docs/design/app-icon-mockup-wide.png` (canonical = nested chevron mark) → `AppIcon.appiconset/AppIcon.png` (1024×1024) via `sips` pad `#E6E7EB` + scale; `Contents.json` filename on universal iOS slot
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) (from portfolio template); `CLAUDE.md` links branding + shared icon spec
 
 ## v0.1 — 2026-04-12 — Phase 2 MVP
 
