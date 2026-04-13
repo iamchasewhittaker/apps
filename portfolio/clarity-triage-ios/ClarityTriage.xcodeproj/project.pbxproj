@@ -1,0 +1,596 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CT010000000000000000001 /* ClarityTriageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000001 /* ClarityTriageApp.swift */; };
+		CT010000000000000000002 /* TriageBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000002 /* TriageBlob.swift */; };
+		CT010000000000000000003 /* TriageConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000003 /* TriageConfig.swift */; };
+		CT010000000000000000004 /* TriageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000004 /* TriageStore.swift */; };
+		CT010000000000000000005 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000005 /* ContentView.swift */; };
+		CT010000000000000000006 /* CapacityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000006 /* CapacityPickerView.swift */; };
+		CT010000000000000000007 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000007 /* TaskListView.swift */; };
+		CT010000000000000000008 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000008 /* AddTaskView.swift */; };
+		CT010000000000000000009 /* IdeasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT020000000000000000009 /* IdeasView.swift */; };
+		CT01000000000000000000A /* WinLoggerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT02000000000000000000A /* WinLoggerView.swift */; };
+		CT01000000000000000000B /* AddWinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT02000000000000000000B /* AddWinView.swift */; };
+		CT01000000000000000000C /* CapacityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT02000000000000000000C /* CapacityBadge.swift */; };
+		CT01000000000000000000D /* Quotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT02000000000000000000D /* Quotes.swift */; };
+		CT01000000000000000000E /* TriageBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT02000000000000000000E /* TriageBlobTests.swift */; };
+		CT01000000000000000000F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CT02000000000000000000F /* Assets.xcassets */; };
+		CT010000000000000000010 /* ClarityUI in Frameworks */ = {isa = PBXBuildFile; productRef = CT0A0000000000000000001 /* ClarityUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CT080000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CT060000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CT050000000000000000001;
+			remoteInfo = ClarityTriage;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CT020000000000000000001 /* ClarityTriageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityTriageApp.swift; sourceTree = "<group>"; };
+		CT020000000000000000002 /* TriageBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriageBlob.swift; sourceTree = "<group>"; };
+		CT020000000000000000003 /* TriageConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriageConfig.swift; sourceTree = "<group>"; };
+		CT020000000000000000004 /* TriageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriageStore.swift; sourceTree = "<group>"; };
+		CT020000000000000000005 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CT020000000000000000006 /* CapacityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityPickerView.swift; sourceTree = "<group>"; };
+		CT020000000000000000007 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
+		CT020000000000000000008 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		CT020000000000000000009 /* IdeasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeasView.swift; sourceTree = "<group>"; };
+		CT02000000000000000000A /* WinLoggerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinLoggerView.swift; sourceTree = "<group>"; };
+		CT02000000000000000000B /* AddWinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWinView.swift; sourceTree = "<group>"; };
+		CT02000000000000000000C /* CapacityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapacityBadge.swift; sourceTree = "<group>"; };
+		CT02000000000000000000D /* Quotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quotes.swift; sourceTree = "<group>"; };
+		CT02000000000000000000E /* TriageBlobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriageBlobTests.swift; sourceTree = "<group>"; };
+		CT02000000000000000000F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CT020000000000000000010 /* ClarityTriage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClarityTriage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CT020000000000000000011 /* ClarityTriageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClarityTriageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CT030000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CT010000000000000000010 /* ClarityUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CT030000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CT040000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				CT040000000000000000002 /* ClarityTriage */,
+				CT04000000000000000000C /* ClarityTriageTests */,
+				CT040000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CT040000000000000000002 /* ClarityTriage */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000001 /* ClarityTriageApp.swift */,
+				CT040000000000000000004 /* Models */,
+				CT040000000000000000005 /* Services */,
+				CT04000000000000000000B /* Constants */,
+				CT040000000000000000006 /* Views */,
+				CT02000000000000000000F /* Assets.xcassets */,
+			);
+			path = ClarityTriage;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000010 /* ClarityTriage.app */,
+				CT020000000000000000011 /* ClarityTriageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000002 /* TriageBlob.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000003 /* TriageConfig.swift */,
+				CT020000000000000000004 /* TriageStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000005 /* ContentView.swift */,
+				CT040000000000000000007 /* Tasks */,
+				CT040000000000000000008 /* Ideas */,
+				CT040000000000000000009 /* Wins */,
+				CT04000000000000000000A /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000007 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000006 /* CapacityPickerView.swift */,
+				CT020000000000000000007 /* TaskListView.swift */,
+				CT020000000000000000008 /* AddTaskView.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000008 /* Ideas */ = {
+			isa = PBXGroup;
+			children = (
+				CT020000000000000000009 /* IdeasView.swift */,
+			);
+			path = Ideas;
+			sourceTree = "<group>";
+		};
+		CT040000000000000000009 /* Wins */ = {
+			isa = PBXGroup;
+			children = (
+				CT02000000000000000000A /* WinLoggerView.swift */,
+				CT02000000000000000000B /* AddWinView.swift */,
+			);
+			path = Wins;
+			sourceTree = "<group>";
+		};
+		CT04000000000000000000A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CT02000000000000000000C /* CapacityBadge.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		CT04000000000000000000B /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				CT02000000000000000000D /* Quotes.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		CT04000000000000000000C /* ClarityTriageTests */ = {
+			isa = PBXGroup;
+			children = (
+				CT02000000000000000000E /* TriageBlobTests.swift */,
+			);
+			path = ClarityTriageTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CT050000000000000000001 /* ClarityTriage */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CT0E0000000000000000002 /* Build configuration list for PBXNativeTarget "ClarityTriage" */;
+			buildPhases = (
+				CT0B0000000000000000001 /* Sources */,
+				CT030000000000000000001 /* Frameworks */,
+				CT0C0000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClarityTriage;
+			packageProductDependencies = (
+				CT0A0000000000000000001 /* ClarityUI */,
+			);
+			productName = ClarityTriage;
+			productReference = CT020000000000000000010 /* ClarityTriage.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CT050000000000000000002 /* ClarityTriageTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CT0E0000000000000000003 /* Build configuration list for PBXNativeTarget "ClarityTriageTests" */;
+			buildPhases = (
+				CT0B0000000000000000002 /* Sources */,
+				CT030000000000000000002 /* Frameworks */,
+				CT0C0000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CT0D0000000000000000001 /* PBXTargetDependency */,
+			);
+			name = ClarityTriageTests;
+			productName = ClarityTriageTests;
+			productReference = CT020000000000000000011 /* ClarityTriageTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CT060000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					CT050000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					CT050000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = CT050000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = CT0E0000000000000000001 /* Build configuration list for PBXProject "ClarityTriage" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CT040000000000000000001;
+			packageReferences = (
+				CT090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */,
+			);
+			productRefGroup = CT040000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CT050000000000000000001 /* ClarityTriage */,
+				CT050000000000000000002 /* ClarityTriageTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CT0C0000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CT01000000000000000000F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CT0C0000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CT0B0000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CT010000000000000000001 /* ClarityTriageApp.swift in Sources */,
+				CT010000000000000000002 /* TriageBlob.swift in Sources */,
+				CT010000000000000000003 /* TriageConfig.swift in Sources */,
+				CT010000000000000000004 /* TriageStore.swift in Sources */,
+				CT010000000000000000005 /* ContentView.swift in Sources */,
+				CT010000000000000000006 /* CapacityPickerView.swift in Sources */,
+				CT010000000000000000007 /* TaskListView.swift in Sources */,
+				CT010000000000000000008 /* AddTaskView.swift in Sources */,
+				CT010000000000000000009 /* IdeasView.swift in Sources */,
+				CT01000000000000000000A /* WinLoggerView.swift in Sources */,
+				CT01000000000000000000B /* AddWinView.swift in Sources */,
+				CT01000000000000000000C /* CapacityBadge.swift in Sources */,
+				CT01000000000000000000D /* Quotes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CT0B0000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CT01000000000000000000E /* TriageBlobTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CT0D0000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CT050000000000000000001 /* ClarityTriage */;
+			targetProxy = CT080000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CT070000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CT070000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CT070000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clarity Triage";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityTriage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CT070000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clarity Triage";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityTriage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CT070000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityTriageTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClarityTriage.app/ClarityTriage";
+			};
+			name = Debug;
+		};
+		CT070000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityTriageTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClarityTriage.app/ClarityTriage";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CT0E0000000000000000001 /* Build configuration list for PBXProject "ClarityTriage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CT070000000000000000001 /* Debug */,
+				CT070000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CT0E0000000000000000002 /* Build configuration list for PBXNativeTarget "ClarityTriage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CT070000000000000000003 /* Debug */,
+				CT070000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CT0E0000000000000000003 /* Build configuration list for PBXNativeTarget "ClarityTriageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CT070000000000000000005 /* Debug */,
+				CT070000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CT090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../clarity-ui";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CT0A0000000000000000001 /* ClarityUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CT090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */;
+			productName = ClarityUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+	};
+	rootObject = CT060000000000000000001 /* Project object */;
+}
