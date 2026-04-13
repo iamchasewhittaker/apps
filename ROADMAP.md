@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-12 (RollerTask Tycoon iOS V1 shipped) | Maintained by Chase
+> Last updated: 2026-04-12 (Clarity Triage Phase 2 shipped; Clarity Time Phase 3 stub) | Maintained by Chase
 
 ---
 
