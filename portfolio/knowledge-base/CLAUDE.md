@@ -3,71 +3,86 @@
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
 ## App Identity
-- **Version:** v1.3
-- **Storage key:** `chase_knowledge_base_v1` (localStorage) — blob shape: `{ bookmarks: [...], categoryOrder: [...] }`
+- **Version:** v2.0
+- **Storage key:** `chase_knowledge_base_v1` (localStorage) — blob shape: `{ bookmarks: [...], folders: [...], favorites: [...], categoryOrder: null }`
 - **URL:** https://knowledge-base-beta-five.vercel.app
 - **Entry:** `src/App.jsx`
 
 ## Purpose
-A personal knowledge base and bookmark manager. One page to store and quickly reach everything Chase needs: AI tool documentation, his own projects, and general reference links.
+A personal knowledge base and bookmark manager with ARC-style sidebar navigation and Chrome-style nested folder hierarchy.
 
 ## File Structure
 ```
-package.json           <- CRA scaffold (react-scripts 5.0.1)
+package.json              <- CRA scaffold (react-scripts 5.0.1)
 public/
-  index.html           <- shell with <div id="root">
+  index.html              <- shell with <div id="root">
 src/
-  index.js             <- ReactDOM.createRoot entry
-  App.jsx              <- main component
-  constants.js         <- SEED data, styles (s), storage helpers (load/save), STORE key
-  ErrorBoundary.jsx    <- standard portfolio error boundary
-bookmark-manager.jsx   <- ARCHIVED original Claude artifact
+  index.js                <- ReactDOM.createRoot entry
+  App.jsx                 <- layout shell: state, CRUD, folder actions, render
+  Sidebar.jsx             <- sidebar: search, smart folders, favorites, folder tree, actions
+  FolderTree.jsx          <- recursive folder tree renderer
+  BookmarkRow.jsx         <- single bookmark row + expandable detail panel
+  BookmarkList.jsx        <- list of BookmarkRows with group header
+  AddEditForm.jsx         <- add/edit bookmark form with folder picker
+  constants.js            <- SEED, SEED_FOLDERS, styles (s), css, storage helpers, display constants
+  ErrorBoundary.jsx       <- standard portfolio error boundary
+bookmark-manager.jsx      <- ARCHIVED original Claude artifact
 docs/
-  PRODUCT_BRIEF.md     <- Phase 1: Product Definition
-  PRD.md               <- Phase 2: Product Requirements
-  APP_FLOW.md          <- Phase 3: UX / App Flow
-CLAUDE.md              <- this file
-ROADMAP.md             <- feature pipeline
-HANDOFF.md             <- session continuity
+  PRODUCT_BRIEF.md        <- Phase 1: Product Definition
+  PRD.md                  <- Phase 2: Product Requirements
+  APP_FLOW.md             <- Phase 3: UX / App Flow
+CLAUDE.md                 <- this file
+ROADMAP.md                <- feature pipeline
+HANDOFF.md                <- session continuity
 ```
 
 ## Tech Stack
-- React 18 (Create React App) with hooks (`useState`, `useEffect`)
+- React 18 (Create React App) with hooks (`useState`, `useEffect`, `useRef`)
 - Inline styles via `s` object in `constants.js` (portfolio convention)
-- `css` string injected via `<style>` for hover effects
+- `css` string injected via `<style>` for hover/pseudo effects (`kb-` class prefix)
 - `lucide-react` for icons
 - `localStorage` for persistence (`load()` / `save()` in constants.js)
 
 ## Data Shape
 ```js
 // localStorage blob (chase_knowledge_base_v1):
-{ bookmarks: [...], categoryOrder: [...] | null }
+{
+  bookmarks: [...],       // array of bookmark objects
+  folders: [...],         // array of folder objects (nested hierarchy)
+  favorites: [...],       // array of bookmark IDs starred as favorites
+  categoryOrder: null,    // legacy field kept for migration compat; not used
+}
 
 // Bookmark:
-{ id: number, title: string, url: string, category: string,
+{ id: number, title: string, url: string,
+  folderId: string,       // canonical — links bookmark to its folder
+  category: string,       // display copy of folder name (kept for compat)
   description?: string, status?: string, progress?: number,
   notes?: string, pinned?: boolean, visits?: number,
   lastVisited?: string, importance?: 0|1|2|3 }
-```
-- `id`: `Date.now()` on creation (seed uses sequential 1–N)
-- `url`: auto-prefixed with `https://` if missing
-- `category`: free-text; defaults to `"Other"` if blank
-- `importance`: 0=None, 1=Low, 2=Medium, 3=High (default 0)
-- `categoryOrder`: null means default A–Z sort (My Projects last)
 
-## Current Features (v1.3)
-- 260 seed bookmarks across 29 categories
-- Grouped collapsible category sections (custom order or alphabetical; My Projects last)
-- **Category organization panel** — reorder, rename, merge, delete empty categories
-- Pinned bookmarks section at top (star icon toggles)
-- **Importance ranking** — High/Med/Low per bookmark; colored badge on rows; "Important" filter shows flat ranked list
-- Per-bookmark detail panel: status, importance, progress 0–100%, notes, last visited
-- Click tracking: visit count + lastVisited set on link open
-- "My Projects" category with all active portfolio apps
-- Search across title / URL / category / description
-- Category filter pills (dynamic from data, respects custom order)
-- Add / edit / delete bookmarks
-- Persistent storage via localStorage
+// Folder:
+{ id: string, name: string, parentId: string|null, order: number }
+```
+- `folderId` is canonical — always use this for folder membership
+- `category` is a display copy of `folder.name`, kept for backward compat
+- Seed folder IDs use `"f_"` prefix; user-created folders use `"f_" + Date.now()`
+- Smart folder IDs `"__important__"` and `"__recent__"` are virtual (not stored in `folders`)
+- `favorites` is an array of bookmark IDs; `pinned` field on bookmarks is legacy (kept in sync)
+
+## Current Features (v2.0)
+- 260 seed bookmarks in nested folder hierarchy (8 parent folders + 29 leaf folders)
+- **ARC-style sidebar** — collapsible (280px ↔ 48px); sticky within 100vh
+- **Smart folders** — "Important" (importance ≥ 1) and "Recent" (last visited, top 15)
+- **Favorites shelf** — starred bookmarks in sidebar + home view cards (up to 12)
+- **Home view** — Favorites / Recently Visited / Important card grids when no folder selected
+- **Nested folder tree** — expand/collapse, bookmark counts, `...` context menu (rename/subfolder/delete)
+- **Folder CRUD** — create, rename (modal), delete (reparents), move bookmarks between folders
+- **Search** — global or within selected folder; results show folder breadcrumb path
+- **Bookmark CRUD** — add, edit (folder picker dropdown), delete, detail panel
+- Per-bookmark: status, importance, progress 0–100%, notes, last visited, visit count
+- **Keyboard shortcuts** — `/` focus search, `n` new bookmark, `Esc` close
+- **Mobile** — sidebar as fixed overlay on < 768px; hamburger toggle
 - Dark mode only (`#09090b` base)
 - ErrorBoundary wrapping
 
@@ -77,14 +92,17 @@ HANDOFF.md             <- session continuity
 
 ## Constraints & Gotchas
 - Preserve dark mode (`#09090b` base).
-- **Seed migration is in place.** `SEED_VERSION` (currently `4`) controls migration. Bump it and add new entries to `SEED` — existing users will get the new entries appended on next load without losing their custom bookmarks. `STORE_SEED_VERSION` (`chase_knowledge_base_seed_version`) tracks the last migrated version in localStorage.
-- **Storage shape is `{ bookmarks, categoryOrder }`.** `load()` auto-detects and migrates old flat-array format. Never write a bare array back to localStorage — always use `save({ bookmarks, categoryOrder })`.
-- **New bookmark fields** are all optional (falsy = default). Don't break existing entries by requiring them.
-- **`persist(next)`** saves bookmarks + current categoryOrder. **`persistAll(bm, order)`** updates both. **`persistOrder(order)`** updates order only (bookmarks unchanged).
-- All styles live in the `s` object in `constants.js`. Hover effects use CSS classes prefixed with `kb-` injected via the `css` string.
+- **SEED_VERSION is 5.** Bump + add entries to `SEED` and `SEED_FOLDERS` when adding seed data. Migration is in `App.jsx` `useEffect` loader.
+- **Storage shape is `{ bookmarks, folders, favorites, categoryOrder }`.** `load()` auto-migrates all older formats. Never write a bare array back. Use `saveAll(bm, folders, favs)` pattern.
+- **`folderId` is canonical.** When creating/moving bookmarks always set both `folderId` and `category` (the folder's name) to keep them in sync.
+- **Folder IDs must be stable.** Seed folder IDs (`f_claude`, `f_chatgpt`, etc.) are stored in user localStorage — never rename or remove them from `SEED_FOLDERS`.
+- **`getDescendantFolderIds(folderId)`** returns a Set including the folder + all nested children — always use this when filtering bookmarks for a folder view.
+- All styles in `s` object in `constants.js`. Hover/pseudo CSS uses `kb-` prefixed classes in the `css` string.
+- `statusColor`, `statusLabel`, `importanceColor`, `importanceLabel` are exported from `constants.js` — import from there, don't redefine locally.
 
 ## How to Extend
-1. Read the ROADMAP.md before adding anything new.
+1. Read ROADMAP.md before adding anything new.
 2. One feature per iteration. Ship, test, then move on.
-3. If a feature requires changing the data shape, migrate existing stored data in the `useEffect` loader.
-4. Never break the seed load path — users rely on it as a fallback.
+3. Data shape changes → update `load()` migration + bump `SEED_VERSION`.
+4. New folders → add to `SEED_FOLDERS` with stable `f_` ID; add `folderId` to matching `SEED` bookmarks.
+5. Never break the seed load path — it's the fallback for fresh installs.

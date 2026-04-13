@@ -52,6 +52,38 @@
 
 - **Monorepo:** path `portfolio/job-search-hq`; README, ROADMAP, AGENTS, `docs/*`; Linear links; master doc path updates.
 
+## v8.5 — 2026-04-13 — Recruiter Wave 1: Action Queue, Next Step Dates, URL Capture, Scenario Chips + Logo
+
+### Logo / branding
+- New "JOB / HQ" logo mark: dark rounded square, small blue "JOB" label above bold white "HQ", replacing default React logo
+- `public/logo.svg` + `public/favicon.svg` (SVG favicons for crisp rendering at all sizes)
+- `public/logo512.png` + `public/logo192.png` regenerated; `index.html` updated to prefer SVG favicon with ICO fallback
+
+### Action Queue (Focus tab)
+- Auto-generated priority list at the top of Focus tab, pulling from: overdue/due-today next step dates, active interview stages with no prep notes, contacts who replied (needs response), sent outreach with no reply in 5+ days, applied 14+ days with no response
+- Each item shows a colored urgency badge (red = overdue, orange = due today/reply, blue = interview prep needed) and a one-click action button that opens the correct modal or navigates to the right tab
+- "All caught up" state shown when queue is empty
+
+### Next Step Dates + Types (Pipeline)
+- `nextStepDate` and `nextStepType` fields added to application data model (`blankApp()`)
+- `NEXT_STEP_TYPES` enum: Apply, Follow Up, Interview Prep, Send Materials, Thank You Note, Negotiate, Other
+- `nextStepUrgency()` helper computes color/label from due date
+- AppModal: new "Due Date" + "Step Type" fields below Next Step text
+- AppCard: urgency badge (Overdue/Due Today/In Xd) appears next to next step text when a due date is set
+- Existing apps load without breaking — new fields default to empty string
+
+### URL Paste Quick-Capture (Pipeline)
+- Paste any job posting URL → AI extracts title, company, and full JD text → pre-fills the new application modal
+- Only shown when API key is configured
+- Uses `callClaude` with 2000 token limit; graceful fallback if parsing fails (opens modal with URL pre-filled)
+- Enter key triggers parse
+
+### Outreach Scenario Chips (AI Tools tab)
+- Connection Request: 4 scenario chips (Cold Outreach, Post-Application, Alumni/Mutual, Recruiter) — click to fill context textarea
+- Follow-up: 4 scenario chips (No Reply, Post-Interview, After Rejection, Reconnect)
+- Active chip highlighted in blue; user can still edit the textarea after selecting
+- Chips export as `CONNECT_SCENARIOS` + `FOLLOWUP_SCENARIOS` constants
+
 ## v8.2 — 2026-03-24 — Auth fix: wrong Supabase project
 
 - **Fixed:** `.env` was pointing to a separate Supabase project (`uwlfhxzeeleebjpiimrg`) instead of the shared wellness project — magic links were redirecting to `wellnes-tracker.vercel.app` because that project's Site URL was set to the wellness URL
