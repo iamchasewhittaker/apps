@@ -3,10 +3,11 @@
 ## Current status: Phase 2 complete
 
 - **Version:** v0.1
-- **Last session:** 2026-04-12
+- **Last session:** 2026-04-13
 - **Bundle ID:** `com.chasewhittaker.ClarityTriage`
 - **Storage key:** `chase_triage_ios_v1`
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
+- **Branding / launcher:** [`docs/BRANDING.md`](docs/BRANDING.md) · shipped **`AppIcon.png`** (1024) from nested-chevron wide mockup [`docs/design/app-icon-mockup-wide.png`](docs/design/app-icon-mockup-wide.png) (+ `app-icon-mockup-explore-*.png` alternates). Shared rules: [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md).
 
 ### Build / test
 

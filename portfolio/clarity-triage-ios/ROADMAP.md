@@ -8,10 +8,10 @@
 - [x] Wins: eight categories, optional note, today’s list
 - [x] Daily quote on Tasks tab (`QuoteBanner` + `triageQuotes`)
 - [x] Programmatic `ClarityTriage.xcodeproj` + unit tests
+- [x] **App icon + branding** — `AppIcon.png` (nested chevron), `docs/design/` wide + explore mockups, [`docs/BRANDING.md`](docs/BRANDING.md), `CLAUDE.md` links (2026-04-13)
 
 ## v0.2 — Next
 
-- [ ] App icon asset (placeholder catalog only today)
 - [ ] Swipe actions on tasks / ideas (optional polish)
 - [ ] Haptics on complete / stage advance
 - [ ] Accessibility pass with Accessibility Inspector
