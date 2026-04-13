@@ -10,6 +10,7 @@
 - [x] Meds editor sheet
 - [x] Daily quote banner (36 quotes, day-of-year rotation)
 - [x] App icon asset in `AppIcon.appiconset` + portfolio icon spec (`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`)
+- [x] **Suite docs** — `docs/BRANDING.md` + monorepo `SESSION_START_CLARITY_IOS_LOGOS.md` / `docs/design/README.md` aligned with all five Clarity iOS apps (reference implementation for family icons)
 - [x] Create Xcode project + wire ClarityUI package
 - [ ] Verify on simulator end-to-end
 

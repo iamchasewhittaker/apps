@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
-| **Focus**      | **Clarity Growth (iOS) — launcher icon + branding** — last sibling without shipped **`AppIcon.png`** / per-app **`docs/BRANDING.md`**. Spec: [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](docs/design/CLARITY_IOS_APP_ICON_SPEC.md) · quality bar: [`portfolio/clarity-checkin-ios/docs/BRANDING.md`](portfolio/clarity-checkin-ios/docs/BRANDING.md). **Also:** Knowledge Base v1.3 shipped; v1.4 = import/export JSON when you return to KB. |
-| **Next**       | After Growth icon: `xcodebuild build` **ClarityGrowth** (simulator, `CODE_SIGNING_ALLOWED=NO`); root [`ROADMAP.md`](ROADMAP.md) Change Log row; this **HANDOFF** State/Last touch; `checkpoint`. Then resume **v0.2+** from [`portfolio/clarity-growth-ios/ROADMAP.md`](portfolio/clarity-growth-ios/ROADMAP.md) / [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md) as needed. |
+| **Focus**      | **Knowledge Base v1.4** — import/export JSON (when you return to KB). **Clarity iOS:** all five apps ship **`docs/BRANDING.md` + AppIcon 1024** (suite glyphs: Check-in horizon+pill · Triage nested chevron · Time clock+arc · Budget stacked coins · Growth sprout). Icon handoff template: [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md). |
+| **Next**       | Knowledge Base v1.4 scope from [`portfolio/knowledge-base/ROADMAP.md`](portfolio/knowledge-base/ROADMAP.md). Clarity v0.2+: [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md), [`portfolio/clarity-growth-ios/ROADMAP.md`](portfolio/clarity-growth-ios/ROADMAP.md). |
 | **Blockers**   | *(none)*                                                                                                                                                                                                                                                                   |
-| **Last touch** | 2026-04-13 — **Handoff for next chat:** State/Notes aimed at **Growth** icon pass; [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) updated (Growth-only scope). Triage · Time · Budget icons + `docs/BRANDING.md` already shipped (see [`ROADMAP.md`](ROADMAP.md) Change Log).                                                                                                                                                                                      |
+| **Last touch** | 2026-04-14 — **Docs sync:** `SESSION_START_CLARITY_IOS_LOGOS.md` + `docs/design/README.md` aligned with **shipped** five-app suite; root `CLAUDE` portfolio rows; Check-in app `HANDOFF`/`CHANGELOG`/`ROADMAP`/`docs/BRANDING`; root `HANDOFF` State + Notes + Templates table |
 
 
 ---
@@ -103,7 +103,7 @@ Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-budget-ios/CLAU
 
 Goal: Continue Clarity Budget iOS at portfolio/clarity-budget-ios/.
 
-Current state: Phase 4 MVP v0.1 shipped — dual scenarios + wants aggregate; PBX prefix CB; store key chase_budget_ios_v1; ClarityUI via ../clarity-ui.
+Current state: Phase 4 MVP v0.1 shipped — dual scenarios + wants aggregate; PBX prefix CB; store key chase_budget_ios_v1; ClarityUI via ../clarity-ui; **launcher** = stacked coins + [`docs/BRANDING.md`](portfolio/clarity-budget-ios/docs/BRANDING.md).
 
 Pick next work from portfolio/clarity-budget-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate the store from nested Button builders, StorageHelpers persistence.
 
@@ -115,29 +115,6 @@ Verify:
 Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file’s State when you stop.
 ```
 
-## Fresh session prompt — **Clarity Growth launcher icon** (next chat)
-
-Use a **new** chat after `checkpoint`. Paste:
-
-```
-Read CLAUDE.md and this HANDOFF.md first, then read:
-  docs/design/CLARITY_IOS_APP_ICON_SPEC.md
-  docs/templates/PORTFOLIO_APP_BRANDING.md
-  portfolio/clarity-checkin-ios/docs/BRANDING.md  (quality bar)
-  portfolio/clarity-growth-ios/CLAUDE.md + HANDOFF.md
-
-Goal: Ship Clarity Growth iOS launcher icon — ONLY sibling left without AppIcon + docs/BRANDING.md.
-
-Do:
-  1) Wide mockup → portfolio/clarity-growth-ios/docs/design/app-icon-mockup-wide.png (1376×768 like Check-in; same Clarity shell + unique center glyph per spec §3 — growth: upward step / sprout / minimal multi-node).
-  2) sips --padColor E6E7EB -p 1376 1376 wide.png ; sips -z 1024 1024 → ClarityGrowth/Assets.xcassets/AppIcon.appiconset/AppIcon.png
-  3) Contents.json universal iOS slot: "filename": "AppIcon.png"
-  4) xcodebuild build -scheme ClarityGrowth -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
-  5) docs/BRANDING.md (from template), CLAUDE.md branding bullets, CHANGELOG [Unreleased], app ROADMAP/HANDOFF icon line, root ROADMAP Change Log, update this root HANDOFF State when done, checkpoint.
-
-Skip Triage / Time / Budget (already shipped).
-```
-
 ## Fresh session prompt — continue Clarity Growth (v0.2+)
 
 Use a **new** chat after `checkpoint`. Paste:
@@ -147,7 +124,7 @@ Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-growth-ios/CLAU
 
 Goal: Continue Clarity Growth iOS at portfolio/clarity-growth-ios/.
 
-Current state: Phase 5 MVP v0.1 shipped — 7 growth areas + streak-aware session logging/history; PBX prefix CG; store key chase_growth_ios_v1; ClarityUI via ../clarity-ui.
+Current state: Phase 5 MVP v0.1 shipped — 7 growth areas + streak-aware session logging/history; PBX prefix CG; store key chase_growth_ios_v1; ClarityUI via ../clarity-ui; **launcher** = sprout + [`docs/BRANDING.md`](portfolio/clarity-growth-ios/docs/BRANDING.md).
 
 Pick next work from portfolio/clarity-growth-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate store from nested Button builders, StorageHelpers persistence.
 
@@ -166,10 +143,10 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **Clarity iOS split plan:** `~/.claude/plans/stateful-wondering-puppy.md` — 5 apps + ClarityUI, build order, accessibility requirements, quotes per app.
 - **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
 - **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; **`docs/BRANDING.md`** + **AppIcon** 1024; new apps copy **`docs/templates/PORTFOLIO_APP_BRANDING.md`** once; shared icon geometry **`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`**.
-- **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; **launcher icon + `docs/BRANDING.md` shipped** (2026-04-13). Use `xcodebuild -showdestinations` if “iPhone 16” simulator is missing.
-- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*` PBX prefix; **launcher icon + `docs/BRANDING.md` shipped** (user clock mark, 2026-04-13).
-- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1**; PBX **`CB`**; **launcher icon + `docs/BRANDING.md` shipped** (2026-04-13).
-- **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **MVP shipped** (v0.1); PBX **`CG`**; **`AppIcon` + `docs/BRANDING.md` not yet shipped** — **next session** (see State **Focus** + `SESSION_START_CLARITY_IOS_LOGOS.md`).
+- **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; **`docs/BRANDING.md` + AppIcon** (nested chevron). `xcodebuild -showdestinations` if “iPhone 16” is missing.
+- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*`; **`docs/BRANDING.md` + AppIcon** (clock + arc + badge).
+- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1**; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); explore wides in `docs/design/`.
+- **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
 - **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.
@@ -185,6 +162,6 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | New initiative, migration, or cross-app work                  | [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md)     |
 | Change one app under `portfolio/<app>/` or `projects/<name>/` | [docs/templates/SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md) |
-| **Clarity Growth launcher icon** (last sibling; suite parity) | [docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md](docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) |
+| **Clarity iOS** — fix / iterate **launcher icon** (name app in chat) | [docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md](docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) |
 
 

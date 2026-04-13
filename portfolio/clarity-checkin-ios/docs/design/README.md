@@ -12,3 +12,5 @@ The shipping **1024×1024** master lives in Xcode: `ClarityCheckin/Assets.xcasse
 Full instructions: [`../../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md).
 
 **New Clarity iOS app?** Copy [`../../../docs/templates/PORTFOLIO_APP_BRANDING.md`](../../../docs/templates/PORTFOLIO_APP_BRANDING.md) → `docs/BRANDING.md` and fill (see [`../../../docs/design/README.md`](../../../docs/design/README.md)).
+
+**Change any Clarity launcher:** paste [`../../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](../../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) in a new chat (suite shipped — name the app).

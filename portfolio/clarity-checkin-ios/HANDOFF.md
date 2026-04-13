@@ -3,7 +3,7 @@
 ## Current status: Phase 1 complete ✅
 
 - **Version:** v0.1
-- **Last session:** 2026-04-13
+- **Last session:** 2026-04-14 (doc sync — Clarity iOS suite branding; this app unchanged)
 - **Build status:** `xcodebuild build` ✅ (2026-04-13, AppIcon asset) · `xcodebuild test` 4/4 pass ✅ (prior session)
 
 ## What's shipped
@@ -12,7 +12,8 @@
 - All 14 source files registered in project, ClarityUI linked as local package (`../clarity-ui`)
 - `Assets.xcassets` with AccentColor (Clarity blue) + **AppIcon** (`AppIcon.png` 1024×1024, filename wired in `Contents.json`)
 - Portfolio **Clarity iOS app icon spec:** monorepo `docs/design/CLARITY_IOS_APP_ICON_SPEC.md` + `docs/design/` wide mockup in-repo
-- **`docs/BRANDING.md`** — filled branding page (template source: monorepo `docs/templates/PORTFOLIO_APP_BRANDING.md`); `CLAUDE.md` links here so sessions do not repeat rules
+- **`docs/BRANDING.md`** — filled branding page (template: `docs/templates/PORTFOLIO_APP_BRANDING.md`); `CLAUDE.md` links here so sessions do not repeat rules
+- **Suite parity:** Triage · Time · Budget · Growth each ship **`docs/BRANDING.md` + AppIcon 1024** (see root `HANDOFF.md` Notes). Batch icon handoff / fixes: **`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`**
 - Morning / evening check-in wizard (5 sections), draft autosave, same-day merge
 - Pulse check sheet, meds editor sheet, past days list, daily quote banner
 - 4/4 unit tests pass: encode/decode, same-day merge, stale draft, default meds

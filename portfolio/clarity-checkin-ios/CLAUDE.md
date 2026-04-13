@@ -4,7 +4,7 @@
 
 ## App Identity
 - **Version:** v0.1
-- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — icons, asset paths, and pointers to the shared **Clarity iOS** spec ([`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md)); do not restate full rules in session prompts.
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — icons, asset paths, suite table, pointers to shared **Clarity iOS** spec ([`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md)); do not restate full rules in session prompts. **Change launcher (any Clarity app):** paste [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) in a new chat.
 - **Bundle ID:** `com.chasewhittaker.ClarityCheckin`
 - **Storage keys:** `chase_checkin_ios_v1` (main), `chase_checkin_ios_draft_v1` (draft), `chase_checkin_ios_meds_v1` (meds)
 - **Entry:** `ClarityCheckin/ClarityCheckinApp.swift`

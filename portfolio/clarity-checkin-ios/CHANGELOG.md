@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Docs:** `HANDOFF`/`ROADMAP`/`docs/BRANDING.md` — cross-links to **shipped** Clarity iOS suite + [`SESSION_START_CLARITY_IOS_LOGOS.md`](../../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) (fix/iterate template)
 - **Branding:** `docs/BRANDING.md` (filled from [`docs/templates/PORTFOLIO_APP_BRANDING.md`](../../../docs/templates/PORTFOLIO_APP_BRANDING.md)); `CLAUDE.md` links there instead of duplicating icon rules
 - **App icon:** `AppIcon.appiconset/AppIcon.png` (1024×1024) + `Contents.json` filename; wide mockup under `docs/design/`
 - **Docs:** portfolio-wide icon system at monorepo `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`; design index `docs/design/README.md`; session templates + `new-app-guide` + iOS starter kit + root `CLAUDE` + `GLOSSARY` point at the branding template

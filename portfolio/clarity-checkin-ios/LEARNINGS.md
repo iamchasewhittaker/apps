@@ -17,6 +17,12 @@
 
 ## Entries
 
+### 2026-04-14 — Suite-wide icon docs drift
+**What happened:** `SESSION_START_CLARITY_IOS_LOGOS` still read like “ship the four apps” after icons already existed.
+**Root cause:** Session template was not retargeted to **fix/iterate** once the suite shipped.
+**Fix / lesson:** Keep **`docs/design/README.md`** + **`SESSION_START_CLARITY_IOS_LOGOS`** in sync with shipped glyphs; root **`HANDOFF`** / **`CLAUDE`** portfolio table should list **`docs/BRANDING` + AppIcon** for every Clarity iOS row.
+**Tags:** docs, branding
+
 ### 2026-04-13 — Portfolio branding template (`docs/BRANDING.md`)
 **What happened:** Branding rules were easy to repeat in every new chat or app.
 **Root cause:** Specs lived only in monorepo `docs/design/` without a **per-app** hub and no copy-paste template.

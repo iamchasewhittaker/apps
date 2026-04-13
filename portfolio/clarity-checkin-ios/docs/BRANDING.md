@@ -1,7 +1,17 @@
 # App branding — Clarity Check-in
 
 > **Filled copy** of the monorepo template. Session prompts: *“Follow `docs/BRANDING.md`”* — do not paste full icon rules into every chat.  
-> **Source template:** [`docs/templates/PORTFOLIO_APP_BRANDING.md`](../../../docs/templates/PORTFOLIO_APP_BRANDING.md)
+> **Source template:** [`docs/templates/PORTFOLIO_APP_BRANDING.md`](../../../docs/templates/PORTFOLIO_APP_BRANDING.md)  
+> **Icon handoff (any Clarity app):** [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](../../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) · Design index [`docs/design/README.md`](../../../docs/design/README.md)
+
+### Clarity iOS suite (sibling apps — each has `docs/BRANDING.md` + `AppIcon`)
+
+| App | Glyph (shipped) |
+|-----|-----------------|
+| **Triage** | Nested chevron |
+| **Time** | Clock + progress arc |
+| **Budget** | Stacked coins |
+| **Growth** | Sprout |
 
 ---
 
@@ -45,3 +55,4 @@
 |------|--------|
 | 2026-04-13 | Initial `BRANDING.md`; AppIcon shipped; linked from `CLAUDE.md`. |
 | 2026-04-13 | Portfolio template [`PORTFOLIO_APP_BRANDING.md`](../../../docs/templates/PORTFOLIO_APP_BRANDING.md) added for sibling apps. |
+| 2026-04-14 | Doc sync: suite glyph table + `SESSION_START_CLARITY_IOS_LOGOS` / `docs/design/README` links. |

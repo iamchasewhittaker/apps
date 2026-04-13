@@ -1,62 +1,63 @@
-# Session start — generate Clarity iOS app icons (Triage · Time · Budget · Growth)
+# Session start — Clarity iOS app icons (fix · iterate · new app)
 
-Copy everything below into a **new** chat, adjust brackets if needed, then send.
+Copy everything below into a **new** chat, fill the brackets, then send.
 
 ---
 
 **Instructions for the agent**
 
-1. Read repo **[CLAUDE.md](../../CLAUDE.md)** and **[HANDOFF.md](../../HANDOFF.md)** first.
+1. Read repo **[`CLAUDE.md`](../../CLAUDE.md)** and **[`HANDOFF.md`](../../HANDOFF.md)** first.
 2. Read the **shared rules** (do not invent a different visual language):
    - **[`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../design/CLARITY_IOS_APP_ICON_SPEC.md)** — tile shell, stroke weight, optional blue badge, center-glyph rules, Xcode layout, `sips` padding note.
-   - **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](PORTFOLIO_APP_BRANDING.md)** — per-app `docs/BRANDING.md` pattern; link from each app’s `CLAUDE.md` when done.
-3. **Reference (already shipped):** [`portfolio/clarity-checkin-ios/docs/BRANDING.md`](../../portfolio/clarity-checkin-ios/docs/BRANDING.md) + [`portfolio/clarity-checkin-ios/docs/design/`](../../portfolio/clarity-checkin-ios/docs/design/) — Check-in icon matches the suite; treat as the quality bar.
-4. For **each scoped app** (default: **Clarity Growth** only): produce a **1024×1024** opaque **`AppIcon.png`**, place it in that app’s `AppIcon.appiconset/`, set **`Contents.json`** `"filename": "AppIcon.png"` on the universal iOS slot (same pattern as Check-in). Keep a wide mockup under that app’s **`docs/design/app-icon-mockup-wide.png`** (1376×768 like Check-in when possible).
-5. If the source art is **not** square, pad to square before scaling: `sips --padColor E6E7EB -p <W> <H> wide.png` then `sips -z 1024 1024` — see **LEARNINGS** in Check-in and §5 of the icon spec.
-6. Run **`xcodebuild build`** for each touched scheme (Growth → **`ClarityGrowth`**; confirm with `-list` if unsure). Update that app’s **`CHANGELOG.md` `[Unreleased]`**, **`docs/BRANDING.md`** (create from portfolio template if missing), **`CLAUDE.md`** branding bullet, app **`HANDOFF`/`ROADMAP`** as needed, root **`ROADMAP.md`** Change Log, and root **`HANDOFF.md`** State when icons ship.
+   - **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](PORTFOLIO_APP_BRANDING.md)** — per-app `docs/BRANDING.md` pattern; link from each app’s `CLAUDE.md` when you change assets.
+3. **Suite shipped (reference):** all five Clarity iOS apps have **`AppIcon.png`** (1024) + **`docs/BRANDING.md`** + wide mockups where noted. Use **Check-in** as the family quality bar: [`portfolio/clarity-checkin-ios/docs/BRANDING.md`](../../portfolio/clarity-checkin-ios/docs/BRANDING.md) + [`portfolio/clarity-checkin-ios/docs/design/`](../../portfolio/clarity-checkin-ios/docs/design/).
+4. **Scope:** Human names **one app** (or “new sixth Clarity app”) in chat. Default = **fix / iterate** launcher art for that app only — do not re-theme the whole suite unless asked.
+5. For the **scoped** app: update **`AppIcon.png`** in `AppIcon.appiconset/`, keep **`Contents.json`** `"filename": "AppIcon.png"` on the universal iOS slot. Keep / add **`docs/design/app-icon-mockup-wide.png`** (wide canvas is fine); optional **`app-icon-mockup-explore-*.png`** for alternates (see Budget / Growth `docs/BRANDING.md`).
+6. If the source art is **not** square, pad before scaling: `sips --padColor E6E7EB -p <W> <H> wide.png` then `sips -z 1024 1024` — see Check-in **`LEARNINGS.md`** and icon spec §5.
+7. Run **`xcodebuild build`** for the touched scheme (`ClarityCheckin`, `ClarityTriage`, `ClarityTime`, `ClarityBudget`, `ClarityGrowth` — confirm with `-list`). Update that app’s **`CHANGELOG.md` `[Unreleased]`**, **`docs/BRANDING.md`**, **`HANDOFF.md`** / **`ROADMAP.md`** if needed, **`CLAUDE.md`** branding line, root **`ROADMAP.md`** Change Log, and root **`HANDOFF.md`** when you ship a glyph change.
 
-**Human — pick scope in chat if needed:**
+**Human — paste one line:**
 
-- [x] **Triage + Time + Budget** — shipped (`AppIcon.png` 1024 + `docs/BRANDING.md` + wide mockups). **Default for new chats:** **Growth only** below.
-- [ ] **Growth only** — `portfolio/clarity-growth-ios/` · scheme `ClarityGrowth` (last sibling for suite parity)
-- [ ] **Fix / iterate** another app’s icon — name which app
+- **App:** [Clarity Check-in | Triage | Time | Budget | Growth | other]  
+- **Goal:** [e.g. “Tighten Triage chevron stroke” / “Try alternate Budget mark, keep explore PNGs”]
 
 ---
 
-## Target apps
+## Shipped suite (glyph summary — read app `docs/BRANDING.md` for paths & alternates)
 
-**Shipped (skip unless fixing):** Clarity Check-in · Clarity Triage · Clarity Time · Clarity Budget — each has `docs/BRANDING.md`, `AppIcon.appiconset/AppIcon.png`, and (where applicable) `docs/design/app-icon-mockup-wide.png`. See root [`HANDOFF.md`](../../HANDOFF.md) State.
+| App | Folder | Scheme | Center glyph (shipped) |
+|-----|--------|--------|-------------------------|
+| **Clarity Check-in** | `portfolio/clarity-checkin-ios/` | `ClarityCheckin` | Morning horizon + tick + **pill** |
+| **Clarity Triage** | `portfolio/clarity-triage-ios/` | `ClarityTriage` | **Nested chevron** (capacity / priority) |
+| **Clarity Time** | `portfolio/clarity-time-ios/` | `ClarityTime` | **Clock + progress arc** + check badge |
+| **Clarity Budget** | `portfolio/clarity-budget-ios/` | `ClarityBudget` | **Stacked coins** (dual-scenario / wants); explore wides in `docs/design/` |
+| **Clarity Growth** | `portfolio/clarity-growth-ios/` | `ClarityGrowth` | **Sprout**; prior steps + explore wides in `docs/design/` |
 
-| App | Folder | Scheme (verify) | Primary ritual → **center glyph** idea (from spec §3 — refine, don’t clone Check-in) |
-|-----|--------|-----------------|----------------------------------------------------------------------------------------|
-| **Clarity Growth** *(next)* | `portfolio/clarity-growth-ios/` | `ClarityGrowth` | Seven areas + streaks — upward step, sprout, or multi-node minimal mark |
-
-**Asset paths (each app):** `<AppFolder>/<AppSources>/Assets.xcassets/AppIcon.appiconset/`  
-(e.g. `ClarityTriage/Assets.xcassets/AppIcon.appiconset/` — confirm folder name inside each repo.)
+**Asset path pattern:** `<Sources>/Assets.xcassets/AppIcon.appiconset/` (e.g. `ClarityTriage/Assets.xcassets/AppIcon.appiconset/` — confirm inside each repo).
 
 ---
 
 ## Acceptance (“done when”)
 
-- [ ] Each scoped app has **`AppIcon.png`** (1024×1024) + **`Contents.json`** filename entry.
-- [ ] Marks use the **same shell** as the spec (navy tile, band, white strokes, optional blue check badge) with a **distinct** center glyph per app.
-- [ ] **`xcodebuild build`** succeeds for each touched app (`CODE_SIGNING_ALLOWED=NO` + known-good simulator destination).
-- [ ] Each touched app has **`docs/BRANDING.md`** (filled or updated) + **`CLAUDE.md`** links it; root **`ROADMAP.md`** Change Log row documents the work.
+- [ ] Scoped app has valid **`AppIcon.png`** (1024×1024 opaque) + **`Contents.json`** filename entry.
+- [ ] Mark still uses the **same shell** as the spec (navy tile, band, white strokes, optional blue check badge) unless product explicitly changes the system.
+- [ ] **`xcodebuild build`** succeeds (`CODE_SIGNING_ALLOWED=NO` + installed simulator).
+- [ ] **`docs/BRANDING.md`** + **`CLAUDE.md`** reflect changes; root **`ROADMAP.md`** + **`HANDOFF.md`** updated if the glyph shipped or docs materially changed.
 
 ---
 
 ## Constraints
 
-- **No** new icon geometry system — follow **`CLARITY_IOS_APP_ICON_SPEC.md`** only.
-- **No** TypeScript / no web build — iOS assets and docs only unless explicitly expanded.
-- Keep diffs **focused** (icons + `Contents.json` + docs; no unrelated refactors).
+- **No** forked icon geometry system — follow **`CLARITY_IOS_APP_ICON_SPEC.md`** only.
+- **No** unrelated app refactors — icons + asset catalog + docs only unless the human expands scope.
+- **SpringBoard:** after icon changes, delete the app from Simulator and reinstall to avoid cached tiles.
 
 ---
 
-## Optional context for image generation
+## Optional — image generation brief
 
-If using an image tool: **minimal**, **high contrast**, **dark rounded tile** on optional light gray field; **white** line art; **blue** badge bottom-trailing with white check — match Check-in’s **family** look, not generic stock icons.
+**Minimal**, **high contrast**, **dark rounded tile** on optional **#E6E7EB** field; **white** line art; **blue** badge bottom-trailing with white check — match the **Clarity Check-in** family; never generic stock marks.
 
 ---
 
-After the session: update root **[`HANDOFF.md`](../../HANDOFF.md)** (State / Notes) and run **`checkpoint`** (or commit).
+After the session: run **`checkpoint`** (or commit) and update root **`HANDOFF.md`**.

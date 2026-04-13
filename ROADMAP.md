@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-13 (Knowledge Base v1.3; Clarity Triage + Time + Budget AppIcon/branding) | Maintained by Chase
+> Last updated: 2026-04-14 (Clarity iOS suite doc sync — branding template + `SESSION_START_CLARITY_IOS_LOGOS` + design index) | Maintained by Chase
 
 ---
 
@@ -226,9 +226,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
-| 2026-04-13 | Clarity Triage (iOS) | v0.1 | **App icon + branding:** nested-chevron wide mockup (`docs/design/app-icon-mockup-wide.png`) → `AppIcon.png` 1024 + `Contents.json` filename; **`docs/BRANDING.md`**; `CLAUDE.md` branding + icon spec links | `portfolio/clarity-triage-ios/` · `xcodebuild build` ClarityTriage ✅ (iPhone 15 / iOS 17.2 sim, `CODE_SIGNING_ALLOWED=NO`) |
-| 2026-04-13 | Clarity Budget (iOS) | v0.1 | **App icon + branding:** dual-column wide mockup → `AppIcon.png` 1024 + `Contents.json` filename; **`docs/BRANDING.md`**; `CLAUDE.md` + app `HANDOFF` / `ROADMAP`; `CHANGELOG` `[Unreleased]` | `portfolio/clarity-budget-ios/` · `xcodebuild build` ClarityBudget ✅ |
-| 2026-04-13 | Clarity Time (iOS) | v0.1 | **App icon + branding:** user-selected **clock + progress arc + check badge** 1024 master → `AppIcon.png`; wide `docs/design/app-icon-mockup-wide.png` on `#E6E7EB`; provenance `app-icon-source-user-1024.png`; **`docs/BRANDING.md`** + `CHANGELOG`; app **`HANDOFF`** / **`ROADMAP`** note shipped launcher | `portfolio/clarity-time-ios/` · `xcodebuild build` ClarityTime ✅ |
+| 2026-04-14 | Portfolio (Clarity iOS docs) | — | **Doc sync:** `SESSION_START_CLARITY_IOS_LOGOS.md` rewritten for **shipped** five-app suite (fix/iterate flow); **`docs/design/README.md`** glyph summary; root **`HANDOFF`** State/Notes/Templates + **`CLAUDE`** portfolio table (`docs/BRANDING` + AppIcon per app); **`portfolio/clarity-checkin-ios`** `HANDOFF`/`CHANGELOG`/`ROADMAP`/`docs/BRANDING` cross-links | See each app `docs/BRANDING.md` |
 | 2026-04-13 | Clarity Check-in (iOS) | v0.1 | **App icon + branding system:** `AppIcon.png` 1024 + `Contents.json`; **`docs/templates/PORTFOLIO_APP_BRANDING.md`** (copy per app) + **`docs/design/README.md`**; session templates, `new-app-guide`, iOS starter kit, `GLOSSARY`, root `CLAUDE` — app **`docs/BRANDING.md`** filled + `CLAUDE` links there (no repeated rules in chats) | `portfolio/clarity-checkin-ios/` · `xcodebuild build` ClarityCheckin ✅ |
 | 2026-04-13 | Knowledge Base | v1.2 | **Seed expansion:** 169 → 260 bookmarks, 21 → 29 categories (SEED_VERSION 3 → 4). New categories: Scripting (8), Python (8), Blogs (10), Reddit (12), Low Vision & RP (10), Making Money (10), Gospel Study (13), Idea Generation (9). Expanded: Tools (+5 YNAB), Job Search (+6). All URLs verified active. | `portfolio/knowledge-base/`; deployed to Vercel |
 | 2026-04-13 | Clarity Growth (iOS) | v0.1 | **Phase 5 MVP:** `GrowthBlob` + `GrowthStore`; 7 growth areas (`gmat`, `job`, `ai`, `pm`, `claude`, `bom`, `cfm`) with streak/session logic; dashboard + log sheet + history filter/delete; programmatic `ClarityGrowth.xcodeproj` (`CG*` PBX IDs), tests + full app docs (`CLAUDE` / `CHANGELOG` / `ROADMAP` / `HANDOFF` / `LEARNINGS`); root `CLAUDE`/`HANDOFF` updated for 5-phase completion | `portfolio/clarity-growth-ios/`; `xcodebuild build` verified (iPhone 15 / iOS 17.2), rerun `xcodebuild test` when Simulator service is healthy |
