@@ -2,7 +2,7 @@
 
 ## v0.1 (shipped)
 
-- [x] **App icon + branding** — `AppIcon.png`, `docs/design/app-icon-mockup-wide.png`, [`docs/BRANDING.md`](docs/BRANDING.md), `CLAUDE.md` links (2026-04-13)
+- [x] **App icon + branding** — `AppIcon.png`, `docs/design/app-icon-mockup-wide.png`, [`docs/BRANDING.md`](docs/BRANDING.md), `CLAUDE.md` links (2026-04-13). **Glyph:** stacked coins shipped 2026-04-14 (dual-column → `docs/design/app-icon-mockup-explore-columns.png`).
 - [x] Dual scenarios (baseline + stretch) in one `BudgetBlob`
 - [x] Wants budget cap + spent + remaining vs plan
 - [x] Tab UX: Scenarios (edit + glance) · Wants (log + reset)

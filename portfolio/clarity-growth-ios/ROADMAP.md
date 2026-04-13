@@ -9,10 +9,7 @@
 - [x] Session logging sheet: area, minutes, optional note/milestones/background
 - [x] History tab: area filter, session list, delete
 - [x] Unit tests for blob round-trip + streak/math helpers
-
-## Pending — launcher icon + branding (next session)
-
-- [ ] **`AppIcon.png`** (1024×1024) + `AppIcon.appiconset/Contents.json` filename · **`docs/design/app-icon-mockup-wide.png`** · **`docs/BRANDING.md`** (from [`docs/templates/PORTFOLIO_APP_BRANDING.md`](../../docs/templates/PORTFOLIO_APP_BRANDING.md)) · **`CLAUDE.md`** links · **`CHANGELOG.md`** `[Unreleased]` · root **`ROADMAP.md`** Change Log + root **`HANDOFF.md`** — see [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md) §3 (growth glyph). **`xcodebuild build`** `ClarityGrowth` with `CODE_SIGNING_ALLOWED=NO`.
+- [x] **Launcher icon + branding:** `AppIcon.png` (1024×1024) + `Contents.json` filename · `docs/design/app-icon-mockup-wide.png` · `docs/BRANDING.md` · `CLAUDE.md` links · `CHANGELOG` · root `ROADMAP` / `HANDOFF` — see [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md) §3. **`xcodebuild build`** `ClarityGrowth` with `CODE_SIGNING_ALLOWED=NO` ✅ (2026-04-13). **Glyph:** sprout shipped 2026-04-14 (steps → `app-icon-mockup-explore-steps.png`).
 
 ## Ideas (v0.2+)
 

@@ -9,6 +9,8 @@
 - **Storage key:** `chase_growth_ios_v1`
 - **Entry:** `ClarityGrowth/ClarityGrowthApp.swift`
 - **Shared package:** `../clarity-ui` (local SPM — product `ClarityUI`)
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons and palette; do not restate full rules in session prompts.
+- **Clarity iOS icon system:** [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md)
 
 ## Purpose
 

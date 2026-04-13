@@ -3,12 +3,12 @@
 ## Current status: Phase 5 complete (MVP v0.1)
 
 - **Version:** v0.1
-- **Last session:** 2026-04-13
+- **Last session:** 2026-04-14 (launcher **sprout** glyph; prior steps wide in `docs/design/app-icon-mockup-explore-steps.png`)
 - **Bundle ID:** `com.chasewhittaker.ClarityGrowth`
 - **Storage key:** `chase_growth_ios_v1` (single `Codable` root in `UserDefaults` — **never rename**)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
 - **PBX prefix:** **`CG`** — all generated IDs in `ClarityGrowth.xcodeproj/project.pbxproj` use `CG*` (reserved siblings: `CC`, `CT`, `CX`, `CB`)
-- **Launcher icon (suite parity):** **Not shipped yet** — next session should add `docs/design/app-icon-mockup-wide.png`, `ClarityGrowth/Assets.xcassets/AppIcon.appiconset/AppIcon.png` (1024), `Contents.json` filename, **`docs/BRANDING.md`**, and `CLAUDE.md` branding bullets per [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md). Siblings already done — see root [`HANDOFF.md`](../../HANDOFF.md).
+- **Launcher icon (suite parity):** **Shipped** — center glyph **sprout** (2026-04-14); `docs/design/app-icon-mockup-wide.png`, `ClarityGrowth/Assets.xcassets/AppIcon.appiconset/AppIcon.png` (1024), `Contents.json` filename, **`docs/BRANDING.md`**, `CLAUDE.md` branding links; spec [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md). Prior **steps** mark: `docs/design/app-icon-mockup-explore-steps.png`. Suite complete with Check-in · Triage · Time · Budget.
 
 ### Build / test
 
@@ -93,7 +93,7 @@ Read CLAUDE.md and repo HANDOFF.md first, then portfolio/clarity-growth-ios/CLAU
 
 Goal: Continue Clarity Growth iOS at portfolio/clarity-growth-ios/.
 
-Current state: Phase 5 MVP v0.1 shipped — 7 growth areas, streak-aware logging/history; PBX prefix CG; store key chase_growth_ios_v1; ClarityUI via ../clarity-ui.
+Current state: Phase 5 MVP v0.1 shipped — 7 growth areas, streak-aware logging/history; PBX prefix CG; store key chase_growth_ios_v1; ClarityUI via ../clarity-ui; **launcher icon** = **sprout** + **`docs/BRANDING.md`**; alternates in `docs/design/app-icon-mockup-explore-*.png` (see `docs/BRANDING.md`).
 
 Pick next work from portfolio/clarity-growth-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate store from nested Button builders, StorageHelpers persistence.
 
