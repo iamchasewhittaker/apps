@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Search, Plus, Trash2, Edit2, X, Check, ExternalLink } from "lucide-react";
-import { SEED, load, save, s, css } from "./constants";
+import { SEED, SEED_VERSION, STORE_SEED_VERSION, load, save, s, css } from "./constants";
 import ErrorBoundary from "./ErrorBoundary";
 
 export default function App() {
@@ -15,10 +15,20 @@ export default function App() {
   useEffect(() => {
     const stored = load();
     if (stored) {
-      setBookmarks(stored);
+      const v = Number(localStorage.getItem(STORE_SEED_VERSION)) || 1;
+      if (v < SEED_VERSION) {
+        const ids = new Set(stored.map(b => b.id));
+        const merged = [...stored, ...SEED.filter(b => !ids.has(b.id))];
+        save(merged);
+        localStorage.setItem(STORE_SEED_VERSION, String(SEED_VERSION));
+        setBookmarks(merged);
+      } else {
+        setBookmarks(stored);
+      }
     } else {
       setBookmarks(SEED);
       save(SEED);
+      localStorage.setItem(STORE_SEED_VERSION, String(SEED_VERSION));
     }
     setLoading(false);
   }, []);

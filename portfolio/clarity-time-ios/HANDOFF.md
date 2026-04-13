@@ -79,7 +79,7 @@ Read CLAUDE.md and HANDOFF.md first.
 
 Goal: Build Phase 4 — Clarity Budget iOS at portfolio/clarity-budget-ios/.
 
-Read portfolio/clarity-budget-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance (stub or roadmap until filled).
+Read portfolio/clarity-budget-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance.
 Follow the same structure and pattern as portfolio/clarity-time-ios/ (Phase 3), portfolio/clarity-triage-ios/ (Phase 2), and portfolio/clarity-checkin-ios/ (Phase 1):
   models → store → views → programmatic xcodeproj → verify build → run tests.
 

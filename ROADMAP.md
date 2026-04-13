@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-12 (Clarity Time Phase 3 shipped) | Maintained by Chase
+> Last updated: 2026-04-13 (Clarity Budget Phase 4 HANDOFF stub + root Phase 4 prompt) | Maintained by Chase
 
 ---
 
@@ -225,6 +225,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-13 | Clarity Budget (iOS) | — | **Phase 4 prep:** `portfolio/clarity-budget-ios/HANDOFF.md` stub (product intent, suggested `CB` PBX prefix, session-start prompt); root [`HANDOFF.md`](HANDOFF.md) “Fresh session prompt — Phase 4” block for new chats | `portfolio/clarity-budget-ios/` |
 | 2026-04-12 | Clarity Time (iOS) | v0.1 | **Phase 3 MVP:** timer + manual time sessions + scripture streak (toggle counts; reference optional); programmatic `ClarityTime.xcodeproj` (`CX*` IDs) + `ClarityTimeTests`; `xcodebuild` build/test on simulator with `CODE_SIGNING_ALLOWED=NO`; app `HANDOFF` + Phase 4 (Budget) session-start prompt | `portfolio/clarity-time-ios/` |
 | 2026-04-12 | Clarity Triage (iOS) | v0.1 | **Phase 2 MVP:** capacity + weighted-slot tasks + ideas pipeline + wins + quotes; programmatic `ClarityTriage.xcodeproj` (`CT*` IDs) + tests; full app docs; `xcodebuild` verified on available simulator (e.g. iPhone 15 / iOS 17.2) when iPhone 16 runtime missing | `portfolio/clarity-triage-ios/` · Phase 3 → Time |
 | 2026-04-12 | YNAB Clarity (iOS) + Spend Clarity | v0.3 / v0.2.0 | **Transaction analysis overhaul (both apps):** `CategoryOverride` SwiftData model + learning system (save override after manual assignment); `CategorySuggestionEngine` expanded to 80+ payee rules + override-first lookup; `PayeeDisplayFormatter` expanded to 70+ merchants; `itemContextSubtitle` universal; Python: `payee_formatter.py` (bank noise strip + 50+ merchants), three-tier `Categorizer` (overrides → payee rules → keywords), Step 4.5 in `main.py` (categorize ALL blank-memo transactions), all 9 category IDs fixed, emoji stripping in `setup_categories.py`, 57 new tests; budget ID removed from `category_rules.yaml` comment | See `portfolio/ynab-clarity-ios/CHANGELOG.md` + `portfolio/spend-clarity/CHANGELOG.md` |

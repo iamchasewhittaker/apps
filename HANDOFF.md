@@ -80,9 +80,32 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | **Focus** | **Clarity iOS — Phases 1–3 complete.** Check-in + Triage + Time: programmatic `xcodeproj`, ClarityUI via `../clarity-ui`, `@Observable` stores with `nonisolated init()`, simulator `xcodebuild` verification. Time uses **`CX*`** PBX IDs (not `CT`). |
-| **Next** | **Phase 4: Clarity Budget** — scaffold `portfolio/clarity-budget-ios/` when ready: dual-scenario budget + wants; new PBX prefix (not `CC`, `CT`, `CX`); session-start prompt in `portfolio/clarity-time-ios/HANDOFF.md`. |
+| **Next** | **Phase 4: Clarity Budget** — implement `portfolio/clarity-budget-ios/` (stub [`HANDOFF.md`](portfolio/clarity-budget-ios/HANDOFF.md) created). Dual-scenario budget + wants; new PBX prefix (not `CC`, `CT`, `CX`); same Clarity iOS build order as Time/Triage/Check-in. |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-12 — Clarity Time Phase 3 shipped (v0.1 MVP + `ClarityTime.xcodeproj` + tests + docs) |
+| **Last touch** | 2026-04-13 — Phase 4 handoff: root prompt below + `portfolio/clarity-budget-ios/HANDOFF.md` stub |
+
+---
+
+## Fresh session prompt — Phase 4 (Clarity Budget)
+
+Use a **new** chat after `checkpoint`. Paste:
+
+```
+Read CLAUDE.md and HANDOFF.md first.
+
+Goal: Build Phase 4 — Clarity Budget iOS at portfolio/clarity-budget-ios/.
+
+Read portfolio/clarity-budget-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance.
+Follow the same structure and pattern as portfolio/clarity-time-ios/ (Phase 3), portfolio/clarity-triage-ios/ (Phase 2), and portfolio/clarity-checkin-ios/ (Phase 1):
+  models → store → views → programmatic xcodeproj → verify build → run tests.
+
+The xcodeproj must be generated programmatically (no manual Xcode project wizard).
+Use a NEW two-letter PBX ID prefix (do not use CC, CT, or CX — reserved for prior Clarity iOS apps). Document the chosen prefix (e.g. CB) in portfolio/clarity-budget-ios/HANDOFF.md.
+
+Wire local package ../clarity-ui as ClarityUI.
+
+Start with: product/data model notes in HANDOFF if still TBD, then models → store → views → xcodeproj → build → test.
+```
 
 ---
 
@@ -92,7 +115,8 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 - **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
 - **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; programmatic xcodeproj (see app HANDOFF for simulator commands).
 - **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; use `xcodebuild -showdestinations` if “iPhone 16” simulator is missing.
-- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **complete** (v0.1); `CX*` PBX prefix; Phase 4 session-start prompt at bottom of that file.
+- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **complete** (v0.1); `CX*` PBX prefix; duplicate Phase 4 prompt also in **this file** (section above) and in `portfolio/clarity-budget-ios/HANDOFF.md`.
+- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **stub** (not started); suggested PBX prefix **`CB`**; storage key `chase_budget_ios_v1`.
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
 - **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.
