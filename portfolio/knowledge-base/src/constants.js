@@ -1,7 +1,5 @@
 // Storage
 export const STORE = "chase_knowledge_base_v1";
-export const STORE_SEED_VERSION = "chase_knowledge_base_seed_version";
-export const SEED_VERSION = 2;
 export const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || null; } catch { return null; } };
 export const save = (data) => { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch {} };
 
@@ -36,22 +34,6 @@ export const SEED = [
   { id: 27, title: "YNAB Clarity (iOS)", url: "https://github.com/iamchasewhittaker/apps", category: "My Projects" },
   { id: 28, title: "Spend Clarity", url: "https://github.com/iamchasewhittaker/apps", category: "My Projects" },
   { id: 29, title: "Knowledge Base", url: "https://github.com/iamchasewhittaker/apps", category: "My Projects" },
-  { id: 30, title: "ClarityUI (Swift pkg)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-ui", category: "My Projects" },
-  { id: 31, title: "Clarity Check-in (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-checkin-ios", category: "My Projects" },
-  { id: 32, title: "Clarity Triage (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-triage-ios", category: "My Projects" },
-  { id: 33, title: "Clarity Time (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-time-ios", category: "My Projects" },
-  { id: 34, title: "Clarity Budget (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-budget-ios", category: "My Projects" },
-  { id: 35, title: "Clarity Growth (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-growth-ios", category: "My Projects" },
-  { id: 36, title: "AI Dev Mastery", url: "https://github.com/iamchasewhittaker/apps/tree/main/projects/ai-dev-mastery", category: "My Projects" },
-  { id: 37, title: "Apple Developer Account", url: "https://developer.apple.com/account", category: "Apple Developer" },
-  { id: 38, title: "Swift Documentation", url: "https://docs.swift.org/swift-book/documentation/the-swift-programming-language", category: "Apple Developer" },
-  { id: 39, title: "SwiftUI Documentation", url: "https://developer.apple.com/documentation/swiftui", category: "Apple Developer" },
-  { id: 40, title: "Human Interface Guidelines", url: "https://developer.apple.com/design/human-interface-guidelines", category: "Apple Developer" },
-  { id: 41, title: "App Store Connect", url: "https://appstoreconnect.apple.com", category: "Apple Developer" },
-  { id: 42, title: "Xcode Documentation", url: "https://developer.apple.com/documentation/xcode", category: "Apple Developer" },
-  { id: 43, title: "WWDC Sessions", url: "https://developer.apple.com/videos", category: "Apple Developer" },
-  { id: 44, title: "TestFlight", url: "https://developer.apple.com/testflight", category: "Apple Developer" },
-  { id: 45, title: "Apple Developer Forums", url: "https://developer.apple.com/forums", category: "Apple Developer" },
 ];
 
 // Inline styles (replaces Tailwind classes)
