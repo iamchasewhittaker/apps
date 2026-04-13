@@ -51,23 +51,26 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **Importance ranking** — High/Med/Low field on bookmarks; colored badge on rows; selector in detail panel; "Important" filter pill (flat ranked list)
 - [x] **Storage migration** — blob shape upgraded to `{ bookmarks, categoryOrder }`; auto-migrates old data
 
-## v1.4 — Next
-- [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)
-- [ ] **Favicons** — show site icons next to each bookmark
+## v2.0 — Shipped
+- [x] **ARC sidebar + Chrome folder redesign** — two-panel layout; collapsible 280px sidebar; nested folder hierarchy; folder CRUD; favorites shelf; smart folders; home view; search with breadcrumbs; keyboard shortcuts; mobile overlay; component extraction (6 files); SEED_VERSION 5 migration
 
-## v1.4 — Quality of life
-- [ ] Tags (multiple per bookmark, separate from single category)
-- [ ] Sort options (recent / alphabetical / most visited)
-- [ ] Keyboard shortcuts (`/` to focus search, `n` for new)
+## v2.1 — Next
+- [ ] **Deploy v2.0 to Vercel** — push and verify live URL works with migrated localStorage data
+- [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)
+- [ ] **Favicons** — show site favicons next to each bookmark row
+
+## v2.2 — Quality of life
+- [ ] Drag-and-drop reordering within a folder and between folders
+- [ ] Tags (multiple per bookmark, cross-folder filtering)
+- [ ] Sort options within folder view (alphabetical / most visited / date added)
 - [ ] Duplicate URL detection on add
 
 ## Later — Ideas parking lot
 - Bulk edit / multi-select
-- Drag to reorder
 - Broken link checker
-- Themed color accents per category
-- Share a category as a read-only list
-- Quick-add from clipboard (paste URL -> auto-fill title)
+- Themed color accents per folder
+- Share a folder as a read-only list
+- Quick-add from clipboard (paste URL → auto-fill title)
 - Supabase sync (follow portfolio pattern)
 
 ## Out of scope (for now)

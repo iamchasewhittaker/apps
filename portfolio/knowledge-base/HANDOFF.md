@@ -2,67 +2,108 @@
 
 ## Session info
 - **Date:** April 13, 2026
-- **Session #:** 8
-- **Working on version:** v1.3
+- **Session #:** 9
+- **Working on version:** v2.0
 
-## What shipped this session (v1.3)
+## What shipped this session (v2.0)
 
-### Category Organization Menu
-- **Categories button** in the search bar (next to Add) opens an inline management panel
-- **Reorder** — up/down arrows on each row; custom order persists across reloads
-- **Rename** — click any category name (or the edit icon) to rename inline; bulk-updates all bookmarks in that category; updates filter/collapse state automatically
-- **Merge** — merge one category's bookmarks into another via dropdown; source category removed
-- **Delete empty** — trash icon appears on categories with 0 bookmarks
-- **Reset A–Z** — clears custom order, reverts to default alphabetical sort
-- Custom order persists in localStorage alongside bookmark data
+### ARC Sidebar + Chrome Folder Redesign — full implementation
 
-### Importance Ranking
-- **Importance field** added to bookmarks: None / Low / Medium / High (0–3)
-- **Importance badge** on each bookmark row (colored pill: blue=Low, amber=Medium, red=High)
-- **Importance selector** in the detail panel (same button pattern as Status)
-- **"Important" filter pill** — flat list of all bookmarks with importance ≥ 1, sorted High→Med→Low then alphabetically within each level
+**Layout**
+- Two-panel layout: fixed 280px sidebar (collapsible to 48px icon strip) + scrollable content area
+- Sidebar and content scroll independently within `100vh`
+- Mobile: sidebar hidden by default; hamburger opens it as a fixed overlay with backdrop
 
-### Storage Migration
-- localStorage blob migrated from flat array → `{ bookmarks, categoryOrder }` object
-- `load()` auto-detects old array format and wraps it — zero data loss on upgrade
-- No `SEED_VERSION` bump needed (no new seed bookmarks; importance defaults to `0`)
+**Sidebar**
+- App title + collapse toggle (ChevronLeft/Right)
+- Search bar (`/` shortcut to focus)
+- Smart folders: "Important" (importance ≥ 1, ranked) and "Recent" (last 15 visited)
+- Favorites shelf: star-toggled bookmarks shown as compact clickable rows (up to 12)
+- Folder tree with expand/collapse, bookmark counts, `...` context menu per folder
+- "New Folder" button in tree header, "New Bookmark" button at bottom
 
-## What shipped previously (Session 7)
-- **Seed expanded 169 → 260 bookmarks across 29 categories** (SEED_VERSION 4)
-  - New categories: Scripting, Python, Blogs, Reddit, Low Vision & RP, Making Money, Gospel Study, Idea Generation
+**Folder hierarchy**
+- 29 seed categories pre-grouped into 8 parent folders:
+  - AI Tools → Claude, ChatGPT, Gemini, Cursor, Perplexity, Prompting
+  - Apple → Swift, Apple Developer, iOS Dev
+  - Web & Dev → Web Dev, Dev Tools, GitHub, Coding, Architecture
+  - Learning → Learning
+  - Career → Job Search, GMAT, Making Money
+  - Community → Community, Blogs, Reddit
+  - Life → Low Vision & RP, Gospel Study, Tools, Scripting, Python
+  - Creative → Design, Idea Generation
+  - My Projects (top-level)
+- Folder CRUD: create, rename (modal), delete (reparents children + bookmarks), move bookmarks via picker
+- Folder context menu (`...` button): Rename, New Subfolder, Delete Folder
+
+**Home view** (no folder selected)
+- Favorites cards grid
+- Recently Visited cards grid (top 10)
+- Important cards grid (top 10)
+
+**Search**
+- Searches across all bookmarks (or within selected folder)
+- Results show folder breadcrumb path above each bookmark row
+
+**Keyboard shortcuts**
+- `/` → focus search
+- `n` → new bookmark form
+- `Esc` → close menus/forms
+
+**Components created**
+- `src/Sidebar.jsx`
+- `src/FolderTree.jsx`
+- `src/BookmarkRow.jsx`
+- `src/BookmarkList.jsx`
+- `src/AddEditForm.jsx`
+
+**Data migration (SEED_VERSION 5)**
+- Storage blob: `{ bookmarks, categoryOrder, folders, favorites }`
+- All bookmarks get `folderId` (mapped from `category`); `category` kept as display fallback
+- `pinned: true` bookmarks migrated to `favorites` array on first load
+- `load()` handles all historical formats (flat array → v1.3 shape → v2.0 shape)
 
 ## What's broken or half-done
-- Nothing broken. Build passes cleanly (`Compiled successfully`).
+- Nothing broken. Build passes cleanly (`Compiled successfully`, 70.71 kB gzipped).
+- Drag-and-drop reordering is deferred (v2.1 roadmap item). Move bookmarks via `...` menu instead.
 
 ## Decisions made
-- **Storage shape:** changed from bare array to `{ bookmarks, categoryOrder }` object in one blob (follows portfolio "one blob" convention — no new localStorage keys)
-- **Importance scale:** 0=None, 1=Low, 2=Medium, 3=High (colors: gray/blue/amber/red)
-- **Category manager:** inline card panel (no modal), consistent with existing Add form pattern
-- **"Important" view:** flat list, not grouped — importance overrides category grouping
+- Pre-grouped 29 categories into 8 parent folders in SEED_FOLDERS (user preference)
+- Smart folders ("Important", "Recent") appear in sidebar AND home view
+- `pinned` field kept on bookmarks for backward compat; `favorites` array is canonical
+- `category` string kept as display field; `folderId` is the structural field
 
 ## Next session — start here
-**Next action:** Import / export JSON (v1.3 roadmap item)
+**Next action:** Deploy v2.0 to Vercel + verify live URL works with migrated data
 
-Steps:
-1. Add export button → downloads `knowledge-base-export.json` (full blob)
-2. Add import button → file picker, merges without duplicating (match by URL)
-3. Test round-trip: export → clear storage → import → verify all bookmarks restored
+Then:
+- Import / export JSON (backup + round-trip; was on v1.4 roadmap)
+- Favicons next to each bookmark
+- Drag-and-drop reordering (v2.1)
 
 ## Files in play
-- `src/App.jsx` — main component
-- `src/constants.js` — SEED, styles, storage helpers (load/save now use object shape)
-- `src/ErrorBoundary.jsx` — error boundary
-- `CLAUDE.md`, `ROADMAP.md`, `HANDOFF.md` — updated
+```
+src/App.jsx           — layout shell, all state, CRUD, folder actions
+src/Sidebar.jsx       — sidebar: search, smart folders, favorites, folder tree
+src/FolderTree.jsx    — recursive folder tree renderer
+src/BookmarkRow.jsx   — single bookmark row + detail panel
+src/BookmarkList.jsx  — list of bookmark rows with group header
+src/AddEditForm.jsx   — add/edit bookmark form with folder picker
+src/constants.js      — SEED, SEED_FOLDERS, s styles, css, storage helpers
+src/ErrorBoundary.jsx — unchanged
+```
 
 ## Notes for future Claude
-- User strongly prefers MVP thinking. Ship one thing at a time.
-- Dark mode is non-negotiable.
-- All styles in `constants.js` `s` object. Hover CSS uses `kb-` prefix.
-- `load()` returns `{ bookmarks, categoryOrder }` — not a bare array anymore.
-- `persist(nextBookmarks)` saves bookmarks+categoryOrder. `persistAll(bm, order)` updates both. `persistOrder(order)` updates order only.
-- Category management state: `showCatManager`, `renamingCat`/`renameValue`, `mergingCat`.
+- Storage shape: `{ bookmarks, categoryOrder, folders, favorites }` — use `saveAll(bm, folders, favs)` pattern
+- `folderId` is canonical; `category` is a display-only copy of the folder name
+- `SEED_FOLDERS` defines the initial nested structure; do not change IDs (they are stored in user data)
+- Folder IDs use `"f_"` prefix for seed folders; new user-created folders use `"f_" + Date.now()`
+- `getDescendantFolderIds(folderId)` returns a Set including the folder itself and all nested children — use this when filtering bookmarks for a folder
+- Smart folder IDs are `"__important__"` and `"__recent__"` (double underscores, not real folder IDs)
+- All styles in `constants.js` `s` object. Hover/CSS classes use `kb-` prefix.
+- No drag-and-drop yet — all folder/bookmark moves via menus.
 
 ---
 
 ### Quick-start prompt for next session
-> I'm continuing work on my Knowledge Base (bookmark manager). It lives at `portfolio/knowledge-base/` in my apps monorepo (`~/Developer/chase`). Read `CLAUDE.md`, `ROADMAP.md`, and `HANDOFF.md` in that folder, then help me ship the next action listed under "Next session — start here."
+> I'm continuing work on my Knowledge Base (bookmark manager, v2.0). It lives at `portfolio/knowledge-base/` in my apps monorepo (`~/Developer/chase`). Read `CLAUDE.md`, `ROADMAP.md`, and `HANDOFF.md` in that folder, then help me ship the next action listed under "Next session — start here."

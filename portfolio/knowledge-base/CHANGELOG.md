@@ -1,5 +1,32 @@
 # Changelog — Knowledge Base
 
+## [v2.0] — 2026-04-13
+### Added
+- **ARC-style sidebar** — fixed left panel (280px) with collapse toggle; folder tree, smart folders, favorites shelf, search, and new bookmark/folder buttons
+- **Nested folder hierarchy** — Chrome-style nested folders 3–4 levels deep. 29 seed categories pre-grouped into 8 parent folders (AI Tools, Apple, Web & Dev, Learning, Career, Community, Life, Creative) + My Projects
+- **Folder CRUD** — create folder/subfolder, rename (modal), delete (reparents children + bookmarks), move bookmarks to any folder via picker
+- **Smart folders** — "Important" (importance ≥ 1, ranked) and "Recent" (last visited, top 15) as virtual sidebar entries and home view sections
+- **Favorites shelf** — star/unstar bookmarks; starred bookmarks shown in sidebar + home view cards (up to 12)
+- **Home view** — landing view when no folder selected; Favorites, Recently Visited, and Important sections as clickable cards
+- **Two-panel layout** — sidebar + scrollable content area, both independently scrollable within 100vh
+- **Search across all folders** — sidebar search bar filters bookmarks globally; results show folder path breadcrumb
+- **Mobile overlay sidebar** — sidebar hidden on <768px; hamburger opens it as a fixed overlay
+- **Keyboard shortcuts** — `/` focuses search, `n` opens new bookmark form, `Esc` closes menus/forms
+- **Component extraction** — App.jsx split into BookmarkRow, BookmarkList, AddEditForm, Sidebar, FolderTree (6 components)
+
+### Changed
+- Storage blob upgraded to `{ bookmarks, categoryOrder, folders, favorites }` (SEED_VERSION 5); `load()` auto-migrates all historical formats
+- Bookmark `folderId` field is now canonical; `category` kept as display fallback
+- `pinned` → `favorites` array migration on first load (backward compatible)
+- `statusColor`, `statusLabel`, `importanceColor`, `importanceLabel` moved to `constants.js` (shared across components)
+- Category filter pills replaced by sidebar folder tree navigation
+- Add/edit form now uses folder picker dropdown instead of free-text category input
+
+### Removed
+- Single-column layout
+- Category filter pill row
+- Category organization panel (superseded by folder CRUD in sidebar)
+
 ## [v1.3] — 2026-04-13
 ### Added
 - **Category organization panel** — "Categories" button in toolbar opens inline manager with: reorder (up/down arrows), rename (click name or edit icon), merge into another category, delete empty categories, reset to A–Z
