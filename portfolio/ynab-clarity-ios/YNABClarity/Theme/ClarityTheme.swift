@@ -2,12 +2,12 @@ import SwiftUI
 
 enum ClarityTheme {
     // MARK: - Background palette (dark, blue-tinted)
-    static let bg      = Color(red: 0.055, green: 0.063, blue: 0.082)
-    static let surface = Color(red: 0.102, green: 0.118, blue: 0.149)
-    static let border  = Color(red: 0.173, green: 0.196, blue: 0.243)
-    static let text    = Color(red: 0.918, green: 0.929, blue: 0.941)
-    /// Secondary text — higher contrast than before for low vision / long reading.
-    static let muted   = Color(red: 0.62, green: 0.66, blue: 0.74)
+    static let bg      = Color(red: 0.059, green: 0.067, blue: 0.090)  // #0f1117
+    static let surface = Color(red: 0.086, green: 0.106, blue: 0.153)  // #161b27
+    static let border  = Color(red: 0.122, green: 0.161, blue: 0.216)  // #1f2937
+    static let text    = Color(red: 0.953, green: 0.957, blue: 0.965)  // #f3f4f6
+    /// Secondary text — aligned to portfolio BASE muted (#6b7280)
+    static let muted   = Color(red: 0.420, green: 0.447, blue: 0.502)  // #6b7280
 
     // MARK: - Semantic status colors
     static let safe     = Color(red: 0.239, green: 0.718, blue: 0.478)  // green — funded

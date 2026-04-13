@@ -7,19 +7,19 @@ public enum ClarityPalette {
 
     // MARK: - Backgrounds
 
-    /// Primary app background — dark blue-charcoal (#0e1015)
-    public static let bg      = Color(red: 0.055, green: 0.063, blue: 0.082)
-    /// Card / surface layer above bg
-    public static let surface = Color(red: 0.102, green: 0.118, blue: 0.149)
-    /// Subtle borders and dividers
-    public static let border  = Color(red: 0.173, green: 0.196, blue: 0.243)
+    /// Primary app background — dark blue-charcoal (#0f1117)
+    public static let bg      = Color(red: 0.059, green: 0.067, blue: 0.090)
+    /// Card / surface layer above bg (#161b27)
+    public static let surface = Color(red: 0.086, green: 0.106, blue: 0.153)
+    /// Subtle borders and dividers (#1f2937)
+    public static let border  = Color(red: 0.122, green: 0.161, blue: 0.216)
 
     // MARK: - Text
 
-    /// Primary text (#eaedf0)
-    public static let text  = Color(red: 0.918, green: 0.929, blue: 0.941)
-    /// Secondary / muted text — high contrast for low-vision readability
-    public static let muted = Color(red: 0.72, green: 0.76, blue: 0.82)
+    /// Primary text (#f3f4f6)
+    public static let text  = Color(red: 0.953, green: 0.957, blue: 0.965)
+    /// Secondary / muted text (#6b7280)
+    public static let muted = Color(red: 0.420, green: 0.447, blue: 0.502)
 
     // MARK: - Semantic
 
