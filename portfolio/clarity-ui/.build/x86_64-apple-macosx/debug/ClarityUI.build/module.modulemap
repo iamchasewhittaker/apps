@@ -1,0 +1,4 @@
+module ClarityUI {
+    header "/Users/chase/Developer/chase/portfolio/clarity-ui/.build/x86_64-apple-macosx/debug/ClarityUI.build/ClarityUI-Swift.h"
+    requires objc
+}

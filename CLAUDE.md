@@ -7,7 +7,13 @@
 | App | Version | Storage Key | URL | Status |
 |-----|---------|-------------|-----|--------|
 | Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active · W+sunrise · Clarity palette · [`HANDOFF.md`](portfolio/wellness-tracker/HANDOFF.md) |
-| Wellness Tracker (iOS) | Phase 2 shell | `chase_wellness_ios_v1` (+ draft, meds keys); **local-only** (no Supabase) | local Xcode | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) · same mark in `AppIcon` |
+| Wellness Tracker (iOS) | Phase 2 shell | archived | — | 🗄️ Archived → replaced by 5 Clarity apps · [`portfolio/archive/wellness-tracker-ios`](portfolio/archive/wellness-tracker-ios) |
+| ClarityUI (Swift pkg) | v0.1 | n/a (shared package) | n/a | 🟡 Local · [`portfolio/clarity-ui`](portfolio/clarity-ui) · palette, components, storage helpers |
+| Clarity Check-in (iOS) | v0.1 | `chase_checkin_ios_v1` (+draft, +meds) | local Xcode | 🟡 Local · [`portfolio/clarity-checkin-ios`](portfolio/clarity-checkin-ios) · morning/evening check-in |
+| Clarity Triage (iOS) | v0.1 | `chase_triage_ios_v1` | local Xcode | 🟡 Local · [`portfolio/clarity-triage-ios`](portfolio/clarity-triage-ios) · capacity tasks + ideas + wins |
+| Clarity Time (iOS) | v0.1 | `chase_time_ios_v1` | local Xcode | 🟡 Local · [`portfolio/clarity-time-ios`](portfolio/clarity-time-ios) · time sessions + scripture streak |
+| Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | 🟡 Local · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
+| Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | 🟡 Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
 | YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain; YNAB read + PATCH assign (Fund, with confirmation) | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
