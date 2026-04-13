@@ -424,6 +424,8 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
           expandedBlock={expandedBlock} setExpandedBlock={setExpandedBlock}
           completedBlocks={completedBlocks} setCompletedBlocks={setCompletedBlocks}
           todayDone={todayDone}
+          applications={data.applications} contacts={data.contacts}
+          setAppModal={setAppModal} setPrepModal={setPrepModal} setTab={setTab}
         />
       )}
       {tab === "pipeline" && (
@@ -432,7 +434,7 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
           contacts={data.contacts} saveApp={saveApp}
           setAppModal={setAppModal} setPrepModal={setPrepModal}
           setKitApp={setKitApp} setKitResumeResult={setKitResumeResult} setKitCoverResult={setKitCoverResult}
-          setTab={setTab} setResumeTab={setResumeTab}
+          setTab={setTab} setResumeTab={setResumeTab} apiKey={apiKey}
         />
       )}
       {tab === "contacts" && (

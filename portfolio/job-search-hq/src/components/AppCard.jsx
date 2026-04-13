@@ -1,5 +1,5 @@
 import React from "react";
-import { s, STAGES, STAGE_COLORS } from "../constants";
+import { s, STAGES, STAGE_COLORS, nextStepUrgency } from "../constants";
 
 export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, archived }) {
   const linked = contacts.filter(c => c.appIds?.includes(app.id));
@@ -16,7 +16,12 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
         </div>
       </div>
       {app.appliedDate && <div style={s.cardMeta}>Applied {app.appliedDate}</div>}
-      {app.nextStep && <div style={s.cardNextStep}>→ {app.nextStep}</div>}
+      {app.nextStep && (
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={s.cardNextStep}>→ {app.nextStep}</div>
+          {(() => { const u = nextStepUrgency(app.nextStepDate); return u ? <span style={{ ...s.urgencyBadge, background: u.bg, color: u.color }}>{u.label}</span> : null; })()}
+        </div>
+      )}
       {linked.length > 0 && (
         <div style={s.cardContacts}>{linked.map(c => <span key={c.id} style={s.contactChip}>{c.name}</span>)}</div>
       )}

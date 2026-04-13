@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background -->
+  <rect width="64" height="64" rx="14" fill="#0f1117"/>
+
+  <!-- HQ text -->
+  <text x="32" y="34" text-anchor="middle" dominant-baseline="central"
+        font-family="system-ui, sans-serif" font-weight="800" font-size="26"
+        fill="#f3f4f6" letter-spacing="-1">HQ</text>
+
+  <!-- Blue accent bar -->
+  <rect x="20" y="44" width="24" height="2" rx="1" fill="#3b82f6"/>
+</svg>

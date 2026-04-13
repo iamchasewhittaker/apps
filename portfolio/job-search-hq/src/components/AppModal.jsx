@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { s, STAGES } from "../constants";
+import { s, STAGES, NEXT_STEP_TYPES } from "../constants";
 import Field from "./Field";
 
 export default function AppModal({ modal, contacts, onSave, onDelete, onClose }) {
@@ -24,7 +24,11 @@ export default function AppModal({ modal, contacts, onSave, onDelete, onClose })
             <Field label="Applied Date" type="date" value={app.appliedDate} onChange={v => set("appliedDate", v)} />
           </div>
           <Field label="Job URL" value={app.url} onChange={v => set("url", v)} placeholder="https://..." />
-          <Field label="Next Step / Follow-up" value={app.nextStep} onChange={v => set("nextStep", v)} placeholder="Send thank you, follow up in 7 days…" />
+          <Field label="Next Step" value={app.nextStep} onChange={v => set("nextStep", v)} placeholder="e.g. Send thank you, follow up in 7 days…" />
+          <div style={s.formRow}>
+            <Field label="Due Date" type="date" value={app.nextStepDate || ""} onChange={v => set("nextStepDate", v)} />
+            <Field label="Step Type" type="select" options={NEXT_STEP_TYPES.map(t => t.label)} value={NEXT_STEP_TYPES.find(t => t.value === (app.nextStepType || ""))?.label || "— type —"} onChange={v => set("nextStepType", NEXT_STEP_TYPES.find(t => t.label === v)?.value || "")} />
+          </div>
           <Field label="Job Description (enables AI tailoring + Apply Kit)" type="textarea" rows={5} value={app.jobDescription} onChange={v => set("jobDescription", v)} placeholder="Paste job description here…" />
           <Field label="Notes" type="textarea" rows={3} value={app.notes} onChange={v => set("notes", v)} placeholder="Comp range, culture, who referred you…" />
           {linked.length > 0 && (

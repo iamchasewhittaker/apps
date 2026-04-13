@@ -91,6 +91,31 @@ export const OUTREACH_STATUSES = [
   { value: "intro_made", label: "Intro Made",  color: "#8b5cf6" },
 ];
 
+export const NEXT_STEP_TYPES = [
+  { value: "",              label: "— type —" },
+  { value: "apply",         label: "Apply" },
+  { value: "follow_up",     label: "Follow Up" },
+  { value: "prep",          label: "Interview Prep" },
+  { value: "send_materials",label: "Send Materials" },
+  { value: "thank_you",     label: "Thank You Note" },
+  { value: "negotiate",     label: "Negotiate" },
+  { value: "other",         label: "Other" },
+];
+
+export const CONNECT_SCENARIOS = [
+  { label: "Cold Outreach",      text: "Cold outreach — exploring implementation/CS roles in their space" },
+  { label: "Post-Application",   text: "I recently applied to a role at their company and wanted to connect with the team" },
+  { label: "Alumni / Mutual",    text: "We share a mutual connection or similar background in payments/fintech" },
+  { label: "Recruiter",          text: "Connecting with a recruiter about open opportunities in payments or fintech" },
+];
+
+export const FOLLOWUP_SCENARIOS = [
+  { label: "No Reply",           text: "Sent a message a few days ago with no response — gentle follow-up" },
+  { label: "Post-Interview",     text: "Sending a thank you / follow-up after a recent interview or phone call" },
+  { label: "After Rejection",    text: "Following up after a rejection — keeping the door open and asking for feedback" },
+  { label: "Reconnect",          text: "Reconnecting after some time — sharing a relevant update" },
+];
+
 // ── JOB SEARCH ────────────────────────────────────────────────────────────────
 export const JOB_SEARCH_QUERIES = [
   "Implementation Specialist fintech payments remote",
@@ -260,7 +285,18 @@ export async function callClaude(system, userMsg, maxTokens = 1000) {
 }
 
 export function blankApp() {
-  return { id: generateId(), company: "", title: "", stage: "Interested", appliedDate: "", url: "", nextStep: "", jobDescription: "", notes: "", prepNotes: "" };
+  return { id: generateId(), company: "", title: "", stage: "Interested", appliedDate: "", url: "", nextStep: "", nextStepDate: "", nextStepType: "", jobDescription: "", notes: "", prepNotes: "" };
+}
+
+export function nextStepUrgency(nextStepDate) {
+  if (!nextStepDate) return null;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const due = new Date(nextStepDate + "T00:00:00");
+  const diff = Math.round((due - today) / 86400000);
+  if (diff < 0) return { label: "Overdue", color: "#ef4444", bg: "#450a0a" };
+  if (diff === 0) return { label: "Due Today", color: "#f59e0b", bg: "#451a03" };
+  if (diff <= 3) return { label: `In ${diff}d`, color: "#60a5fa", bg: "#1e3a5f" };
+  return null;
 }
 export function blankContact() {
   return {
@@ -517,6 +553,28 @@ export const s = {
   liNavBtnActive: { background: "#1f2937", color: "#f3f4f6", borderColor: "#4b5563" },
   errorToast: { position: "fixed", top: 16, left: "50%", transform: "translateX(-50%)", background: "#450a0a", border: "1px solid #991b1b", color: "#fca5a5", borderRadius: 10, padding: "12px 20px", zIndex: 200, fontSize: 13, display: "flex", gap: 12, alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.6)", maxWidth: "90vw" },
   toastClose: { background: "none", border: "none", color: "#fca5a5", cursor: "pointer", fontSize: 16, lineHeight: 1, padding: 0, flexShrink: 0 },
+  // Action queue
+  aqSection: { marginBottom: 20 },
+  aqHeader: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
+  aqTitle: { fontSize: 15, fontWeight: 700, color: "#f3f4f6" },
+  aqBadge: { fontSize: 11, fontWeight: 700, background: "#ef4444", color: "#fff", borderRadius: 20, padding: "2px 8px" },
+  aqEmpty: { background: "#0c1a0c", border: "1px solid #14532d", borderRadius: 10, padding: "12px 16px", fontSize: 13, color: "#6ee7b7", textAlign: "center" },
+  aqList: { display: "flex", flexDirection: "column", gap: 6 },
+  aqItem: { display: "flex", alignItems: "center", gap: 10, background: "#1a1f2e", borderRadius: 10, padding: "10px 14px" },
+  aqItemText: { display: "flex", flexDirection: "column", flex: 1, minWidth: 0 },
+  aqItemTitle: { fontSize: 13, fontWeight: 600, color: "#f3f4f6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  aqItemSub: { fontSize: 11, color: "#6b7280", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  aqActionBtn: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 },
+  aqLabel: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
+  // Scenario chips
+  scenarioRow: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 },
+  scenarioChip: { background: "#1f2937", border: "1px solid #374151", color: "#9ca3af", borderRadius: 20, padding: "4px 12px", fontSize: 12, cursor: "pointer" },
+  scenarioChipActive: { background: "#1e3a5f", border: "1px solid #3b82f6", color: "#60a5fa" },
+  // URL paste bar
+  urlPasteBar: { display: "flex", gap: 8, marginBottom: 16 },
+  urlPasteInput: { flex: 1, background: "#111827", border: "1px solid #374151", borderRadius: 8, color: "#e5e7eb", fontSize: 13, padding: "8px 12px", fontFamily: "inherit" },
+  // Next step urgency badge on cards
+  urgencyBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
 };
 
 export const css = `

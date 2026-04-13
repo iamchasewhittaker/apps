@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { s, CHASE_CONTEXT, JOB_SEARCH_QUERIES, API_KEY_STORAGE, callClaude, blankApp } from "../constants";
+import { s, CHASE_CONTEXT, JOB_SEARCH_QUERIES, API_KEY_STORAGE, callClaude, blankApp, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import AIResult from "../components/AIResult";
 
@@ -557,8 +557,14 @@ export default function AITab({
                       </div>
                     </div>
                   )}
+                  <div style={s.sectionLabel}>Scenario</div>
+                  <div style={s.scenarioRow}>
+                    {CONNECT_SCENARIOS.map(sc => (
+                      <button key={sc.label} style={{ ...s.scenarioChip, ...(connectContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setConnectContext(sc.text)}>{sc.label}</button>
+                    ))}
+                  </div>
                   <div style={s.sectionLabel}>Context / Why you're reaching out</div>
-                  <textarea style={s.textarea} rows={3} value={connectContext} onChange={e => setConnectContext(e.target.value)} placeholder="e.g. Saw their post about payments trends, cold outreach exploring implementation roles at their company…" />
+                  <textarea style={s.textarea} rows={2} value={connectContext} onChange={e => setConnectContext(e.target.value)} placeholder="e.g. Saw their post about payments trends, cold outreach exploring implementation roles at their company…" />
                   <button
                     style={{ ...s.btnPrimary, width: "100%", opacity: (!connectContact || loadingConnect) ? 0.5 : 1 }}
                     disabled={!connectContact || loadingConnect}
@@ -605,8 +611,14 @@ export default function AITab({
                       </div>
                     </div>
                   )}
+                  <div style={s.sectionLabel}>Scenario</div>
+                  <div style={s.scenarioRow}>
+                    {FOLLOWUP_SCENARIOS.map(sc => (
+                      <button key={sc.label} style={{ ...s.scenarioChip, ...(followupContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setFollowupContext(sc.text)}>{sc.label}</button>
+                    ))}
+                  </div>
                   <div style={s.sectionLabel}>What did you discuss / when did you speak?</div>
-                  <textarea style={s.textarea} rows={3} value={followupContext} onChange={e => setFollowupContext(e.target.value)} placeholder="e.g. Had a 15-min call about their implementation team, they mentioned they're hiring in Q2…" />
+                  <textarea style={s.textarea} rows={2} value={followupContext} onChange={e => setFollowupContext(e.target.value)} placeholder="e.g. Had a 15-min call about their implementation team, they mentioned they're hiring in Q2…" />
                   <button
                     style={{ ...s.btnPrimary, width: "100%", opacity: (!followupContact || loadingFollowup) ? 0.5 : 1 }}
                     disabled={!followupContact || loadingFollowup}
