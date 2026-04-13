@@ -4,6 +4,7 @@
 
 ## App Identity
 - **Version:** v0.1
+- **App icon:** `ClarityCheckin/Assets.xcassets/AppIcon.appiconset/AppIcon.png` (1024×1024). **Clarity iOS icon system** (reuse on Triage / Time / Budget / Growth): monorepo [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md) · local pointer [`docs/CLARITY_IOS_APP_ICON_SPEC.md`](docs/CLARITY_IOS_APP_ICON_SPEC.md) · wide mockup [`docs/design/app-icon-mockup-wide.png`](docs/design/app-icon-mockup-wide.png)
 - **Bundle ID:** `com.chasewhittaker.ClarityCheckin`
 - **Storage keys:** `chase_checkin_ios_v1` (main), `chase_checkin_ios_draft_v1` (draft), `chase_checkin_ios_meds_v1` (meds)
 - **Entry:** `ClarityCheckin/ClarityCheckinApp.swift`
@@ -23,6 +24,7 @@ SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. No SwiftData,
 ## File Structure
 ```
 ClarityCheckin/
+  Assets.xcassets/           — AppIcon (1024 master) + AccentColor
   ClarityCheckinApp.swift    — @main entry, store init, .environment()
   Models/
     CheckinBlob.swift        — CheckinBlob, CheckinEntry, MorningData, EveningData, PulseCheck

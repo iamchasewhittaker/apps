@@ -9,7 +9,8 @@
 - [x] Pulse check sheet
 - [x] Meds editor sheet
 - [x] Daily quote banner (36 quotes, day-of-year rotation)
-- [ ] Create Xcode project + wire ClarityUI package
+- [x] App icon asset in `AppIcon.appiconset` + portfolio icon spec (`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`)
+- [x] Create Xcode project + wire ClarityUI package
 - [ ] Verify on simulator end-to-end
 
 ## v0.2 — Next

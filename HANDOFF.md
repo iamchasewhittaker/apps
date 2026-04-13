@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
-| **Focus**      | **Clarity iOS — Phases 1–4 complete.** Check-in + Triage + Time + **Budget**: programmatic `xcodeproj`, ClarityUI via `../clarity-ui`, `@Observable` stores with `nonisolated init()`, simulator `xcodebuild` verification. PBX prefixes: `CC` / `CT` / `CX` / `CB`.        |
-| **Next**       | **Phase 5: Clarity Growth** — `portfolio/clarity-growth-ios/` (not started). Optional: Budget v0.2 items in [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md).                                                                           |
+| **Focus**      | **Knowledge Base v1.3** — category organization menu (reorder/rename/merge/delete) + importance ranking (High/Med/Low badges + "Important" filter). Also: Clarity iOS Phases 1–5 complete (PBX: `CC`/`CT`/`CX`/`CB`/`CG`). **Clarity Check-in:** AppIcon 1024 + shared icon spec at `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`. |
+| **Next**       | Knowledge Base v1.4: import/export JSON. Clarity: continue v0.2+ from [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md) and [`portfolio/clarity-growth-ios/ROADMAP.md`](portfolio/clarity-growth-ios/ROADMAP.md). |
 | **Blockers**   | *(none)*                                                                                                                                                                                                                                                                   |
-| **Last touch** | 2026-04-13 — Clarity Budget Phase 4 MVP shipped (code + docs); root/app handoff prompts updated                                                                                                                                                                          |
+| **Last touch** | 2026-04-13 — Clarity Check-in: shipped AppIcon + portfolio `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`; Knowledge Base v1.3 on Vercel (https://knowledge-base-beta-five.vercel.app)                                                                                          |
 
 
 ---
@@ -115,9 +115,26 @@ Verify:
 Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file’s State when you stop.
 ```
 
-## Fresh session prompt — Phase 5 (Clarity Growth)
+## Fresh session prompt — continue Clarity Growth (v0.2+)
 
-When starting Growth, use a **new** chat after `checkpoint`. Until `portfolio/clarity-growth-ios/HANDOFF.md` exists, say: *Read `CLAUDE.md` + `HANDOFF.md`; scaffold Clarity Growth iOS matching Check-in/Triage/Time/Budget patterns; new PBX two-letter prefix (not CC, CT, CX, CB); wire `../clarity-ui`.*
+Use a **new** chat after `checkpoint`. Paste:
+
+```
+Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-growth-ios/CLAUDE.md and portfolio/clarity-growth-ios/HANDOFF.md.
+
+Goal: Continue Clarity Growth iOS at portfolio/clarity-growth-ios/.
+
+Current state: Phase 5 MVP v0.1 shipped — 7 growth areas + streak-aware session logging/history; PBX prefix CG; store key chase_growth_ios_v1; ClarityUI via ../clarity-ui.
+
+Pick next work from portfolio/clarity-growth-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate store from nested Button builders, StorageHelpers persistence.
+
+Verify:
+  cd portfolio/clarity-growth-ios && xcodebuild -scheme ClarityGrowth -showdestinations
+  xcodebuild build -scheme ClarityGrowth -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+  xcodebuild test  -scheme ClarityGrowth -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+
+Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file’s State when you stop.
+```
 
 ---
 
@@ -125,10 +142,11 @@ When starting Growth, use a **new** chat after `checkpoint`. Until `portfolio/cl
 
 - **Clarity iOS split plan:** `~/.claude/plans/stateful-wondering-puppy.md` — 5 apps + ClarityUI, build order, accessibility requirements, quotes per app.
 - **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
-- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; programmatic xcodeproj (see app HANDOFF for simulator commands).
+- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; **AppIcon** 1024 in `AppIcon.appiconset`; shared suite spec **`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`** (other Clarity iOS apps should follow it).
 - **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; use `xcodebuild -showdestinations` if “iPhone 16” simulator is missing.
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **complete** (v0.1); `CX*` PBX prefix; “Next” points at Growth + shipped Budget.
-- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **MVP shipped** (v0.1); PBX prefix **`CB`**; storage key `chase_budget_ios_v1`; continue prompt in **this file** + app `HANDOFF.md`.
+- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **MVP shipped** (v0.1); PBX prefix **`CB`**; storage key `chase_budget_ios_v1`; continue prompt in this file + app `HANDOFF.md`.
+- **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **MVP shipped** (v0.1); PBX prefix **`CG`**; storage key `chase_growth_ios_v1`; continue prompt in this file + app `HANDOFF.md`.
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
 - **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.

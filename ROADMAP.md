@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-13 (Clarity Budget Phase 4 MVP shipped) | Maintained by Chase
+> Last updated: 2026-04-13 (Knowledge Base v1.3 — category organization + importance ranking) | Maintained by Chase
 
 ---
 
@@ -12,6 +12,7 @@
 | Job Search HQ | v8.3 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | YNAB Clarity (iOS) | v0.2 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
+| Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
 | RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
@@ -225,6 +226,9 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-13 | Clarity Check-in (iOS) | v0.1 | **App icon + docs:** `AppIcon.appiconset/AppIcon.png` (1024×1024) wired in `Contents.json`; portfolio-wide **Clarity iOS app icon spec** at `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`; app `docs/design/` wide mockup + `CLAUDE`/`CHANGELOG`/`HANDOFF`/`ROADMAP`/`LEARNINGS` | `portfolio/clarity-checkin-ios/` · `xcodebuild build` ClarityCheckin ✅ |
+| 2026-04-13 | Knowledge Base | v1.2 | **Seed expansion:** 169 → 260 bookmarks, 21 → 29 categories (SEED_VERSION 3 → 4). New categories: Scripting (8), Python (8), Blogs (10), Reddit (12), Low Vision & RP (10), Making Money (10), Gospel Study (13), Idea Generation (9). Expanded: Tools (+5 YNAB), Job Search (+6). All URLs verified active. | `portfolio/knowledge-base/`; deployed to Vercel |
+| 2026-04-13 | Clarity Growth (iOS) | v0.1 | **Phase 5 MVP:** `GrowthBlob` + `GrowthStore`; 7 growth areas (`gmat`, `job`, `ai`, `pm`, `claude`, `bom`, `cfm`) with streak/session logic; dashboard + log sheet + history filter/delete; programmatic `ClarityGrowth.xcodeproj` (`CG*` PBX IDs), tests + full app docs (`CLAUDE` / `CHANGELOG` / `ROADMAP` / `HANDOFF` / `LEARNINGS`); root `CLAUDE`/`HANDOFF` updated for 5-phase completion | `portfolio/clarity-growth-ios/`; `xcodebuild build` verified (iPhone 15 / iOS 17.2), rerun `xcodebuild test` when Simulator service is healthy |
 | 2026-04-13 | Clarity Budget (iOS) | v0.1 | **Phase 4 MVP:** `BudgetBlob` + dual scenarios + wants tab; `BudgetStore` + ClarityUI; programmatic `ClarityBudget.xcodeproj` (`CB*` PBX IDs) + `ClarityBudgetTests`; app `CLAUDE` / `CHANGELOG` / `ROADMAP` / `HANDOFF` / `LEARNINGS`; root `HANDOFF` + `CLAUDE` portfolio row; `xcodebuild build` verified (iPhone 15 / iOS 17.2); run `xcodebuild test` when Simulator healthy | `portfolio/clarity-budget-ios/` |
 | 2026-04-12 | Clarity Time (iOS) | v0.1 | **Phase 3 MVP:** timer + manual time sessions + scripture streak (toggle counts; reference optional); programmatic `ClarityTime.xcodeproj` (`CX*` IDs) + `ClarityTimeTests`; `xcodebuild` build/test on simulator with `CODE_SIGNING_ALLOWED=NO`; app `HANDOFF` + Phase 4 (Budget) session-start prompt | `portfolio/clarity-time-ios/` |
 | 2026-04-12 | Clarity Triage (iOS) | v0.1 | **Phase 2 MVP:** capacity + weighted-slot tasks + ideas pipeline + wins + quotes; programmatic `ClarityTriage.xcodeproj` (`CT*` IDs) + tests; full app docs; `xcodebuild` verified on available simulator (e.g. iPhone 15 / iOS 17.2) when iPhone 16 runtime missing | `portfolio/clarity-triage-ios/` · Phase 3 → Time |

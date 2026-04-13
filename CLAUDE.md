@@ -9,11 +9,11 @@
 | Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active · W+sunrise · Clarity palette · [`HANDOFF.md`](portfolio/wellness-tracker/HANDOFF.md) |
 | Wellness Tracker (iOS) | Phase 2 shell | archived | — | 🗄️ Archived → replaced by 5 Clarity apps · [`portfolio/archive/wellness-tracker-ios`](portfolio/archive/wellness-tracker-ios) |
 | ClarityUI (Swift pkg) | v0.1 | n/a (shared package) | n/a | ✅ Built · `swift build` clean · `FlowLayout` public · [`portfolio/clarity-ui`](portfolio/clarity-ui) |
-| Clarity Check-in (iOS) | v0.1 | `chase_checkin_ios_v1` (+draft, +meds) | local Xcode | ✅ Phase 1 done · xcodeproj generated · 4/4 tests pass · [`portfolio/clarity-checkin-ios`](portfolio/clarity-checkin-ios) |
+| Clarity Check-in (iOS) | v0.1 | `chase_checkin_ios_v1` (+draft, +meds) | local Xcode | ✅ Phase 1 done · AppIcon 1024 + shared icon spec [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](docs/design/CLARITY_IOS_APP_ICON_SPEC.md) · [`portfolio/clarity-checkin-ios`](portfolio/clarity-checkin-ios) |
 | Clarity Triage (iOS) | v0.1 | `chase_triage_ios_v1` | local Xcode | ✅ Phase 2 done · xcodeproj generated (`CT*` IDs) · tests pass on simulator · [`portfolio/clarity-triage-ios`](portfolio/clarity-triage-ios) · capacity tasks + ideas + wins |
 | Clarity Time (iOS) | v0.1 | `chase_time_ios_v1` | local Xcode | ✅ Phase 3 done · xcodeproj generated (`CX*` IDs) · tests pass on simulator · [`portfolio/clarity-time-ios`](portfolio/clarity-time-ios) · time sessions + scripture streak |
 | Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | ✅ Phase 4 done · xcodeproj generated (`CB*` IDs) · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
-| Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | 🔲 Phase 5 — not started · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
+| Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | ✅ Phase 5 done · xcodeproj generated (`CG*` IDs) · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
 | YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain; YNAB read + PATCH assign (Fund, with confirmation) | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
@@ -22,7 +22,7 @@
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 | Spend Clarity | v0.1 | none (Python CLI; no localStorage); YNAB token in `.env`; Gmail OAuth tokens in `config/` | local Python | 🟡 Local · [`portfolio/spend-clarity`](portfolio/spend-clarity) |
-| Knowledge Base | v1.0 | `chase_knowledge_base_v1` | not yet deployed | 🟡 Local · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
+| Knowledge Base | v1.0 | `chase_knowledge_base_v1` | knowledge-base-beta-five.vercel.app | ✅ Active · 48 bookmarks · 12 categories · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 

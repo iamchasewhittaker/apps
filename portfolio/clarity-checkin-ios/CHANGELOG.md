@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- **App icon:** `AppIcon.appiconset/AppIcon.png` (1024×1024) + `Contents.json` filename; wide mockup under `docs/design/`
+- **Docs:** portfolio-wide icon system at monorepo `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`; app pointers in `docs/` + `CLAUDE.md`
+
 ## v0.1 — 2026-04-12 — Initial source
 - Models: CheckinBlob, CheckinEntry, MorningData, EveningData, PulseCheck, DraftBlob
 - CheckinConfig: UserDefaults keys, default meds list

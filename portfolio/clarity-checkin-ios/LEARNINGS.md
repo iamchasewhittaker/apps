@@ -17,6 +17,12 @@
 
 ## Entries
 
+### 2026-04-13 — Squaring wide app-icon mockups with `sips`
+**What happened:** A wide marketing mockup (1376×768) needed to become a **1024×1024** `AppIcon.png` for Xcode’s single-size slot.
+**Root cause:** `sips -p` pads to square using **black** by default, which clashes with a light presentation field.
+**Fix / lesson:** Use `sips --padColor E6E7EB -p <W> <H> file.png` then `sips -z 1024 1024` — document in the shared icon spec. After icon changes, **delete the app from Simulator** before judging the result (SpringBoard caches icons).
+**Tags:** xcode, design
+
 ### 2026-04-12 — @Observable binding pattern
 **What happened:** `@Observable` stores don't use `@Published`. Views need `@Bindable var s = store` to get two-way bindings.
 **Root cause:** iOS 17 `@Observable` macro changed the binding pattern from `ObservableObject`.
