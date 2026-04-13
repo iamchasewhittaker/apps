@@ -82,7 +82,7 @@ struct MedsEditorView: View {
         .preferredColorScheme(.dark)
     }
 
-    private func addMed() {
+    @MainActor private func addMed() {
         store.addMed(newMed)
         newMed = ""
     }

@@ -1,0 +1,592 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC010000000000000000001 /* ClarityCheckinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000001 /* ClarityCheckinApp.swift */; };
+		CC010000000000000000002 /* CheckinBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000002 /* CheckinBlob.swift */; };
+		CC010000000000000000003 /* DraftBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000003 /* DraftBlob.swift */; };
+		CC010000000000000000004 /* CheckinConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000004 /* CheckinConfig.swift */; };
+		CC010000000000000000005 /* CheckinStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000005 /* CheckinStore.swift */; };
+		CC010000000000000000006 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000006 /* ContentView.swift */; };
+		CC010000000000000000007 /* CheckinFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000007 /* CheckinFlowView.swift */; };
+		CC010000000000000000008 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000008 /* Sections.swift */; };
+		CC010000000000000000009 /* MedsEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000009 /* MedsEditorView.swift */; };
+		CC01000000000000000000A /* PastDaysSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02000000000000000000A /* PastDaysSection.swift */; };
+		CC01000000000000000000B /* PulseCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02000000000000000000B /* PulseCheckView.swift */; };
+		CC01000000000000000000C /* TodayStatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02000000000000000000C /* TodayStatusCard.swift */; };
+		CC01000000000000000000D /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02000000000000000000D /* EntryDetailView.swift */; };
+		CC01000000000000000000E /* Quotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02000000000000000000E /* Quotes.swift */; };
+		CC01000000000000000000F /* CheckinBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC02000000000000000000F /* CheckinBlobTests.swift */; };
+		CC010000000000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC020000000000000000010 /* Assets.xcassets */; };
+		CC010000000000000000011 /* ClarityUI in Frameworks */ = {isa = PBXBuildFile; productRef = CC0A0000000000000000001 /* ClarityUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CC080000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC060000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC050000000000000000001;
+			remoteInfo = ClarityCheckin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CC020000000000000000001 /* ClarityCheckinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityCheckinApp.swift; sourceTree = "<group>"; };
+		CC020000000000000000002 /* CheckinBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinBlob.swift; sourceTree = "<group>"; };
+		CC020000000000000000003 /* DraftBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftBlob.swift; sourceTree = "<group>"; };
+		CC020000000000000000004 /* CheckinConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinConfig.swift; sourceTree = "<group>"; };
+		CC020000000000000000005 /* CheckinStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinStore.swift; sourceTree = "<group>"; };
+		CC020000000000000000006 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CC020000000000000000007 /* CheckinFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinFlowView.swift; sourceTree = "<group>"; };
+		CC020000000000000000008 /* Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sections.swift; sourceTree = "<group>"; };
+		CC020000000000000000009 /* MedsEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedsEditorView.swift; sourceTree = "<group>"; };
+		CC02000000000000000000A /* PastDaysSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastDaysSection.swift; sourceTree = "<group>"; };
+		CC02000000000000000000B /* PulseCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseCheckView.swift; sourceTree = "<group>"; };
+		CC02000000000000000000C /* TodayStatusCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayStatusCard.swift; sourceTree = "<group>"; };
+		CC02000000000000000000D /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		CC02000000000000000000E /* Quotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quotes.swift; sourceTree = "<group>"; };
+		CC02000000000000000000F /* CheckinBlobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckinBlobTests.swift; sourceTree = "<group>"; };
+		CC020000000000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC020000000000000000011 /* ClarityCheckin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClarityCheckin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC020000000000000000012 /* ClarityCheckinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClarityCheckinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CC030000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC010000000000000000011 /* ClarityUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC030000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CC040000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				CC040000000000000000002 /* ClarityCheckin */,
+				CC04000000000000000000B /* ClarityCheckinTests */,
+				CC040000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CC040000000000000000002 /* ClarityCheckin */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000001 /* ClarityCheckinApp.swift */,
+				CC040000000000000000004 /* Models */,
+				CC040000000000000000005 /* Services */,
+				CC040000000000000000006 /* Views */,
+				CC04000000000000000000A /* Constants */,
+				CC020000000000000000010 /* Assets.xcassets */,
+			);
+			path = ClarityCheckin;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000011 /* ClarityCheckin.app */,
+				CC020000000000000000012 /* ClarityCheckinTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000002 /* CheckinBlob.swift */,
+				CC020000000000000000003 /* DraftBlob.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000004 /* CheckinConfig.swift */,
+				CC020000000000000000005 /* CheckinStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000006 /* ContentView.swift */,
+				CC040000000000000000007 /* CheckinFlow */,
+				CC040000000000000000008 /* Components */,
+				CC040000000000000000009 /* History */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000007 /* CheckinFlow */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000007 /* CheckinFlowView.swift */,
+				CC020000000000000000008 /* Sections.swift */,
+			);
+			path = CheckinFlow;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000008 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CC020000000000000000009 /* MedsEditorView.swift */,
+				CC02000000000000000000A /* PastDaysSection.swift */,
+				CC02000000000000000000B /* PulseCheckView.swift */,
+				CC02000000000000000000C /* TodayStatusCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		CC040000000000000000009 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				CC02000000000000000000D /* EntryDetailView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		CC04000000000000000000A /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				CC02000000000000000000E /* Quotes.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		CC04000000000000000000B /* ClarityCheckinTests */ = {
+			isa = PBXGroup;
+			children = (
+				CC02000000000000000000F /* CheckinBlobTests.swift */,
+			);
+			path = ClarityCheckinTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CC050000000000000000001 /* ClarityCheckin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC0E0000000000000000002 /* Build configuration list for PBXNativeTarget "ClarityCheckin" */;
+			buildPhases = (
+				CC0B0000000000000000001 /* Sources */,
+				CC030000000000000000001 /* Frameworks */,
+				CC0C0000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClarityCheckin;
+			packageProductDependencies = (
+				CC0A0000000000000000001 /* ClarityUI */,
+			);
+			productName = ClarityCheckin;
+			productReference = CC020000000000000000011 /* ClarityCheckin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC050000000000000000002 /* ClarityCheckinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC0E0000000000000000003 /* Build configuration list for PBXNativeTarget "ClarityCheckinTests" */;
+			buildPhases = (
+				CC0B0000000000000000002 /* Sources */,
+				CC030000000000000000002 /* Frameworks */,
+				CC0C0000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC0D0000000000000000001 /* PBXTargetDependency */,
+			);
+			name = ClarityCheckinTests;
+			productName = ClarityCheckinTests;
+			productReference = CC020000000000000000012 /* ClarityCheckinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CC060000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					CC050000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					CC050000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = CC050000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = CC0E0000000000000000001 /* Build configuration list for PBXProject "ClarityCheckin" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CC040000000000000000001;
+			packageReferences = (
+				CC090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */,
+			);
+			productRefGroup = CC040000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC050000000000000000001 /* ClarityCheckin */,
+				CC050000000000000000002 /* ClarityCheckinTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC0C0000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC010000000000000000010 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC0C0000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC0B0000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC010000000000000000001 /* ClarityCheckinApp.swift in Sources */,
+				CC010000000000000000002 /* CheckinBlob.swift in Sources */,
+				CC010000000000000000003 /* DraftBlob.swift in Sources */,
+				CC010000000000000000004 /* CheckinConfig.swift in Sources */,
+				CC010000000000000000005 /* CheckinStore.swift in Sources */,
+				CC010000000000000000006 /* ContentView.swift in Sources */,
+				CC010000000000000000007 /* CheckinFlowView.swift in Sources */,
+				CC010000000000000000008 /* Sections.swift in Sources */,
+				CC010000000000000000009 /* MedsEditorView.swift in Sources */,
+				CC01000000000000000000A /* PastDaysSection.swift in Sources */,
+				CC01000000000000000000B /* PulseCheckView.swift in Sources */,
+				CC01000000000000000000C /* TodayStatusCard.swift in Sources */,
+				CC01000000000000000000D /* EntryDetailView.swift in Sources */,
+				CC01000000000000000000E /* Quotes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC0B0000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC01000000000000000000F /* CheckinBlobTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CC0D0000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC050000000000000000001 /* ClarityCheckin */;
+			targetProxy = CC080000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CC070000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CC070000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CC070000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clarity Check-in";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityCheckin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CC070000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clarity Check-in";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityCheckin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CC070000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityCheckinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClarityCheckin.app/ClarityCheckin";
+			};
+			name = Debug;
+		};
+		CC070000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityCheckinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClarityCheckin.app/ClarityCheckin";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CC0E0000000000000000001 /* Build configuration list for PBXProject "ClarityCheckin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC070000000000000000001 /* Debug */,
+				CC070000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC0E0000000000000000002 /* Build configuration list for PBXNativeTarget "ClarityCheckin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC070000000000000000003 /* Debug */,
+				CC070000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC0E0000000000000000003 /* Build configuration list for PBXNativeTarget "ClarityCheckinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC070000000000000000005 /* Debug */,
+				CC070000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CC090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../clarity-ui";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CC0A0000000000000000001 /* ClarityUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC090000000000000000001 /* XCLocalSwiftPackageReference "../../clarity-ui" */;
+			productName = ClarityUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+	};
+	rootObject = CC060000000000000000001 /* Project object */;
+}

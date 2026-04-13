@@ -64,10 +64,12 @@ public struct ClarityChipGroup<Option: Hashable & CustomStringConvertible>: View
 
 // MARK: - Simple flow layout
 
-struct FlowLayout: Layout {
-    var spacing: CGFloat = 8
+public struct FlowLayout: Layout {
+    public var spacing: CGFloat = 8
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+    public init(spacing: CGFloat = 8) { self.spacing = spacing }
+
+    public func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let maxWidth = proposal.width ?? .infinity
         var x: CGFloat = 0, y: CGFloat = 0, rowHeight: CGFloat = 0
         for view in subviews {
@@ -83,7 +85,7 @@ struct FlowLayout: Layout {
         return CGSize(width: maxWidth, height: y + rowHeight)
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+    public func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         var x = bounds.minX, y = bounds.minY, rowHeight: CGFloat = 0
         for view in subviews {
             let size = view.sizeThatFits(.unspecified)

@@ -1,6 +1,7 @@
 import SwiftUI
 import ClarityUI
 
+@MainActor
 struct PastDaysSection: View {
     @Environment(CheckinStore.self) private var store
 

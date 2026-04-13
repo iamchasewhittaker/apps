@@ -39,13 +39,13 @@ struct TodayStatusCard: View {
         .clarityCard()
     }
 
-    private var primaryButtonLabel: String {
+    @MainActor private var primaryButtonLabel: String {
         if !store.hasMorningToday { return "Start Morning Check-in" }
         if !store.hasEveningToday { return "Start Evening Check-in" }
         return "View Today's Entry"
     }
 
-    private var primaryButtonIcon: String {
+    @MainActor private var primaryButtonIcon: String {
         if !store.hasMorningToday { return "sunrise.fill" }
         if !store.hasEveningToday { return "moon.fill" }
         return "checkmark.circle.fill"

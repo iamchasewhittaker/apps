@@ -79,10 +79,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Clarity iOS family — Phase 0+1 complete.** Split monolithic wellness-tracker-ios into 5 focused apps. `portfolio/clarity-ui/` Swift package built (palette, typography, metrics, components, QuoteBanner, StorageHelpers). `portfolio/clarity-checkin-ios/` Swift source files written (CheckinBlob, CheckinStore, CheckinFlowView, Quotes). **Manual Xcode step pending** — see clarity-checkin-ios/HANDOFF.md. Security audit complete (SEC-001–008 all fixed). |
-| **Next** | 1) Chase: open Xcode → New Project → ClarityCheckin → save to `portfolio/clarity-checkin-ios/` → add ClarityUI local package from `../../clarity-ui` → add existing .swift files to target · 2) Phase 2: Clarity Triage (`portfolio/clarity-triage-ios/`) · 3) Phase 3–5: Time, Budget, Growth |
-| **Blockers** | Manual Xcode project creation required before clarity-checkin-ios can build |
-| **Last touch** | 2026-04-12 (ClarityUI + Check-in source, security fixes SEC-001–008) |
+| **Focus** | **Clarity iOS family — Phase 1 complete.** `ClarityCheckin.xcodeproj` generated programmatically — builds clean and all 4 unit tests pass (`xcodebuild test` on iPhone 16 simulator). `FlowLayout` made public in ClarityUI. Swift 6 concurrency annotations applied (`nonisolated init`, `@MainActor` on computed properties). |
+| **Next** | Phase 2: Clarity Triage — create `portfolio/clarity-triage-ios/` (source files + xcodeproj) for capacity-based tasks, ideas pipeline, win logging |
+| **Blockers** | *(none)* |
+| **Last touch** | 2026-04-12 (ClarityCheckin.xcodeproj + build verified + 4 tests pass) |
 
 ---
 

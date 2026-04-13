@@ -3,6 +3,7 @@ import ClarityUI
 
 /// The morning/evening check-in wizard.
 /// Sections advance linearly; user can go back. Draft is autosaved on every change.
+@MainActor
 struct CheckinFlowView: View {
     @Environment(CheckinStore.self) private var store
     @Environment(\.dismiss) private var dismiss
