@@ -79,10 +79,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace** | `~/Developer/chase` |
 | **Branch** | `main` |
 | **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Clarity iOS family — Phase 1 complete.** `ClarityCheckin.xcodeproj` generated programmatically — builds clean and all 4 unit tests pass (`xcodebuild test` on iPhone 16 simulator). `FlowLayout` made public in ClarityUI. Swift 6 concurrency annotations applied (`nonisolated init`, `@MainActor` on computed properties). |
-| **Next** | Phase 2: Clarity Triage — create `portfolio/clarity-triage-ios/` (source files + xcodeproj) for capacity-based tasks, ideas pipeline, win logging |
+| **Focus** | **Clarity iOS — Phases 1–2 complete.** Check-in + Triage: programmatic `xcodeproj`, ClarityUI via `../clarity-ui`, `@Observable` stores with `nonisolated init()`, simulator `xcodebuild` verification. Triage uses **weighted** task slots (quick/short/medium). |
+| **Next** | **Phase 3: Clarity Time** — scaffold `portfolio/clarity-time-ios/` (full app): time sessions + scripture streak; follow Triage/Check-in build order; new PBX prefix (not `CT`; see `portfolio/clarity-time-ios/HANDOFF.md`). |
 | **Blockers** | *(none)* |
-| **Last touch** | 2026-04-12 (ClarityCheckin.xcodeproj + build verified + 4 tests pass) |
+| **Last touch** | 2026-04-12 — Clarity Triage shipped (v0.1 MVP + docs + checkpoint commit); `clarity-time-ios/HANDOFF.md` added for Phase 3 prompt |
 
 ---
 
@@ -90,7 +90,9 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 
 - **Clarity iOS split plan:** `~/.claude/plans/stateful-wondering-puppy.md` — 5 apps + ClarityUI, build order, accessibility requirements, quotes per app.
 - **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
-- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — documents the manual Xcode step and "done when" checklist.
+- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; programmatic xcodeproj (see app HANDOFF for simulator commands).
+- **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; use `xcodebuild -showdestinations` if “iPhone 16” simulator is missing.
+- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — stub + session-start prompt only until implementation starts.
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
 - **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.

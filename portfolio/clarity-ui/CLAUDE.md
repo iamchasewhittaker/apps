@@ -9,7 +9,7 @@ Provides colors, typography, spacing, and reusable SwiftUI components so all 5 C
 
 ## Consumers
 
-All 5 apps reference this as a local Swift package dependency via relative path `../../clarity-ui`.
+Portfolio iOS apps under `portfolio/clarity-*-ios/` reference this package from their `.xcodeproj` as `../clarity-ui` (sibling folder under `portfolio/`).
 
 | App | Path |
 |-----|------|

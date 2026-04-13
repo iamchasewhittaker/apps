@@ -7,7 +7,7 @@
 - **Bundle ID:** `com.chasewhittaker.ClarityCheckin`
 - **Storage keys:** `chase_checkin_ios_v1` (main), `chase_checkin_ios_draft_v1` (draft), `chase_checkin_ios_meds_v1` (meds)
 - **Entry:** `ClarityCheckin/ClarityCheckinApp.swift`
-- **Shared package:** `../../clarity-ui` (local SPM dependency — `ClarityUI`)
+- **Shared package:** `../clarity-ui` from this app folder (local SPM — `ClarityUI`; see `project.pbxproj` `XCLocalSwiftPackageReference`)
 
 ## Purpose
 Morning and evening wellness check-in app with medication tracking, mood logging, pulse mood snapshots, and daily quotes.

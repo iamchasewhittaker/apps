@@ -15,4 +15,4 @@
 - TodayStatusCard: morning/evening status badges + primary CTA
 - 36 themed daily quotes (faith, ADHD, self-compassion, morning motivation, stoic)
 - CheckinBlobTests: encode/decode, same-day merge, stale draft detection
-- Xcode project file not yet created — needs manual Xcode setup
+- `ClarityCheckin.xcodeproj` generated programmatically + shared scheme (see repo)
