@@ -8,6 +8,7 @@
 - **Storage key:** `chase_budget_ios_v1` (single `Codable` root in `UserDefaults` — **never rename**)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
 - **PBX prefix:** **`CB`** — all generated IDs in `ClarityBudget.xcodeproj/project.pbxproj` use `CB*` (reserved: `CC`, `CT`, `CX` for sibling Clarity apps)
+- **Branding / launcher:** [`docs/BRANDING.md`](docs/BRANDING.md) · shipped **`AppIcon.png`** (1024) + [`docs/design/app-icon-mockup-wide.png`](docs/design/app-icon-mockup-wide.png). Shared rules: [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md).
 
 ### Build / test
 

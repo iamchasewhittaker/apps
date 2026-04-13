@@ -3,10 +3,11 @@
 ## Current status: Phase 3 complete (MVP)
 
 - **Version:** v0.1
-- **Last session:** 2026-04-12
+- **Last session:** 2026-04-13
 - **Bundle ID:** `com.chasewhittaker.ClarityTime`
 - **Storage key:** `chase_time_ios_v1` (single `Codable` root in `UserDefaults` — never rename)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
+- **Branding / launcher:** [`docs/BRANDING.md`](docs/BRANDING.md) · shipped **`AppIcon.png`** (1024) = user-selected **clock + ring progress arc + check badge**; wide slide = [`docs/design/app-icon-mockup-wide.png`](docs/design/app-icon-mockup-wide.png); provenance [`docs/design/app-icon-source-user-1024.png`](docs/design/app-icon-source-user-1024.png). Shared rules: [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md).
 
 ### Build / test
 

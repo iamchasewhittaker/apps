@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
-*(nothing yet)*
+- **App icon:** `docs/design/app-icon-mockup-wide.png` (dual-column / balance mark) → `AppIcon.appiconset/AppIcon.png` (1024×1024) via `sips --padColor E6E7EB -p 1376 1376` + `sips -z 1024 1024`; `Contents.json` filename on universal iOS slot
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) (from portfolio template); `CLAUDE.md` links branding + shared icon spec
 
 ## v0.1 — 2026-04-13 — Phase 4 MVP
 

@@ -2,6 +2,7 @@
 
 ## Shipped (v0.1)
 
+- [x] **App icon + branding** — `AppIcon.png` (user clock mark), `docs/design/` wide + source PNGs, [`docs/BRANDING.md`](docs/BRANDING.md), `CLAUDE.md` links (2026-04-13)
 - [x] Timer sessions with pause/resume and persisted active timer state
 - [x] Manual duration sessions
 - [x] Session history with delete
