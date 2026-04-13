@@ -1,5 +1,7 @@
 # Clarity iOS — shared app icon system
 
+> **New app?** Start from the portfolio template **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](../templates/PORTFOLIO_APP_BRANDING.md)** — copy to `portfolio/<app>/docs/BRANDING.md`, fill placeholders, link from that app’s `CLAUDE.md`. Use **this** document only for **icon geometry / Xcode / export** details so you do not repeat prose in every project.
+
 **Canonical reference implementation:** [`portfolio/clarity-checkin-ios`](../../portfolio/clarity-checkin-ios) — `ClarityCheckin/Assets.xcassets/AppIcon.appiconset/` + `docs/design/`.
 
 Use this document when creating **matching icons** for **Clarity Triage**, **Clarity Time**, **Clarity Budget**, **Clarity Growth**, or future Clarity iOS apps so the suite reads as one family on the Home Screen.

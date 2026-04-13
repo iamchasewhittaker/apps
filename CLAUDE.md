@@ -9,7 +9,7 @@
 | Wellness Tracker | v15.10 | `chase_wellness_v1` | wellnes-tracker.vercel.app | ✅ Active · W+sunrise · Clarity palette · [`HANDOFF.md`](portfolio/wellness-tracker/HANDOFF.md) |
 | Wellness Tracker (iOS) | Phase 2 shell | archived | — | 🗄️ Archived → replaced by 5 Clarity apps · [`portfolio/archive/wellness-tracker-ios`](portfolio/archive/wellness-tracker-ios) |
 | ClarityUI (Swift pkg) | v0.1 | n/a (shared package) | n/a | ✅ Built · `swift build` clean · `FlowLayout` public · [`portfolio/clarity-ui`](portfolio/clarity-ui) |
-| Clarity Check-in (iOS) | v0.1 | `chase_checkin_ios_v1` (+draft, +meds) | local Xcode | ✅ Phase 1 done · AppIcon 1024 + shared icon spec [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](docs/design/CLARITY_IOS_APP_ICON_SPEC.md) · [`portfolio/clarity-checkin-ios`](portfolio/clarity-checkin-ios) |
+| Clarity Check-in (iOS) | v0.1 | `chase_checkin_ios_v1` (+draft, +meds) | local Xcode | ✅ Phase 1 done · `docs/BRANDING.md` + AppIcon 1024 · template [`docs/templates/PORTFOLIO_APP_BRANDING.md`](docs/templates/PORTFOLIO_APP_BRANDING.md) · [`portfolio/clarity-checkin-ios`](portfolio/clarity-checkin-ios) |
 | Clarity Triage (iOS) | v0.1 | `chase_triage_ios_v1` | local Xcode | ✅ Phase 2 done · xcodeproj generated (`CT*` IDs) · tests pass on simulator · [`portfolio/clarity-triage-ios`](portfolio/clarity-triage-ios) · capacity tasks + ideas + wins |
 | Clarity Time (iOS) | v0.1 | `chase_time_ios_v1` | local Xcode | ✅ Phase 3 done · xcodeproj generated (`CX*` IDs) · tests pass on simulator · [`portfolio/clarity-time-ios`](portfolio/clarity-time-ios) · time sessions + scripture streak |
 | Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | ✅ Phase 4 done · xcodeproj generated (`CB*` IDs) · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
@@ -116,10 +116,17 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 
 > Each active `portfolio/*` app contains: `CLAUDE.md`, `HANDOFF.md`, `LEARNINGS.md`, `CHANGELOG.md`, `ROADMAP.md`.
 > `LEARNINGS.md` — per-project mistakes, fixes, and "aha" moments. AI tools read it at session start; append after anything surprising.
+>
+> **Branding (do not repeat in every chat):** For new or restyled apps, add **`docs/BRANDING.md`** by copying [`docs/templates/PORTFOLIO_APP_BRANDING.md`](docs/templates/PORTFOLIO_APP_BRANDING.md), fill placeholders, and link it from that app’s `CLAUDE.md`. Index of design specs: [`docs/design/README.md`](docs/design/README.md).
 
 Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo root** (`~/Developer/chase`).
 
 ## Key Conventions
+
+### Branding (portfolio)
+- **Template:** [`docs/templates/PORTFOLIO_APP_BRANDING.md`](docs/templates/PORTFOLIO_APP_BRANDING.md) — copy → `portfolio/<app>/docs/BRANDING.md` (or `projects/<name>/docs/BRANDING.md`), fill once, link from app `CLAUDE.md`.
+- **Clarity iOS icons (shared geometry):** [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](docs/design/CLARITY_IOS_APP_ICON_SPEC.md) — use with the template; session prompts should say *follow `docs/BRANDING.md`* instead of pasting rules.
+- **Web reference pattern:** [`portfolio/wellness-tracker/docs/BRANDING.md`](portfolio/wellness-tracker/docs/BRANDING.md) (Clarity palette + PWA notes).
 
 ### Storage pattern (all apps)
 - One big JSON blob per app in localStorage
@@ -204,6 +211,7 @@ When you **ship or materially extend** an app in this portfolio, **use Linear** 
 > 4. Update `/ROADMAP.md` (repo root) Change Log table with a new row
 > 5. Update `HANDOFF.md` State table — Focus, Next, Last touch
 > 6. Update that app's `LEARNINGS.md` — if anything went wrong, was surprising, or was learned
+> 7. **New app or first-time branding:** ensure **`docs/BRANDING.md`** exists (copy from [`docs/templates/PORTFOLIO_APP_BRANDING.md`](docs/templates/PORTFOLIO_APP_BRANDING.md)) and is linked from that app's `CLAUDE.md`
 >
 > **After a manual Xcode session (Chase editing alone):**
 > Run `checkpoint` — that is the minimum. Updating docs is a bonus.

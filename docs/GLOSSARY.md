@@ -24,11 +24,14 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 | **`http.postBuffer`** | Git config; increase if **`git push`** fails with HTTP 400 on a large pack (e.g. **`git config http.postBuffer 524288000`**). |
 | **Local legacy mirror** | **`~/Developer/chase/projects/archive/from-documents-20260404/`** — optional on-disk copy of old **`~/Documents`** **`apps/`**, **`Projects/`**, **`growth-tracker-old/`**; **gitignored**, not in **`git clone`**. See [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md). |
 | **HANDOFF.md** | Repo-root **living** state for the **current thread** (branch, Linear, next steps, blockers). Update when switching agents or pausing; pair with [docs/templates/](templates/) session prompts. |
+| **`docs/BRANDING.md`** | **Per-app** branding + icon checklist (optional but recommended). **Source:** copy [templates/PORTFOLIO_APP_BRANDING.md](templates/PORTFOLIO_APP_BRANDING.md) into the app once; link from that app’s `CLAUDE.md` so session prompts do not repeat hex codes or layout rules. |
+| **Clarity iOS icon spec** | Shared geometry for Clarity suite launcher icons: [design/CLARITY_IOS_APP_ICON_SPEC.md](design/CLARITY_IOS_APP_ICON_SPEC.md). |
 
 ## Related files
 
 - [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md) — gitignored **`from-documents-20260404/`** bundle
 - [templates/SESSION_START_MONOREPO.md](templates/SESSION_START_MONOREPO.md) · [templates/SESSION_START_APP_CHANGE.md](templates/SESSION_START_APP_CHANGE.md) — paste into a new chat
+- [templates/PORTFOLIO_APP_BRANDING.md](templates/PORTFOLIO_APP_BRANDING.md) · [design/README.md](design/README.md) — branding template + design index
 - [CLAUDE.md](../CLAUDE.md) — master instructions for the portfolio
 - [ROADMAP.md](../ROADMAP.md) — cross-app priorities and change log
 - [AGENTS.md](../portfolio/wellness-tracker/AGENTS.md) (per app) — Cursor/agent conventions

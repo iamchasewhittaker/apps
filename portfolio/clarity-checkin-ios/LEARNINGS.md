@@ -17,6 +17,12 @@
 
 ## Entries
 
+### 2026-04-13 — Portfolio branding template (`docs/BRANDING.md`)
+**What happened:** Branding rules were easy to repeat in every new chat or app.
+**Root cause:** Specs lived only in monorepo `docs/design/` without a **per-app** hub and no copy-paste template.
+**Fix / lesson:** Copy **`docs/templates/PORTFOLIO_APP_BRANDING.md`** → app `docs/BRANDING.md`, fill once, link from `CLAUDE.md`; session templates tell agents to read `docs/BRANDING.md` instead of re-pasting hex codes.
+**Tags:** docs, branding
+
 ### 2026-04-13 — Squaring wide app-icon mockups with `sips`
 **What happened:** A wide marketing mockup (1376×768) needed to become a **1024×1024** `AppIcon.png` for Xcode’s single-size slot.
 **Root cause:** `sips -p` pads to square using **black** by default, which clashes with a light presentation field.

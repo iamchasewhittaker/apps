@@ -98,6 +98,19 @@ Done! Created portfolio/habit-tracker/ (React CRA)
 
 ---
 
+## Step 4a — Branding template (once per app; any stack)
+
+So you **do not repeat** icon colors, stroke rules, or PWA notes in every AI session:
+
+1. Copy **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](../templates/PORTFOLIO_APP_BRANDING.md)** → **`docs/BRANDING.md`** inside the new app folder.
+2. Replace the `[PLACEHOLDERS]` (display name, path, stack, bundle ID, storage key, primary ritual for the icon glyph).
+3. Add **one bullet** in that app’s **`CLAUDE.md`** linking `docs/BRANDING.md` (exact snippet is in the template).
+4. **Clarity iOS** apps: follow **[`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../design/CLARITY_IOS_APP_ICON_SPEC.md)** when exporting `AppIcon.png`. **Web CRA:** align with **[`portfolio/wellness-tracker/docs/BRANDING.md`](../../portfolio/wellness-tracker/docs/BRANDING.md)** as the reference pattern.
+
+Index: **[`docs/design/README.md`](../design/README.md)**.
+
+---
+
 ## Step 4 — Fill out the Phase 1-3 docs
 
 > **Do not write any code yet.** This is the most important rule.

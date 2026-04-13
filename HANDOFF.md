@@ -89,7 +89,7 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Focus**      | **Knowledge Base v1.3** — category organization menu (reorder/rename/merge/delete) + importance ranking (High/Med/Low badges + "Important" filter). Also: Clarity iOS Phases 1–5 complete (PBX: `CC`/`CT`/`CX`/`CB`/`CG`). **Clarity Check-in:** AppIcon 1024 + shared icon spec at `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`. |
 | **Next**       | Knowledge Base v1.4: import/export JSON. Clarity: continue v0.2+ from [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md) and [`portfolio/clarity-growth-ios/ROADMAP.md`](portfolio/clarity-growth-ios/ROADMAP.md). |
 | **Blockers**   | *(none)*                                                                                                                                                                                                                                                                   |
-| **Last touch** | 2026-04-13 — Clarity Check-in: shipped AppIcon + portfolio `docs/design/CLARITY_IOS_APP_ICON_SPEC.md`; Knowledge Base v1.3 on Vercel (https://knowledge-base-beta-five.vercel.app)                                                                                          |
+| **Last touch** | 2026-04-13 — Portfolio **branding template** (`docs/templates/PORTFOLIO_APP_BRANDING.md` + design index); Clarity Check-in **`docs/BRANDING.md`**; Knowledge Base v1.3 on Vercel (https://knowledge-base-beta-five.vercel.app)                                                      |
 
 
 ---
@@ -142,7 +142,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 
 - **Clarity iOS split plan:** `~/.claude/plans/stateful-wondering-puppy.md` — 5 apps + ClarityUI, build order, accessibility requirements, quotes per app.
 - **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
-- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; **AppIcon** 1024 in `AppIcon.appiconset`; shared suite spec **`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`** (other Clarity iOS apps should follow it).
+- **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; **`docs/BRANDING.md`** + **AppIcon** 1024; new apps copy **`docs/templates/PORTFOLIO_APP_BRANDING.md`** once; shared icon geometry **`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`**.
 - **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; use `xcodebuild -showdestinations` if “iPhone 16” simulator is missing.
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **complete** (v0.1); `CX*` PBX prefix; “Next” points at Growth + shipped Budget.
 - **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **MVP shipped** (v0.1); PBX prefix **`CB`**; storage key `chase_budget_ios_v1`; continue prompt in this file + app `HANDOFF.md`.

@@ -7,8 +7,9 @@ Copy everything below into a **new** chat (Cursor, Claude Code, Codex, etc.), fi
 **Instructions for the agent**
 
 1. Read **[CLAUDE.md](../../CLAUDE.md)** (repo root) and **[HANDOFF.md](../../HANDOFF.md)** first.
-2. Run `cd ~/Developer/chase && git status -sb && git log -3 --oneline`.
-3. Follow portfolio rules: small diffs, update `CHANGELOG.md` / `ROADMAP.md` when required by [CLAUDE.md](../../CLAUDE.md).
+2. If work touches **icons or marketing visuals**, read **[`docs/design/README.md`](../design/README.md)** — portfolio branding template + Clarity iOS icon spec live there (avoid re-explaining rules per chat).
+3. Run `cd ~/Developer/chase && git status -sb && git log -3 --oneline`.
+4. Follow portfolio rules: small diffs, update `CHANGELOG.md` / `ROADMAP.md` when required by [CLAUDE.md](../../CLAUDE.md).
 
 **Workspace:** `~/Developer/chase`  
 **Remote:** `github.com/iamchasewhittaker/apps`  

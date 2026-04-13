@@ -10,8 +10,9 @@ Copy everything below into a **new** chat, fill the brackets, then send.
 2. Read this app’s **`CLAUDE.md`** and **`AGENTS.md`** (if present):
    - Portfolio app path: `~/Developer/chase/portfolio/<app>/`
    - Other project path: `~/Developer/chase/projects/<name>/`
-3. Read **[HANDOFF.md](../../HANDOFF.md)** for current thread state.
-4. Run `cd ~/Developer/chase && git status -sb` and inspect only the relevant subtree.
+3. If the app has **`docs/BRANDING.md`**, read it for icons/palette (do not invent alternate branding). **New apps:** copy **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](../templates/PORTFOLIO_APP_BRANDING.md)** there once, then link it from `CLAUDE.md` — see **[`docs/design/README.md`](../design/README.md)**.
+4. Read **[HANDOFF.md](../../HANDOFF.md)** for current thread state.
+5. Run `cd ~/Developer/chase && git status -sb` and inspect only the relevant subtree.
 
 **App / project path:** `portfolio/[APP_NAME]/` or `projects/[PROJECT_NAME]/`  
 **Linear (optional):** [paste issue URL]  

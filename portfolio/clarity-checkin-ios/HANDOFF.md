@@ -12,6 +12,7 @@
 - All 14 source files registered in project, ClarityUI linked as local package (`../clarity-ui`)
 - `Assets.xcassets` with AccentColor (Clarity blue) + **AppIcon** (`AppIcon.png` 1024×1024, filename wired in `Contents.json`)
 - Portfolio **Clarity iOS app icon spec:** monorepo `docs/design/CLARITY_IOS_APP_ICON_SPEC.md` + `docs/design/` wide mockup in-repo
+- **`docs/BRANDING.md`** — filled branding page (template source: monorepo `docs/templates/PORTFOLIO_APP_BRANDING.md`); `CLAUDE.md` links here so sessions do not repeat rules
 - Morning / evening check-in wizard (5 sections), draft autosave, same-day merge
 - Pulse check sheet, meds editor sheet, past days list, daily quote banner
 - 4/4 unit tests pass: encode/decode, same-day merge, stale draft, default meds

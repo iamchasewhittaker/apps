@@ -6,6 +6,10 @@ This starter kit is designed for small-to-medium iOS apps, especially when a jun
 
 **In use:** [RollerTask Tycoon (iOS)](../../portfolio/roller-task-tycoon-ios/docs/planning/README.md) keeps **filled** copies under `portfolio/roller-task-tycoon-ios/docs/planning/`.
 
+## Branding (once per app — before App Store / marketing polish)
+
+Do **not** restate icon geometry or palette in every chat. Copy **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](../templates/PORTFOLIO_APP_BRANDING.md)** into your app as **`docs/BRANDING.md`**, fill placeholders, link from that app’s **`CLAUDE.md`**. Clarity-family **iOS** icons share **[`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../design/CLARITY_IOS_APP_ICON_SPEC.md)**. Spec index: **[`docs/design/README.md`](../design/README.md)**.
+
 ## Recommended order
 1. PRODUCT_BUILD_FRAMEWORK.md
 2. PRODUCT_BRIEF.md
