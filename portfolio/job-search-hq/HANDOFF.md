@@ -15,7 +15,7 @@
 | **Focus** | Wave 2 — structured prep framework, STAR story bank, outreach cadence nudges |
 | **Next** | See `ROADMAP.md` Wave 2 section |
 | **Blockers** | None |
-| **Last touch** | 2026-04-13 — Wave 2 #1 shipped: By Company view, warm lead badges, ghost rows, AppModal pre-fill |
+| **Last touch** | 2026-04-13 — Theme alignment: surface `#1a1f2e`/`#111827` → `#161b27` across `constants.js`, `App.jsx`, `ContactsTab.jsx` (portfolio-wide BASE token sync). Wave 2 #1 also shipped this session: By Company view, warm lead badges, ghost rows, AppModal pre-fill |
 
 ---
 
@@ -26,7 +26,10 @@ Read CLAUDE.md and HANDOFF.md first, then portfolio/job-search-hq/CLAUDE.md and 
 
 Goal: Continue Job Search HQ at portfolio/job-search-hq/.
 
-Current state: v8.5 — Wave 1 shipped. Action queue on Focus tab, next step dates on pipeline cards, URL paste quick-capture, outreach scenario chips on AI Tools. New logo (JOB/HQ mark).
+Current state: v8.5 — Wave 1 shipped + Wave 2 item #1 done (By Company view on ContactsTab — warm leads, ghost rows, expand/collapse, AppModal pre-fill).
+
+Next: Wave 2 item #2 — "Who should I message today?" widget on FocusTab.
+Session template: docs/templates/SESSION_START_JOB_SEARCH_WHO_TO_MESSAGE.md
 
 Pick next work from portfolio/job-search-hq/ROADMAP.md Wave 2 section.
 

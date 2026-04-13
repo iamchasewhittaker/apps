@@ -54,6 +54,9 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 ## v2.0 — Shipped
 - [x] **ARC sidebar + Chrome folder redesign** — two-panel layout; collapsible 280px sidebar; nested folder hierarchy; folder CRUD; favorites shelf; smart folders; home view; search with breadcrumbs; keyboard shortcuts; mobile overlay; component extraction (6 files); SEED_VERSION 5 migration
 
+## v2.0.1 — Shipped
+- [x] **Theme alignment** — portfolio-wide BASE token sweep (`#0f1117` bg, `#161b27` surface, `#1f2937` border, `#6b7280` muted, `#f3f4f6` text); DM Sans font (2026-04-13)
+
 ## v2.1 — Next
 - [ ] **Deploy v2.0 to Vercel** — push and verify live URL works with migrated localStorage data
 - [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)

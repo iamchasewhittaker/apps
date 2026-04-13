@@ -2,6 +2,7 @@
 
 ## Now
 
+- [x] **Theme alignment** — `C` tokens updated to portfolio BASE token set; DM Sans font added (2026-04-13)
 - [ ] Vercel root directory `portfolio/app-forge`
 
 ## Next
