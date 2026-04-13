@@ -32,6 +32,10 @@
 | **`YNABClient.updateTransactionCategory`** — bulk PATCH `/transactions` (HTTP 209) | ✅ Done |
 | **Spend Clarity `label:Receipt` pre-filter** — `gmail_client.py` aligned with Inbox Zero taxonomy | ✅ Done |
 | `CategorySuggestionEngine.swift` — added to `.pbxproj` (Engine group + Sources phase) | ✅ Done |
+| **`CategoryOverride` SwiftData model** — persists learned categorizations; Schema registered | ✅ Done |
+| **Learning system** — `BillsPlannerView` saves override after each manual assignment | ✅ Done |
+| **`CategorySuggestionEngine`** — 80+ payee rules + override-first lookup (confidence 1.0) | ✅ Done |
+| **`PayeeDisplayFormatter`** — 70+ known merchants; universal "No item details yet" subtitle | ✅ Done |
 
 ---
 
@@ -78,6 +82,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-12 | **v0.3:** `CategoryOverride` SwiftData model + learning system (saves override after each manual assignment); `CategorySuggestionEngine` expanded to 80+ payee rules + override-first lookup; `PayeeDisplayFormatter` expanded to 70+ merchants; `itemContextSubtitle` universal (not Amazon-only); `BillsPlannerView` wired to overrides |
 | 2026-04-12 | **4-Rules redesign (v0.2):** tabs → Assign / Bills / Adjust / Age Money; Categorization Review on Bills tab with `CategorySuggestionEngine` + YNAB PATCH write-back; Age of Money card from `GET /budgets/{id}`; budget health + underfunded goals moved to Adjust; `patchRequest` accepts 209; `label:Receipt` pre-filter in Spend Clarity `gmail_client.py` |
 | 2026-04-11 | Layout rethink: `goal_target` decoding; Overview reorder + Budget Health + Underfunded Goals; Bills by status + Fund PATCH; `dueDay`; Income tab improvements; Cash Flow today marker + bill status; TipBanner; HowItWorksView; `YNABClient` PATCH; Xcode project includes new Swift files |
 | 2026-04-08 | `IncomeFrequency`: added `semimonthly` case + `secondPayDay` on `IncomeSource`; form shows 2nd pay date stepper when selected |

@@ -20,6 +20,18 @@
 
 ## Entries
 
+### 2026-04-12 — Adding CategoryOverride to Schema doesn't require a migration version
+**What happened:** Added `CategoryOverride.self` to the SwiftData `Schema` array in `YNABClarityApp.swift`. Worried this would crash existing installs.
+**Root cause:** Not an issue — SwiftData handles new `@Model` types added to the Schema without requiring a `VersionedSchema` or `SchemaMigrationPlan`. The new table is simply created. Only renaming/removing existing `@Model` properties requires a migration.
+**Fix / lesson:** New `@Model` types = safe to add at any time. Renaming/removing fields on existing models = needs lightweight migration. Properties on new models have no existing data to migrate so they just work.
+**Tags:** swift, swiftdata, gotcha
+
+### 2026-04-12 — CategoryOverride payeeSubstring stores full lowercased raw payee
+**What happened:** Considered whether to store the cleaned/display name or the raw payee as the `payeeSubstring`. The `CategorySuggestionEngine.suggest()` matches against `transaction.payeeName?.lowercased()` (the raw payee), not the display name.
+**Root cause:** Design decision: we match on raw because that's what `suggest()` receives. The raw payee is noisier but is the same string every time for the same transaction source.
+**Fix / lesson:** The override stores the full raw payee lowercased. This is intentionally broad — it catches all future transactions from the same merchant/card. If it over-matches, add more specific patterns; the override with the most specific substring wins because the check exits on first match.
+**Tags:** swift, swiftdata, categorization
+
 ### 2026-04-12 — Optional `memo` on `YNABTransaction` still updates test memberwise inits
 **What happened:** Added `memo: String?` for API decoding and Bills UI. Same pattern as `categoryId`: `MetricsEngineTests` memberwise `YNABTransaction(...)` calls needed `memo: nil`.
 **Root cause:** Optional fields have no default in the struct definition, so the synthesized memberwise initializer requires every property at call sites.

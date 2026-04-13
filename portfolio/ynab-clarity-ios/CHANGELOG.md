@@ -32,6 +32,24 @@
 
 ---
 
+## [v0.3] — 2026-04-12
+
+### Added
+- **`CategoryOverride` SwiftData model** (`Models/CategoryOverride.swift`) — persists learned categorization corrections: `payeeSubstring` + `ynabCategoryID` + `ynabCategoryName` + `createdAt`; registered in `YNABClarityApp` Schema
+- **Learning system in `BillsPlannerView`** — after each successful manual category assignment, saves a `CategoryOverride` for the payee (skips if identical override already exists); future suggestions for that payee will use the learned rule at confidence 1.0
+
+### Changed
+- **`CategorySuggestionEngine`** — expanded from ~40 to 80+ `payeeRules` patterns (restaurants, grocery stores, gas stations, pharmacies, fitness gyms, home improvement, additional streaming services, rideshare); `suggest()` now accepts `overrides: [CategoryOverride]` parameter and checks them first (confidence 1.0) before built-in rules (confidence 0.9)
+- **`PayeeDisplayFormatter`** — expanded known merchant map from 17 to 70+ merchants: added Chick-fil-A, Chipotle, McDonald's, Starbucks, Panera, Subway, Wendy's, Taco Bell, Dutch Bros, Dunkin', Olive Garden, Five Guys, Popeyes, Panda Express, Pizza Hut, Domino's, Grubhub, Kroger, Publix, Trader Joe's, ALDI, H-E-B, Safeway, Sprouts, Wegmans, Exxon, Speedway, Circle K, QuikTrip, BP, Wawa, Sheetz, Best Buy, Home Depot, Lowe's, Ace Hardware, Walgreens, CVS, Rite Aid, Hulu, Disney+, Paramount+, Peacock, SiriusXM, Max, Grammarly, Backblaze, 1Password, MacroFactor, Oura, Sunsama, Lyft, Uber, Burn Boot Camp, Planet Fitness, Anytime Fitness
+- **`PayeeDisplayFormatter.itemContextSubtitle`** — now returns `"No item details yet"` for **all** transactions without a memo (was Amazon-only); `isAmazonMerchant` no longer needed for this function
+- **`BillsPlannerView`** — queries `[CategoryOverride]` via `@Query`; passes `overrides` array to `CategorySuggestionEngine.suggest()`; saves override to `modelContext` after each assignment
+
+### Fixed
+- **`YNABClarityApp` Schema** — added `CategoryOverride.self` so SwiftData creates the table on first launch (existing installs migrate safely; model has no migration dependencies)
+- **`project.pbxproj`** — `CategoryOverride.swift` added to Models group + Sources build phase
+
+---
+
 ## [Unreleased]
 
 ### Added

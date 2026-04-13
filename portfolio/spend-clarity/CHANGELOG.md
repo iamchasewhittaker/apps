@@ -4,7 +4,26 @@ All notable changes to this project will be documented here.
 
 ## [Unreleased]
 
-- **Docs:** `HANDOFF.md` — note that Wellness Tracker branding references **YNAB Clarity** `ClarityTheme` (this CLI ships no logo asset).
+## [0.2.0] — 2026-04-12
+
+### Added
+- `src/payee_formatter.py` — port of iOS `PayeeDisplayFormatter.swift`; strips ACH/bank noise (10 regex patterns, 8-pass iterative), resolves 50+ known merchants by substring, strips trailing `*ALPHANUM` / `#digits` noise, title-cases ALL CAPS strings ≥ 4 letters
+- `config/category_overrides.yaml` — user-editable correction file checked before all rules; format: `pattern` (case-insensitive substring) → `category_id` → optional `note`; starts empty so only corrections intentionally added take effect
+- `config/category_rules.yaml` — new `payee_rules:` section; 12 rule groups covering Subscriptions, Utilities, Insurance, Groceries, Gas, Dining, Rideshare, Pharmacy, Big-box, Gifts, Home improvement, Kids activities
+- `tests/test_payee_formatter.py` — 37 tests (known merchants, bank noise stripping, trailing noise, ALL CAPS, edge cases)
+- `tests/test_categorizer.py` — 20 tests (payee rules, combined categorization, overrides priority)
+
+### Fixed
+- **Critical:** All 9 category IDs in `category_rules.yaml` were pointing to the wrong YNAB budget (`583fdbca` "ynab-enrichment") — every categorization attempt was writing invalid IDs. All IDs updated to the correct budget (`ab0a40fe`).
+- `config/category_rules.yaml` — budget ID removed from comment (replaced with `.env` reference) to avoid committing identifiable config to a public repo
+
+### Changed
+- `src/categorizer.py` — rewritten with three-tier `Categorizer` class: (1) user overrides, (2) payee rules, (3) item keyword rules; `categorize_transaction(payee, items)` tries all three in order
+- `src/main.py` — **Step 4.5** added: after receipt matching, iterates ALL remaining blank-memo transactions and applies `categorize_transaction(payee=...)` via cleaned payee name; previously only receipt-matched transactions were categorized
+- `src/main.py` — uses `display_payee()` for clean payee names in unmatched report output
+- `src/main.py` — `AUTO_CATEGORIZE` defaults to `true` (was `false`)
+- `src/setup_categories.py` — added `strip_emojis()` (removes `[^\x00-\u024F]` characters) so YNAB category names with emoji suffixes (💸, 🔒, etc.) match correctly; `build_name_to_id()` handles duplicate base names across groups via `group/name` qualified keys; `CATEGORY_NAME_MAP` uses group-qualified names for ambiguous entries (e.g., `"NEEDS/Clothing"`)
+- `.env.example` — `AUTO_CATEGORIZE` default changed to `true`
 
 ## [0.1.2] — 2026-03-30
 
