@@ -1,8 +1,16 @@
 // Storage
 export const STORE = "chase_knowledge_base_v1";
 export const STORE_SEED_VERSION = "chase_knowledge_base_seed_version";
-export const SEED_VERSION = 3;
-export const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || null; } catch { return null; } };
+export const SEED_VERSION = 4;
+export const load = () => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORE));
+    if (!parsed) return null;
+    // Migrate old flat array format → { bookmarks, categoryOrder }
+    if (Array.isArray(parsed)) return { bookmarks: parsed, categoryOrder: null };
+    return parsed;
+  } catch { return null; }
+};
 export const save = (data) => { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch {} };
 
 // Seed bookmarks
@@ -217,6 +225,117 @@ export const SEED = [
   { id: 167, title: "Clarity Budget (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-budget-ios", category: "My Projects", description: "iOS app for dual-scenario budget planning and wants tracking" },
   { id: 168, title: "Clarity Growth (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-growth-ios", category: "My Projects", description: "iOS app for tracking 7 growth areas with streaks and progress" },
   { id: 169, title: "AI Dev Mastery", url: "https://github.com/iamchasewhittaker/apps/tree/main/projects/ai-dev-mastery", category: "My Projects", description: "AI developer course viewer app" },
+
+  // --- Scripting (170–177) ---
+  { id: 170, title: "Shortcuts User Guide", url: "https://support.apple.com/guide/shortcuts/welcome/ios", category: "Scripting", description: "Apple's official guide to creating and using Shortcuts on iOS and Mac" },
+  { id: 171, title: "ShortcutsGallery", url: "https://shortcutsgallery.com", category: "Scripting", description: "Curated collection of downloadable iOS Shortcuts organized by category" },
+  { id: 172, title: "RoutineHub", url: "https://routinehub.co", category: "Scripting", description: "Community sharing platform for iOS Shortcuts with versioning and updates" },
+  { id: 173, title: "r/shortcuts", url: "https://www.reddit.com/r/shortcuts", category: "Scripting", description: "Reddit community for sharing and troubleshooting iOS Shortcuts" },
+  { id: 174, title: "Apps Script Reference", url: "https://developers.google.com/apps-script/reference", category: "Scripting", description: "Official Google Apps Script API reference for Sheets, Docs, Drive, and Gmail" },
+  { id: 175, title: "Apps Script Guides", url: "https://developers.google.com/apps-script/overview", category: "Scripting", description: "Google Apps Script getting-started guides and quickstarts" },
+  { id: 176, title: "Clasp (GitHub)", url: "https://github.com/google/clasp", category: "Scripting", description: "Google's CLI for developing and deploying Apps Script projects locally" },
+  { id: 177, title: "Ben Collins Apps Script", url: "https://www.benlcollins.com/apps-script", category: "Scripting", description: "Practical Google Apps Script tutorials focused on Sheets automation" },
+
+  // --- Python (178–185) ---
+  { id: 178, title: "Python Docs", url: "https://docs.python.org/3", category: "Python", description: "Official Python 3 documentation and standard library reference" },
+  { id: 179, title: "Real Python", url: "https://realpython.com", category: "Python", description: "In-depth Python tutorials, guides, and best practices for all levels" },
+  { id: 180, title: "PyPI", url: "https://pypi.org", category: "Python", description: "The Python Package Index — official repo for third-party packages" },
+  { id: 181, title: "Click Docs", url: "https://click.palletsprojects.com", category: "Python", description: "Documentation for Click, the Python package for creating CLI interfaces" },
+  { id: 182, title: "Typer Docs", url: "https://typer.tiangolo.com", category: "Python", description: "Documentation for Typer, the modern Python CLI framework built on Click" },
+  { id: 183, title: "Rich Docs", url: "https://rich.readthedocs.io", category: "Python", description: "Documentation for Rich, the Python library for beautiful terminal output" },
+  { id: 184, title: "Ruff Docs", url: "https://docs.astral.sh/ruff", category: "Python", description: "Documentation for Ruff, the fast Python linter and formatter" },
+  { id: 185, title: "uv Docs", url: "https://docs.astral.sh/uv", category: "Python", description: "Documentation for uv, the fast Python package and project manager" },
+
+  // --- Blogs (186–195) ---
+  { id: 186, title: "Vercel Blog", url: "https://vercel.com/blog", category: "Blogs", description: "Vercel product announcements, Next.js updates, and frontend engineering" },
+  { id: 187, title: "Next.js Blog", url: "https://nextjs.org/blog", category: "Blogs", description: "Official Next.js release notes, RFCs, and framework deep dives" },
+  { id: 188, title: "The Pragmatic Engineer", url: "https://blog.pragmaticengineer.com", category: "Blogs", description: "Gergely Orosz on engineering culture, career growth, and big tech internals" },
+  { id: 189, title: "Overreacted", url: "https://overreacted.io", category: "Blogs", description: "Dan Abramov's blog on React internals and programming philosophy" },
+  { id: 190, title: "Kent C. Dodds Blog", url: "https://kentcdodds.com/blog", category: "Blogs", description: "Practical posts on React testing, patterns, and frontend best practices" },
+  { id: 191, title: "Julia Evans Blog", url: "https://jvns.ca", category: "Blogs", description: "Approachable deep dives on networking, Linux, debugging, and systems" },
+  { id: 192, title: "Daring Fireball", url: "https://daringfireball.net", category: "Blogs", description: "John Gruber's commentary on Apple, design, and the tech industry" },
+  { id: 193, title: "NSHipster", url: "https://nshipster.com", category: "Blogs", description: "Detailed articles on overlooked Swift, Objective-C, and Apple framework APIs" },
+  { id: 194, title: "Fatbobman", url: "https://fatbobman.com/en", category: "Blogs", description: "In-depth SwiftUI and Core Data articles" },
+  { id: 195, title: "Swift by Sundell", url: "https://swiftbysundell.com", category: "Blogs", description: "Weekly Swift articles, tips, and podcast on iOS development" },
+
+  // --- Reddit (196–207) ---
+  { id: 196, title: "r/programming", url: "https://www.reddit.com/r/programming", category: "Reddit", description: "General programming news, articles, and discussion" },
+  { id: 197, title: "r/webdev", url: "https://www.reddit.com/r/webdev", category: "Reddit", description: "Web development discussion covering frontend, backend, and tooling" },
+  { id: 198, title: "r/reactjs", url: "https://www.reddit.com/r/reactjs", category: "Reddit", description: "React community for news, questions, and ecosystem discussion" },
+  { id: 199, title: "r/iOSProgramming", url: "https://www.reddit.com/r/iOSProgramming", category: "Reddit", description: "iOS and SwiftUI development community" },
+  { id: 200, title: "r/Python", url: "https://www.reddit.com/r/Python", category: "Reddit", description: "Python news, projects, and discussion for all levels" },
+  { id: 201, title: "r/MachineLearning", url: "https://www.reddit.com/r/MachineLearning", category: "Reddit", description: "Academic and industry ML research discussion and paper reviews" },
+  { id: 202, title: "r/ExperiencedDevs", url: "https://www.reddit.com/r/ExperiencedDevs", category: "Reddit", description: "Career and technical discussion for senior-level engineers" },
+  { id: 203, title: "r/SwiftUI", url: "https://www.reddit.com/r/SwiftUI", category: "Reddit", description: "SwiftUI-focused community for code examples and tips" },
+  { id: 204, title: "r/ynab", url: "https://www.reddit.com/r/ynab", category: "Reddit", description: "~200k-member YNAB budgeting community — strategies and troubleshooting" },
+  { id: 205, title: "r/personalfinance", url: "https://www.reddit.com/r/personalfinance", category: "Reddit", description: "19M-member community for budgeting, investing, debt, and retirement" },
+  { id: 206, title: "r/cscareerquestions", url: "https://www.reddit.com/r/cscareerquestions", category: "Reddit", description: "CS career advice — resumes, interviews, offers, and career transitions" },
+  { id: 207, title: "r/SideProject", url: "https://www.reddit.com/r/SideProject", category: "Reddit", description: "Community for sharing and getting feedback on side projects" },
+
+  // --- Low Vision & RP (208–217) ---
+  { id: 208, title: "Foundation Fighting Blindness", url: "https://www.fightingblindness.org", category: "Low Vision & RP", description: "Leading US nonprofit funding RP and inherited retinal disease research" },
+  { id: 209, title: "NEI — Retinitis Pigmentosa", url: "https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/retinitis-pigmentosa", category: "Low Vision & RP", description: "NIH's authoritative RP fact sheet covering symptoms, genetics, and research" },
+  { id: 210, title: "Retina International", url: "https://retina-international.org", category: "Low Vision & RP", description: "Global umbrella org connecting national RP patient groups" },
+  { id: 211, title: "ClinicalTrials.gov — RP", url: "https://clinicaltrials.gov/search?cond=Retinitis+Pigmentosa", category: "Low Vision & RP", description: "Live NIH database of all open and completed RP trials worldwide" },
+  { id: 212, title: "Apple Accessibility — Vision", url: "https://www.apple.com/accessibility/vision/", category: "Low Vision & RP", description: "Apple's built-in vision features: VoiceOver, Magnifier, Display Accommodations" },
+  { id: 213, title: "AppleVis", url: "https://www.applevis.com", category: "Low Vision & RP", description: "Community resource for blind and low vision Apple users — app reviews and guides" },
+  { id: 214, title: "Hadley", url: "https://hadleyhelps.org", category: "Low Vision & RP", description: "Free online workshops and courses for adults with vision loss" },
+  { id: 215, title: "APH ConnectCenter", url: "https://aphconnectcenter.org", category: "Low Vision & RP", description: "American Printing House hub: VisionAware guides, CareerConnect, FamilyConnect" },
+  { id: 216, title: "r/blind", url: "https://www.reddit.com/r/blind", category: "Low Vision & RP", description: "Reddit community for blind and low vision users — tech tips and support" },
+  { id: 217, title: "r/retinitispigmentosa", url: "https://www.reddit.com/r/retinitispigmentosa", category: "Low Vision & RP", description: "RP-specific subreddit for lived experience, gene therapy updates, peer support" },
+
+  // --- Tools additions (218–222) ---
+  { id: 218, title: "YNAB", url: "https://app.ynab.com", category: "Tools", description: "YNAB web app — zero-based budgeting where you assign every dollar a job" },
+  { id: 219, title: "YNAB API Docs", url: "https://api.ynab.com", category: "Tools", description: "Official YNAB REST API reference — primary ref for YNAB Clarity and Spend Clarity" },
+  { id: 220, title: "YNAB Python SDK", url: "https://github.com/ynab/ynab-sdk-python", category: "Tools", description: "Official Python client for the YNAB API" },
+  { id: 221, title: "YNAB Blog", url: "https://www.ynab.com/blog", category: "Tools", description: "Official YNAB blog with budgeting guides and product updates" },
+  { id: 222, title: "The YNAB Method", url: "https://www.ynab.com/ynab-method", category: "Tools", description: "The four-rule budgeting framework: Give Every Dollar a Job, Embrace True Expenses" },
+
+  // --- Job Search additions (223–228) ---
+  { id: 223, title: "Work at a Startup (YC)", url: "https://www.workatastartup.com", category: "Job Search", description: "Y Combinator's job board — direct access to funded YC startups hiring engineers" },
+  { id: 224, title: "Welcome to the Jungle", url: "https://us.welcometothejungle.com", category: "Job Search", description: "Recommendation-driven job board with deep company culture profiles (formerly Otta)" },
+  { id: 225, title: "Remotive", url: "https://remotive.com", category: "Job Search", description: "Curated remote-only job board with 150k+ vetted listings" },
+  { id: 226, title: "Peerlist", url: "https://peerlist.io", category: "Job Search", description: "Professional network for builders — integrates GitHub and Product Hunt into one portfolio" },
+  { id: 227, title: "Candor", url: "https://candor.co/negotiation", category: "Job Search", description: "Salary negotiation coaching — pay only if they increase your offer" },
+  { id: 228, title: "Rora", url: "https://www.teamrora.com", category: "Job Search", description: "Career coaching and salary negotiation for senior technical talent" },
+
+  // --- Making Money (229–238) ---
+  { id: 229, title: "Indie Hackers", url: "https://www.indiehackers.com", category: "Making Money", description: "Community for bootstrapped founders — interviews, revenue sharing, and forums" },
+  { id: 230, title: "MicroConf", url: "https://microconf.com", category: "Making Money", description: "Conference and community for self-funded SaaS founders" },
+  { id: 231, title: "levels.io", url: "https://levels.io", category: "Making Money", description: "Pieter Levels' blog on building profitable solo products" },
+  { id: 232, title: "RevenueCat Docs", url: "https://www.revenuecat.com/docs", category: "Making Money", description: "Industry-standard SDK for iOS/Android subscription management and paywalls" },
+  { id: 233, title: "Lemon Squeezy", url: "https://www.lemonsqueezy.com", category: "Making Money", description: "Sell software, templates, and digital products — handles global tax as merchant of record" },
+  { id: 234, title: "Gumroad", url: "https://gumroad.com", category: "Making Money", description: "Classic creator platform for selling ebooks, courses, templates, and downloads" },
+  { id: 235, title: "Beehiiv", url: "https://www.beehiiv.com", category: "Making Money", description: "Newsletter platform with 0% fee on paid subscriptions (vs Substack's 10%)" },
+  { id: 236, title: "Contra", url: "https://contra.com", category: "Making Money", description: "Commission-free freelance network — keep 100% of earnings" },
+  { id: 237, title: "Product Hunt", url: "https://www.producthunt.com", category: "Making Money", description: "Launch platform for new products — visibility and community feedback" },
+  { id: 238, title: "awesome-indie (GitHub)", url: "https://github.com/mezod/awesome-indie", category: "Making Money", description: "Curated mega-list of resources for developers making money from code" },
+
+  // --- Gospel Study (239–251) ---
+  { id: 239, title: "Gospel Library", url: "https://www.churchofjesuschrist.org/study?lang=eng", category: "Gospel Study", description: "Web version of Gospel Library — scriptures, manuals, Conference talks, and annotations" },
+  { id: 240, title: "Come Follow Me Hub", url: "https://www.churchofjesuschrist.org/learn/come-follow-me?lang=eng", category: "Gospel Study", description: "Official landing page for all Come Follow Me resources and curriculum" },
+  { id: 241, title: "Come Follow Me 2026 Manual", url: "https://www.churchofjesuschrist.org/study/manual/come-follow-me-for-home-and-church-old-testament-2026?lang=eng", category: "Gospel Study", description: "Official weekly study manual — Old Testament for 2026" },
+  { id: 242, title: "Leader and Clerk Resources (LCR)", url: "https://lcr.churchofjesuschrist.org", category: "Gospel Study", description: "Secure tool for clerks and leaders — membership, finances, callings, and reports" },
+  { id: 243, title: "General Handbook", url: "https://www.churchofjesuschrist.org/study/manual/general-handbook?lang=eng", category: "Gospel Study", description: "Complete online policy and instruction handbook for Church leaders" },
+  { id: 244, title: "My Calling as a Ward Clerk", url: "https://www.churchofjesuschrist.org/study/manual/my-calling-as-a-ward-clerk?lang=eng", category: "Gospel Study", description: "Official step-by-step guide covering every ward clerk responsibility" },
+  { id: 245, title: "Church Tech Forum — Clerks", url: "https://tech.churchofjesuschrist.org/forum/viewforum.php?f=42", category: "Gospel Study", description: "Official community forum for clerks — LCR, finance tools, records, new-clerk help" },
+  { id: 246, title: "Scripture Central — CFM", url: "https://scripturecentral.org/come-follow-me", category: "Gospel Study", description: "Free weekly Come Follow Me study helps with articles, videos, and KnoWhy insights" },
+  { id: 247, title: "Don't Miss This", url: "https://www.dontmissthisstudy.com", category: "Gospel Study", description: "Weekly CFM video and study guide by David Butler and Emily Belle Freeman" },
+  { id: 248, title: "followHIM Podcast", url: "https://followhim.co", category: "Gospel Study", description: "Weekly CFM podcast with Hank Smith and John Bytheway featuring scripture scholars" },
+  { id: 249, title: "BYU Religious Studies Center", url: "https://rsc.byu.edu", category: "Gospel Study", description: "4,000+ free scholarly articles and commentaries on scriptures and Church history" },
+  { id: 250, title: "Scripture Notes", url: "https://scripturenotes.com", category: "Gospel Study", description: "Advanced personal scripture study tool with cross-referencing and linked notes" },
+  { id: 251, title: "r/latterdaysaints", url: "https://www.reddit.com/r/latterdaysaints", category: "Gospel Study", description: "Largest faithful Latter-day Saint community on Reddit" },
+
+  // --- Idea Generation (252–260) ---
+  { id: 252, title: "Ideaflow", url: "https://ideaflow.app", category: "Idea Generation", description: "AI-powered notebook for frictionless idea capture — voice, hashtags, AI search" },
+  { id: 253, title: "Whimsical", url: "https://whimsical.com", category: "Idea Generation", description: "Clean visual canvas for mind maps, flowcharts, wireframes, and user flows" },
+  { id: 254, title: "Miro", url: "https://miro.com", category: "Idea Generation", description: "Collaborative online whiteboard for brainstorming, workshops, and diagramming" },
+  { id: 255, title: "Exploding Topics", url: "https://explodingtopics.com", category: "Idea Generation", description: "Surfaces rapidly growing topics and niches before they peak" },
+  { id: 256, title: "Paul Graham Essays", url: "https://www.paulgraham.com/articles.html", category: "Idea Generation", description: "Foundational essays on startup ideas, including \"How to Get Startup Ideas\"" },
+  { id: 257, title: "The Idea Machine (Altucher)", url: "https://archive.jamesaltucher.com/blog/the-ultimate-guide-for-becoming-an-idea-machine", category: "Idea Generation", description: "The \"10 ideas a day\" practice for building your creative idea muscle" },
+  { id: 258, title: "IDEO Design Thinking", url: "https://designthinking.ideo.com", category: "Idea Generation", description: "Human-centered ideation framework: Empathize, Define, Ideate, Prototype, Test" },
+  { id: 259, title: "Taskade", url: "https://www.taskade.com", category: "Idea Generation", description: "AI workspace where agents brainstorm ideas and route them into project boards" },
+  { id: 260, title: "Google Trends", url: "https://trends.google.com", category: "Idea Generation", description: "Free tool to explore search interest over time — validate idea demand" },
 ];
 
 // Inline styles (replaces Tailwind classes)
@@ -234,10 +353,27 @@ export const s = {
   searchInput: { width: "100%", background: "#18181b", border: "1px solid #27272a", borderRadius: 8, paddingLeft: 40, paddingRight: 12, paddingTop: 8, paddingBottom: 8, fontSize: 14, color: "#f4f4f5", outline: "none", boxSizing: "border-box" },
   addBtn: { background: "#f4f4f5", color: "#18181b", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
 
+  // Category toggle button
+  catToggleBtn: { background: "#18181b", color: "#d4d4d8", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 500, border: "1px solid #27272a", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
+  catToggleBtnActive: { background: "#27272a", color: "#f4f4f5", borderColor: "#3f3f46" },
+
+  // Category manager panel
+  catManagerCard: { background: "#18181b", border: "1px solid #27272a", borderRadius: 8, padding: 12, marginBottom: 16 },
+  catManagerHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid #27272a" },
+  catManagerTitle: { fontSize: 13, fontWeight: 600, color: "#a1a1aa", textTransform: "uppercase", letterSpacing: "0.05em" },
+  catManagerResetBtn: { fontSize: 12, color: "#71717a", background: "transparent", border: "1px solid #27272a", borderRadius: 4, padding: "3px 8px", cursor: "pointer" },
+  catManagerRow: { display: "flex", alignItems: "center", gap: 8, padding: "6px 4px", borderRadius: 4 },
+  catManagerName: { flex: 1, fontSize: 14, color: "#f4f4f5", cursor: "pointer", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  catManagerCount: { fontSize: 11, color: "#52525b", background: "#27272a", padding: "1px 6px", borderRadius: 9999, flexShrink: 0 },
+  catManagerBtn: { padding: 5, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#71717a", display: "flex", alignItems: "center" },
+  catManagerInput: { flex: 1, background: "#09090b", border: "1px solid #52525b", borderRadius: 4, padding: "3px 8px", fontSize: 14, color: "#f4f4f5", outline: "none" },
+  catManagerMergeSelect: { flex: 1, background: "#09090b", border: "1px solid #27272a", borderRadius: 4, padding: "3px 8px", fontSize: 13, color: "#f4f4f5", cursor: "pointer", outline: "none" },
+
   // Category pills
   pillRow: { display: "flex", gap: 8, marginBottom: 16, overflowX: "auto", paddingBottom: 4 },
   pill: { padding: "4px 12px", borderRadius: 9999, fontSize: 12, whiteSpace: "nowrap", border: "1px solid #27272a", background: "#18181b", color: "#d4d4d8", cursor: "pointer" },
   pillActive: { background: "#f4f4f5", color: "#18181b", borderColor: "#f4f4f5" },
+  pillImportant: { borderColor: "#ef444466", color: "#ef4444" },
 
   // Add/Edit form
   formCard: { background: "#18181b", border: "1px solid #27272a", borderRadius: 8, padding: 16, marginBottom: 16 },
@@ -316,4 +452,8 @@ input:focus { border-color: #52525b !important; }
 .kb-status-btn:hover { opacity: 0.85; }
 input[type=range] { accent-color: #10b981; cursor: pointer; }
 textarea:focus { border-color: #52525b !important; }
+.kb-cat-toggle:hover { background: #27272a !important; color: #f4f4f5 !important; }
+.kb-cat-row:hover { background: #1c1c1f; }
+.kb-cat-mgr-act:hover { background: #27272a; color: #f4f4f5; }
+.kb-cat-row .kb-cat-manager-name:hover { color: #facc15; }
 `;

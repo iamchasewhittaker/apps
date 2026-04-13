@@ -40,11 +40,22 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **Seed expanded to 169 bookmarks across 21 categories** — Job Search, GMAT, Coding, Web Dev, iOS Dev, Design, Architecture, GitHub, Swift, Tools + expanded AI categories
 - [x] **SEED_VERSION 3 migration**
 
-## v1.2 — Next
+## v1.2 — Shipped
+- [x] **Seed expanded 169 → 260 bookmarks across 29 categories** — all URLs verified active
+  - New: Scripting, Python, Blogs, Reddit, Low Vision & RP, Making Money, Gospel Study, Idea Generation
+  - Expanded: Tools (+5 YNAB), Job Search (+6 boards/negotiation)
+- [x] **SEED_VERSION 4 migration**
+
+## v1.3 — Shipped
+- [x] **Category organization menu** — inline panel: reorder (up/down), rename, merge, delete empty, reset A–Z; custom order persists
+- [x] **Importance ranking** — High/Med/Low field on bookmarks; colored badge on rows; selector in detail panel; "Important" filter pill (flat ranked list)
+- [x] **Storage migration** — blob shape upgraded to `{ bookmarks, categoryOrder }`; auto-migrates old data
+
+## v1.4 — Next
 - [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)
 - [ ] **Favicons** — show site icons next to each bookmark
 
-## v1.3 — Quality of life
+## v1.4 — Quality of life
 - [ ] Tags (multiple per bookmark, separate from single category)
 - [ ] Sort options (recent / alphabetical / most visited)
 - [ ] Keyboard shortcuts (`/` to focus search, `n` for new)
