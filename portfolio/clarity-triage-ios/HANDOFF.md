@@ -57,9 +57,7 @@ Slot usage is **not** raw incomplete-task count; it sums weighted slots per acti
 
 ## Next (repo roadmap)
 
-**Phase 3 — Clarity Time (iOS)** — `portfolio/clarity-time-ios/` (`HANDOFF.md` stub in place): time sessions + scripture streak. Mirror Check-in / Triage: models → store → views → programmatic `xcodeproj` → build → test.
-
-Use a **new** two-letter PBX prefix (not `CT`, reserved for Triage). Suggested: **`CX`** for “Clarity Time” unless you standardize elsewhere.
+**Phase 3 — Clarity Time (iOS)** — ✅ shipped at `portfolio/clarity-time-ios/` (`CX*` PBX prefix). **Phase 4 — Clarity Budget** — `portfolio/clarity-budget-ios/` (when scaffolded): dual-scenario budget + wants; pick a **new** PBX prefix (not `CC`, `CT`, or `CX`).
 
 ---
 

@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-12 (Clarity Triage Phase 2 shipped; Clarity Time Phase 3 stub) | Maintained by Chase
+> Last updated: 2026-04-12 (Clarity Time Phase 3 shipped) | Maintained by Chase
 
 ---
 
@@ -225,7 +225,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
-| 2026-04-12 | Clarity Triage (iOS) | v0.1 | **Phase 2 MVP:** capacity + weighted-slot tasks + ideas pipeline + wins + quotes; programmatic `ClarityTriage.xcodeproj` (`CT*` IDs) + tests; full app docs; `xcodebuild` verified on available simulator (e.g. iPhone 15 / iOS 17.2) when iPhone 16 runtime missing | `portfolio/clarity-triage-ios/` · Phase 3 stub: `portfolio/clarity-time-ios/HANDOFF.md` |
+| 2026-04-12 | Clarity Time (iOS) | v0.1 | **Phase 3 MVP:** timer + manual time sessions + scripture streak (toggle counts; reference optional); programmatic `ClarityTime.xcodeproj` (`CX*` IDs) + `ClarityTimeTests`; `xcodebuild` build/test on simulator with `CODE_SIGNING_ALLOWED=NO`; app `HANDOFF` + Phase 4 (Budget) session-start prompt | `portfolio/clarity-time-ios/` |
+| 2026-04-12 | Clarity Triage (iOS) | v0.1 | **Phase 2 MVP:** capacity + weighted-slot tasks + ideas pipeline + wins + quotes; programmatic `ClarityTriage.xcodeproj` (`CT*` IDs) + tests; full app docs; `xcodebuild` verified on available simulator (e.g. iPhone 15 / iOS 17.2) when iPhone 16 runtime missing | `portfolio/clarity-triage-ios/` · Phase 3 → Time |
 | 2026-04-12 | YNAB Clarity (iOS) + Spend Clarity | v0.3 / v0.2.0 | **Transaction analysis overhaul (both apps):** `CategoryOverride` SwiftData model + learning system (save override after manual assignment); `CategorySuggestionEngine` expanded to 80+ payee rules + override-first lookup; `PayeeDisplayFormatter` expanded to 70+ merchants; `itemContextSubtitle` universal; Python: `payee_formatter.py` (bank noise strip + 50+ merchants), three-tier `Categorizer` (overrides → payee rules → keywords), Step 4.5 in `main.py` (categorize ALL blank-memo transactions), all 9 category IDs fixed, emoji stripping in `setup_categories.py`, 57 new tests; budget ID removed from `category_rules.yaml` comment | See `portfolio/ynab-clarity-ios/CHANGELOG.md` + `portfolio/spend-clarity/CHANGELOG.md` |
 | 2026-04-12 | Wellness Tracker + iOS | v15.10 / iOS | **Branding:** W + sunrise mark — first on `#0d0d0f`, then **Clarity family** refresh (`#0e1015`, blue horizon, amber sun per YNAB Clarity `ClarityTheme`; Spend Clarity CLI has no logo — see BRANDING); web PWA assets + `manifest.json` + `index.html`; iOS `AppIcon.png`; per-app `portfolio/wellness-tracker/HANDOFF.md` + `portfolio/wellness-tracker-ios/HANDOFF.md` | See `portfolio/wellness-tracker/docs/BRANDING.md` |
 | 2026-04-12 | Wellness Tracker (iOS) | Phase 2 foundation | Added native `TabView` shell (`Check-in`, `Tasks`, `Time`, `Capture`); shipped first daily parity slice (Tasks + Time + quick Win/Pulse capture); expanded draft/navigation tests; defined explicit companion-first scope, deferred Insights parity, and replacement-vs-sync decision gate in iOS docs/roadmap | See `portfolio/wellness-tracker-ios/CHANGELOG.md` + `ROADMAP.md` |

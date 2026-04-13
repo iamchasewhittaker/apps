@@ -1,83 +1,94 @@
 # Handoff — Clarity Time (iOS)
 
-## Current status: Phase 3 — not started
+## Current status: Phase 3 complete (MVP)
 
-- **Version:** v0.1 (planned)
-- **Bundle ID:** *(define — e.g. `com.chasewhittaker.ClarityTime`)*
-- **Storage key:** `chase_time_ios_v1` (per repo root `CLAUDE.md`)
+- **Version:** v0.1
+- **Last session:** 2026-04-12
+- **Bundle ID:** `com.chasewhittaker.ClarityTime`
+- **Storage key:** `chase_time_ios_v1` (single `Codable` root in `UserDefaults` — never rename)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
 
----
+### Build / test
 
-## Product intent (from portfolio roadmap)
+- `ClarityTime.xcodeproj` is **generated in-repo** (no manual Xcode project wizard). PBX object IDs use prefix **`CX`** (do not use `CT` — reserved for Clarity Triage).
+- Verify with `xcodebuild` on an **installed** iOS Simulator + `CODE_SIGNING_ALLOWED=NO`. Use `-showdestinations` if `iPhone 16` is missing on your host.
 
-**Time sessions + scripture streak** — focused timer or session logging for deep work / spiritual habit, consistent with the Clarity iOS family (local-first, `StorageHelpers`, ClarityUI shell).
-
-**Reference implementations (copy structure, not IDs):**
-
-| App | Path | PBX prefix | Notes |
-|-----|------|------------|--------|
-| Clarity Check-in | `portfolio/clarity-checkin-ios/` | `CC` | Phase 1 complete |
-| Clarity Triage | `portfolio/clarity-triage-ios/` | `CT` | Phase 2 complete |
-
----
-
-## Before coding (product phases 1–3)
-
-Per root `PRODUCT_BUILD_FRAMEWORK.md`: document **PRD + UX flow + data model** in this folder (or link a plan doc) before Swift files. At minimum capture:
-
-1. **Time sessions** — start/stop, pause, categories/tags, daily list vs history, relationship to `Wellness` Time tab if any.
-2. **Scripture streak** — what counts as “done” per day, streak reset rules, optional reading plan vs free-form reference.
-3. **Single blob vs multiple keys** — follow family pattern: one primary `Codable` root + `TriageConfig`-style keys enum; never rename keys after ship.
-
----
-
-## Engineering pattern (match Phases 1–2)
-
-1. **Order:** models → `*Config` + store → views → **programmatic** `*.xcodeproj` + shared scheme → `xcodebuild build` → `xcodebuild test`.
-2. **Xcodeproj:** No manual “New Project” step. Clone `ClarityTriage.xcodeproj/project.pbxproj` or `ClarityCheckin.xcodeproj/project.pbxproj` structure; use a **new** two-letter ID prefix (suggested **`CX`** for Clarity Time — do **not** reuse `CT`).
-3. **SPM:** `XCLocalSwiftPackageReference` with `relativePath = "../clarity-ui"` from `portfolio/clarity-time-ios/`.
-4. **Concurrency:** `@Observable @MainActor` store, `nonisolated init()`; `@MainActor` on views that touch the store outside `body`.
-5. **Team / plist:** Same defaults as siblings unless told otherwise — `DEVELOPMENT_TEAM = 9XVT527KP3`, `GENERATE_INFOPLIST_FILE = YES`, iOS 17, Swift 5.0.
-
----
-
-## Verification
+### Open project
 
 ```bash
-cd portfolio/clarity-time-ios
-xcodebuild -scheme ClarityTime -showdestinations   # pick an installed simulator
-xcodebuild build -scheme ClarityTime -destination 'platform=iOS Simulator,name=REPLACE_ME,OS=REPLACE_ME' CODE_SIGNING_ALLOWED=NO
-xcodebuild test  -scheme ClarityTime -destination 'platform=iOS Simulator,name=REPLACE_ME,OS=REPLACE_ME' CODE_SIGNING_ALLOWED=NO
+open portfolio/clarity-time-ios/ClarityTime.xcodeproj
 ```
-
-If `CODE_SIGNING_ALLOWED=NO`, always use a **simulator** destination — physical devices require a valid signature.
 
 ---
 
-## Session start prompt — Phase 3 build
+## Product / data model (MVP)
 
-Copy into a **new** chat (after `checkpoint`):
+### Time sessions
+
+1. **Timer** — Start with optional title + category; pause/resume; stop writes a `TimeSession` with `kind == .timer` and `durationSeconds` from wall clock minus paused intervals. Active timer state is persisted in the blob so a relaunch can resume accounting (UI may still show “paused” state from blob).
+2. **Manual** — User enters duration (minutes), optional title/category, and optional day (defaults to today); appends a `TimeSession` with `kind == .manual`.
+3. **History** — Sessions listed newest-first; delete supported.
+
+### Scripture streak
+
+- **Counts toward streak:** `ScriptureDayEntry.completed == true` for a calendar day (`yyyy-MM-dd`, local timezone via `DateHelpers`).
+- **Optional metadata:** `scriptureReference` (e.g. “John 3:16”) does **not** affect streak.
+- **Streak rule:** Current streak = consecutive completed days ending at **today** if today is completed; otherwise it ends at **yesterday** and counts backward (so an incomplete today does not zero the streak until the chain breaks). Implemented in `TimeBlob.scriptureStreakCount()`.
+
+### Persistence
+
+- One root struct `TimeBlob` keyed by `TimeConfig.storeKey`.
+- No secondary `UserDefaults` keys for app data.
+
+---
+
+## What shipped (MVP)
+
+| Area | Notes |
+|------|--------|
+| Sessions | Timer (start/pause/resume/stop) + manual duration entry; categories from `TimeConfig` |
+| Scripture | Per-day completion toggle + optional reference; streak display |
+| Quote | `timeQuotes` + `QuoteBanner` on Time tab |
+| Storage | `StorageHelpers` + `TimeBlob` JSON |
+| Tests | `ClarityTimeTests` — JSON round-trip, streak logic, timer elapsed math |
+
+---
+
+## Done when (checklist)
+
+- [x] Timer start → pause → resume → stop persists a session
+- [x] Manual session adds row with correct duration
+- [x] Scripture toggle persists; streak matches rules above
+- [x] `xcodebuild build` clean (simulator, no signing)
+- [x] `xcodebuild test` pass (same destination)
+
+---
+
+## Next (repo roadmap)
+
+**Phase 4 — Clarity Budget (iOS)** — `portfolio/clarity-budget-ios/` — dual-scenario budget + wants. Scaffold the folder + `HANDOFF.md` if it does not exist yet. Use a **new** two-letter PBX prefix (do not reuse `CC`, `CT`, or `CX`). Wire `../clarity-ui` as `ClarityUI`. Same build order: models → store → views → programmatic `xcodeproj` → build → test.
+
+---
+
+## Session start prompt — Phase 4 build
+
+Paste into a **new** chat (after `checkpoint`):
 
 ```
 Read CLAUDE.md and HANDOFF.md first.
 
-Goal: Build Phase 3 — Clarity Time iOS at portfolio/clarity-time-ios/.
+Goal: Build Phase 4 — Clarity Budget iOS at portfolio/clarity-budget-ios/.
 
-Read portfolio/clarity-time-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance.
-Follow the same structure and pattern as portfolio/clarity-triage-ios/ (Phase 2) and portfolio/clarity-checkin-ios/ (Phase 1):
+Read portfolio/clarity-budget-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance (stub or roadmap until filled).
+Follow the same structure and pattern as portfolio/clarity-time-ios/ (Phase 3), portfolio/clarity-triage-ios/ (Phase 2), and portfolio/clarity-checkin-ios/ (Phase 1):
   models → store → views → programmatic xcodeproj → verify build → run tests.
 
 The xcodeproj must be generated programmatically (no manual Xcode project wizard).
-Use a NEW two-letter PBX ID prefix (do not use CT — reserved for Clarity Triage). Suggested: CX.
+Use a NEW two-letter PBX ID prefix (do not use CC, CT, or CX — reserved for prior Clarity iOS apps). Pick a fresh prefix (e.g. CB for Clarity Budget) and document it in that app’s HANDOFF.
 
 Wire local package ../clarity-ui as ClarityUI.
 
 Start with: product/data model notes in HANDOFF if still TBD, then models → store → views → xcodeproj → build → test.
 ```
 
----
-
-## After this file is filled in
-
-Replace placeholder sections with real bundle ID, file tree, MVP checklist, and “done when” rows — same style as `portfolio/clarity-triage-ios/HANDOFF.md` after Phase 2.
+For **Clarity Time maintenance only**, use the “Session start — maintenance only” block in [`CLAUDE.md`](CLAUDE.md).
