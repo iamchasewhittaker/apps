@@ -27,6 +27,7 @@ from receipt_parser import parse_receipt
 from matcher import match_receipts_to_transactions
 from memo_formatter import format_memo
 from categorizer import Categorizer
+from payee_formatter import display_payee
 
 # ---------------------------------------------------------------------------
 # Logging setup
@@ -224,20 +225,30 @@ def main():
     )
     log.info(f"  Matched {len(matches)} transactions")
 
-    # Step 4 & 5 — Generate memos and optionally categorize
-    auto_categorize = os.getenv("AUTO_CATEGORIZE", "false").lower() == "true"
-    categorizer = Categorizer("config/category_rules.yaml") if auto_categorize else None
+    # Step 4 & 5 — Generate memos and categorize matched transactions
+    auto_categorize = os.getenv("AUTO_CATEGORIZE", "true").lower() == "true"
+    categorizer = Categorizer(
+        rules_path="config/category_rules.yaml",
+        overrides_path="config/category_overrides.yaml",
+    ) if auto_categorize else None
 
+    matched_ids: set[str] = set()
     updates = []
+
     for match in matches:
+        matched_ids.add(match.transaction["id"])
         memo = format_memo(match.receipt.items, is_split=match.is_split, split_total=match.receipt.amount)
+        clean_payee = display_payee(match.transaction.get("payee_name"))
         category_id = None
         if categorizer:
-            category_id = categorizer.categorize(match.receipt.items)
+            category_id = categorizer.categorize_transaction(
+                payee=clean_payee,
+                items=match.receipt.items,
+            )
 
         log.info(
             f"  MATCH [{match.match_type}] {match.transaction['date']} "
-            f"{match.transaction['payee_name']} ${match.transaction['amount'] / 1000:.2f} "
+            f"{clean_payee} ${match.transaction['amount'] / 1000:.2f} "
             f"→ memo: {memo!r}"
             + (f" category: {category_id}" if category_id else "")
         )
@@ -246,6 +257,25 @@ def main():
         if category_id:
             update["category_id"] = category_id
         updates.append(update)
+
+    # Step 4.5 — Payee-based categorization for ALL unmatched blank-memo transactions
+    if categorizer:
+        log.info("Step 4.5: Payee-categorizing unmatched transactions...")
+        payee_cat_count = 0
+        for txn in transactions:
+            if txn["id"] in matched_ids:
+                continue
+            clean_payee = display_payee(txn.get("payee_name"))
+            category_id = categorizer.categorize_transaction(payee=clean_payee)
+            if category_id:
+                updates.append({"id": txn["id"], "category_id": category_id})
+                matched_ids.add(txn["id"])
+                payee_cat_count += 1
+                log.info(
+                    f"  PAYEE-CAT {txn['date']} {clean_payee} "
+                    f"${txn['amount'] / 1000:.2f} → {category_id}"
+                )
+        log.info(f"  Payee-categorized {payee_cat_count} additional transactions")
 
     # Step 6 — Write to YNAB
     log.info("Step 6: Writing to YNAB...")
@@ -257,9 +287,7 @@ def main():
 
     # Step 7 — Unmatched report
     log.info("Step 7: Generating unmatched report...")
-    matched_ids = {m.transaction["id"] for m in matches}
-
-    # Filter to only transactions for active merchants
+    # Filter to only transactions for active merchants (receipt-eligible)
     def is_active_merchant(txn):
         payee = (txn.get("payee_name") or "").lower()
         for merchant_name in active_merchants:
@@ -281,9 +309,9 @@ def _write_unmatched_report(unmatched: list, total: int):
     lines.append("-" * 70 + "\n")
     for txn in unmatched:
         amount = txn["amount"] / 1000
-        payee = (txn.get("payee_name") or "")[:28]
+        clean = display_payee(txn.get("payee_name"))[:28]
         reason = txn.get("_unmatched_reason", "No receipt found in date window")
-        lines.append(f"{txn['date']:<12} {payee:<30} ${amount:>9.2f}  {reason}\n")
+        lines.append(f"{txn['date']:<12} {clean:<30} ${amount:>9.2f}  {reason}\n")
     lines.append("\n")
     lines.append(f"Total unmatched: {len(unmatched)} of {total}\n")
 

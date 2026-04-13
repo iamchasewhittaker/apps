@@ -3,8 +3,10 @@ import SwiftUI
 
 struct BillsPlannerView: View {
     @EnvironmentObject private var appState: AppState
+    @Environment(\.modelContext) private var modelContext
     @Query private var mappings: [CategoryMapping]
     @Query(sort: \IncomeSource.sortOrder) private var sources: [IncomeSource]
+    @Query private var overrides: [CategoryOverride]
 
     @State private var showCovered = false
     @State private var fundSheet: FundCategorySheetConfig? = nil
@@ -103,6 +105,22 @@ struct BillsPlannerView: View {
                             categoryMappings: mappings,
                             incomeSources: sources
                         )
+                        // Learn from this assignment: save override if not already present
+                        if let payeeSub = config.transaction.payeeName?
+                            .lowercased()
+                            .trimmingCharacters(in: .whitespacesAndNewlines),
+                           !payeeSub.isEmpty {
+                            let alreadyExists = overrides.contains {
+                                $0.payeeSubstring == payeeSub && $0.ynabCategoryID == mapping.ynabCategoryID
+                            }
+                            if !alreadyExists {
+                                modelContext.insert(CategoryOverride(
+                                    payeeSubstring: payeeSub,
+                                    ynabCategoryID: mapping.ynabCategoryID,
+                                    ynabCategoryName: mapping.ynabCategoryName
+                                ))
+                            }
+                        }
                         reviewSheet = nil
                     },
                     onDismiss: { reviewSheet = nil }
@@ -161,7 +179,7 @@ struct BillsPlannerView: View {
             } else {
                 VStack(spacing: 1) {
                     ForEach(items) { txn in
-                        let suggestions = CategorySuggestionEngine.suggest(for: txn, from: mappings)
+                        let suggestions = CategorySuggestionEngine.suggest(for: txn, from: mappings, overrides: Array(overrides))
                         reviewRow(txn: txn, suggestions: suggestions)
                     }
                 }
@@ -588,5 +606,5 @@ private struct CategoryReviewConfig: Identifiable {
 #Preview {
     BillsPlannerView()
         .environmentObject(AppState.preview)
-        .modelContainer(for: [CategoryMapping.self, IncomeSource.self], inMemory: true)
+        .modelContainer(for: [CategoryMapping.self, IncomeSource.self, CategoryOverride.self], inMemory: true)
 }

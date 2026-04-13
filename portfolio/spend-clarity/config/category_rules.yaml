@@ -1,10 +1,10 @@
 # category_rules.yaml
 # Maps item name keywords (case-insensitive) to YNAB category IDs.
 # Enable with AUTO_CATEGORIZE=true in .env
-# Budget: ynab-enrichment (583fdbca-5148-4ebf-8b36-ebb75c3e7d1b)
+# Budget: YNABClarity (ID stored in .env — see YNAB_BUDGET_ID)
 
 Electronics:
-  category_id: "45a82253-9685-4964-94ee-204affd854de"  # Entertainment (interim — create Shopping category, then re-run setup_categories.py)
+  category_id: "11f98f06-95aa-4263-a2b5-b9492dcbffa3"  # Fun & Entertainment > Miscellaneous
   keywords:
     - echo
     - kindle
@@ -25,7 +25,7 @@ Electronics:
     - fire tv
 
 Groceries:
-  category_id: "7e77a194-b53d-4de9-b1f8-4d098d239380"  # Frequent > Groceries
+  category_id: "0856160f-6845-46c5-bec6-df51bc9ea61f"  # GROCERIES > Groceries
   keywords:
     - ziploc
     - paper towel
@@ -44,7 +44,7 @@ Groceries:
     - olive oil
 
 Household:
-  category_id: "de649809-6a0e-4502-9d8e-9226c8ccdd4f"  # Non-Monthly > Home Maintenance
+  category_id: "39345937-32e0-4102-937c-73db80187d40"  # NEEDS > Household Goods
   keywords:
     - lightbulb
     - batteries
@@ -61,7 +61,7 @@ Household:
     - cleaning
 
 Clothing:
-  category_id: "459a5620-cbf7-45d0-9fef-1a16368b0d77"  # Quality of Life > Hobbies (interim — create Shopping category, then re-run setup_categories.py)
+  category_id: "745bf420-862e-4d24-adc0-892fa7715686"  # NEEDS > Clothing
   keywords:
     - shirt
     - pants
@@ -76,7 +76,7 @@ Clothing:
     - sweater
 
 Books & Media:
-  category_id: "45a82253-9685-4964-94ee-204affd854de"  # Quality of Life > Entertainment
+  category_id: "be071d77-0b7e-4282-aab4-d5a9a589e4c4"  # Fun & Entertainment > Books/Media
   keywords:
     - book
     - audiobook
@@ -86,7 +86,7 @@ Books & Media:
     - planner
 
 Health Expenses:
-  category_id: "922b3618-96d5-4cda-bbf6-5e79426eebbd"  # Quality of Life > Health & Wellness
+  category_id: "008b23b4-96eb-4c0a-8eb7-e67ece1f7acd"  # Health & Medical > Health Expenses
   keywords:
     - vitamin
     - supplement
@@ -98,7 +98,7 @@ Health Expenses:
     - sunscreen
 
 Personal Care:
-  category_id: "922b3618-96d5-4cda-bbf6-5e79426eebbd"  # Quality of Life > Health & Wellness
+  category_id: "e7587754-3b13-4d2c-bf32-f12150cb8ded"  # NEEDS > Personal Care
   keywords:
     - lotion
     - moisturizer
@@ -122,7 +122,7 @@ Personal Care:
     - cologne
 
 Kids:
-  category_id: "459a5620-cbf7-45d0-9fef-1a16368b0d77"  # Quality of Life > Hobbies (interim — create Kids Activities category, then re-run setup_categories.py)
+  category_id: "1f80130b-725a-43d2-8c3b-e6ee726ef111"  # KIDS > Miscellaneous
   keywords:
     - diaper
     - wipe
@@ -136,7 +136,7 @@ Kids:
     - lunchbox
 
 Pets:
-  category_id: "922b3618-96d5-4cda-bbf6-5e79426eebbd"  # Quality of Life > Health & Wellness (interim — create Pets category if needed)
+  category_id: "21b5c666-68ec-4e99-95cb-167b24d599cf"  # NEEDS > Pet Food
   keywords:
     - dog food
     - cat food
@@ -145,3 +145,67 @@ Pets:
     - leash
     - collar
     - litter
+
+# ---------------------------------------------------------------------------
+# Payee-based rules (applied to ALL transactions, not just receipt-matched ones)
+# Checked AFTER user overrides (category_overrides.yaml) but BEFORE item keywords.
+# ---------------------------------------------------------------------------
+
+payee_rules:
+  # Subscriptions
+  - patterns: [netflix, spotify, hulu, disney, youtube, "apple one", siriusxm,
+               peacock, paramount, audible, grammarly, backblaze, oura, macrofactor,
+               "1password", evernote, sunsama, ynab, vivint, "burn boot camp"]
+    category_id: "854f0f4c-de7e-4584-9de8-ac7b7ccfc2c3"  # Subscriptions > Misc
+
+  # Utilities (map all to Internet bucket — most common; override for electric/gas/water if needed)
+  - patterns: [xfinity, comcast, spectrum, "at&t", verizon, t-mobile,
+               "dominion energy", "duke energy", "con edison", "pge", "pg&e"]
+    category_id: "5407f7b8-a9be-4a3b-ac30-f29011b58b24"  # Utilities > Internet
+
+  # Insurance
+  - patterns: [geico, progressive, "state farm", allstate, safeco, nationwide,
+               "liberty mutual", travelers]
+    category_id: "9e692358-e411-4a03-a2bd-b380a2a83b36"  # Insurance > Car Insurance
+
+  # Groceries (standalone grocery stores — not big-box that sell everything)
+  - patterns: ["whole foods", kroger, safeway, "trader joe", aldi, publix, "h-e-b",
+               "food lion", wegmans, sprouts, "fresh market", "giant eagle"]
+    category_id: "0856160f-6845-46c5-bec6-df51bc9ea61f"  # GROCERIES > Groceries
+
+  # Gas / fuel
+  - patterns: [chevron, shell, exxon, speedway, "circle k", "quik trip", quiktrip,
+               sunoco, wawa, sheetz, "bp ", "bpus", marathon]
+    category_id: "3c8e117f-11ca-4202-9d4a-fc83f40a0913"  # TRANSPORTATION > Fuel for Ford
+
+  # Dining out / food delivery / coffee
+  - patterns: [doordash, "uber eats", grubhub, instacart, starbucks, chipotle,
+               "chick-fil-a", chickfila, mcdonald, wendy, "taco bell", panera, subway,
+               "olive garden", applebee, "panda express", "five guys", popeyes,
+               "pizza hut", domino, "papa john", dunkin, "dutch bros"]
+    category_id: "b013b72e-a3a1-4c73-8f4a-420633c9b5dd"  # Fun & Entertainment > Eating Out
+
+  # Rideshare (uber alone = rideshare; "uber eats" already caught above)
+  - patterns: [lyft]
+    category_id: "e84ad554-09a0-4fa5-ad9a-e1670be412bd"  # TRANSPORTATION > Uber
+
+  # Pharmacy / drugstore
+  - patterns: [walgreens, "cvs", "rite aid", "rite-aid"]
+    category_id: "6308a24b-7146-4700-8b02-04da32cbf34d"  # Health & Medical > Prescriptions
+
+  # Big-box stores (default to Groceries — most common purchase type)
+  # Override specific payees in category_overrides.yaml if needed
+  - patterns: [walmart, costco, target]
+    category_id: "0856160f-6845-46c5-bec6-df51bc9ea61f"  # GROCERIES > Groceries
+
+  # Gifts & celebrations (Amazon gift orders, card shops)
+  - patterns: ["hallmark", "1-800-flowers", "teleflora", "ftd flowers"]
+    category_id: "b747d7df-11ef-4643-ad5d-77261891de41"  # Gifts & Celebrations > Gifts
+
+  # Home improvement
+  - patterns: ["home depot", "lowe's", lowes, menards, "ace hardware", "true value"]
+    category_id: "2b52c8b4-9a9e-4326-b842-79eec08a0a23"  # NEEDS > Home Maintenance
+
+  # Kids activities
+  - patterns: ["dance studio", gymnastics, "soccer club", "little league"]
+    category_id: "d807a084-14c9-428a-838a-e4c8eb434629"  # KIDS > Dance

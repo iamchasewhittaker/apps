@@ -9,6 +9,7 @@ struct YNABClarityApp: App {
         let schema = Schema([
             CategoryMapping.self,
             IncomeSource.self,
+            CategoryOverride.self,
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {

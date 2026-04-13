@@ -1,0 +1,28 @@
+# category_overrides.yaml — User corrections for categorization
+#
+# These are checked BEFORE all other rules (highest priority).
+# Use this when a payee is mis-categorized by the payee_rules or keyword rules.
+#
+# Format:
+#   - pattern: "payee substring to match (case-insensitive)"
+#     category_id: "ynab-category-uuid"
+#     note: "optional human-readable explanation"
+#
+# Examples:
+#   - pattern: "costco gas"
+#     category_id: "3c8e117f-11ca-4202-9d4a-fc83f40a0913"
+#     note: "Gas pump at Costco, not groceries"
+#
+#   - pattern: "amazon fresh"
+#     category_id: "0856160f-6845-46c5-bec6-df51bc9ea61f"
+#     note: "Amazon grocery delivery, not shopping"
+#
+#   - pattern: "target pharmacy"
+#     category_id: "6308a24b-7146-4700-8b02-04da32cbf34d"
+#     note: "Target Pharmacy → Prescriptions, not Groceries"
+#
+# After adding entries, run:
+#   python src/main.py --dry-run
+# to preview what would be updated.
+
+overrides: []

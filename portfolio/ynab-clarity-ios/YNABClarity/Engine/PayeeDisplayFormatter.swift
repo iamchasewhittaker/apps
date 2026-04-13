@@ -33,6 +33,76 @@ enum PayeeDisplayFormatter {
         if lower.contains("shell") && lower.contains("oil") { return "Shell" }
         if lower.contains("chevron") { return "Chevron" }
 
+        // Restaurants
+        if lower.contains("chick-fil-a") || lower.contains("chickfila") { return "Chick-fil-A" }
+        if lower.contains("chipotle") { return "Chipotle" }
+        if lower.contains("mcdonald") { return "McDonald's" }
+        if lower.contains("starbucks") { return "Starbucks" }
+        if lower.contains("panera") { return "Panera" }
+        if lower.contains("subway") { return "Subway" }
+        if lower.contains("wendy") { return "Wendy's" }
+        if lower.contains("taco bell") { return "Taco Bell" }
+        if lower.contains("dutch bros") { return "Dutch Bros" }
+        if lower.contains("dunkin") { return "Dunkin'" }
+        if lower.contains("olive garden") { return "Olive Garden" }
+        if lower.contains("five guys") { return "Five Guys" }
+        if lower.contains("popeyes") { return "Popeyes" }
+        if lower.contains("panda express") { return "Panda Express" }
+        if lower.contains("pizza hut") { return "Pizza Hut" }
+        if lower.contains("domino") { return "Domino's" }
+        if lower.contains("grubhub") { return "Grubhub" }
+
+        // Grocery
+        if lower.contains("kroger") { return "Kroger" }
+        if lower.contains("publix") { return "Publix" }
+        if lower.contains("trader joe") { return "Trader Joe's" }
+        if lower.contains("aldi") { return "ALDI" }
+        if lower.contains("h-e-b") || lower.contains("heb ") { return "H-E-B" }
+        if lower.contains("safeway") { return "Safeway" }
+        if lower.contains("sprouts") { return "Sprouts" }
+        if lower.contains("wegmans") { return "Wegmans" }
+
+        // Gas
+        if lower.contains("exxon") { return "Exxon" }
+        if lower.contains("speedway") { return "Speedway" }
+        if lower.contains("circle k") { return "Circle K" }
+        if lower.contains("quiktrip") || lower.contains("quik trip") { return "QuikTrip" }
+        if lower.hasPrefix("bp") || lower.contains(" bp ") { return "BP" }
+        if lower.contains("wawa") { return "Wawa" }
+        if lower.contains("sheetz") { return "Sheetz" }
+
+        // Retail / Pharmacy
+        if lower.contains("best buy") { return "Best Buy" }
+        if lower.contains("home depot") { return "Home Depot" }
+        if lower.contains("lowe's") || lower.contains("lowes") { return "Lowe's" }
+        if lower.contains("ace hardware") { return "Ace Hardware" }
+        if lower.contains("walgreens") { return "Walgreens" }
+        if lower.contains("cvs") { return "CVS" }
+        if lower.contains("rite aid") { return "Rite Aid" }
+
+        // Subscriptions
+        if lower.contains("hulu") { return "Hulu" }
+        if lower.contains("disneyplus") || (lower.contains("disney") && lower.contains("plus")) { return "Disney+" }
+        if lower.contains("paramount") { return "Paramount+" }
+        if lower.contains("peacock") { return "Peacock" }
+        if lower.contains("siriusxm") || lower.contains("sirius xm") { return "SiriusXM" }
+        if lower.contains("max.com") || (lower.contains("hbo") && lower.contains("max")) { return "Max" }
+        if lower.contains("grammarly") { return "Grammarly" }
+        if lower.contains("backblaze") { return "Backblaze" }
+        if lower.contains("1password") { return "1Password" }
+        if lower.contains("macrofactor") { return "MacroFactor" }
+        if lower.contains("oura") { return "Oura" }
+        if lower.contains("sunsama") { return "Sunsama" }
+
+        // Rideshare / Transportation
+        if lower.contains("lyft") { return "Lyft" }
+        if lower.contains("uber") && !lower.contains("uber eats") { return "Uber" }
+
+        // Fitness
+        if lower.contains("burn boot camp") { return "Burn Boot Camp" }
+        if lower.contains("planet fitness") { return "Planet Fitness" }
+        if lower.contains("anytime fitness") { return "Anytime Fitness" }
+
         var cleaned = stripNoise(bankStripped)
         cleaned = cleaned.trimmingCharacters(in: .whitespacesAndNewlines)
         if cleaned.isEmpty { return "Unknown Payee" }
@@ -62,15 +132,12 @@ enum PayeeDisplayFormatter {
         return String(m[..<idx]) + "…"
     }
 
-    /// Subtitle for item / memo context in transaction rows (Amazon-specific fallback when memo is empty).
+    /// Subtitle for item / memo context in transaction rows.
     static func itemContextSubtitle(payeeRaw: String?, memo: String?) -> String? {
         if let preview = memoPreview(memo), !preview.isEmpty {
             return "Item: \(preview)"
         }
-        if isAmazonMerchant(payeeRaw) {
-            return "No item details in YNAB memo yet. Add a memo in YNAB or use Spend Clarity to enrich."
-        }
-        return nil
+        return "No item details yet"
     }
 
     // MARK: - Private
