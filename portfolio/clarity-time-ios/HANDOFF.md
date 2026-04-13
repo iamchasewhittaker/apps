@@ -66,29 +66,10 @@ open portfolio/clarity-time-ios/ClarityTime.xcodeproj
 
 ## Next (repo roadmap)
 
-**Phase 4 — Clarity Budget (iOS)** — `portfolio/clarity-budget-ios/` — dual-scenario budget + wants. Scaffold the folder + `HANDOFF.md` if it does not exist yet. Use a **new** two-letter PBX prefix (do not reuse `CC`, `CT`, or `CX`). Wire `../clarity-ui` as `ClarityUI`. Same build order: models → store → views → programmatic `xcodeproj` → build → test.
+**Phase 5 — Clarity Growth (iOS)** — `portfolio/clarity-growth-ios/` — not started. See repo root [`HANDOFF.md`](../../HANDOFF.md) “Fresh session prompt — Phase 5 (Clarity Growth)”.
+
+**Clarity Budget (Phase 4)** — shipped at `portfolio/clarity-budget-ios/` (v0.1). To continue Budget work, use repo root [`HANDOFF.md`](../../HANDOFF.md) “Fresh session prompt — continue Clarity Budget” or [`portfolio/clarity-budget-ios/HANDOFF.md`](../clarity-budget-ios/HANDOFF.md).
 
 ---
-
-## Session start prompt — Phase 4 build
-
-Paste into a **new** chat (after `checkpoint`):
-
-```
-Read CLAUDE.md and HANDOFF.md first.
-
-Goal: Build Phase 4 — Clarity Budget iOS at portfolio/clarity-budget-ios/.
-
-Read portfolio/clarity-budget-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance.
-Follow the same structure and pattern as portfolio/clarity-time-ios/ (Phase 3), portfolio/clarity-triage-ios/ (Phase 2), and portfolio/clarity-checkin-ios/ (Phase 1):
-  models → store → views → programmatic xcodeproj → verify build → run tests.
-
-The xcodeproj must be generated programmatically (no manual Xcode project wizard).
-Use a NEW two-letter PBX ID prefix (do not use CC, CT, or CX — reserved for prior Clarity iOS apps). Pick a fresh prefix (e.g. CB for Clarity Budget) and document it in that app’s HANDOFF.
-
-Wire local package ../clarity-ui as ClarityUI.
-
-Start with: product/data model notes in HANDOFF if still TBD, then models → store → views → xcodeproj → build → test.
-```
 
 For **Clarity Time maintenance only**, use the “Session start — maintenance only” block in [`CLAUDE.md`](CLAUDE.md).

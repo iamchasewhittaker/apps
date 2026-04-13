@@ -12,7 +12,7 @@
 | Clarity Check-in (iOS) | v0.1 | `chase_checkin_ios_v1` (+draft, +meds) | local Xcode | ✅ Phase 1 done · xcodeproj generated · 4/4 tests pass · [`portfolio/clarity-checkin-ios`](portfolio/clarity-checkin-ios) |
 | Clarity Triage (iOS) | v0.1 | `chase_triage_ios_v1` | local Xcode | ✅ Phase 2 done · xcodeproj generated (`CT*` IDs) · tests pass on simulator · [`portfolio/clarity-triage-ios`](portfolio/clarity-triage-ios) · capacity tasks + ideas + wins |
 | Clarity Time (iOS) | v0.1 | `chase_time_ios_v1` | local Xcode | ✅ Phase 3 done · xcodeproj generated (`CX*` IDs) · tests pass on simulator · [`portfolio/clarity-time-ios`](portfolio/clarity-time-ios) · time sessions + scripture streak |
-| Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | 🔲 Phase 4 — HANDOFF stub · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
+| Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | ✅ Phase 4 done · xcodeproj generated (`CB*` IDs) · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
 | Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | 🔲 Phase 5 — not started · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |

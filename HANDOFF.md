@@ -7,35 +7,41 @@
 ## Every Session — 3 Steps
 
 ### 1. CHECKPOINT first
+
 Run `checkpoint` in Terminal before touching anything.
 This saves a git snapshot so you can always get back to where you started.
 
 ### 2. Tell the tool what you're doing
 
-| Tool | How to start |
-|------|-------------|
-| **Claude Code** | Paste `docs/templates/SESSION_START_APP_CHANGE.md` (one app) or `SESSION_START_MONOREPO.md` (cross-cutting). Say: *"Read CLAUDE.md and HANDOFF.md first."* |
-| **Cursor** | Open the project folder — `.cursor/rules/session-handoff.mdc` auto-loads. Still paste the template for goal context. |
-| **Antigravity (VS Code)** | Open the project folder — reads `CLAUDE.md` automatically. Paste the template for goal context. |
-| **Codex (OpenAI)** | Paste `CLAUDE.md` intro + this file's **State** table into the prompt, then paste the template. |
-| **Xcode only** | Just run `checkpoint` — that's your safety net. No template needed for Xcode-only edits. |
+
+| Tool                      | How to start                                                                                                                                               |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**           | Paste `docs/templates/SESSION_START_APP_CHANGE.md` (one app) or `SESSION_START_MONOREPO.md` (cross-cutting). Say: *"Read CLAUDE.md and HANDOFF.md first."* |
+| **Cursor**                | Open the project folder — `.cursor/rules/session-handoff.mdc` auto-loads. Still paste the template for goal context.                                       |
+| **Antigravity (VS Code)** | Open the project folder — reads `CLAUDE.md` automatically. Paste the template for goal context.                                                            |
+| **Codex (OpenAI)**        | Paste `CLAUDE.md` intro + this file's **State** table into the prompt, then paste the template.                                                            |
+| **Xcode only**            | Just run `checkpoint` — that's your safety net. No template needed for Xcode-only edits.                                                                   |
+
 
 ### 3. Checkpoint when done
+
 Run `checkpoint` again when you stop (or let AI tools do it).
 
 **AI session deliverables** (AI tools handle these automatically):
-- [ ] Code committed via `checkpoint` or explicit commit
-- [ ] App `CHANGELOG.md` updated under `## [Unreleased]`
-- [ ] App `ROADMAP.md` updated (mark done, add ideas)
-- [ ] Root `ROADMAP.md` Change Log row added
-- [ ] `HANDOFF.md` State table updated (Focus, Next, Last touch)
-- [ ] App `LEARNINGS.md` updated if something went wrong or was learned
+
+- Code committed via `checkpoint` or explicit commit
+- App `CHANGELOG.md` updated under `## [Unreleased]`
+- App `ROADMAP.md` updated (mark done, add ideas)
+- Root `ROADMAP.md` Change Log row added
+- `HANDOFF.md` State table updated (Focus, Next, Last touch)
+- App `LEARNINGS.md` updated if something went wrong or was learned
 
 **Xcode-only session:** run `checkpoint` — that's the minimum.
 
 ---
 
 ## Recovery — if something breaks
+
 ```
 restore          # shows your last 15 saves, numbered
 restore 3        # go back to save #3 (auto-saves current state first — nothing is lost)
@@ -74,38 +80,44 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 
 ## State (agents: read this first)
 
-| Field | Value |
-|--------|--------|
-| **Workspace** | `~/Developer/chase` |
-| **Branch** | `main` |
-| **Linear** | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus** | **Clarity iOS — Phases 1–3 complete.** Check-in + Triage + Time: programmatic `xcodeproj`, ClarityUI via `../clarity-ui`, `@Observable` stores with `nonisolated init()`, simulator `xcodebuild` verification. Time uses **`CX*`** PBX IDs (not `CT`). |
-| **Next** | **Phase 4: Clarity Budget** — implement `portfolio/clarity-budget-ios/` (stub [`HANDOFF.md`](portfolio/clarity-budget-ios/HANDOFF.md) created). Dual-scenario budget + wants; new PBX prefix (not `CC`, `CT`, `CX`); same Clarity iOS build order as Time/Triage/Check-in. |
-| **Blockers** | *(none)* |
-| **Last touch** | 2026-04-13 — Phase 4 handoff: root prompt below + `portfolio/clarity-budget-ios/HANDOFF.md` stub |
+
+| Field          | Value                                                                                                                                                                                                                                                                      |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
+| **Branch**     | `main`                                                                                                                                                                                                                                                                     |
+| **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
+| **Focus**      | **Clarity iOS — Phases 1–4 complete.** Check-in + Triage + Time + **Budget**: programmatic `xcodeproj`, ClarityUI via `../clarity-ui`, `@Observable` stores with `nonisolated init()`, simulator `xcodebuild` verification. PBX prefixes: `CC` / `CT` / `CX` / `CB`.        |
+| **Next**       | **Phase 5: Clarity Growth** — `portfolio/clarity-growth-ios/` (not started). Optional: Budget v0.2 items in [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md).                                                                           |
+| **Blockers**   | *(none)*                                                                                                                                                                                                                                                                   |
+| **Last touch** | 2026-04-13 — Clarity Budget Phase 4 MVP shipped (code + docs); root/app handoff prompts updated                                                                                                                                                                          |
+
 
 ---
 
-## Fresh session prompt — Phase 4 (Clarity Budget)
+## Fresh session prompt — continue Clarity Budget (v0.2+)
 
 Use a **new** chat after `checkpoint`. Paste:
 
 ```
-Read CLAUDE.md and HANDOFF.md first.
+Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-budget-ios/CLAUDE.md and portfolio/clarity-budget-ios/HANDOFF.md.
 
-Goal: Build Phase 4 — Clarity Budget iOS at portfolio/clarity-budget-ios/.
+Goal: Continue Clarity Budget iOS at portfolio/clarity-budget-ios/.
 
-Read portfolio/clarity-budget-ios/HANDOFF.md for scope, constraints, and PBX prefix guidance.
-Follow the same structure and pattern as portfolio/clarity-time-ios/ (Phase 3), portfolio/clarity-triage-ios/ (Phase 2), and portfolio/clarity-checkin-ios/ (Phase 1):
-  models → store → views → programmatic xcodeproj → verify build → run tests.
+Current state: Phase 4 MVP v0.1 shipped — dual scenarios + wants aggregate; PBX prefix CB; store key chase_budget_ios_v1; ClarityUI via ../clarity-ui.
 
-The xcodeproj must be generated programmatically (no manual Xcode project wizard).
-Use a NEW two-letter PBX ID prefix (do not use CC, CT, or CX — reserved for prior Clarity iOS apps). Document the chosen prefix (e.g. CB) in portfolio/clarity-budget-ios/HANDOFF.md.
+Pick next work from portfolio/clarity-budget-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate the store from nested Button builders, StorageHelpers persistence.
 
-Wire local package ../clarity-ui as ClarityUI.
+Verify:
+  cd portfolio/clarity-budget-ios && xcodebuild -scheme ClarityBudget -showdestinations
+  xcodebuild build -scheme ClarityBudget -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+  xcodebuild test  -scheme ClarityBudget -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
 
-Start with: product/data model notes in HANDOFF if still TBD, then models → store → views → xcodeproj → build → test.
+Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file’s State when you stop.
 ```
+
+## Fresh session prompt — Phase 5 (Clarity Growth)
+
+When starting Growth, use a **new** chat after `checkpoint`. Until `portfolio/clarity-growth-ios/HANDOFF.md` exists, say: *Read `CLAUDE.md` + `HANDOFF.md`; scaffold Clarity Growth iOS matching Check-in/Triage/Time/Budget patterns; new PBX two-letter prefix (not CC, CT, CX, CB); wire `../clarity-ui`.*
 
 ---
 
@@ -115,8 +127,8 @@ Start with: product/data model notes in HANDOFF if still TBD, then models → st
 - **ClarityUI package:** `portfolio/clarity-ui/` — iOS 17+ / macOS 14+. Compiles clean via `swift build`. SwiftUI tests can't run on macOS host (no display); use `xcodebuild` with simulator for real testing.
 - **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; programmatic xcodeproj (see app HANDOFF for simulator commands).
 - **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; use `xcodebuild -showdestinations` if “iPhone 16” simulator is missing.
-- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **complete** (v0.1); `CX*` PBX prefix; duplicate Phase 4 prompt also in **this file** (section above) and in `portfolio/clarity-budget-ios/HANDOFF.md`.
-- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **stub** (not started); suggested PBX prefix **`CB`**; storage key `chase_budget_ios_v1`.
+- **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **complete** (v0.1); `CX*` PBX prefix; “Next” points at Growth + shipped Budget.
+- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **MVP shipped** (v0.1); PBX prefix **`CB`**; storage key `chase_budget_ios_v1`; continue prompt in **this file** + app `HANDOFF.md`.
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
 - **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.
@@ -127,7 +139,10 @@ Start with: product/data model notes in HANDOFF if still TBD, then models → st
 
 ## Templates (copy from repo)
 
-| Situation | File |
-|-----------|------|
-| New initiative, migration, or cross-app work | [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md) |
+
+| Situation                                                     | File                                                                                     |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| New initiative, migration, or cross-app work                  | [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md)     |
 | Change one app under `portfolio/<app>/` or `projects/<name>/` | [docs/templates/SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md) |
+
+

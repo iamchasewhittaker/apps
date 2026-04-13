@@ -1,0 +1,544 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CB010000000000000000001 /* ClarityBudgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000001 /* ClarityBudgetApp.swift */; };
+		CB010000000000000000002 /* BudgetBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000002 /* BudgetBlob.swift */; };
+		CB010000000000000000003 /* BudgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000003 /* BudgetConfig.swift */; };
+		CB010000000000000000004 /* BudgetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000004 /* BudgetStore.swift */; };
+		CB010000000000000000005 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000005 /* ContentView.swift */; };
+		CB010000000000000000006 /* BudgetScenariosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000006 /* BudgetScenariosView.swift */; };
+		CB010000000000000000007 /* WantsTrackerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000007 /* WantsTrackerView.swift */; };
+		CB010000000000000000008 /* Quotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000008 /* Quotes.swift */; };
+		CB010000000000000000009 /* BudgetBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000009 /* BudgetBlobTests.swift */; };
+		CB01000000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB02000000000000000000A /* Assets.xcassets */; };
+		CB01000000000000000000B /* ClarityUI in Frameworks */ = {isa = PBXBuildFile; productRef = CB0A0000000000000000001 /* ClarityUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CB080000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB060000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB050000000000000000001;
+			remoteInfo = ClarityBudget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CB020000000000000000001 /* ClarityBudgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityBudgetApp.swift; sourceTree = "<group>"; };
+		CB020000000000000000002 /* BudgetBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetBlob.swift; sourceTree = "<group>"; };
+		CB020000000000000000003 /* BudgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetConfig.swift; sourceTree = "<group>"; };
+		CB020000000000000000004 /* BudgetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetStore.swift; sourceTree = "<group>"; };
+		CB020000000000000000005 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CB020000000000000000006 /* BudgetScenariosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetScenariosView.swift; sourceTree = "<group>"; };
+		CB020000000000000000007 /* WantsTrackerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantsTrackerView.swift; sourceTree = "<group>"; };
+		CB020000000000000000008 /* Quotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quotes.swift; sourceTree = "<group>"; };
+		CB020000000000000000009 /* BudgetBlobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetBlobTests.swift; sourceTree = "<group>"; };
+		CB02000000000000000000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CB02000000000000000000B /* ClarityBudget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClarityBudget.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB02000000000000000000C /* ClarityBudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClarityBudgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CB030000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB01000000000000000000B /* ClarityUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB030000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CB040000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				CB040000000000000000002 /* ClarityBudget */,
+				CB04000000000000000000D /* ClarityBudgetTests */,
+				CB040000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CB040000000000000000002 /* ClarityBudget */ = {
+			isa = PBXGroup;
+			children = (
+				CB020000000000000000001 /* ClarityBudgetApp.swift */,
+				CB040000000000000000004 /* Models */,
+				CB040000000000000000005 /* Services */,
+				CB04000000000000000000B /* Constants */,
+				CB040000000000000000006 /* Views */,
+				CB02000000000000000000A /* Assets.xcassets */,
+			);
+			path = ClarityBudget;
+			sourceTree = "<group>";
+		};
+		CB040000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB02000000000000000000B /* ClarityBudget.app */,
+				CB02000000000000000000C /* ClarityBudgetTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB040000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CB020000000000000000002 /* BudgetBlob.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CB040000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CB020000000000000000003 /* BudgetConfig.swift */,
+				CB020000000000000000004 /* BudgetStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		CB040000000000000000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CB020000000000000000005 /* ContentView.swift */,
+				CB020000000000000000006 /* BudgetScenariosView.swift */,
+				CB020000000000000000007 /* WantsTrackerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CB04000000000000000000B /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				CB020000000000000000008 /* Quotes.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		CB04000000000000000000D /* ClarityBudgetTests */ = {
+			isa = PBXGroup;
+			children = (
+				CB020000000000000000009 /* BudgetBlobTests.swift */,
+			);
+			path = ClarityBudgetTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CB050000000000000000001 /* ClarityBudget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB0E0000000000000000002 /* Build configuration list for PBXNativeTarget "ClarityBudget" */;
+			buildPhases = (
+				CB0B0000000000000000001 /* Sources */,
+				CB030000000000000000001 /* Frameworks */,
+				CB0C0000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClarityBudget;
+			packageProductDependencies = (
+				CB0A0000000000000000001 /* ClarityUI */,
+			);
+			productName = ClarityBudget;
+			productReference = CB02000000000000000000B /* ClarityBudget.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CB050000000000000000002 /* ClarityBudgetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB0E0000000000000000003 /* Build configuration list for PBXNativeTarget "ClarityBudgetTests" */;
+			buildPhases = (
+				CB0B0000000000000000002 /* Sources */,
+				CB030000000000000000002 /* Frameworks */,
+				CB0C0000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB0D0000000000000000001 /* PBXTargetDependency */,
+			);
+			name = ClarityBudgetTests;
+			productName = ClarityBudgetTests;
+			productReference = CB02000000000000000000C /* ClarityBudgetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CB060000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					CB050000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					CB050000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = CB050000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = CB0E0000000000000000001 /* Build configuration list for PBXProject "ClarityBudget" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CB040000000000000000001;
+			packageReferences = (
+				CB090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */,
+			);
+			productRefGroup = CB040000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CB050000000000000000001 /* ClarityBudget */,
+				CB050000000000000000002 /* ClarityBudgetTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CB0C0000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB01000000000000000000A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB0C0000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CB0B0000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB010000000000000000001 /* ClarityBudgetApp.swift in Sources */,
+				CB010000000000000000002 /* BudgetBlob.swift in Sources */,
+				CB010000000000000000003 /* BudgetConfig.swift in Sources */,
+				CB010000000000000000004 /* BudgetStore.swift in Sources */,
+				CB010000000000000000005 /* ContentView.swift in Sources */,
+				CB010000000000000000006 /* BudgetScenariosView.swift in Sources */,
+				CB010000000000000000007 /* WantsTrackerView.swift in Sources */,
+				CB010000000000000000008 /* Quotes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB0B0000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB010000000000000000009 /* BudgetBlobTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CB0D0000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB050000000000000000001 /* ClarityBudget */;
+			targetProxy = CB080000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CB070000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CBX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CB070000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CBX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CB070000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clarity Budget";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityBudget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB070000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clarity Budget";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityBudget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CB070000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityBudgetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClarityBudget.app/ClarityBudget";
+			};
+			name = Debug;
+		};
+		CB070000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.ClarityBudgetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClarityBudget.app/ClarityBudget";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CB0E0000000000000000001 /* Build configuration list for PBXProject "ClarityBudget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB070000000000000000001 /* Debug */,
+				CB070000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB0E0000000000000000002 /* Build configuration list for PBXNativeTarget "ClarityBudget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB070000000000000000003 /* Debug */,
+				CB070000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB0E0000000000000000003 /* Build configuration list for PBXNativeTarget "ClarityBudgetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB070000000000000000005 /* Debug */,
+				CB070000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CB090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../clarity-ui";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CB0A0000000000000000001 /* ClarityUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */;
+			productName = ClarityUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+	};
+	rootObject = CB060000000000000000001 /* Project object */;
+}

@@ -76,4 +76,4 @@ Read portfolio/clarity-time-ios/HANDOFF.md for shipped scope and verification no
 Run checkpoint before edits; update CHANGELOG / ROADMAP / this HANDOFF when you stop.
 ```
 
-For **Phase 4 (Clarity Budget)**, use the prompt in `portfolio/clarity-time-ios/HANDOFF.md` (Next / Phase 4 section).
+For **Clarity Budget** (continue / v0.2), use repo root [`HANDOFF.md`](../../HANDOFF.md) “Fresh session prompt — continue Clarity Budget” or [`portfolio/clarity-budget-ios/HANDOFF.md`](../clarity-budget-ios/HANDOFF.md).

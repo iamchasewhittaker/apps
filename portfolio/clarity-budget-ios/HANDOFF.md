@@ -1,48 +1,104 @@
 # Handoff — Clarity Budget (iOS)
 
-## Current status: Phase 4 — not started
+## Current status: Phase 4 complete (MVP v0.1)
 
-- **Version:** v0.1 (planned)
-- **Bundle ID:** *(define — e.g. `com.chasewhittaker.ClarityBudget`)*
-- **Storage key:** `chase_budget_ios_v1` (per repo root [`CLAUDE.md`](../../CLAUDE.md)) — **never rename after ship**
+- **Version:** v0.1
+- **Last session:** 2026-04-13
+- **Bundle ID:** `com.chasewhittaker.ClarityBudget`
+- **Storage key:** `chase_budget_ios_v1` (single `Codable` root in `UserDefaults` — **never rename**)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
+- **PBX prefix:** **`CB`** — all generated IDs in `ClarityBudget.xcodeproj/project.pbxproj` use `CB*` (reserved: `CC`, `CT`, `CX` for sibling Clarity apps)
 
----
+### Build / test
 
-## Product intent (from portfolio roadmap)
+- `ClarityBudget.xcodeproj` is **generated in-repo** (no manual Xcode project wizard).
+- Verify with `xcodebuild` on an **installed** iOS Simulator + `CODE_SIGNING_ALLOWED=NO`. Use `-showdestinations` if your preferred device name/OS is missing.
 
-**Dual-scenario budget + wants** — local-first app in the Clarity iOS family: one `Codable` root blob, `StorageHelpers`, ClarityUI shell (`ClarityPalette`, `ClarityTypography`, `QuoteBanner`, etc.).
-
-**Before coding:** Capture PRD-level notes in this file (or link a plan): two scenarios (e.g. baseline vs stretch), how “wants” are tracked, and persistence keys.
-
----
-
-## Engineering pattern (match Phases 1–3)
-
-1. **Order:** models → `*Config` + store → views → **programmatic** `*.xcodeproj` + shared scheme → `xcodebuild build` → `xcodebuild test`.
-2. **Xcodeproj:** No manual “New Project” wizard. Clone `ClarityTime.xcodeproj/project.pbxproj` or `ClarityTriage.xcodeproj/project.pbxproj` structure; assign a **new** two-letter PBX ID prefix (**suggested: `CB`** for Clarity Budget). Do **not** reuse `CC`, `CT`, or `CX`.
-3. **SPM:** `XCLocalSwiftPackageReference` with `relativePath = "../clarity-ui"` from `portfolio/clarity-budget-ios/`.
-4. **Concurrency:** `@Observable @MainActor` store, `nonisolated init()`; `@MainActor` on views that touch the store outside `body`.
-5. **Team / plist:** Same defaults as siblings unless told otherwise — `DEVELOPMENT_TEAM = 9XVT527KP3`, `GENERATE_INFOPLIST_FILE = YES`, iOS 17, Swift 5.0.
-
----
-
-## Verification (when the project exists)
+### Open project
 
 ```bash
-cd portfolio/clarity-budget-ios
-xcodebuild -scheme ClarityBudget -showdestinations   # pick an installed simulator
-xcodebuild build -scheme ClarityBudget -destination 'platform=iOS Simulator,name=REPLACE_ME,OS=REPLACE_ME' CODE_SIGNING_ALLOWED=NO
-xcodebuild test  -scheme ClarityBudget -destination 'platform=iOS Simulator,name=REPLACE_ME,OS=REPLACE_ME' CODE_SIGNING_ALLOWED=NO
+open portfolio/clarity-budget-ios/ClarityBudget.xcodeproj
 ```
-
-*(Replace scheme name if you choose a different target name; keep scheme and product names consistent in `project.pbxproj`.)*
 
 ---
 
-## Session start prompt — Phase 4 build (copy into new chat)
+## Product / data model (v0.1)
+
+### Dual scenarios
+
+1. **Baseline** — conservative month: `BudgetScenario` with `label`, `monthlyIncomeCents`, `fixedNeedsCents`, `flexibleNeedsEstimateCents`, `wantsBudgetCents`, `wantsSpentCents`.
+2. **Stretch** — alternate plan (e.g. lower fixed costs or higher wants cap) stored side-by-side in `BudgetBlob.baseline` / `BudgetBlob.stretch`.
+3. **Glance math (all in cents):**
+   - `afterNeedsCents` = income − fixed − flexible estimate
+   - `wantsRemainingVersusBudgetCents` = wants budget cap − wants spent
+   - `surplusAfterNeedsAndWantsCents` = afterNeeds − wants spent
+
+### Wants tracking
+
+- **Aggregate only (v0.1):** each scenario has `wantsSpentCents` incremented from the **Wants** tab (quick +$5 / +$20 / +$50, custom dollars, or reset). No per-line want ledger yet (see `ROADMAP.md`).
+
+### Persistence
+
+- One root struct `BudgetBlob` keyed by `BudgetConfig.storeKey`.
+- No secondary keys for app data.
+
+---
+
+## What shipped (MVP)
+
+| Area | Notes |
+|------|-------|
+| Scenarios | Edit baseline + stretch; summary rows (after needs, wants remaining vs plan, surplus) |
+| Wants | Segmented picker (scenario); log spend; reset spent for scenario |
+| Quote | `budgetQuotes` + `QuoteBanner` on both tabs |
+| Storage | `StorageHelpers` + `BudgetBlob` JSON |
+| Tests | `ClarityBudgetTests` — JSON round-trip, math, format smoke |
+
+---
+
+## Done when (checklist)
+
+- [x] Two scenarios persist and edit independently
+- [x] Wants spend logs against selected scenario; reset works
+- [x] `xcodebuild build` clean (simulator, no signing) — verified iPhone 15 / iOS 17.2
+- [ ] `xcodebuild test` — run locally when Simulator launches cleanly (same destination as `CLAUDE.md`)
+
+---
+
+## Next (repo roadmap)
+
+**Phase 5 — Clarity Growth (iOS)** — `portfolio/clarity-growth-ios/` — not started.
+
+**This app (v0.2+):** see [`ROADMAP.md`](ROADMAP.md) (month boundaries, want line items, export).
+
+---
+
+## Fresh session prompt — continue Clarity Budget (copy into new chat)
 
 After `checkpoint`:
+
+```
+Read CLAUDE.md and repo HANDOFF.md first, then portfolio/clarity-budget-ios/CLAUDE.md and portfolio/clarity-budget-ios/HANDOFF.md.
+
+Goal: Continue Clarity Budget iOS at portfolio/clarity-budget-ios/.
+
+Current state: Phase 4 MVP v0.1 shipped — dual scenarios + wants aggregate; PBX prefix CB; store key chase_budget_ios_v1; ClarityUI via ../clarity-ui.
+
+Pick next work from portfolio/clarity-budget-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate store from nested Button builders, StorageHelpers persistence.
+
+Verify: cd portfolio/clarity-budget-ios && xcodebuild -scheme ClarityBudget -showdestinations
+Then build (and test when Simulator is healthy):
+  xcodebuild build -scheme ClarityBudget -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+  xcodebuild test  -scheme ClarityBudget -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+
+Update CHANGELOG [Unreleased], ROADMAP, this HANDOFF, root ROADMAP Change Log, root HANDOFF State when you stop.
+```
+
+---
+
+## Historical — Phase 4 initial scaffold prompt (complete)
+
+*(Use the “continue” block above for new sessions; this was the first-build checklist.)*
 
 ```
 Read CLAUDE.md and HANDOFF.md first.
@@ -60,9 +116,3 @@ Wire local package ../clarity-ui as ClarityUI.
 
 Start with: product/data model notes in HANDOFF if still TBD, then models → store → views → xcodeproj → build → test.
 ```
-
----
-
-## After implementation
-
-Replace placeholder sections with real bundle ID, file tree, MVP checklist, and “done when” rows — same style as [`portfolio/clarity-time-ios/HANDOFF.md`](../clarity-time-ios/HANDOFF.md) after Phase 3.
