@@ -98,6 +98,7 @@
 | [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../design/CLARITY_IOS_APP_ICON_SPEC.md) | Drawing or exporting **any** Clarity-family iOS icon |
 | [`docs/design/README.md`](../design/README.md) | Index of design specs |
 | [`docs/templates/SESSION_START_APP_CHANGE.md`](SESSION_START_APP_CHANGE.md) | Starting a single-app AI session |
+| [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](SESSION_START_CLARITY_IOS_LOGOS.md) | Batch handoff — **Triage / Time / Budget / Growth** launcher icons (Check-in = reference) |
 | [`docs/ios-app-starter-kit/README.md`](../ios-app-starter-kit/README.md) | Planning docs order before code |
 
 ---

@@ -32,6 +32,7 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 - [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md) — gitignored **`from-documents-20260404/`** bundle
 - [templates/SESSION_START_MONOREPO.md](templates/SESSION_START_MONOREPO.md) · [templates/SESSION_START_APP_CHANGE.md](templates/SESSION_START_APP_CHANGE.md) — paste into a new chat
 - [templates/PORTFOLIO_APP_BRANDING.md](templates/PORTFOLIO_APP_BRANDING.md) · [design/README.md](design/README.md) — branding template + design index
+- [templates/SESSION_START_CLARITY_IOS_LOGOS.md](templates/SESSION_START_CLARITY_IOS_LOGOS.md) — paste into a new chat to generate **Clarity Triage/Time/Budget/Growth** app icons (suite spec + Check-in reference)
 - [CLAUDE.md](../CLAUDE.md) — master instructions for the portfolio
 - [ROADMAP.md](../ROADMAP.md) — cross-app priorities and change log
 - [AGENTS.md](../portfolio/wellness-tracker/AGENTS.md) (per app) — Cursor/agent conventions
