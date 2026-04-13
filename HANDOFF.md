@@ -87,9 +87,9 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
 | **Focus**      | **Job Search HQ Wave 2** — structured prep framework, STAR story bank, outreach cadence nudges. See [`portfolio/job-search-hq/HANDOFF.md`](portfolio/job-search-hq/HANDOFF.md). **Knowledge Base v1.4** — import/export JSON (when you return to KB). |
-| **Next**       | Job Search HQ Wave 2 item #2 ("Who should I message today?") — see `portfolio/job-search-hq/ROADMAP.md`. Theme alignment: [`docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md`](docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md). |
+| **Next**       | Job Search HQ Wave 2 item #2 ("Who should I message today?") — see `portfolio/job-search-hq/ROADMAP.md`. |
 | **Blockers**   | *(none)*                                                                                                                                                                                                                                                                   |
-| **Last touch** | 2026-04-13 — **Job Search HQ Wave 2 #1:** By Company view on ContactsTab — warm lead badges, ghost rows, expand/collapse company rows, AppModal pre-fill. Deployed to Vercel. |
+| **Last touch** | 2026-04-13 — **Portfolio theme alignment:** unified all 4 web apps (Job Search HQ, Wellness Tracker, App Forge, Knowledge Base) onto shared BASE token set (`#0f1117` bg, `#161b27` surface, `#1f2937` border, `#f3f4f6` text, DM Sans font). See `docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md`. |
 
 
 ---
