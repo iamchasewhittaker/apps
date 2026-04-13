@@ -5,7 +5,7 @@
 ## App Identity
 - **Version:** v1.0
 - **Storage key:** `chase_knowledge_base_v1` (localStorage)
-- **URL:** not yet deployed (Vercel next)
+- **URL:** https://knowledge-base-beta-five.vercel.app
 - **Entry:** `src/App.jsx`
 
 ## Purpose
@@ -46,9 +46,13 @@ HANDOFF.md             <- session continuity
 - `url`: auto-prefixed with `https://` if missing
 - `category`: free-text; defaults to `"Other"` if blank
 
-## Current Features (v1.0)
-- 29 seed bookmarks across 9 categories (including "My Projects")
-- "My Projects" category with Chase's active portfolio apps
+## Current Features (v1.1)
+- 169 seed bookmarks across 21 categories
+- Grouped collapsible category sections (alphabetical; My Projects always last)
+- Pinned bookmarks section at top (star icon toggles)
+- Per-bookmark detail panel: status (Not Started / In Progress / Completed), progress 0–100%, notes, last visited
+- Click tracking: visit count + lastVisited set on link open
+- "My Projects" category with all active portfolio apps (14 entries)
 - Search across title / URL / category
 - Category filter pills (dynamic from data)
 - Add / edit / delete bookmarks
@@ -62,7 +66,8 @@ HANDOFF.md             <- session continuity
 
 ## Constraints & Gotchas
 - Preserve dark mode (`#09090b` base).
-- **Seed only loads on empty storage.** Changing the `SEED` array won't update existing users. For future seed changes, document a manual reset or add a migration step in the loader.
+- **Seed migration is in place.** `SEED_VERSION` (currently `3`) controls migration. Bump it and add new entries to `SEED` — existing users will get the new entries appended on next load without losing their custom bookmarks. `STORE_SEED_VERSION` (`chase_knowledge_base_seed_version`) tracks the last migrated version in localStorage.
+- **New bookmark fields** are all optional (falsy = default). Don't break existing entries by requiring them.
 - All styles live in the `s` object in `constants.js`. Hover effects use CSS classes prefixed with `kb-` injected via the `css` string.
 
 ## How to Extend

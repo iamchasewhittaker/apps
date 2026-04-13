@@ -21,29 +21,34 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **"My Projects" category** — 7 portfolio app links
 - [x] **Project folder setup** — moved into monorepo at `portfolio/knowledge-base/` with Product Build Framework docs
 
-## v1.0 — Shipped (CRA conversion)
+## v1.0 — Shipped
 - [x] **Swap `window.storage` → `localStorage`** — new key `chase_knowledge_base_v1`
 - [x] **CRA scaffold** — `package.json`, `public/index.html`, `src/` structure (react-scripts, not Vite)
 - [x] **Inline styles** — converted Tailwind to `s` style object (portfolio convention)
 - [x] **ErrorBoundary** — standard portfolio pattern
 - [x] **CI** — added to `portfolio-web-build.yml`
-- [ ] **Deploy to Vercel** — connect repo, auto-deploy on push
+- [x] **Seed expanded** — 48 bookmarks across 12 categories (Apple Developer, Perplexity, full My Projects)
+- [x] **Seed migration** — version-based; existing users get new entries without losing custom bookmarks
+- [x] **Deploy to Vercel** — https://knowledge-base-beta-five.vercel.app
 
-## v1.1 — Next
-- [ ] **Import / export JSON** — backup + portability
+## v1.1 — Shipped
+- [x] **Grouped collapsible sections** — bookmarks under category headers, alphabetical, My Projects last
+- [x] **Pinned bookmarks** — star to promote to top Pinned section
+- [x] **Per-bookmark tracking** — status, progress 0–100%, notes, last visited, visit count
+- [x] **Click tracking** — auto-increments visits + sets lastVisited on link open
+- [x] **Expanded Add/Edit form** — description, status, progress, notes
+- [x] **Seed expanded to 169 bookmarks across 21 categories** — Job Search, GMAT, Coding, Web Dev, iOS Dev, Design, Architecture, GitHub, Swift, Tools + expanded AI categories
+- [x] **SEED_VERSION 3 migration**
+
+## v1.2 — Next
+- [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)
 - [ ] **Favicons** — show site icons next to each bookmark
 
-## v1.2 — Make it scale as a KB
-- [ ] Tags (multiple per bookmark, separate from single category)
-- [ ] Pinned / favorites section at top
-- [ ] Notes field per bookmark
-- [ ] Sort options (recent / alphabetical / category)
-
 ## v1.3 — Quality of life
+- [ ] Tags (multiple per bookmark, separate from single category)
+- [ ] Sort options (recent / alphabetical / most visited)
 - [ ] Keyboard shortcuts (`/` to focus search, `n` for new)
 - [ ] Duplicate URL detection on add
-- [ ] "Last visited" tracking
-- [ ] Collapsible category groups
 
 ## Later — Ideas parking lot
 - Bulk edit / multi-select

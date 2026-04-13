@@ -1,42 +1,49 @@
 # Handoff — Knowledge Base
 
 ## Session info
-- **Date:** April 12, 2026
-- **Session #:** 4
-- **Working on version:** v1.0
+- **Date:** April 13, 2026
+- **Session #:** 6
+- **Working on version:** v1.1
 
 ## What shipped this session
-- **CRA conversion** — converted from single-file Claude artifact to standard Create React App
-- **localStorage swap** — `window.storage` → `localStorage` with key `chase_knowledge_base_v1`
-- **Inline styles** — converted all Tailwind classes to `s` style object in `constants.js` (portfolio convention)
-- **File structure** — `src/App.jsx`, `src/constants.js`, `src/ErrorBoundary.jsx`, `src/index.js`
-- **CI** — added `knowledge-base` job to `portfolio-web-build.yml`
-- **Archived** — `bookmark-manager.jsx` marked as archived (kept for reference)
+- **Grouped collapsible sections** — bookmarks grouped under category headers (alphabetical; My Projects last)
+- **Pinned bookmarks** — star any bookmark to pin it to a section at the top
+- **Per-bookmark detail panel** — expand any row to reveal: status (Not Started / In Progress / Completed), progress slider 0–100%, notes textarea, last visited date
+- **Click tracking** — visit count + lastVisited auto-set when opening a link
+- **Status pills** — In Progress / Completed shown inline on bookmark rows
+- **Expanded Add/Edit form** — description, status, progress, notes fields added
+- **Seed expanded 48 → 169 bookmarks across 21 categories**:
+  - New categories: Job Search, GMAT, Coding, Web Dev, iOS Dev, Design, Architecture, GitHub, Swift, Tools
+  - Expanded AI categories: Claude (9), ChatGPT (8), Gemini (8), Cursor (4), Perplexity (5), Dev Tools (8), Learning (8), Community (8)
+- **SEED_VERSION 3 migration** — existing users get new entries appended on next load
+
+## What shipped previously (Session 5)
+  - 9 new "Apple Developer" entries: Account, Swift docs, SwiftUI docs, HIG, App Store Connect, Xcode docs, WWDC, TestFlight, Forums
+  - 3 new "Perplexity" entries: Perplexity app, API docs, Guides hub
+- **Seed migration** — version-based migration (`SEED_VERSION`, `STORE_SEED_VERSION`) so existing users get new entries appended without losing custom bookmarks
+- **Deployed to Vercel** — https://knowledge-base-beta-five.vercel.app
+- **Knowledge Base self-link updated** — id 29 now points to live URL
 
 ## What shipped previously
 - **v0.1:** Dark mode React artifact, 10 seed bookmarks, search, category filter pills, add/edit/delete, `window.storage` persistence
 - **v0.2:** Expanded seed to 22 bookmarks across 8 categories
 - **v0.3:** My Projects category, project folder, Product Build Framework docs
+- **v1.0 (Session 4):** CRA conversion, localStorage, inline styles, ErrorBoundary, CI
 
 ## What's broken or half-done
-- Nothing broken. Build passes cleanly.
-- Vercel deployment not yet connected (next step).
-- Import/export and favicons deferred to v1.1.
+- Nothing broken. Build passes cleanly. Deployed and live.
 
 ## Decisions made
-- **CRA, not Vite** — matches all other portfolio apps (wellness-tracker, job-search-hq, app-forge).
-- **Storage key: `chase_knowledge_base_v1`** — follows portfolio naming convention (`chase_{app}_v1`).
-- **Inline styles with `s` object** — matches portfolio convention; hover effects via injected `<style>` with `kb-` prefixed classes.
-- **Skipped import/export for v1.0** — shipped the platform conversion first; import/export moves to v1.1.
+- **Seed migration pattern** — `SEED_VERSION` int + `STORE_SEED_VERSION` localStorage key; bump version to push new entries to existing users.
+- **Deployed via Vercel CLI** (`vercel --yes` from app folder) — auto-linked to `iamchasewhittakers-projects/knowledge-base`.
 
 ## Next session — start here
-**Next action:** Deploy to Vercel.
+**Next action:** Ship v1.2 — import/export JSON.
 
 Steps:
-1. Connect `portfolio/knowledge-base/` to Vercel (set root directory)
-2. Verify build succeeds on Vercel
-3. Update CLAUDE.md and root CLAUDE.md with deployed URL
-4. Then ship import/export JSON (v1.1)
+1. Add export button → downloads `knowledge-base-export.json`
+2. Add import button → file picker, merges without duplicating (by URL)
+3. Test round-trip: export → clear storage → import → verify all bookmarks restored
 
 ## Files in play
 - [x] `src/App.jsx` — main component (v1.0)
