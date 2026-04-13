@@ -22,7 +22,7 @@
 | Growth Tracker | v6 | retired | — | 🗄️ Retired |
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 | Spend Clarity | v0.1 | none (Python CLI; no localStorage); YNAB token in `.env`; Gmail OAuth tokens in `config/` | local Python | 🟡 Local · [`portfolio/spend-clarity`](portfolio/spend-clarity) |
-| Knowledge Base | v2.0 | `chase_knowledge_base_v1` (blob: `{ bookmarks, folders, favorites, categoryOrder }`) | knowledge-base-beta-five.vercel.app | ✅ Active · 260 bookmarks · ARC sidebar + nested folders · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
+| Knowledge Base | v1.0 | `chase_knowledge_base_v1` | knowledge-base-beta-five.vercel.app | ✅ Active · 48 bookmarks · 12 categories · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
@@ -196,7 +196,7 @@ If you discover sensitive data already in a tracked file, **stop and flag it imm
 
 ## CI — portfolio web builds
 
-GitHub Actions **`.github/workflows/portfolio-web-build.yml`** runs **`npm ci && npm run build`** for **Wellness**, **Job Search**, and **App Forge** when those paths change (push to `main` / `master` or PR). **RollerTask Tycoon (iOS)** is not in that workflow — use Xcode (**⌘B** / **⌘U** for `RollerTaskTycoonTests`).
+GitHub Actions **`.github/workflows/portfolio-web-build.yml`** runs **`npm ci && npm run build`** on **Node 20** for these four CRA apps when their paths change (push to `main` / `master` or PR): **Wellness Tracker** (`portfolio/wellness-tracker`), **Job Search HQ** (`portfolio/job-search-hq`), **Knowledge Base** (`portfolio/knowledge-base`), **App Forge** (`portfolio/app-forge`). **`package-lock.json` must stay in sync** with each app’s `package.json` — CI uses `npm ci`, which fails if the lockfile was produced by a mismatched npm (e.g. Node 24 / npm 11 locally while CI uses Node 20). **Regenerate lockfiles with Node 20’s `npm`** and verify with `npm ci` before pushing; session template: [`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](docs/templates/SESSION_START_FIX_CI_LOCKFILES.md). **RollerTask Tycoon (iOS)** is not in that workflow — use Xcode (**⌘B** / **⌘U** for `RollerTaskTycoonTests`).
 
 ## Linear — project tracking (PM-style)
 

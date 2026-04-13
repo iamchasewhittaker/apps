@@ -63,7 +63,7 @@ SwiftData store: app container (attractions, subtasks, ledger).
 
 **Import:** **v1** (`isDone` + legacy fields) or **v2**; confirms **replace all** attractions, subtasks, ledger, and park cash.
 
-**Tests:** In Xcode, run **RollerTaskTycoonTests** (`BackupImporter` decode/validation). **CI:** Web apps use repo [`.github/workflows/portfolio-web-build.yml`](../../.github/workflows/portfolio-web-build.yml) (`npm run build` per app).
+**Tests:** In Xcode, run **RollerTaskTycoonTests** (`BackupImporter` decode/validation). **CI:** The four CRA portfolio web apps use repo [`.github/workflows/portfolio-web-build.yml`](../../.github/workflows/portfolio-web-build.yml) (**Node 20**, `npm ci` then `npm run build` per app). This iOS app is not in that workflow.
 
 ## Docs
 

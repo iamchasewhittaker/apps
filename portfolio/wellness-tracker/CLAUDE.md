@@ -109,6 +109,9 @@ See [Passwordless email — With OTP](https://supabase.com/docs/guides/auth/auth
 - Split `TrackerTab.jsx` (78K) into morning/evening sub-components
 - Split `HistoryTab.jsx` (58K) into analytics, export, AI summary
 
+## CI (GitHub Actions)
+This app is built by **`.github/workflows/portfolio-web-build.yml`** on **Node 20** (`npm ci` then `npm run build`). Keep **`package-lock.json`** in sync with `package.json` using **Node 20’s npm** — see repo root **[`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../../docs/templates/SESSION_START_FIX_CI_LOCKFILES.md)**.
+
 ## Learnings
 Read `LEARNINGS.md` at session start for project-specific gotchas.
 After a session where something unexpected happened or was learned, append an entry.

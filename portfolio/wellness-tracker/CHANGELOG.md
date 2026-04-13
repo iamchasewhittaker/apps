@@ -11,6 +11,9 @@
 
 ## [Unreleased]
 
+### Docs
+- **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
+
 ### Chore
 - **Theme alignment:** updated `T` tokens in `theme.js` to match shared portfolio BASE token set (`bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`, `faint` `#161b27`); added DM Sans Google Fonts link to `public/index.html`; replaced `'Georgia', serif` font with `'DM Sans', system-ui, sans-serif` in `App.jsx`
 

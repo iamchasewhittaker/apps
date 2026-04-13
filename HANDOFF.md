@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
-| **Focus**      | **Job Search HQ Wave 2** — structured prep framework, STAR story bank, outreach cadence nudges. See [`portfolio/job-search-hq/HANDOFF.md`](portfolio/job-search-hq/HANDOFF.md). **Knowledge Base v1.4** — import/export JSON (when you return to KB). |
-| **Next**       | Job Search HQ Wave 2 item #2 ("Who should I message today?") — see `portfolio/job-search-hq/ROADMAP.md`. |
+| **Focus**      | **Knowledge Base v1.4** — import/export JSON (when you return to KB). **Clarity iOS:** all five apps ship **`docs/BRANDING.md` + AppIcon 1024** (suite glyphs: Check-in horizon+pill · Triage nested chevron · Time clock+arc · Budget stacked coins · Growth sprout). Icon handoff template: [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md). |
+| **Next**       | Knowledge Base v1.4 scope from [`portfolio/knowledge-base/ROADMAP.md`](portfolio/knowledge-base/ROADMAP.md). Clarity v0.2+: [`portfolio/clarity-budget-ios/ROADMAP.md`](portfolio/clarity-budget-ios/ROADMAP.md), [`portfolio/clarity-growth-ios/ROADMAP.md`](portfolio/clarity-growth-ios/ROADMAP.md). |
 | **Blockers**   | *(none)*                                                                                                                                                                                                                                                                   |
-| **Last touch** | 2026-04-13 — **iOS theme alignment:** `ClarityPalette.swift` (clarity-ui, covers 5 Clarity apps) + `ClarityTheme.swift` (YNAB Clarity) updated to portfolio BASE token set. All 6 iOS apps now aligned to web BASE palette. See `docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md`. (Earlier this session: web theme alignment across all 4 web apps — `docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md`.) |
+| **Last touch** | 2026-04-14 — **Portfolio web CI docs:** root `CLAUDE` CI section (four CRA apps, Node 20 lockfile parity); `SESSION_START_FIX_CI_LOCKFILES.md` + cross-links in `HANDOFF` Templates, `new-app-guide`, monorepo/app session templates, RollerTask README/planning, four web app `CLAUDE`s; root `ROADMAP` Change Log row |
 
 
 ---
@@ -147,6 +147,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*`; **`docs/BRANDING.md` + AppIcon** (clock + arc + badge).
 - **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1**; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); explore wides in `docs/design/`.
 - **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
+- **Portfolio web CI (2026-04-13–14):** GitHub Actions [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) uses **Node 20** and `npm ci`. Regenerate **`package-lock.json`** with Node 20’s npm (not only Node 24/npm 11) so CI stays green — see [`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](docs/templates/SESSION_START_FIX_CI_LOCKFILES.md).
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).
 - **YNAB Clarity (2026-04-11):** `goal_target` on `YNABMonthCategory`, Bills by coverage, `dueDay`, Income tab, `TipBanner`, `HowItWorksView`, PATCH Fund; spending chips; safe-to-spend formula; stale sync banner.
@@ -162,6 +163,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | New initiative, migration, or cross-app work                  | [docs/templates/SESSION_START_MONOREPO.md](docs/templates/SESSION_START_MONOREPO.md)     |
 | Change one app under `portfolio/<app>/` or `projects/<name>/` | [docs/templates/SESSION_START_APP_CHANGE.md](docs/templates/SESSION_START_APP_CHANGE.md) |
+| **Portfolio web CI** — `npm ci` / lockfile failures (Wellness, Job Search, Knowledge Base, App Forge) | [docs/templates/SESSION_START_FIX_CI_LOCKFILES.md](docs/templates/SESSION_START_FIX_CI_LOCKFILES.md) |
 | **Clarity iOS** — fix / iterate **launcher icon** (name app in chat) | [docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md](docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) |
 
 

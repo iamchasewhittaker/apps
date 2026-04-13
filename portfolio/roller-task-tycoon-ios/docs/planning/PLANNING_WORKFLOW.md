@@ -30,4 +30,4 @@ The generic discipline lives in the monorepo **[iOS App Starter Kit](../../../..
 
 When a planning item becomes code: **Linear issue** (or update) with acceptance criteria + link to the filled doc section; on ship, **CHANGELOG** + **ROADMAP** in `portfolio/roller-task-tycoon-ios/`, and a row in repo root **ROADMAP.md** when the change is portfolio-visible.
 
-**Web apps (Wellness, Job Search, App Forge):** push/PR may run **`.github/workflows/portfolio-web-build.yml`** — keep **`npm run build`** green when you touch those folders. (Archived Vite RollerTask PWA is not in CI.)
+**Web apps (Wellness, Job Search, Knowledge Base, App Forge):** push/PR may run **`.github/workflows/portfolio-web-build.yml`** (**Node 20**, `npm ci` then `npm run build`). Keep **`package-lock.json`** in sync — see repo **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**. (Archived Vite RollerTask PWA is not in CI.)

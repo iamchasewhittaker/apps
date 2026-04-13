@@ -90,6 +90,9 @@ HANDOFF.md                <- session continuity
 - `npm start` — dev server
 - `npm run build` — production build
 
+## CI (GitHub Actions)
+This app is built by **`.github/workflows/portfolio-web-build.yml`** on **Node 20** (`npm ci` then `npm run build`). Keep **`package-lock.json`** in sync with `package.json` using **Node 20’s npm** — see repo root **[`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../../docs/templates/SESSION_START_FIX_CI_LOCKFILES.md)**.
+
 ## Constraints & Gotchas
 - Preserve dark mode (`#09090b` base).
 - **SEED_VERSION is 5.** Bump + add entries to `SEED` and `SEED_FOLDERS` when adding seed data. Migration is in `App.jsx` `useEffect` loader.

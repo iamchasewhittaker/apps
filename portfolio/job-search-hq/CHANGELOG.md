@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Docs
+- **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
+
 ### Chore
 - **Theme alignment:** updated surface color `#1a1f2e` / `#111827` → `#161b27` across `constants.js`, `App.jsx`, and `ContactsTab.jsx` to match shared portfolio BASE token set (see `docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md`)
 

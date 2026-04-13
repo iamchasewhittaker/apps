@@ -110,6 +110,9 @@ Sync is fully wired. Files involved:
 ## Pending Work (from ROADMAP)
 - AITab is 636 lines — could split into sub-components per tool if it grows further
 
+## CI (GitHub Actions)
+This app is built by **`.github/workflows/portfolio-web-build.yml`** on **Node 20** (`npm ci` then `npm run build`). Keep **`package-lock.json`** in sync with `package.json` using **Node 20’s npm** — see repo root **[`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../../docs/templates/SESSION_START_FIX_CI_LOCKFILES.md)**.
+
 ## Learnings
 Read `LEARNINGS.md` at session start for project-specific gotchas.
 After a session where something unexpected happened or was learned, append an entry.

@@ -13,6 +13,7 @@ Copy everything below into a **new** chat, fill the brackets, then send.
 3. If the app has **`docs/BRANDING.md`**, read it for icons/palette (do not invent alternate branding). **New apps:** copy **[`docs/templates/PORTFOLIO_APP_BRANDING.md`](../templates/PORTFOLIO_APP_BRANDING.md)** there once, then link it from `CLAUDE.md` — see **[`docs/design/README.md`](../design/README.md)**.
 4. Read **[HANDOFF.md](../../HANDOFF.md)** for current thread state.
 5. Run `cd ~/Developer/chase && git status -sb` and inspect only the relevant subtree.
+6. **CRA apps in CI** (`portfolio/wellness-tracker`, `job-search-hq`, `knowledge-base`, `app-forge`): GitHub Actions uses **Node 20** + `npm ci`. If you change dependencies or see lockfile drift, follow **[`SESSION_START_FIX_CI_LOCKFILES.md`](SESSION_START_FIX_CI_LOCKFILES.md)** (regenerate `package-lock.json` with Node 20’s npm).
 
 **App / project path:** `portfolio/[APP_NAME]/` or `projects/[PROJECT_NAME]/`  
 **Linear (optional):** [paste issue URL]  

@@ -114,6 +114,9 @@ When ready, follow the same pattern: use the shared project `unqtnnxlltiadzbqpyh
 ## Roadmap Reference
 See `/ROADMAP.md` (repo root) for the full priority queue and improvement ideas (items A1–A7).
 
+## CI (GitHub Actions)
+This app is built by **`.github/workflows/portfolio-web-build.yml`** on **Node 20** (`npm ci` then `npm run build`). Keep **`package-lock.json`** in sync with `package.json` using **Node 20’s npm** — see repo root **[`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../../docs/templates/SESSION_START_FIX_CI_LOCKFILES.md)**.
+
 ## Learnings
 Read `LEARNINGS.md` at session start for project-specific gotchas.
 After a session where something unexpected happened or was learned, append an entry.

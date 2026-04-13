@@ -1,7 +1,7 @@
 # How to Work on an App — Session Guide
 
 > Plain English. No jargon. Refer back to this any time.
-> Last updated: 2026-04-11
+> Last updated: 2026-04-14
 
 ---
 
@@ -201,6 +201,12 @@ Then use the normal 9-step session flow for all coding sessions.
 | 9 | Final `checkpoint` | End of session (automatic or you) |
 
 Steps 1–3 are **yours to do**. Steps 4–9 happen **automatically**.
+
+---
+
+### Portfolio web apps and GitHub Actions (Wellness, Job Search, Knowledge Base, App Forge)
+
+Those four CRA apps live under **`portfolio/`** and are compile-checked on every push by **`.github/workflows/portfolio-web-build.yml`** using **Node 20** and **`npm ci`**. If you add or bump dependencies, regenerate **`package-lock.json`** with **Node 20’s `npm`** (your laptop might default to Node 24 — that can still break CI). Full steps: **[`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../templates/SESSION_START_FIX_CI_LOCKFILES.md)**. Root **`CLAUDE.md`** also has a **CI — portfolio web builds** section.
 
 ---
 

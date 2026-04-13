@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Docs
+- **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
+
 ### Chore
 - **Theme alignment:** swept all inline colors across `constants.js`, `App.jsx`, `Sidebar.jsx`, `FolderTree.jsx`, `BookmarkList.jsx`, `ErrorBoundary.jsx` to match shared portfolio BASE token set (`#09090b` / `#0d0d0f` → `#0f1117`, `#18181b` → `#161b27`, `#27272a` / `#1c1c1f` → `#1f2937`, `#a1a1aa` → `#6b7280`, `#f4f4f5` → `#f3f4f6`); added DM Sans font to `public/index.html`; updated root `fontFamily` to `'DM Sans', system-ui, sans-serif`; updated `theme-color` meta and body background
 

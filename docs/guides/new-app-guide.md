@@ -245,7 +245,7 @@ You never have to think about these again:
 | Storage key | Auto-set to `chase_{app_name}_v1` |
 | Folder structure | Created to match portfolio conventions |
 | Phase 1-3 doc stubs | Generated with prompts pre-filled |
-| CI workflow | App added to `portfolio-web-build.yml` (React only) |
+| CI workflow | App added to `portfolio-web-build.yml` (React only). Workflow uses **Node 20** and **`npm ci`** — keep **`package-lock.json`** in sync with `package.json` using **Node 20’s `npm install`** (see [`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../templates/SESSION_START_FIX_CI_LOCKFILES.md)) |
 | Portfolio table | Row added to root `CLAUDE.md` |
 | Cursor symlink | `.cursor/rules/session-handoff.mdc` wired up |
 | Session docs | `CLAUDE.md`, `ROADMAP.md`, `HANDOFF.md`, `CHANGELOG.md`, `LEARNINGS.md` |

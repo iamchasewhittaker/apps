@@ -22,10 +22,17 @@ This is a lockfile drift issue — the package-lock.json in each app is out of s
 the installed dependencies. Vercel builds independently and is unaffected, but the CI
 check is broken on every push.
 
+**Node/npm must match CI.** The workflow uses **Node 20** (see `node-version: "20"` in
+`.github/workflows/portfolio-web-build.yml`). If you regenerate lockfiles with **Node 24
+and npm 11**, `npm install` can still produce a lockfile that **passes local `npm run build`**
+but fails on GitHub with `Missing: yaml@2.8.3 from lock file` (or similar) because **`npm ci`
+on Node 20’s npm is stricter**. Use **Node 20’s `npm`** for the lockfile sync step (nvm,
+fnm, Homebrew `node@20`, or a portable Node 20 tarball from nodejs.org).
+
 ## The fix
 
-Run `npm install` (not `npm ci`) in each app directory to regenerate the lockfile,
-then commit all four updated lockfiles in one checkpoint.
+Run `npm install` (not `npm ci`) in each app directory **using Node 20’s npm** to regenerate
+the lockfile, then commit all four updated lockfiles in one checkpoint.
 
 ## Apps to fix (4 total)
 
@@ -38,16 +45,17 @@ then commit all four updated lockfiles in one checkpoint.
 
 1. checkpoint (before touching anything — safety net)
 
-2. For each app, run:
+2. Ensure your shell uses **Node 20** (same major as CI), then for each app run:
    cd portfolio/<app> && npm install
 
-   This regenerates package-lock.json to match the current node_modules state.
+   This regenerates package-lock.json to match resolved deps from package.json.
    Do NOT run `npm install <package>` — just bare `npm install` to sync the lockfile.
 
-3. Verify each build still passes:
-   cd portfolio/<app> && npm run build
+3. Verify like CI does (recommended): from each app dir, with **Node 20** still active:
+   rm -rf node_modules && npm ci && npm run build
 
-   All 4 must build clean before committing.
+   All four apps must complete cleanly before committing. (If you only run `npm run build`
+   without `npm ci`, you can still miss lockfile issues that CI will catch.)
 
 4. checkpoint to commit all 4 updated lockfiles in one go.
 

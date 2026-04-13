@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Docs
+- **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
+
 - **Theme alignment:** updated `C` tokens in `App.jsx` to match shared portfolio BASE token set (`bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `borderLight` `#374151`, `text` `#f3f4f6`, `muted` `#6b7280`, `dim` `#374151`); added DM Sans Google Fonts link to `public/index.html`; updated `theme-color` meta to `#0f1117`
 - **Monorepo:** path `portfolio/app-forge`; `PROJECT_INSTRUCTIONS.md` (renamed from `APP_FORGE_PROJECT_INSTRUCTIONS.md`); README, ROADMAP, AGENTS, `docs/*`; Linear links.
 

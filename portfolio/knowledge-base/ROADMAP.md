@@ -26,7 +26,7 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **CRA scaffold** — `package.json`, `public/index.html`, `src/` structure (react-scripts, not Vite)
 - [x] **Inline styles** — converted Tailwind to `s` style object (portfolio convention)
 - [x] **ErrorBoundary** — standard portfolio pattern
-- [x] **CI** — added to `portfolio-web-build.yml`
+- [x] **CI** — added to `portfolio-web-build.yml` (Node 20, `npm ci` + build; keep `package-lock.json` in sync — see repo `docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`)
 - [x] **Seed expanded** — 48 bookmarks across 12 categories (Apple Developer, Perplexity, full My Projects)
 - [x] **Seed migration** — version-based; existing users get new entries without losing custom bookmarks
 - [x] **Deploy to Vercel** — https://knowledge-base-beta-five.vercel.app
