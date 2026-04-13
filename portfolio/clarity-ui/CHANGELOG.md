@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- **Theme alignment (BASE tokens):** `ClarityPalette` core tokens updated to portfolio BASE token set — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; all semantic/accent colors unchanged; change propagates automatically to all 5 Clarity consumer apps
+
 ## v0.1 — 2026-04-12 — Initial package
 - ClarityPalette: full color token set, progressColor, clampedFraction, highContrast muted
 - ClarityTypography: semantic Dynamic Type fonts (display, title, headline, body, support, caption, mono)

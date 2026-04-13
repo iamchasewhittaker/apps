@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Theme alignment (via clarity-ui):** `ClarityPalette` BASE tokens updated — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; inherited from `clarity-ui` package; no local changes required
 - **App icon:** **User-selected** clock mark (`docs/design/app-icon-source-user-1024.png`) → `AppIcon.appiconset/AppIcon.png` (1024×1024); `docs/design/app-icon-mockup-wide.png` = same art centered on `#E6E7EB` 1376×768 for decks; `Contents.json` universal iOS slot unchanged
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) (from portfolio template); `CLAUDE.md` links branding + shared icon spec
 

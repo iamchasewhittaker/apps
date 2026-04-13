@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Theme alignment (via clarity-ui):** `ClarityPalette` BASE tokens updated — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; inherited from `clarity-ui` package; no local changes required
 - **App icon:** `docs/design/app-icon-mockup-wide.png` (canonical = nested chevron mark) → `AppIcon.appiconset/AppIcon.png` (1024×1024) via `sips` pad `#E6E7EB` + scale; `Contents.json` filename on universal iOS slot
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) (from portfolio template); `CLAUDE.md` links branding + shared icon spec
 

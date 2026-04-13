@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Theme alignment (via clarity-ui):** `ClarityPalette` BASE tokens updated — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; inherited from `clarity-ui` package; no local changes required
 - **Docs:** `HANDOFF`/`ROADMAP`/`docs/BRANDING.md` — cross-links to **shipped** Clarity iOS suite + [`SESSION_START_CLARITY_IOS_LOGOS.md`](../../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) (fix/iterate template)
 - **Branding:** `docs/BRANDING.md` (filled from [`docs/templates/PORTFOLIO_APP_BRANDING.md`](../../../docs/templates/PORTFOLIO_APP_BRANDING.md)); `CLAUDE.md` links there instead of duplicating icon rules
 - **App icon:** `AppIcon.appiconset/AppIcon.png` (1024×1024) + `Contents.json` filename; wide mockup under `docs/design/`

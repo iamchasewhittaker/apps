@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Theme alignment (via clarity-ui):** `ClarityPalette` BASE tokens updated — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; inherited from `clarity-ui` package; no local changes required
 - **App icon (glyph refresh):** shipped center mark changed from **ascending steps** to **sprout** (organic growth); canonical wide `docs/design/app-icon-mockup-wide.png` + `AppIcon.png` regenerated with `sips`; prior steps art kept as `docs/design/app-icon-mockup-explore-steps.png`. **`docs/BRANDING.md`** updated. `xcodebuild build` **ClarityGrowth** ✅ (iPhone 15 / iOS 17.2, `CODE_SIGNING_ALLOWED=NO`).
 - **App icon + branding:** wide mockup `docs/design/app-icon-mockup-wide.png` (1376×768) → `sips --padColor E6E7EB -p 1376 1376` → `AppIcon.png` 1024 + `AppIcon.appiconset/Contents.json` filename; **`docs/BRANDING.md`**; `CLAUDE.md` branding + icon spec links. Initial center glyph: ascending steps + suite check badge. `xcodebuild build` **ClarityGrowth** ✅ (iPhone 15 / iOS 17.2, `CODE_SIGNING_ALLOWED=NO`).
 - **Design references:** added non-shipped wide explorations `docs/design/app-icon-mockup-explore-{sprout,nodes,arc}.png` with rationale in `docs/BRANDING.md`.

@@ -52,6 +52,9 @@
 
 ## [Unreleased]
 
+### Theme
+- **Theme alignment (BASE tokens):** `ClarityTheme` core tokens updated to portfolio BASE token set — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; all semantic/accent colors (`safe`, `caution`, `danger`, `accent`, `mortgage`) unchanged
+
 ### Added
 - **Overview tab** (`OverviewView.swift`) — Safe to Spend + Spending + stale/error banners; first tab in `TabView`
 - **`SettingsSheetView.swift`** — settings extracted for reuse from Overview

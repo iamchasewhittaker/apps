@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Theme alignment (via clarity-ui):** `ClarityPalette` BASE tokens updated — `bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`; inherited from `clarity-ui` package; no local changes required
 - **App icon (glyph refresh):** shipped center mark changed from **dual columns + balance stroke** to **stacked coins**; `docs/design/app-icon-mockup-wide.png` + `AppIcon.png` regenerated with `sips`; prior columns art → `docs/design/app-icon-mockup-explore-columns.png`. **`docs/BRANDING.md`** updated. `xcodebuild build` **ClarityBudget** ✅ (iPhone 15 / iOS 17.2, `CODE_SIGNING_ALLOWED=NO`).
 - **Design references:** wide **explore** launcher mockups in `docs/design/` — `app-icon-mockup-explore-{scales,stack,ledger}.png` (1376×768); rationale in **`docs/BRANDING.md`**.
 - **App icon:** `docs/design/app-icon-mockup-wide.png` (dual-column / balance mark) → `AppIcon.appiconset/AppIcon.png` (1024×1024) via `sips --padColor E6E7EB -p 1376 1376` + `sips -z 1024 1024`; `Contents.json` filename on universal iOS slot
