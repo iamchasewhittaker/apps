@@ -8,6 +8,7 @@
 - **Storage key:** `chase_growth_ios_v1` (single `Codable` root in `UserDefaults` — **never rename**)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
 - **PBX prefix:** **`CG`** — all generated IDs in `ClarityGrowth.xcodeproj/project.pbxproj` use `CG*` (reserved siblings: `CC`, `CT`, `CX`, `CB`)
+- **Launcher icon (suite parity):** **Not shipped yet** — next session should add `docs/design/app-icon-mockup-wide.png`, `ClarityGrowth/Assets.xcassets/AppIcon.appiconset/AppIcon.png` (1024), `Contents.json` filename, **`docs/BRANDING.md`**, and `CLAUDE.md` branding bullets per [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md). Siblings already done — see root [`HANDOFF.md`](../../HANDOFF.md).
 
 ### Build / test
 

@@ -13,7 +13,7 @@
 | Clarity Triage (iOS) | v0.1 | `chase_triage_ios_v1` | local Xcode | ✅ Phase 2 done · **`docs/BRANDING.md` + AppIcon 1024`** · xcodeproj (`CT*` IDs) · tests on simulator · [`portfolio/clarity-triage-ios`](portfolio/clarity-triage-ios) · capacity tasks + ideas + wins |
 | Clarity Time (iOS) | v0.1 | `chase_time_ios_v1` | local Xcode | ✅ Phase 3 done · **`docs/BRANDING.md` + AppIcon 1024`** (user clock mark) · xcodeproj (`CX*` IDs) · [`portfolio/clarity-time-ios`](portfolio/clarity-time-ios) · time sessions + scripture streak |
 | Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | ✅ Phase 4 done · **`docs/BRANDING.md` + AppIcon 1024`** · xcodeproj (`CB*` IDs) · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
-| Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | ✅ Phase 5 done · xcodeproj generated (`CG*` IDs) · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
+| Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | ✅ Phase 5 done · xcodeproj (`CG*` IDs) · **Next:** `docs/BRANDING.md` + **AppIcon 1024** (only Clarity sibling without shipped launcher yet) · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
 | Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
 | YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain; YNAB read + PATCH assign (Fund, with confirmation) | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |

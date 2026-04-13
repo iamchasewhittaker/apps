@@ -9,4 +9,4 @@ Single index so branding and icon rules are **not** scattered across chats.
 
 **Workflow:** New app → copy **PORTFOLIO_APP_BRANDING** → fill → link from app `CLAUDE.md` → for Clarity iOS icons, follow **CLARITY_IOS_APP_ICON_SPEC** once when producing assets.
 
-**Handoff — generate remaining Clarity launcher icons:** paste **[`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](../templates/SESSION_START_CLARITY_IOS_LOGOS.md)** into a new chat (Triage · Time · Budget · Growth; Check-in is reference).
+**Handoff — Clarity launcher icons:** Triage · Time · Budget **shipped** (see root `HANDOFF.md` + each app’s `docs/BRANDING.md`). **Remaining:** **Clarity Growth** — paste **[`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](../templates/SESSION_START_CLARITY_IOS_LOGOS.md)** into a new chat; Check-in stays the visual reference.
