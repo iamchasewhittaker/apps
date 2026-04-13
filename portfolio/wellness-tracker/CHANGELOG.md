@@ -11,6 +11,9 @@
 
 ## [Unreleased]
 
+### Chore
+- **Theme alignment:** updated `T` tokens in `theme.js` to match shared portfolio BASE token set (`bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`, `faint` `#161b27`); added DM Sans Google Fonts link to `public/index.html`; replaced `'Georgia', serif` font with `'DM Sans', system-ui, sans-serif` in `App.jsx`
+
 - **Branding / PWA:** corrected master + derived icons to **1024×1024** square (fixes Xcode App Icon validation when syncing from non-square sources).
 - **Branding / PWA:** unified **W + sunrise** mark recolored to **Clarity family** palette (`#0e1015` canvas, blue horizon, amber sun — tokens per YNAB Clarity `ClarityTheme`; Spend Clarity CLI has no logo in-repo); refreshed `public/logo-*.png`, `apple-touch-icon`, `favicon-32`, `manifest.json` (`theme_color` / `background_color` `#0e1015`), `index.html` `theme-color`. Specs in `docs/BRANDING.md`. Added per-app [HANDOFF.md](HANDOFF.md).
 - **Monorepo:** app path is `portfolio/wellness-tracker` under `~/Developer/chase`; README, ROADMAP, AGENTS, `docs/ARCHITECTURE`, `docs/LEARNING`; Linear project linked in docs.

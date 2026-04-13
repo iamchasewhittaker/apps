@@ -39,7 +39,7 @@ export default function Sidebar({
           className="kb-folder-row"
           title="Important"
           onClick={() => onSelectFolder("__important__")}
-          style={{ ...s.collapsedIconBtn, background: selectedFolderId === "__important__" ? "#27272a" : "transparent" }}
+          style={{ ...s.collapsedIconBtn, background: selectedFolderId === "__important__" ? "#1f2937" : "transparent" }}
         >
           <AlertTriangle size={16} style={{ color: "#ef4444" }} />
         </button>
@@ -47,7 +47,7 @@ export default function Sidebar({
           className="kb-folder-row"
           title="Recent"
           onClick={() => onSelectFolder("__recent__")}
-          style={{ ...s.collapsedIconBtn, background: selectedFolderId === "__recent__" ? "#27272a" : "transparent" }}
+          style={{ ...s.collapsedIconBtn, background: selectedFolderId === "__recent__" ? "#1f2937" : "transparent" }}
         >
           <Clock size={16} style={{ color: "#3b82f6" }} />
         </button>
@@ -101,7 +101,7 @@ export default function Sidebar({
         <button
           className={`kb-smart-folder${selectedFolderId === "__important__" ? " selected" : ""}`}
           onClick={() => onSelectFolder("__important__")}
-          style={{ ...s.smartFolderBtn, background: selectedFolderId === "__important__" ? "#27272a" : "transparent" }}
+          style={{ ...s.smartFolderBtn, background: selectedFolderId === "__important__" ? "#1f2937" : "transparent" }}
         >
           <AlertTriangle size={13} style={{ color: "#ef4444", flexShrink: 0 }} />
           <span style={s.smartFolderName}>Important</span>
@@ -109,7 +109,7 @@ export default function Sidebar({
         <button
           className={`kb-smart-folder${selectedFolderId === "__recent__" ? " selected" : ""}`}
           onClick={() => onSelectFolder("__recent__")}
-          style={{ ...s.smartFolderBtn, background: selectedFolderId === "__recent__" ? "#27272a" : "transparent" }}
+          style={{ ...s.smartFolderBtn, background: selectedFolderId === "__recent__" ? "#1f2937" : "transparent" }}
         >
           <Clock size={13} style={{ color: "#3b82f6", flexShrink: 0 }} />
           <span style={s.smartFolderName}>Recent</span>
@@ -151,9 +151,9 @@ export default function Sidebar({
         <button
           className={`kb-folder-row${selectedFolderId === null ? " selected" : ""}`}
           onClick={() => onSelectFolder(null)}
-          style={{ ...s.allBooksBtn, background: selectedFolderId === null ? "#27272a" : "transparent" }}
+          style={{ ...s.allBooksBtn, background: selectedFolderId === null ? "#1f2937" : "transparent" }}
         >
-          <span style={{ ...s.folderName, color: selectedFolderId === null ? "#f4f4f5" : "#a1a1aa" }}>All Bookmarks</span>
+          <span style={{ ...s.folderName, color: selectedFolderId === null ? "#f3f4f6" : "#6b7280" }}>All Bookmarks</span>
           <span style={s.folderCount}>{bookmarks.length}</span>
         </button>
         <FolderTree

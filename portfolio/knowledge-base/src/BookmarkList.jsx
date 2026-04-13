@@ -6,7 +6,7 @@ export default function BookmarkList({ bookmarks, title, titleColor, borderColor
   if (!bookmarks || bookmarks.length === 0) return null;
 
   const headerStyle = borderColor
-    ? { ...s.pinnedHeader, borderColor, borderBottom: "1px solid #27272a" }
+    ? { ...s.pinnedHeader, borderColor, borderBottom: "1px solid #1f2937" }
     : s.groupHeader;
   const titleStyle = titleColor
     ? { ...s.pinnedTitle, color: titleColor }

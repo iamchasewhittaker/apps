@@ -223,13 +223,13 @@ const FRAMEWORK_RULES = [
 
 // ── DESIGN TOKENS ──────────────────────────────────────────────
 const C = {
-  bg: "#0d0d0f",
-  surface: "#111116",
-  border: "#1e1e28",
-  borderLight: "#2a2a36",
-  text: "#e8e6e0",
-  muted: "#7a7888",
-  dim: "#3a3a48",
+  bg: "#0f1117",
+  surface: "#161b27",
+  border: "#1f2937",
+  borderLight: "#374151",
+  text: "#f3f4f6",
+  muted: "#6b7280",
+  dim: "#374151",
   purple: "#9F8AE8",
   teal: "#1D9E75",
   amber: "#BA7517",

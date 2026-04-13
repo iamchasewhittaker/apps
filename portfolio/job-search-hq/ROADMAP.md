@@ -15,7 +15,7 @@
 
 ## Wave 2 — Next
 
-- [ ] Company intel view on Contacts tab — group by company, show gap ("0 contacts at Stripe")
+- [x] Company intel view on Contacts tab — group by company, warm leads, ghost rows, pre-fill AppModal (2026-04-13)
 - [ ] "Who should I message today?" prioritized list on Focus tab
 - [ ] Outreach cadence suggestions on ContactCard (day 3, day 7 follow-up nudges)
 - [ ] Structured prep framework — replace freetext prepNotes with sections (company research, role analysis, STAR stories, questions to ask)

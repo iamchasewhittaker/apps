@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { s, CONTACT_TYPES, OUTREACH_STATUSES } from "../constants";
+import { s, CONTACT_TYPES, OUTREACH_STATUSES, STAGE_COLORS, blankApp } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import ContactCard from "../components/ContactCard";
 
@@ -19,7 +19,7 @@ function SalesNavGuide() {
   }
 
   return (
-    <div style={{ background: "#111827", border: "1px solid #1f2937", borderRadius: 12, marginBottom: 16, overflow: "hidden" }}>
+    <div style={{ background: "#161b27", border: "1px solid #1f2937", borderRadius: 12, marginBottom: 16, overflow: "hidden" }}>
       <button
         onClick={() => setOpen(o => !o)}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#f3f4f6", textAlign: "left" }}
@@ -85,9 +85,11 @@ function SalesNavGuide() {
   );
 }
 
-export default function ContactsTab({ contacts, applications, setContactModal, deleteContact, saveContact, setTab }) {
+export default function ContactsTab({ contacts, applications, setContactModal, deleteContact, saveContact, setTab, setAppModal }) {
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [view, setView] = useState("list");
+  const [openCompanies, setOpenCompanies] = useState(new Set());
 
   const filtered = useMemo(() => contacts.filter(c => {
     if (typeFilter !== "all" && (c.type || "other") !== typeFilter) return false;
@@ -108,6 +110,64 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
     const meetings = contacts.filter(c => c.outreachStatus === "meeting").length;
     return { total, sent, responseRate, recentActivity, meetings };
   }, [contacts]);
+
+  // Company grouping — purely computed from contacts + applications
+  const companyGroups = useMemo(() => {
+    const normalize = name => name?.trim().toLowerCase() || "__unknown__";
+    const displayName = name => name?.trim() || "Unknown company";
+
+    // Map contacts by company key
+    const contactsByKey = {};
+    const nameByKey = {};
+    contacts.forEach(c => {
+      const key = normalize(c.company);
+      if (!contactsByKey[key]) { contactsByKey[key] = []; nameByKey[key] = displayName(c.company); }
+      contactsByKey[key].push(c);
+    });
+
+    // Map applications by company key
+    const appsByKey = {};
+    applications.forEach(a => {
+      if (["Rejected", "Withdrawn"].includes(a.stage)) return; // skip closed apps
+      const key = normalize(a.company);
+      if (!appsByKey[key]) { appsByKey[key] = []; if (!nameByKey[key]) nameByKey[key] = displayName(a.company); }
+      appsByKey[key].push(a);
+    });
+
+    // Union all keys
+    const allKeys = new Set([...Object.keys(contactsByKey), ...Object.keys(appsByKey)]);
+
+    const groups = Array.from(allKeys).map(key => {
+      const groupContacts = contactsByKey[key] || [];
+      const groupApps = appsByKey[key] || [];
+      return {
+        key,
+        name: nameByKey[key],
+        contacts: groupContacts,
+        apps: groupApps,
+        isWarmLead: groupContacts.length > 0 && groupApps.length === 0,
+        isMissingContact: groupApps.length > 0 && groupContacts.length === 0,
+      };
+    });
+
+    // Sort: warm leads first, then by contact count desc, "__unknown__" always last
+    groups.sort((a, b) => {
+      if (a.key === "__unknown__") return 1;
+      if (b.key === "__unknown__") return -1;
+      if (a.isWarmLead !== b.isWarmLead) return a.isWarmLead ? -1 : 1;
+      return b.contacts.length - a.contacts.length;
+    });
+
+    return groups;
+  }, [contacts, applications]);
+
+  function toggleCompany(key) {
+    setOpenCompanies(prev => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  }
 
   function updateStatus(contact, newStatus) {
     saveContact({
@@ -162,54 +222,152 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
           </div>
         )}
 
-        {/* Filters */}
-        {contacts.length > 0 && (
+        {/* View toggle */}
+        <div style={s.ciToggleRow}>
+          <button
+            style={{ ...s.ciToggleBtn, ...(view === "list" ? s.ciToggleBtnActive : {}) }}
+            onClick={() => setView("list")}
+          >List</button>
+          <button
+            style={{ ...s.ciToggleBtn, ...(view === "company" ? s.ciToggleBtnActive : {}) }}
+            onClick={() => setView("company")}
+          >By Company</button>
+        </div>
+
+        {/* LIST VIEW */}
+        {view === "list" && (
           <>
-            <div style={s.filterRow}>
-              <span style={s.filterLabel}>Type:</span>
-              <button style={{ ...s.filterChip, ...(typeFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setTypeFilter("all")}>All</button>
-              {CONTACT_TYPES.map(t => (
-                <button key={t.value}
-                  style={{ ...s.filterChip, ...(typeFilter === t.value ? s.filterChipActive : {}) }}
-                  onClick={() => toggleType(t.value)}>
-                  {t.label}
-                </button>
-              ))}
-            </div>
-            <div style={{ ...s.filterRow, marginBottom: 16 }}>
-              <span style={s.filterLabel}>Status:</span>
-              <button style={{ ...s.filterChip, ...(statusFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setStatusFilter("all")}>All</button>
-              {OUTREACH_STATUSES.map(st => (
-                <button key={st.value}
-                  style={{ ...s.filterChip, ...(statusFilter === st.value ? s.filterChipActive : {}) }}
-                  onClick={() => toggleStatus(st.value)}>
-                  {st.label}
-                </button>
+            {/* Filters */}
+            {contacts.length > 0 && (
+              <>
+                <div style={s.filterRow}>
+                  <span style={s.filterLabel}>Type:</span>
+                  <button style={{ ...s.filterChip, ...(typeFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setTypeFilter("all")}>All</button>
+                  {CONTACT_TYPES.map(t => (
+                    <button key={t.value}
+                      style={{ ...s.filterChip, ...(typeFilter === t.value ? s.filterChipActive : {}) }}
+                      onClick={() => toggleType(t.value)}>
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ ...s.filterRow, marginBottom: 16 }}>
+                  <span style={s.filterLabel}>Status:</span>
+                  <button style={{ ...s.filterChip, ...(statusFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setStatusFilter("all")}>All</button>
+                  {OUTREACH_STATUSES.map(st => (
+                    <button key={st.value}
+                      style={{ ...s.filterChip, ...(statusFilter === st.value ? s.filterChipActive : {}) }}
+                      onClick={() => toggleStatus(st.value)}>
+                      {st.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Empty states */}
+            {contacts.length === 0 && (
+              <div style={s.empty}>No contacts yet. Add someone you've spoken with!</div>
+            )}
+            {contacts.length > 0 && filtered.length === 0 && (
+              <div style={s.empty}>No contacts match these filters.</div>
+            )}
+
+            {/* Contact list */}
+            <div style={s.contactList}>
+              {filtered.map(c => (
+                <ContactCard
+                  key={c.id} contact={c} apps={applications}
+                  onEdit={() => setContactModal({ mode: "edit", contact: { ...c } })}
+                  onDelete={() => { if (window.confirm("Delete this contact?")) deleteContact(c.id); }}
+                  onStatusChange={status => updateStatus(c, status)}
+                  onDraftMessage={() => setTab("ai")}
+                />
               ))}
             </div>
           </>
         )}
 
-        {/* Empty states */}
-        {contacts.length === 0 && (
-          <div style={s.empty}>No contacts yet. Add someone you've spoken with!</div>
+        {/* BY COMPANY VIEW */}
+        {view === "company" && (
+          <div>
+            {contacts.length === 0 && applications.length === 0 && (
+              <div style={s.empty}>No contacts or applications yet.</div>
+            )}
+            {companyGroups.map(group => (
+              group.isMissingContact ? (
+                // Ghost row — active application with zero contacts
+                <div key={group.key} style={s.ciGhostRow}>
+                  <span>0 contacts at <strong style={{ color: "#9ca3af" }}>{group.name}</strong></span>
+                  <button
+                    onClick={() => window.open(`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(group.name)}`, "_blank")}
+                    style={{ background: "none", border: "none", color: "#3b82f6", cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "inherit" }}
+                  >find someone ↗</button>
+                  {group.apps.map(a => (
+                    <span key={a.id} style={{ ...s.ciStagePill, background: (STAGE_COLORS[a.stage] || "#6b7280") + "22", color: STAGE_COLORS[a.stage] || "#6b7280" }}>
+                      {a.stage}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                // Normal company row with contacts
+                <div key={group.key} style={s.ciRow}>
+                  <div style={s.ciRowHeader} onClick={() => toggleCompany(group.key)}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={s.ciCompanyName}>
+                        {group.name}
+                        <span style={{ fontSize: 13, fontWeight: 400, color: "#6b7280", marginLeft: 8 }}>
+                          {openCompanies.has(group.key) ? "▲" : "▼"}
+                        </span>
+                      </div>
+                      <div style={s.ciMeta}>
+                        {group.contacts.length} contact{group.contacts.length !== 1 ? "s" : ""}
+                        {" — "}
+                        {[...new Set(
+                          group.contacts.map(c => (CONTACT_TYPES.find(t => t.value === (c.type || "other")) || {}).label).filter(Boolean)
+                        )].join(", ")}
+                        {group.contacts.some(c => ["replied", "meeting", "intro_made"].includes(c.outreachStatus)) && (
+                          ` · ${group.contacts.filter(c => ["replied", "meeting", "intro_made"].includes(c.outreachStatus)).length} replied`
+                        )}
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", gap: 6, alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
+                      {group.apps.map(a => (
+                        <span key={a.id} style={{ ...s.ciStagePill, background: (STAGE_COLORS[a.stage] || "#6b7280") + "22", color: STAGE_COLORS[a.stage] || "#6b7280" }}>
+                          {a.stage}
+                        </span>
+                      ))}
+                      {group.isWarmLead && (
+                        <button
+                          style={s.ciWarmBadge}
+                          onClick={e => {
+                            e.stopPropagation();
+                            setAppModal({ mode: "new", app: { ...blankApp(), company: group.name } });
+                          }}
+                        >
+                          Not applied — warm lead!
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  {openCompanies.has(group.key) && (
+                    <div style={s.ciCards}>
+                      {group.contacts.map(c => (
+                        <ContactCard
+                          key={c.id} contact={c} apps={applications}
+                          onEdit={() => setContactModal({ mode: "edit", contact: { ...c } })}
+                          onDelete={() => { if (window.confirm("Delete this contact?")) deleteContact(c.id); }}
+                          onStatusChange={status => updateStatus(c, status)}
+                          onDraftMessage={() => setTab("ai")}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            ))}
+          </div>
         )}
-        {contacts.length > 0 && filtered.length === 0 && (
-          <div style={s.empty}>No contacts match these filters.</div>
-        )}
-
-        {/* Contact list */}
-        <div style={s.contactList}>
-          {filtered.map(c => (
-            <ContactCard
-              key={c.id} contact={c} apps={applications}
-              onEdit={() => setContactModal({ mode: "edit", contact: { ...c } })}
-              onDelete={() => { if (window.confirm("Delete this contact?")) deleteContact(c.id); }}
-              onStatusChange={status => updateStatus(c, status)}
-              onDraftMessage={() => setTab("ai")}
-            />
-          ))}
-        </div>
       </div>
     </ErrorBoundary>
   );

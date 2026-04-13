@@ -1,5 +1,23 @@
 # Changelog
 
+## [Unreleased]
+
+### Chore
+- **Theme alignment:** updated surface color `#1a1f2e` / `#111827` → `#161b27` across `constants.js`, `App.jsx`, and `ContactsTab.jsx` to match shared portfolio BASE token set (see `docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md`)
+
+## [Unreleased] — 2026-04-13 — Company intel view (Wave 2 #1)
+
+### ContactsTab — By Company view
+- **View toggle:** "List" | "By Company" buttons above the contact list; default is List (no behavior change on load)
+- **Company rows:** group all contacts by `contact.company` (case-insensitive); each row shows company name, contact count + types, replied count
+- **Expand/collapse:** click a company row to reveal its ContactCards (same component as list view)
+- **Warm lead badge:** if a company has contacts but no active application → amber "Not applied — warm lead!" badge; clicking it opens AppModal pre-filled with the company name
+- **Ghost rows:** if an active application has zero contacts at that company → muted dashed row "0 contacts at [company] — find someone ↗" with LinkedIn search link and stage pill
+- **Sort order:** warm leads first, then by contact count desc, "Unknown company" last
+- **No data changes:** purely computed from existing `contact.company` + `application.company` fields
+- New style tokens in `s`: `ciToggleRow`, `ciToggleBtn`, `ciToggleBtnActive`, `ciRow`, `ciRowHeader`, `ciCompanyName`, `ciMeta`, `ciStagePill`, `ciWarmBadge`, `ciGhostRow`, `ciCards`
+- `setAppModal` prop threaded from App.jsx to ContactsTab
+
 ## v8.4 — 2026-04-12 — Sales Navigator networking upgrade + accessibility
 
 ### Sales Navigator integration

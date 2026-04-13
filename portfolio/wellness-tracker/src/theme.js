@@ -2,12 +2,12 @@
 export const JOB_TRACKER_URL = "https://job-search-hq.vercel.app"; // ← replace with real URL
 // ────────────────────────────────────────────────────────────────────────────
 export const T = {
-  bg: "#0d0d0f",
-  surface: "#1a1a1f",
-  border: "#2a2a35",
-  text: "#e8e6e0",
-  muted: "#6b6a72",
-  faint: "#16161c",
+  bg: "#0f1117",
+  surface: "#161b27",
+  border: "#1f2937",
+  text: "#f3f4f6",
+  muted: "#6b7280",
+  faint: "#161b27",
   accent: "#3d9970",
   accentLight: "#0d2b1e",
   warn: "#e07040",

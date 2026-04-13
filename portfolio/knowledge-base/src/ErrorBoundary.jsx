@@ -9,7 +9,7 @@ export default class ErrorBoundary extends React.Component {
         <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 15 }}>Something went wrong in {this.props.name}</div>
         <div style={{ fontSize: 12, color: "#71717a", marginBottom: 16 }}>{this.state.error.message}</div>
         <button onClick={() => this.setState({ error: null })}
-          style={{ padding: "8px 16px", borderRadius: 8, background: "#27272a",
+          style={{ padding: "8px 16px", borderRadius: 8, background: "#1f2937",
             border: "1px solid #3f3f46", color: "#d4d4d8", cursor: "pointer", fontFamily: "inherit" }}>
           Try again
         </button>

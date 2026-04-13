@@ -89,7 +89,7 @@ function LoginScreen() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'Georgia', serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
       <div style={{ maxWidth: 360, width: "100%", background: T.surface, borderRadius: 16, padding: 32, border: `1px solid ${T.border}` }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🌿</div>
         <div style={{ fontSize: 20, fontWeight: 700, color: T.text, textAlign: "center", marginBottom: 4 }}>Wellness Tracker</div>
@@ -377,14 +377,14 @@ export default function App() {
 
   // Auth gate — session=null means still checking, session=false means not logged in
   if (session === null) {
-    return <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontFamily: "'Georgia', serif", fontSize: 14 }}>Loading…</div>;
+    return <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
   }
   if (session === false) {
     return <LoginScreen />;
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Georgia', serif", color: T.text }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'DM Sans', system-ui, sans-serif", color: T.text }}>
       <style>{`
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; touch-action: manipulation; }

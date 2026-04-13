@@ -221,6 +221,9 @@ export default function App() {
   };
 
   // ── Derived data ──────────────────────────────────────────────────────────
+  const isSearch = !!query;
+  const isHome = selectedFolderId === null && !isSearch;
+
   const applySearch = (list) => {
     if (!query) return list;
     const q = query.toLowerCase();
@@ -306,9 +309,6 @@ export default function App() {
     onTogglePin: togglePin, onEdit: startEdit, onDelete: del,
     onUpdateField: updateField, onLinkClick: handleLinkClick,
   };
-
-  const isSearch = !!query;
-  const isHome = selectedFolderId === null && !isSearch;
 
   return (
     <ErrorBoundary name="Knowledge Base">
@@ -431,7 +431,7 @@ export default function App() {
               {/* Stats */}
               {favoriteBookmarks.length === 0 && recentBookmarks.length === 0 && (
                 <div style={{ textAlign: "center", paddingTop: 48 }}>
-                  <FolderOpen size={40} style={{ color: "#27272a", margin: "0 auto 16px" }} />
+                  <FolderOpen size={40} style={{ color: "#1f2937", margin: "0 auto 16px" }} />
                   <p style={{ ...s.empty, padding: 0 }}>{bookmarks.length} bookmarks across {folders.filter(f => f.parentId !== null || folders.some(c => c.parentId === f.id) === false).length} folders</p>
                   <p style={{ fontSize: 13, color: "#52525b", marginTop: 8 }}>Select a folder in the sidebar to browse, or star bookmarks to add favorites.</p>
                 </div>
@@ -496,18 +496,18 @@ export default function App() {
           {/* Move bookmark picker overlay */}
           {movingBookmarkId && (
             <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12, padding: 20, minWidth: 280, maxWidth: 360 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: "#f4f4f5", marginBottom: 12 }}>Move to folder</p>
+              <div style={{ background: "#161b27", border: "1px solid #1f2937", borderRadius: 12, padding: 20, minWidth: 280, maxWidth: 360 }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: "#f3f4f6", marginBottom: 12 }}>Move to folder</p>
                 <select
                   size={8}
-                  style={{ width: "100%", background: "#09090b", border: "1px solid #27272a", borderRadius: 6, padding: 8, fontSize: 13, color: "#f4f4f5", outline: "none", cursor: "pointer" }}
+                  style={{ width: "100%", background: "#0f1117", border: "1px solid #1f2937", borderRadius: 6, padding: 8, fontSize: 13, color: "#f3f4f6", outline: "none", cursor: "pointer" }}
                   onChange={(e) => moveBookmarkToFolder(movingBookmarkId, e.target.value)}
                 >
                   {buildFolderOptions(null, 0).map(opt => (
                     <option key={opt.id} value={opt.id}>{opt.label}</option>
                   ))}
                 </select>
-                <button onClick={() => setMovingBookmarkId(null)} style={{ marginTop: 10, padding: "6px 12px", background: "#27272a", border: "none", borderRadius: 6, color: "#a1a1aa", cursor: "pointer", fontSize: 13 }}>
+                <button onClick={() => setMovingBookmarkId(null)} style={{ marginTop: 10, padding: "6px 12px", background: "#1f2937", border: "none", borderRadius: 6, color: "#6b7280", cursor: "pointer", fontSize: 13 }}>
                   Cancel
                 </button>
               </div>
@@ -520,8 +520,8 @@ export default function App() {
         {/* Folder rename inline modal */}
         {renamingFolderId && (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12, padding: 20, minWidth: 280 }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: "#f4f4f5", marginBottom: 12 }}>Rename folder</p>
+            <div style={{ background: "#161b27", border: "1px solid #1f2937", borderRadius: 12, padding: 20, minWidth: 280 }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: "#f3f4f6", marginBottom: 12 }}>Rename folder</p>
               <input
                 value={renameValue}
                 onChange={(e) => setRenameValue(e.target.value)}
@@ -551,7 +551,7 @@ export default function App() {
               onClick={() => createFolder(contextMenu.folderId)}>
               <FolderPlus size={13} /> New Subfolder
             </button>
-            <div style={{ borderTop: "1px solid #27272a", margin: "4px 0" }} />
+            <div style={{ borderTop: "1px solid #1f2937", margin: "4px 0" }} />
             <button className="kb-ctx-item kb-ctx-item-danger" style={{ ...s.contextMenuItem, color: "#f87171" }}
               onClick={() => deleteFolder(contextMenu.folderId)}>
               <Trash2 size={13} /> Delete Folder

@@ -12,10 +12,10 @@
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 2 — company intel view, structured prep framework, STAR story bank |
+| **Focus** | Wave 2 — structured prep framework, STAR story bank, outreach cadence nudges |
 | **Next** | See `ROADMAP.md` Wave 2 section |
 | **Blockers** | None |
-| **Last touch** | 2026-04-13 — Wave 1 shipped: action queue, next step dates/types, URL paste capture, scenario chips, logo |
+| **Last touch** | 2026-04-13 — Wave 2 #1 shipped: By Company view, warm lead badges, ghost rows, AppModal pre-fill |
 
 ---
 

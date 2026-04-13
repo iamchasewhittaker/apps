@@ -97,7 +97,7 @@ function LoginScreen() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f1117", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div style={{ maxWidth: 360, width: "100%", background: "#1a1f2e", borderRadius: 16, padding: 32, border: "1px solid #1f2937" }}>
+      <div style={{ maxWidth: 360, width: "100%", background: "#161b27", borderRadius: 16, padding: 32, border: "1px solid #1f2937" }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🎯</div>
         <div style={{ fontSize: 20, fontWeight: 700, color: "#f3f4f6", textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
         <div style={{ fontSize: 13, color: "#6b7280", textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
@@ -442,6 +442,7 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
           contacts={data.contacts} applications={data.applications}
           setContactModal={setContactModal} deleteContact={deleteContact}
           saveContact={saveContact} setTab={setTab}
+          setAppModal={setAppModal}
         />
       )}
       {tab === "ai" && (

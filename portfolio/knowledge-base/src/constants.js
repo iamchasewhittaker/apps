@@ -427,33 +427,33 @@ export const SEED = [
 
 // Inline styles (replaces Tailwind classes)
 export const s = {
-  root: { height: "100vh", background: "#09090b", color: "#f4f4f5", fontFamily: "system-ui, -apple-system, sans-serif", display: "flex", overflow: "hidden" },
+  root: { height: "100vh", background: "#0f1117", color: "#f3f4f6", fontFamily: "'DM Sans', system-ui, sans-serif", display: "flex", overflow: "hidden" },
 
   // ── Layout ──────────────────────────────────────────────────────────────────
   sidebar: {
-    width: 280, flexShrink: 0, background: "#0d0d0f", borderRight: "1px solid #27272a",
+    width: 280, flexShrink: 0, background: "#0f1117", borderRight: "1px solid #1f2937",
     display: "flex", flexDirection: "column", height: "100vh", overflowY: "hidden",
     transition: "width 0.2s ease",
   },
   sidebarCollapsed: {
-    width: 48, flexShrink: 0, background: "#0d0d0f", borderRight: "1px solid #27272a",
+    width: 48, flexShrink: 0, background: "#0f1117", borderRight: "1px solid #1f2937",
     display: "flex", flexDirection: "column", alignItems: "center", height: "100vh",
     overflowY: "hidden", transition: "width 0.2s ease",
   },
   content: { flex: 1, padding: "20px 24px", overflowY: "auto", height: "100vh" },
 
   // ── Sidebar internals ────────────────────────────────────────────────────────
-  sidebarHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 12px 10px", borderBottom: "1px solid #1c1c1f" },
-  sidebarTitle: { fontSize: 13, fontWeight: 700, color: "#f4f4f5", letterSpacing: "0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  sidebarHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 12px 10px", borderBottom: "1px solid #1f2937" },
+  sidebarTitle: { fontSize: 13, fontWeight: 700, color: "#f3f4f6", letterSpacing: "0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
   sidebarToggleBtn: { padding: 6, borderRadius: 6, border: "none", background: "transparent", cursor: "pointer", color: "#71717a", display: "flex", alignItems: "center", minHeight: 32 },
   sidebarSearchWrap: { position: "relative", margin: "10px 10px 4px" },
   sidebarSearchIcon: { position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#52525b" },
-  sidebarSearchInput: { width: "100%", background: "#18181b", border: "1px solid #27272a", borderRadius: 8, paddingLeft: 30, paddingRight: 10, paddingTop: 7, paddingBottom: 7, fontSize: 13, color: "#f4f4f5", outline: "none", boxSizing: "border-box" },
+  sidebarSearchInput: { width: "100%", background: "#161b27", border: "1px solid #1f2937", borderRadius: 8, paddingLeft: 30, paddingRight: 10, paddingTop: 7, paddingBottom: 7, fontSize: 13, color: "#f3f4f6", outline: "none", boxSizing: "border-box" },
   sidebarSection: { padding: "8px 8px 4px" },
   sidebarSectionLabel: { fontSize: 10, fontWeight: 600, color: "#52525b", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: 4, paddingLeft: 4 },
   sidebarActBtn: { padding: 4, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#52525b", display: "flex", alignItems: "center" },
-  sidebarFooter: { padding: "8px 10px 12px", borderTop: "1px solid #1c1c1f" },
-  sidebarAddBtn: { width: "100%", background: "#18181b", color: "#d4d4d8", borderRadius: 8, padding: "8px 12px", fontSize: 13, fontWeight: 500, border: "1px solid #27272a", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, minHeight: 36 },
+  sidebarFooter: { padding: "8px 10px 12px", borderTop: "1px solid #1f2937" },
+  sidebarAddBtn: { width: "100%", background: "#161b27", color: "#d4d4d8", borderRadius: 8, padding: "8px 12px", fontSize: 13, fontWeight: 500, border: "1px solid #1f2937", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, minHeight: 36 },
 
   // Smart folders
   smartFolderBtn: { width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", borderRadius: 6, border: "none", cursor: "pointer", color: "#d4d4d8", fontSize: 13, textAlign: "left", minHeight: 32, marginBottom: 1 },
@@ -471,7 +471,7 @@ export const s = {
   folderNameBtn: { flex: 1, display: "flex", alignItems: "center", gap: 6, border: "none", background: "transparent", cursor: "pointer", color: "#d4d4d8", fontSize: 13, textAlign: "left", overflow: "hidden", minHeight: 32, padding: 0 },
   folderIcon: { color: "#71717a", flexShrink: 0 },
   folderName: { flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 13 },
-  folderCount: { fontSize: 11, color: "#52525b", background: "#1c1c1f", padding: "1px 5px", borderRadius: 9999, flexShrink: 0 },
+  folderCount: { fontSize: 11, color: "#52525b", background: "#1f2937", padding: "1px 5px", borderRadius: 9999, flexShrink: 0 },
   folderMoreBtn: { padding: 4, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#52525b", display: "flex", alignItems: "center", flexShrink: 0, opacity: 0, minHeight: 24 },
   allBooksBtn: { width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "6px 8px 6px 12px", borderRadius: 6, border: "none", cursor: "pointer", marginBottom: 4, minHeight: 32 },
 
@@ -481,9 +481,9 @@ export const s = {
 
   // ── Content area ─────────────────────────────────────────────────────────────
   contentHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 },
-  contentTitle: { fontSize: 22, fontWeight: 700, color: "#f4f4f5" },
+  contentTitle: { fontSize: 22, fontWeight: 700, color: "#f3f4f6" },
   contentSubtitle: { fontSize: 13, color: "#71717a", marginTop: 2 },
-  mobileMenuBtn: { padding: 8, borderRadius: 8, border: "1px solid #27272a", background: "#18181b", cursor: "pointer", color: "#a1a1aa", display: "none" },
+  mobileMenuBtn: { padding: 8, borderRadius: 8, border: "1px solid #1f2937", background: "#161b27", cursor: "pointer", color: "#6b7280", display: "none" },
 
   // Mobile overlay backdrop
   backdrop: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 99 },
@@ -493,13 +493,13 @@ export const s = {
   homeSection: { marginBottom: 32 },
   homeSectionTitle: { fontSize: 13, fontWeight: 600, color: "#71717a", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 12 },
   homeCardGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 },
-  homeCard: { background: "#18181b", border: "1px solid #27272a", borderRadius: 8, padding: "10px 14px", textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", gap: 4, cursor: "pointer" },
-  homeCardTitle: { fontSize: 13, fontWeight: 500, color: "#f4f4f5", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  homeCard: { background: "#161b27", border: "1px solid #1f2937", borderRadius: 8, padding: "10px 14px", textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", gap: 4, cursor: "pointer" },
+  homeCardTitle: { fontSize: 13, fontWeight: 500, color: "#f3f4f6", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
   homeCardDesc: { fontSize: 12, color: "#71717a", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" },
   homeCardMeta: { fontSize: 11, color: "#52525b", marginTop: 2 },
 
   // Folder context menu
-  contextMenu: { position: "fixed", background: "#18181b", border: "1px solid #27272a", borderRadius: 8, padding: "4px 0", zIndex: 200, minWidth: 160, boxShadow: "0 8px 24px rgba(0,0,0,0.4)" },
+  contextMenu: { position: "fixed", background: "#161b27", border: "1px solid #1f2937", borderRadius: 8, padding: "4px 0", zIndex: 200, minWidth: 160, boxShadow: "0 8px 24px rgba(0,0,0,0.4)" },
   contextMenuItem: { width: "100%", padding: "8px 14px", border: "none", background: "transparent", cursor: "pointer", color: "#d4d4d8", fontSize: 13, textAlign: "left", display: "flex", alignItems: "center", gap: 8, minHeight: 36 },
 
   // Search results
@@ -509,54 +509,54 @@ export const s = {
   container: { maxWidth: 896, margin: "0 auto" },
   header: { marginBottom: 24 },
   headerTitle: { fontSize: 30, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 },
-  headerSub: { fontSize: 14, color: "#a1a1aa" },
+  headerSub: { fontSize: 14, color: "#6b7280" },
 
   // Search row
   searchRow: { display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" },
   searchWrap: { position: "relative", flex: 1, minWidth: 200 },
   searchIcon: { position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#71717a" },
-  searchInput: { width: "100%", background: "#18181b", border: "1px solid #27272a", borderRadius: 8, paddingLeft: 40, paddingRight: 12, paddingTop: 8, paddingBottom: 8, fontSize: 14, color: "#f4f4f5", outline: "none", boxSizing: "border-box" },
-  addBtn: { background: "#f4f4f5", color: "#18181b", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
+  searchInput: { width: "100%", background: "#161b27", border: "1px solid #1f2937", borderRadius: 8, paddingLeft: 40, paddingRight: 12, paddingTop: 8, paddingBottom: 8, fontSize: 14, color: "#f3f4f6", outline: "none", boxSizing: "border-box" },
+  addBtn: { background: "#f3f4f6", color: "#161b27", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
 
   // Category toggle button
-  catToggleBtn: { background: "#18181b", color: "#d4d4d8", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 500, border: "1px solid #27272a", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
-  catToggleBtnActive: { background: "#27272a", color: "#f4f4f5", borderColor: "#3f3f46" },
+  catToggleBtn: { background: "#161b27", color: "#d4d4d8", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 500, border: "1px solid #1f2937", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" },
+  catToggleBtnActive: { background: "#1f2937", color: "#f3f4f6", borderColor: "#3f3f46" },
 
   // Category manager panel
-  catManagerCard: { background: "#18181b", border: "1px solid #27272a", borderRadius: 8, padding: 12, marginBottom: 16 },
-  catManagerHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid #27272a" },
-  catManagerTitle: { fontSize: 13, fontWeight: 600, color: "#a1a1aa", textTransform: "uppercase", letterSpacing: "0.05em" },
-  catManagerResetBtn: { fontSize: 12, color: "#71717a", background: "transparent", border: "1px solid #27272a", borderRadius: 4, padding: "3px 8px", cursor: "pointer" },
+  catManagerCard: { background: "#161b27", border: "1px solid #1f2937", borderRadius: 8, padding: 12, marginBottom: 16 },
+  catManagerHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid #1f2937" },
+  catManagerTitle: { fontSize: 13, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" },
+  catManagerResetBtn: { fontSize: 12, color: "#71717a", background: "transparent", border: "1px solid #1f2937", borderRadius: 4, padding: "3px 8px", cursor: "pointer" },
   catManagerRow: { display: "flex", alignItems: "center", gap: 8, padding: "6px 4px", borderRadius: 4 },
-  catManagerName: { flex: 1, fontSize: 14, color: "#f4f4f5", cursor: "pointer", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
-  catManagerCount: { fontSize: 11, color: "#52525b", background: "#27272a", padding: "1px 6px", borderRadius: 9999, flexShrink: 0 },
+  catManagerName: { flex: 1, fontSize: 14, color: "#f3f4f6", cursor: "pointer", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  catManagerCount: { fontSize: 11, color: "#52525b", background: "#1f2937", padding: "1px 6px", borderRadius: 9999, flexShrink: 0 },
   catManagerBtn: { padding: 5, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#71717a", display: "flex", alignItems: "center" },
-  catManagerInput: { flex: 1, background: "#09090b", border: "1px solid #52525b", borderRadius: 4, padding: "3px 8px", fontSize: 14, color: "#f4f4f5", outline: "none" },
-  catManagerMergeSelect: { flex: 1, background: "#09090b", border: "1px solid #27272a", borderRadius: 4, padding: "3px 8px", fontSize: 13, color: "#f4f4f5", cursor: "pointer", outline: "none" },
+  catManagerInput: { flex: 1, background: "#0f1117", border: "1px solid #52525b", borderRadius: 4, padding: "3px 8px", fontSize: 14, color: "#f3f4f6", outline: "none" },
+  catManagerMergeSelect: { flex: 1, background: "#0f1117", border: "1px solid #1f2937", borderRadius: 4, padding: "3px 8px", fontSize: 13, color: "#f3f4f6", cursor: "pointer", outline: "none" },
 
   // Category pills
   pillRow: { display: "flex", gap: 8, marginBottom: 16, overflowX: "auto", paddingBottom: 4 },
-  pill: { padding: "4px 12px", borderRadius: 9999, fontSize: 12, whiteSpace: "nowrap", border: "1px solid #27272a", background: "#18181b", color: "#d4d4d8", cursor: "pointer" },
-  pillActive: { background: "#f4f4f5", color: "#18181b", borderColor: "#f4f4f5" },
+  pill: { padding: "4px 12px", borderRadius: 9999, fontSize: 12, whiteSpace: "nowrap", border: "1px solid #1f2937", background: "#161b27", color: "#d4d4d8", cursor: "pointer" },
+  pillActive: { background: "#f3f4f6", color: "#161b27", borderColor: "#f3f4f6" },
   pillImportant: { borderColor: "#ef444466", color: "#ef4444" },
 
   // Add/Edit form
-  formCard: { background: "#18181b", border: "1px solid #27272a", borderRadius: 8, padding: 16, marginBottom: 16 },
-  formInput: { width: "100%", background: "#09090b", border: "1px solid #27272a", borderRadius: 4, padding: "8px 12px", fontSize: 14, color: "#f4f4f5", outline: "none", marginBottom: 8, boxSizing: "border-box" },
+  formCard: { background: "#161b27", border: "1px solid #1f2937", borderRadius: 8, padding: 16, marginBottom: 16 },
+  formInput: { width: "100%", background: "#0f1117", border: "1px solid #1f2937", borderRadius: 4, padding: "8px 12px", fontSize: 14, color: "#f3f4f6", outline: "none", marginBottom: 8, boxSizing: "border-box" },
   formActions: { display: "flex", gap: 8 },
-  formBtnSave: { background: "#10b981", color: "#09090b", borderRadius: 4, padding: "6px 12px", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 },
-  formBtnCancel: { background: "#27272a", color: "#d4d4d8", borderRadius: 4, padding: "6px 12px", fontSize: 14, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 },
+  formBtnSave: { background: "#10b981", color: "#0f1117", borderRadius: 4, padding: "6px 12px", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 },
+  formBtnCancel: { background: "#1f2937", color: "#d4d4d8", borderRadius: 4, padding: "6px 12px", fontSize: 14, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 },
 
   // Bookmark list
   listWrap: { display: "flex", flexDirection: "column", gap: 16 },
-  listWrapInner: { border: "1px solid #27272a", borderTop: "none", borderRadius: "0 0 8px 8px", overflow: "hidden" },
+  listWrapInner: { border: "1px solid #1f2937", borderTop: "none", borderRadius: "0 0 8px 8px", overflow: "hidden" },
   listRow: { display: "flex", alignItems: "center", gap: 12, padding: 12 },
-  listRowBorder: { borderBottom: "1px solid #27272a" },
-  categoryBadge: { fontSize: 12, padding: "2px 8px", borderRadius: 4, background: "#27272a", color: "#d4d4d8", whiteSpace: "nowrap" },
+  listRowBorder: { borderBottom: "1px solid #1f2937" },
+  categoryBadge: { fontSize: 12, padding: "2px 8px", borderRadius: 4, background: "#1f2937", color: "#d4d4d8", whiteSpace: "nowrap" },
   linkArea: { flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 8, textDecoration: "none", color: "inherit" },
   linkTitle: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 500 },
   linkIcon: { color: "#71717a", flexShrink: 0 },
-  actionBtn: { padding: 6, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#a1a1aa", display: "flex", alignItems: "center" },
+  actionBtn: { padding: 6, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#6b7280", display: "flex", alignItems: "center" },
 
   // Bookmark row additions
   descText: { fontSize: 12, color: "#71717a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 },
@@ -568,26 +568,26 @@ export const s = {
 
   // Group headers
   groupWrap: { marginBottom: 16 },
-  groupHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", cursor: "pointer", borderRadius: "8px 8px 0 0", background: "#18181b", border: "1px solid #27272a", userSelect: "none" },
+  groupHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", cursor: "pointer", borderRadius: "8px 8px 0 0", background: "#161b27", border: "1px solid #1f2937", userSelect: "none" },
   groupHeaderLeft: { display: "flex", alignItems: "center", gap: 10 },
-  groupTitle: { fontSize: 15, fontWeight: 600, color: "#f4f4f5" },
-  groupCount: { fontSize: 12, color: "#71717a", background: "#27272a", padding: "1px 8px", borderRadius: 9999 },
+  groupTitle: { fontSize: 15, fontWeight: 600, color: "#f3f4f6" },
+  groupCount: { fontSize: 12, color: "#71717a", background: "#1f2937", padding: "1px 8px", borderRadius: 9999 },
   groupChevron: { color: "#71717a", flexShrink: 0, transition: "transform 0.2s" },
-  pinnedHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", cursor: "default", borderRadius: "8px 8px 0 0", background: "#18181b", border: "1px solid #facc15", borderBottom: "1px solid #27272a", userSelect: "none" },
+  pinnedHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", cursor: "default", borderRadius: "8px 8px 0 0", background: "#161b27", border: "1px solid #facc15", borderBottom: "1px solid #1f2937", userSelect: "none" },
   pinnedTitle: { fontSize: 15, fontWeight: 600, color: "#facc15" },
 
   // Detail panel (expanded row)
-  detailPanel: { padding: "12px 16px", background: "#0d0d0f", borderTop: "1px solid #27272a", display: "flex", flexDirection: "column", gap: 12 },
+  detailPanel: { padding: "12px 16px", background: "#0f1117", borderTop: "1px solid #1f2937", display: "flex", flexDirection: "column", gap: 12 },
   detailRow: { display: "flex", alignItems: "center", gap: 12 },
   detailLabel: { fontSize: 12, color: "#71717a", width: 80, flexShrink: 0 },
   detailMeta: { fontSize: 11, color: "#52525b" },
-  notesArea: { width: "100%", background: "#18181b", border: "1px solid #27272a", borderRadius: 4, padding: "8px 12px", fontSize: 13, color: "#f4f4f5", outline: "none", resize: "vertical", minHeight: 72, boxSizing: "border-box", fontFamily: "system-ui, -apple-system, sans-serif" },
+  notesArea: { width: "100%", background: "#161b27", border: "1px solid #1f2937", borderRadius: 4, padding: "8px 12px", fontSize: 13, color: "#f3f4f6", outline: "none", resize: "vertical", minHeight: 72, boxSizing: "border-box", fontFamily: "'DM Sans', system-ui, sans-serif" },
   progressWrap: { flex: 1, display: "flex", alignItems: "center", gap: 10 },
-  progressTrack: { flex: 1, height: 6, background: "#27272a", borderRadius: 3, overflow: "hidden" },
+  progressTrack: { flex: 1, height: 6, background: "#1f2937", borderRadius: 3, overflow: "hidden" },
   progressFill: { height: "100%", background: "#10b981", borderRadius: 3, transition: "width 0.2s" },
-  progressLabel: { fontSize: 12, color: "#a1a1aa", width: 36, textAlign: "right" },
+  progressLabel: { fontSize: 12, color: "#6b7280", width: 36, textAlign: "right" },
   statusBtns: { display: "flex", gap: 6 },
-  statusBtn: { fontSize: 12, padding: "3px 10px", borderRadius: 9999, border: "1px solid #27272a", background: "transparent", cursor: "pointer", color: "#71717a" },
+  statusBtn: { fontSize: 12, padding: "3px 10px", borderRadius: 9999, border: "1px solid #1f2937", background: "transparent", cursor: "pointer", color: "#71717a" },
   statusBtnActive: { border: "none", cursor: "pointer", fontSize: 12, padding: "3px 10px", borderRadius: 9999 },
   expandBtn: { padding: 6, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", color: "#52525b", display: "flex", alignItems: "center" },
 
@@ -603,44 +603,44 @@ input:focus { border-color: #52525b !important; }
 select:focus { border-color: #52525b !important; outline: none; }
 
 /* Bookmark rows */
-.kb-row:hover { background: #18181b; }
+.kb-row:hover { background: #161b27; }
 .kb-row .kb-actions { opacity: 0; transition: opacity 0.15s; }
 .kb-row:hover .kb-actions { opacity: 1; }
 .kb-save:hover { background: #34d399; }
 .kb-cancel:hover { background: #3f3f46; }
-.kb-act:hover { background: #27272a; color: #f4f4f5; }
+.kb-act:hover { background: #1f2937; color: #f3f4f6; }
 .kb-del:hover { color: #f87171 !important; }
-.kb-group-header:hover { background: #1c1c1f !important; }
+.kb-group-header:hover { background: #1f2937 !important; }
 .kb-star { color: #52525b; }
 .kb-star:hover { color: #facc15; }
 .kb-star.pinned { color: #facc15; }
-.kb-expand:hover { color: #a1a1aa; }
+.kb-expand:hover { color: #6b7280; }
 .kb-status-btn:hover { opacity: 0.85; }
 input[type=range] { accent-color: #10b981; cursor: pointer; }
 textarea:focus { border-color: #52525b !important; }
 
 /* Category manager (legacy, kept for future use) */
-.kb-cat-toggle:hover { background: #27272a !important; color: #f4f4f5 !important; }
-.kb-cat-row:hover { background: #1c1c1f; }
-.kb-cat-mgr-act:hover { background: #27272a; color: #f4f4f5; }
+.kb-cat-toggle:hover { background: #1f2937 !important; color: #f3f4f6 !important; }
+.kb-cat-row:hover { background: #1f2937; }
+.kb-cat-mgr-act:hover { background: #1f2937; color: #f3f4f6; }
 
 /* Sidebar */
-.kb-sidebar-toggle:hover { background: #27272a; color: #f4f4f5; }
-.kb-sidebar-act:hover { background: #27272a; color: #a1a1aa; }
-.kb-folder-row:hover { background: #1c1c1f !important; }
-.kb-folder-row.selected { background: #27272a !important; }
+.kb-sidebar-toggle:hover { background: #1f2937; color: #f3f4f6; }
+.kb-sidebar-act:hover { background: #1f2937; color: #6b7280; }
+.kb-folder-row:hover { background: #1f2937 !important; }
+.kb-folder-row.selected { background: #1f2937 !important; }
 .kb-folder-row:hover .kb-folder-more { opacity: 1 !important; }
-.kb-smart-folder:hover { background: #1c1c1f !important; }
-.kb-smart-folder.selected { background: #27272a !important; }
-.kb-fav-item:hover { background: #1c1c1f; }
-.kb-add:hover { background: #27272a; }
+.kb-smart-folder:hover { background: #1f2937 !important; }
+.kb-smart-folder.selected { background: #1f2937 !important; }
+.kb-fav-item:hover { background: #1f2937; }
+.kb-add:hover { background: #1f2937; }
 
 /* Context menu */
-.kb-ctx-item:hover { background: #27272a; color: #f4f4f5; }
+.kb-ctx-item:hover { background: #1f2937; color: #f3f4f6; }
 .kb-ctx-item-danger:hover { background: #450a0a; color: #f87171 !important; }
 
 /* Home cards */
-.kb-home-card:hover { border-color: #3f3f46; background: #1c1c1f; }
+.kb-home-card:hover { border-color: #3f3f46; background: #1f2937; }
 
 /* Mobile — sidebar becomes overlay, content takes full width */
 @media (max-width: 768px) {

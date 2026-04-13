@@ -36,7 +36,7 @@ export default function FolderTree({ folders, bookmarks, selectedFolderId, onSel
           style={{
             ...s.folderRow,
             paddingLeft: 12 + depth * 16,
-            background: isSelected ? "#27272a" : "transparent",
+            background: isSelected ? "#1f2937" : "transparent",
           }}
         >
           {/* Expand/collapse toggle */}
