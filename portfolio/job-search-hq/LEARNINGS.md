@@ -18,6 +18,42 @@
 
 ## Entries
 
+### 2026-04-13 — Extension imports need the authenticated shell
+**What happened:** Opening Job Search HQ with `?importContact=` while the login screen was showing meant import state never reached the contact/application modals.
+**Root cause:** URL import ran on first mount before session was resolved; the main app tree (modals) is not mounted until after Supabase auth.
+**Fix / lesson:** Run bookmarklet/extension import consumption in a `useEffect` gated on `session` being ready (and `hasLoaded`), then strip query/hash with `replaceState`.
+**Tags:** chrome-extension · supabase · auth · react
+
+### 2026-04-13 — Analytics should use closed outcomes only
+**What happened:** Win/loss analytics needed to reflect final outcomes without being skewed by active pipeline stages.
+**Root cause:** Including non-final stages in outcome percentages distorts conversion signals and under-represents true offer/reject rates.
+**Fix / lesson:** Compute outcome analytics from closed stages only (`Offer`, `Rejected`, `Withdrawn`) and show percentages against that closed total.
+**Tags:** analytics · data-model · ux
+
+### 2026-04-13 — JSON-first AI output is more stable for structured editors
+**What happened:** STAR story drafting needed to populate multiple editable fields rather than one text blob.
+**Root cause:** Freeform AI output requires brittle parsing and slows user edits when each section should remain independently editable.
+**Fix / lesson:** Prompt Claude for strict JSON shape and parse into normalized story fields; keep a fallback path for malformed output.
+**Tags:** ai · prompts · data-model
+
+### 2026-04-13 — Safer migration path for prep model changes
+**What happened:** Interview prep moved from one `prepNotes` string to sectioned prep data, but existing saved apps already had legacy prep text.
+**Root cause:** Directly switching fields would hide prior prep content for existing users unless migrated at hydration time.
+**Fix / lesson:** Add normalization helpers (`normalizePrepSections`, `normalizeApplication`) and hydrate old `prepNotes` into a section (`roleAnalysis`) so historical prep remains visible.
+**Tags:** react · migration · data-model
+
+### 2026-04-13 — Follow-up nudges need explicit status guard
+**What happened:** Cadence nudges became noisy unless they only targeted contacts with outreach already sent.
+**Root cause:** Day-based follow-up logic without status filtering can surface reminders for contacts who haven't been messaged yet.
+**Fix / lesson:** Gate day 3/day 7 nudges behind `outreachStatus === "sent"` plus a valid `outreachDate`, then escalate message tone by threshold.
+**Tags:** react · ux · data-model
+
+### 2026-04-13 — Style key collisions trigger ESLint warnings
+**What happened:** `npm run build` flagged `no-dupe-keys` after adding new FocusTab outreach styles because `s.outreachBadge` already existed for contact cards.
+**Root cause:** The shared `s` style object is large; adding similarly named keys can silently collide until lint/build runs.
+**Fix / lesson:** Use feature-specific key names (`outreachCountBadge` vs existing contact `outreachBadge`) and always run a build immediately after adding style tokens.
+**Tags:** react · lint · styles
+
 ### 2026-04-13 — SVG favicon rendering on macOS
 **What happened:** `qlmanage -t -s 512` produces clean PNG renders from SVG files on macOS without needing ImageMagick, rsvg-convert, or any npm packages.
 **Root cause:** qlmanage is the Quick Look thumbnail generator — it's on every Mac and handles SVG natively.

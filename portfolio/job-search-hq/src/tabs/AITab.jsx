@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { s, CHASE_CONTEXT, JOB_SEARCH_QUERIES, API_KEY_STORAGE, callClaude, blankApp, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS } from "../constants";
+import React, { useEffect, useState } from "react";
+import { s, CHASE_CONTEXT, JOB_SEARCH_QUERIES, API_KEY_STORAGE, callClaude, blankApp, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import AIResult from "../components/AIResult";
 
 export default function AITab({
   data, apiKey, hasApiKey, profileComplete,
   kitApp, setKitApp, resumeTab, setResumeTab,
-  setTab, saveApp,
+  setTab, saveApp, saveStarStories,
   showError, setShowApiKeyModal, setProfileModal,
 }) {
   const [resumeType, setResumeType] = useState("PM");
@@ -40,6 +40,15 @@ export default function AITab({
   const [followupContext, setFollowupContext] = useState("");
   const [followupResult, setFollowupResult] = useState("");
   const [loadingFollowup, setLoadingFollowup] = useState(false);
+  const [stories, setStories] = useState(normalizeStarStories(data.starStories));
+  const [storyDraft, setStoryDraft] = useState(blankStarStory());
+  const [editingStoryId, setEditingStoryId] = useState(null);
+  const [storySource, setStorySource] = useState("");
+  const [loadingStoryDraft, setLoadingStoryDraft] = useState(false);
+
+  useEffect(() => {
+    setStories(normalizeStarStories(data.starStories));
+  }, [data.starStories]);
 
   function profileContext() {
     const p = data.profile;
@@ -244,6 +253,91 @@ export default function AITab({
     setLoadingFollowup(false);
   }
 
+  function persistStories(nextStories) {
+    const normalized = normalizeStarStories(nextStories);
+    setStories(normalized);
+    saveStarStories(normalized);
+  }
+
+  function saveCurrentStory() {
+    const nextStory = {
+      ...storyDraft,
+      title: storyDraft.title.trim() || "Untitled STAR story",
+      competency: storyDraft.competency.trim(),
+      situation: storyDraft.situation.trim(),
+      task: storyDraft.task.trim(),
+      action: storyDraft.action.trim(),
+      result: storyDraft.result.trim(),
+      takeaway: storyDraft.takeaway.trim(),
+    };
+    if (!nextStory.situation && !nextStory.action && !nextStory.result) return;
+
+    const nextStories = editingStoryId
+      ? stories.map(story => story.id === editingStoryId ? nextStory : story)
+      : [nextStory, ...stories];
+    persistStories(nextStories);
+    setStoryDraft(blankStarStory());
+    setEditingStoryId(null);
+    setStorySource("");
+  }
+
+  function editStory(story) {
+    setStoryDraft({ ...story });
+    setEditingStoryId(story.id);
+    setResumeTab("stories");
+  }
+
+  function deleteStory(id) {
+    persistStories(stories.filter(story => story.id !== id));
+    if (editingStoryId === id) {
+      setStoryDraft(blankStarStory());
+      setEditingStoryId(null);
+    }
+  }
+
+  async function draftStarStoryWithAI() {
+    const source = storySource.trim() || data.profile.topAchievements || data.baseResume || "";
+    if (!source) return;
+    setLoadingStoryDraft(true);
+    await handleClaudeCall(async () => {
+      const result = await callClaude(
+        `You are a STAR story writing coach.
+Return ONLY valid JSON with this exact shape:
+{
+  "title": "",
+  "competency": "",
+  "situation": "",
+  "task": "",
+  "action": "",
+  "result": "",
+  "takeaway": ""
+}
+
+Rules:
+- Build one concise, interview-ready STAR story from the source text.
+- Use specific details from Chase's payments background when possible.
+- "action" should be the longest field (2-4 bullets in plain text).
+- "result" must include clear business impact or measurable outcome.
+- No markdown, no code fences, JSON only.`,
+        `${profileContext()}\n\nSOURCE MATERIAL:\n${source}\n\nReturn the STAR story JSON now.`,
+        1200
+      );
+      let parsed;
+      try {
+        parsed = JSON.parse(result.replace(/```json|```/g, "").trim());
+      } catch {
+        parsed = { title: "Drafted story", action: result };
+      }
+      const merged = {
+        ...blankStarStory(),
+        ...storyDraft,
+        ...parsed,
+      };
+      setStoryDraft(merged);
+    });
+    setLoadingStoryDraft(false);
+  }
+
   return (
     <ErrorBoundary name="AI Tools">
       <div style={s.content}>
@@ -275,7 +369,7 @@ export default function AITab({
         </div>
 
         <div style={s.subTabs}>
-          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"]].map(([key, label]) => (
+          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"]].map(([key, label]) => (
             <button key={key} style={{ ...s.subTabBtn, ...(resumeTab === key ? s.subTabBtnActive : {}) }} onClick={() => setResumeTab(key)}>{label}</button>
           ))}
         </div>
@@ -640,6 +734,92 @@ export default function AITab({
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* STAR STORY BANK */}
+        {resumeTab === "stories" && (
+          <div style={s.aiLayout}>
+            <div style={s.aiLeft}>
+              <div style={s.sectionLabel}>STAR Story Bank</div>
+              <div style={s.tipBox}>
+                <p>Build reusable interview stories by competency. Keep each one concise and outcome-focused.</p>
+              </div>
+
+              <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+                <input
+                  style={s.input}
+                  placeholder="Story title (e.g. Resolved complex integration blocker)"
+                  value={storyDraft.title}
+                  onChange={e => setStoryDraft(d => ({ ...d, title: e.target.value }))}
+                />
+                <select
+                  style={s.input}
+                  value={storyDraft.competency}
+                  onChange={e => setStoryDraft(d => ({ ...d, competency: e.target.value }))}
+                >
+                  <option value="">Select competency</option>
+                  {STAR_COMPETENCIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <textarea style={s.textarea} rows={3} placeholder="Situation" value={storyDraft.situation} onChange={e => setStoryDraft(d => ({ ...d, situation: e.target.value }))} />
+                <textarea style={s.textarea} rows={2} placeholder="Task" value={storyDraft.task} onChange={e => setStoryDraft(d => ({ ...d, task: e.target.value }))} />
+                <textarea style={s.textarea} rows={4} placeholder="Action (what you did)" value={storyDraft.action} onChange={e => setStoryDraft(d => ({ ...d, action: e.target.value }))} />
+                <textarea style={s.textarea} rows={3} placeholder="Result (impact, metrics)" value={storyDraft.result} onChange={e => setStoryDraft(d => ({ ...d, result: e.target.value }))} />
+                <textarea style={s.textarea} rows={2} placeholder="Takeaway / why this matters for target roles" value={storyDraft.takeaway} onChange={e => setStoryDraft(d => ({ ...d, takeaway: e.target.value }))} />
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <button style={s.btnPrimary} onClick={saveCurrentStory}>{editingStoryId ? "Update Story" : "Save Story"}</button>
+                  {editingStoryId && (
+                    <button style={s.btnSecondary} onClick={() => { setStoryDraft(blankStarStory()); setEditingStoryId(null); }}>Cancel Edit</button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div style={s.aiRight}>
+              <div style={s.sectionLabel}>AI-assisted draft from resume</div>
+              <textarea
+                style={s.textarea}
+                rows={5}
+                value={storySource}
+                onChange={e => setStorySource(e.target.value)}
+                placeholder="Paste a resume bullet or achievement to draft into STAR format."
+              />
+              <button style={{ ...s.btnPrimary, width: "100%", opacity: loadingStoryDraft ? 0.6 : 1 }} disabled={loadingStoryDraft} onClick={draftStarStoryWithAI}>
+                {loadingStoryDraft ? "Drafting…" : "✨ Draft STAR Story"}
+              </button>
+
+              <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={s.sectionLabel}>Saved stories ({stories.length})</div>
+                {stories.length === 0 && <div style={s.empty}>No STAR stories saved yet.</div>}
+                {stories.map(story => (
+                  <div key={story.id} style={{ ...s.card, padding: 12 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start" }}>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>{story.title || "Untitled STAR story"}</div>
+                        {story.competency && <div style={{ fontSize: 11, color: "#60a5fa", marginTop: 2 }}>{story.competency}</div>}
+                      </div>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button style={s.actionBtn} onClick={() => editStory(story)}>Edit</button>
+                        <button style={s.actionBtnDanger} onClick={() => deleteStory(story.id)}>✕</button>
+                      </div>
+                    </div>
+                    <pre style={{ ...s.resultText, maxHeight: 180, marginTop: 8 }}>
+{`Situation: ${story.situation}
+Task: ${story.task}
+Action: ${story.action}
+Result: ${story.result}
+Takeaway: ${story.takeaway}`}
+                    </pre>
+                    <button
+                      style={s.copyBtn}
+                      onClick={() => navigator.clipboard.writeText(`Situation: ${story.situation}\nTask: ${story.task}\nAction: ${story.action}\nResult: ${story.result}\nTakeaway: ${story.takeaway}`)}
+                    >
+                      Copy STAR
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>

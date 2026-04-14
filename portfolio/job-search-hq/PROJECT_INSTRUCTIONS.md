@@ -38,12 +38,12 @@ bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 
 ## What This App Is
 
-A personal job search command center. Tracks applications, contacts, interview prep, and uses Claude AI to generate tailored resumes, cover letters, apply kits, and interview prep questions. Used on Mac browser and iPhone (added to home screen). Deployed on Vercel.
+A personal job search command center. Tracks applications, contacts, interview prep (structured sections + legacy migration), outreach cadence, pipeline analytics, a STAR story bank, and uses Claude AI to generate tailored resumes, cover letters, apply kits, and interview prep. Optional **Chrome extension** (`extension/`) imports LinkedIn profile/job rows and shows an Action Queue badge on the HQ tab. Used on Mac browser and iPhone (added to home screen). Deployed on Vercel.
 
 **Live URL:** `https://job-search-hq.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/job-search-hq` (private)
 **Local folder (monorepo):** `portfolio/job-search-hq` under `~/Developer/chase`
-**Current version:** `v8.3` (see `CLAUDE.md` — thin `App.jsx` shell + tabs)
+**Current version:** `v8.5` (see `CLAUDE.md` — shell + tabs; Wave 2 shipped; Wave 3 #1 Chrome extension in `extension/`)
 **Supabase sign-in email:** Shared project with Wellness — **Magic link** template must include `{{ .Token }}` (see Wellness or Job Search `CLAUDE.md`).
 
 ---

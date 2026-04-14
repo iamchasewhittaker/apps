@@ -11,6 +11,7 @@
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.5 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
+| Clarity Hub | v0.1 | TBD (Vercel) | `chase_hub_ynab_v1` (+ 6 more) | 🟡 Local · Scaffold done · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
 | YNAB Clarity (iOS) | v0.2 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
@@ -226,6 +227,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-13 | Clarity Hub | v0.1 | **Scaffold:** CRA app with 7-blob state management, email OTP auth gate, MetricsEngine.js + CashFlowEngine.js + YNABClient.js (ports from YNAB Clarity iOS), 8 placeholder tabs, Supabase push/pull for all 7 app_keys | `portfolio/clarity-hub/` — YNAB tab is next priority |
+| 2026-04-13 | Inbox Zero | — | **Phase 3 kickoff:** Apps Script auto-sorter (`auto-sort.gs` + `rules.gs`) with Gemini classification + Rules-only fallback + Sheets logging; Chrome extension (`extension/`) with label tab bar, Sort button, settings popup, dark mode | Pending deployment to script.google.com + Chrome |
 | 2026-04-13 | Job Search HQ | v8.5 | **Wave 2 #6 shipped:** Pipeline win/loss analytics bar chart by final stage outcome (Offer/Rejected/Withdrawn) with totals and percentages | Verified with `npm run build` and `npm test -- --watchAll=false --passWithNoTests` |
 | 2026-04-13 | Job Search HQ | v8.5 | **Documentation parity:** App + portfolio docs aligned with shipped Wave 2–3 scope (`CLAUDE.md`, `README`, `AGENTS`, `HANDOFF`, `PROJECT_INSTRUCTIONS`, `MASTER_PROJECT_FRAMEWORK`, `MVP-AUDIT`, `docs/*`, session templates); root `CLAUDE`/`ROADMAP` app table v8.5; monorepo tree lists `extension/`; `APP_META` 8.5 | See `CHANGELOG` [Unreleased] Documentation |
 | 2026-04-13 | Job Search HQ | v8.5 | **Wave 3 #1 shipped:** Chrome MV3 extension (`portfolio/job-search-hq/extension/`) — LinkedIn profile + job capture into app, Action Queue badge on HQ tab; post-login URL/hash import flow | Verified with `npm run build` |

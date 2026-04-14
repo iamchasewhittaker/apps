@@ -1,11 +1,13 @@
 # Inbox Zero — Claude Instructions
 
 ## Project
-Chase Whittaker's Gmail Inbox Zero system using native Gmail XML filters. No paid tools.
+Chase Whittaker's Gmail Inbox Zero system. Three-layer architecture: XML filters (instant) → Apps Script auto-sorter (5-min sweep + AI) → Chrome extension (manual UI). No paid tools.
 
 **Owner:** chase.t.whittaker@gmail.com  
 **Asana GID:** 1213891408033292  
-**Filter file:** `gmail-filters.xml` (import into Gmail when updated)
+**Filter file:** `gmail-filters.xml` (import into Gmail when updated)  
+**Apps Script:** `apps-script/auto-sort.gs` + `rules.gs` (deploy to script.google.com)  
+**Extension:** `extension/` (load unpacked in Chrome)
 
 ---
 
@@ -88,8 +90,11 @@ Omit any category with zero emails. After the report, flag any **inbox leakers**
 When Chase identifies a new sender to filter:
 1. Prefer domain-level matching (`from: domain.com`) over individual addresses
 2. Add the entry to `gmail-filters.xml` in the correct section
-3. Update the filter count in `claude.md` and `roadmap/roadmap.md`
-4. Output the updated `gmail-filters.xml` for download/import
+3. Add the matching domain/address to `apps-script/rules.gs` in the correct label
+4. Update the filter count in `claude.md` and `roadmap/roadmap.md`
+5. Output the updated `gmail-filters.xml` for download/import
+
+**Note:** With the Apps Script running, new senders are auto-classified by AI. You only need to manually add filters for senders you want to lock in permanently (skip AI cost + guarantee correct label).
 
 ---
 
@@ -132,8 +137,24 @@ When Chase identifies a new sender to filter:
 
 ---
 
+## Automation (Phase 3)
+
+### Apps Script Auto-Sorter
+- **Files:** `apps-script/auto-sort.gs` (engine) + `apps-script/rules.gs` (sender rules)
+- **Trigger:** 5-minute timer via `setupTrigger()`
+- **Flow:** Find unlabeled inbox emails → match against rules.gs → if no match, classify via Gemini (or skip in Rules-only mode) → apply label + archive → log new senders to Google Sheet
+- **Config:** Script Properties: `CLASSIFIER_MODE` (`GEMINI`/`RULES_ONLY`), `GEMINI_API_KEY` (for Gemini mode), `SHEET_ID` (optional)
+- **Job search protection:** Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn job addresses are whitelisted — never touched
+
+### Chrome Extension
+- **Files:** `extension/` directory (MV3)
+- **Features:** Label tab bar (matches screenshot), Sort button (AI classification), settings popup
+- **Install:** `chrome://extensions` → Developer mode → Load unpacked → select `extension/`
+
+---
+
 ## Asana Project
 
 **Project:** Inbox Zero Build  
 **GID:** 1213891408033292  
-**Status:** 🟢 Green — filters live, daily workflow established
+**Status:** 🟢 Green — Phase 3 automation built, pending deployment

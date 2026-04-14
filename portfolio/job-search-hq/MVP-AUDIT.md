@@ -7,7 +7,7 @@
 
 **Current step (per the framework):** Step 5 — Ship
 
-**Evidence for that step:** v8.3 is live at job-search-hq.vercel.app. Supabase sync and email OTP auth both working. 8 versions shipped. Claude API integration functional. No feature commits in the last week — only docs/housekeeping.
+**Evidence for that step:** v8.5 is live at job-search-hq.vercel.app. Supabase sync and email OTP auth working. Claude API integration functional. Wave 2 (pipeline through prep/networking) and Wave 3 #1 (optional Chrome capture extension) shipped as of 2026-04-13 — see `CHANGELOG.md` [Unreleased] and `ROADMAP.md`.
 
 **What's missing to legitimately be at this step:** Nothing critical. The app is live and usable.
 

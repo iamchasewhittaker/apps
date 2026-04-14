@@ -25,6 +25,12 @@ When a Vercel project is connected to the wrong GitHub repo (e.g., standalone `j
 
 Avoid running `vercel link` from inside the app directory — the CLI creates a `.vercel/project.json` in the wrong location (app dir instead of repo root) and uses the wrong `rootDirectory`.
 
+## Chrome extension + auth-gated imports (2026-04-13)
+
+The MV3 package opens Job Search HQ with `importContact` / `importJob` query params or `#importJob=` for large JSON payloads. **The web app must not consume those params on the first paint before Supabase session is ready** — otherwise the import modals never appear for logged-in users. Pattern: run the import effect only after `session` exists and initial `hasLoaded` is true; guard with a ref so the URL is processed once.
+
+Badge bridge (`content-jobhq-bridge.js`) only runs on HQ origins; it reads `localStorage[chase_job_search_v1]` and approximates the Focus Action Queue count — keep that logic in sync if Action Queue rules change.
+
 ## Low vision accessibility — contrast and font size (2026-04-12)
 
 Dark amber (`#92400e`) on near-black (`#1c1a0a`) is nearly invisible for users with low vision — it has a contrast ratio well below WCAG AA. Rules of thumb for dark-theme UI:

@@ -21,9 +21,12 @@ flowchart LR
 
 | Path | Role |
 |------|------|
-| `src/App.jsx` | Shell — state, load/save, navigation, modals |
+| `src/App.jsx` | Shell — state, load/save, navigation, modals; post-auth URL/hash import for extension |
 | `src/constants.js` | Data, `s` styles, `callClaude`, helpers |
 | `src/sync.js` | `APP_KEY = job-search`, `createSync` |
+| `extension/` | Chrome MV3 — LinkedIn capture, HQ tab badge bridge (`content-jobhq-bridge.js`) |
+
+See [extension/README.md](../extension/README.md) for load-unpacked steps and permissions.
 
 ## Deploy
 

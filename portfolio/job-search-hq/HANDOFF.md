@@ -12,10 +12,10 @@
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 2 — structured prep framework, STAR story bank, outreach cadence nudges |
-| **Next** | See `ROADMAP.md` Wave 2 section |
+| **Focus** | Wave 3 — stage-specific prep templates + interview depth |
+| **Next** | See `ROADMAP.md` Wave 3 (next: stage-specific prep templates) |
 | **Blockers** | None |
-| **Last touch** | 2026-04-13 — Theme alignment: surface `#1a1f2e`/`#111827` → `#161b27` across `constants.js`, `App.jsx`, `ContactsTab.jsx` (portfolio-wide BASE token sync). Wave 2 #1 also shipped this session: By Company view, warm lead badges, ghost rows, AppModal pre-fill |
+| **Last touch** | 2026-04-13 — Wave 3 #1 shipped (Chrome MV3 `extension/`). Docs parity pass: app + root `CLAUDE.md`/`ROADMAP.md`, README, AGENTS, templates, ARCHITECTURE, PROJECT_INSTRUCTIONS, MASTER/MVP audits, `APP_META` 8.5. Verified `npm run build`. |
 
 ---
 
@@ -26,12 +26,11 @@ Read CLAUDE.md and HANDOFF.md first, then portfolio/job-search-hq/CLAUDE.md and 
 
 Goal: Continue Job Search HQ at portfolio/job-search-hq/.
 
-Current state: v8.5 — Wave 1 shipped + Wave 2 item #1 done (By Company view on ContactsTab — warm leads, ghost rows, expand/collapse, AppModal pre-fill).
+Current state: v8.5 — Wave 2 complete (#1–#6). Wave 3 #1 done: Chrome extension MVP in `extension/` (see `extension/README.md`).
 
-Next: Wave 2 item #2 — "Who should I message today?" widget on FocusTab.
-Session template: docs/templates/SESSION_START_JOB_SEARCH_WHO_TO_MESSAGE.md
+Next: Wave 3 item #2 — stage-specific prep templates (Phone Screen vs Interview vs Final Round).
 
-Pick next work from portfolio/job-search-hq/ROADMAP.md Wave 2 section.
+Pick next work from portfolio/job-search-hq/ROADMAP.md Wave 3 section.
 
 Follow existing patterns:
 - constants.js for all data/config/styles — no React
@@ -52,13 +51,14 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 |------|---------|
 | `src/constants.js` | ALL data models, enums, styles, helpers, AI call wrapper |
 | `src/App.jsx` | Shell: state, load/save, modals, tab routing |
-| `src/tabs/FocusTab.jsx` | Action queue + daily blocks |
-| `src/tabs/PipelineTab.jsx` | Application cards + URL paste capture |
-| `src/tabs/ContactsTab.jsx` | Contact list + stats + filter |
-| `src/tabs/AITab.jsx` | All AI tools: resume, cover, kit, jobs, LinkedIn |
-| `src/components/AppModal.jsx` | Add/edit application (next step date + type added v8.5) |
-| `src/components/AppCard.jsx` | Pipeline card (urgency badge added v8.5) |
-| `src/components/PrepModal.jsx` | Interview prep modal |
+| `src/tabs/FocusTab.jsx` | Action queue + daily blocks + prioritized outreach (“who to message”) |
+| `src/tabs/PipelineTab.jsx` | Application cards + URL paste capture + win/loss outcome analytics |
+| `src/tabs/ContactsTab.jsx` | Contact list + stats + filter + By Company view |
+| `src/tabs/AITab.jsx` | All AI tools + STAR story bank sub-tab |
+| `src/components/AppModal.jsx` | Add/edit application (next step date + type + structured prep) |
+| `src/components/AppCard.jsx` | Pipeline card (urgency + prep status from `prepSections`) |
+| `src/components/PrepModal.jsx` | Interview prep — sectioned `prepSections` + regenerate |
+| `extension/*` | Chrome MV3: LinkedIn scrape → HQ import; `content-jobhq-bridge.js` sets Action Queue badge |
 
 ## Data model additions (v8.5)
 
@@ -74,4 +74,9 @@ nextStepUrgency(nextStepDate)  // → { label, color, bg } | null
 NEXT_STEP_TYPES       // array of { value, label }
 CONNECT_SCENARIOS     // array of { label, text } — for connection request chips
 FOLLOWUP_SCENARIOS    // array of { label, text } — for follow-up message chips
+
+// Wave 2 #4–#6 (see constants.js for exact shapes):
+prepSections on applications   // structured prep; legacy prepNotes still migrates
+starStories on data root       // STAR bank for AI Tools
+getOutcomeAnalytics(applications) // Pipeline closed-outcome bar chart
 ```

@@ -1,0 +1,174 @@
+/* Inbox Zero — Tab Bar & UI Styles */
+
+/* Tab bar container */
+#iz-tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 16px;
+  background: var(--gm-tabbar-bg, #f8f9fa);
+  border-bottom: 1px solid var(--gm-tabbar-border, #e0e0e0);
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 13px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 100;
+}
+
+/* Individual tab button */
+.iz-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: transparent;
+  color: #5f6368;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1.4;
+}
+
+.iz-tab:hover {
+  background: #e8eaed;
+  color: #202124;
+}
+
+.iz-tab--active {
+  background: #d3e3fd;
+  color: #0b57d0;
+  font-weight: 500;
+}
+
+.iz-tab--active:hover {
+  background: #c2d9fc;
+}
+
+/* Tab icon (emoji) */
+.iz-tab-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Tab label text */
+.iz-tab-label {
+  font-size: 13px;
+}
+
+/* Unread count badge on each tab */
+.iz-tab-count {
+  font-size: 11px;
+  color: #80868b;
+  margin-left: 2px;
+}
+
+.iz-tab-count:empty {
+  display: none;
+}
+
+/* Unsorted emails badge */
+#iz-unsorted-badge {
+  display: none;
+  align-items: center;
+  margin-left: auto;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: #fce8e6;
+  color: #c5221f;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Sort button in toolbar */
+.iz-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  margin-left: 8px;
+  border-radius: 4px;
+  background: #1a73e8;
+  color: white;
+  font-size: 13px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.iz-sort-button:hover {
+  background: #1557b0;
+}
+
+/* Toast notification */
+#iz-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  padding: 10px 24px;
+  background: #323232;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#iz-toast.iz-toast--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Gmail dark mode support */
+@media (prefers-color-scheme: dark) {
+  #iz-tab-bar {
+    background: #1f1f1f;
+    border-bottom-color: #3c4043;
+  }
+
+  .iz-tab {
+    color: #bdc1c6;
+  }
+
+  .iz-tab:hover {
+    background: #3c4043;
+    color: #e8eaed;
+  }
+
+  .iz-tab--active {
+    background: #004a77;
+    color: #8ab4f8;
+  }
+
+  .iz-tab--active:hover {
+    background: #005a8e;
+  }
+
+  .iz-tab-count {
+    color: #9aa0a6;
+  }
+
+  #iz-unsorted-badge {
+    background: #442726;
+    color: #f28b82;
+  }
+
+  .iz-sort-button {
+    background: #8ab4f8;
+    color: #202124;
+  }
+
+  .iz-sort-button:hover {
+    background: #aecbfa;
+  }
+}

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { s, STAGES, STAGE_COLORS, callClaude, blankApp } from "../constants";
+import { s, STAGES, STAGE_COLORS, callClaude, blankApp, getOutcomeAnalytics } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import AppCard from "../components/AppCard";
 
 export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab, apiKey }) {
   const [urlInput, setUrlInput] = useState("");
   const [urlLoading, setUrlLoading] = useState(false);
+  const outcomes = getOutcomeAnalytics([...(activeApps || []), ...(archivedApps || [])]);
 
   async function parseJobUrl() {
     const url = urlInput.trim();
@@ -61,6 +62,33 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
                 <div style={{ ...s.stageDot, background: STAGE_COLORS[st] }} />
                 <span style={s.stagePillLabel}>{st}</span>
                 <span style={s.stagePillCount}>{count}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div style={s.outcomeSection}>
+          <div style={s.outcomeHeader}>
+            <div style={s.outcomeTitle}>Win/Loss Analytics</div>
+            <div style={s.outcomeMeta}>
+              {outcomes.total > 0
+                ? `${outcomes.total} closed applications`
+                : "No closed outcomes yet"}
+            </div>
+          </div>
+          {[
+            ["Offer", STAGE_COLORS.Offer],
+            ["Rejected", STAGE_COLORS.Rejected],
+            ["Withdrawn", STAGE_COLORS.Withdrawn],
+          ].map(([label, color]) => {
+            const count = outcomes.counts[label];
+            const rate = outcomes.rates[label];
+            return (
+              <div key={label} style={s.outcomeRow}>
+                <div style={s.outcomeLabel}>{label}</div>
+                <div style={s.outcomeTrack}>
+                  <div style={{ ...s.outcomeFill, width: `${rate}%`, background: color }} />
+                </div>
+                <div style={s.outcomeValue}>{count} ({rate}%)</div>
               </div>
             );
           })}

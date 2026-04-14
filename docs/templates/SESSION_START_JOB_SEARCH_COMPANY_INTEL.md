@@ -1,5 +1,7 @@
 # Session Start — Job Search HQ: Company Intel View
 
+> **Status:** Shipped as **Wave 2 #1** (By Company on ContactsTab). For current focus, read **`portfolio/job-search-hq/HANDOFF.md`**.
+
 Paste this into a new chat and say: *"Read CLAUDE.md and HANDOFF.md first."*
 
 ---

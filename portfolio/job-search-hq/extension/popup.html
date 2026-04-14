@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Job Search HQ</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 12px; width: 280px; background: #0f1117; color: #e5e7eb; }
+    h1 { font-size: 14px; margin: 0 0 8px; font-weight: 700; }
+    p { font-size: 12px; color: #9ca3af; margin: 0 0 10px; line-height: 1.45; }
+    button {
+      width: 100%; margin-bottom: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid #374151;
+      background: #1f2937; color: #f3f4f6; font-size: 13px; cursor: pointer; font-weight: 600;
+    }
+    button.primary { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    label { font-size: 11px; color: #6b7280; display: block; margin-bottom: 4px; }
+    input { width: 100%; box-sizing: border-box; padding: 6px 8px; border-radius: 6px; border: 1px solid #374151; background: #161b27; color: #e5e7eb; font-size: 12px; margin-bottom: 10px; }
+    .status { font-size: 11px; min-height: 28px; color: #fbbf24; }
+    .ok { color: #6ee7b7; }
+    a { color: #60a5fa; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Job Search HQ</h1>
+  <p>On LinkedIn: capture this tab into the web app (sign in to Job Search HQ in the same browser first).</p>
+  <button type="button" class="primary" id="btnProfile">Import profile → Contact</button>
+  <button type="button" class="primary" id="btnJob">Import job → Application</button>
+  <label for="origin">App origin (optional)</label>
+  <input id="origin" type="url" placeholder="https://job-search-hq.vercel.app" />
+  <button type="button" id="btnSaveOrigin">Save origin</button>
+  <div class="status" id="status"></div>
+  <p style="margin-top:6px"><a id="openApp" href="https://job-search-hq.vercel.app" target="_blank" rel="noreferrer">Open Job Search HQ ↗</a></p>
+  <script src="popup.js"></script>
+</body>
+</html>

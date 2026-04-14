@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Job Search HQ Capture",
+  "version": "0.1.0",
+  "description": "Send LinkedIn profiles and job postings to Job Search HQ (contact import + application pre-fill).",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Job Search HQ"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["activeTab", "scripting", "tabs", "storage"],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://linkedin.com/*",
+    "https://job-search-hq.vercel.app/*",
+    "http://localhost:3001/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://job-search-hq.vercel.app/*",
+        "http://localhost:3001/*"
+      ],
+      "js": ["content-jobhq-bridge.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

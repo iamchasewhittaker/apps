@@ -1,0 +1,10 @@
+{
+  "name": "inbox-zero-extension",
+  "version": "1.0.0",
+  "description": "Gmail label tab bar and AI-powered email sorting",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {}
+}

@@ -1,11 +1,21 @@
 import React from "react";
-import { s, CONTACT_TYPES, OUTREACH_STATUSES } from "../constants";
+import { s, CONTACT_TYPES, OUTREACH_STATUSES, getOutreachCadenceNudge } from "../constants";
 
-export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusChange, onDraftMessage }) {
+export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusChange, onDraftMessage, showError }) {
   const linked = apps.filter(a => contact.appIds?.includes(a.id));
   const typeInfo = CONTACT_TYPES.find(t => t.value === (contact.type || "other")) || CONTACT_TYPES[3];
   const statusInfo = OUTREACH_STATUSES.find(st => st.value === (contact.outreachStatus || "none")) || OUTREACH_STATUSES[0];
   const hasIntel = contact.companySize || contact.industry || contact.isHiring;
+  const nudge = getOutreachCadenceNudge(contact, linked[0] || null);
+
+  async function copyNudgePrompt() {
+    if (!nudge) return;
+    try {
+      await navigator.clipboard.writeText(nudge.prompt);
+    } catch {
+      showError?.("Could not copy follow-up prompt.");
+    }
+  }
 
   return (
     <div style={s.contactCard} className="card-hover">
@@ -40,6 +50,15 @@ export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusC
       {contact.email && <div style={s.cardMeta}>✉️ {contact.email}</div>}
       {contact.lastContact && <div style={s.cardMeta}>Last contact: {contact.lastContact}</div>}
       {contact.outreachDate && <div style={s.cardMeta}>Outreach sent: {contact.outreachDate}</div>}
+      {nudge && (
+        <div style={{ ...s.warnSmall, marginTop: 6, display: "flex", gap: 8, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <span style={{ ...s.aqLabel, background: nudge.bg, color: nudge.color }}>{nudge.label}</span>
+            <span>{nudge.message}</span>
+          </div>
+          <button style={s.outreachBtnSecondary} onClick={copyNudgePrompt}>Copy Follow-up Prompt</button>
+        </div>
+      )}
       {contact.notes && <div style={s.contactNotes}>{contact.notes}</div>}
       {linked.length > 0 && (
         <div style={s.cardContacts}>{linked.map(a => <span key={a.id} style={s.appChip}>{a.company} — {a.title}</span>)}</div>

@@ -25,6 +25,13 @@ export default function ResourcesTab() {
           </div>
         ))}
 
+        <div style={{ marginBottom: 24, padding: "14px 16px", background: "#161b27", border: "1px solid #1f2937", borderRadius: 12 }}>
+          <div style={{ ...s.sectionLabel, color: "#60a5fa", marginBottom: 8 }}>Chrome extension (MVP)</div>
+          <div style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.55, marginBottom: 10 }}>
+            Load the unpacked extension from the repo folder <code style={{ fontSize: 11, color: "#93c5fd" }}>extension/</code> — capture LinkedIn profiles and job postings into this app, and show an Action Queue badge while Job Search HQ is open. Full steps: see <code style={{ fontSize: 11, color: "#93c5fd" }}>extension/README.md</code> in the project (clone / monorepo).
+          </div>
+        </div>
+
         <div style={s.weeklyRhythm}>
           <div style={s.sectionLabel}>Your job search ground rules</div>
           {[

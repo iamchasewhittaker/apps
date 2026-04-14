@@ -1,5 +1,7 @@
 # Session Start — Job Search HQ: "Who should I message today?"
 
+> **Status:** Shipped as **Wave 2 #2** (2026-04-13). For current focus and next tasks, read **`portfolio/job-search-hq/HANDOFF.md`** and **`ROADMAP.md`**.
+
 Paste this into a new chat and say: *"Read CLAUDE.md and HANDOFF.md first."*
 
 ---

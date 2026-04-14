@@ -16,9 +16,13 @@ npm run build
 
 Path from repo root: **`portfolio/job-search-hq`**. Keep `src/shared/sync.js` aligned with `portfolio/shared/sync.js`.
 
+## Chrome extension (optional)
+
+Load unpacked from **`extension/`** — LinkedIn profile/job capture into HQ and toolbar badge for Action Queue count. See [extension/README.md](extension/README.md).
+
 ## Docs
 
-- [CLAUDE.md](CLAUDE.md) — structure, `constants.js`, Claude patterns
+- [CLAUDE.md](CLAUDE.md) — structure, `constants.js`, Claude patterns, extension + import flow
 - [PROJECT_INSTRUCTIONS.md](PROJECT_INSTRUCTIONS.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/LEARNING.md](docs/LEARNING.md)
 

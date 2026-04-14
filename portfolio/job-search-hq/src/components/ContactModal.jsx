@@ -65,6 +65,7 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
                 {[
                   { value: "sales_navigator", label: "Sales Nav" },
                   { value: "linkedin", label: "LinkedIn" },
+                  { value: "chrome_extension", label: "Chrome ext" },
                   { value: "referral", label: "Referral" },
                   { value: "other", label: "Other" },
                 ].map(src => (

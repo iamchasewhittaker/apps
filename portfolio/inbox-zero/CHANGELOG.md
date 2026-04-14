@@ -2,6 +2,26 @@
 
 ## [Unreleased]
 
+- Added `healthCheck()` in `apps-script/auto-sort.gs` — logs classifier mode, key presence (length only), trigger count, and sheet access without calling Gemini
+
+### Phase 3 — Automation (Apr 13, 2026)
+- Built Google Apps Script auto-sorter (`apps-script/auto-sort.gs`) — runs every 5 min, catches unlabeled inbox emails
+- Created JS rules file (`apps-script/rules.gs`) mirroring all 69 XML filters as domain/address objects
+- Switched AI provider from OpenAI to Gemini (`gemini-2.0-flash`) for unknown-sender classification
+- Added `CLASSIFIER_MODE` toggle with fallback Route A support (`RULES_ONLY`) so automation can run with zero AI/API calls
+- Added Google Sheets new-sender logging (logs every AI classification for weekly review)
+- Built Chrome extension (`extension/`) with Manifest V3:
+  - Label tab bar (Inbox, To Reply, Newsletter, Calendar, Receipt, Notification, Marketing, Cold Email, Security, Personal)
+  - AI-powered "Sort" button in Gmail toolbar
+  - Settings popup for API key + visible tab configuration
+  - Dark mode support
+  - Toast notifications
+- Created setup README for both Apps Script and Chrome extension
+
+### Phase 2 (Apr 13, 2026)
+- Started Phase 2 mislabeled sender audit loop with `roadmap/mislabel-audit.md`
+- Completed Apr 13 baseline Newsletter vs Cold Email review; no new confirmed reclassifications, so `gmail-filters.xml` remains unchanged at 69 filters
+
 ## [Apr 12, 2026] — Session 2: Filter expansion + system improvements
 - Added 8 Receipt filters for Spend Clarity integration (Apple, PayPal, Costco, Target, Uber, DoorDash, Spotify, Google Play) — total now 60
 - Added Security label + Google account alerts filter (accounts.google.com)

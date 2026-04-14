@@ -1,38 +1,31 @@
-# Session Start — Job Search HQ Wave 2
+# Session Start — Job Search HQ (post–Wave 2)
 
 Paste this into a new chat and say: *"Read CLAUDE.md and HANDOFF.md first."*
+
+> **Template note:** Wave 2 (#1–#6) is **complete**. Use this prompt for general continuation; for a specific archived build spec, see `SESSION_START_JOB_SEARCH_WHO_TO_MESSAGE.md` or `SESSION_START_JOB_SEARCH_COMPANY_INTEL.md` (both marked shipped).
 
 ---
 
 ```
 Read CLAUDE.md and HANDOFF.md first, then portfolio/job-search-hq/CLAUDE.md and portfolio/job-search-hq/HANDOFF.md.
 
-Goal: Continue Job Search HQ at portfolio/job-search-hq/ — Wave 2 features.
+Goal: Continue Job Search HQ at portfolio/job-search-hq/.
 
-Current state: v8.5 — Wave 1 shipped + Wave 2 item #1 done (2026-04-13).
+Current state: v8.5 — Wave 2 complete (#1–#6). Wave 3 #1 shipped: Chrome MV3 extension in `extension/` (see `extension/README.md`) — LinkedIn profile/job import, post-login URL/hash import on the web app, Action Queue toolbar badge.
 
-Wave 1 (shipped):
-- Action queue on Focus tab (overdue/due-today next steps, prep needed, stale contacts)
-- Next step dates + types on applications (nextStepDate, nextStepType, nextStepUrgency)
-- URL paste quick-capture on Pipeline (callClaude extracts title/company/JD from any job URL)
-- Outreach scenario chips on AI Tools (Connection Request + Follow-up generators)
-- New logo: JOB/HQ mark (blue #3b82f6)
+Next work: pick from `portfolio/job-search-hq/ROADMAP.md` **Wave 3** (e.g. stage-specific prep templates).
 
-Wave 2 item #1 (shipped 2026-04-13):
-- By Company view on ContactsTab — view toggle (List / By Company), company rows with expand/collapse, warm lead badges (amber, click pre-fills AppModal), ghost rows for apps with no contacts
-
-Wave 2 remaining — pick from ROADMAP.md Wave 2 section:
-2. "Who should I message today?" widget on FocusTab — prioritized outreach queue; see SESSION_START_JOB_SEARCH_WHO_TO_MESSAGE.md
-3. Outreach cadence suggestions on ContactCard (day 3, day 7 follow-up nudges)
-4. Structured prep framework — replace freetext prepNotes in PrepModal with sections: company research, role analysis, STAR stories, anticipated questions, your questions
-5. STAR story bank — new starStories array on data, reusable stories tagged by competency, AI-assisted drafting from base resume
+Wave 2 shipped summary:
+- By Company on ContactsTab; Focus “who to message” outreach queue; ContactCard cadence nudges
+- Structured `prepSections` + PrepModal; STAR story bank in AITab; Pipeline win/loss analytics
 
 Follow existing patterns:
 - constants.js for all data/config/styles — no React
 - App.jsx is shell only: state, load/save, modals, nav
-- Tabs are dumb components — props only, no persistent state
+- Tabs are dumb components — props only, no persistent tab-local persistence for domain data
 - Inline styles only via s.* from constants.js
 - callClaude(system, user, maxTokens) for all AI calls
+- Extension changes: document in CHANGELOG and keep `extension/README.md` accurate
 
 Verify: cd portfolio/job-search-hq && npm start (port 3001)
 

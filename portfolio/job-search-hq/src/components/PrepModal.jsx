@@ -1,26 +1,39 @@
 import React, { useState } from "react";
-import { s } from "../constants";
+import { s, PREP_SECTIONS, normalizePrepSections, prepSectionsHasContent, prepSectionsToText } from "../constants";
 
-export default function PrepModal({ app, onRun, onClose }) {
-  const [prepText, setPrepText] = useState(app.prepNotes || "");
+export default function PrepModal({ app, onRun, onSave, onClose }) {
+  const [prepSections, setPrepSections] = useState(normalizePrepSections(app.prepSections, app.prepNotes));
   const [loading, setLoading] = useState(false);
   const [currentApp, setCurrentApp] = useState(app);
+  const [errorText, setErrorText] = useState("");
 
   async function generate() {
     setLoading(true);
-    setPrepText("");
+    setErrorText("");
     await onRun(currentApp, (result, updated) => {
-      if (typeof result === "string" && !result.startsWith("Something went wrong")) {
-        setPrepText(result);
+      if (result && typeof result === "object" && !Array.isArray(result)) {
+        const normalized = normalizePrepSections(result, "");
+        setPrepSections(normalized);
         setCurrentApp(updated || currentApp);
       } else if (typeof result === "string") {
-        setPrepText(result);
+        setErrorText(result);
       }
     });
     setLoading(false);
   }
 
-  const hasPrep = !!prepText;
+  const hasPrep = prepSectionsHasContent(prepSections);
+  const hasGeneratedError = !!errorText && errorText.startsWith("Something went wrong");
+
+  function setSection(key, value) {
+    setPrepSections(prev => ({ ...prev, [key]: value }));
+  }
+
+  function saveSections() {
+    const updated = { ...currentApp, prepSections: normalizePrepSections(prepSections, ""), prepNotes: "" };
+    onSave(updated);
+    setCurrentApp(updated);
+  }
 
   return (
     <div style={s.overlay} onClick={onClose}>
@@ -38,11 +51,14 @@ export default function PrepModal({ app, onRun, onClose }) {
           {!app.jobDescription && !hasPrep && (
             <div style={s.warnSmall}>⚠️ No JD saved for this application — prep will be based on the role title only. Add a JD in the pipeline card for better results.</div>
           )}
-          {!hasPrep && !loading && (
+          {!hasPrep && !loading && !hasGeneratedError && (
             <div style={s.tipBox}>
-              <p>Generates 5 questions covering: behavioral (STAR), role-specific, company fit, and compensation — with talking points anchored to your Authorize.Net experience.</p>
-              {app.jobDescription && <p style={{ color: "#10b981", marginTop: 4 }}>✓ JD is saved — questions will be tailored to this specific role.</p>}
+              <p>Generates a structured prep framework with four sections: company research, role analysis, STAR stories, and questions to ask.</p>
+              {app.jobDescription && <p style={{ color: "#10b981", marginTop: 4 }}>✓ JD is saved — prep will be tailored to this specific role.</p>}
             </div>
+          )}
+          {hasGeneratedError && (
+            <div style={s.warnSmall}>{errorText}</div>
           )}
           {loading && (
             <div style={{ textAlign: "center", padding: "32px 20px", color: "#6b7280" }}>
@@ -52,20 +68,35 @@ export default function PrepModal({ app, onRun, onClose }) {
             </div>
           )}
           {hasPrep && !loading && (
-            <div style={s.resultBox}>
-              <div style={s.resultHeader}>
-                <span>5 Questions + Talking Points</span>
-                <button style={s.copyBtn} onClick={() => navigator.clipboard.writeText(prepText)}>Copy all</button>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={s.resultBox}>
+                <div style={s.resultHeader}>
+                  <span>Structured Interview Prep</span>
+                  <button style={s.copyBtn} onClick={() => navigator.clipboard.writeText(prepSectionsToText(prepSections))}>Copy all</button>
+                </div>
               </div>
-              <pre style={{ ...s.resultText, maxHeight: 480, fontSize: 13, lineHeight: 1.65 }}>{prepText}</pre>
+              {PREP_SECTIONS.map(section => (
+                <div key={section.key} style={s.fieldGroup}>
+                  <label style={s.fieldLabel}>{section.label}</label>
+                  <textarea
+                    style={{ ...s.textarea, minHeight: 90 }}
+                    value={prepSections[section.key] || ""}
+                    onChange={e => setSection(section.key, e.target.value)}
+                    placeholder={`Add ${section.label.toLowerCase()} notes...`}
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>
         <div style={s.modalFooter}>
           {hasPrep && (
-            <button style={s.btnSecondary} onClick={generate} disabled={loading}>
-              {loading ? "Regenerating…" : "↻ Regenerate"}
-            </button>
+            <>
+              <button style={s.btnSecondary} onClick={generate} disabled={loading}>
+                {loading ? "Regenerating…" : "↻ Regenerate"}
+              </button>
+              <button style={s.btnPrimary} onClick={saveSections}>Save Sections</button>
+            </>
           )}
           <div style={{ flex: 1 }} />
           <button style={s.btnSecondary} onClick={onClose}>Close</button>

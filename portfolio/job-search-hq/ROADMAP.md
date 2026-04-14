@@ -13,18 +13,18 @@
 - [x] URL paste quick-capture on Pipeline tab (v8.5)
 - [x] Outreach scenario chips on AI Tools (v8.5)
 
-## Wave 2 — Next
+## Wave 2 — Shipped
 
 - [x] Company intel view on Contacts tab — group by company, warm leads, ghost rows, pre-fill AppModal (2026-04-13)
-- [ ] "Who should I message today?" prioritized list on Focus tab
-- [ ] Outreach cadence suggestions on ContactCard (day 3, day 7 follow-up nudges)
-- [ ] Structured prep framework — replace freetext prepNotes with sections (company research, role analysis, STAR stories, questions to ask)
-- [ ] STAR story bank — reusable competency stories, AI-assisted drafting from resume
-- [ ] Win/loss analytics — bar chart of applications by final stage outcome
+- [x] "Who should I message today?" prioritized list on Focus tab (2026-04-13)
+- [x] Outreach cadence suggestions on ContactCard (day 3, day 7 follow-up nudges) (2026-04-13)
+- [x] Structured prep framework — replace freetext prepNotes with sections (company research, role analysis, STAR stories, questions to ask) (2026-04-13)
+- [x] STAR story bank — reusable competency stories, AI-assisted drafting from resume (2026-04-13)
+- [x] Win/loss analytics — bar chart of applications by final stage outcome (2026-04-13)
 
 ## Wave 3 — Later
 
-- [ ] Chrome Extension MVP: popup capture for LinkedIn profiles (contact) + job postings (JD + apply URL), badge count for overdue items
+- [x] Chrome Extension MVP: popup capture for LinkedIn profiles (contact) + job postings (JD + apply URL), badge count for overdue items (2026-04-13)
 - [ ] Stage-specific prep templates (Phone Screen vs Interview vs Final Round)
 - [ ] Post-interview debrief log (`interviewLog` array on application)
 - [ ] Mock interview mode in AI Tools tab

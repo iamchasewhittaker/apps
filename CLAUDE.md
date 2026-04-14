@@ -14,8 +14,10 @@
 | Clarity Time (iOS) | v0.1 | `chase_time_ios_v1` | local Xcode | ✅ Phase 3 done · **`docs/BRANDING.md` + AppIcon** (clock + arc) · xcodeproj (`CX*`) · [`portfolio/clarity-time-ios`](portfolio/clarity-time-ios) · time sessions + scripture streak |
 | Clarity Budget (iOS) | v0.1 | `chase_budget_ios_v1` | local Xcode | ✅ Phase 4 done · **`docs/BRANDING.md` + AppIcon** (stacked coins) · xcodeproj (`CB*`) · [`portfolio/clarity-budget-ios`](portfolio/clarity-budget-ios) · dual-scenario budget + wants |
 | Clarity Growth (iOS) | v0.1 | `chase_growth_ios_v1` | local Xcode | ✅ Phase 5 done · **`docs/BRANDING.md` + AppIcon** (sprout) · xcodeproj (`CG*`) · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) · 7 growth areas + streaks |
-| Job Search HQ | v8.3 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active |
+| Clarity Command | v1.0 | `chase_command_v1` | clarity-command.vercel.app | ✅ Active · Daily accountability hub · LDS faith + family urgency · needs Supabase env vars · [`portfolio/clarity-command`](portfolio/clarity-command) |
+| Job Search HQ | v8.5 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active · Chrome MV3 capture + badge in `portfolio/job-search-hq/extension/` |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
+| Clarity Hub | v0.1 | `chase_hub_ynab_v1` (+ 6 more) | TBD (Vercel) | 🟡 Local · Scaffold done — YNAB tab next · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
 | YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain; YNAB read + PATCH assign (Fund, with confirmation) | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | RollerTask Tycoon (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | `chase_roller_task_v1` (historical) | (optional Vercel) | 🗄️ Retired — [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) |
@@ -77,6 +79,7 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
         TrackerTab.jsx, TasksTab.jsx, TimeTrackerTab.jsx,
         BudgetTab.jsx, HistoryTab.jsx, GrowthTab.jsx
   job-search-hq/
+    extension/   ← Chrome MV3 MVP: LinkedIn → HQ import + Action Queue badge (see extension/README.md)
     src/
       App.jsx      ← shell only (~280 lines)
       constants.js ← all data, styles (s), helpers, templates — no React

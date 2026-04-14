@@ -1,5 +1,5 @@
 import React from "react";
-import { s, STAGES, STAGE_COLORS, nextStepUrgency } from "../constants";
+import { s, STAGES, STAGE_COLORS, nextStepUrgency, prepSectionsHasContent } from "../constants";
 
 export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, archived }) {
   const linked = contacts.filter(c => c.appIds?.includes(app.id));
@@ -25,7 +25,7 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
       {linked.length > 0 && (
         <div style={s.cardContacts}>{linked.map(c => <span key={c.id} style={s.contactChip}>{c.name}</span>)}</div>
       )}
-      {app.prepNotes && (
+      {prepSectionsHasContent(app.prepSections, app.prepNotes) && (
         <div style={{ fontSize: 11, color: "#10b981", marginTop: 2 }}>✓ Interview prep saved</div>
       )}
       <div style={s.cardActions}>

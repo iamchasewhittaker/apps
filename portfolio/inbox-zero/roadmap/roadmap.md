@@ -1,7 +1,7 @@
 # Inbox Zero — Roadmap
 
 > **Owner:** Chase Whittaker  
-> **Last updated:** April 12, 2026  
+> **Last updated:** April 13, 2026  
 > **Approach:** Free Gmail XML filter system + daily Claude review
 
 ---
@@ -37,7 +37,7 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 | Task | Status | Notes |
 |---|---|---|
 | Track inbox leakers daily | 🔄 In progress | Added via daily Claude report |
-| Identify any mislabeled senders | ⬜ Pending | Review Newsletter vs Cold Email accuracy |
+| Identify any mislabeled senders | 🔄 In progress | Baseline audit started Apr 13; using `roadmap/mislabel-audit.md` |
 | Monthly newsletter unsubscribe audit | ⬜ Pending | Pull open rates; unsubscribe from anything not opened in 30 days |
 | Assess daily review sustainability | ⬜ Pending | Is 5-min review realistic long-term? |
 | Clean up any duplicate/overlapping filters | ⬜ Pending | Audit XML for redundancies |
@@ -50,18 +50,21 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 
 ---
 
-## 🚀 Phase 3 — Automation (Future)
+## 🚀 Phase 3 — Automation (In Progress)
 
-**Target:** Q3 2026 (if Phase 2 reveals manual friction)  
+**Target:** April 2026  
 **Goal:** Reduce or eliminate manual XML updates.
 
-| Idea | Effort | Notes |
+| Task | Status | Notes |
 |---|---|---|
-| Script to auto-generate XML from a spreadsheet | Low | Maintain a Google Sheet of senders → auto-export XML |
-| Spend Clarity integration | Medium | Receipt label → auto-feed into portfolio/spend-clarity Python CLI for transaction categorization |
-| Lightweight web app (like getinboxzero GitHub) | Medium | Self-hosted, free — builds on Gmail API |
-| Gmail AI labels (Google's native feature) | Low | Monitor if Google expands this natively |
-| Zapier/Make automation for new senders | Medium | Detect new senders, prompt for classification |
+| Google Apps Script auto-sorter | ✅ Done | `apps-script/auto-sort.gs` — 5-min trigger, rule matching + Gemini + Rules-only fallback |
+| Sender rules in JS (mirrors XML) | ✅ Done | `apps-script/rules.gs` — 69 filters as JS objects |
+| New-sender Google Sheets logging | ✅ Done | Built into auto-sort.gs — logs AI classifications to "New Senders" sheet |
+| Chrome extension (label tab bar) | ✅ Done | `extension/` — MV3, tab bar + Sort button + settings popup |
+| Deploy Apps Script to script.google.com | ⬜ Pending | Copy `.gs` files, set Script Properties, run `setupTrigger()` |
+| Deploy Chrome extension (load unpacked) | ⬜ Pending | `chrome://extensions` → Load unpacked → select `extension/` |
+| Spend Clarity integration | ⬜ Pending | Receipt label → auto-feed into portfolio/spend-clarity Python CLI |
+| Gmail AI labels (Google's native feature) | ⬜ Pending | Monitor if Google expands this natively |
 
 ---
 
@@ -71,7 +74,7 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 |---|---|
 | Kassie's Gmail setup | Paused indefinitely — Chase's inbox is the only active focus |
 | getinboxzero.com | Decided against paid tools |
-| AI-powered auto-categorization | Not needed yet — manual daily review is sufficient at MVP |
+| AI-powered auto-categorization | ✅ Shipped — Apps Script + Gemini (with Rules-only fallback) |
 
 ---
 
@@ -91,6 +94,8 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 
 | Date | Change |
 |---|---|
+| Apr 13, 2026 | **Phase 3 kickoff:** Built Apps Script auto-sorter (`apps-script/auto-sort.gs` + `rules.gs`) with Gemini classification + Rules-only fallback + Google Sheets logging; built Chrome extension (`extension/`) with label tab bar, Sort button, settings popup, dark mode |
+| Apr 13, 2026 | Started Phase 2 mislabeled sender audit loop; created `roadmap/mislabel-audit.md`; baseline review found no new confirmed Newsletter vs Cold Email reclassifications |
 | Apr 12, 2026 | Church filter upgraded to domain-level (churchofjesuschrist.org); added Google Calendar notifications filter — total now 69 |
 | Apr 12, 2026 | Fixed Apple filter (domain → no_reply@email.apple.com); added 3 Calendar (Kassi Hair Co., dentist, Luma), 5 Receipt (Rocky Mountain Power, Chewy, Enbridge Gas, FASTEL, Nike) — total now 68 |
 | Apr 12, 2026 | Added 8 Receipt filters for Spend Clarity integration (Apple, PayPal, Costco, Target, Uber, DoorDash, Spotify, Google Play) — total now 60 |
