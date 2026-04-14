@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Added
+- `src/tabs/TimeTab.jsx` — focus timer (start/pause/resume/stop/discard), manual session log, scripture streak tracker with consecutive-day count
+- `src/tabs/BudgetTab.jsx` — dual-scenario (baseline/stretch) at-a-glance, scenario editors, wants tracker with quick-add buttons (+$5/+$20/+$50) and reset
+- Deployed to Vercel: https://clarity-hub-lilac.vercel.app
 - `src/tabs/YnabTab.jsx` — full YNAB tab: 4-step setup flow (token verify → budget picker → category roles w/ auto-suggest → income sources), dashboard with safe-to-spend, budget health bar, bills planner (Needs Attention / Partial / Covered), income gap, cash flow timeline, spending summary, and fund category write-back with confirmation modal
 - `src/tabs/SettingsTab.jsx` — YNAB section: token update field, Re-run YNAB Setup button
 - Snake_case → camelCase mappers for YNAB API response fields (required by MetricsEngine)

@@ -153,7 +153,6 @@ export function occurrencesInMonth(source, month) {
   const monthEnd = new Date(year, mo, daysInMonth);
 
   const freq = source.frequencyRaw;
-  const amountDollars = source.amountCents / 100;
   const nextPay = new Date(source.nextPayDate + "T00:00:00");
   const payDay = nextPay.getDate();
 

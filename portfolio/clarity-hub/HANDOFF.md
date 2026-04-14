@@ -41,8 +41,8 @@ All tab implementations are placeholders. Build in this order:
 ## Deploy Checklist
 
 - [x] `npm run build` passes cleanly
-- [ ] Deploy to Vercel
-- [ ] Set `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` env vars in Vercel
+- [x] Deploy to Vercel — https://clarity-hub-lilac.vercel.app (localStorage-only mode — auth/sync needs Supabase env vars)
+- [ ] Set `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` env vars in Vercel, then `vercel deploy --prod`
 - [ ] Add to root `CLAUDE.md` portfolio table
 - [ ] Add to CI workflow (`.github/workflows/portfolio-web-build.yml`)
 
