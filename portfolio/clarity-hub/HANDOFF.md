@@ -6,50 +6,39 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Remaining tabs: Check-in, Triage, Growth, RollerTask, full Settings |
-| **Next** | Build CheckinTab.jsx → TriageTab.jsx → GrowthTab.jsx → RollerTaskTab.jsx → Settings → CI → deploy |
-| **Last touch** | 2026-04-13 — built YnabTab, TimeTab, BudgetTab; deployed to Vercel; added deploy automation (.env.supabase + scripts/vercel-add-env + /deploy skill) |
-| **Status** | ✅ YNAB + Time + Budget done · Deployed · Env vars set · 4 tabs still placeholder |
+| **Focus** | Stable — 5 remaining tabs (Check-in, Triage, Time, Budget, Growth) |
+| **Next** | Maintain remaining tabs; YNAB + RollerTask now live as standalone apps |
+| **Last touch** | 2026-04-13 — split YNAB + RollerTask into standalone apps; stripped engines + tabs; updated nav with external links; deployed v0.2 |
+| **Status** | ✅ Deployed · v0.2 · 5 tabs + external links to YNAB + Tasks |
 
 ## What's Built
 
-- `src/App.jsx` — auth gate (email OTP), 7-blob state, load/pull on mount, save/push effects, NavTabs
-- `src/theme.js` — T palette, loadBlob/saveBlob, YNAB token helpers, date helpers, defaults, fmtCents/fmtDollars/fmtDuration, computeStreak
-- `src/sync.js` — push/pull wrappers for all 7 Supabase app_keys
+- `src/App.jsx` — auth gate (email OTP), 5-blob state, load/pull on mount, save/push effects, NavTabs w/ external links
+- `src/theme.js` — T palette, loadBlob/saveBlob, date helpers, defaults, fmtCents/fmtDuration/computeStreak
+- `src/sync.js` — push/pull wrappers for 5 Supabase app_keys (checkin, triage, time, budget, growth)
 - `src/shared/sync.js` — shared Supabase sync module
 - `src/ErrorBoundary.jsx`
-- `src/engines/MetricsEngine.js` — port of MetricsEngine.swift
-- `src/engines/CashFlowEngine.js` — port of CashFlowEngine.swift
-- `src/engines/YNABClient.js` — YNAB API fetch client
-- `src/tabs/YnabTab.jsx` — ✅ Full: setup flow (token→budget→categories→income) + dashboard + fund modal
-- `src/tabs/TimeTab.jsx` — ✅ Full: focus timer + manual sessions + scripture streak
-- `src/tabs/BudgetTab.jsx` — ✅ Full: dual scenarios + wants tracker
-- `src/tabs/SettingsTab.jsx` — 🟡 Partial: YNAB token + sign out (needs account info, export, last synced)
+- `src/tabs/CheckinTab.jsx` — morning/evening forms, pulse checks, history
+- `src/tabs/TriageTab.jsx` — capacity bar, tasks, ideas pipeline, wins log
+- `src/tabs/TimeTab.jsx` — focus timer + manual sessions + scripture streak
+- `src/tabs/BudgetTab.jsx` — dual scenarios + wants tracker
+- `src/tabs/GrowthTab.jsx` — 7 growth areas, sessions, streaks
+- `src/tabs/SettingsTab.jsx` — sign out, data export, links to standalone apps
 
-## What's NOT Built Yet
+## Removed (split out)
 
-| Tab | File | Priority | Key Features |
-|-----|------|----------|-------------|
-| **Check-in** | `CheckinTab.jsx` | 🔴 First | Morning/evening forms, pulse checks, history |
-| **Triage** | `TriageTab.jsx` | 🔴 First | Capacity bar, tasks, ideas pipeline, wins log |
-| **Growth** | `GrowthTab.jsx` | 🟡 Then | 7 areas grid, log session, history, weekly bar |
-| **RollerTask** | `RollerTaskTab.jsx` | 🟡 Then | Points/cash display, task completion, ledger |
-| **Settings** | `SettingsTab.jsx` | 🟢 Enhance | Account, data export, last synced timestamp |
-| **CI** | `.github/workflows/` | 🟢 Admin | Add clarity-hub job to portfolio-web-build.yml |
-
-## Session Start Doc
-
-Full spec for the remaining tabs (blob shapes, features, iOS source locations):  
-**`docs/SESSION_START_REMAINING_TABS.md`**
+| Item | Now lives at |
+|------|-------------|
+| `YnabTab.jsx` + 3 engine files | `portfolio/ynab-clarity-web/` → https://ynab-clarity-web.vercel.app |
+| `RollerTaskTab.jsx` | `portfolio/rollertask-tycoon-web/` → https://rollertask-tycoon-web.vercel.app |
 
 ## Deploy Status
 
 - [x] `npm run build` passes cleanly
 - [x] Deployed — https://clarity-hub-lilac.vercel.app
 - [x] Supabase env vars set on Vercel (production + preview)
-- [x] Deploy automation: `scripts/vercel-add-env` + `.env.supabase` at repo root + `/deploy` skill
-- [ ] Add to CI workflow
-- [ ] Deploy after remaining tabs are built
+- [x] CI job in `.github/workflows/portfolio-web-build.yml`
+- [x] Nav links to YNAB Clarity Web + RollerTask Tycoon Web
 
 ## Hard Rules
 
@@ -58,11 +47,3 @@ Full spec for the remaining tabs (blob shapes, features, iOS source locations):
 3. No unused variables (CI treats ESLint warnings as errors)
 4. No TypeScript — plain JS
 5. Blob pattern — tabs get `blob` + `setBlob` props; no tab-level localStorage
-
-## iOS Sources of Truth
-
-| App | Model file |
-|-----|-----------|
-| Check-in | `portfolio/clarity-checkin-ios/ClarityCheckin/Models/CheckinBlob.swift` |
-| Triage | `portfolio/clarity-triage-ios/ClarityTriage/Models/TriageBlob.swift` |
-| Growth | `portfolio/clarity-growth-ios/ClarityGrowth/Models/GrowthBlob.swift` |

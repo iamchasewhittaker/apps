@@ -21,13 +21,11 @@ export const T = {
 
 // ── STORAGE KEYS ──────────────────────────────────────────────────────────
 const KEYS = {
-  ynab: "chase_hub_ynab_v1",
   checkin: "chase_hub_checkin_v1",
   triage: "chase_hub_triage_v1",
   time: "chase_hub_time_v1",
   budget: "chase_hub_budget_v1",
   growth: "chase_hub_growth_v1",
-  rollertask: "chase_hub_rollertask_v1",
 };
 
 export const loadBlob = (app) => {
@@ -35,13 +33,6 @@ export const loadBlob = (app) => {
 };
 export const saveBlob = (app, data) => {
   try { localStorage.setItem(KEYS[app], JSON.stringify({ ...data, _syncAt: Date.now() })); } catch {}
-};
-
-export const YNAB_TOKEN_KEY = "chase_hub_ynab_token";
-export const loadYnabToken = () => localStorage.getItem(YNAB_TOKEN_KEY) || "";
-export const saveYnabToken = (token) => {
-  if (token) localStorage.setItem(YNAB_TOKEN_KEY, token);
-  else localStorage.removeItem(YNAB_TOKEN_KEY);
 };
 
 // ── DATE HELPERS ──────────────────────────────────────────────────────────
@@ -52,12 +43,6 @@ export const yesterday = () => {
 };
 
 // ── DEFAULT BLOBS ─────────────────────────────────────────────────────────
-export const DEFAULT_YNAB = {
-  categoryMappings: [],
-  incomeSources: [],
-  preferences: { activeBudgetID: "", activeBudgetName: "", setupComplete: false, taxRate: 0.28, annualSalary: 0 },
-};
-
 export const DEFAULT_CHECKIN = { entries: [], pulseChecks: [], savedMorning: null, savedEvening: null, syncAt: 0 };
 
 export const DEFAULT_TRIAGE = { capacity: 0, capacityDate: "", tasks: [], ideas: [], wins: [] };
@@ -70,8 +55,6 @@ export const DEFAULT_BUDGET = {
 };
 
 export const DEFAULT_GROWTH = { sessions: [] };
-
-export const DEFAULT_ROLLERTASK = { schemaVersion: 2, cash: 0, tasks: [], ledger: [] };
 
 // ── STREAK HELPER ─────────────────────────────────────────────────────────
 export const computeStreak = (completedDates) => {
@@ -99,12 +82,6 @@ export const computeStreak = (completedDates) => {
 export const fmtCents = (cents) => {
   const dollars = (cents / 100).toFixed(2);
   return `$${dollars.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-};
-
-export const fmtDollars = (dollars) => {
-  const str = Math.abs(dollars).toFixed(2);
-  const formatted = str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return dollars < 0 ? `-$${formatted}` : `$${formatted}`;
 };
 
 export const fmtDuration = (seconds) => {

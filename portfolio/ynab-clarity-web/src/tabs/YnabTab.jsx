@@ -686,7 +686,7 @@ function Dashboard({ blob, setBlob }) {
     }
   };
 
-  useEffect(() => { loadData(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { loadData(); }, []); // eslint-disable-line
 
   if (loading) {
     return (

@@ -1,32 +1,35 @@
-# Handoff — Ynab Clarity Web
+# Handoff — YNAB Clarity Web
 
-## Session info
-- **Date:** 2026-04-13
-- **Session #:** 1
-- **Working on version:** v0.1
+## State
 
-## What shipped this session
-- **Project scaffolded** — React CRA app created via `scripts/new-app`
+| Field | Value |
+|-------|-------|
+| **Focus** | Stable v1.0 — fully functional YNAB dashboard |
+| **Next** | Ship + monitor; potential improvements: save-to-spend notifications, multi-budget support |
+| **Last touch** | 2026-04-13 — created as standalone app split from clarity-hub; deployed to Vercel |
+| **Status** | ✅ Deployed · https://ynab-clarity-web.vercel.app |
 
-## What's broken or half-done
-- Nothing — clean scaffold.
-- Phase 1-3 docs need to be filled out before building features.
+## What Shipped (Session 1 — 2026-04-13)
 
-## Decisions made
-- Tech stack: React CRA
-- Storage key: `chase_ynab_clarity_web_v1`
+- Full app split from `clarity-hub` — standalone CRA with single-blob state
+- `src/theme.js` — T palette, `chase_hub_ynab_v1` storage key, YNAB token helpers, format helpers
+- `src/sync.js` — `pushYnab` / `pullYnab` using `app_key = 'ynab'`
+- `src/App.jsx` — auth gate (email OTP), settings modal (token update + re-run setup + sign out), gear icon nav
+- `src/tabs/YnabTab.jsx` — full YNAB tab: setup flow + dashboard
+- `src/engines/` — MetricsEngine.js, CashFlowEngine.js, YNABClient.js (copied from clarity-hub)
+- CI job added to `.github/workflows/portfolio-web-build.yml`
+- Deployed to https://ynab-clarity-web.vercel.app
 
-## Next session — start here
-**Next action:** Fill out docs/PRODUCT_BRIEF.md (Phase 1), then docs/PRD.md (Phase 2), then docs/APP_FLOW.md (Phase 3). No coding until those are done.
+## Key Constraints
 
-## Notes for future Claude
-- This app lives in the monorepo at `portfolio/ynab-clarity-web/`.
-- Read `CLAUDE.md` + `HANDOFF.md` at session start.
-- User prefers MVP thinking. Ship one thing at a time.
-- Dark mode is non-negotiable (web apps).
-- **No coding before Phase 3 is documented.** See PRODUCT_BUILD_FRAMEWORK.md.
+- Storage key `chase_hub_ynab_v1` — must never change (existing user data)
+- Supabase `app_key = 'ynab'` — must never change (iOS sync)
+- YNAB token key `chase_hub_ynab_token` — must never change (shared with clarity-hub)
 
----
+## Quick-start prompt
 
-### Quick-start prompt for next session
-> I'm starting work on Ynab Clarity Web. It lives at `portfolio/ynab-clarity-web/` in my apps monorepo (`~/Developer/chase`). Read `CLAUDE.md`, `ROADMAP.md`, and `HANDOFF.md` in that folder. Help me fill out the Phase 1-3 docs before we start building.
+```
+Read CLAUDE.md and portfolio/ynab-clarity-web/HANDOFF.md first.
+Goal: Work on YNAB Clarity Web at portfolio/ynab-clarity-web/.
+Run checkpoint before edits; update CHANGELOG / ROADMAP / HANDOFF when done.
+```

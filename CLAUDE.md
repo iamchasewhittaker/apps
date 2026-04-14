@@ -17,7 +17,7 @@
 | Clarity Command | v1.0 | `chase_command_v1` | clarity-command.vercel.app | ✅ Active · Daily accountability hub · LDS faith + family urgency · needs Supabase env vars · [`portfolio/clarity-command`](portfolio/clarity-command) |
 | Job Search HQ | v8.5 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active · Chrome MV3 capture + badge in `portfolio/job-search-hq/extension/` |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
-| Clarity Hub | v0.1 | `chase_hub_ynab_v1` (+ 6 more) | clarity-hub-lilac.vercel.app | ✅ Active · YNAB + Time + Budget tabs done · Supabase env vars set · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
+| Clarity Hub | v0.2 | `chase_hub_checkin_v1` (+ 4 more) | clarity-hub-lilac.vercel.app | ✅ Active · 5 tabs: Check-in, Triage, Time, Budget, Growth · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
 | YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain; YNAB read + PATCH assign (Fund, with confirmation) | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | RollerTask Tycoon (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | `chase_roller_task_v1` (historical) | (optional Vercel) | 🗄️ Retired — [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) |
@@ -25,8 +25,8 @@
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 | Spend Clarity | v0.1 | none (Python CLI; no localStorage); YNAB token in `.env`; Gmail OAuth tokens in `config/` | local Python | 🟡 Local · [`portfolio/spend-clarity`](portfolio/spend-clarity) |
 | Knowledge Base | v1.0 | `chase_knowledge_base_v1` | knowledge-base-beta-five.vercel.app | ✅ Active · 48 bookmarks · 12 categories · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
-| Rollertask Tycoon Web | v0.1 | `chase_rollertask_tycoon_web_v1` | not yet deployed | 🟡 Local · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
-| Ynab Clarity Web | v0.1 | `chase_ynab_clarity_web_v1` | not yet deployed | 🟡 Local · [`portfolio/ynab-clarity-web`](portfolio/ynab-clarity-web) |
+| YNAB Clarity Web | v1.0 | `chase_hub_ynab_v1` | ynab-clarity-web.vercel.app | ✅ Active · Standalone YNAB dashboard · split from clarity-hub · [`portfolio/ynab-clarity-web`](portfolio/ynab-clarity-web) |
+| RollerTask Tycoon Web | v1.0 | `chase_hub_rollertask_v1` | rollertask-tycoon-web.vercel.app | ✅ Active · Standalone tasks/points tracker · split from clarity-hub · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 

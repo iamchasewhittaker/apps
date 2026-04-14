@@ -2,7 +2,20 @@
 
 ## [Unreleased]
 
-### Added
+## [0.2.0] — 2026-04-13 — YNAB + RollerTask split out
+
+### Removed
+- `src/tabs/YnabTab.jsx`, `src/engines/MetricsEngine.js`, `src/engines/CashFlowEngine.js`, `src/engines/YNABClient.js` — moved to `portfolio/ynab-clarity-web/`
+- `src/tabs/RollerTaskTab.jsx` — moved to `portfolio/rollertask-tycoon-web/`
+- `DEFAULT_YNAB`, `DEFAULT_ROLLERTASK`, YNAB token helpers, `fmtDollars` from `theme.js`
+- ynab + rollertask push/pull exports from `sync.js`
+
+### Changed
+- `src/App.jsx` — reduced to 5-blob shell; default tab changed to "checkin"; nav now includes external links to YNAB Clarity Web + RollerTask Tycoon Web
+- `src/tabs/SettingsTab.jsx` — removed YNAB section; added links to standalone apps; scoped export to 5 remaining blobs
+- Bumped to v0.2
+
+### Added (scaffold — 2026-04-13)
 - `src/tabs/TimeTab.jsx` — focus timer (start/pause/resume/stop/discard), manual session log, scripture streak tracker with consecutive-day count
 - `src/tabs/BudgetTab.jsx` — dual-scenario (baseline/stretch) at-a-glance, scenario editors, wants tracker with quick-add buttons (+$5/+$20/+$50) and reset
 - Deployed to Vercel: https://clarity-hub-lilac.vercel.app

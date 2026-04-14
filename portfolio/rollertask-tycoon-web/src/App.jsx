@@ -123,12 +123,12 @@ export default function App() {
       if (remote && remote !== stored) setRollertask(remote);
     });
     hasLoaded.current = true;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   // Save + push
   useEffect(() => {
     if (hasLoaded.current) { saveBlob(rollertask); pushRollertask(rollertask); }
-  }, [rollertask]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [rollertask]); // eslint-disable-line
 
   if (session === undefined) {
     return <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>

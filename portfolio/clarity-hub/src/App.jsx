@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { T, loadBlob, saveBlob, DEFAULT_YNAB, DEFAULT_CHECKIN, DEFAULT_TRIAGE, DEFAULT_TIME, DEFAULT_BUDGET, DEFAULT_GROWTH, DEFAULT_ROLLERTASK } from "./theme";
-import { pullYnab, pushYnab, pullCheckin, pushCheckin, pullTriage, pushTriage, pullTime, pushTime, pullBudget, pushBudget, pullGrowth, pushGrowth, pullRollertask, pushRollertask, auth } from "./sync";
-import YnabTab from "./tabs/YnabTab";
+import { T, loadBlob, saveBlob, DEFAULT_CHECKIN, DEFAULT_TRIAGE, DEFAULT_TIME, DEFAULT_BUDGET, DEFAULT_GROWTH } from "./theme";
+import { pullCheckin, pushCheckin, pullTriage, pushTriage, pullTime, pushTime, pullBudget, pushBudget, pullGrowth, pushGrowth, auth } from "./sync";
 import CheckinTab from "./tabs/CheckinTab";
 import TriageTab from "./tabs/TriageTab";
 import TimeTab from "./tabs/TimeTab";
 import BudgetTab from "./tabs/BudgetTab";
 import GrowthTab from "./tabs/GrowthTab";
-import RollerTaskTab from "./tabs/RollerTaskTab";
 import SettingsTab from "./tabs/SettingsTab";
 import ErrorBoundary from "./ErrorBoundary";
 
@@ -90,19 +88,29 @@ function LoginScreen() {
 
 // ── NAV TABS ───────────────────────────────────────────────────────────────
 const TABS = [
-  { id: "ynab", label: "YNAB" },
   { id: "checkin", label: "Check-in" },
   { id: "triage", label: "Triage" },
   { id: "time", label: "Time" },
   { id: "budget", label: "Budget" },
   { id: "growth", label: "Growth" },
-  { id: "rollertask", label: "Tasks" },
   { id: "settings", label: "\u2699" },
+];
+
+const EXTERNAL_LINKS = [
+  { label: "YNAB", url: "https://ynab-clarity-web.vercel.app" },
+  { label: "Tasks", url: "https://rollertask-tycoon-web.vercel.app" },
 ];
 
 function NavTabs({ active, onSelect }) {
   return (
     <div style={{ display: "flex", borderBottom: `1px solid ${T.border}`, background: T.surface, position: "sticky", top: 0, zIndex: 10, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+      {EXTERNAL_LINKS.map(link => (
+        <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" style={{
+          flex: "0 0 auto", padding: "12px 12px", background: "none", border: "none",
+          borderBottom: "2px solid transparent", color: T.muted, fontWeight: 400,
+          fontSize: 13, cursor: "pointer", whiteSpace: "nowrap", textDecoration: "none",
+        }}>{link.label} {"\u2197"}</a>
+      ))}
       {TABS.map(tab => {
         const isActive = tab.id === active;
         return (
@@ -121,16 +129,14 @@ function NavTabs({ active, onSelect }) {
 // ── APP SHELL ──────────────────────────────────────────────────────────────
 export default function App() {
   const [session, setSession] = useState(undefined);
-  const [tab, setTab] = useState("ynab");
+  const [tab, setTab] = useState("checkin");
   const hasLoaded = useRef(false);
 
-  const [ynab, setYnab] = useState(DEFAULT_YNAB);
   const [checkin, setCheckin] = useState(DEFAULT_CHECKIN);
   const [triage, setTriage] = useState(DEFAULT_TRIAGE);
   const [time, setTime] = useState(DEFAULT_TIME);
   const [budget, setBudget] = useState(DEFAULT_BUDGET);
   const [growth, setGrowth] = useState(DEFAULT_GROWTH);
-  const [rollertask, setRollertask] = useState(DEFAULT_ROLLERTASK);
 
   // Auth gate
   useEffect(() => {
@@ -143,13 +149,11 @@ export default function App() {
   // Load from localStorage + pull from Supabase
   useEffect(() => {
     const apps = [
-      { key: "ynab", def: DEFAULT_YNAB, set: setYnab, pull: pullYnab },
       { key: "checkin", def: DEFAULT_CHECKIN, set: setCheckin, pull: pullCheckin },
       { key: "triage", def: DEFAULT_TRIAGE, set: setTriage, pull: pullTriage },
       { key: "time", def: DEFAULT_TIME, set: setTime, pull: pullTime },
       { key: "budget", def: DEFAULT_BUDGET, set: setBudget, pull: pullBudget },
       { key: "growth", def: DEFAULT_GROWTH, set: setGrowth, pull: pullGrowth },
-      { key: "rollertask", def: DEFAULT_ROLLERTASK, set: setRollertask, pull: pullRollertask },
     ];
     for (const app of apps) {
       const stored = loadBlob(app.key) || app.def;
@@ -159,20 +163,18 @@ export default function App() {
       });
     }
     hasLoaded.current = true;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   // Save + push effects (one per blob)
-  useEffect(() => { if (hasLoaded.current) { saveBlob("ynab", ynab); pushYnab(ynab); } }, [ynab]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (hasLoaded.current) { saveBlob("checkin", checkin); pushCheckin(checkin); } }, [checkin]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (hasLoaded.current) { saveBlob("triage", triage); pushTriage(triage); } }, [triage]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (hasLoaded.current) { saveBlob("time", time); pushTime(time); } }, [time]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (hasLoaded.current) { saveBlob("budget", budget); pushBudget(budget); } }, [budget]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (hasLoaded.current) { saveBlob("growth", growth); pushGrowth(growth); } }, [growth]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (hasLoaded.current) { saveBlob("rollertask", rollertask); pushRollertask(rollertask); } }, [rollertask]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (hasLoaded.current) { saveBlob("checkin", checkin); pushCheckin(checkin); } }, [checkin]); // eslint-disable-line
+  useEffect(() => { if (hasLoaded.current) { saveBlob("triage", triage); pushTriage(triage); } }, [triage]); // eslint-disable-line
+  useEffect(() => { if (hasLoaded.current) { saveBlob("time", time); pushTime(time); } }, [time]); // eslint-disable-line
+  useEffect(() => { if (hasLoaded.current) { saveBlob("budget", budget); pushBudget(budget); } }, [budget]); // eslint-disable-line
+  useEffect(() => { if (hasLoaded.current) { saveBlob("growth", growth); pushGrowth(growth); } }, [growth]); // eslint-disable-line
 
   if (session === undefined) {
     return <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ color: T.muted, fontSize: 14 }}>Loading\u2026</div>
+      <div style={{ color: T.muted, fontSize: 14 }}>Loading{"\u2026"}</div>
     </div>;
   }
 
@@ -185,14 +187,12 @@ export default function App() {
     <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", maxWidth: 700, margin: "0 auto" }}>
       <NavTabs active={tab} onSelect={setTab} />
       <div style={{ padding: "0 0 80px" }}>
-        <ErrorBoundary name="YNAB">{tab === "ynab" && <YnabTab blob={ynab} setBlob={setYnab} />}</ErrorBoundary>
         <ErrorBoundary name="Check-in">{tab === "checkin" && <CheckinTab blob={checkin} setBlob={setCheckin} />}</ErrorBoundary>
         <ErrorBoundary name="Triage">{tab === "triage" && <TriageTab blob={triage} setBlob={setTriage} />}</ErrorBoundary>
         <ErrorBoundary name="Time">{tab === "time" && <TimeTab blob={time} setBlob={setTime} />}</ErrorBoundary>
         <ErrorBoundary name="Budget">{tab === "budget" && <BudgetTab blob={budget} setBlob={setBudget} />}</ErrorBoundary>
         <ErrorBoundary name="Growth">{tab === "growth" && <GrowthTab blob={growth} setBlob={setGrowth} />}</ErrorBoundary>
-        <ErrorBoundary name="RollerTask">{tab === "rollertask" && <RollerTaskTab blob={rollertask} setBlob={setRollertask} />}</ErrorBoundary>
-        <ErrorBoundary name="Settings">{tab === "settings" && <SettingsTab signOut={signOut} ynab={ynab} setYnab={setYnab} checkin={checkin} triage={triage} time={time} budget={budget} growth={growth} rollertask={rollertask} />}</ErrorBoundary>
+        <ErrorBoundary name="Settings">{tab === "settings" && <SettingsTab signOut={signOut} checkin={checkin} triage={triage} time={time} budget={budget} growth={growth} />}</ErrorBoundary>
       </div>
     </div>
   );

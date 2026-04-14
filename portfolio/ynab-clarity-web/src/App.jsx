@@ -153,12 +153,12 @@ export default function App() {
       if (remote && remote !== stored) setYnab(remote);
     });
     hasLoaded.current = true;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   // Save + push
   useEffect(() => {
     if (hasLoaded.current) { saveBlob(ynab); pushYnab(ynab); }
-  }, [ynab]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ynab]); // eslint-disable-line
 
   if (session === undefined) {
     return <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
