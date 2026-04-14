@@ -431,6 +431,32 @@ export default function MissionTab({ layoffDate, scriptures, reminders, targets,
           </div>
         </>
       )}
+
+      {/* My Apps — quick links */}
+      <div style={{ margin: "20px 16px 0", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12, padding: "14px 16px" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>
+          My Apps
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {[
+            { label: "Job Search HQ", url: "https://job-search-hq.vercel.app" },
+            { label: "Wellness", url: "https://wellnes-tracker.vercel.app" },
+            { label: "Clarity Hub", url: "https://clarity-hub-lilac.vercel.app" },
+            { label: "Knowledge Base", url: "https://knowledge-base-beta-five.vercel.app" },
+            { label: "YNAB Clarity", url: "https://ynab-clarity-web.vercel.app" },
+            { label: "RollerTask", url: "https://rollertask-tycoon-web.vercel.app" },
+            { label: "App Forge", url: "https://app-forge-fawn.vercel.app" },
+          ].map(app => (
+            <a key={app.label} href={app.url} target="_blank" rel="noopener noreferrer" style={{
+              padding: "7px 14px", borderRadius: 8, background: T.surfaceHigh,
+              border: `1px solid ${T.border}`, color: T.accent, fontSize: 13,
+              fontWeight: 600, textDecoration: "none",
+            }}>
+              {app.label}
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
