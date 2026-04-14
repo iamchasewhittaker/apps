@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Added (2026-04-14)
+- **Cross-app navigation (WHI-40):** `AppNav` bar below header links to Wellness and Clarity Hub — uses shared `resolveAppUrl` for canonical-origin URL resolution
+- **Shared UI component:** added `src/shared/ui.jsx` (copy of `portfolio/shared/ui.jsx`) — `Card`, `NavTabs`, `AppNav`, `resolveAppUrl`
+- **Shared sync.js update:** synced `src/shared/sync.js` to canonical (comment-only drift fix)
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/job-search`), session key consolidation, OTP `emailRedirectTo`
 - **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`
 - **Auth diagnostics:** `REACT_APP_AUTH_DEBUG` flag enables `local_mode_no_auth`, `initial_session`, `state_change` events

@@ -52,7 +52,7 @@ WEB_APP_URLS=(
 )
 
 # --- Shared files to check for drift ---
-SHARED_FILES=(sync.js)
+SHARED_FILES=(sync.js auth.js ui.jsx)
 
 # --- Skip list ---
 SKIP_DIRS="shared archive clarity-logo-mockups-assets"

@@ -17,6 +17,12 @@ import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
 import AITab from "./tabs/AITab";
 import ResourcesTab from "./tabs/ResourcesTab";
+import { AppNav, resolveAppUrl } from "./shared/ui";
+
+const APP_NAV_LINKS = [
+  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellnes-tracker.vercel.app") },
+  { key: "clarity-hub", label: "Clarity Hub", url: resolveAppUrl("/hub", "https://clarity-hub-lilac.vercel.app") },
+];
 
 const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
 function logAuth(message, payload) {
@@ -505,6 +511,9 @@ Rules:
           {tab === "contacts" && <button style={s.btnPrimary} onClick={() => setContactModal({ mode: "new", contact: blankContact() })}>+ Contact</button>}
         </div>
       </div>
+
+      {/* Cross-app nav */}
+      <AppNav currentApp="job-search" links={APP_NAV_LINKS} />
 
       {/* Nav Tabs */}
       <div style={s.tabs}>

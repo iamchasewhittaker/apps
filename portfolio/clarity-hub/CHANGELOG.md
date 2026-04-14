@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Added (2026-04-14)
+- **Cross-app navigation (WHI-40):** `AppNav` bar above tab row links to Wellness, Job Search, YNAB, Tasks — uses shared `resolveAppUrl` for canonical-origin URL resolution; replaces inline `EXTERNAL_LINKS` in `NavTabs`
+- **Shared UI component:** added `src/shared/ui.jsx` (copy of `portfolio/shared/ui.jsx`) — `Card`, `NavTabs`, `AppNav`, `resolveAppUrl`
+- **Shared sync.js update:** synced `src/shared/sync.js` to canonical (comment-only drift fix)
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/hub`), session key consolidation, OTP `emailRedirectTo`
 - **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`
 - **Canonical external links:** SettingsTab links to YNAB and RollerTask now resolve to canonical-host paths when `REACT_APP_AUTH_CANONICAL_ORIGIN` is set

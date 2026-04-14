@@ -86,38 +86,35 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus**      | **Governance Phase 1 + Phase 2 start complete (2026-04-14).** WHI-36: `portfolio/shared/` expanded (auth.js, storage.js, ErrorBoundary.jsx, ui.jsx, sync.js updated); `scripts/new-app` copies all shared files on scaffold. WHI-37: Job Search HQ launch polish (BRANDING.md, LAUNCH_CHECKLIST, README, CLAUDE.md link). WHI-41 (scripts/new-app) also marked Done. |
-| **Next**       | 1. **WHI-52** — Product Lines doc (`docs/governance/PRODUCT_LINES.md`): map every app to Clarity Life OS / Career Toolkit / Finance & Budget. Completes Phase 1. 2. **WHI-38** — Clarity ecosystem consistency: copy `portfolio/shared/auth.js` as real file into all 6 web apps that still diverge; run `portfolio-health-check` to verify 0 drift. 3. **WHI-40** — Cross-app navigation bar (`AppNav` in `portfolio/shared/ui.jsx`; ship to Clarity Hub + Job Search HQ first). |
-| **Blockers**   | ~20 uncommitted file changes still outstanding (app icons, session templates, knowledge-base constants, rollertask/ynab-clarity-web public files). Run `checkpoint` before new feature work. |
-| **Last touch** | 2026-04-14 — WHI-36 shared registry + WHI-37 Job Search HQ launch polish shipped (commit 8e75952). |
+| **Focus**      | **Governance Phase 1 complete + Phase 2 shipping (2026-04-14).** WHI-52 (PRODUCT_LINES.md) confirmed done. WHI-38 (ecosystem consistency) done — `auth.js` + `sync.js` 0 drift across 6 apps, health check expanded. WHI-40 (cross-app nav) done — `AppNav` component in `portfolio/shared/ui.jsx`, shipped to Clarity Hub + Job Search HQ. |
+| **Next**       | 1. Deploy Clarity Hub + Job Search HQ to Vercel (`vercel --prod`). 2. Mark WHI-52, WHI-38, WHI-40 Done in Linear. 3. Pick next from governance backlog (WHI-39 executive report automation, WHI-42 CI/CD pipeline, or WHI-43 portfolio dashboard). |
+| **Blockers**   | None. |
+| **Last touch** | 2026-04-14 — WHI-52 + WHI-38 + WHI-40 shipped (AppNav, shared drift = 0, PRODUCT_LINES.md confirmed). |
 
 
 ---
 
-## Fresh session prompt — continue governance Phase 2
+## Fresh session prompt — continue governance Phase 2+
 
 Use a **new** chat after `checkpoint`. Paste:
 
 ```
-Read CLAUDE.md and this HANDOFF.md first, then portfolio/shared/ (auth.js, ui.jsx).
+Read CLAUDE.md and HANDOFF.md first.
 
-Goal: Continue Portfolio Governance — finish Phase 1, then Phase 2 infra.
+Goal: Continue Portfolio Governance — Phase 2 next items.
 
 Current state (2026-04-14):
-- Phase 1 mostly done: scripts/portfolio-health-check, docs/governance/ (5 docs), report templates rewritten, Linear WHI-30 to WHI-51.
-- Phase 1 missing: docs/governance/PRODUCT_LINES.md (WHI-52, just created in Linear — do this first).
-- WHI-36 done (commit 8e75952): portfolio/shared/ now has auth.js, storage.js, ErrorBoundary.jsx, ui.jsx, updated sync.js. scripts/new-app copies all shared files on scaffold.
-- WHI-37 done (commit 8e75952): Job Search HQ — docs/BRANDING.md, LAUNCH_CHECKLIST.md, README.md updated, CLAUDE.md links BRANDING.md.
-- WHI-41 done (same commit): scripts/new-app shared-file copy already shipped.
+- Phase 1 complete: all 6 governance docs, health check, PRODUCT_LINES.md confirmed.
+- WHI-52/38/40 all done: AppNav shipped to Clarity Hub + Job Search HQ; 0 shared file drift; PRODUCT_LINES.md exists.
+- Shared files tracked by health check: sync.js, auth.js, ui.jsx — 14/14 green.
 
-Priority queue:
-1. WHI-52: Create docs/governance/PRODUCT_LINES.md — map every app to one of 3 product lines (Clarity Life OS / Career Toolkit / Finance & Budget). Reference in CLAUDE.md.
-2. WHI-38: Clarity ecosystem consistency — copy portfolio/shared/auth.js as real file into each web app that diverges; run portfolio-health-check to confirm 0 sync.js drift. Affected: clarity-hub, ynab-clarity-web, rollertask-tycoon-web, clarity-command, wellness-tracker, app-forge.
-3. WHI-40: Cross-app navigation bar — add AppNav component to portfolio/shared/ui.jsx; deploy to Clarity Hub + Job Search HQ first.
+Priority queue (pick from governance backlog):
+1. Deploy clarity-hub + job-search-hq to Vercel (vercel --prod) to ship AppNav live.
+2. WHI-39: Executive report automation.
+3. WHI-42: CI/CD pipeline improvements.
+4. WHI-43: Portfolio dashboard.
 
-First action: run checkpoint (still ~20 uncommitted changes — app icons, session templates, etc.).
-
-Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file's State when you stop.
+Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
 ```
 
 ## Fresh session prompt — continue Clarity Budget (v0.2+)
@@ -168,7 +165,9 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 
 - **Governance Phase 1 (2026-04-14):** `scripts/portfolio-health-check` (LOC, commits/30d, URL liveness, sync drift, npm audit, secrets scan, doc freshness) · `docs/governance/` (KPI_DICTIONARY.md, SECURITY_CHECKLIST.md, OPERATING_MODEL.md, ARCHIVE_POLICY.md, LAUNCH_CHECKLIST.md) · report templates rewritten · Linear project WHI-30 to WHI-51. **Phase 1 still missing: PRODUCT_LINES.md → WHI-52.**
 - **Health check baseline (2026-04-14):** 33,355 LOC / 19 apps / 8 live URLs all 200 / 6 sync.js drift instances / 0 hardcoded secrets / top monoliths: TrackerTab.jsx (1420), TasksTab.jsx (1192), HistoryTab.jsx (1113), App Forge App.jsx (1075) / most active 30d: job-search-hq (22), wellness-tracker (18), ynab-clarity-ios (16), knowledge-base (15).
-- **Phase 2 priority queue:** ~~WHI-36 shared code registry~~ done · ~~WHI-37 Job Search HQ launch polish~~ done · ~~WHI-41 scripts/new-app shared files~~ done · **WHI-52** Product Lines doc (Phase 1 closer) → **WHI-38** Clarity ecosystem consistency → **WHI-40** cross-app nav bar.
+- **Phase 2 priority queue:** ~~WHI-36 shared code registry~~ done · ~~WHI-37 Job Search HQ launch polish~~ done · ~~WHI-41 scripts/new-app shared files~~ done · ~~WHI-52 Product Lines doc~~ done (confirmed existing) · ~~WHI-38 ecosystem consistency~~ done (0 drift) · ~~WHI-40 cross-app nav bar~~ done (AppNav shipped to Clarity Hub + Job Search HQ).
+- **WHI-40 delivered (2026-04-14):** `AppNav` + `resolveAppUrl` in `portfolio/shared/ui.jsx`; copied to `src/shared/ui.jsx` in clarity-hub and job-search-hq. Clarity Hub: replaces inline `EXTERNAL_LINKS` in NavTabs. Job Search HQ: new nav bar between header and tabs. Health check now tracks `sync.js`, `auth.js`, `ui.jsx` — 14/14 green checks, 0 drift.
+- **WHI-38 delivered (2026-04-14):** `scripts/portfolio-health-check` expanded from `sync.js`-only to `(sync.js auth.js ui.jsx)`. Synced canonical `sync.js` to all 6 apps (comment-only drift). All shared files: 0 drift.
 - **WHI-36 delivered (2026-04-14, commit 8e75952):** `portfolio/shared/` — `auth.js` (canonical auth: `getAuthConfig`, `maybeRedirectToCanonical`, `createPortfolioAuthClient`, `getEmailRedirectUrl`); `storage.js` (createStorage factory with `_syncAt`); `ErrorBoundary.jsx`; `ui.jsx` (Card + NavTabs); updated `sync.js`. `scripts/new-app` now copies all 5 shared files into `src/shared/` on scaffold.
 - **WHI-37 delivered (2026-04-14, commit 8e75952):** Job Search HQ — `docs/BRANDING.md` (palette, typography, component patterns), `LAUNCH_CHECKLIST.md` (all 4 gates; external beta flagged open), `README.md` user-facing description, `CLAUDE.md` links branding.
 - **Uncommitted batch:** ~20 file modifications still outstanding — app icons (6 iOS + web), session templates, Knowledge Base constants, rollertask-tycoon-web + ynab-clarity-web public files, new scripts. Run `checkpoint` before new feature work.

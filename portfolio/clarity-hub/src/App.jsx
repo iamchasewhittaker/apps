@@ -8,6 +8,7 @@ import BudgetTab from "./tabs/BudgetTab";
 import GrowthTab from "./tabs/GrowthTab";
 import SettingsTab from "./tabs/SettingsTab";
 import ErrorBoundary from "./ErrorBoundary";
+import { AppNav, resolveAppUrl } from "./shared/ui";
 
 const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
 function logAuth(message, payload) {
@@ -106,49 +107,30 @@ const TABS = [
   { id: "settings", label: "\u2699" },
 ];
 
-const CANONICAL_ORIGIN = String(process.env.REACT_APP_AUTH_CANONICAL_ORIGIN || "").replace(/\/+$/, "");
-const DEFAULT_EXTERNALS = {
-  ynab: "https://ynab-clarity-web.vercel.app",
-  tasks: "https://rollertask-tycoon-web.vercel.app",
-};
-function toCanonicalApp(pathValue, fallback) {
-  if (!CANONICAL_ORIGIN) return fallback;
-  const path = String(pathValue || "").startsWith("/") ? pathValue : `/${pathValue || ""}`;
-  return `${CANONICAL_ORIGIN}${path}`;
-}
-
-const EXTERNAL_LINKS = [
-  {
-    label: "YNAB",
-    url: toCanonicalApp(process.env.REACT_APP_YNAB_APP_PATH || "/ynab", DEFAULT_EXTERNALS.ynab),
-  },
-  {
-    label: "Tasks",
-    url: toCanonicalApp(process.env.REACT_APP_TASKS_APP_PATH || "/tasks", DEFAULT_EXTERNALS.tasks),
-  },
+const APP_NAV_LINKS = [
+  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellnes-tracker.vercel.app") },
+  { key: "job-search", label: "Job Search", url: resolveAppUrl("/job-search", "https://job-search-hq.vercel.app") },
+  { key: "ynab", label: "YNAB", url: resolveAppUrl(process.env.REACT_APP_YNAB_APP_PATH || "/ynab", "https://ynab-clarity-web.vercel.app") },
+  { key: "tasks", label: "Tasks", url: resolveAppUrl(process.env.REACT_APP_TASKS_APP_PATH || "/tasks", "https://rollertask-tycoon-web.vercel.app") },
 ];
 
 function NavTabs({ active, onSelect }) {
   return (
-    <div style={{ display: "flex", borderBottom: `1px solid ${T.border}`, background: T.surface, position: "sticky", top: 0, zIndex: 10, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-      {EXTERNAL_LINKS.map(link => (
-        <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" style={{
-          flex: "0 0 auto", padding: "12px 12px", background: "none", border: "none",
-          borderBottom: "2px solid transparent", color: T.muted, fontWeight: 400,
-          fontSize: 13, cursor: "pointer", whiteSpace: "nowrap", textDecoration: "none",
-        }}>{link.label} {"\u2197"}</a>
-      ))}
-      {TABS.map(tab => {
-        const isActive = tab.id === active;
-        return (
-          <button key={tab.id} onClick={() => onSelect(tab.id)} style={{
-            flex: "0 0 auto", padding: "12px 12px", background: "none", border: "none",
-            borderBottom: isActive ? `2px solid ${T.accent}` : "2px solid transparent",
-            color: isActive ? T.accent : T.muted, fontWeight: isActive ? 700 : 400,
-            fontSize: 13, cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap",
-          }}>{tab.label}</button>
-        );
-      })}
+    <div style={{ position: "sticky", top: 0, zIndex: 10, background: T.surface }}>
+      <AppNav currentApp="clarity-hub" links={APP_NAV_LINKS} style={{ background: T.surface, borderBottom: "none" }} />
+      <div style={{ display: "flex", borderBottom: `1px solid ${T.border}`, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+        {TABS.map(tab => {
+          const isActive = tab.id === active;
+          return (
+            <button key={tab.id} onClick={() => onSelect(tab.id)} style={{
+              flex: "0 0 auto", padding: "12px 12px", background: "none", border: "none",
+              borderBottom: isActive ? `2px solid ${T.accent}` : "2px solid transparent",
+              color: isActive ? T.accent : T.muted, fontWeight: isActive ? 700 : 400,
+              fontSize: 13, cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap",
+            }}>{tab.label}</button>
+          );
+        })}
+      </div>
     </div>
   );
 }
