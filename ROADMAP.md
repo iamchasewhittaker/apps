@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-14 (Knowledge Base My Projects sections refresh + seed migration) | Maintained by Chase
+> Last updated: 2026-04-14 (Shared auth canonical host strategy — all 6 web apps) | Maintained by Chase
 
 ---
 
@@ -35,6 +35,7 @@
 | 3 | ✅ Done | Wellness | Add Supabase env vars to Vercel so deployed app has sync (not just local) | ✅ Done |
 | 4 | ✅ Done | Job Search | Wire Supabase sync (same pattern as Wellness — infra ready) | ✅ Done |
 | 4.5 | ✅ Done | Job Search | Fix auth: .env pointed to wrong separate Supabase project; corrected to shared wellness project + redirect URLs updated | ✅ Done |
+| 4.6 | ✅ Done | All 6 web apps | Shared auth: canonical host strategy — `src/shared/auth.js`, Supabase Site URL + redirect allowlist, Vercel env vars ([WHI-29](https://linear.app/whittaker/issue/WHI-29)) | ✅ Done (2026-04-14) |
 | 5 | 🔴 High | Wellness | Split TrackerTab.jsx (78K) — too large, similar to old App.jsx problem | 🟡 Planned |
 | 6 | 🔴 High | Wellness | Split HistoryTab.jsx (58K) — analytics, export, AI summary too large | 🟡 Planned |
 | 7 | 🟡 Medium | App Forge | Add deployment status checks (ping live URLs, compare to last-sync.json) | 💡 Idea |

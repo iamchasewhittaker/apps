@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added (2026-04-14)
+- **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/job-search`), session key consolidation, OTP `emailRedirectTo`
+- **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`
+- **Auth diagnostics:** `REACT_APP_AUTH_DEBUG` flag enables `local_mode_no_auth`, `initial_session`, `state_change` events
+- **Env template:** `.env.example` updated with `REACT_APP_AUTH_CANONICAL_ORIGIN` and `REACT_APP_AUTH_APP_PATH`
+- **Supabase / Vercel:** Site URL + redirect allowlist set to canonical origin; auth env vars set in Vercel production
+
 ### Fixed (2026-04-14)
 - **Favicon/logo white corners:** removed `rx` rounded corners from `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png`; regenerated `favicon.ico` — solid `#0f1117` fill covers full square
 

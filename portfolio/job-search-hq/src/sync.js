@@ -7,11 +7,17 @@
 import { createSync } from './shared/sync.js';
 
 export const APP_KEY = 'job-search';
+export const APP_NAME = 'job-search';
+export const DEFAULT_CANONICAL_PATH = '/job-search';
 
 // CRA exposes env vars via process.env.REACT_APP_* (not import.meta.env.VITE_*)
-const { push, pull, auth } = createSync(
+const { push, pull, auth, emailRedirectTo } = createSync(
   process.env.REACT_APP_SUPABASE_URL,
-  process.env.REACT_APP_SUPABASE_ANON_KEY
+  process.env.REACT_APP_SUPABASE_ANON_KEY,
+  {
+    appName: APP_NAME,
+    canonicalPath: process.env.REACT_APP_AUTH_APP_PATH || DEFAULT_CANONICAL_PATH,
+  }
 );
 
-export { push, pull, auth };
+export { push, pull, auth, emailRedirectTo };

@@ -1,11 +1,21 @@
 // APP_META: { "app": "clarity-command", "version": "1.0" }
 import React, { useState, useEffect, useRef } from "react";
 import { T, load, save, today, DEFAULT_STATE } from "./theme";
-import { push, pull, auth, APP_KEY } from "./sync";
+import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
 import MissionTab from "./tabs/MissionTab";
 import ScoreboardTab from "./tabs/ScoreboardTab";
 import SettingsTab from "./tabs/SettingsTab";
 import ErrorBoundary from "./ErrorBoundary";
+
+const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
+function logAuth(message, payload) {
+  if (!AUTH_DEBUG) return;
+  if (payload === undefined) {
+    console.log(`[auth:clarity-command] ${message}`);
+    return;
+  }
+  console.log(`[auth:clarity-command] ${message}`, payload);
+}
 
 // ── LOGIN SCREEN ───────────────────────────────────────────────────────────
 function LoginScreen() {
@@ -28,7 +38,7 @@ function LoginScreen() {
     try {
       const { error: e } = await auth.signInWithOtp({
         email: email.trim(),
-        options: { shouldCreateUser: true, emailRedirectTo: window.location.origin },
+        options: { shouldCreateUser: true, emailRedirectTo },
       });
       if (e) throw e;
       setSent(true); setResendSec(45);
@@ -143,9 +153,19 @@ export default function App() {
 
   // ── Auth gate (same pattern as Wellness) ──
   useEffect(() => {
-    if (!auth) { setSession(null); return; }
-    auth.getSession().then(({ data: { session: s } }) => setSession(s));
-    const { data: { subscription } } = auth.onAuthStateChange((_event, s) => setSession(s));
+    if (!auth) {
+      logAuth("local_mode_no_auth");
+      setSession(null);
+      return;
+    }
+    auth.getSession().then(({ data: { session: s } }) => {
+      logAuth("initial_session", { hasSession: !!s });
+      setSession(s);
+    });
+    const { data: { subscription } } = auth.onAuthStateChange((event, s) => {
+      logAuth("state_change", { event, hasSession: !!s });
+      setSession(s);
+    });
     return () => subscription.unsubscribe();
   }, []);
 

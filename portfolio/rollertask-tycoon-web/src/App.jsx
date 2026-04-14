@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { T, loadBlob, saveBlob, DEFAULT_ROLLERTASK } from "./theme";
-import { pullRollertask, pushRollertask, auth } from "./sync";
+import { pullRollertask, pushRollertask, auth, emailRedirectTo } from "./sync";
 import RollerTaskTab from "./tabs/RollerTaskTab";
 import ErrorBoundary from "./ErrorBoundary";
+
+const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
+function logAuth(message, payload) {
+  if (!AUTH_DEBUG) return;
+  if (payload === undefined) {
+    console.log(`[auth:rollertask] ${message}`);
+    return;
+  }
+  console.log(`[auth:rollertask] ${message}`, payload);
+}
 
 // ── LOGIN SCREEN ───────────────────────────────────────────────────────────
 function LoginScreen() {
@@ -23,7 +33,7 @@ function LoginScreen() {
   const sendOtp = async () => {
     setLoading(true); setError("");
     try {
-      const { error: e } = await auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true, emailRedirectTo: window.location.origin } });
+      const { error: e } = await auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true, emailRedirectTo } });
       if (e) throw e;
       setSent(true); setResendSec(45);
     } catch (e) { setError(e.message || "Something went wrong."); }
@@ -109,9 +119,19 @@ export default function App() {
 
   // Auth gate
   useEffect(() => {
-    if (!auth) { setSession(null); return; }
-    auth.getSession().then(({ data: { session: s } }) => setSession(s));
-    const { data: { subscription } } = auth.onAuthStateChange((_event, s) => setSession(s));
+    if (!auth) {
+      logAuth("local_mode_no_auth");
+      setSession(null);
+      return;
+    }
+    auth.getSession().then(({ data: { session: s } }) => {
+      logAuth("initial_session", { hasSession: !!s });
+      setSession(s);
+    });
+    const { data: { subscription } } = auth.onAuthStateChange((event, s) => {
+      logAuth("state_change", { event, hasSession: !!s });
+      setSession(s);
+    });
     return () => subscription.unsubscribe();
   }, []);
 

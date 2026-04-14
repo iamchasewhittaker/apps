@@ -11,6 +11,13 @@
 
 ## [Unreleased]
 
+### Added (2026-04-14)
+- **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/wellness`), session key consolidation (`chase_portfolio_auth_token`), OTP `emailRedirectTo`
+- **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo` (removes `window.location.origin` hardcoding)
+- **Auth diagnostics:** `local_mode_no_auth`, `initial_session`, `state_change` events logged when `REACT_APP_AUTH_DEBUG=true`
+- **Env template:** `.env.example` updated with `REACT_APP_AUTH_CANONICAL_ORIGIN` and `REACT_APP_AUTH_APP_PATH`
+- **Supabase / Vercel:** Site URL + redirect allowlist set to canonical origin; `REACT_APP_AUTH_CANONICAL_ORIGIN` + `REACT_APP_AUTH_APP_PATH` set in Vercel production
+
 ### Docs
 - **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
 

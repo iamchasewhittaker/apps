@@ -31,33 +31,43 @@
  * roller_task_tycoon_v1 (archived web).
  */
 
-import { createClient } from '@supabase/supabase-js';
+import {
+  createPortfolioAuthClient,
+  getAuthConfig,
+  getEmailRedirectUrl,
+  maybeRedirectToCanonical,
+} from './auth';
 
 /**
  * Create a sync instance bound to a specific Supabase project.
  * Each app calls this once at the top of its sync.js file.
  */
-export function createSync(supabaseUrl, supabaseKey) {
+export function createSync(supabaseUrl, supabaseKey, config = {}) {
+  const authConfig = getAuthConfig(config);
+  const emailRedirectTo = getEmailRedirectUrl(authConfig);
+
+  maybeRedirectToCanonical(authConfig);
+
   if (!supabaseUrl || !supabaseKey) {
     console.warn('[sync] Missing Supabase credentials — running in localStorage-only mode.');
     return {
       push: async () => {},
       pull: async (appKey, localData) => localData,
       auth: null,
+      emailRedirectTo,
     };
   }
 
   let sb;
   try {
-    sb = createClient(supabaseUrl, supabaseKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-    });
+    sb = createPortfolioAuthClient(supabaseUrl, supabaseKey, authConfig);
   } catch (e) {
     console.warn('[sync] Failed to initialize Supabase client:', e.message, '— running in localStorage-only mode.');
     return {
       push: async () => {},
       pull: async (_appKey, localData) => localData,
       auth: null,
+      emailRedirectTo,
     };
   }
 
@@ -124,5 +134,5 @@ export function createSync(supabaseUrl, supabaseKey) {
     }
   }
 
-  return { push, pull, auth: sb.auth };
+  return { push, pull, auth: sb.auth, emailRedirectTo };
 }

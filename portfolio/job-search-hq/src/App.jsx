@@ -6,7 +6,7 @@ import {
   callClaude, getApiKey, CHASE_CONTEXT,
   s, css, today, generateId,
 } from "./constants";
-import { push, pull, auth, APP_KEY } from "./sync";
+import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
 import ApiKeyModal from "./components/ApiKeyModal";
 import AppModal from "./components/AppModal";
 import ContactModal from "./components/ContactModal";
@@ -17,6 +17,16 @@ import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
 import AITab from "./tabs/AITab";
 import ResourcesTab from "./tabs/ResourcesTab";
+
+const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
+function logAuth(message, payload) {
+  if (!AUTH_DEBUG) return;
+  if (payload === undefined) {
+    console.log(`[auth:job-search] ${message}`);
+    return;
+  }
+  console.log(`[auth:job-search] ${message}`, payload);
+}
 
 // ── LOGIN SCREEN (shown when no Supabase session) ──────────────────────────
 // Email OTP + verifyOtp: iOS home-screen PWA has separate localStorage from Safari;
@@ -44,7 +54,7 @@ function LoginScreen() {
         email: email.trim(),
         options: {
           shouldCreateUser: true,
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo,
         },
       });
       if (authErr) throw authErr;
@@ -178,10 +188,18 @@ export default function JobSearchTracker() {
   // null = not yet checked, false = no session, object = logged in
   const [session, setSession] = useState(null);
   useEffect(() => {
-    if (!auth) { setSession(true); return; } // localStorage-only mode (no .env) — skip auth gate
+    if (!auth) {
+      logAuth("local_mode_no_auth");
+      setSession(true);
+      return;
+    } // localStorage-only mode (no .env) — skip auth gate
     const hasCode = window.location.search.includes('code=') || window.location.hash.includes('access_token=');
-    const { data: { subscription } } = auth.onAuthStateChange((_event, s) => setSession(s || false));
+    const { data: { subscription } } = auth.onAuthStateChange((event, s) => {
+      logAuth("state_change", { event, hasSession: !!s });
+      setSession(s || false);
+    });
     auth.getSession().then(({ data: d }) => {
+      logAuth("initial_session", { hasSession: !!d.session, hasCode });
       if (d.session) setSession(d.session);
       else if (!hasCode) setSession(false);
       // if hasCode but no session yet, keep null (loading) until onAuthStateChange fires

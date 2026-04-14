@@ -31,25 +31,34 @@
  * roller_task_tycoon_v1 (archived web).
  */
 
-import { createClient } from '@supabase/supabase-js';
+import {
+  createPortfolioAuthClient,
+  getAuthConfig,
+  getEmailRedirectUrl,
+  maybeRedirectToCanonical,
+} from './auth';
 
 /**
  * Create a sync instance bound to a specific Supabase project.
  * Each app calls this once at the top of its sync.js file.
  */
-export function createSync(supabaseUrl, supabaseKey) {
+export function createSync(supabaseUrl, supabaseKey, config = {}) {
+  const authConfig = getAuthConfig(config);
+  const emailRedirectTo = getEmailRedirectUrl(authConfig);
+
+  maybeRedirectToCanonical(authConfig);
+
   if (!supabaseUrl || !supabaseKey) {
     console.warn('[sync] Missing Supabase credentials — running in localStorage-only mode.');
     return {
       push: async () => {},
       pull: async (appKey, localData) => localData,
       auth: null,
+      emailRedirectTo,
     };
   }
 
-  const sb = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-  });
+  const sb = createPortfolioAuthClient(supabaseUrl, supabaseKey, authConfig);
 
   async function getUser() {
     const { data: { user } } = await sb.auth.getUser();
@@ -114,5 +123,5 @@ export function createSync(supabaseUrl, supabaseKey) {
     }
   }
 
-  return { push, pull, auth: sb.auth };
+  return { push, pull, auth: sb.auth, emailRedirectTo };
 }

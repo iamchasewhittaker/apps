@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { T, loadBlob, saveBlob, DEFAULT_CHECKIN, DEFAULT_TRIAGE, DEFAULT_TIME, DEFAULT_BUDGET, DEFAULT_GROWTH } from "./theme";
-import { pullCheckin, pushCheckin, pullTriage, pushTriage, pullTime, pushTime, pullBudget, pushBudget, pullGrowth, pushGrowth, auth } from "./sync";
+import { pullCheckin, pushCheckin, pullTriage, pushTriage, pullTime, pushTime, pullBudget, pushBudget, pullGrowth, pushGrowth, auth, emailRedirectTo } from "./sync";
 import CheckinTab from "./tabs/CheckinTab";
 import TriageTab from "./tabs/TriageTab";
 import TimeTab from "./tabs/TimeTab";
@@ -8,6 +8,16 @@ import BudgetTab from "./tabs/BudgetTab";
 import GrowthTab from "./tabs/GrowthTab";
 import SettingsTab from "./tabs/SettingsTab";
 import ErrorBoundary from "./ErrorBoundary";
+
+const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
+function logAuth(message, payload) {
+  if (!AUTH_DEBUG) return;
+  if (payload === undefined) {
+    console.log(`[auth:clarity-hub] ${message}`);
+    return;
+  }
+  console.log(`[auth:clarity-hub] ${message}`, payload);
+}
 
 // ── LOGIN SCREEN ───────────────────────────────────────────────────────────
 function LoginScreen() {
@@ -28,7 +38,7 @@ function LoginScreen() {
   const sendOtp = async () => {
     setLoading(true); setError("");
     try {
-      const { error: e } = await auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true, emailRedirectTo: window.location.origin } });
+      const { error: e } = await auth.signInWithOtp({ email: email.trim(), options: { shouldCreateUser: true, emailRedirectTo } });
       if (e) throw e;
       setSent(true); setResendSec(45);
     } catch (e) { setError(e.message || "Something went wrong."); }
@@ -96,9 +106,26 @@ const TABS = [
   { id: "settings", label: "\u2699" },
 ];
 
+const CANONICAL_ORIGIN = String(process.env.REACT_APP_AUTH_CANONICAL_ORIGIN || "").replace(/\/+$/, "");
+const DEFAULT_EXTERNALS = {
+  ynab: "https://ynab-clarity-web.vercel.app",
+  tasks: "https://rollertask-tycoon-web.vercel.app",
+};
+function toCanonicalApp(pathValue, fallback) {
+  if (!CANONICAL_ORIGIN) return fallback;
+  const path = String(pathValue || "").startsWith("/") ? pathValue : `/${pathValue || ""}`;
+  return `${CANONICAL_ORIGIN}${path}`;
+}
+
 const EXTERNAL_LINKS = [
-  { label: "YNAB", url: "https://ynab-clarity-web.vercel.app" },
-  { label: "Tasks", url: "https://rollertask-tycoon-web.vercel.app" },
+  {
+    label: "YNAB",
+    url: toCanonicalApp(process.env.REACT_APP_YNAB_APP_PATH || "/ynab", DEFAULT_EXTERNALS.ynab),
+  },
+  {
+    label: "Tasks",
+    url: toCanonicalApp(process.env.REACT_APP_TASKS_APP_PATH || "/tasks", DEFAULT_EXTERNALS.tasks),
+  },
 ];
 
 function NavTabs({ active, onSelect }) {
@@ -140,9 +167,19 @@ export default function App() {
 
   // Auth gate
   useEffect(() => {
-    if (!auth) { setSession(null); return; }
-    auth.getSession().then(({ data: { session: s } }) => setSession(s));
-    const { data: { subscription } } = auth.onAuthStateChange((_event, s) => setSession(s));
+    if (!auth) {
+      logAuth("local_mode_no_auth");
+      setSession(null);
+      return;
+    }
+    auth.getSession().then(({ data: { session: s } }) => {
+      logAuth("initial_session", { hasSession: !!s });
+      setSession(s);
+    });
+    const { data: { subscription } } = auth.onAuthStateChange((event, s) => {
+      logAuth("state_change", { event, hasSession: !!s });
+      setSession(s);
+    });
     return () => subscription.unsubscribe();
   }, []);
 

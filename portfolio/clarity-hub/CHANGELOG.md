@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added (2026-04-14)
+- **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/hub`), session key consolidation, OTP `emailRedirectTo`
+- **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`
+- **Canonical external links:** SettingsTab links to YNAB and RollerTask now resolve to canonical-host paths when `REACT_APP_AUTH_CANONICAL_ORIGIN` is set
+- **Auth diagnostics:** `REACT_APP_AUTH_DEBUG` flag enables auth state event logging
+- **Env template:** `.env.example` updated with `REACT_APP_AUTH_CANONICAL_ORIGIN` and `REACT_APP_AUTH_APP_PATH`
+- **Supabase / Vercel:** Site URL + redirect allowlist set to canonical origin; auth env vars set in Vercel production
+
 ### Fixed (2026-04-14)
 - **Favicon/logo white corners:** removed `rx` rounded corners from `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png` — solid `#0f1117` fill covers full square
 
