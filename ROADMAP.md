@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-14 (Portfolio web CI docs — Node 20 lockfile parity + template cross-links) | Maintained by Chase
+> Last updated: 2026-04-14 (Knowledge Base My Projects sections refresh + seed migration) | Maintained by Chase
 
 ---
 
@@ -11,7 +11,9 @@
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.5 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
-| Clarity Hub | v0.1 | TBD (Vercel) | `chase_hub_ynab_v1` (+ 6 more) | 🟡 Local · Scaffold done · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
+| Clarity Hub | v0.2 | https://clarity-hub-lilac.vercel.app | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
+| YNAB Clarity Web | v1.0 | https://ynab-clarity-web.vercel.app | `chase_hub_ynab_v1` | ✅ Active · Standalone YNAB dashboard · [`portfolio/ynab-clarity-web`](portfolio/ynab-clarity-web) |
+| RollerTask Tycoon Web | v1.0 | https://rollertask-tycoon-web.vercel.app | `chase_hub_rollertask_v1` | ✅ Active · Standalone task tracker · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
 | YNAB Clarity (iOS) | v0.2 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
@@ -227,6 +229,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-14 | All web apps (7) | — | **Favicon/logo fix:** removed `rx` rounded corners from all `favicon.svg` + `logo.svg` background rects; regenerated all `logo192.png`, `logo512.png`, `apple-touch-icon.png` — no more white corners on Vercel dashboard or light backgrounds | app-forge, clarity-command, clarity-hub, job-search-hq, knowledge-base, rollertask-tycoon-web, ynab-clarity-web |
+| 2026-04-14 | Knowledge Base | v2.0.2 | **Sections refresh:** added missing active project links (Clarity Command, Clarity Hub, YNAB Clarity Web, RollerTask Tycoon Web), added nested `My Projects` folders (Daily Prompts, Theme & Colors, Development Details), seeded daily prompt templates (email/planning/review), and bumped `SEED_VERSION` 5 → 6 | `portfolio/knowledge-base/` · `npm run build` ✅ |
 | 2026-04-13 | Clarity Hub | v0.1 | **YNAB tab:** Full setup flow (token → budget → category roles w/ auto-suggest → income sources), dashboard (safe-to-spend, budget health, bills planner, income gap, cash flow timeline, spending), fund category write-back with confirmation modal; SettingsTab YNAB section | `portfolio/clarity-hub/` — Time tab is next |
 | 2026-04-13 | Clarity Hub | v0.1 | **Scaffold:** CRA app with 7-blob state management, email OTP auth gate, MetricsEngine.js + CashFlowEngine.js + YNABClient.js (ports from YNAB Clarity iOS), 8 placeholder tabs, Supabase push/pull for all 7 app_keys | `portfolio/clarity-hub/` — YNAB tab is next priority |
 | 2026-04-13 | Spend Clarity | v0.2.1 | **Roadmap top-3 shipped:** startup category-ID validation, launchd scheduling install flow, richer unmatched diagnostics; test import stubs fixed + DoorDash fixture aligned; full suite green (90/90) | `portfolio/spend-clarity/` · `PYTHONPATH=src python3 -m pytest` |

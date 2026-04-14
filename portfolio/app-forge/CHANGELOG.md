@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed (2026-04-14)
+- **Favicon/logo white corners:** removed `rx` rounded corners from background `<rect>` in `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, and `apple-touch-icon.png` — solid `#0f1117` fill now covers full square on all backgrounds
+
 ### Docs
 - **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
 

@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+### Fixed (2026-04-14)
+- **Favicon/logo white corners:** removed `rx` rounded corners from `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png` — solid `#0f1117` fill covers full square
+
+### Added (2026-04-13)
+- **Portfolio App Logo Template bookmark** added to `Theme & Colors` folder (id 274) — links to `docs/templates/PORTFOLIO_APP_LOGO.md`
+- **Seed v7:** bumped from `6` to `7` to auto-merge new bookmark on existing installs
+
+### Added
+- **My Projects organization:** added three new child folders under `My Projects` — `Daily Prompts`, `Theme & Colors`, and `Development Details`
+- **Missing active project links:** added `Clarity Command`, `Clarity Hub`, `YNAB Clarity Web`, and `RollerTask Tycoon Web` to `My Projects`
+- **Daily workflow prompts:** seeded reusable prompt bookmarks for daily email triage, daily planning, and end-of-day review with copy-ready text in bookmark `notes`
+- **Standards/reference sections:** seeded Theme & Colors links (branding template, icon spec, wellness branding reference) and Development Details links (portfolio handoff, roadmap, product framework)
+
+### Changed
+- **Seed migration:** bumped `SEED_VERSION` from `5` to `6` so existing installs auto-merge new folders and bookmarks
+
 ### Docs
 - **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
 

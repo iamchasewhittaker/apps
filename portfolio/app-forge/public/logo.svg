@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#0f1117"/>
+  <rect width="512" height="512" fill="#0f1117"/>
   <text x="256" y="195" text-anchor="middle"
         font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="52"
         fill="#8b5cf6" letter-spacing="14">APP</text>

@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
-| **Focus**      | **Clarity Hub — YNAB tab done.** Full setup flow + dashboard (safe-to-spend, bills, income gap, cash flow, spending, fund modal). Time tab is next priority. See [`portfolio/clarity-hub/HANDOFF.md`](portfolio/clarity-hub/HANDOFF.md). |
-| **Next**       | 1. Build `TimeTab.jsx` — focus timer, manual session log, scripture streak. 2. Add Supabase env vars to Clarity Command Vercel project. |
-| **Blockers**   | None for Clarity Hub. Clarity Command: Supabase env vars not set on Vercel project. |
-| **Last touch** | 2026-04-13 — **Clarity Hub YNAB tab:** full setup flow + dashboard, fund write-back, SettingsTab YNAB section. Build passes. |
+| **Focus**      | **Favicon/logo fix shipped across all 7 web apps.** Removed `rx` rounded corners from SVG backgrounds; regenerated all PNG assets. No more white corners on Vercel dashboard or light backgrounds. |
+| **Next**       | Deploy all 7 apps (push to GitHub → auto-deploy via Vercel git). Then continue Knowledge Base v2.1 (JSON import/export). |
+| **Blockers**   | None. |
+| **Last touch** | 2026-04-14 — Cross-cutting favicon/logo white corner fix across app-forge, clarity-command, clarity-hub, job-search-hq, knowledge-base, rollertask-tycoon-web, ynab-clarity-web; all CHANGELOGs + root docs updated. |
 
 
 ---
@@ -147,7 +147,9 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*`; **`docs/BRANDING.md` + AppIcon** (clock + arc + badge).
 - **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1**; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); explore wides in `docs/design/`.
 - **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
-- **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — scaffold complete; **YNAB tab is priority 1**; session start prompt at `portfolio/clarity-hub/docs/SESSION_START_YNAB_TAB.md`; 7-blob Supabase sync + auth gate built; MetricsEngine.js + CashFlowEngine.js + YNABClient.js ported from YNAB Clarity iOS.
+- **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — v0.2; 5 tabs (Check-in, Triage, Time, Budget, Growth); YNAB + RollerTask split to standalone apps; nav links to both. Deployed at https://clarity-hub-lilac.vercel.app.
+- **YNAB Clarity Web (2026-04-13):** `portfolio/ynab-clarity-web/HANDOFF.md` — v1.0; standalone YNAB dashboard; storage key `chase_hub_ynab_v1`; Supabase `app_key = 'ynab'`. Deployed at https://ynab-clarity-web.vercel.app.
+- **RollerTask Tycoon Web (2026-04-13):** `portfolio/rollertask-tycoon-web/HANDOFF.md` — v1.0; standalone task/points tracker; storage key `chase_hub_rollertask_v1`; Supabase `app_key = 'rollertask'`. Deployed at https://rollertask-tycoon-web.vercel.app.
 - **Portfolio web CI (2026-04-13–14):** GitHub Actions [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) uses **Node 20** and `npm ci`. Regenerate **`package-lock.json`** with Node 20’s npm (not only Node 24/npm 11) so CI stays green — see [`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](docs/templates/SESSION_START_FIX_CI_LOCKFILES.md).
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js (phone/salary redacted), SEC-002 Gmail OAuth token in gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored + git rm --cached, SEC-005 YNAB category UUIDs (accepted risk), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced in gmail-filters.xml, SEC-008 .env added to app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (now archived shell — superseded by Clarity apps).

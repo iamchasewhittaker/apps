@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <!-- Background -->
-  <rect width="512" height="512" rx="96" fill="#0f1117"/>
+  <rect width="512" height="512" fill="#0f1117"/>
 
   <!-- "JOB" label above -->
   <text x="256" y="178" text-anchor="middle"

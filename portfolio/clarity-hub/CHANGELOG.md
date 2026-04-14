@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Fixed (2026-04-14)
+- **Favicon/logo white corners:** removed `rx` rounded corners from `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png` — solid `#0f1117` fill covers full square
+
+### Added (2026-04-13)
+- **Logo standardization:** added `logo.svg` (`CLARITY` indigo / `HUB` white), `favicon.svg`, `logo192.png`, `logo512.png`, `apple-touch-icon.png`; updated `manifest.json` from CRA defaults to proper name/colors; added SVG favicon to `index.html`
+
 ## [0.2.0] — 2026-04-13 — YNAB + RollerTask split out
 
 ### Removed

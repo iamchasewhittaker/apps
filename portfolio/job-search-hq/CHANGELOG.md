@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed (2026-04-14)
+- **Favicon/logo white corners:** removed `rx` rounded corners from `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png`; regenerated `favicon.ico` — solid `#0f1117` fill covers full square
+
+### Planning / readiness
+- Added a Wave 3 execution sequence in `ROADMAP.md`: prep templates → debrief log → velocity dashboard → mock interview mode.
+- Added a release-readiness dependency checklist in `ROADMAP.md` and `HANDOFF.md` (OTP template, Vercel root/env, Node 20 lockfile/CI discipline, LinkedIn DOM dependency note for extension).
+- Updated `HANDOFF.md` State with a readiness checkpoint confirming **go** for current v8.5 shipped scope and no active code-level blockers.
+
 ### Documentation
 - Synced Job Search HQ and portfolio docs with v8.5 shipped scope: `CLAUDE.md`, `README.md`, `AGENTS.md`, `HANDOFF.md`, `PROJECT_INSTRUCTIONS.md`, `MASTER_PROJECT_FRAMEWORK.md`, `MVP-AUDIT.md`, `docs/ARCHITECTURE.md`, `docs/LEARNING.md`, `docs/templates/SESSION_START_JOB_SEARCH_*.md`, root `CLAUDE.md` / `ROADMAP.md` app table; `APP_META` version comment in `src/App.jsx`.
 
