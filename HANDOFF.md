@@ -86,11 +86,36 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus**      | **Governance Phase 1 complete + Phase 2 shipping (2026-04-14).** WHI-52 (PRODUCT_LINES.md) confirmed done. WHI-38 (ecosystem consistency) done — `auth.js` + `sync.js` 0 drift across 6 apps, health check expanded. WHI-40 (cross-app nav) done — `AppNav` component in `portfolio/shared/ui.jsx`, shipped to Clarity Hub + Job Search HQ. |
-| **Next**       | 1. Deploy Clarity Hub + Job Search HQ to Vercel (`vercel --prod`). 2. Mark WHI-52, WHI-38, WHI-40 Done in Linear. 3. Pick next from governance backlog (WHI-39 executive report automation, WHI-42 CI/CD pipeline, or WHI-43 portfolio dashboard). |
-| **Blockers**   | None. |
-| **Last touch** | 2026-04-14 — WHI-52 + WHI-38 + WHI-40 shipped (AppNav, shared drift = 0, PRODUCT_LINES.md confirmed). |
+| **Focus**      | **iOS device test + portfolio alignment session complete (2026-04-14).** All 5 goals done: `/handoff` skill created, 7 iOS apps built for device (Team 9XVT527KP3, UDID 00008101-000630D01161001E), auto-deploy hook verified, mission motto in all 19 CLAUDE.md files + `scripts/new-app`, Linear issues converted to User Story format with story points. |
+| **Next**       | 1. **Sprint 1 setup in Linear UI** — create cycle 2026-04-21 to 2026-05-04, assign WHI-42 (8pt) + WHI-23 (2pt) + WHI-35 (2pt) + WHI-49 (1pt) = 13 pts. 2. **TrackerTab split (WHI-42)** — break 1420-line monolith into morning/evening sub-components. 3. Deploy Clarity Hub + Job Search HQ to Vercel. |
+| **Blockers**   | None. Sprint cycle creation requires Linear UI (no API tool available). |
+| **Last touch** | 2026-04-14 — iOS device test session: `/handoff` skill, 7 iOS builds, motto in 19 files, 10 Linear issues → User Story + story points. |
 
+
+---
+
+## Fresh session prompt — Sprint 1 kickoff + TrackerTab split
+
+Use a **new** chat after `checkpoint`. Paste:
+
+```
+Read CLAUDE.md and HANDOFF.md first.
+
+Goal: Sprint 1 kickoff — TrackerTab split (WHI-42).
+
+Current state (2026-04-14):
+- iOS device test session complete: 7 apps build, /handoff skill, motto everywhere, Linear User Stories + story points.
+- Sprint 1 NOT YET CREATED in Linear UI — needs manual cycle: 2026-04-21 to 2026-05-04, assign WHI-42 (8pt) + WHI-23 (2pt) + WHI-35 (2pt) + WHI-49 (1pt) = 13 pts.
+- WHI-42: Split TrackerTab.jsx (1420 lines) into morning/evening sub-components.
+
+Priority:
+1. Read portfolio/wellness-tracker/src/tabs/TrackerTab.jsx — understand morning vs evening sections.
+2. Plan the split (morning form, evening form, shared helpers).
+3. Implement — keep all props/behavior identical.
+4. Test: npm start, verify both check-in flows work.
+
+Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
+```
 
 ---
 
@@ -182,6 +207,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **YNAB Clarity Web (2026-04-13):** `portfolio/ynab-clarity-web/HANDOFF.md` — v1.0; standalone YNAB dashboard; storage key `chase_hub_ynab_v1`; Supabase `app_key = 'ynab'`. Deployed at https://ynab-clarity-web.vercel.app.
 - **RollerTask Tycoon Web (2026-04-13):** `portfolio/rollertask-tycoon-web/HANDOFF.md` — v1.0; standalone task/points tracker; storage key `chase_hub_rollertask_v1`; Supabase `app_key = 'rollertask'`. Deployed at https://rollertask-tycoon-web.vercel.app.
 - **Shared auth (2026-04-14):** Canonical host strategy shipped across all 6 web apps (WHI-29). `src/shared/auth.js` added. Supabase Site URL + redirect allowlist updated. Vercel env vars `REACT_APP_AUTH_CANONICAL_ORIGIN` + `REACT_APP_AUTH_APP_PATH` set for all 6 apps. Redeploy still needed to pick up new env vars.
+- **iOS device test session (2026-04-14):** All 7 iOS apps built for physical device (iPhone 12 Pro Max, UDID `00008101-000630D01161001E`, Team `9XVT527KP3`). ClarityCheckin had existing profile; other 6 needed `-allowProvisioningUpdates`. `/handoff` slash command created at `.claude/commands/handoff.md`. PreCompact hook added to `.claude/settings.local.json` (gitignored). Mission motto added to all 19 CLAUDE.md files + `scripts/new-app`. 10 Linear issues converted to User Story format with Fibonacci story points (WHI-42 8pt, WHI-43 8pt, WHI-20 13pt, WHI-45 5pt, WHI-24 5pt, WHI-27 3pt, WHI-23 2pt, WHI-35 2pt, WHI-49 1pt, WHI-44 8pt). Sprint 1 needs manual setup in Linear UI (no `create_cycle` API).
 - **Vercel git connections (2026-04-14):** Connected 7 Vercel projects to GitHub (`iamchasewhittaker/apps`) via `scripts/vercel-check-git --fix`. All auto-deploy on push to `main`.
 - **Portfolio web CI (2026-04-13-14):** GitHub Actions [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) uses **Node 20** and `npm ci`. Regenerate **`package-lock.json`** with Node 20's npm — see [`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](docs/templates/SESSION_START_FIX_CI_LOCKFILES.md).
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js, SEC-002 Gmail OAuth token gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored, SEC-005 YNAB UUIDs (accepted), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced, SEC-008 .env in app-forge gitignore.
