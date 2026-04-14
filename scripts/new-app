@@ -377,6 +377,14 @@ export default class ErrorBoundary extends React.Component {
 }
 EBEOF
 
+  # Copy canonical shared files from portfolio/shared/
+  mkdir -p "$APP_DIR/src/shared"
+  for shared_file in sync.js auth.js storage.js ErrorBoundary.jsx ui.jsx; do
+    if [ -f "$REPO_ROOT/portfolio/shared/$shared_file" ]; then
+      cp "$REPO_ROOT/portfolio/shared/$shared_file" "$APP_DIR/src/shared/$shared_file"
+    fi
+  done
+
   cat > "$APP_DIR/src/App.jsx" << APPEOF
 import { useState, useEffect } from "react";
 import { load, save, s, css } from "./constants";
@@ -616,7 +624,7 @@ cat > "$APP_DIR/CLAUDE.md" << CLAUDEEOF
 ## App Identity
 - **Version:** v0.1
 - **Storage key:** $STORE_LABEL
-- **URL:** not yet deployed
+- **URL:** $([ "$APP_TYPE" = "react" ] && echo "${APP_NAME}.vercel.app (pending first deploy)" || echo "not yet deployed")
 - **Entry:** \`$ENTRY_FILE\`
 
 ## Purpose
@@ -722,6 +730,26 @@ if [ -f "$ROOT_CLAUDE" ]; then
 fi
 
 # ╔══════════════════════════════════════════════════════════════════╗
+# ║  Vercel setup (React apps only)                                 ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+if [ "$APP_TYPE" = "react" ]; then
+  echo ""
+  echo -e "${CYAN}Setting up Vercel...${NC}"
+
+  # Create the Vercel project
+  vercel project add "$APP_NAME" --scope iamchasewhittakers-projects 2>/dev/null || true
+
+  # Link the local directory to the Vercel project
+  vercel link --project "$APP_NAME" --scope iamchasewhittakers-projects --yes --cwd "$APP_DIR"
+
+  # Connect to GitHub for automatic deployments on push
+  vercel git connect https://github.com/iamchasewhittaker/apps.git --cwd "$APP_DIR" --yes 2>/dev/null || true
+
+  echo -e "${GREEN}Vercel project created and connected to GitHub.${NC}"
+fi
+
+# ╔══════════════════════════════════════════════════════════════════╗
 # ║  Output                                                         ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
@@ -734,6 +762,7 @@ if [ "$APP_TYPE" = "react" ]; then
   echo "  src/constants.js         Storage helpers + styles"
   echo "  src/ErrorBoundary.jsx    Error boundary"
   echo "  src/index.js             CRA entry"
+  echo "  src/shared/              Canonical shared files (sync, auth, storage, ui)"
   echo "  package.json             Dependencies"
   echo "  public/index.html        HTML shell"
 elif [ "$APP_TYPE" = "swift" ]; then

@@ -1,6 +1,21 @@
 # Job Search HQ
 
-Personal job-search command center (Create React App): pipeline, contacts, prep, and Claude-powered drafts. Data in `chase_job_search_v1`; Anthropic API key in `chase_anthropic_key`. Optional Supabase sync (`app_key` `job-search`).
+Your personal job-search command center. Track every company in your pipeline, manage contacts, prep STAR stories, and generate tailored application drafts with AI — all in one fast, offline-first app.
+
+**Live:** https://job-search-hq.vercel.app · **Product line:** Career Toolkit
+
+## What it does
+
+- **Pipeline tab** — track companies by stage (Research → Applied → Interview → Offer/Pass) with daily focus scoring
+- **By Company view** — everything about one company on one screen: contacts, notes, timeline, next action
+- **Contacts tab** — store people you've met, their role, warmth level, and follow-up reminders
+- **AI tab** — Claude-powered cover letter drafts, email follow-ups, and interview prep tailored to each role
+- **Resources tab** — STAR story bank, salary research, and company research templates
+- **Chrome extension** — capture LinkedIn profiles and job postings into your pipeline with one click, badge shows Action Queue count
+
+## Tech
+
+React CRA · localStorage (`chase_job_search_v1`) · Supabase sync (`job-search`) · Anthropic API key (user-supplied in-app) · Chrome MV3 extension in `extension/`
 
 ## Run locally
 

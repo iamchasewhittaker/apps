@@ -3,11 +3,25 @@
  * Offline-first Supabase sync layer for all apps.
  *
  * Usage (after copying this file to the app as src/shared/sync.js):
- *   import { createSync } from './shared/sync.js';  // from src/sync.js (Vite)
- *   export const { push, pull, auth } = createSync(
- *     import.meta.env.VITE_SUPABASE_URL,
- *     import.meta.env.VITE_SUPABASE_ANON_KEY
+ *   import { createSync } from './shared/sync';
+ *   export const { push, pull, auth, emailRedirectTo } = createSync(
+ *     process.env.REACT_APP_SUPABASE_URL,
+ *     process.env.REACT_APP_SUPABASE_ANON_KEY,
+ *     { appName: 'my-app' }
  *   );
+ *
+ * Config options (all optional):
+ *   appName             string — used in debug logs (default: 'app')
+ *   canonicalOrigin     string — if set, non-canonical origins are redirected here
+ *   canonicalPath       string — path within canonicalOrigin (e.g. '/')
+ *   storageKey          string — localStorage key for auth session (default: 'chase_portfolio_auth_token')
+ *
+ * Environment variables (CRA apps use REACT_APP_ prefix):
+ *   REACT_APP_SUPABASE_URL
+ *   REACT_APP_SUPABASE_ANON_KEY
+ *   REACT_APP_AUTH_CANONICAL_ORIGIN   (optional)
+ *   REACT_APP_AUTH_APP_PATH           (optional)
+ *   REACT_APP_AUTH_DEBUG              (optional, set to '1' for debug logs)
  *
  * Supabase table (run once in the SQL editor):
  *   create table user_data (
@@ -27,29 +41,38 @@
  *   create trigger user_data_updated_at before update on user_data
  *     for each row execute function set_updated_at();
  *
- * Known app_key values in this monorepo include: wellness (CRA web), job-search,
- * roller_task_tycoon_v1 (archived web).
+ * Known app_key values in this monorepo:
+ *   wellness, job-search, roller_task_tycoon_v1 (archived web)
  */
 
-import { createClient } from '@supabase/supabase-js';
+import {
+  createPortfolioAuthClient,
+  getAuthConfig,
+  getEmailRedirectUrl,
+  maybeRedirectToCanonical,
+} from './auth';
 
 /**
  * Create a sync instance bound to a specific Supabase project.
  * Each app calls this once at the top of its sync.js file.
  */
-export function createSync(supabaseUrl, supabaseKey) {
+export function createSync(supabaseUrl, supabaseKey, config = {}) {
+  const authConfig = getAuthConfig(config);
+  const emailRedirectTo = getEmailRedirectUrl(authConfig);
+
+  maybeRedirectToCanonical(authConfig);
+
   if (!supabaseUrl || !supabaseKey) {
     console.warn('[sync] Missing Supabase credentials — running in localStorage-only mode.');
     return {
       push: async () => {},
       pull: async (appKey, localData) => localData,
       auth: null,
+      emailRedirectTo,
     };
   }
 
-  const sb = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-  });
+  const sb = createPortfolioAuthClient(supabaseUrl, supabaseKey, authConfig);
 
   async function getUser() {
     const { data: { user } } = await sb.auth.getUser();
@@ -85,7 +108,7 @@ export function createSync(supabaseUrl, supabaseKey) {
    * otherwise returns localData unchanged.
    *
    * localTimestamp = localData._syncAt (ms since epoch),
-   * which is written by your save() function.
+   * written by save() in your storage helpers.
    * If remote is newer, caller should update localStorage with the returned data.
    */
   async function pull(appKey, localData, localTimestamp) {
@@ -114,5 +137,5 @@ export function createSync(supabaseUrl, supabaseKey) {
     }
   }
 
-  return { push, pull, auth: sb.auth };
+  return { push, pull, auth: sb.auth, emailRedirectTo };
 }

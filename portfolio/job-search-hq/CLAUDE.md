@@ -9,6 +9,7 @@
 - **Storage key:** `chase_job_search_v1` (data) · `chase_anthropic_key` (API key — separate)
 - **URL:** job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, typography, component patterns; do not restate in session prompts.
 
 ## File Structure
 ```
