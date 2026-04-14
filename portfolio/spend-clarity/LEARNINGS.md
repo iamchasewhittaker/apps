@@ -18,6 +18,12 @@
 
 ## Entries
 
+### 2026-04-13 — Startup validation should fail only when all category IDs are invalid
+**What happened:** We needed guardrails for stale category IDs after the wrong-budget incident, but a strict "any invalid ID = fail" rule would break runs during normal incremental config edits.
+**Root cause:** Validation requirements were framed as safety only, but the runtime also needs resilience when only part of the mapping is in flux.
+**Fix / lesson:** Validate against live YNAB categories at startup, log valid/invalid counts, and fail fast only when zero configured IDs resolve. Warn (don’t abort) on partial invalid sets.
+**Tags:** python, ynab, validation, reliability
+
 ### 2026-04-12 — All category IDs were wrong (pointed to a deleted budget)
 **What happened:** Every `category_rules.yaml` entry had IDs from budget `583fdbca` ("ynab-enrichment") — a budget that no longer existed. The actual working budget is `ab0a40fe`. Every categorization write since the tool was created was writing invalid IDs and silently failing.
 **Root cause:** The project was consolidated from `projects/ynab-enrichment/` which had its own test budget. When the code was migrated to `portfolio/spend-clarity/`, the YAML was never updated with real budget IDs. No validation step checked whether IDs were valid at startup.

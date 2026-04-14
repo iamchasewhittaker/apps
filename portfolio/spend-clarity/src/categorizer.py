@@ -141,3 +141,13 @@ class Categorizer:
                 return result
 
         return None
+
+    def configured_category_ids(self) -> set[str]:
+        """
+        Return all category IDs configured in payee rules, keyword rules, and overrides.
+        Used for startup validation against live YNAB categories.
+        """
+        ids = {category_id for category_id, _ in self._keyword_rules}
+        ids.update(category_id for category_id, _ in self._payee_rules)
+        ids.update(category_id for _, category_id in self._overrides)
+        return ids

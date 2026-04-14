@@ -1,6 +1,6 @@
 import pytest
 from datetime import date
-from src.matcher import match_receipts_to_transactions, _txn_amount, _txn_date
+from src.matcher import match_receipts_to_transactions, _txn_amount, _txn_date, _unmatched_reason
 from src.receipt_parser import ParsedReceipt
 
 
@@ -109,3 +109,35 @@ def test_txn_amount_converts_milliunits():
 def test_txn_date_parses():
     txn = {"date": "2024-11-03"}
     assert _txn_date(txn) == date(2024, 11, 3)
+
+
+def test_unmatched_reason_includes_closest_date_delta():
+    txn = _make_txn("t7", "Amazon", 19.99, "2024-11-03")
+    receipts = [_make_receipt("ord7", 19.99, date(2024, 10, 25), ["Cable"]) ]
+
+    reason = _unmatched_reason(txn, receipts, date_tol=6, amount_tol=0.50, merchant_name="amazon")
+    assert "No receipt in" in reason
+    assert "closest" in reason
+    assert "merchant=amazon" in reason
+
+
+def test_unmatched_reason_includes_closest_amount_delta():
+    txn = _make_txn("t8", "Amazon", 19.99, "2024-11-03")
+    receipts = [_make_receipt("ord8", 25.99, date(2024, 11, 3), ["Cable"]) ]
+
+    reason = _unmatched_reason(txn, receipts, date_tol=6, amount_tol=0.50, merchant_name="amazon")
+    assert "amount outside" in reason
+    assert "closest delta" in reason
+
+
+def test_matcher_sets_merchant_candidates_metadata():
+    txns = [_make_txn("t9", "Amazon", 47.23, "2024-11-03")]
+    receipts = [_make_receipt("ord9", 47.23, date(2024, 10, 1), ["HDMI Cable"])]
+
+    results = match_receipts_to_transactions(
+        txns, receipts, ["amazon"], MERCHANT_CONFIG,
+        date_tolerance_days=6, amount_tolerance_dollars=0.50,
+    )
+
+    assert len(results) == 0
+    assert txns[0]["_merchant_candidates"] == ["amazon"]

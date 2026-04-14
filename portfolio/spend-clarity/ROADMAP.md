@@ -28,10 +28,10 @@
 
 | # | Priority | Task | Why |
 |---|----------|------|-----|
-| 1 | 🔴 High | Startup validation — check that at least one category ID resolves against live budget | Prevents silent failures from stale/wrong IDs (root cause of v0.1 bug) |
+| 1 | ✅ Done | Startup validation — check that at least one category ID resolves against live budget | Shipped: startup now logs valid/invalid IDs and fails fast when none resolve |
 | 2 | 🔴 High | `venv` + `requirements.txt` install instructions in README | `bs4`, `pyyaml`, `google-auth-oauthlib` need to be installed before first run |
-| 3 | 🟡 Medium | Scheduled run via `launchd` — auto-enrich on a cron (e.g. nightly) | Eliminates manual runs; `DRY_RUN=false` after confidence validated |
-| 4 | 🟡 Medium | Unmatched report improvement — show which payee rule (if any) was tried and why it failed | Easier to debug missing rules |
+| 3 | ✅ Done | Scheduled run via `launchd` — auto-enrich on a cron (e.g. nightly) | Shipped: `scripts/install_launchd_job.sh` + plist template + README ops commands |
+| 4 | ✅ Done | Unmatched report improvement — show which payee rule (if any) was tried and why it failed | Shipped: merchant candidates + closest date/amount mismatch diagnostics in report |
 | 5 | 🟡 Medium | `category_overrides.yaml` auto-suggest — print "add this override?" prompt when a pattern fails | Reduces friction for adding corrections |
 | 6 | 🟢 Low | Amazon payee sub-categorization — detect "Amazon Fresh" → Groceries vs default Miscellaneous | Amazon is intentionally excluded from payee rules; item-keyword rules handle it, but Amazon Fresh is grocery-only |
 | 7 | 🟢 Low | Summary stats at end of run — X categorized, Y memos enriched, Z skipped | Better run feedback beyond the current log |
@@ -53,6 +53,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-13 | **v0.2.1:** startup category-ID validation against live YNAB budget, launchd scheduler install flow, richer unmatched diagnostics + tests |
 | 2026-04-12 | **v0.2.0:** `payee_formatter.py`, `category_overrides.yaml`, three-tier `Categorizer`, Step 4.5 in `main.py`, emoji stripping in `setup_categories.py`, all 9 category IDs fixed, 57 new tests |
 | 2026-03-30 | **v0.1.2:** `privacy_client.py`, Audible parser, matcher split/dedup fixes, receipt parser improvements |
 | 2026-03-30 | **v0.1.1:** README + CLAUDE.md OAuth setup gotchas |

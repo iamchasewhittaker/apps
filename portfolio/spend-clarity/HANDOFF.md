@@ -8,10 +8,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Transaction analysis overhaul: payee cleanup, auto-categorization, learning system |
-| **Status** | v0.2.0 shipped — 57/57 tests passing; `xcodebuild` green on iOS side |
-| **Last touch** | 2026-04-12 |
-| **Next** | Run `python src/main.py --dry-run` against real YNAB data to verify output; tune `category_overrides.yaml` for any mismatches; optionally add `venv` + `requirements.txt` install notes |
+| **Focus** | Pipeline hardening: startup validation, launchd scheduling, unmatched diagnostics |
+| **Status** | v0.2.1 in progress — roadmap #1/#3/#4 implemented (validation + launchd + diagnostics) |
+| **Last touch** | 2026-04-13 |
+| **Next** | Run `python src/main.py --dry-run` once with live data to inspect startup validation counts + new unmatched diagnostics; then install nightly job via `scripts/install_launchd_job.sh` (dry-run first, `--live` only after confidence) |
 
 ---
 
@@ -23,7 +23,13 @@ Run: `python3 src/main.py` (from `portfolio/spend-clarity/`)
 
 ---
 
-## Recent changes (2026-04-12)
+## Recent changes (2026-04-13)
+
+
+### Pipeline hardening (roadmap #1, #3, #4)
+- **Startup validation** (`main.py` + `ynab_client.py` + `categorizer.py`): checks configured category IDs against live budget IDs before enrichment; logs valid/invalid counts; fails only when none resolve.
+- **launchd scheduling** (`ops/com.chase.spend-clarity.enrich.plist`, `scripts/install_launchd_job.sh`, `main.py --print-launchd-plist`): one-command install/update flow for nightly automation, dry-run default.
+- **Unmatched diagnostics** (`matcher.py` + `main.py`): report now includes merchant candidates and closest date/amount mismatch context to explain failure reasons.
 
 ### Categorization — root cause fix
 All 9 category IDs in `config/category_rules.yaml` were pointing to the wrong YNAB budget (`583fdbca` "ynab-enrichment"). Every prior categorization attempt was writing invalid IDs. All IDs updated to the correct budget (`ab0a40fe`).

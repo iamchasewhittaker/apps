@@ -192,7 +192,7 @@ export default function App() {
         <ErrorBoundary name="Budget">{tab === "budget" && <BudgetTab blob={budget} setBlob={setBudget} />}</ErrorBoundary>
         <ErrorBoundary name="Growth">{tab === "growth" && <GrowthTab blob={growth} setBlob={setGrowth} />}</ErrorBoundary>
         <ErrorBoundary name="RollerTask">{tab === "rollertask" && <RollerTaskTab blob={rollertask} setBlob={setRollertask} />}</ErrorBoundary>
-        <ErrorBoundary name="Settings">{tab === "settings" && <SettingsTab signOut={signOut} ynab={ynab} checkin={checkin} triage={triage} time={time} budget={budget} growth={growth} rollertask={rollertask} />}</ErrorBoundary>
+        <ErrorBoundary name="Settings">{tab === "settings" && <SettingsTab signOut={signOut} ynab={ynab} setYnab={setYnab} checkin={checkin} triage={triage} time={time} budget={budget} growth={growth} rollertask={rollertask} />}</ErrorBoundary>
       </div>
     </div>
   );

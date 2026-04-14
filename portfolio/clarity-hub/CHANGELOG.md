@@ -3,6 +3,13 @@
 ## [Unreleased]
 
 ### Added
+- `src/tabs/YnabTab.jsx` — full YNAB tab: 4-step setup flow (token verify → budget picker → category roles w/ auto-suggest → income sources), dashboard with safe-to-spend, budget health bar, bills planner (Needs Attention / Partial / Covered), income gap, cash flow timeline, spending summary, and fund category write-back with confirmation modal
+- `src/tabs/SettingsTab.jsx` — YNAB section: token update field, Re-run YNAB Setup button
+- Snake_case → camelCase mappers for YNAB API response fields (required by MetricsEngine)
+
+---
+
+### Added (scaffold — 2026-04-13)
 - CRA scaffold with 7-blob state management and auth gate (email OTP via Supabase)
 - `src/theme.js` — Clarity palette tokens, load/save helpers for all 7 app blobs, YNAB token helpers, format helpers
 - `src/sync.js` — push/pull wrappers for 7 Supabase app_keys: ynab, checkin, triage, time, budget, growth, rollertask

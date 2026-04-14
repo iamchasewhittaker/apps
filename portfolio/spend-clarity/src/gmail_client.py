@@ -63,12 +63,32 @@ class GmailClient:
         since_str = since_date.strftime("%Y/%m/%d")
         query = f"label:Receipt from:{sender} after:{since_str}"
         log.debug(f"Gmail query: {query}")
+        return self.search_query(query=query)
+
+    def search_query(self, query: str, max_results: int = 500) -> list[dict]:
+        """
+        Search Gmail using a raw query string.
+        Returns list of raw email dicts with id, subject, date, body_html, body_text.
+        """
+        if not self._service:
+            raise RuntimeError("Call authenticate() first")
+
+        message_ids = self.search_query_ids(query=query, max_results=max_results)
+        return [self._fetch_email(m_id) for m_id in message_ids]
+
+    def search_query_ids(self, query: str, max_results: int = 500) -> list[str]:
+        """
+        Search Gmail using a raw query string.
+        Returns only message IDs (faster than fetching full payloads).
+        """
+        if not self._service:
+            raise RuntimeError("Call authenticate() first")
 
         messages = []
         page_token = None
 
         while True:
-            kwargs = {"userId": "me", "q": query, "maxResults": 500}
+            kwargs = {"userId": "me", "q": query, "maxResults": max_results}
             if page_token:
                 kwargs["pageToken"] = page_token
 
@@ -80,8 +100,24 @@ class GmailClient:
             if not page_token:
                 break
 
-        log.debug(f"Found {len(messages)} message IDs for sender={sender}")
-        return [self._fetch_email(m["id"]) for m in messages]
+        message_ids = [m["id"] for m in messages]
+        log.debug(f"Gmail query returned {len(message_ids)} IDs: {query}")
+        return message_ids
+
+    @staticmethod
+    def build_label_query(label: str, since_date: date, extra_terms: str = "") -> str:
+        """
+        Build a label-based Gmail query with an after-date clause.
+        Example:
+          label:Receipt after:2026/04/14
+          label:Notification after:2026/04/14 from:amazon.com subject:(order OR shipped)
+        """
+        since_str = since_date.strftime("%Y/%m/%d")
+        query = f"label:{label} after:{since_str}"
+        extra_terms = extra_terms.strip()
+        if extra_terms:
+            query = f"{query} {extra_terms}"
+        return query
 
     def _fetch_email(self, message_id: str) -> dict:
         msg = self._service.users().messages().get(

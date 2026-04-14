@@ -65,6 +65,36 @@ python src/main.py
 DRY_RUN=false python src/main.py
 ```
 
+At startup, the CLI validates configured category IDs (`category_rules.yaml` + `category_overrides.yaml`) against the live YNAB budget. It fails fast only if **zero** configured IDs resolve.
+
+### 6. Scheduled run (launchd)
+
+Install/update a nightly LaunchAgent (defaults to dry-run mode):
+
+```bash
+scripts/install_launchd_job.sh
+```
+
+Switch scheduler to live writes:
+
+```bash
+scripts/install_launchd_job.sh --live
+```
+
+Operational commands:
+
+```bash
+launchctl print gui/$(id -u)/com.chase.spend-clarity.enrich
+launchctl kickstart -k gui/$(id -u)/com.chase.spend-clarity.enrich
+launchctl bootout gui/$(id -u) "$HOME/Library/LaunchAgents/com.chase.spend-clarity.enrich.plist"
+```
+
+Print a plist without installing (for manual review/customization):
+
+```bash
+python src/main.py --print-launchd-plist > ~/Desktop/com.chase.spend-clarity.enrich.plist
+```
+
 ## Configuration
 
 Edit `config/category_rules.yaml` to map item keywords to YNAB category IDs.
@@ -74,7 +104,7 @@ Set `AUTO_CATEGORIZE=true` in `.env` to enable automatic category assignment.
 ## Output
 
 - `output/enrichment_log.txt` — every match decision and write
-- `output/unmatched_report.txt` — transactions with no receipt found
+- `output/unmatched_report.txt` — unmatched transactions with merchant-candidate context and closest-failure diagnostics
 
 ## Supported Merchants
 

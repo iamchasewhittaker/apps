@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                         |
-| **Focus**      | **Clarity Hub scaffold complete** — 7-blob CRA app with auth gate, MetricsEngine.js, CashFlowEngine.js, YNABClient.js, 8 placeholder tabs. Build YNAB tab next. See [`portfolio/clarity-hub/HANDOFF.md`](portfolio/clarity-hub/HANDOFF.md). |
-| **Next**       | 1. Build `YnabTab.jsx` — setup flow + dashboard + bills + income gap + cash flow (use [`portfolio/clarity-hub/docs/SESSION_START_YNAB_TAB.md`](portfolio/clarity-hub/docs/SESSION_START_YNAB_TAB.md)). 2. Add Supabase env vars to Clarity Command Vercel project. |
+| **Focus**      | **Clarity Hub — YNAB tab done.** Full setup flow + dashboard (safe-to-spend, bills, income gap, cash flow, spending, fund modal). Time tab is next priority. See [`portfolio/clarity-hub/HANDOFF.md`](portfolio/clarity-hub/HANDOFF.md). |
+| **Next**       | 1. Build `TimeTab.jsx` — focus timer, manual session log, scripture streak. 2. Add Supabase env vars to Clarity Command Vercel project. |
 | **Blockers**   | None for Clarity Hub. Clarity Command: Supabase env vars not set on Vercel project. |
-| **Last touch** | 2026-04-13 — **Clarity Hub scaffold:** CRA app, 7-blob state, auth gate, MetricsEngine.js + CashFlowEngine.js + YNABClient.js, 8 placeholder tabs, all docs. |
+| **Last touch** | 2026-04-13 — **Clarity Hub YNAB tab:** full setup flow + dashboard, fund write-back, SettingsTab YNAB section. Build passes. |
 
 
 ---

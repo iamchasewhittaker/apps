@@ -10,10 +10,11 @@ Usage:
 """
 
 import argparse
+import json
 import logging
 import os
 import sys
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -28,6 +29,7 @@ from matcher import match_receipts_to_transactions
 from memo_formatter import format_memo
 from categorizer import Categorizer
 from payee_formatter import display_payee
+from pipeline_state import PipelineState
 
 # ---------------------------------------------------------------------------
 # Logging setup
@@ -119,9 +121,32 @@ def main():
         choices=list(MERCHANTS.keys()),
         help="Limit processing to specific merchants",
     )
+    parser.add_argument(
+        "--pipeline-auto",
+        action="store_true",
+        help="Run full-auto pipeline using label queries + dedupe state",
+    )
+    parser.add_argument(
+        "--print-launchd-plist",
+        action="store_true",
+        help="Print a launchd plist configured for this project and exit",
+    )
+    parser.add_argument(
+        "--print-launchd-plist",
+        action="store_true",
+        help="Print a launchd plist configured for this project and exit",
+    )
     args = parser.parse_args()
 
     dry_run = args.dry_run or os.getenv("DRY_RUN", "true").lower() == "true"
+    if args.print_launchd_plist:
+        print(_render_launchd_plist(dry_run=dry_run))
+        return
+
+    if args.print_launchd_plist:
+        print(_render_launchd_plist(dry_run=dry_run))
+        return
+
     if dry_run:
         log.info("DRY RUN mode — no changes will be written to YNAB")
 
@@ -176,40 +201,73 @@ def main():
     log.info("Step 2: Fetching Gmail receipts...")
     active_merchants = args.merchants or list(MERCHANTS.keys())
     all_receipts = []
+    pipeline_summary = None
+    state = None
 
-    # Privacy.com: use API if key is available, otherwise fall back to email
-    privacy_api_key = os.getenv("PRIVACY_API_KEY", "")
-    if "privacy" in active_merchants and privacy_api_key:
-        log.info("  Fetching privacy receipts via API...")
-        try:
-            privacy_client = PrivacyClient(api_key=privacy_api_key)
-            privacy_receipts = privacy_client.get_receipts(since_date=since_date)
-            all_receipts.extend(privacy_receipts)
-            log.info(f"    Privacy.com API: {len(privacy_receipts)} transactions")
-        except Exception as e:
-            log.warning(f"  Privacy.com API failed ({e}), skipping")
-        email_merchants = [m for m in active_merchants if m != "privacy"]
+    if args.pipeline_auto:
+        state_path = os.getenv("PIPELINE_STATE_FILE", "output/pipeline_state.json")
+        state = PipelineState.load(
+            state_path=state_path,
+            retention_days=int(os.getenv("PIPELINE_RETENTION_DAYS", "30")),
+            max_ids=int(os.getenv("PIPELINE_MAX_IDS", "10000")),
+        )
+        pipeline_since = state.get_since_date(
+            default_lookback_days=int(os.getenv("PIPELINE_LOOKBACK_DAYS", "7")),
+            overlap_minutes=int(os.getenv("PIPELINE_OVERLAP_MINUTES", "120")),
+        )
+        log.info(f"  Pipeline mode: loading Gmail emails since {pipeline_since} using state file {state_path}")
+
+        all_receipts, pipeline_summary = _collect_pipeline_receipts(
+            gmail=gmail,
+            since_date=pipeline_since,
+            active_merchants=active_merchants,
+            state=state,
+        )
+        log.info(
+            "  Pipeline parse summary: fetched=%s new=%s dedupe_skipped=%s "
+            "parsed=%s parse_failed=%s unknown_sender=%s",
+            pipeline_summary["fetched_total"],
+            pipeline_summary["new_messages"],
+            pipeline_summary["dedupe_skipped"],
+            pipeline_summary["parsed_receipts"],
+            pipeline_summary["parse_failed"],
+            pipeline_summary["unknown_sender"],
+        )
+
     else:
-        email_merchants = active_merchants
+        # Privacy.com: use API if key is available, otherwise fall back to email
+        privacy_api_key = os.getenv("PRIVACY_API_KEY", "")
+        if "privacy" in active_merchants and privacy_api_key:
+            log.info("  Fetching privacy receipts via API...")
+            try:
+                privacy_client = PrivacyClient(api_key=privacy_api_key)
+                privacy_receipts = privacy_client.get_receipts(since_date=since_date)
+                all_receipts.extend(privacy_receipts)
+                log.info(f"    Privacy.com API: {len(privacy_receipts)} transactions")
+            except Exception as e:
+                log.warning(f"  Privacy.com API failed ({e}), skipping")
+            email_merchants = [m for m in active_merchants if m != "privacy"]
+        else:
+            email_merchants = active_merchants
 
-    for merchant_name in email_merchants:
-        merchant_cfg = MERCHANTS[merchant_name]
-        log.info(f"  Fetching {merchant_name} receipts...")
+        for merchant_name in email_merchants:
+            merchant_cfg = MERCHANTS[merchant_name]
+            log.info(f"  Fetching {merchant_name} receipts...")
 
-        # Determine which Gmail accounts to search for this merchant
-        accounts = [("chase", gmail)]
-        if kassie_gmail and merchant_name in KASSIE_MERCHANTS:
-            accounts.append(("kassie", kassie_gmail))
+            # Determine which Gmail accounts to search for this merchant
+            accounts = [("chase", gmail)]
+            if kassie_gmail and merchant_name in KASSIE_MERCHANTS:
+                accounts.append(("kassie", kassie_gmail))
 
-        for sender in merchant_cfg["senders"]:
-            for account_name, account_client in accounts:
-                emails = account_client.search_emails(sender=sender, since_date=since_date)
-                log.info(f"    {sender} ({account_name}): {len(emails)} emails found")
-                for email in emails:
-                    receipt = parse_receipt(email, merchant=merchant_name)
-                    if receipt:
-                        receipt.merchant = merchant_name
-                        all_receipts.append(receipt)
+            for sender in merchant_cfg["senders"]:
+                for account_name, account_client in accounts:
+                    emails = account_client.search_emails(sender=sender, since_date=since_date)
+                    log.info(f"    {sender} ({account_name}): {len(emails)} emails found")
+                    for email in emails:
+                        receipt = parse_receipt(email, merchant=merchant_name)
+                        if receipt:
+                            receipt.merchant = merchant_name
+                            all_receipts.append(receipt)
     log.info(f"  Parsed {len(all_receipts)} receipts total")
 
     # Step 3 — Match receipts to transactions
@@ -232,6 +290,8 @@ def main():
         rules_path="config/category_rules.yaml",
         overrides_path="config/category_overrides.yaml",
     ) if auto_categorize else None
+    if categorizer:
+        _validate_category_configuration(ynab, categorizer)
 
     matched_ids: set[str] = set()
     updates = []
@@ -289,32 +349,337 @@ def main():
     # Step 7 — Unmatched report
     log.info("Step 7: Generating unmatched report...")
     # Filter to only transactions for active merchants (receipt-eligible)
-    def is_active_merchant(txn):
+    def matched_active_merchants(txn):
         payee = (txn.get("payee_name") or "").lower()
+        merchants = []
         for merchant_name in active_merchants:
             for keyword in MERCHANTS[merchant_name]["payee_keywords"]:
                 if keyword in payee:
-                    return True
-        return False
+                    merchants.append(merchant_name)
+                    break
+        return merchants
 
-    relevant_txns = [t for t in transactions if is_active_merchant(t)]
+    relevant_txns = []
+    for txn in transactions:
+        merchants = matched_active_merchants(txn)
+        if merchants:
+            txn["_active_merchant_matches"] = merchants
+            relevant_txns.append(txn)
+
     unmatched = [t for t in relevant_txns if t["id"] not in matched_ids]
-    _write_unmatched_report(unmatched, total=len(relevant_txns))
+    report_rows = []
+    for txn in unmatched:
+        merchant_candidates = txn.get("_merchant_candidates") or txn.get("_active_merchant_matches") or []
+        report_rows.append({
+            "txn": txn,
+            "merchant_candidates": ", ".join(merchant_candidates) if merchant_candidates else "n/a",
+        })
+
+    _write_unmatched_report(report_rows, total=len(relevant_txns))
     log.info(f"  {len(unmatched)} unmatched of {len(relevant_txns)} relevant transactions")
+
+    if args.pipeline_auto and state and pipeline_summary is not None:
+        state.mark_many_processed(pipeline_summary["new_message_ids"])
+        state.record_success()
+        state.save()
+        _write_pipeline_summary(
+            pipeline_summary=pipeline_summary,
+            receipts_parsed=len(all_receipts),
+            matches_found=len(matches),
+            updates_count=len(updates),
+            unmatched_count=len(unmatched),
+            dry_run=dry_run,
+        )
+        log.info(
+            "  Pipeline state updated: processed_ids=%s last_success_at=%s",
+            len(state.processed_ids),
+            state.last_success_at.isoformat() if state.last_success_at else "n/a",
+        )
+
     log.info("Done.")
 
 
-def _write_unmatched_report(unmatched: list, total: int):
+def _validate_category_configuration(ynab: YNABClient, categorizer: Categorizer):
+    configured_ids = sorted(categorizer.configured_category_ids())
+    if not configured_ids:
+        log.warning("Startup validation skipped: no category IDs configured")
+        return
+
+    live_ids = ynab.get_category_ids()
+    valid_ids = [cid for cid in configured_ids if cid in live_ids]
+    invalid_ids = [cid for cid in configured_ids if cid not in live_ids]
+
+    log.info(
+        "Startup validation: %s configured category IDs (%s valid, %s invalid)",
+        len(configured_ids),
+        len(valid_ids),
+        len(invalid_ids),
+    )
+
+    if not valid_ids:
+        raise RuntimeError(
+            "Category validation failed: none of the configured category IDs resolve "
+            "against the current YNAB budget. Run src/setup_categories.py and update config files."
+        )
+
+    if invalid_ids:
+        preview = ", ".join(invalid_ids[:5])
+        suffix = "..." if len(invalid_ids) > 5 else ""
+        log.warning(
+            "Category validation warning: %s invalid category ID(s): %s%s",
+            len(invalid_ids),
+            preview,
+            suffix,
+        )
+
+
+def _collect_pipeline_receipts(
+    gmail: GmailClient,
+    since_date: date,
+    active_merchants: list[str],
+    state: PipelineState,
+) -> tuple[list, dict]:
+    sender_lookup = _build_sender_lookup(active_merchants)
+    queries = [
+        {
+            "name": "receipt_label",
+            "query": GmailClient.build_label_query("Receipt", since_date),
+        },
+        {
+            "name": "amazon_notification",
+            "query": GmailClient.build_label_query(
+                "Notification",
+                since_date,
+                "from:amazon.com subject:(order OR shipped)",
+            ),
+        },
+    ]
+
+    fetched_by_id: dict[str, dict] = {}
+    fetched_total = 0
+
+    for item in queries:
+        emails = gmail.search_query(query=item["query"])
+        fetched_total += len(emails)
+        log.info("    Query %s: %s email(s)", item["name"], len(emails))
+        for email in emails:
+            fetched_by_id[email["id"]] = email
+
+    dedupe_skipped = 0
+    unknown_sender = 0
+    parse_failed = 0
+    parsed = []
+    new_message_ids = []
+
+    for message_id, email in fetched_by_id.items():
+        if state.is_processed(message_id):
+            dedupe_skipped += 1
+            continue
+
+        new_message_ids.append(message_id)
+        merchant = _infer_merchant(email, sender_lookup)
+        if not merchant:
+            unknown_sender += 1
+            continue
+
+        receipt = parse_receipt(email, merchant=merchant)
+        if receipt:
+            receipt.merchant = merchant
+            parsed.append(receipt)
+        else:
+            parse_failed += 1
+
+    summary = {
+        "fetched_total": fetched_total,
+        "unique_messages": len(fetched_by_id),
+        "new_messages": len(new_message_ids),
+        "new_message_ids": new_message_ids,
+        "dedupe_skipped": dedupe_skipped,
+        "unknown_sender": unknown_sender,
+        "parse_failed": parse_failed,
+        "parsed_receipts": len(parsed),
+        "since_date": since_date.isoformat(),
+    }
+    return parsed, summary
+
+
+def _build_sender_lookup(active_merchants: list[str]) -> dict[str, str]:
+    sender_lookup: dict[str, str] = {}
+    for merchant in active_merchants:
+        cfg = MERCHANTS.get(merchant)
+        if not cfg:
+            continue
+        for sender in cfg["senders"]:
+            sender_lookup[sender.lower()] = merchant
+    return sender_lookup
+
+
+def _extract_sender_email(from_header: str) -> str:
+    if "<" in from_header and ">" in from_header:
+        try:
+            return from_header.split("<", 1)[1].split(">", 1)[0].strip().lower()
+        except Exception:
+            return from_header.strip().lower()
+    return from_header.strip().lower()
+
+
+def _infer_merchant(email: dict, sender_lookup: dict[str, str]) -> str | None:
+    sender_header = email.get("from", "")
+    sender_email = _extract_sender_email(sender_header)
+    sender_domain = sender_email.split("@")[-1] if "@" in sender_email else sender_email
+
+    if sender_email in sender_lookup:
+        return sender_lookup[sender_email]
+
+    for sender_key, merchant in sender_lookup.items():
+        if "@" in sender_key and sender_email == sender_key:
+            return merchant
+        if "@" not in sender_key and sender_key in sender_domain:
+            return merchant
+        if "@" in sender_key:
+            key_domain = sender_key.split("@", 1)[1]
+            if key_domain and key_domain in sender_domain:
+                return merchant
+
+    # Amazon notification query intentionally sits outside Receipt label.
+    if "amazon.com" in sender_domain:
+        return "amazon"
+    return None
+
+
+def _render_launchd_plist(dry_run: bool) -> str:
+    project_dir = Path(__file__).resolve().parent.parent
+    python_bin = os.getenv("PYTHON_BIN", str(project_dir / ".venv" / "bin" / "python"))
+    log_dir = Path.home() / "Library" / "Logs"
+    dry_run_arg = "      <string>--dry-run</string>\n" if dry_run else ""
+
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.chase.spend-clarity.enrich</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>{python_bin}</string>
+      <string>{project_dir / 'src' / 'main.py'}</string>
+{dry_run_arg}    </array>
+
+    <key>WorkingDirectory</key>
+    <string>{project_dir}</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>2</integer>
+      <key>Minute</key>
+      <integer>30</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>{log_dir / 'spend-clarity.stdout.log'}</string>
+    <key>StandardErrorPath</key>
+    <string>{log_dir / 'spend-clarity.stderr.log'}</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+  </dict>
+</plist>
+"""
+
+
+
+def _render_launchd_plist(dry_run: bool) -> str:
+    project_dir = Path(__file__).resolve().parent.parent
+    python_bin = os.getenv("PYTHON_BIN", str(project_dir / ".venv" / "bin" / "python"))
+    log_dir = Path.home() / "Library" / "Logs"
+    dry_run_arg = "      <string>--dry-run</string>\n" if dry_run else ""
+
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.chase.spend-clarity.enrich</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>{python_bin}</string>
+      <string>{project_dir / 'src' / 'main.py'}</string>
+{dry_run_arg}    </array>
+    <key>WorkingDirectory</key>
+    <string>{project_dir}</string>
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>2</integer>
+      <key>Minute</key>
+      <integer>30</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>{log_dir / 'spend-clarity.stdout.log'}</string>
+    <key>StandardErrorPath</key>
+    <string>{log_dir / 'spend-clarity.stderr.log'}</string>
+    <key>RunAtLoad</key>
+    <false/>
+  </dict>
+</plist>
+"""
+
+def _write_pipeline_summary(
+    pipeline_summary: dict,
+    receipts_parsed: int,
+    matches_found: int,
+    updates_count: int,
+    unmatched_count: int,
+    dry_run: bool,
+) -> None:
+    Path("output").mkdir(exist_ok=True)
+    now = datetime.now(timezone.utc).isoformat()
+    payload = {
+        "run_at": now,
+        "dry_run": dry_run,
+        "gmail": pipeline_summary,
+        "receipts_parsed": receipts_parsed,
+        "matches_found": matches_found,
+        "updates_count": updates_count,
+        "unmatched_count": unmatched_count,
+    }
+    Path("output/pipeline_summary.json").write_text(json.dumps(payload, indent=2, sort_keys=True))
+
+    lines = [
+        "=== SPEND CLARITY PIPELINE SUMMARY ===",
+        f"Run at (UTC): {now}",
+        f"Dry run: {dry_run}",
+        f"Gmail fetched total: {pipeline_summary['fetched_total']}",
+        f"Gmail unique messages: {pipeline_summary['unique_messages']}",
+        f"New messages processed: {pipeline_summary['new_messages']}",
+        f"Dedupe skipped: {pipeline_summary['dedupe_skipped']}",
+        f"Unknown sender skipped: {pipeline_summary['unknown_sender']}",
+        f"Parse failed: {pipeline_summary['parse_failed']}",
+        f"Receipts parsed: {receipts_parsed}",
+        f"YNAB matches found: {matches_found}",
+        f"YNAB updates: {updates_count}",
+        f"Unmatched relevant txns: {unmatched_count}",
+    ]
+    Path("output/pipeline_summary.txt").write_text("\n".join(lines) + "\n")
+
+
+def _write_unmatched_report(rows: list[dict], total: int):
     lines = ["=== UNMATCHED TRANSACTIONS ===\n"]
-    lines.append(f"{'Date':<12} {'Payee':<30} {'Amount':>10}  Reason\n")
-    lines.append("-" * 70 + "\n")
-    for txn in unmatched:
+    lines.append(f"{'Date':<12} {'Payee':<30} {'Amount':>10} {'Merchants':<18} Reason\n")
+    lines.append("-" * 120 + "\n")
+    for row in rows:
+        txn = row["txn"]
         amount = txn["amount"] / 1000
         clean = display_payee(txn.get("payee_name"))[:28]
+        merchants = row["merchant_candidates"][:18]
         reason = txn.get("_unmatched_reason", "No receipt found in date window")
-        lines.append(f"{txn['date']:<12} {clean:<30} ${amount:>9.2f}  {reason}\n")
+        lines.append(
+            f"{txn['date']:<12} {clean:<30} ${amount:>9.2f} {merchants:<18} {reason}\n"
+        )
     lines.append("\n")
-    lines.append(f"Total unmatched: {len(unmatched)} of {total}\n")
+    lines.append(f"Total unmatched: {len(rows)} of {total}\n")
 
     Path("output").mkdir(exist_ok=True)
     Path("output/unmatched_report.txt").write_text("".join(lines))

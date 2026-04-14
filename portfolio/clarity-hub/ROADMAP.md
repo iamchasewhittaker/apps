@@ -9,15 +9,15 @@
 
 ## In Progress / Next
 
-### YNAB Tab (Priority 1)
-- [ ] Setup flow: token entry + verify → budget picker → category role assignment → income sources
-- [ ] Dashboard: safe-to-spend (daily/weekly/monthly), budget health bar, obligations coverage
-- [ ] Bills planner: grouped by Needs Attention / Partial / Covered
-- [ ] Income gap: expected income vs required, salary target
-- [ ] Cash flow timeline: chronological events with today marker
-- [ ] Spending: yesterday/this week/this month from transactions
-- [ ] Fund category write-back (PATCH to YNAB with confirmation)
-- [ ] Settings: re-enter YNAB token, re-run setup
+### YNAB Tab (Priority 1) ✅ DONE — 2026-04-13
+- [x] Setup flow: token entry + verify → budget picker → category role assignment → income sources
+- [x] Dashboard: safe-to-spend (daily/weekly/monthly), budget health bar, obligations coverage
+- [x] Bills planner: grouped by Needs Attention / Partial / Covered
+- [x] Income gap: expected income vs required, salary target
+- [x] Cash flow timeline: chronological events with today marker
+- [x] Spending: yesterday/this week/this month from transactions
+- [x] Fund category write-back (PATCH to YNAB with confirmation)
+- [x] Settings: re-enter YNAB token, re-run setup
 
 ### Time Tab (Priority 2)
 - [ ] Focus timer: start/pause/resume/stop, `Date.now()` elapsed math

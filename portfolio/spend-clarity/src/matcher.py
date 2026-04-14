@@ -68,6 +68,10 @@ def match_receipts_to_transactions(
                 log.debug(f"  txn: date={t['date']} amount=${_txn_amount(t):.2f} payee={t.get('payee_name')!r}")
 
         for txn in merchant_txns:
+            candidates = txn.setdefault("_merchant_candidates", [])
+            if merchant_name not in candidates:
+                candidates.append(merchant_name)
+
             if txn["id"] in used_txn_ids:
                 continue
             match = _find_match(
@@ -83,7 +87,11 @@ def match_receipts_to_transactions(
                 results.append(match)
             else:
                 txn["_unmatched_reason"] = _unmatched_reason(
-                    txn, merchant_receipts, date_tolerance_days, amount_tolerance_dollars
+                    txn,
+                    merchant_receipts,
+                    date_tolerance_days,
+                    amount_tolerance_dollars,
+                    merchant_name,
                 )
 
         # Split order matching — skip for high-volume merchants where coincidental
@@ -210,16 +218,33 @@ def _unmatched_reason(
     receipts: list[ParsedReceipt],
     date_tol: int,
     amount_tol: float,
+    merchant_name: str,
 ) -> str:
     txn_dt = _txn_date(txn)
     txn_amt = _txn_amount(txn)
 
+    if not receipts:
+        return f"No receipts parsed for merchant '{merchant_name}'"
+
+    date_diffs = [abs((r.date - txn_dt).days) for r in receipts]
     in_date = [r for r in receipts if abs((r.date - txn_dt).days) <= date_tol]
     if not in_date:
-        return "No receipt found in date window"
+        closest_days = min(date_diffs)
+        return (
+            f"No receipt in ±{date_tol}d "
+            f"(closest {closest_days}d; merchant={merchant_name})"
+        )
 
+    amount_diffs = [abs(r.amount - txn_amt) for r in in_date]
     in_amount = [r for r in in_date if abs(r.amount - txn_amt) <= amount_tol]
     if not in_amount:
-        return "Receipt(s) found but amount outside tolerance"
+        closest_amount_delta = min(amount_diffs)
+        return (
+            f"Receipt(s) in date window but amount outside ±${amount_tol:.2f} "
+            f"(closest delta ${closest_amount_delta:.2f}; merchant={merchant_name})"
+        )
 
-    return f"Ambiguous — {len(in_amount)} receipts matched"
+    return (
+        f"Ambiguous — {len(in_amount)} receipt(s) within tolerance "
+        f"for merchant '{merchant_name}'"
+    )

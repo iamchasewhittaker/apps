@@ -74,3 +74,12 @@ class YNABClient:
         for group in groups:
             categories.extend(group.get("categories", []))
         return categories
+
+    def get_category_ids(self) -> set[str]:
+        """Return category IDs for non-deleted categories in this budget."""
+        categories = self.get_categories()
+        return {
+            c["id"]
+            for c in categories
+            if not c.get("deleted") and c.get("id")
+        }

@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Scaffold complete — all 7 placeholder tabs, core infrastructure, YNAB engines built |
-| **Next** | Build out YnabTab.jsx (priority): setup flow → dashboard → bills → income gap → cash flow |
-| **Last touch** | 2026-04-13 — scaffolded CRA app, auth gate, 7-blob sync, MetricsEngine.js, CashFlowEngine.js, YNABClient.js |
-| **Status** | 🟡 Scaffold only — tabs are placeholders, no real content yet |
+| **Focus** | YNAB tab done — Time tab is next |
+| **Next** | Build TimeTab.jsx: focus timer, manual session log, scripture streak |
+| **Last touch** | 2026-04-13 — built full YnabTab.jsx (setup flow + dashboard + fund modal), updated SettingsTab |
+| **Status** | 🟡 YNAB tab complete — all other tabs still placeholder |
 
 ## What's Built
 

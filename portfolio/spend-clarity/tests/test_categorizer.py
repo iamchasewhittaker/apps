@@ -114,3 +114,14 @@ class TestOverrides:
     def test_no_overrides_path(self):
         cat = Categorizer(RULES_PATH, None)
         assert cat.categorize_by_payee("Netflix") == SUBSCRIPTIONS_ID
+
+
+class TestStartupValidationSupport:
+    def test_configured_category_ids_collects_all_sources(self):
+        cat = Categorizer(RULES_PATH, OVERRIDES_PATH)
+        ids = cat.configured_category_ids()
+
+        assert isinstance(ids, set)
+        assert SUBSCRIPTIONS_ID in ids
+        assert GROCERIES_ID in ids
+        assert len(ids) >= 9

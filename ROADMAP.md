@@ -227,6 +227,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-13 | Clarity Hub | v0.1 | **YNAB tab:** Full setup flow (token → budget → category roles w/ auto-suggest → income sources), dashboard (safe-to-spend, budget health, bills planner, income gap, cash flow timeline, spending), fund category write-back with confirmation modal; SettingsTab YNAB section | `portfolio/clarity-hub/` — Time tab is next |
 | 2026-04-13 | Clarity Hub | v0.1 | **Scaffold:** CRA app with 7-blob state management, email OTP auth gate, MetricsEngine.js + CashFlowEngine.js + YNABClient.js (ports from YNAB Clarity iOS), 8 placeholder tabs, Supabase push/pull for all 7 app_keys | `portfolio/clarity-hub/` — YNAB tab is next priority |
 | 2026-04-13 | Inbox Zero | — | **Phase 3 kickoff:** Apps Script auto-sorter (`auto-sort.gs` + `rules.gs`) with Gemini classification + Rules-only fallback + Sheets logging; Chrome extension (`extension/`) with label tab bar, Sort button, settings popup, dark mode | Pending deployment to script.google.com + Chrome |
 | 2026-04-13 | Job Search HQ | v8.5 | **Wave 2 #6 shipped:** Pipeline win/loss analytics bar chart by final stage outcome (Offer/Rejected/Withdrawn) with totals and percentages | Verified with `npm run build` and `npm test -- --watchAll=false --passWithNoTests` |
