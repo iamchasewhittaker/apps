@@ -25,6 +25,8 @@
 | AI Dev Mastery | v1.0 | none (no persistence) | not yet deployed | 🟡 Local |
 | Spend Clarity | v0.1 | none (Python CLI; no localStorage); YNAB token in `.env`; Gmail OAuth tokens in `config/` | local Python | 🟡 Local · [`portfolio/spend-clarity`](portfolio/spend-clarity) |
 | Knowledge Base | v1.0 | `chase_knowledge_base_v1` | knowledge-base-beta-five.vercel.app | ✅ Active · 48 bookmarks · 12 categories · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
+| Rollertask Tycoon Web | v0.1 | `chase_rollertask_tycoon_web_v1` | not yet deployed | 🟡 Local · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
+| Ynab Clarity Web | v0.1 | `chase_ynab_clarity_web_v1` | not yet deployed | 🟡 Local · [`portfolio/ynab-clarity-web`](portfolio/ynab-clarity-web) |
 
 > ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
