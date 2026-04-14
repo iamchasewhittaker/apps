@@ -305,6 +305,28 @@ export default function App() {
 
   useEffect(() => { saveMeds(meds); }, [meds]);
 
+  // Push wellness daily summary for Clarity Command cross-app scoreboard
+  useEffect(() => {
+    if (!hasLoaded.current) return;
+    const todayDate = new Date().toISOString().slice(0, 10);
+    const todayStr = new Date().toDateString();
+    push('wellness-daily', {
+      date: todayDate,
+      morningDone: savedMorning === todayStr || savedMorning === true,
+      eveningDone: savedEvening === todayStr || savedEvening === true,
+      excusesMorning: formData.excusesMorning || null,
+      excusesEvening: formData.excusesEvening || null,
+      activityPlanned: formData.activityPlanned || null,
+      activityDone: formData.activityDone || null,
+      met: !!(
+        (savedMorning === todayStr || savedMorning === true) &&
+        (savedEvening === todayStr || savedEvening === true) &&
+        formData.activityDone === "yes"
+      ),
+      _syncAt: Date.now(),
+    });
+  }, [savedMorning, savedEvening, formData.excusesMorning, formData.excusesEvening, formData.activityDone]); // run once on mount
+
   // Auto-save check-in draft
   useEffect(() => {
     if (Object.keys(formData).length > 0 && !savedMorning && !savedEvening) {

@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added (Phase 2 — 2026-04-13)
+- Logo: shield + compass SVG (`logo.svg`, `logo192.png`, `logo512.png`, `apple-touch-icon.png`, `favicon.svg`)
+- Cross-app reads: pulls `job-search-daily` and `wellness-daily` from Supabase on load
+- MissionTab: shows live job count from Job Search HQ with 📡 indicator when synced
+- ScoreboardTab: `LiveAppData` section shows Job Search count + Wellness morning/evening/activity status
+
 ## [1.0.0] — 2026-04-13
 ### Added
 - Initial build — full Phase 1 web app

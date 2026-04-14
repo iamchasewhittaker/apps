@@ -274,7 +274,7 @@ function SectionHeader({ title, subtitle }) {
 }
 
 // ── MAIN MISSION TAB ───────────────────────────────────────────────────────
-export default function MissionTab({ layoffDate, scriptures, reminders, targets, dailyLogs, getTodayLog, upsertTodayLog }) {
+export default function MissionTab({ layoffDate, scriptures, reminders, targets, dailyLogs, getTodayLog, upsertTodayLog, jobSearchDaily, wellnessDaily }) {
   const [mode, setMode] = useState("morning"); // "morning" | "evening"
 
   const todayLog = getTodayLog();
@@ -292,6 +292,14 @@ export default function MissionTab({ layoffDate, scriptures, reminders, targets,
   const areas = todayLog?.areas || {};
   const jobActions = todayLog?.jobActions || [];
   const committed = todayLog?.committed || false;
+
+  // Live cross-app data — use Job Search HQ count for today if available
+  const todayStr = today();
+  const liveJobCount = jobSearchDaily?.date === todayStr ? jobSearchDaily.count : null;
+  const liveJobMet = jobSearchDaily?.date === todayStr ? jobSearchDaily.met : null;
+  const displayJobCount = liveJobCount !== null ? liveJobCount : jobActions.length;
+  const displayJobMet = liveJobMet !== null ? liveJobMet : (jobActions.length >= targets.jobActions);
+  const jobSynced = liveJobCount !== null;
 
   const patchAreas = (patch) => upsertTodayLog({ areas: patch });
 
@@ -343,8 +351,12 @@ export default function MissionTab({ layoffDate, scriptures, reminders, targets,
           {/* Today's targets */}
           <SectionHeader title="Today's Targets" subtitle="Non-negotiable. Your family is counting on you." />
           <div style={{ margin: "12px 16px 0", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12, padding: "4px 14px" }}>
-            <TargetRow label="Job Search Actions" done={jobActions.length >= targets.jobActions} count={jobActions.length} target={targets.jobActions} inputType="number"
-              onToggle={() => {}} onCount={() => {}} />
+            <TargetRow
+              label={jobSynced ? "Job Search Actions 📡" : "Job Search Actions"}
+              done={displayJobMet} count={displayJobCount} target={targets.jobActions}
+              inputType={jobSynced ? "toggle" : "number"}
+              onToggle={() => {}} onCount={() => {}}
+            />
             <TargetRow label={`Productive Hours (${targets.productiveHours}h)`} done={(areas.time || 0) >= targets.productiveHours} count={areas.time || 0} target={targets.productiveHours} inputType="number"
               onToggle={() => {}} onCount={v => patchAreas({ time: v })} />
             <TargetRow label="Budget Check-in" done={!!areas.budget} count={areas.budget ? 1 : 0} target={1}

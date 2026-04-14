@@ -219,14 +219,67 @@ function StatsRow({ dailyLogs, targets, layoffDate }) {
   );
 }
 
+// ── LIVE APP DATA ─────────────────────────────────────────────────────────
+function LiveAppData({ jobSearchDaily, wellnessDaily }) {
+  const todayStr = today();
+  const jsToday = jobSearchDaily?.date === todayStr;
+  const wlToday = wellnessDaily?.date === todayStr;
+  const hasAny = jsToday || wlToday || jobSearchDaily || wellnessDaily;
+  if (!hasAny) return null;
+
+  return (
+    <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12, padding: "14px 16px" }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>
+        📡 Live App Data
+      </div>
+      {/* Job Search HQ */}
+      {jobSearchDaily && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: `1px solid ${T.border}` }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Job Search HQ</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{jsToday ? "Today" : jobSearchDaily.date}</div>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <span style={{
+              fontSize: 13, fontWeight: 700,
+              color: jobSearchDaily.met ? T.green : T.accent,
+            }}>
+              {jobSearchDaily.count}/{5} actions
+              {jobSearchDaily.met ? " ✓" : ""}
+            </span>
+            {!jsToday && <div style={{ fontSize: 10, color: T.muted }}>last sync</div>}
+          </div>
+        </div>
+      )}
+      {/* Wellness Tracker */}
+      {wellnessDaily && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Wellness Tracker</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{wlToday ? "Today" : wellnessDaily.date}</div>
+          </div>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            <span style={{ fontSize: 16 }} title="Morning check-in">{wellnessDaily.morningDone ? "☀️" : "⬜"}</span>
+            <span style={{ fontSize: 16 }} title="Evening check-in">{wellnessDaily.eveningDone ? "🌙" : "⬜"}</span>
+            <span style={{ fontSize: 16 }} title="Activity">{wellnessDaily.activityDone === "yes" ? "🏃" : "⬜"}</span>
+            {wellnessDaily.excusesEvening === "no" && <span style={{ fontSize: 11, color: T.green }}>✓</span>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── MAIN SCOREBOARD TAB ────────────────────────────────────────────────────
-export default function ScoreboardTab({ dailyLogs, layoffDate, targets }) {
+export default function ScoreboardTab({ dailyLogs, layoffDate, targets, jobSearchDaily, wellnessDaily }) {
   return (
     <div style={{ padding: "20px 16px", display: "flex", flexDirection: "column", gap: 20 }}>
       <div>
         <div style={{ fontSize: 18, fontWeight: 700, color: T.text, marginBottom: 2 }}>Scoreboard</div>
         <div style={{ fontSize: 12, color: T.muted }}>Your consistency. Your accountability. No hiding.</div>
       </div>
+
+      <LiveAppData jobSearchDaily={jobSearchDaily} wellnessDaily={wellnessDaily} />
 
       <StatsRow dailyLogs={dailyLogs} targets={targets} layoffDate={layoffDate} />
 

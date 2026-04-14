@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#0a0d14"/>
+
+  <!-- Shield outline — gold stroke -->
+  <path d="M256 72 L400 140 L400 280 Q400 380 256 440 Q112 380 112 280 L112 140 Z"
+        fill="none" stroke="#c8a84b" stroke-width="8" stroke-linejoin="round"/>
+
+  <!-- Inner shield fill — subtle dark surface -->
+  <path d="M256 92 L384 152 L384 274 Q384 366 256 420 Q128 366 128 274 L128 152 Z"
+        fill="#111520"/>
+
+  <!-- Compass rose — gold -->
+  <!-- North arrow -->
+  <polygon points="256,130 270,220 256,200 242,220" fill="#c8a84b"/>
+  <!-- South arrow -->
+  <polygon points="256,340 270,250 256,270 242,250" fill="#c8a84b" opacity="0.5"/>
+  <!-- East arrow -->
+  <polygon points="340,240 270,226 280,240 270,254" fill="#c8a84b" opacity="0.5"/>
+  <!-- West arrow -->
+  <polygon points="172,240 242,226 232,240 242,254" fill="#c8a84b" opacity="0.5"/>
+
+  <!-- Center circle -->
+  <circle cx="256" cy="240" r="16" fill="#c8a84b"/>
+  <circle cx="256" cy="240" r="8" fill="#0a0d14"/>
+
+  <!-- Compass cardinal ticks -->
+  <line x1="256" y1="112" x2="256" y2="126" stroke="#c8a84b" stroke-width="3" stroke-linecap="round"/>
+  <line x1="256" y1="354" x2="256" y2="368" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <line x1="350" y1="240" x2="364" y2="240" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <line x1="148" y1="240" x2="162" y2="240" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Diagonal ticks -->
+  <line x1="320" y1="166" x2="330" y2="156" stroke="#c8a84b" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+  <line x1="192" y1="166" x2="182" y2="156" stroke="#c8a84b" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+  <line x1="320" y1="314" x2="330" y2="324" stroke="#c8a84b" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+  <line x1="192" y1="314" x2="182" y2="324" stroke="#c8a84b" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- "CC" text at bottom -->
+  <text x="256" y="406" text-anchor="middle"
+        font-family="'DM Sans', system-ui, sans-serif" font-weight="700" font-size="28"
+        fill="#c8a84b" letter-spacing="6" opacity="0.7">CC</text>
+</svg>

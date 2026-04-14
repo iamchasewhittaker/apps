@@ -174,7 +174,27 @@ function MorningStartSection({ data, set, meds = [] }) {
       <div style={{ padding: "10px 14px", background: T.accentLight, borderRadius: 8, marginBottom: 16, fontSize: 12, color: T.accent, lineHeight: 1.5 }}>
         ☀️ <strong>Best time:</strong> Right after your 7–8am meds. Takes about 2 minutes.
       </div>
-      <SectionLabel num={1}>How am I waking up feeling today...</SectionLabel>
+
+      {/* ── Accountability: Excuses ── */}
+      <div style={{ padding: "12px 14px", background: "#1a1608", border: "1.5px solid #c8a84b33", borderRadius: 8, marginBottom: 16 }}>
+        <SectionLabel num={1}>Am I making excuses today?</SectionLabel>
+        {[
+          { v: "yes",     e: "🔴", l: "Yes — I'm already planning to coast" },
+          { v: "pushing", e: "🟡", l: "I'm pushing through anyway" },
+          { v: "no",      e: "🟢", l: "No — I'm locked in today" },
+        ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.excusesMorning === o.v} onClick={() => set("excusesMorning", o.v)} />)}
+      </div>
+
+      {/* ── Accountability: Activity ── */}
+      <div style={{ padding: "12px 14px", background: "#0d1f18", border: "1.5px solid #3d997033", borderRadius: 8, marginBottom: 16 }}>
+        <SectionLabel num={2}>Physical activity planned today? (20+ min)</SectionLabel>
+        {[
+          { v: "yes", e: "✅", l: "Yes — 20+ min planned" },
+          { v: "no",  e: "🚫", l: "Not today" },
+        ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.activityPlanned === o.v} onClick={() => set("activityPlanned", o.v)} />)}
+      </div>
+
+      <SectionLabel num={3}>How am I waking up feeling today...</SectionLabel>
       {[
         { v: "rough", e: "🔴", l: "Rough — dreading the day, low energy" },
         { v: "low", e: "🟠", l: "Low — not great but I'll get through it" },
@@ -184,7 +204,7 @@ function MorningStartSection({ data, set, meds = [] }) {
       ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.morningFeel === o.v} onClick={() => set("morningFeel", o.v)} />)}
 
       <Divider />
-      <SectionLabel num={2}>Medications taken this morning</SectionLabel>
+      <SectionLabel num={4}>Medications taken this morning</SectionLabel>
       <div style={{ fontSize: 11, color: T.muted, marginBottom: 8 }}>Select all taken so far</div>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {meds.map(m => (
@@ -198,7 +218,7 @@ function MorningStartSection({ data, set, meds = [] }) {
       </div>
 
       <Divider />
-      <SectionLabel num={3}>Today's capacity — how many focused hours do I realistically have?</SectionLabel>
+      <SectionLabel num={5}>Today's capacity — how many focused hours do I realistically have?</SectionLabel>
       {[
         { v: "survival", e: "😔", l: "Survival — 1 hour or less. Just keeping the lights on." },
         { v: "limited", e: "😐", l: "Limited — 1–2 hours. Low but functional." },
@@ -207,7 +227,7 @@ function MorningStartSection({ data, set, meds = [] }) {
       ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.capacity === o.v} onClick={() => set("capacity", o.v)} />)}
 
       <Divider />
-      <SectionLabel num={4}>Medication timing <span style={{fontSize:10, color: T.muted, fontWeight:400}}>(optional — tap to log time taken)</span></SectionLabel>
+      <SectionLabel num={6}>Medication timing <span style={{fontSize:10, color: T.muted, fontWeight:400}}>(optional — tap to log time taken)</span></SectionLabel>
       <div style={{ fontSize: 11, color: T.muted, marginBottom: 10 }}>Helps connect timing to focus crashes, sleep issues, and Adderall effectiveness.</div>
       {[
         { key: "timeSertraline",  label: "Sertraline 200mg",    color: T.blue },
@@ -236,7 +256,7 @@ function MorningStartSection({ data, set, meds = [] }) {
       ))}
 
       <Divider />
-      <SectionLabel num={5}>Anything already on my mind this morning...</SectionLabel>
+      <SectionLabel num={7}>Anything already on my mind this morning...</SectionLabel>
       <textarea value={data.morningNote || ""} onChange={e => set("morningNote", e.target.value)}
         placeholder="Worries, intentions, something from last night still lingering... (optional)"
         rows={2} style={textareaStyle} />
@@ -1068,7 +1088,26 @@ function HealthLifestyleSection({ data, set }) {
 function EndOfDaySection({ data, set }) {
   return (
     <div>
-      <SectionLabel num={1}>Overall, today felt like...</SectionLabel>
+      {/* ── Accountability: Excuses ── */}
+      <div style={{ padding: "12px 14px", background: "#1a1608", border: "1.5px solid #c8a84b33", borderRadius: 8, marginBottom: 16 }}>
+        <SectionLabel num={1}>Did I make excuses today?</SectionLabel>
+        {[
+          { v: "yes",     e: "🔴", l: "Yes — I coasted and know it" },
+          { v: "partial", e: "🟡", l: "Partial — some excuses but pushed through some" },
+          { v: "no",      e: "🟢", l: "No — I showed up and did the work" },
+        ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.excusesEvening === o.v} onClick={() => set("excusesEvening", o.v)} />)}
+      </div>
+
+      {/* ── Accountability: Activity ── */}
+      <div style={{ padding: "12px 14px", background: "#0d1f18", border: "1.5px solid #3d997033", borderRadius: 8, marginBottom: 16 }}>
+        <SectionLabel num={2}>Physical activity completed today? (20+ min)</SectionLabel>
+        {[
+          { v: "yes", e: "✅", l: "Yes — done" },
+          { v: "no",  e: "🚫", l: "No" },
+        ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.activityDone === o.v} onClick={() => set("activityDone", o.v)} />)}
+      </div>
+
+      <SectionLabel num={3}>Overall, today felt like...</SectionLabel>
       {[
         { v: "hardest", e: "🔴", l: "One of my harder days" },
         { v: "rough", e: "🟠", l: "Rough but got through it" },
@@ -1078,7 +1117,7 @@ function EndOfDaySection({ data, set }) {
       ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.overall === o.v} onClick={() => set("overall", o.v)} />)}
 
       <Divider />
-      <SectionLabel num={2}>Compared to yesterday, today felt...</SectionLabel>
+      <SectionLabel num={4}>Compared to yesterday, today felt...</SectionLabel>
       {[
         { v: "much_worse", e: "🔴", l: "Much worse" },
         { v: "little_worse", e: "🟠", l: "A little worse" },
@@ -1088,7 +1127,7 @@ function EndOfDaySection({ data, set }) {
       ].map(o => <ChoiceButton key={o.v} emoji={o.e} label={o.l} selected={data.vsYesterday === o.v} onClick={() => set("vsYesterday", o.v)} />)}
 
       <Divider />
-      <SectionLabel num={3}>💵 Money — did you spend anything today you felt uncertain about?</SectionLabel>
+      <SectionLabel num={5}>💵 Money — did you spend anything today you felt uncertain about?</SectionLabel>
       <div style={{ fontSize: 11, color: T.muted, marginBottom: 10 }}>Not about planning — just how you felt about it after.</div>
       {[
         { v: "significant", e: "🔴", l: "Yes — and I regret it or it's weighing on me" },
@@ -1100,7 +1139,7 @@ function EndOfDaySection({ data, set }) {
       {data.unplanned && data.unplanned !== "no" && (
         <>
           <Divider />
-          <SectionLabel num={4}>Before spending I felt... (select all)</SectionLabel>
+          <SectionLabel num={6}>Before spending I felt... (select all)</SectionLabel>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {["Anxious or stressed", "Bored", "Excited / impulsive", "Justified — genuinely needed it"].map(f => (
               <MultiChip key={f} label={f}
@@ -1115,7 +1154,7 @@ function EndOfDaySection({ data, set }) {
       )}
 
       <Divider />
-      <SectionLabel num={5}>Today in one word...</SectionLabel>
+      <SectionLabel num={7}>Today in one word...</SectionLabel>
       <input
         value={data.oneWord || ""}
         onChange={e => set("oneWord", e.target.value)}
@@ -1129,7 +1168,7 @@ function EndOfDaySection({ data, set }) {
       />
 
       <Divider />
-      <SectionLabel num={6}>Biggest thing that affected my day...</SectionLabel>
+      <SectionLabel num={8}>Biggest thing that affected my day...</SectionLabel>
       <textarea
         value={data.biggestThing || ""}
         onChange={e => set("biggestThing", e.target.value)}
@@ -1138,7 +1177,7 @@ function EndOfDaySection({ data, set }) {
       />
 
       <Divider />
-      <SectionLabel num={7}>One thing I want my doctor to know about today... (optional)</SectionLabel>
+      <SectionLabel num={9}>One thing I want my doctor to know about today... (optional)</SectionLabel>
       <textarea
         value={data.doctorNote || ""}
         onChange={e => set("doctorNote", e.target.value)}
@@ -1148,7 +1187,7 @@ function EndOfDaySection({ data, set }) {
 
       <Divider />
       <div style={{ background: T.blueLight, border: `1.5px solid ${T.blue}44`, borderRadius: 10, padding: "14px 16px" }}>
-        <SectionLabel num={8} color={T.blue}>🌙 What does tomorrow need to be about?</SectionLabel>
+        <SectionLabel num={10} color={T.blue}>🌙 What does tomorrow need to be about?</SectionLabel>
         <div style={{ fontSize: 11, color: T.muted, marginBottom: 10, lineHeight: 1.5 }}>
           One word or one sentence. You're deciding now so morning-you doesn't have to. Could be a task, a feeling, a person, or an area of life.
         </div>

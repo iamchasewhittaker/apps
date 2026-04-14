@@ -1,10 +1,10 @@
-// APP_META: { "app": "jobsearch", "version": "8.3" }
+// APP_META: { "app": "jobsearch", "version": "8.5" }
 import React, { useState, useEffect, useRef } from "react";
 import {
   STORAGE_KEY, API_KEY_STORAGE,
-  defaultData, blankApp, blankContact,
+  defaultData, blankApp, blankContact, normalizeApplication, normalizePrepSections, normalizeStarStories,
   callClaude, getApiKey, CHASE_CONTEXT,
-  s, css,
+  s, css, today, generateId,
 } from "./constants";
 import { push, pull, auth, APP_KEY } from "./sync";
 import ApiKeyModal from "./components/ApiKeyModal";
@@ -205,10 +205,14 @@ export default function JobSearchTracker() {
 
   const [errorToast, setErrorToast] = useState("");
   const errorToastTimer = useRef(null);
+  const importUrlConsumed = useRef(false);
 
   // ── LOAD / SAVE ──────────────────────────────────────────────────────────
   function hydrateState(parsed) {
-    setData({ ...defaultData, ...parsed, profile: { ...defaultData.profile, ...(parsed.profile || {}) } });
+    const next = { ...defaultData, ...parsed, profile: { ...defaultData.profile, ...(parsed.profile || {}) } };
+    next.applications = (next.applications || []).map(normalizeApplication);
+    next.starStories = normalizeStarStories(next.starStories);
+    setData(next);
   }
 
   useEffect(() => {
@@ -230,27 +234,6 @@ export default function JobSearchTracker() {
     } catch (e) {}
     hasLoaded.current = true;
 
-    // Bookmarklet import — check for Sales Navigator contact data in URL params
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("importContact") === "1") {
-      const imported = {
-        ...blankContact(),
-        name: params.get("name") || "",
-        role: params.get("role") || "",
-        company: params.get("company") || "",
-        linkedin: params.get("linkedin") || "",
-        companySize: params.get("companySize") || "",
-        industry: params.get("industry") || "",
-        isHiring: params.get("isHiring") === "true",
-        source: "sales_navigator",
-        type: "other",
-        outreachStatus: "none",
-      };
-      setContactModal({ mode: "new", contact: imported });
-      setTab("contacts");
-      window.history.replaceState({}, "", window.location.pathname);
-    }
-
     // Pull from Supabase — if remote is newer, re-hydrate and update localStorage
     pull(APP_KEY, stored, stored._syncAt).then(remote => {
       if (remote === stored) return; // no change (same reference = local wins)
@@ -265,6 +248,88 @@ export default function JobSearchTracker() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(blob));
     push(APP_KEY, blob); // fire-and-forget background sync to Supabase
   }, [data]);
+
+  // Push daily job-search summary for Clarity Command cross-app scoreboard
+  useEffect(() => {
+    if (!hasLoaded.current) return;
+    const todayStr = today();
+    const todayActions = (data.dailyActions || []).filter(a => a.date === todayStr);
+    push('job-search-daily', {
+      date: todayStr,
+      count: todayActions.length,
+      met: todayActions.length >= 5,
+      actions: todayActions,
+      _syncAt: Date.now(),
+    });
+  }, [data.dailyActions]); // run once on mount
+
+  // Extension / bookmarklet URL imports — run after session is ready so modals render
+  useEffect(() => {
+    if (session === null || session === false) return;
+    if (!hasLoaded.current) return;
+    if (importUrlConsumed.current) return;
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("importContact") === "1") {
+      importUrlConsumed.current = true;
+      const sourceParam = params.get("source") || "sales_navigator";
+      const imported = {
+        ...blankContact(),
+        name: params.get("name") || "",
+        role: params.get("role") || "",
+        company: params.get("company") || "",
+        linkedin: params.get("linkedin") || "",
+        companySize: params.get("companySize") || "",
+        industry: params.get("industry") || "",
+        isHiring: params.get("isHiring") === "true",
+        source: sourceParam === "chrome_extension" ? "chrome_extension" : sourceParam,
+        type: "other",
+        outreachStatus: "none",
+      };
+      setContactModal({ mode: "new", contact: imported });
+      setTab("contacts");
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+
+    if (params.get("importJob") === "1") {
+      importUrlConsumed.current = true;
+      const imported = {
+        ...blankApp(),
+        title: params.get("title") || "",
+        company: params.get("company") || "",
+        url: params.get("url") || "",
+        jobDescription: params.get("jobDescription") || "",
+        stage: "Interested",
+      };
+      setAppModal({ mode: "new", app: imported });
+      setTab("pipeline");
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+
+    const hash = window.location.hash || "";
+    if (hash.startsWith("#importJob=")) {
+      try {
+        const json = decodeURIComponent(hash.slice("#importJob=".length));
+        const payload = JSON.parse(json);
+        importUrlConsumed.current = true;
+        const imported = {
+          ...blankApp(),
+          title: payload.title || "",
+          company: payload.company || "",
+          url: payload.url || "",
+          jobDescription: payload.jobDescription || "",
+          stage: "Interested",
+        };
+        setAppModal({ mode: "new", app: imported });
+        setTab("pipeline");
+      } catch (e) {
+        // leave URL for debugging if parse fails
+      }
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [session]);
 
   // ── HELPERS ───────────────────────────────────────────────────────────────
   function showError(msg) {
@@ -294,6 +359,15 @@ export default function JobSearchTracker() {
   }
   function deleteContact(id) { setData(d => ({ ...d, contacts: d.contacts.filter(c => c.id !== id) })); }
   function saveProfile(p) { setData(d => ({ ...d, profile: p })); }
+  function saveStarStories(stories) { setData(d => ({ ...d, starStories: normalizeStarStories(stories) })); }
+
+  function addDailyAction(type, note = "") {
+    const action = { id: generateId(), date: today(), type, note, time: new Date().toTimeString().slice(0, 5) };
+    setData(d => ({ ...d, dailyActions: [...(d.dailyActions || []), action] }));
+  }
+  function removeDailyAction(id) {
+    setData(d => ({ ...d, dailyActions: (d.dailyActions || []).filter(a => a.id !== id) }));
+  }
 
   function profileContext() {
     const p = data.profile;
@@ -325,34 +399,37 @@ export default function JobSearchTracker() {
     const jdText = app.jobDescription || "";
     await handleClaudeCall(async () => {
       const result = await callClaude(
-        `You are an expert interview coach for enterprise sales and payments professionals. Generate 5 targeted interview questions with talking points for Chase Whittaker based on the job description and his background.
+        `You are an expert interview coach for enterprise sales and payments professionals.
+Generate structured interview prep for Chase Whittaker and return ONLY valid JSON.
 
-STRUCTURE — for each question, output exactly this format:
-Q[N]: [Question]
-Talking points:
-• [2-3 bullet points anchored to his real experience]
+Required JSON shape:
+{
+  "companyResearch": "string",
+  "roleAnalysis": "string",
+  "starStories": "string",
+  "questionsToAsk": "string"
+}
 
-QUESTION MIX — include all 4 types:
-1. One behavioral (STAR format — start with "Tell me about a time...")
-2. One role-specific / technical sales (specific to the role's responsibilities)
-3. One company/industry fit (why this company, industry knowledge)
-4. One compensation & expectations (salary, remote, timeline)
-5. One wildcard based on the JD's most important requirement
-
-TALKING POINT RULES — CRITICAL:
-- Every bullet must reference his REAL experience: Authorize.Net merchant onboarding, 98% resolution rate, ~200 merchants/month, exceeded KPI 10-15%, CyberSource enterprise accounts, Select Bankcard fraud/chargeback work
-- Be specific — "at Authorize.Net I..." not vague
-- Plain direct language — no buzzwords like "leveraged" or "spearheaded"
-- Compensation answer: frame as $75K–$95K base, remote-only (cannot drive), available immediately
-- Keep each talking point under 2 sentences — these are quick prep notes, not scripts
-
-Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
-        `${profileContext()}\n\nROLE BEING INTERVIEWED FOR:\nCompany: ${app.company}\nTitle: ${app.title}\nStage: ${app.stage}\n\nJOB DESCRIPTION:\n${jdText || "(no JD saved — generate questions based on the role title and Chase's background)"}\n\nGenerate the 5 interview questions with talking points now.`,
+Rules:
+- Each field must be concise, practical, and specific to the role/JD.
+- Use plain language; no buzzword-heavy phrasing.
+- Ground points in Chase's real background (Authorize.Net, 98% integration resolution, ~200 merchants/month, KPI overachievement, CyberSource enterprise accounts, Select Bankcard risk/chargeback experience).
+- "starStories" should include at least 3 STAR-ready story bullets.
+- "questionsToAsk" should include at least 5 thoughtful interviewer questions.
+- No markdown code fences. Output JSON only.`,
+        `${profileContext()}\n\nROLE BEING INTERVIEWED FOR:\nCompany: ${app.company}\nTitle: ${app.title}\nStage: ${app.stage}\n\nJOB DESCRIPTION:\n${jdText || "(no JD saved — generate structured prep from the role title and Chase's background)"}\n\nReturn the structured prep JSON now.`,
         1500
       );
-      const updated = { ...app, prepNotes: result };
+      let parsed;
+      try {
+        parsed = JSON.parse(result.replace(/```json|```/g, "").trim());
+      } catch {
+        parsed = { roleAnalysis: result };
+      }
+      const prepSections = normalizePrepSections(parsed, "");
+      const updated = { ...app, prepSections, prepNotes: "" };
       saveApp(updated);
-      onResult(result, updated);
+      onResult(prepSections, updated);
     }, onResult);
   }
 
@@ -425,7 +502,10 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
           completedBlocks={completedBlocks} setCompletedBlocks={setCompletedBlocks}
           todayDone={todayDone}
           applications={data.applications} contacts={data.contacts}
-          setAppModal={setAppModal} setPrepModal={setPrepModal} setTab={setTab}
+          dailyActions={data.dailyActions || []}
+          addDailyAction={addDailyAction} removeDailyAction={removeDailyAction}
+          setAppModal={setAppModal} setPrepModal={setPrepModal}
+          setContactModal={setContactModal} setTab={setTab} showError={showError}
         />
       )}
       {tab === "pipeline" && (
@@ -443,6 +523,7 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
           setContactModal={setContactModal} deleteContact={deleteContact}
           saveContact={saveContact} setTab={setTab}
           setAppModal={setAppModal}
+          showError={showError}
         />
       )}
       {tab === "ai" && (
@@ -450,7 +531,7 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
           data={data} apiKey={apiKey} hasApiKey={hasApiKey} profileComplete={profileComplete}
           kitApp={kitApp} setKitApp={setKitApp}
           resumeTab={resumeTab} setResumeTab={setResumeTab}
-          setTab={setTab} saveApp={saveApp}
+          setTab={setTab} saveApp={saveApp} saveStarStories={saveStarStories}
           showError={showError} setShowApiKeyModal={setShowApiKeyModal} setProfileModal={setProfileModal}
         />
       )}
@@ -483,6 +564,7 @@ Output ONLY the 5 Q&A blocks. No intro, no summary, no preamble.`,
         <PrepModal
           app={prepModal.app}
           onRun={runInterviewPrep}
+          onSave={saveApp}
           onClose={() => setPrepModal(null)}
         />
       )}

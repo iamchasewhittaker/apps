@@ -2,6 +2,59 @@
 
 ## [Unreleased]
 
+### Documentation
+- Synced Job Search HQ and portfolio docs with v8.5 shipped scope: `CLAUDE.md`, `README.md`, `AGENTS.md`, `HANDOFF.md`, `PROJECT_INSTRUCTIONS.md`, `MASTER_PROJECT_FRAMEWORK.md`, `MVP-AUDIT.md`, `docs/ARCHITECTURE.md`, `docs/LEARNING.md`, `docs/templates/SESSION_START_JOB_SEARCH_*.md`, root `CLAUDE.md` / `ROADMAP.md` app table; `APP_META` version comment in `src/App.jsx`.
+
+### Chrome extension — Wave 3 #1 (MVP)
+- Added `extension/` — Manifest V3 package: popup actions to import **LinkedIn profile → new contact** and **LinkedIn job → new application** (opens Job Search HQ with `importContact` / `importJob` query or `#importJob=` JSON for long JDs).
+- Added `extension/background.js` with page scrapers injected via `chrome.scripting.executeScript`; optional app origin stored in `chrome.storage.local` (`hqOrigin`) for local dev (`http://localhost:3001`).
+- Added `extension/content-jobhq-bridge.js` — on HQ tab only, recomputes Focus **Action Queue** count and sets toolbar badge via `chrome.action.setBadgeText` (poll + `storage` listener).
+- **App:** URL imports (`importContact`, `importJob`, `#importJob=`) now run **after auth session is ready** so modals appear when logged in; `source=chrome_extension` supported.
+- **ContactModal:** new source chip **Chrome ext**.
+- **ResourcesTab:** short pointer to `extension/README.md`.
+- **Docs:** `CLAUDE.md` file tree lists `extension/` (see also Documentation entry above).
+- Verified: `npm run build` (compiled successfully).
+
+### Pipeline — Wave 2 #6: win/loss analytics
+- Added `getOutcomeAnalytics(applications)` helper in `src/constants.js` to compute closed-outcome totals and percentages for Offer / Rejected / Withdrawn stages.
+- Added Pipeline analytics section in `src/tabs/PipelineTab.jsx` with horizontal bar chart rows for final-stage outcomes.
+- Added lightweight analytics style tokens in `src/constants.js` for consistent dark-theme rendering.
+- Test verification:
+  - `npm run build` (compiled successfully)
+  - `npm test -- --watchAll=false --passWithNoTests` (no tests found, exits 0)
+
+### AI Tools — Wave 2 #5: STAR story bank
+- Added STAR story bank data model in `src/constants.js` (`starStories`) with helper utilities: `blankStarStory()`, `normalizeStarStories()`, and competency presets.
+- Added `saveStarStories()` flow in `src/App.jsx` and threaded it into `AITab`.
+- Added new `⭐ STAR Bank` sub-tab in `src/tabs/AITab.jsx` with CRUD for reusable STAR stories (title, competency, situation, task, action, result, takeaway).
+- Added AI-assisted STAR drafting from resume/profile context using JSON output parsing into story fields.
+- Added copy-ready STAR export per saved story for interview prep reuse.
+- Test verification:
+  - `npm run build` (compiled successfully)
+  - `npm test -- --watchAll=false --passWithNoTests` (no tests found, exits 0)
+
+### Interview Prep — Wave 2 #4: structured prep framework
+- Added sectioned prep model in `src/constants.js`: `prepSections` with four fields (`companyResearch`, `roleAnalysis`, `starStories`, `questionsToAsk`) plus helpers for normalization, content checks, and copy formatting.
+- Added backwards compatibility migration helpers so legacy `prepNotes` values hydrate into the new structured model without data loss.
+- Updated `runInterviewPrep` in `src/App.jsx` to request structured JSON output from Claude and save to `app.prepSections` (legacy `prepNotes` cleared on save).
+- Updated `PrepModal` to render editable sectioned fields with `Save Sections`, `Regenerate`, and `Copy all` actions.
+- Updated prep status checks in `FocusTab` and `AppCard` to use structured prep helpers instead of freeform `prepNotes`.
+- Build verification: `npm run build` (clean compile).
+
+### Contacts — Wave 2 #3: cadence nudges
+- Added `getOutreachCadenceNudge(contact, linkedApp)` helper in `src/constants.js` for day 3/day 7 follow-up recommendations based on `outreachStatus: "sent"` and `outreachDate`.
+- Updated `ContactCard` to show a contextual cadence banner when follow-up is due, including stage-aware message context when a linked app exists.
+- Added **Copy Follow-up Prompt** action to cadence nudges so outreach copy can be generated quickly in AI tools.
+- Threaded `showError` through `App.jsx` → `ContactsTab.jsx` → `ContactCard.jsx` for clipboard failure handling.
+- Build verification: `npm run build` (clean compile).
+
+### FocusTab — Wave 2 #2: Who to message today
+- Added `buildOutreachPriorityList()` in `src/constants.js` to rank contact outreach by status recency, linked active application stage, next-step urgency, hiring signals, and stale touchpoints.
+- Added a new "Who should I message today?" widget in `src/tabs/FocusTab.jsx` with deterministic priority ordering, reason/context metadata, and empty-state guidance.
+- Added quick actions per ranked contact: **Copy Prompt**, **Edit Contact**, and **Open App** (when a linked active application exists).
+- Threaded `setContactModal` and `showError` into FocusTab from `src/App.jsx` to support contact editing and clipboard-failure feedback without new persistent state.
+- Build verification: `npm run build` (clean compile).
+
 ### Docs
 - **`CLAUDE.md`:** CI section — GitHub Actions (`portfolio-web-build.yml`), Node 20, lockfile parity; link to **`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`**
 

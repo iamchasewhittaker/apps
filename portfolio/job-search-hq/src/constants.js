@@ -3,6 +3,19 @@ export const STORAGE_KEY = "chase_job_search_v1";
 export const API_KEY_STORAGE = "chase_anthropic_key";
 export const BACKUP_FOLDER_KEY = "chase_job_search_backup_folder";
 
+// ── DATE HELPER ───────────────────────────────────────────────────────────────
+export const today = () => new Date().toISOString().slice(0, 10);
+
+// ── DAILY ACTION TYPES ────────────────────────────────────────────────────────
+export const JOB_ACTION_TYPES = [
+  { value: "application", label: "Application", icon: "📄" },
+  { value: "outreach",    label: "Outreach",    icon: "📧" },
+  { value: "interview",   label: "Interview",   icon: "🎤" },
+  { value: "prep",        label: "Prep",        icon: "📝" },
+  { value: "learning",    label: "Learning",    icon: "📚" },
+  { value: "other",       label: "Other",       icon: "⚡" },
+];
+
 // ── BACKUP / RESTORE ─────────────────────────────────────────────────────────
 const getBackupBlob = () => {
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -229,6 +242,8 @@ Sandler Sales Training — Certified  |  Visa Bronze Certified  |  HubSpot Sales
 export const defaultData = {
   applications: [],
   contacts: [],
+  starStories: [],
+  dailyActions: [], // { id, date, type, note, time }
   baseResume: RESUME_TEMPLATE_PM,
   profile: {
     name: "Chase Whittaker",
@@ -285,7 +300,12 @@ export async function callClaude(system, userMsg, maxTokens = 1000) {
 }
 
 export function blankApp() {
-  return { id: generateId(), company: "", title: "", stage: "Interested", appliedDate: "", url: "", nextStep: "", nextStepDate: "", nextStepType: "", jobDescription: "", notes: "", prepNotes: "" };
+  return {
+    id: generateId(), company: "", title: "", stage: "Interested", appliedDate: "", url: "",
+    nextStep: "", nextStepDate: "", nextStepType: "", jobDescription: "", notes: "",
+    prepNotes: "", // legacy fallback
+    prepSections: blankPrepSections(),
+  };
 }
 
 export function nextStepUrgency(nextStepDate) {
@@ -297,6 +317,261 @@ export function nextStepUrgency(nextStepDate) {
   if (diff === 0) return { label: "Due Today", color: "#f59e0b", bg: "#451a03" };
   if (diff <= 3) return { label: `In ${diff}d`, color: "#60a5fa", bg: "#1e3a5f" };
   return null;
+}
+
+const ACTIVE_STAGE_PRIORITY = {
+  "Offer": 5,
+  "Final Round": 4,
+  "Interview": 3,
+  "Phone Screen": 2,
+  "Applied": 1,
+  "Interested": 0,
+};
+
+function daysSinceDate(value, now = new Date()) {
+  if (!value) return null;
+  const date = new Date(value + "T00:00:00");
+  if (Number.isNaN(date.getTime())) return null;
+  return Math.round((now - date) / 86400000);
+}
+
+function getPriorityTone(score) {
+  if (score >= 115) return { label: "High", color: "#ef4444", bg: "#450a0a" };
+  if (score >= 85) return { label: "Next", color: "#f59e0b", bg: "#451a03" };
+  return { label: "Queue", color: "#60a5fa", bg: "#1e3a5f" };
+}
+
+export function buildOutreachPriorityList(contacts = [], applications = []) {
+  const activeApps = applications.filter(a => !["Rejected", "Withdrawn"].includes(a.stage));
+  const appsById = new Map(activeApps.map(a => [a.id, a]));
+  const appsByCompany = new Map();
+  activeApps.forEach(app => {
+    const key = (app.company || "").trim().toLowerCase();
+    if (!key) return;
+    const list = appsByCompany.get(key) || [];
+    list.push(app);
+    appsByCompany.set(key, list);
+  });
+
+  return contacts
+    .map(contact => {
+      const status = contact.outreachStatus || "none";
+      const companyKey = (contact.company || "").trim().toLowerCase();
+      const linkedById = (contact.appIds || []).map(id => appsById.get(id)).filter(Boolean);
+      const linkedByCompany = companyKey ? (appsByCompany.get(companyKey) || []) : [];
+      const linkedApps = [...new Map([...linkedById, ...linkedByCompany].map(a => [a.id, a])).values()];
+      const topApp = linkedApps.sort((a, b) => (ACTIVE_STAGE_PRIORITY[b.stage] || 0) - (ACTIVE_STAGE_PRIORITY[a.stage] || 0))[0] || null;
+
+      const daysSinceOutreach = daysSinceDate(contact.outreachDate);
+      const daysSinceLastTouch = daysSinceDate(contact.lastContact || contact.outreachDate);
+      let score = 0;
+      let primaryReason = "";
+
+      if (status === "replied") {
+        score += 130;
+        primaryReason = "They replied - respond today";
+      } else if (status === "meeting") {
+        score += 105;
+        primaryReason = "Meeting in play - keep momentum";
+      } else if (status === "sent") {
+        if (daysSinceOutreach >= 7) {
+          score += 95;
+          primaryReason = `No reply in ${daysSinceOutreach}d - follow up now`;
+        } else if (daysSinceOutreach >= 3) {
+          score += 78;
+          primaryReason = `Sent ${daysSinceOutreach}d ago - plan follow up`;
+        } else {
+          score += 45;
+          primaryReason = "Recently sent - monitor and prep next touch";
+        }
+      } else if (status === "intro_made") {
+        score += 72;
+        primaryReason = "Intro made - send thank-you and next step";
+      } else {
+        score += 40;
+        primaryReason = "No outreach yet - start a warm intro";
+      }
+
+      if (topApp) {
+        score += 18 + (ACTIVE_STAGE_PRIORITY[topApp.stage] || 0) * 7;
+        const appUrgency = nextStepUrgency(topApp.nextStepDate);
+        if (appUrgency?.label === "Overdue") score += 24;
+        else if (appUrgency?.label === "Due Today") score += 20;
+        else if (appUrgency) score += 10;
+      }
+
+      if (contact.isHiring) score += 8;
+      if (daysSinceLastTouch >= 21 && !["replied", "meeting"].includes(status)) score += 12;
+
+      const contextBits = [];
+      if (topApp) contextBits.push(`${topApp.company} - ${topApp.stage}`);
+      if (daysSinceLastTouch != null) contextBits.push(`last touch ${daysSinceLastTouch}d ago`);
+      if (contact.isHiring) contextBits.push("hiring signal");
+
+      const draftPrompt = `Draft a concise LinkedIn outreach message to ${contact.name || "this contact"}${contact.role ? ` (${contact.role})` : ""}${contact.company ? ` at ${contact.company}` : ""}. Goal: ${primaryReason.toLowerCase()}. Keep it to 2-4 sentences, friendly and specific to digital payments experience. End with a low-friction CTA.`;
+      const tone = getPriorityTone(score);
+
+      return {
+        id: contact.id,
+        contact,
+        score,
+        tone,
+        primaryReason,
+        context: contextBits.join(" • "),
+        linkedApp: topApp,
+        draftPrompt,
+      };
+    })
+    .filter(item => item.score >= 50)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      const aName = (a.contact.name || "").toLowerCase();
+      const bName = (b.contact.name || "").toLowerCase();
+      return aName.localeCompare(bName);
+    })
+    .slice(0, 6);
+}
+
+export function getOutreachCadenceNudge(contact, linkedApp = null) {
+  if (!contact || contact.outreachStatus !== "sent" || !contact.outreachDate) return null;
+
+  const sent = new Date(contact.outreachDate + "T00:00:00");
+  if (Number.isNaN(sent.getTime())) return null;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const days = Math.round((today - sent) / 86400000);
+  if (days < 3) return null;
+
+  const appContext = linkedApp
+    ? ` for the ${linkedApp.title} role at ${linkedApp.company}`
+    : (contact.company ? ` at ${contact.company}` : "");
+  const personName = contact.name || "there";
+
+  if (days >= 7) {
+    return {
+      label: "Day 7 follow-up",
+      color: "#ef4444",
+      bg: "#450a0a",
+      message: `No reply in ${days} days - send a stronger second follow-up today.`,
+      prompt: `Draft a concise second LinkedIn follow-up message to ${personName}${appContext}. Tone: warm and confident. Mention this is a brief follow-up, reinforce relevant digital payments implementation experience, and end with one specific CTA. Keep it 2-4 sentences.`,
+    };
+  }
+
+  return {
+    label: "Day 3 follow-up",
+    color: "#f59e0b",
+    bg: "#451a03",
+    message: `Sent ${days} days ago - send a gentle check-in follow-up now.`,
+    prompt: `Draft a short first follow-up message to ${personName}${appContext}. Tone: polite and low-pressure. Reference the previous outreach briefly and ask one light next-step question. Keep it 2-3 sentences.`,
+  };
+}
+
+export const PREP_SECTIONS = [
+  { key: "companyResearch", label: "Company research" },
+  { key: "roleAnalysis", label: "Role analysis" },
+  { key: "starStories", label: "STAR stories" },
+  { key: "questionsToAsk", label: "Questions to ask" },
+];
+
+export function blankPrepSections() {
+  return {
+    companyResearch: "",
+    roleAnalysis: "",
+    starStories: "",
+    questionsToAsk: "",
+  };
+}
+
+export function normalizePrepSections(prepSections, prepNotes = "") {
+  const base = blankPrepSections();
+  if (prepSections && typeof prepSections === "object") {
+    return {
+      companyResearch: prepSections.companyResearch || "",
+      roleAnalysis: prepSections.roleAnalysis || "",
+      starStories: prepSections.starStories || "",
+      questionsToAsk: prepSections.questionsToAsk || "",
+    };
+  }
+  if (typeof prepNotes === "string" && prepNotes.trim()) {
+    return { ...base, roleAnalysis: prepNotes.trim() };
+  }
+  return base;
+}
+
+export function prepSectionsHasContent(prepSections, prepNotes = "") {
+  const normalized = normalizePrepSections(prepSections, prepNotes);
+  return PREP_SECTIONS.some(section => normalized[section.key].trim());
+}
+
+export function prepSectionsToText(prepSections, prepNotes = "") {
+  const normalized = normalizePrepSections(prepSections, prepNotes);
+  return PREP_SECTIONS
+    .filter(section => normalized[section.key].trim())
+    .map(section => `${section.label.toUpperCase()}\n${normalized[section.key].trim()}`)
+    .join("\n\n");
+}
+
+export function normalizeApplication(app = {}) {
+  return {
+    ...app,
+    prepSections: normalizePrepSections(app.prepSections, app.prepNotes),
+  };
+}
+
+export const STAR_COMPETENCIES = [
+  "Problem solving",
+  "Customer communication",
+  "Cross-functional collaboration",
+  "Technical troubleshooting",
+  "Process improvement",
+  "Leadership",
+  "Adaptability",
+  "Ownership",
+];
+
+export function blankStarStory() {
+  return {
+    id: generateId(),
+    title: "",
+    competency: "",
+    situation: "",
+    task: "",
+    action: "",
+    result: "",
+    takeaway: "",
+  };
+}
+
+export function normalizeStarStories(stories = []) {
+  if (!Array.isArray(stories)) return [];
+  return stories.map(story => ({
+    id: story.id || generateId(),
+    title: story.title || "",
+    competency: story.competency || "",
+    situation: story.situation || "",
+    task: story.task || "",
+    action: story.action || "",
+    result: story.result || "",
+    takeaway: story.takeaway || "",
+  }));
+}
+
+export function getOutcomeAnalytics(applications = []) {
+  const closed = applications.filter(app => ["Offer", "Rejected", "Withdrawn"].includes(app.stage));
+  const counts = {
+    Offer: closed.filter(app => app.stage === "Offer").length,
+    Rejected: closed.filter(app => app.stage === "Rejected").length,
+    Withdrawn: closed.filter(app => app.stage === "Withdrawn").length,
+  };
+  const total = closed.length;
+  return {
+    total,
+    counts,
+    rates: {
+      Offer: total ? Math.round((counts.Offer / total) * 100) : 0,
+      Rejected: total ? Math.round((counts.Rejected / total) * 100) : 0,
+      Withdrawn: total ? Math.round((counts.Withdrawn / total) * 100) : 0,
+    },
+  };
 }
 export function blankContact() {
   return {
@@ -578,6 +853,20 @@ export const s = {
   aqItemSub: { fontSize: 11, color: "#6b7280", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   aqActionBtn: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 },
   aqLabel: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
+  outreachSection: { marginBottom: 20 },
+  outreachHeader: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
+  outreachTitle: { fontSize: 15, fontWeight: 700, color: "#f3f4f6" },
+  outreachCountBadge: { fontSize: 11, fontWeight: 700, background: "#3b82f6", color: "#dbeafe", borderRadius: 20, padding: "2px 8px" },
+  outreachEmpty: { background: "#111827", border: "1px solid #1f2937", borderRadius: 10, padding: "12px 16px", fontSize: 13, color: "#9ca3af", textAlign: "center" },
+  outreachList: { display: "flex", flexDirection: "column", gap: 8 },
+  outreachItem: { background: "#161b27", border: "1px solid #1f2937", borderRadius: 10, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 8 },
+  outreachTop: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" },
+  outreachName: { fontSize: 14, fontWeight: 600, color: "#f3f4f6" },
+  outreachReason: { fontSize: 12, color: "#d1d5db" },
+  outreachContext: { fontSize: 11, color: "#6b7280" },
+  outreachActions: { display: "flex", gap: 6, flexWrap: "wrap" },
+  outreachBtnPrimary: { background: "#1e3a5f", border: "none", color: "#60a5fa", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer" },
+  outreachBtnSecondary: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer" },
   // Scenario chips
   scenarioRow: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 },
   scenarioChip: { background: "#1f2937", border: "1px solid #374151", color: "#9ca3af", borderRadius: 20, padding: "4px 12px", fontSize: 12, cursor: "pointer" },
@@ -585,6 +874,16 @@ export const s = {
   // URL paste bar
   urlPasteBar: { display: "flex", gap: 8, marginBottom: 16 },
   urlPasteInput: { flex: 1, background: "#161b27", border: "1px solid #374151", borderRadius: 8, color: "#e5e7eb", fontSize: 13, padding: "8px 12px", fontFamily: "inherit" },
+  // Win/loss analytics
+  outcomeSection: { background: "#161b27", border: "1px solid #1f2937", borderRadius: 12, padding: 14, marginBottom: 16 },
+  outcomeHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" },
+  outcomeTitle: { fontSize: 14, fontWeight: 700, color: "#f3f4f6" },
+  outcomeMeta: { fontSize: 12, color: "#6b7280" },
+  outcomeRow: { display: "grid", gridTemplateColumns: "90px 1fr 52px", gap: 10, alignItems: "center", marginBottom: 8 },
+  outcomeLabel: { fontSize: 12, color: "#d1d5db" },
+  outcomeTrack: { height: 10, borderRadius: 999, background: "#111827", overflow: "hidden" },
+  outcomeFill: { height: "100%", borderRadius: 999 },
+  outcomeValue: { fontSize: 12, color: "#9ca3af", textAlign: "right" },
   // Next step urgency badge on cards
   urgencyBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
 };

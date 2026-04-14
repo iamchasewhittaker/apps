@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Phase 1 complete — full web app built. Ready to deploy + use. |
-| **Next** | 1. Deploy to Vercel (set REACT_APP_SUPABASE_* env vars). 2. Set layoff date in Settings. 3. Phase 2: Job Search HQ daily action counter integration. |
-| **Last touch** | 2026-04-13 — initial build (all three tabs, LDS scripture bank, wife's reminders, conviction system) |
-| **Status** | ✅ Built, needs deploy |
+| **Focus** | Phase 1 complete — deployed live. Set Supabase env vars + layoff date to activate fully. |
+| **Next** | 1. Add Supabase env vars in Vercel dashboard (see HANDOFF Deploy Checklist below). 2. Set layoff date in Settings at clarity-command.vercel.app. 3. Phase 2: see `docs/CLARITY_COMMAND_PHASE2.md`. |
+| **Last touch** | 2026-04-13 — built + deployed to https://clarity-command.vercel.app |
+| **Status** | ✅ Live · localStorage-only mode (no Supabase env vars yet) |
 
 ## Phase Roadmap
 
@@ -22,12 +22,13 @@
 | 5 — iOS native | ⏳ Later | Native Swift version of Command |
 
 ## Deploy Checklist
-- [ ] `npm install` in `portfolio/clarity-command/`
-- [ ] Create `.env` from `.env.example` — use same Supabase project as Wellness/Job Search
-- [ ] `npm run build` passes
-- [ ] `vercel --prod` or connect GitHub → Vercel
-- [ ] Set env vars in Vercel dashboard
-- [ ] Add to root CLAUDE.md portfolio table URL column
+- [x] `npm install` — done
+- [x] `npm run build` passes
+- [x] Deployed → https://clarity-command.vercel.app
+- [x] Added to root CLAUDE.md portfolio table
+- [x] Added to CI workflow (`.github/workflows/portfolio-web-build.yml`)
+- [x] **Supabase env vars set** — `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` on Production. App redeployed with sync active.
+- [ ] **Set layoff date** in Settings at https://clarity-command.vercel.app
 
 ## Notes
 - Scripture and reminder rotation: day-of-year mod length. No seed needed — just changes daily automatically.
