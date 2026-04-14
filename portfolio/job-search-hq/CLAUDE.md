@@ -11,6 +11,8 @@
 - **Entry:** `src/App.jsx`
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, typography, component patterns; do not restate in session prompts.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## File Structure
 ```
 .claude/

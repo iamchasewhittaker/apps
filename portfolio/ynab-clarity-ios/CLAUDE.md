@@ -15,6 +15,8 @@ A YNAB companion app for iOS. Answers 4 questions the YNAB UI answers poorly:
 (assigned) amounts back via `PATCH /v1/budgets/{id}/months/{month}/categories/{cat_id}`.
 Writes require user confirmation and are equivalent to the user manually assigning money in YNAB.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech stack
 
 - Swift 5.0 · SwiftUI · SwiftData · iOS 17.0+

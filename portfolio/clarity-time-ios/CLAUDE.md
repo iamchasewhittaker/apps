@@ -16,6 +16,8 @@
 
 Time sessions (timer + manual logging) and a scripture completion streak — local-first, same patterns as Clarity Check-in / Triage.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).

@@ -2,6 +2,14 @@
 
 > For Claude Code. Read this first before touching any app in this portfolio.
 
+## Mission
+
+> **"For Reese. For Buzz. Forward — no excuses."**
+>
+> Build every app as if your family depends on it — because they do.
+> Work with urgency. Ship with quality. No excuses, no coasting.
+> This is for Reese and Buzz.
+
 ## Portfolio Overview
 
 

@@ -13,6 +13,8 @@ This project lives at `portfolio/spend-clarity/` in the monorepo (`~/Developer/c
 
 Always read **`HANDOFF.md`** and **`LEARNINGS.md`** (this folder) before starting work. Update both when you stop.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Learnings
 Read **`LEARNINGS.md`** at session start for project-specific gotchas.
 After a session where something unexpected happened or was learned, append an entry.

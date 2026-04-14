@@ -11,6 +11,8 @@
 ## Purpose
 A personal knowledge base and bookmark manager with ARC-style sidebar navigation and Chrome-style nested folder hierarchy.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## File Structure
 ```
 package.json              <- CRA scaffold (react-scripts 5.0.1)

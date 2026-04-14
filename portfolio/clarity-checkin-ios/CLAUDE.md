@@ -13,6 +13,8 @@
 ## Purpose
 Morning and evening wellness check-in app with medication tracking, mood logging, pulse mood snapshots, and daily quotes.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech Stack
 SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. No SwiftData, no external dependencies beyond ClarityUI.
 

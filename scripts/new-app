@@ -630,6 +630,8 @@ cat > "$APP_DIR/CLAUDE.md" << CLAUDEEOF
 ## Purpose
 $DESCRIPTION
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech Stack
 $TECH_LABEL
 

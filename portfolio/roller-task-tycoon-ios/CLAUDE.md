@@ -8,6 +8,8 @@ A **native iOS** park-themed checklist branded **RollerTask Tycoon**: **SwiftUI*
 
 **Bundle ID:** `com.chasewhittaker.ParkChecklist` (unchanged from the original Park Checklist app for App Store continuity).
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Behavior rules
 
 1. **Local-first:** Tasks live in SwiftData; cash in `UserDefaults` via `@AppStorage`.

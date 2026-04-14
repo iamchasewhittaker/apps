@@ -12,6 +12,8 @@
 - **Entry:** `src/App.jsx`
 - **Native iOS (Phase 1):** [`../wellness-tracker-ios`](../wellness-tracker-ios) — SwiftUI check-in, **device-local only** (no Supabase; separate UserDefaults keys — see that `CLAUDE.md`)
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## File Structure
 ```
 src/

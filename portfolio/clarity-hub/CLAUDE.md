@@ -16,6 +16,8 @@
 
 A web companion for 5 iOS apps — gives desktop access to the same data via Supabase sync. Each tab mirrors one iOS app's features.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 YNAB and RollerTask were split into standalone apps (see `portfolio/ynab-clarity-web` and `portfolio/rollertask-tycoon-web`).
 
 | Tab | iOS App | Supabase `app_key` |

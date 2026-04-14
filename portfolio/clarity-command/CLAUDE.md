@@ -7,6 +7,7 @@
 - **Storage key:** `chase_command_v1`
 - **URL:** TBD (deploy to Vercel)
 - **Purpose:** Daily accountability hub — morning mission briefing, evening reflection, cross-app scoreboard. Rooted in LDS faith and family urgency.
+- **Mission:** *"For Reese. For Buzz. Forward — no excuses."*
 - **Branding:** Clarity family palette, gold accent (`#c8a84b`), dark background (`#0a0d14`). See [`docs/BRANDING.md`](docs/BRANDING.md).
 - **Entry:** `src/App.jsx`
 

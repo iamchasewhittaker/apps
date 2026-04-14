@@ -13,6 +13,8 @@
 ## Purpose
 App Forge is the portfolio management and audit tool. It tracks the state of all other apps, captures lessons learned, manages ideas, and runs code audits. Think of it as the "mission control" for the whole portfolio.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## File Structure
 ```
 src/

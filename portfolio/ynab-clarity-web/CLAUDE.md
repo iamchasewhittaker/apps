@@ -16,6 +16,8 @@
 
 Standalone YNAB budget dashboard — web companion to `ynab-clarity-ios`. Split out from Clarity Hub for focused access.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech Stack
 
 React (CRA) · localStorage · Supabase sync · inline styles (no CSS modules, no Tailwind) · no TypeScript · no component libraries

@@ -16,6 +16,8 @@
 
 Capacity-based daily triage: pick today’s energy level, add tasks that consume weighted slots, move ideas through a three-stage pipeline, and log wins.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).

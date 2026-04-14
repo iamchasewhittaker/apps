@@ -16,6 +16,8 @@
 
 Dual-scenario budget (baseline vs stretch) plus wants tracking — local-first, same patterns as Clarity Check-in / Triage / Time.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).

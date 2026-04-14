@@ -7,6 +7,8 @@
 
 Provides colors, typography, spacing, and reusable SwiftUI components so all 5 Clarity apps look and behave consistently — and so accessibility requirements are enforced in one place.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Consumers
 
 Portfolio iOS apps under `portfolio/clarity-*-ios/` reference this package from their `.xcodeproj` as `../clarity-ui` (sibling folder under `portfolio/`).

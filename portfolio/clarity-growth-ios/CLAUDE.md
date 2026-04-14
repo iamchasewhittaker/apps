@@ -16,6 +16,8 @@
 
 Track progress across seven growth areas with streak-aware session logging and lightweight history review.
 
+> *"For Reese. For Buzz. Forward — no excuses."*
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).
