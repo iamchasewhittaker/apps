@@ -7,6 +7,9 @@ Paste this into a new chat and say: *"Read CLAUDE.md and HANDOFF.md first."*
 ```
 Read CLAUDE.md and HANDOFF.md first.
 
+Defaults: `CLAUDE.md` defines "update docs" as app + root; this template is lockfile-only — usually **handoff-only** (root `HANDOFF.md` last touch) unless you also changed app code.
+Docs scope override (optional): [handoff-only | default app+root | app-only]
+
 Goal: Fix the GitHub Actions CI failures across all 4 portfolio web apps at ~/Developer/chase.
 
 ## The problem

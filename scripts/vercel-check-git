@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# vercel-check-git — Verify (and fix) git connection for all Vercel-linked apps
+#
+# Usage:
+#   scripts/vercel-check-git           # check all linked apps
+#   scripts/vercel-check-git --fix     # connect any that are missing
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+GIT_URL="https://github.com/iamchasewhittaker/apps.git"
+FIX="${1:-}"
+
+echo "Checking Vercel-Git connections..."
+echo ""
+
+found=0
+for project_json in "$ROOT_DIR"/portfolio/*/.vercel/project.json; do
+  [ -f "$project_json" ] || continue
+  found=1
+
+  app_dir="$(dirname "$(dirname "$project_json")")"
+  app_name="$(basename "$app_dir")"
+
+  output=$(vercel git connect "$GIT_URL" --cwd "$app_dir" --yes 2>&1) || true
+
+  if echo "$output" | grep -qi "already"; then
+    echo "  OK  $app_name"
+  elif [ "$FIX" = "--fix" ]; then
+    echo "  FIX $app_name — connected"
+  else
+    echo "  !!  $app_name — NOT connected (run with --fix)"
+  fi
+done
+
+if [ "$found" -eq 0 ]; then
+  echo "  No Vercel-linked apps found (no .vercel/project.json files)."
+fi
+
+echo ""
+echo "Done."

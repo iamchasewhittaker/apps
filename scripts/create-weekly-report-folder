@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Creates a dated weekly report folder and starter files.
+# Usage:
+#   scripts/create-weekly-report-folder
+#   scripts/create-weekly-report-folder 2026-04-14
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPORT_DATE="${1:-$(date +%F)}"
+REPORT_DIR="${ROOT_DIR}/docs/reports/portfolio-executive-${REPORT_DATE}"
+
+mkdir -p "${REPORT_DIR}"
+
+declare -a FILES=(
+  "WEEKLY_EXECUTIVE_REFRESH.md"
+  "WEEKLY_BOARD_SCORECARD.md"
+  "WEEKLY_SIMPLE_SUMMARY.md"
+)
+
+for file in "${FILES[@]}"; do
+  path="${REPORT_DIR}/${file}"
+  if [[ ! -f "${path}" ]]; then
+    cat > "${path}" <<EOF
+# ${file%.md}
+
+Date: ${REPORT_DATE}
+Status: Draft
+
+EOF
+  fi
+done
+
+echo "Created/verified weekly report pack:"
+echo "  ${REPORT_DIR}"
+echo
+echo "Files:"
+for file in "${FILES[@]}"; do
+  echo "  - ${REPORT_DIR}/${file}"
+done

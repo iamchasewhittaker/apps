@@ -1,7 +1,7 @@
 // Storage
 export const STORE = "chase_knowledge_base_v1";
 export const STORE_SEED_VERSION = "chase_knowledge_base_seed_version";
-export const SEED_VERSION = 5;
+export const SEED_VERSION = 7;
 export const load = () => {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORE));
@@ -40,6 +40,9 @@ const CATEGORY_TO_FOLDER = {
   "Scripting": "f_scripting", "Python": "f_python",
   "Design": "f_design", "Idea Generation": "f_idea_gen",
   "My Projects": "f_my_projects",
+  "Daily Prompts": "f_my_projects_prompts",
+  "Theme & Colors": "f_my_projects_theme",
+  "Development Details": "f_my_projects_dev",
 };
 export const categoryToFolderId = (cat) => CATEGORY_TO_FOLDER[cat] || "f_other";
 
@@ -98,6 +101,11 @@ export const SEED_FOLDERS = [
   // Creative children
   { id: "f_design", name: "Design", parentId: "f_creative", order: 0 },
   { id: "f_idea_gen", name: "Idea Generation", parentId: "f_creative", order: 1 },
+
+  // My Projects children
+  { id: "f_my_projects_prompts", name: "Daily Prompts", parentId: "f_my_projects", order: 0 },
+  { id: "f_my_projects_theme", name: "Theme & Colors", parentId: "f_my_projects", order: 1 },
+  { id: "f_my_projects_dev", name: "Development Details", parentId: "f_my_projects", order: 2 },
 ];
 
 // Seed bookmarks — folderId links each bookmark to its folder in SEED_FOLDERS
@@ -423,6 +431,52 @@ export const SEED = [
   { id: 258, title: "IDEO Design Thinking", url: "https://designthinking.ideo.com", category: "Idea Generation", folderId: "f_idea_gen", description: "Human-centered ideation framework: Empathize, Define, Ideate, Prototype, Test" },
   { id: 259, title: "Taskade", url: "https://www.taskade.com", category: "Idea Generation", folderId: "f_idea_gen", description: "AI workspace where agents brainstorm ideas and route them into project boards" },
   { id: 260, title: "Google Trends", url: "https://trends.google.com", category: "Idea Generation", folderId: "f_idea_gen", description: "Free tool to explore search interest over time — validate idea demand" },
+
+  // --- My Projects additions (261–264) ---
+  { id: 261, title: "Clarity Command", url: "https://clarity-command.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Daily accountability hub focused on faith, family, and high-priority execution" },
+  { id: 262, title: "Clarity Hub", url: "https://clarity-hub-lilac.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Unified hub for Check-in, Triage, Time, Budget, and Growth workflows" },
+  { id: 263, title: "YNAB Clarity Web", url: "https://ynab-clarity-web.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Standalone YNAB dashboard split out from Clarity Hub for budgeting focus" },
+  { id: 264, title: "RollerTask Tycoon Web", url: "https://rollertask-tycoon-web.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Standalone tasks-and-points web tracker split out from Clarity Hub" },
+
+  // --- Daily Prompts (265–267) ---
+  {
+    id: 265,
+    title: "Daily Email Triage Prompt",
+    url: "https://mail.google.com",
+    category: "Daily Prompts",
+    folderId: "f_my_projects_prompts",
+    description: "Use this prompt to clear inbox priorities fast and capture follow-ups.",
+    notes: "You are my executive email assistant. Review today's inbox and produce: 1) critical replies to send today, 2) quick wins under 2 minutes, 3) messages to defer with a proposed reply date, and 4) draft replies for the top 3 priority emails in my tone."
+  },
+  {
+    id: 266,
+    title: "Daily Planning Prompt",
+    url: "https://app.sunsama.com",
+    category: "Daily Prompts",
+    folderId: "f_my_projects_prompts",
+    description: "Use this prompt to create a realistic day plan with focus blocks.",
+    notes: "Act as my planning coach. Given my tasks, calendar, and current energy level, build a realistic day plan with: top 3 outcomes, time-boxed focus blocks, admin block, communication block, and one buffer block. Flag any overload and suggest what to cut."
+  },
+  {
+    id: 267,
+    title: "End-of-Day Review Prompt",
+    url: "https://linear.app",
+    category: "Daily Prompts",
+    folderId: "f_my_projects_prompts",
+    description: "Use this prompt to close the day, capture wins, and prep tomorrow.",
+    notes: "Run an end-of-day review using my completed and open tasks. Return: wins, blockers, carry-overs, and tomorrow's first task. Then write a short standup-style summary I can paste into my planning notes."
+  },
+
+  // --- Theme & Colors (268–270) ---
+  { id: 268, title: "Portfolio App Branding Template", url: "https://github.com/iamchasewhittaker/apps/blob/main/docs/templates/PORTFOLIO_APP_BRANDING.md", category: "Theme & Colors", folderId: "f_my_projects_theme", description: "Canonical template for app visual identity, palette, and brand decisions" },
+  { id: 269, title: "Clarity iOS App Icon Spec", url: "https://github.com/iamchasewhittaker/apps/blob/main/docs/design/CLARITY_IOS_APP_ICON_SPEC.md", category: "Theme & Colors", folderId: "f_my_projects_theme", description: "Shared icon geometry and visual system used across Clarity iOS apps" },
+  { id: 270, title: "Wellness Branding Reference", url: "https://github.com/iamchasewhittaker/apps/blob/main/portfolio/wellness-tracker/docs/BRANDING.md", category: "Theme & Colors", folderId: "f_my_projects_theme", description: "Reference implementation of Clarity palette and product-level design guidance" },
+  { id: 274, title: "Portfolio App Logo Template", url: "https://github.com/iamchasewhittaker/apps/blob/main/docs/templates/PORTFOLIO_APP_LOGO.md", category: "Theme & Colors", folderId: "f_my_projects_theme", description: "Standard text-based logo format for all apps: SVG templates, accent color palette, sizing guide, and PNG generation instructions" },
+
+  // --- Development Details (271–273) ---
+  { id: 271, title: "Portfolio HANDOFF", url: "https://github.com/iamchasewhittaker/apps/blob/main/HANDOFF.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Current development focus, next steps, and session continuity notes" },
+  { id: 272, title: "Portfolio Root ROADMAP", url: "https://github.com/iamchasewhittaker/apps/blob/main/ROADMAP.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Cross-app roadmap and priority queue for planning what ships next" },
+  { id: 273, title: "Product Build Framework", url: "https://github.com/iamchasewhittaker/apps/blob/main/PRODUCT_BUILD_FRAMEWORK.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Standard product build phases used to define and ship apps consistently" },
 ];
 
 // Inline styles (replaces Tailwind classes)

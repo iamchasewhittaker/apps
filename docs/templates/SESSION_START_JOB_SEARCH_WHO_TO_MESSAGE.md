@@ -9,6 +9,9 @@ Paste this into a new chat and say: *"Read CLAUDE.md and HANDOFF.md first."*
 ```
 Read CLAUDE.md and HANDOFF.md first, then portfolio/job-search-hq/CLAUDE.md and portfolio/job-search-hq/HANDOFF.md.
 
+Defaults: use `CLAUDE.md` — "update docs" = app + root unless overridden below.
+Docs scope override (optional): [default app+root | app-only | handoff-only]
+
 Goal: Build the "Who should I message today?" feature — Wave 2 item #2 — at portfolio/job-search-hq/.
 
 ## What to build

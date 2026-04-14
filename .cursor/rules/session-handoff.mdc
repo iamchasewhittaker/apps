@@ -10,5 +10,6 @@ When working in `~/Developer/chase` (or this repo):
 1. **End of session or switch agent:** Update **State** (and **Notes** if useful) in **`HANDOFF.md`** at repo root.
 2. **New chat:** Use **`docs/templates/SESSION_START_MONOREPO.md`** or **`docs/templates/SESSION_START_APP_CHANGE.md`**; fill the bracket placeholders; paste into the new chat; say *read `CLAUDE.md` and `HANDOFF.md` first*.
 3. **Shipped work:** **Linear** and **git commits** are the source of truth for what shipped; **`HANDOFF.md`** is the living “where we are now” pointer.
+4. **Docs default phrase:** when Chase says *update docs*, default to app + root docs scope unless explicitly overridden in the prompt/template.
 
 Do not treat `HANDOFF.md` as a substitute for issues/commits for completed work — use it for **resume context**.

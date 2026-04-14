@@ -9,6 +9,9 @@ Paste this into a new chat and say: *"Read CLAUDE.md and HANDOFF.md first."*
 ```
 Read CLAUDE.md and HANDOFF.md first, then portfolio/job-search-hq/CLAUDE.md and portfolio/job-search-hq/HANDOFF.md.
 
+Defaults: use `CLAUDE.md` — "update docs" = app + root unless overridden below.
+Docs scope override (optional): [default app+root | app-only | handoff-only]
+
 Goal: Continue Job Search HQ at portfolio/job-search-hq/.
 
 Current state: v8.5 — Wave 2 complete (#1–#6). Wave 3 #1 shipped: Chrome MV3 extension in `extension/` (see `extension/README.md`) — LinkedIn profile/job import, post-login URL/hash import on the web app, Action Queue toolbar badge.
