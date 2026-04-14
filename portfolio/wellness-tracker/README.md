@@ -12,6 +12,16 @@ npm start              # http://localhost:3000
 npm run build
 ```
 
+## Shared login configuration
+
+Use canonical-host auth settings in `.env`:
+
+- `REACT_APP_AUTH_CANONICAL_ORIGIN=https://apps.chasewhittaker.com`
+- `REACT_APP_AUTH_APP_PATH=/wellness`
+- `REACT_APP_SUPABASE_STORAGE_KEY=chase_portfolio_auth_token`
+
+Supabase should allow redirects for the canonical app URL and local dev URL.
+
 ## Monorepo
 
 Path from repo root: **`portfolio/wellness-tracker`**. Copy of shared sync lives in `src/shared/sync.js` — keep aligned with `portfolio/shared/sync.js`.

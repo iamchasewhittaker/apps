@@ -33,6 +33,8 @@ build/
 .env
 .env.local
 .env.*.local
+.env.supabase
+.env.linear
 
 # OS & tooling
 .DS_Store

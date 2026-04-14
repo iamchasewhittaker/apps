@@ -36,6 +36,8 @@
 
 **Migration tracking:** [MONOREPO_MIGRATION.md](MONOREPO_MIGRATION.md) · [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) · **Terms:** [docs/GLOSSARY.md](docs/GLOSSARY.md) · **Local legacy (not in git):** [docs/LEGACY_LOCAL_MIRRORS.md](docs/LEGACY_LOCAL_MIRRORS.md)
 
+**Portfolio governance:** [Linear — Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51) · **Governance docs:** [docs/governance/](docs/governance/) · **Health check:** `scripts/portfolio-health-check` · **Report templates:** [docs/templates/PORTFOLIO_EXECUTIVE_REPORT_PROMPT.md](docs/templates/PORTFOLIO_EXECUTIVE_REPORT_PROMPT.md)
+
 **Multi-session / multi-agent:** Read **[HANDOFF.md](HANDOFF.md)** when continuing work or opening a **new** chat; copy a starter from [docs/templates/](docs/templates/).
 
 - **End / switch agent:** Update **State** (and **Notes**) in `HANDOFF.md`.

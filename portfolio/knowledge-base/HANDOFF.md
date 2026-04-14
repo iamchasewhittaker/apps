@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v2.0 |
+| **Version** | v2.0.2 |
 | **Branch** | `main` |
 | **URL** | knowledge-base-beta-five.vercel.app |
 | **Storage key** | `chase_knowledge_base_v1` — blob: `{ bookmarks, folders, favorites, categoryOrder }` |
-| **Focus** | Post-v2.0 improvements — import/export, favicons, drag-and-drop |
-| **Next** | Import / export JSON (backup + round-trip). Then favicons next to each bookmark row. |
+| **Focus** | My Projects sections refresh — missing active project links added; new nested sections for Daily Prompts, Theme & Colors, and Development Details |
+| **Next** | Deploy v2.0.2 update, then continue v2.1 import/export and favicon work |
 | **Blockers** | None |
-| **Last touch** | 2026-04-13 — Theme alignment: portfolio-wide BASE token sweep across `constants.js`, `App.jsx`, `Sidebar.jsx`, `FolderTree.jsx`, `BookmarkList.jsx`, `ErrorBoundary.jsx` (`#09090b`/`#0d0d0f` → `#0f1117`, `#18181b` → `#161b27`, `#27272a`/`#1c1c1f` → `#1f2937`, `#a1a1aa` → `#6b7280`, `#f4f4f5` → `#f3f4f6`); DM Sans font added; v2.0 ARC sidebar + Chrome folder redesign shipped |
+| **Last touch** | 2026-04-14 — `SEED_VERSION` 6: added My Projects child folders (`Daily Prompts`, `Theme & Colors`, `Development Details`), added missing active projects (`Clarity Command`, `Clarity Hub`, `YNAB Clarity Web`, `RollerTask Tycoon Web`), and seeded daily prompt/theme/dev reference bookmarks |
 
 ---
 
@@ -59,7 +59,7 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 
 | File | Purpose |
 |------|---------|
-| `src/constants.js` | SEED (260 bookmarks), SEED_FOLDERS, `s` styles, `css` string, storage helpers |
+| `src/constants.js` | SEED (273 bookmarks), SEED_FOLDERS, `s` styles, `css` string, storage helpers |
 | `src/App.jsx` | Layout shell: state, CRUD, folder actions, modals |
 | `src/Sidebar.jsx` | Sidebar: search, smart folders, favorites, folder tree, new buttons |
 | `src/FolderTree.jsx` | Recursive folder tree renderer |
@@ -69,7 +69,7 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 
 ## Critical gotchas
 
-- `SEED_VERSION` is **5** — bump + add entries to `SEED`/`SEED_FOLDERS` when adding seed data
+- `SEED_VERSION` is **6** — bump + add entries to `SEED`/`SEED_FOLDERS` when adding seed data
 - `folderId` is canonical; `category` is display fallback only — always set both when moving bookmarks
 - Seed folder IDs (`f_claude`, `f_chatgpt`, etc.) are stored in user localStorage — never rename
 - Smart folder IDs are `"__important__"` and `"__recent__"` (double underscores, not real folders)

@@ -12,10 +12,10 @@
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 3 — stage-specific prep templates + interview depth |
-| **Next** | See `ROADMAP.md` Wave 3 (next: stage-specific prep templates) |
-| **Blockers** | None |
-| **Last touch** | 2026-04-13 — Wave 3 #1 shipped (Chrome MV3 `extension/`). Docs parity pass: app + root `CLAUDE.md`/`ROADMAP.md`, README, AGENTS, templates, ARCHITECTURE, PROJECT_INSTRUCTIONS, MASTER/MVP audits, `APP_META` 8.5. Verified `npm run build`. |
+| **Focus** | Wave 3 #2 execution kickoff — stage-specific prep templates |
+| **Next** | Ship Wave 3 in this order: prep templates → debrief log → velocity dashboard → mock interview mode |
+| **Blockers** | None (code-level). External dependency: LinkedIn DOM stability for extension capture. |
+| **Last touch** | 2026-04-13 — Readiness checkpoint complete: app is go for current v8.5 scope; ops dependencies verified in docs (OTP template, Vercel root/env, Node 20 CI lockfile discipline). |
 
 ---
 
@@ -42,6 +42,19 @@ Verify: cd portfolio/job-search-hq && npm start (port 3001)
 
 Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root HANDOFF State when done.
 ```
+
+---
+
+## Readiness checkpoint (2026-04-13)
+
+- **Go/No-Go:** Go for the currently shipped v8.5 scope.
+- **Waiting on:** no active code blockers.
+- **Operational checks to keep green:**
+  - Supabase email template includes `{{ .Token }}` for OTP code flow (documented in `.env.example` / `CLAUDE.md`).
+  - Vercel root directory is `portfolio/job-search-hq` (documented in `README.md`).
+  - `REACT_APP_SUPABASE_URL` and `REACT_APP_SUPABASE_ANON_KEY` remain configured in Vercel env (required by `.env.example` + deploy docs).
+  - CI path remains Node 20 lockfile-compatible (`.github/workflows/portfolio-web-build.yml` uses Node 20, `npm ci`, `npm run build`).
+  - Local readiness check: `npm run build` succeeds (warning only: unused `handleQuickAdd` in `src/tabs/FocusTab.jsx`).
 
 ---
 

@@ -57,6 +57,12 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 ## v2.0.1 — Shipped
 - [x] **Theme alignment** — portfolio-wide BASE token sweep (`#0f1117` bg, `#161b27` surface, `#1f2937` border, `#6b7280` muted, `#f3f4f6` text); DM Sans font (2026-04-13)
 
+## v2.0.2 — Shipped
+- [x] **My Projects refresh** — added missing active projects (Clarity Command, Clarity Hub, YNAB Clarity Web, RollerTask Tycoon Web)
+- [x] **My Projects sub-sections** — added nested folders for Daily Prompts, Theme & Colors, and Development Details
+- [x] **Operational prompt library** — added daily email/planning/end-of-day prompt bookmarks with copy-ready prompt text in notes
+- [x] **SEED_VERSION 6 migration** — new folders/bookmarks auto-merge for existing users
+
 ## v2.1 — Next
 - [ ] **Deploy v2.0 to Vercel** — push and verify live URL works with migrated localStorage data
 - [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)

@@ -30,6 +30,37 @@
 - [ ] Mock interview mode in AI Tools tab
 - [ ] Application velocity dashboard (weekly targets + trend line)
 
+## Wave 3 — Execution order (current recommendation)
+
+1. Stage-specific prep templates (next ship target)
+2. Post-interview debrief log
+3. Application velocity dashboard
+4. Mock interview mode
+
+### Wave 3 #2 scope — stage-specific prep templates
+
+- Add a stage preset selector in prep flows: `phone_screen`, `interview`, `final_round`.
+- Generate different question emphasis and prep prompts per stage.
+- Keep current structured sections (`companyResearch`, `roleAnalysis`, `starStories`, `questionsToAsk`) so existing data remains compatible.
+- Ensure legacy `prepNotes` migration behavior remains unchanged.
+- Ship with manual smoke validation: App card prep button → modal generate/regenerate → save sections → Focus/Pipeline indicators.
+
+### Follow-on sequencing rationale
+
+- **Debrief log after templates:** capture outcome quality per stage while the prep context is still fresh.
+- **Velocity dashboard after debrief log:** use both application stage flow and debrief signal quality for better trend visibility.
+- **Mock interview mode last:** depends on stabilized stage templates + debrief data to generate higher-quality simulations.
+
+## Release readiness + dependencies
+
+- App status: **go for current v8.5 shipped scope** (no code-level blockers documented).
+- Keep these dependencies healthy:
+  - Supabase email OTP template includes `{{ .Token }}`.
+  - Vercel root directory remains `portfolio/job-search-hq`.
+  - Vercel env vars include `REACT_APP_SUPABASE_URL` and `REACT_APP_SUPABASE_ANON_KEY`.
+  - Lockfile remains Node 20 compatible for CI (`npm ci` + `npm run build`).
+  - Chrome extension capture remains subject to LinkedIn DOM changes (known external dependency).
+
 ## Wave 4 — Ideas
 
 - [ ] Outreach cadence timeline per contact (visual touchpoint history)

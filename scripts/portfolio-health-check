@@ -1,0 +1,318 @@
+#!/bin/zsh
+# portfolio-health-check — collect quantitative portfolio health data
+#
+# Usage:
+#   portfolio-health-check          (full report)
+#   portfolio-health-check --fast   (quick summary — skip builds and audits)
+#
+# What it checks:
+#   - LOC per app
+#   - Largest files per app (top 10)
+#   - Commits per app in last 30 days
+#   - npm audit summary per web app
+#   - Build pass/fail per web app (skipped in --fast mode)
+#   - Live URL HTTP status for deployed apps
+#   - Shared file drift detection
+#   - Doc freshness (HANDOFF.md, CHANGELOG.md last modified)
+#   - Secrets scan
+
+set -e
+
+# --- Config ---
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PORTFOLIO="$REPO_ROOT/portfolio"
+SHARED="$PORTFOLIO/shared"
+
+BOLD=$'\033[1m'
+DIM=$'\033[2m'
+GREEN=$'\033[0;32m'
+RED=$'\033[0;31m'
+YELLOW=$'\033[0;33m'
+CYAN=$'\033[0;36m'
+NC=$'\033[0m'
+
+FAST=false
+for arg in "$@"; do
+  case "$arg" in
+    --fast) FAST=true ;;
+  esac
+done
+
+# --- Web apps with live URLs (parallel arrays for shell compat) ---
+WEB_APP_NAMES=(wellness-tracker job-search-hq app-forge clarity-hub clarity-command ynab-clarity-web rollertask-tycoon-web knowledge-base)
+WEB_APP_URLS=(
+  "https://wellnes-tracker.vercel.app"
+  "https://job-search-hq.vercel.app"
+  "https://app-forge-fawn.vercel.app"
+  "https://clarity-hub-lilac.vercel.app"
+  "https://clarity-command.vercel.app"
+  "https://ynab-clarity-web.vercel.app"
+  "https://rollertask-tycoon-web.vercel.app"
+  "https://knowledge-base-beta-five.vercel.app"
+)
+
+# --- Shared files to check for drift ---
+SHARED_FILES=(sync.js)
+
+# --- Skip list ---
+SKIP_DIRS="shared archive clarity-logo-mockups-assets"
+
+# --- Counters ---
+TOTAL_LOC=0
+TOTAL_APPS=0
+DRIFT_COUNT=0
+BUILD_PASS=0
+BUILD_FAIL=0
+URL_OK=0
+URL_FAIL=0
+AUDIT_CLEAN=0
+AUDIT_WARN=0
+
+# ============================================================
+header() {
+  echo ""
+  echo "${BOLD}${CYAN}=== $1 ===${NC}"
+  echo ""
+}
+
+ok()   { echo "  ${GREEN}✓${NC} $1"; }
+warn() { echo "  ${YELLOW}!${NC} $1"; }
+fail() { echo "  ${RED}✗${NC} $1"; }
+dim()  { echo "  ${DIM}$1${NC}"; }
+
+should_skip() {
+  local app="$1"
+  for s in ${=SKIP_DIRS}; do
+    [ "$app" = "$s" ] && return 0
+  done
+  return 1
+}
+
+# ============================================================
+# 1. LOC per app
+# ============================================================
+header "Lines of Code per App"
+
+for dir in "$PORTFOLIO"/*/; do
+  app=$(basename "$dir")
+  should_skip "$app" && continue
+
+  loc=0
+  if [ -d "$dir/src" ]; then
+    loc=$(find "$dir/src" -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.swift" -o -name "*.py" \) -exec cat {} + 2>/dev/null | wc -l | tr -d ' ')
+  else
+    # iOS apps — find Swift files anywhere in app dir
+    swift_count=$(find "$dir" -maxdepth 1 -type d -name "*.xcodeproj" 2>/dev/null | wc -l | tr -d ' ')
+    if [ "$swift_count" -gt 0 ]; then
+      loc=$(find "$dir" -type f -name "*.swift" -not -path "*/build/*" -exec cat {} + 2>/dev/null | wc -l | tr -d ' ')
+    fi
+  fi
+
+  TOTAL_LOC=$((TOTAL_LOC + loc))
+  TOTAL_APPS=$((TOTAL_APPS + 1))
+  printf "  %-30s %6s lines\n" "$app" "$loc"
+done
+
+echo ""
+echo "  ${BOLD}Total: $TOTAL_LOC lines across $TOTAL_APPS apps${NC}"
+
+# ============================================================
+# 2. Largest files (top 10)
+# ============================================================
+header "Largest Files (Top 10 across portfolio)"
+
+find "$PORTFOLIO" -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.swift" -o -name "*.py" \) \
+  -not -path "*/node_modules/*" \
+  -not -path "*/build/*" \
+  -not -path "*/archive/*" \
+  -not -path "*/.git/*" \
+  -exec wc -l {} + 2>/dev/null | sort -rn | head -11 | tail -10 | while read lines file; do
+    rel="${file#$REPO_ROOT/}"
+    printf "  %6s lines  %s\n" "$lines" "$rel"
+done
+
+# ============================================================
+# 3. Commits per app (last 30 days)
+# ============================================================
+header "Commits per App (last 30 days)"
+
+for dir in "$PORTFOLIO"/*/; do
+  app=$(basename "$dir")
+  should_skip "$app" && continue
+
+  count=$(cd "$REPO_ROOT" && git log --since="30 days ago" --oneline -- "portfolio/$app/" 2>/dev/null | wc -l | tr -d ' ')
+
+  if [ "$count" -gt 0 ]; then
+    printf "  %-30s %3s commits\n" "$app" "$count"
+  else
+    printf "  ${DIM}%-30s %3s commits${NC}\n" "$app" "$count"
+  fi
+done
+
+# ============================================================
+# 4. Live URL status
+# ============================================================
+header "Live URL Status"
+
+for i in {1..${#WEB_APP_NAMES[@]}}; do
+  app="${WEB_APP_NAMES[$i]}"
+  url="${WEB_APP_URLS[$i]}"
+  http_code=$(curl -o /dev/null -s -w "%{http_code}" --max-time 10 "$url" 2>/dev/null || echo "000")
+
+  if [ "$http_code" = "200" ]; then
+    ok "$app → $http_code ($url)"
+    URL_OK=$((URL_OK + 1))
+  else
+    fail "$app → $http_code ($url)"
+    URL_FAIL=$((URL_FAIL + 1))
+  fi
+done
+
+# ============================================================
+# 5. Shared file drift detection
+# ============================================================
+header "Shared File Drift Detection"
+
+for shared_file in "${SHARED_FILES[@]}"; do
+  canonical="$SHARED/$shared_file"
+  if [ ! -f "$canonical" ]; then
+    warn "Canonical file missing: $canonical"
+    continue
+  fi
+
+  for dir in "$PORTFOLIO"/*/; do
+    app=$(basename "$dir")
+    should_skip "$app" && continue
+
+    app_copy="$dir/src/shared/$shared_file"
+    if [ -f "$app_copy" ]; then
+      if diff -q "$canonical" "$app_copy" > /dev/null 2>&1; then
+        ok "$app/$shared_file — matches canonical"
+      else
+        fail "$app/$shared_file — DRIFTED from canonical"
+        DRIFT_COUNT=$((DRIFT_COUNT + 1))
+      fi
+    fi
+  done
+done
+
+if [ "$DRIFT_COUNT" -eq 0 ]; then
+  ok "No drift detected in checked shared files"
+fi
+
+# ============================================================
+# 6. npm audit (web apps, skipped in --fast)
+# ============================================================
+if [ "$FAST" = false ]; then
+  header "npm Audit Summary"
+
+  for app in "${WEB_APP_NAMES[@]}"; do
+    app_dir="$PORTFOLIO/$app"
+    if [ -f "$app_dir/package.json" ] && [ -f "$app_dir/package-lock.json" ]; then
+      audit_output=$(cd "$app_dir" && npm audit --json 2>/dev/null || true)
+      criticals=$(echo "$audit_output" | grep -o '"critical":[0-9]*' | head -1 | cut -d: -f2)
+      highs=$(echo "$audit_output" | grep -o '"high":[0-9]*' | head -1 | cut -d: -f2)
+      criticals=${criticals:-0}
+      highs=${highs:-0}
+
+      if [ "$criticals" -eq 0 ] && [ "$highs" -eq 0 ]; then
+        ok "$app — clean (0 critical, 0 high)"
+        AUDIT_CLEAN=$((AUDIT_CLEAN + 1))
+      else
+        warn "$app — $criticals critical, $highs high"
+        AUDIT_WARN=$((AUDIT_WARN + 1))
+      fi
+    fi
+  done
+else
+  header "npm Audit Summary"
+  dim "Skipped in --fast mode"
+fi
+
+# ============================================================
+# 7. Build pass/fail (web apps, skipped in --fast)
+# ============================================================
+if [ "$FAST" = false ]; then
+  header "Build Status"
+
+  for app in "${WEB_APP_NAMES[@]}"; do
+    app_dir="$PORTFOLIO/$app"
+    if [ -f "$app_dir/package.json" ]; then
+      if (cd "$app_dir" && npm ci --silent 2>/dev/null && CI=true npm run build 2>/dev/null); then
+        ok "$app — build passed"
+        BUILD_PASS=$((BUILD_PASS + 1))
+      else
+        fail "$app — build FAILED"
+        BUILD_FAIL=$((BUILD_FAIL + 1))
+      fi
+    fi
+  done
+else
+  header "Build Status"
+  dim "Skipped in --fast mode"
+fi
+
+# ============================================================
+# 8. Doc freshness
+# ============================================================
+header "Doc Freshness (HANDOFF.md / CHANGELOG.md)"
+
+for dir in "$PORTFOLIO"/*/; do
+  app=$(basename "$dir")
+  should_skip "$app" && continue
+
+  handoff="$dir/HANDOFF.md"
+  changelog="$dir/CHANGELOG.md"
+
+  handoff_date="—"
+  changelog_date="—"
+
+  if [ -f "$handoff" ]; then
+    handoff_date=$(cd "$REPO_ROOT" && git log -1 --format="%as" -- "portfolio/$app/HANDOFF.md" 2>/dev/null || echo "untracked")
+    [ -z "$handoff_date" ] && handoff_date="untracked"
+  fi
+  if [ -f "$changelog" ]; then
+    changelog_date=$(cd "$REPO_ROOT" && git log -1 --format="%as" -- "portfolio/$app/CHANGELOG.md" 2>/dev/null || echo "untracked")
+    [ -z "$changelog_date" ] && changelog_date="untracked"
+  fi
+
+  printf "  %-25s HANDOFF: %-12s  CHANGELOG: %-12s\n" "$app" "$handoff_date" "$changelog_date"
+done
+
+# ============================================================
+# 9. Secrets scan
+# ============================================================
+header "Secrets Scan"
+
+secrets_found=0
+grep -rn 'sk-[a-zA-Z0-9]\{20,\}\|sk_live_\|pk_live_\|SUPABASE_SERVICE_ROLE\|service_role' \
+  "$PORTFOLIO" \
+  --include="*.js" --include="*.jsx" --include="*.swift" --include="*.py" \
+  --exclude-dir=node_modules --exclude-dir=build --exclude-dir=archive \
+  2>/dev/null | while IFS= read -r line; do
+    fail "$line"
+    secrets_found=$((secrets_found + 1))
+done
+
+if [ "$secrets_found" -eq 0 ]; then
+  ok "No hardcoded secrets found in source files"
+fi
+
+# ============================================================
+# Summary
+# ============================================================
+header "Summary"
+
+echo "  ${BOLD}Portfolio:${NC} $TOTAL_APPS apps, $TOTAL_LOC total LOC"
+echo "  ${BOLD}URLs:${NC} $URL_OK ok, $URL_FAIL failed"
+echo "  ${BOLD}Shared drift:${NC} $DRIFT_COUNT files drifted"
+echo "  ${BOLD}Secrets:${NC} $secrets_found found"
+
+if [ "$FAST" = false ]; then
+  echo "  ${BOLD}Builds:${NC} $BUILD_PASS passed, $BUILD_FAIL failed"
+  echo "  ${BOLD}Audits:${NC} $AUDIT_CLEAN clean, $AUDIT_WARN with warnings"
+fi
+
+echo ""
+echo "  ${DIM}Run date: $(date '+%Y-%m-%d %H:%M')${NC}"
+echo "  ${DIM}Mode: $([ "$FAST" = true ] && echo "fast" || echo "full")${NC}"

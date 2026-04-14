@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vibecoder Memory Handoff</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <p><a href="./index.html">Back to index</a></p>
+    <h1>Vibecoder Improvement: Memory, CLAUDE.md, Handoff</h1>
+    <p class="subtle">How to preserve speed while reducing drift and rework.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>What to update in CLAUDE.md</h3>
+        <ul>
+          <li>Version, URL, storage keys, status</li>
+          <li>Current architecture and commands</li>
+          <li>Critical constraints and security notes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>What not to update constantly</h3>
+        <ul>
+          <li>Session-by-session logs</li>
+          <li>Duplicate changelog narrative</li>
+          <li>Speculative notes without owners</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Handoff standard</h3>
+        <ul>
+          <li>Single authoritative State table</li>
+          <li>Clear Next and blockers</li>
+          <li>No competing stale prompt blocks</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <h3>Recommendation</h3>
+      <ul>
+        <li>Add doc drift checks between root and app-level files.</li>
+        <li>Enforce end-of-session handoff quality checklist.</li>
+        <li>Introduce vibecoder quality gates before shipping changes.</li>
+      </ul>
+      <h3>Next step</h3>
+      <p>Run a 2-week documentation governance cleanup across top-priority apps first.</p>
+    </div>
+  </div>
+</body>
+</html>

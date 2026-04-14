@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Shared login configuration
+
+Set these values in `.env` for canonical-host auth:
+
+- `REACT_APP_AUTH_CANONICAL_ORIGIN=https://apps.chasewhittaker.com`
+- `REACT_APP_AUTH_APP_PATH=/hub`
+- `REACT_APP_YNAB_APP_PATH=/ynab`
+- `REACT_APP_TASKS_APP_PATH=/tasks`
+- `REACT_APP_SUPABASE_STORAGE_KEY=chase_portfolio_auth_token`
+
+Supabase dashboard must include the canonical app URL in allowed redirects.
+
 ## Available Scripts
 
 In the project directory, you can run:

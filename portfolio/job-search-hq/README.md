@@ -12,6 +12,16 @@ npm start              # default CRA port 3000; see .claude/launch.json for 3001
 npm run build
 ```
 
+## Shared login configuration
+
+Use canonical-host auth settings in `.env`:
+
+- `REACT_APP_AUTH_CANONICAL_ORIGIN=https://apps.chasewhittaker.com`
+- `REACT_APP_AUTH_APP_PATH=/job-search`
+- `REACT_APP_SUPABASE_STORAGE_KEY=chase_portfolio_auth_token`
+
+Supabase should allow redirects for the canonical app URL and local dev URL.
+
 ## Monorepo
 
 Path from repo root: **`portfolio/job-search-hq`**. Keep `src/shared/sync.js` aligned with `portfolio/shared/sync.js`.
