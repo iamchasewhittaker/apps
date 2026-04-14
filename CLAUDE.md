@@ -17,7 +17,7 @@
 | Clarity Command | v1.0 | `chase_command_v1` | clarity-command.vercel.app | ✅ Active · Daily accountability hub · LDS faith + family urgency · needs Supabase env vars · [`portfolio/clarity-command`](portfolio/clarity-command) |
 | Job Search HQ | v8.5 | `chase_job_search_v1` | job-search-hq.vercel.app | ✅ Active · Chrome MV3 capture + badge in `portfolio/job-search-hq/extension/` |
 | App Forge | v8.1 | `chase_forge_v1` | app-forge-fawn.vercel.app | ✅ Active |
-| Clarity Hub | v0.1 | `chase_hub_ynab_v1` (+ 6 more) | TBD (Vercel) | 🟡 Local · Scaffold done — YNAB tab next · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
+| Clarity Hub | v0.1 | `chase_hub_ynab_v1` (+ 6 more) | clarity-hub-lilac.vercel.app | ✅ Active · YNAB + Time + Budget tabs done · Supabase env vars set · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
 | YNAB Clarity (iOS) | v0.1 | SwiftData + `AppStorage` (`chase_ynab_clarity_ios_*`); token in Keychain; YNAB read + PATCH assign (Fund, with confirmation) | local Xcode | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | RollerTask Tycoon (iOS) | v1.0 | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`) | local Xcode | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | `chase_roller_task_v1` (historical) | (optional Vercel) | 🗄️ Retired — [`portfolio/archive/roller-task-tycoon`](portfolio/archive/roller-task-tycoon) |
@@ -166,12 +166,23 @@ Master instructions (this file) and [ROADMAP.md](ROADMAP.md) live at the **repo 
 > ⚠️ **Env prefixes:** CRA apps → `REACT_APP_*` + `process.env`. **Archived Vite RollerTask only** → `VITE_*` + `import.meta.env`.
 
 **To activate sync on an app:**
-1. Create Supabase project at supabase.com (explain: org, project name, region, free tier limits)
-2. Run SQL from `shared/sync.js` comments in Supabase SQL editor (explain: table schema, RLS, updated_at trigger)
-3. Copy project URL + anon key → fill in `.env` from `.env.example` (explain: anon key is safe in browser, RLS is what protects data)
+1. All portfolio apps share one Supabase project: `unqtnnxlltiadzbqpyhh` — do NOT create a new project
+2. SQL schema + RLS already applied — no SQL editor step needed for new apps
+3. Supabase creds are stored in `.env.supabase` at repo root (gitignored, pre-populated — never commit it)
 4. `npm install @supabase/supabase-js`
 5. In the app's `App.jsx` load `useEffect`: call `pull(APP_KEY, stored, stored._syncAt)` after localStorage load
 6. In the unified save `useEffect`: call `push(APP_KEY, blob)` after `save(blob)`
+
+**Vercel deploy automation (no manual credential entry):**
+1. `npm run build` — verify build passes first
+2. `vercel link` — link app to Vercel project (first time only)
+3. `scripts/vercel-add-env portfolio/<app>` — reads `.env.supabase`, pipes `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` into Vercel for production + preview automatically
+4. `vercel --prod` — deploy
+5. Update `CLAUDE.md` portfolio table URL column and the app's `HANDOFF.md`
+
+Or use the `/deploy` slash command — it runs all 5 steps automatically.
+
+**If `.env.supabase` is missing** (new machine / lost): `cd portfolio/clarity-hub && vercel env pull --environment=production /tmp/.env.prod` then copy the two `REACT_APP_SUPABASE_*` lines into `.env.supabase` at repo root.
 
 **Roll out order:** Wellness first → Job Search → App Forge
 

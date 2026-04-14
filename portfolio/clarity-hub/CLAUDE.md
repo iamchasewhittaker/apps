@@ -7,7 +7,9 @@
 - **Version:** v0.1
 - **Storage keys:** `chase_hub_ynab_v1`, `chase_hub_checkin_v1`, `chase_hub_triage_v1`, `chase_hub_time_v1`, `chase_hub_budget_v1`, `chase_hub_growth_v1`, `chase_hub_rollertask_v1`
 - **YNAB token key:** `chase_hub_ynab_token` (localStorage, never synced)
-- **URL:** TBD (deploy to Vercel)
+- **URL:** https://clarity-hub-lilac.vercel.app
+- **Vercel project:** `clarity-hub` (team: `iamchasewhittakers-projects`)
+- **Supabase:** project `unqtnnxlltiadzbqpyhh` — env vars already set on Vercel (production + preview)
 - **Entry:** `src/App.jsx`
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md)
 
@@ -82,6 +84,11 @@ cd portfolio/clarity-hub
 
 npm start          # dev server at localhost:3000
 npm run build      # production build (verify before deploy)
+
+# Deploy (env vars already set — just build + deploy):
+vercel --prod
+
+# Or use the /deploy skill which handles build + env vars + deploy automatically
 ```
 
 ## Constraints

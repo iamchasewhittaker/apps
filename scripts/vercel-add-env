@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# scripts/vercel-add-env [app-dir]
+#
+# Adds shared Supabase env vars (REACT_APP_SUPABASE_URL + REACT_APP_SUPABASE_ANON_KEY)
+# to the Vercel project linked in the given directory.
+#
+# Prerequisites:
+#   - vercel CLI installed (npm i -g vercel)
+#   - App directory already linked: vercel link (or first deploy via: vercel)
+#   - .env.supabase exists at repo root (auto-created, gitignored)
+#
+# Usage:
+#   scripts/vercel-add-env                   # uses current directory
+#   scripts/vercel-add-env portfolio/my-app  # path relative to repo root
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+ENV_FILE="$ROOT_DIR/.env.supabase"
+
+if [[ ! -f "$ENV_FILE" ]]; then
+  echo "❌  Missing: $ENV_FILE"
+  echo "    Pull it from an existing project:"
+  echo "    cd portfolio/clarity-hub && vercel env pull --environment=production /tmp/.env.prod"
+  echo "    Then copy REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY into .env.supabase"
+  exit 1
+fi
+
+# Load env vars (no export needed — we'll pass values via printf)
+set -a
+source "$ENV_FILE"
+set +a
+
+APP_DIR="${1:-$(pwd)}"
+# Allow repo-relative paths
+if [[ "$APP_DIR" != /* ]]; then
+  APP_DIR="$ROOT_DIR/$APP_DIR"
+fi
+cd "$APP_DIR"
+
+if [[ ! -f ".vercel/project.json" ]]; then
+  echo "⚠️  No .vercel/project.json found in $APP_DIR"
+  echo "   Link first: vercel link"
+  exit 1
+fi
+
+PROJECT=$(python3 -c "import json,sys; d=json.load(open('.vercel/project.json')); print(d.get('projectName',d.get('projectId','unknown')))" 2>/dev/null || echo "unknown")
+echo "→ Adding Supabase env vars to Vercel project: $PROJECT"
+
+for ENV_TARGET in production preview; do
+  echo "  [$ENV_TARGET]"
+  printf '%s' "$REACT_APP_SUPABASE_URL" | vercel env add REACT_APP_SUPABASE_URL "$ENV_TARGET" 2>&1 | grep -E "Success|already|Error" || true
+  printf '%s' "$REACT_APP_SUPABASE_ANON_KEY" | vercel env add REACT_APP_SUPABASE_ANON_KEY "$ENV_TARGET" 2>&1 | grep -E "Success|already|Error" || true
+done
+
+echo "✓ Done. Deploy with: vercel --prod"
