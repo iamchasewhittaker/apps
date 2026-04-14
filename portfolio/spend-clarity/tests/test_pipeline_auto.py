@@ -11,8 +11,8 @@ def _install_google_stubs():
     google_mod = types.ModuleType("google")
     auth_mod = types.ModuleType("google.auth")
     transport_mod = types.ModuleType("google.auth.transport")
-    requests_mod = types.ModuleType("google.auth.transport.requests")
-    requests_mod.Request = object
+    google_requests_mod = types.ModuleType("google.auth.transport.requests")
+    google_requests_mod.Request = object
 
     oauth2_mod = types.ModuleType("google.oauth2")
     credentials_mod = types.ModuleType("google.oauth2.credentials")
@@ -27,14 +27,14 @@ def _install_google_stubs():
     discovery_mod.build = lambda *args, **kwargs: None
     dotenv_mod = types.ModuleType("dotenv")
     dotenv_mod.load_dotenv = lambda *args, **kwargs: None
-    requests_mod = types.ModuleType("requests")
-    requests_mod.get = lambda *args, **kwargs: None
-    requests_mod.post = lambda *args, **kwargs: None
+    http_requests_mod = types.ModuleType("requests")
+    http_requests_mod.get = lambda *args, **kwargs: None
+    http_requests_mod.post = lambda *args, **kwargs: None
 
     sys.modules["google"] = google_mod
     sys.modules["google.auth"] = auth_mod
     sys.modules["google.auth.transport"] = transport_mod
-    sys.modules["google.auth.transport.requests"] = requests_mod
+    sys.modules["google.auth.transport.requests"] = google_requests_mod
     sys.modules["google.oauth2"] = oauth2_mod
     sys.modules["google.oauth2.credentials"] = credentials_mod
     sys.modules["google_auth_oauthlib"] = oauthlib_mod
@@ -42,7 +42,7 @@ def _install_google_stubs():
     sys.modules["googleapiclient"] = googleapiclient_mod
     sys.modules["googleapiclient.discovery"] = discovery_mod
     sys.modules["dotenv"] = dotenv_mod
-    sys.modules["requests"] = requests_mod
+    sys.modules["requests"] = http_requests_mod
 
 
 _install_google_stubs()

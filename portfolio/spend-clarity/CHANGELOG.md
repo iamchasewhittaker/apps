@@ -16,6 +16,11 @@ All notable changes to this project will be documented here.
 - `src/ynab_client.py` + `src/categorizer.py` — expose category ID sets for startup validation (`get_category_ids`, `configured_category_ids`)
 - `README.md` + `ROADMAP.md` — documented launchd operation, startup validation behavior, and completed roadmap items (#1, #3, #4)
 
+### Fixed
+- `tests/test_pipeline_auto.py` — resolved stub collision so `google.auth.transport.requests.Request` is no longer overwritten by a fake `requests` module during collection
+- `tests/test_receipt_parser.py` — updated DoorDash fixture to include order-confirmation subject text expected by parser guards
+- `src/main.py` — removed duplicated launchd parser/helper blocks and restored Python 3.9 compatibility (`Optional[str]`)
+
 ## [0.2.0] — 2026-04-12
 
 ### Added

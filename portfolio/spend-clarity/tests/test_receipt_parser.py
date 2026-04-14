@@ -57,7 +57,13 @@ def test_parse_apple_extracts_amount():
 
 
 def test_parse_doordash_restaurant_name():
-    receipt = parse_receipt(_email(body_html=DOORDASH_HTML), merchant="doordash")
+    receipt = parse_receipt(
+        _email(
+            body_html=DOORDASH_HTML,
+            subject="Order Confirmation for Chase from Chick-fil-A",
+        ),
+        merchant="doordash",
+    )
     assert receipt is not None
     assert receipt.amount == pytest.approx(18.47)
     assert any("Chick-fil-A" in item for item in receipt.items)

@@ -16,6 +16,7 @@ import os
 import sys
 from datetime import date, timedelta, datetime, timezone
 from pathlib import Path
+from typing import Optional
 
 from dotenv import load_dotenv
 
@@ -131,18 +132,9 @@ def main():
         action="store_true",
         help="Print a launchd plist configured for this project and exit",
     )
-    parser.add_argument(
-        "--print-launchd-plist",
-        action="store_true",
-        help="Print a launchd plist configured for this project and exit",
-    )
     args = parser.parse_args()
 
     dry_run = args.dry_run or os.getenv("DRY_RUN", "true").lower() == "true"
-    if args.print_launchd_plist:
-        print(_render_launchd_plist(dry_run=dry_run))
-        return
-
     if args.print_launchd_plist:
         print(_render_launchd_plist(dry_run=dry_run))
         return
@@ -523,7 +515,7 @@ def _extract_sender_email(from_header: str) -> str:
     return from_header.strip().lower()
 
 
-def _infer_merchant(email: dict, sender_lookup: dict[str, str]) -> str | None:
+def _infer_merchant(email: dict, sender_lookup: dict[str, str]) -> Optional[str]:
     sender_header = email.get("from", "")
     sender_email = _extract_sender_email(sender_header)
     sender_domain = sender_email.split("@")[-1] if "@" in sender_email else sender_email
@@ -589,42 +581,6 @@ def _render_launchd_plist(dry_run: bool) -> str:
 """
 
 
-
-def _render_launchd_plist(dry_run: bool) -> str:
-    project_dir = Path(__file__).resolve().parent.parent
-    python_bin = os.getenv("PYTHON_BIN", str(project_dir / ".venv" / "bin" / "python"))
-    log_dir = Path.home() / "Library" / "Logs"
-    dry_run_arg = "      <string>--dry-run</string>\n" if dry_run else ""
-
-    return f"""<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>com.chase.spend-clarity.enrich</string>
-    <key>ProgramArguments</key>
-    <array>
-      <string>{python_bin}</string>
-      <string>{project_dir / 'src' / 'main.py'}</string>
-{dry_run_arg}    </array>
-    <key>WorkingDirectory</key>
-    <string>{project_dir}</string>
-    <key>StartCalendarInterval</key>
-    <dict>
-      <key>Hour</key>
-      <integer>2</integer>
-      <key>Minute</key>
-      <integer>30</integer>
-    </dict>
-    <key>StandardOutPath</key>
-    <string>{log_dir / 'spend-clarity.stdout.log'}</string>
-    <key>StandardErrorPath</key>
-    <string>{log_dir / 'spend-clarity.stderr.log'}</string>
-    <key>RunAtLoad</key>
-    <false/>
-  </dict>
-</plist>
-"""
 
 def _write_pipeline_summary(
     pipeline_summary: dict,

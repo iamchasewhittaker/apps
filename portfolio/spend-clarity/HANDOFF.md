@@ -9,9 +9,9 @@
 | Field | Value |
 |-------|-------|
 | **Focus** | Pipeline hardening: startup validation, launchd scheduling, unmatched diagnostics |
-| **Status** | v0.2.1 in progress — roadmap #1/#3/#4 implemented (validation + launchd + diagnostics) |
+| **Status** | v0.2.1 ready — roadmap #1/#3/#4 shipped + full test suite green (90/90) |
 | **Last touch** | 2026-04-13 |
-| **Next** | Run `python src/main.py --dry-run` once with live data to inspect startup validation counts + new unmatched diagnostics; then install nightly job via `scripts/install_launchd_job.sh` (dry-run first, `--live` only after confidence) |
+| **Next** | Run one live local dry-run with Gmail/YNAB credentials present (`python src/main.py --dry-run`) to inspect startup validation counts and unmatched diagnostics output, then install nightly launchd job (`scripts/install_launchd_job.sh`) |
 
 ---
 
@@ -30,6 +30,11 @@ Run: `python3 src/main.py` (from `portfolio/spend-clarity/`)
 - **Startup validation** (`main.py` + `ynab_client.py` + `categorizer.py`): checks configured category IDs against live budget IDs before enrichment; logs valid/invalid counts; fails only when none resolve.
 - **launchd scheduling** (`ops/com.chase.spend-clarity.enrich.plist`, `scripts/install_launchd_job.sh`, `main.py --print-launchd-plist`): one-command install/update flow for nightly automation, dry-run default.
 - **Unmatched diagnostics** (`matcher.py` + `main.py`): report now includes merchant candidates and closest date/amount mismatch context to explain failure reasons.
+
+### Test stability follow-up (2026-04-13)
+- Fixed `test_pipeline_auto.py` import stubs so full test collection works with Gmail auth request imports.
+- Aligned DoorDash parser test fixture with parser order-confirmation subject requirement.
+- Verified full suite: `PYTHONPATH=src python3 -m pytest` (90 passed).
 
 ### Categorization — root cause fix
 All 9 category IDs in `config/category_rules.yaml` were pointing to the wrong YNAB budget (`583fdbca` "ynab-enrichment"). Every prior categorization attempt was writing invalid IDs. All IDs updated to the correct budget (`ab0a40fe`).
