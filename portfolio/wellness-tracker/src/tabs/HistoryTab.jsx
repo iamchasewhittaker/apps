@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { T, STORE, save } from "../theme";
 import { Card, SectionLabel, Divider } from "../ui";
 import { GmatTracker, LIFE_AREAS, WIN_CATEGORIES } from "./TasksTab";
-import { QUOTES } from "./TrackerTab";
+import { QUOTES } from "./tracker";
 
 // ══════════════════════════════════════════════════════════════════════════
 // WIN LOGGER

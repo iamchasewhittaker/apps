@@ -26,15 +26,6 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
     if ((byDate[d] || 0) >= target) { streak++; check.setDate(check.getDate() - 1); } else break;
   }
 
-  function handleQuickAdd(type) {
-    if (noteInput.trim() || !pendingType) {
-      addDailyAction(type, noteInput.trim());
-      setNoteInput(""); setPendingType(null);
-    } else {
-      setPendingType(type);
-    }
-  }
-
   function confirmAdd() {
     if (!pendingType) return;
     addDailyAction(pendingType, noteInput.trim());

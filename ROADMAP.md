@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-14 (Shared auth canonical host strategy — all 6 web apps) | Maintained by Chase
+> Last updated: 2026-04-14 (Clarity Command iOS v0.1 shipped — all 6 Clarity apps on iPhone) | Maintained by Chase
 
 ---
 
@@ -16,6 +16,7 @@
 | RollerTask Tycoon Web | v1.0 | https://rollertask-tycoon-web.vercel.app | `chase_hub_rollertask_v1` | ✅ Active · Standalone task tracker · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
 | YNAB Clarity (iOS) | v0.2 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
 | Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
+| Clarity Command (iOS) | v0.1 | local Xcode | `chase_command_ios_v1` | ✅ Local · 14/14 tests · all 6 apps on iPhone · [`portfolio/clarity-command-ios`](portfolio/clarity-command-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
 | RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
@@ -230,6 +231,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-14 | Clarity Command iOS | v0.1 | **Phase 6 shipped:** 26 Swift source files, 3-tab SwiftUI app (Mission/Scoreboard/Settings), CommandStore with conviction system + streak logic, CommandPalette gold accent (#c8a84b), 14/14 unit tests, all 6 Clarity iOS apps installed on iPhone 12 Pro Max | `portfolio/clarity-command-ios/` · `xcodebuild` BUILD SUCCEEDED · `xcrun devicectl` install complete |
 | 2026-04-14 | Clarity Hub, Job Search HQ | — | **Cross-app nav (WHI-40):** `AppNav` component in `portfolio/shared/ui.jsx` with `resolveAppUrl` helper; shipped to Clarity Hub (replaces inline external links) and Job Search HQ (new nav bar). Health check tracks `ui.jsx` drift. | WHI-38 also closed: `auth.js` + `sync.js` drift = 0 across all 6 apps; WHI-52 PRODUCT_LINES.md confirmed complete |
 | 2026-04-14 | All web apps (7) | — | **Favicon/logo fix:** removed `rx` rounded corners from all `favicon.svg` + `logo.svg` background rects; regenerated all `logo192.png`, `logo512.png`, `apple-touch-icon.png` — no more white corners on Vercel dashboard or light backgrounds | app-forge, clarity-command, clarity-hub, job-search-hq, knowledge-base, rollertask-tycoon-web, ynab-clarity-web |
 | 2026-04-14 | Knowledge Base | v2.0.2 | **Sections refresh:** added missing active project links (Clarity Command, Clarity Hub, YNAB Clarity Web, RollerTask Tycoon Web), added nested `My Projects` folders (Daily Prompts, Theme & Colors, Development Details), seeded daily prompt templates (email/planning/review), and bumped `SEED_VERSION` 5 → 6 | `portfolio/knowledge-base/` · `npm run build` ✅ |

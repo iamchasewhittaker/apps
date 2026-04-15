@@ -2,13 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { T, load, save, loadDraft, saveDraft, clearDraft, DEFAULT_MEDS, loadMeds, saveMeds } from "./theme";
 import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
-import TrackerTab, { MORNING_SECTIONS, EVENING_SECTIONS, getCheckinMode } from "./tabs/TrackerTab";
+import TrackerTab, { MORNING_SECTIONS, EVENING_SECTIONS, getCheckinMode, PulseCheckModal } from "./tabs/tracker";
 import TasksTab from "./tabs/TasksTab";
 import TimeTrackerTab from "./tabs/TimeTrackerTab";
 import BudgetTool, { WantsTracker } from "./tabs/BudgetTab";
 import HistoryView, { WinLogger } from "./tabs/HistoryTab";
 import GrowthTab from "./tabs/GrowthTab";
-import { PulseCheckModal } from "./tabs/TrackerTab";
 import ErrorBoundary from "./ErrorBoundary";
 
 const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());

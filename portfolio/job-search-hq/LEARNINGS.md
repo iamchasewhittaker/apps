@@ -60,6 +60,12 @@
 **Fix / lesson:** For SVG → PNG conversion in this monorepo, use `qlmanage -t -s <size> -o /tmp <file>.svg && cp /tmp/<file>.svg.png dest.png`. Then `sips -z H W` for resizing.
 **Tags:** tooling · icons · svg
 
+### 2026-04-14 — Vercel CLI doubles path when rootDirectory is set + CI kills ESLint warnings
+**What happened:** `vercel --prod` from inside `portfolio/job-search-hq/` failed with "path does not exist" — path was being doubled (`portfolio/job-search-hq/portfolio/job-search-hq`). Also, a pre-existing `no-unused-vars` warning in FocusTab caused the Vercel CI build to fail (Vercel sets `CI=true`, which makes CRA treat warnings as errors).
+**Root cause:** The Vercel project has `rootDirectory: "portfolio/job-search-hq"` configured for GitHub auto-deploy. Running the CLI from inside that subdirectory appends the rootDirectory on top of the cwd, doubling it. The unused `handleQuickAdd` function was harmless locally but fatal in CI.
+**Fix / lesson:** For this project, always run `vercel --prod` from the **monorepo root** (`~/Developer/chase/`) with a temp `.vercel/project.json` pointing at the job-search-hq project ID. Remove the temp file after deploying. And fix all ESLint warnings before deploying — Vercel CI has zero tolerance.
+**Tags:** deploy · vercel · lint
+
 ### 2026-04-13 — FocusTab needs app/contact data props from App.jsx
 **What happened:** FocusTab previously only received `completedBlocks` / `expandedBlock` state. Adding the action queue required passing `applications`, `contacts`, `setAppModal`, `setPrepModal`, `setTab` from App.jsx.
 **Root cause:** The queue is derived from live data, not persisted state — it belongs in FocusTab as computed logic.

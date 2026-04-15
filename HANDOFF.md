@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| **Focus**      | **iOS device test + portfolio alignment session complete (2026-04-14).** All 5 goals done: `/handoff` skill created, 7 iOS apps built for device (Team 9XVT527KP3, UDID 00008101-000630D01161001E), auto-deploy hook verified, mission motto in all 19 CLAUDE.md files + `scripts/new-app`, Linear issues converted to User Story format with story points. |
-| **Next**       | 1. **Sprint 1 setup in Linear UI** — create cycle 2026-04-21 to 2026-05-04, assign WHI-42 (8pt) + WHI-23 (2pt) + WHI-35 (2pt) + WHI-49 (1pt) = 13 pts. 2. **TrackerTab split (WHI-42)** — break 1420-line monolith into morning/evening sub-components. 3. Deploy Clarity Hub + Job Search HQ to Vercel. |
-| **Blockers**   | None. Sprint cycle creation requires Linear UI (no API tool available). |
-| **Last touch** | 2026-04-14 — iOS device test session: `/handoff` skill, 7 iOS builds, motto in 19 files, 10 Linear issues → User Story + story points. |
+| **Focus**      | **Clarity Command iOS shipped (2026-04-14).** 26 Swift source files, 3-tab SwiftUI app (Mission/Scoreboard/Settings), gold accent, 14/14 unit tests passed, all 6 Clarity iOS apps installed on iPhone 12 Pro Max (UDID 00008101-000630D01161001E). |
+| **Next**       | 1. **Sprint 1 setup in Linear UI** — create cycle 2026-04-21 to 2026-05-04, assign WHI-42 (8pt) + WHI-23 (2pt) + WHI-35 (2pt) + WHI-49 (1pt) = 13 pts. 2. **TrackerTab split (WHI-42)** — break 1420-line monolith into morning/evening sub-components. 3. Add AppIcon artwork to Clarity Command iOS. |
+| **Blockers**   | None. |
+| **Last touch** | 2026-04-14 — Clarity Command iOS v0.1: 26 Swift files, CommandStore, 3 tabs, 14 tests, all 6 apps on iPhone. |
 
 
 ---
@@ -140,6 +140,27 @@ Priority queue (pick from governance backlog):
 4. WHI-43: Portfolio dashboard.
 
 Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
+```
+
+## Fresh session prompt — continue Clarity Command iOS (v0.2+)
+
+Use a **new** chat after `checkpoint`. Paste:
+
+```
+Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-command-ios/CLAUDE.md and portfolio/clarity-command-ios/HANDOFF.md.
+
+Goal: Continue Clarity Command iOS at portfolio/clarity-command-ios/.
+
+Current state: Phase 6 MVP v0.1 shipped — 3-tab SwiftUI app (Mission/Scoreboard/Settings), CommandStore with conviction system, 26 Swift source files, gold accent (#c8a84b), 14/14 unit tests, all 6 Clarity apps on iPhone 12 Pro Max. PBX prefix CD; store key chase_command_ios_v1; ClarityUI via ../clarity-ui; docs/BRANDING.md written.
+
+Pick next work from portfolio/clarity-command-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views with computed properties accessing the store, StorageHelpers persistence.
+
+Verify:
+  cd portfolio/clarity-command-ios && xcodebuild -scheme ClarityCommand -showdestinations
+  xcodebuild build -scheme ClarityCommand -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+  xcodebuild test  -scheme ClarityCommand -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
+
+Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file's State when you stop.
 ```
 
 ## Fresh session prompt — continue Clarity Budget (v0.2+)
@@ -203,6 +224,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*`; **`docs/BRANDING.md` + AppIcon** (clock + arc + badge).
 - **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1**; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); explore wides in `docs/design/`.
 - **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
+- **clarity-command-ios (Phase 6):** `portfolio/clarity-command-ios/HANDOFF.md` — **v0.1**; **`CD`**; gold accent (`#c8a84b`); 3 tabs (Mission/Scoreboard/Settings); conviction system; 14/14 tests; all 6 apps on iPhone 2026-04-14. Next: AppIcon artwork, CloudKit sync (v0.2).
 - **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — v0.2; 5 tabs (Check-in, Triage, Time, Budget, Growth); YNAB + RollerTask split to standalone apps; nav links to both. Deployed at https://clarity-hub-lilac.vercel.app.
 - **YNAB Clarity Web (2026-04-13):** `portfolio/ynab-clarity-web/HANDOFF.md` — v1.0; standalone YNAB dashboard; storage key `chase_hub_ynab_v1`; Supabase `app_key = 'ynab'`. Deployed at https://ynab-clarity-web.vercel.app.
 - **RollerTask Tycoon Web (2026-04-13):** `portfolio/rollertask-tycoon-web/HANDOFF.md` — v1.0; standalone task/points tracker; storage key `chase_hub_rollertask_v1`; Supabase `app_key = 'rollertask'`. Deployed at https://rollertask-tycoon-web.vercel.app.
