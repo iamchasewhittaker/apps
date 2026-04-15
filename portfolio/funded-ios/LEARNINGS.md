@@ -1,4 +1,4 @@
-# Learnings — YNAB Clarity (iOS)
+# Learnings — Funded (iOS)
 
 > Mistakes, fixes, and "aha" moments captured from real sessions.
 > **AI tools:** read this at session start alongside CLAUDE.md for project-specific gotchas.
@@ -67,6 +67,24 @@
 **Root cause:** Shared DerivedData path; two processes contend for the same XCBuildData database.
 **Fix / lesson:** Use `-derivedDataPath /tmp/YNABClarity-dd-test` (or any empty temp dir) for CLI test runs, or quit other builders first.
 **Tags:** xcode, tests, gotcha
+
+### 2026-04-15 — App rename: pbxproj replacements must go longest-match first
+**What happened:** Renaming Conto → Funded in `project.pbxproj` via `sed` required a specific ordering: `ContoApp.swift` → `ContoTests` → `"Conto"` → `Conto`. Doing shorter strings first corrupted longer tokens (e.g. `ContoTests` became `FundedTests` but `ContoApp.swift` became `FundedApp.swift` only if the filename was first).
+**Root cause:** `sed` replaces left-to-right in one pass. Shorter patterns shadow longer ones when the shorter form is a prefix of the longer.
+**Fix / lesson:** Always process longest tokens first in pbxproj renames. Also: `git mv` the source folder and `.xcodeproj` directory before editing the pbxproj so path references are already correct.
+**Tags:** xcode, rename, gotcha
+
+### 2026-04-15 — NSImage.lockFocus renders at Retina scale (2048px not 1024px)
+**What happened:** Used `NSImage(size:)` + `lockFocus()` to generate the AppIcon PNG. The resulting file was 2048×2048 (Retina @2x), causing `actool` to reject it: "AppIcon.png is 2048×2048 but should be 1024×1024."
+**Root cause:** `NSImage.lockFocus()` renders at the screen's backing scale factor (2× on Retina). The size parameter is in points, not pixels.
+**Fix / lesson:** Use `CGContext(data:width:height:…)` directly to work in exact pixels, then wrap it with `NSGraphicsContext(cgContext:flipped:)` for AppKit drawing. Write via `CGImageDestination` / `CGImageDestinationFinalize`.
+**Tags:** xcode, swift, appicon, gotcha
+
+### 2026-04-15 — `brew install librsvg` stalls for 10+ min (builds Rust from source)
+**What happened:** Tried to install `librsvg` to get `rsvg-convert` for SVG→PNG conversion. Brew stalled because `librsvg` depends on `rust`, which compiles from source on older homebrew setups.
+**Root cause:** No pre-built bottle available for the current macOS/Xcode combo; Homebrew falls back to source compilation.
+**Fix / lesson:** Skip `rsvg-convert` entirely. Use a Swift script with `CGContext` + `NSAttributedString` to render text directly — faster, no dependencies, always works on macOS.
+**Tags:** tooling, gotcha, svg, appicon
 
 ### 2026-04-15 — `itemContextSubtitle` test drift after universal empty-memo copy
 **What happened:** `testItemContextSubtitle_amazonFallbackWhenMemoEmpty` failed — it still expected the old Amazon-specific hint containing "memo".
