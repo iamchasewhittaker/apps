@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added (2026-04-15)
+
+- **iOS companion (v0.1 scaffold):** new Xcode project at `../job-search-hq-ios/` — SwiftUI + ClarityUI, web-shaped `Codable` blob, Focus / Pipeline / Contacts / More tabs; see that folder’s `README.md` and `docs/SYNC_PHASE2.md` for Phase 2 sync.
+
 ### Added (2026-04-14)
 - **Cross-app navigation (WHI-40):** `AppNav` bar below header links to Wellness and Clarity Hub — uses shared `resolveAppUrl` for canonical-origin URL resolution
 - **Shared UI component:** added `src/shared/ui.jsx` (copy of `portfolio/shared/ui.jsx`) — `Card`, `NavTabs`, `AppNav`, `resolveAppUrl`

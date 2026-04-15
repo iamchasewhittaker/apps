@@ -5,7 +5,7 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)
 
 ## App Identity
-- **Version:** v8.5 (Wave 2 complete; Wave 3 #1 Chrome extension shipped)
+- **Version:** v8.5 (Wave 2 complete; Wave 3 #1 Chrome extension shipped; iOS companion scaffold in `../job-search-hq-ios/`)
 - **Storage key:** `chase_job_search_v1` (data) · `chase_anthropic_key` (API key — separate)
 - **URL:** job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
