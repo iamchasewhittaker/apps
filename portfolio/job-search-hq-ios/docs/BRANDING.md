@@ -9,7 +9,8 @@
 |--------|--------|
 | Layout, Dynamic Type, tap targets | ClarityUI (`ClarityTypography`, `ClarityMetrics`) |
 | Background / surfaces / accents | `JSHQTheme` — hex aligned with web table in web `BRANDING.md` |
-| App icon | Clarity iOS shell + placeholder glyph (`AppIcon.png`); replace before App Store |
+| App icon | Clarity-style tile + pipeline glyph + blue badge — regenerate with [`tools/generate_brand_assets.py`](../tools/generate_brand_assets.py) (requires Pillow) |
+| In-app mark | `Logo` image set — same script writes `Logo.imageset/Logo.png`; header in `ContentView` |
 
 ## Token table (iOS)
 
