@@ -12,8 +12,8 @@
 | **Version** | v1.0 |
 | **Platform** | Native iOS — SwiftUI + SwiftData |
 | **Bundle ID** | `com.chasewhittaker.ParkChecklist` |
-| **Focus** | Shipped V1 — stable. No active work. |
-| **Last touch** | 2026-04-12 — post-ship cleanup docs (`docs: post-ship cleanup for RollerTask Tycoon iOS V1`) |
+| **Focus** | Shipped V1 — stable. |
+| **Last touch** | 2026-04-15 — brighter AppIcon; `devicectl` uninstall + reinstall on physical iPhone; README/CLAUDE/HANDOFF device notes |
 | **Next** | No immediate work planned. Future ideas: Supabase sync (local-first → cloud), App Store submission |
 
 ---
@@ -28,7 +28,7 @@
 ## Architecture snapshot
 
 - **State:** SwiftData (tasks/attractions) + `@AppStorage` (park cash, display prefs)
-- **Tabs:** Overview console · Park Attractions · Settings
+- **Tabs:** Overview · Attractions · Finances
 - **Backup:** Share sheet JSON export/import — schema v2 (tasks + subtasks + ledger); v1 import still supported
 - **No cloud sync** — local-first only
 
@@ -37,6 +37,17 @@
 - Profit ledger (reward on Close)
 - Park cash counter
 - JSON backup via share sheet
+
+## Physical iPhone (CLI reinstall)
+
+From repo root, with the phone **unlocked** and **Developer Mode** on (iOS 16+):
+
+1. `xcrun devicectl list devices` — use the iPhone **Identifier** UUID.
+2. `xcrun devicectl device uninstall app --device <UUID> com.chasewhittaker.ParkChecklist`
+3. `xcodebuild -scheme RollerTaskTycoon -project RollerTaskTycoon.xcodeproj -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath /tmp/rtt-iphone-build -allowProvisioningUpdates build`
+4. `xcrun devicectl device install app --device <UUID> "/tmp/rtt-iphone-build/Build/Products/Debug-iphoneos/RollerTaskTycoon.app"`
+
+If the home icon looks **dim**, trust the cert (**Settings → General → VPN & Device Management**) then reinstall; see [README.md](README.md#dim--gray-home-screen-icon-development--sideload).
 
 ## Known gaps / future
 - No Supabase sync yet (local-only)

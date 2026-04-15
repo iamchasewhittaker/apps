@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed (2026-04-15 ship polish)
 
-- **App icon:** Production 1024×1024 asset in `AppIcon.appiconset` (park-themed plaque on grass gradient).
+- **App icon:** Production 1024×1024 asset in `AppIcon.appiconset`; refreshed to a **brighter, higher-contrast** treatment so the SpringBoard icon reads clearly (gold + cream plaque on vivid grass). Docs: [`README.md`](README.md) (dim icon / trust), [`CLAUDE.md`](CLAUDE.md) (CLI reinstall), [`HANDOFF.md`](HANDOFF.md).
 - **Empty states (PRD copy):** Overview — “Your park is ready for its first attraction.”; Attractions — “No attractions yet. Tap + to open the park.”; Finances top earners — “Close attractions to start earning profit.”
 - **Overdue due dates:** Due line uses alert red (and slightly stronger card border) when the attraction is past due and not closed.
 

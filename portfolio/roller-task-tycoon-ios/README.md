@@ -36,6 +36,29 @@ Usually the app **never stays running** long enough for the debugger to attach, 
 5. **Clean reinstall**  
    Delete **RollerTask Tycoon** from the phone → **Product → Clean Build Folder** → Run (⌘R).
 
+### Dim / gray home screen icon (development / sideload)
+
+A **washed-out or grayed icon** is usually **not** the PNG asset — iOS de-emphasizes apps until the **developer certificate is trusted**, or until the install finishes cleanly.
+
+1. **Trust the developer** (first install per Mac): **Settings → General → VPN & Device Management** → select your **Apple Development** profile → **Trust** → confirm. Then **force-quit SpringBoard** (restart the phone) or remove and reinstall the app.
+2. **Clean reinstall from Terminal** (same bundle `com.chasewhittaker.ParkChecklist`):  
+   ```bash
+   # List devices (copy the UUID in the Identifier column for your iPhone)
+   xcrun devicectl list devices
+
+   xcrun devicectl device uninstall app --device <UUID> com.chasewhittaker.ParkChecklist
+
+   cd portfolio/roller-task-tycoon-ios   # from monorepo root
+   rm -rf /tmp/rtt-iphone-build
+   xcodebuild -scheme RollerTaskTycoon -project RollerTaskTycoon.xcodeproj \
+     -configuration Debug -destination 'generic/platform=iOS' \
+     -derivedDataPath /tmp/rtt-iphone-build -allowProvisioningUpdates build
+
+   xcrun devicectl device install app --device <UUID> \
+     "/tmp/rtt-iphone-build/Build/Products/Debug-iphoneos/RollerTaskTycoon.app"
+   ```
+3. If the icon still looks wrong after trust + reinstall, **regenerate `AppIcon.png`** (1024×1024 in `Assets.xcassets/AppIcon.appiconset/`) with **strong contrast** — very light plaque, saturated gold, vivid background — then rebuild and install again.
+
 ### Black screen on launch (real device)
 
 Pull latest; the app forces **light** mode and fixes SwiftData + layout sizing. If it still happens after the steps above, treat it as a **crash on launch** (see step 3).
