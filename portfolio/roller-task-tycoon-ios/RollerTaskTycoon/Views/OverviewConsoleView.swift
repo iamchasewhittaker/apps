@@ -30,6 +30,14 @@ struct OverviewConsoleView: View {
         NavigationStack {
             VStack(spacing: 10) {
                 headerMetrics
+                if tasks.isEmpty {
+                    Text("Your park is ready for its first attraction.")
+                        .font(ParkTheme.bodyFont(readable: readableFonts))
+                        .foregroundStyle(ParkTheme.ink)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                        .parkPanel(readable: readableFonts)
+                }
                 parkStatusCard
                 guestThoughtBanner
                 HStack(alignment: .top, spacing: 10) {

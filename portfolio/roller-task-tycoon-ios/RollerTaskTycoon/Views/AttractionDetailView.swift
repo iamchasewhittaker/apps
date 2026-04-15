@@ -23,7 +23,7 @@ struct AttractionDetailView: View {
                 row("Staff", "\(task.staffRole.emoji) \(task.staffRole.displayTitle)")
                 row("Reward", "$\(task.rewardDollars)")
                 row("Priority", task.priority.displayTitle)
-                row("Due", task.dueDateLabel())
+                dueRow
 
                 if !task.details.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     VStack(alignment: .leading, spacing: 6) {
@@ -69,6 +69,20 @@ struct AttractionDetailView: View {
             Text(v)
                 .font(ParkTheme.bodyFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
+                .multilineTextAlignment(.trailing)
+        }
+        .padding(.vertical, 4)
+    }
+
+    private var dueRow: some View {
+        HStack {
+            Text("Due")
+                .font(ParkTheme.bodyFont(readable: readableFonts).weight(.semibold))
+                .foregroundStyle(ParkTheme.ink.opacity(0.75))
+            Spacer()
+            Text(task.dueDateLabel())
+                .font(ParkTheme.bodyFont(readable: readableFonts).weight(task.isOverdue() ? .semibold : .regular))
+                .foregroundStyle(task.isOverdue() ? ParkTheme.alertRed : ParkTheme.ink)
                 .multilineTextAlignment(.trailing)
         }
         .padding(.vertical, 4)

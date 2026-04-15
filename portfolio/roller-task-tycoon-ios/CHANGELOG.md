@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.0] — 2026-04-12
 
+### Changed (2026-04-15 ship polish)
+
+- **App icon:** Production 1024×1024 asset in `AppIcon.appiconset` (park-themed plaque on grass gradient).
+- **Empty states (PRD copy):** Overview — “Your park is ready for its first attraction.”; Attractions — “No attractions yet. Tap + to open the park.”; Finances top earners — “Close attractions to start earning profit.”
+- **Overdue due dates:** Due line uses alert red (and slightly stronger card border) when the attraction is past due and not closed.
+
 ### Added
 
 - **V1 simplification:** Reduced from 5 tabs → **3 tabs** (Overview / Attractions / Finances). Staff and Map functionality merged into Attractions as **filter chips** (zone + staff role filters in a horizontal scroll bar).

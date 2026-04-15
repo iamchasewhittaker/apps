@@ -33,7 +33,15 @@ struct ParkAttractionsView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 4)
 
-                if useBoard {
+                if tasks.isEmpty {
+                    Text("No attractions yet. Tap + to open the park.")
+                        .font(ParkTheme.bodyFont(readable: readableFonts))
+                        .foregroundStyle(ParkTheme.ink)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(20)
+                        .parkPanel(readable: readableFonts)
+                } else if useBoard {
                     board
                 } else {
                     listView
@@ -190,11 +198,13 @@ struct AttractionCardView: View {
             .foregroundStyle(ParkTheme.ink.opacity(0.85))
             HStack {
                 Text("Priority: \(item.priority.displayTitle)")
+                    .foregroundStyle(ParkTheme.ink.opacity(0.8))
                 Spacer()
                 Text("Due: \(item.dueDateLabel())")
+                    .foregroundStyle(item.isOverdue() ? ParkTheme.alertRed : ParkTheme.ink.opacity(0.8))
+                    .fontWeight(item.isOverdue() ? .semibold : .regular)
             }
             .font(ParkTheme.captionFont(readable: readableFonts))
-            .foregroundStyle(ParkTheme.ink.opacity(0.8))
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -202,7 +212,10 @@ struct AttractionCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(ParkTheme.wood.opacity(0.45), lineWidth: 1)
+                .stroke(
+                    item.isOverdue() ? ParkTheme.alertRed.opacity(0.55) : ParkTheme.wood.opacity(0.45),
+                    lineWidth: item.isOverdue() ? 1.5 : 1
+                )
         )
     }
 }

@@ -20,7 +20,7 @@ struct FinancesView: View {
                             .foregroundStyle(ParkTheme.ink)
                         let top = ParkFinance.topEarners(entries: ledger, tasks: tasks, limit: 8)
                         if top.isEmpty {
-                            Text("Close attractions to see earnings here.")
+                            Text("Close attractions to start earning profit.")
                                 .font(ParkTheme.bodyFont(readable: readableFonts))
                                 .foregroundStyle(ParkTheme.ink.opacity(0.75))
                         } else {
