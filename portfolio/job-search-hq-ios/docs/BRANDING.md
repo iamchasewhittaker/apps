@@ -12,6 +12,8 @@
 | App icon | Clarity-style tile + pipeline glyph + blue badge — regenerate with [`tools/generate_brand_assets.py`](../tools/generate_brand_assets.py) (requires Pillow) |
 | In-app mark | `Logo` image set — same script writes `Logo.imageset/Logo.png`; header in `ContentView` |
 
+**Home Screen refresh:** If the launcher tile looks stale after regenerating PNGs, delete the app from the device once and reinstall so Springboard picks up the new asset catalog.
+
 ## Token table (iOS)
 
 | Token | Hex | Use |

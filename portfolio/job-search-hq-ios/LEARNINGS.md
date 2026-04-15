@@ -1,5 +1,9 @@
 # LEARNINGS — Job Search HQ iOS
 
+## 2026-04-15
+
+- **Springboard icon cache:** After replacing `AppIcon` assets, iOS can show the previous icon until the app is **deleted** and reinstalled (or a clean install via `devicectl`). Same symptom if the first icon was too low-contrast on navy — prefer a Clarity-style band + glyph so the tile reads at a glance.
+
 ## 2026-04-14
 
 - **Swift 5.0 / Xcode project `SWIFT_VERSION = 5.0`:** trailing commas in call argument lists (e.g. `Text("...", )`, `.overlay(..., )`) are rejected — remove trailing commas before `)`.

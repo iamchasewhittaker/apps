@@ -5,6 +5,7 @@
 ### Added (2026-04-15)
 
 - **iOS companion (v0.1 scaffold):** new Xcode project at `../job-search-hq-ios/` — SwiftUI + ClarityUI, web-shaped `Codable` blob, Focus / Pipeline / Contacts / More tabs; see that folder’s `README.md` and `docs/SYNC_PHASE2.md` for Phase 2 sync.
+- **iOS companion — brand + device QA:** reproducible `AppIcon` / `Logo` via `../job-search-hq-ios/tools/generate_brand_assets.py`; Debug build + `xcrun devicectl device install app` verified on physical iPhone (see iOS `HANDOFF.md` / `README.md`). **Linear:** track under [Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d).
 
 ### Added (2026-04-14)
 - **Cross-app navigation (WHI-40):** `AppNav` bar below header links to Wellness and Clarity Hub — uses shared `resolveAppUrl` for canonical-origin URL resolution
@@ -182,7 +183,7 @@
 
 ## v8.2 — 2026-03-24 — Auth fix: wrong Supabase project
 
-- **Fixed:** `.env` was pointing to a separate Supabase project (`uwlfhxzeeleebjpiimrg`) instead of the shared wellness project — magic links were redirecting to `wellnes-tracker.vercel.app` because that project's Site URL was set to the wellness URL
+- **Fixed:** `.env` was pointing to a separate Supabase project (`uwlfhxzeeleebjpiimrg`) instead of the shared wellness project — magic links were redirecting to `wellness-tracker.vercel.app` because that project's Site URL was set to the wellness URL
 - **Fixed:** Updated `.env` to use wellness Supabase project credentials (`unqtnnxlltiadzbqpyhh`) — both apps now share one project; one magic-link session covers both
 - **Fixed:** Added `https://job-search-hq.vercel.app`, `http://localhost:3000`, `http://localhost:3001` to the shared Supabase project's redirect URL allowlist
 - **Fixed:** `.env.example` had wrong `VITE_` prefix — corrected to `REACT_APP_` (this is CRA, not Vite)
@@ -248,7 +249,7 @@
   - Minutes auto-estimated per block type (apply=40, research=20, network=20, followup=15, skills=25)
   - Green toast confirmation after logging: "✓ Session logged to Wellness Tracker"
   - WELLNESS_KEY constant references chase_wellness_v1 — must never change
-- Added ← Wellness back-link in header pointing to wellnes-tracker.vercel.app
+- Added ← Wellness back-link in header pointing to wellness-tracker.vercel.app
 
 ## v4 — 2026-03-23
 - Deployed to Vercel at job-search-hq.vercel.app

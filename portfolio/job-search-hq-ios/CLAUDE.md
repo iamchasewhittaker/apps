@@ -2,6 +2,8 @@
 
 > See also: [`/CLAUDE.md`](../../CLAUDE.md) (repo root) and web app [`../job-search-hq/CLAUDE.md`](../job-search-hq/CLAUDE.md).
 
+**Project tracking (shared with web):** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)
+
 ## App Identity
 
 - **Version:** v0.1 (local-first MVP)
@@ -17,9 +19,11 @@ SwiftUI · iOS 17 · `@Observable` · `UserDefaults` + `Codable` · local SPM [`
 ## Commands
 
 - Open `JobSearchHQ.xcodeproj` in Xcode → ⌘B / ⌘R
+- **Regenerate launcher + in-app logo:** `python3 tools/generate_brand_assets.py` (Pillow) — commit updated PNGs when art changes.
 - Tests: ⌘U (requires signing for the new bundle id once)
 - Build check (no signing):  
   `xcodebuild -scheme JobSearchHQ -destination 'platform=iOS Simulator,name=iPhone 16' build CODE_SIGNING_ALLOWED=NO`
+- **Physical device (example):** Debug build with `-allowProvisioningUpdates`, then `xcrun devicectl device install app` to the `.app` under `DerivedData/.../Debug-iphoneos/` (see `HANDOFF.md`).
 
 ## File layout (v1)
 

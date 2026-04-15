@@ -2,7 +2,7 @@
 
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
-**Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)
+**Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
 - **Version:** v8.5 (Wave 2 complete; Wave 3 #1 Chrome extension shipped; iOS companion scaffold in `../job-search-hq-ios/`)

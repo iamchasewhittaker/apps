@@ -15,7 +15,7 @@
 | **Focus** | Wave 3 #2 execution kickoff — stage-specific prep templates |
 | **Next** | Ship Wave 3 in this order: prep templates → debrief log → velocity dashboard → mock interview mode |
 | **Blockers** | None (code-level). External dependency: LinkedIn DOM stability for extension capture. |
-| **Last touch** | 2026-04-15 — iOS companion scaffold at `../job-search-hq-ios/` (v0.1 local-first; see that repo’s HANDOFF). Prior: 2026-04-13 readiness checkpoint. |
+| **Last touch** | 2026-04-15 — iOS v0.1: brand assets + physical-device install documented in `../job-search-hq-ios/` (`HANDOFF`, `README`). Prior: scaffold + readiness checkpoint. |
 
 ---
 

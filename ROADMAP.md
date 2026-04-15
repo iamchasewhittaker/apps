@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-14 (Clarity Command iOS v0.1 shipped — all 6 Clarity apps on iPhone) | Maintained by Chase
+> Last updated: 2026-04-15 (Job Search HQ iOS v0.1 — brand + device install documented) | Maintained by Chase
 
 ---
 
@@ -10,6 +10,7 @@
 | Wellness Tracker | v15.10 | https://wellnes-tracker.vercel.app | chase_wellness_v1 | ✅ Active |
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.5 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
+| Job Search HQ (iOS) | v0.1 | — | `chase_job_search_ios_v1` | 🟡 Local · [`portfolio/job-search-hq-ios`](portfolio/job-search-hq-ios) · [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | Clarity Hub | v0.2 | https://clarity-hub-lilac.vercel.app | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
 | YNAB Clarity Web | v1.0 | https://ynab-clarity-web.vercel.app | `chase_hub_ynab_v1` | ✅ Active · Standalone YNAB dashboard · [`portfolio/ynab-clarity-web`](portfolio/ynab-clarity-web) |
@@ -231,6 +232,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-15 | Job Search HQ (iOS) | v0.1 | **Brand + device QA:** `tools/generate_brand_assets.py` (Pillow) → `AppIcon` + `Logo.imageset`; Debug `xcodebuild` + `xcrun devicectl device install app` to physical iPhone (UDID `00008101-000630D01161001E`); docs sync (`HANDOFF`, `README`, `ROADMAP`, `CLAUDE`, `AGENTS`, `LEARNINGS`, `docs/BRANDING`) · **Linear:** [Job Search HQ project](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — paste project update from root `HANDOFF.md` if MCP auth unavailable | Springboard may need delete-app reinstall to refresh icon |
 | 2026-04-15 | Job Search HQ (iOS) | v0.1 | **Scaffold:** Xcode project with SwiftUI + ClarityUI SPM, web-shaped `Codable` blob + `UserDefaults` (`chase_job_search_ios_v1`), Focus / Pipeline / Contacts / More tabs, editor sheets, Phase 2 sync stub + docs | `portfolio/job-search-hq-ios/` · `xcodebuild … CODE_SIGNING_ALLOWED=NO` build check · ⌘U tests need provisioning for new bundle id |
 | 2026-04-14 | Clarity Command iOS | v0.1 | **Phase 6 shipped:** 26 Swift source files, 3-tab SwiftUI app (Mission/Scoreboard/Settings), CommandStore with conviction system + streak logic, CommandPalette gold accent (#c8a84b), 14/14 unit tests, all 6 Clarity iOS apps installed on iPhone 12 Pro Max | `portfolio/clarity-command-ios/` · `xcodebuild` BUILD SUCCEEDED · `xcrun devicectl` install complete |
 | 2026-04-14 | Clarity Hub, Job Search HQ | — | **Cross-app nav (WHI-40):** `AppNav` component in `portfolio/shared/ui.jsx` with `resolveAppUrl` helper; shipped to Clarity Hub (replaces inline external links) and Job Search HQ (new nav bar). Health check tracks `ui.jsx` drift. | WHI-38 also closed: `auth.js` + `sync.js` drift = 0 across all 6 apps; WHI-52 PRODUCT_LINES.md confirmed complete |

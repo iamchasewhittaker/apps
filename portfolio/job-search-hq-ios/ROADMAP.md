@@ -7,6 +7,8 @@
 - Focus tab (read-only daily blocks)
 - More tab (profile read-only + sync copy)
 - Unit tests (blob round-trip + decode fixture) — run in Xcode with signing
+- **Brand:** `tools/generate_brand_assets.py` → `AppIcon` + `Logo.imageset`; in-app header mark in `ContentView`
+- **Device QA (2026-04-15):** Debug `xcodebuild` to physical iPhone + `devicectl` install succeeded (Team `9XVT527KP3`); Springboard shows new icon after fresh install (delete old app if icon cached)
 
 ## Next
 

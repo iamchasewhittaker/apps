@@ -2,6 +2,7 @@
 
 ## Shipped
 
+- [x] **iOS companion (v0.1)** at `../job-search-hq-ios/` — local-first SwiftUI shell + brand tooling; device install path documented 2026-04-15 (shared Linear: [Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d))
 - [x] Supabase sync + email OTP (v8.3)
 - [x] Vercel monorepo root directory fix (v8.3)
 - [x] Sales Navigator bookmarklet + in-app import flow (v8.4)
