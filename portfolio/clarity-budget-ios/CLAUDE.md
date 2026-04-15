@@ -14,13 +14,13 @@
 
 ## Purpose
 
-Dual-scenario budget (baseline vs stretch) plus wants tracking — local-first, same patterns as Clarity Check-in / Triage / Time.
+Dual-scenario budget (baseline vs stretch) plus wants tracking — local-first, same patterns as Clarity Check-in / Triage / Time. Optional **YNAB** link: token in Keychain (`BudgetYNABKeychain`), same API client/models/metrics patterns as **YNAB Clarity iOS**; **Import** refreshes the **Baseline** scenario from mapped category roles; **Fund category** PATCHes assigned amount with confirmation.
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
 ## Tech stack
 
-SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).
+SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps). YNAB: URLSession + `https://api.ynab.com/v1` (ported `YNABClient` / `YNABModels`); token **never** in UserDefaults or logs (Keychain only, `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`).
 
 ## Commands
 
@@ -48,13 +48,22 @@ ClarityBudget/
   Models/BudgetBlob.swift
   Services/BudgetConfig.swift
   Services/BudgetStore.swift
+  YNAB/
+    BudgetYNABKeychain.swift
+    YNABClient.swift
+    YNABModels.swift
+    BudgetYNABDTOs.swift       — CategoryRole, YNABCategoryMapping, YNABIncomeSource
+    BudgetMetricsEngine.swift  — pure metrics (mirrors YNAB Clarity engine; DTOs not SwiftData)
+    YNABScenarioImport.swift   — month + mappings → Baseline cents
   Constants/Quotes.swift
   Views/ContentView.swift
   Views/BudgetScenariosView.swift
+  Views/BudgetYNABSettingsView.swift
   Views/WantsTrackerView.swift
   Assets.xcassets/
 ClarityBudgetTests/
   BudgetBlobTests.swift
+  YNABScenarioImportTests.swift
 ```
 
 ## Architecture
@@ -66,6 +75,16 @@ ClarityBudgetTests/
 ## Constraints
 
 - Do not change `BudgetConfig.storeKey` once real devices hold data
+- **`BudgetConfig.ynabBudgetIdUserDefaultsKey`** — optional mirror of selected budget id; do not reuse `chase_ynab_clarity_ios_*` keys
+- **`YNABClient`** must never log the `Authorization` header (same rule as YNAB Clarity iOS)
+
+### YNAB import mapping (Baseline only)
+
+- **Income:** if `ynabIncomeSources` is non-empty → projected pay this month (`BudgetMetricsEngine.expectedIncomeThisMonth`); else YNAB month `income` (milliunits → cents).
+- **Fixed needs:** sum of monthly targets (goal → else assigned) for roles **mortgage + bill**.
+- **Flexible needs estimate:** sum of targets for **essential**.
+- **Wants budget cap:** sum of targets for **flexible**.
+- **Wants spent:** unchanged on import.
 
 ## Session start — maintenance / v0.2+
 

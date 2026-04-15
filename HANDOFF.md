@@ -89,7 +89,7 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Focus**      | **Clarity Command iOS shipped (2026-04-14).** 26 Swift source files, 3-tab SwiftUI app (Mission/Scoreboard/Settings), gold accent, 14/14 unit tests passed, all 6 Clarity iOS apps installed on iPhone 12 Pro Max (UDID 00008101-000630D01161001E). **Job Search HQ iOS v0.1** at `portfolio/job-search-hq-ios/` — scaffold + **brand assets** (`tools/generate_brand_assets.py`) + **Debug build + `devicectl` install** verified on same device (2026-04-15). |
 | **Next**       | 1. **Sprint 1 setup in Linear UI** — create cycle 2026-04-21 to 2026-05-04, assign WHI-42 (8pt) + WHI-23 (2pt) + WHI-35 (2pt) + WHI-49 (1pt) = 13 pts. 2. **TrackerTab split (WHI-42)** — break 1420-line monolith into morning/evening sub-components. 3. Add AppIcon artwork to Clarity Command iOS. 4. **Job Search HQ iOS:** ⌘U / CI tests; Phase 2 Supabase per `job-search-hq-ios/docs/SYNC_PHASE2.md`. 5. **Linear:** paste **Job Search HQ — project description update** from Notes below (or authenticate Cursor Linear MCP and mirror the same text). |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-15 — Job Search HQ iOS docs + root/portfolio `ROADMAP` / `HANDOFF` / `CLAUDE`; web `CHANGELOG` + `AGENTS` + `ROADMAP`. Linear MCP auth timed out — manual project update pending. Prior: Clarity Command iOS v0.1. |
+| **Last touch** | 2026-04-15 — **Clarity Budget iOS:** YNAB import + PATCH fund (`portfolio/clarity-budget-ios`), YNAB Clarity iOS PAT/Keychain docs (`TokenStepView` + `CLAUDE.md`), root `ROADMAP` / `CLAUDE` portfolio row. Prior: Job Search HQ iOS docs; Clarity Command iOS v0.1. |
 
 
 ---
@@ -172,7 +172,7 @@ Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-budget-ios/CLAU
 
 Goal: Continue Clarity Budget iOS at portfolio/clarity-budget-ios/.
 
-Current state: Phase 4 MVP v0.1 shipped — dual scenarios + wants aggregate; PBX prefix CB; store key chase_budget_ios_v1; ClarityUI via ../clarity-ui; **launcher** = stacked coins + [`docs/BRANDING.md`](portfolio/clarity-budget-ios/docs/BRANDING.md).
+Current state: v0.1 + **YNAB** — dual scenarios + wants; Budget tab toolbar (link icon) → YNAB settings (token, budget, category roles, income sources, import Baseline, PATCH fund); PBX prefix **CB**; store key `chase_budget_ios_v1`; ClarityUI via `../clarity-ui`; **launcher** = stacked coins + [`docs/BRANDING.md`](portfolio/clarity-budget-ios/docs/BRANDING.md).
 
 Pick next work from portfolio/clarity-budget-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate the store from nested Button builders, StorageHelpers persistence.
 
@@ -224,7 +224,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; **`docs/BRANDING.md`** + **AppIcon** 1024; new apps copy **`docs/templates/PORTFOLIO_APP_BRANDING.md`** once; shared icon geometry **`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`**.
 - **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; **`docs/BRANDING.md` + AppIcon** (nested chevron). `xcodebuild -showdestinations` if "iPhone 16" is missing.
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*`; **`docs/BRANDING.md` + AppIcon** (clock + arc + badge).
-- **clarity-budget-ios (Phase 4):** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1**; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); explore wides in `docs/design/`.
+- **clarity-budget-ios:** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1 + YNAB** (Keychain `com.chasewhittaker.ClarityBudget`, import Baseline, fund category); **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins).
 - **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
 - **clarity-command-ios (Phase 6):** `portfolio/clarity-command-ios/HANDOFF.md` — **v0.1**; **`CD`**; gold accent (`#c8a84b`); 3 tabs (Mission/Scoreboard/Settings); conviction system; 14/14 tests; all 6 apps on iPhone 2026-04-14. Next: AppIcon artwork, CloudKit sync (v0.2).
 - **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — v0.2; 5 tabs (Check-in, Triage, Time, Budget, Growth); YNAB + RollerTask split to standalone apps; nav links to both. Deployed at https://clarity-hub-lilac.vercel.app.

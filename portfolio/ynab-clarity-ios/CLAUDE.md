@@ -25,7 +25,8 @@ Writes require user confirmation and are equivalent to the user manually assigni
 
 ## Security rules (non-negotiable)
 
-- YNAB token stored in iOS Keychain only (`kSecAttrAccessibleWhenUnlockedThisDeviceOnly`)
+- YNAB token stored in iOS Keychain only (`kSecAttrAccessibleWhenUnlockedThisDeviceOnly`) under service **`com.chasewhittaker.YNABClarity`**
+- **Clarity Budget iOS** is a different app: it uses Keychain service **`com.chasewhittaker.ClarityBudget`**. Create a **separate** Personal Access Token in YNAB if you want independent revoke/audit when running both apps.
 - Token **never** written to AppStorage, UserDefaults, SwiftData, logs, or print statements
 - `YNABClient` never stores the token as a property — reads from Keychain on each refresh
 - `YNABClient.request()` must never log the Authorization header

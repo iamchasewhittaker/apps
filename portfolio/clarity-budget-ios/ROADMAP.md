@@ -11,6 +11,7 @@
 
 ## Ideas (v0.2+)
 
+- [x] **YNAB link** — token, budget, category roles, income sources, import Baseline, PATCH fund (2026-04-15)
 - [ ] Calendar-month boundaries for wants (rollover / “this month”)
 - [ ] Per-want line items (label + amount) instead of only aggregate spent
 - [ ] Compare scenarios chart / delta summary card

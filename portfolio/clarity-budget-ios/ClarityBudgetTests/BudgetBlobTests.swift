@@ -51,4 +51,19 @@ final class BudgetBlobTests: XCTestCase {
         let s = BudgetMoneyFormat.string(fromCents: 100)
         XCTAssertFalse(s.isEmpty)
     }
+
+    /// Pre–YNAB blobs only encoded `baseline` + `stretch`; decoding must default YNAB fields.
+    func testLegacyJSONWithoutYnabKeys() throws {
+        let legacy = """
+        {"baseline":{"id":"baseline","label":"Baseline","monthly_income_cents":100000,"fixed_needs_cents":50000,"flexible_needs_estimate_cents":10000,"wants_budget_cents":5000,"wants_spent_cents":0},"stretch":{"id":"stretch","label":"Stretch","monthly_income_cents":100000,"fixed_needs_cents":40000,"flexible_needs_estimate_cents":10000,"wants_budget_cents":8000,"wants_spent_cents":0}}
+        """
+        let data = try XCTUnwrap(legacy.data(using: .utf8))
+        let dec = JSONDecoder()
+        dec.keyDecodingStrategy = .convertFromSnakeCase
+        let blob = try dec.decode(BudgetBlob.self, from: data)
+        XCTAssertNil(blob.ynabBudgetId)
+        XCTAssertTrue(blob.ynabCategoryMappings.isEmpty)
+        XCTAssertTrue(blob.ynabIncomeSources.isEmpty)
+        XCTAssertEqual(blob.baseline.monthlyIncomeCents, 100_000)
+    }
 }

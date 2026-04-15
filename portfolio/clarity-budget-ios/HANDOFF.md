@@ -1,9 +1,9 @@
 # Handoff — Clarity Budget (iOS)
 
-## Current status: Phase 4 complete (MVP v0.1)
+## Current status: v0.1 + YNAB import & writes
 
-- **Version:** v0.1
-- **Last session:** 2026-04-13
+- **Version:** v0.1 (YNAB layer shipped in-tree, same session)
+- **Last session:** 2026-04-15
 - **Bundle ID:** `com.chasewhittaker.ClarityBudget`
 - **Storage key:** `chase_budget_ios_v1` (single `Codable` root in `UserDefaults` — **never rename**)
 - **Shared package:** `../clarity-ui` (local SPM — `ClarityUI`)
@@ -53,7 +53,8 @@ open portfolio/clarity-budget-ios/ClarityBudget.xcodeproj
 | Wants | Segmented picker (scenario); log spend; reset spent for scenario |
 | Quote | `budgetQuotes` + `QuoteBanner` on both tabs |
 | Storage | `StorageHelpers` + `BudgetBlob` JSON |
-| Tests | `ClarityBudgetTests` — JSON round-trip, math, format smoke |
+| Tests | `ClarityBudgetTests` + `YNABScenarioImportTests`; legacy blob JSON without YNAB keys |
+| YNAB | Toolbar **link** on Budget tab → settings: PAT, budget, roles, income, import Baseline, fund category (PATCH) |
 
 ---
 

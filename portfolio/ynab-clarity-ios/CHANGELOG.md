@@ -1,5 +1,9 @@
 # Changelog — YNAB Clarity iOS
 
+## [Unreleased]
+
+- **Docs / token UX:** `CLAUDE.md` security section notes Keychain service id and that **Clarity Budget iOS** uses a separate Keychain service + PAT; `TokenStepView` instruction copy suggests a dedicated token per app.
+
 ## [v0.2] — 2026-04-12
 
 ### Added

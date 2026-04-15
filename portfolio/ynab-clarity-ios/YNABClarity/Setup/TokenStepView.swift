@@ -30,7 +30,7 @@ struct TokenStepView: View {
             Text("Your YNAB Personal Access Token")
                 .font(ClarityTheme.titleFont)
                 .foregroundStyle(ClarityTheme.text)
-            Text("Get it at app.ynab.com → Account Settings → Developer Settings → New Token. This stays on your device in the secure Keychain — never stored anywhere else.")
+            Text("Get it at app.ynab.com → Account Settings → Developer Settings → New Token. Prefer a token used only for YNAB Clarity (you can create a separate token for Clarity Budget iOS). This stays on your device in the secure Keychain — never stored anywhere else.")
                 .font(ClarityTheme.bodyFont)
                 .foregroundStyle(ClarityTheme.muted)
         }

@@ -7,3 +7,7 @@
 ## Simulator / CI
 
 - `xcodebuild test` needs a bootable Simulator. If CoreSimulator / `launchd_sim` fails, `build` can still succeed — retry locally or pick another destination from `-showdestinations`.
+
+## YNAB
+
+- **Separate PAT / Keychain from YNAB Clarity iOS:** this app uses `BudgetYNABKeychain` service `com.chasewhittaker.ClarityBudget`. Do not read the other app’s token; users can create two tokens in YNAB Developer settings for independent revoke.

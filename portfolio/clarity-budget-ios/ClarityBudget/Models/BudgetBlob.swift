@@ -37,11 +37,59 @@ struct BudgetScenario: Codable, Identifiable, Equatable {
 // MARK: - Root blob
 
 /// Local-first state for Clarity Budget. Stored under `BudgetConfig.storeKey`.
-struct BudgetBlob: Codable, Equatable {
+struct BudgetBlob: Equatable {
     /// Conservative / default plan (e.g. baseline month).
     var baseline: BudgetScenario
     /// Aspirational or tighter plan for comparison.
     var stretch: BudgetScenario
+    /// Selected YNAB budget id (optional until user picks one).
+    var ynabBudgetId: String?
+    /// Category → role mappings for import / metrics (Codable; not SwiftData).
+    var ynabCategoryMappings: [YNABCategoryMapping]
+    /// Paycheck-style income for import when non-empty; otherwise month `income` is used.
+    var ynabIncomeSources: [YNABIncomeSource]
+
+    init(
+        baseline: BudgetScenario,
+        stretch: BudgetScenario,
+        ynabBudgetId: String? = nil,
+        ynabCategoryMappings: [YNABCategoryMapping] = [],
+        ynabIncomeSources: [YNABIncomeSource] = []
+    ) {
+        self.baseline = baseline
+        self.stretch = stretch
+        self.ynabBudgetId = ynabBudgetId
+        self.ynabCategoryMappings = ynabCategoryMappings
+        self.ynabIncomeSources = ynabIncomeSources
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case baseline
+        case stretch
+        case ynabBudgetId
+        case ynabCategoryMappings
+        case ynabIncomeSources
+    }
+}
+
+extension BudgetBlob: Codable {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        baseline = try c.decode(BudgetScenario.self, forKey: .baseline)
+        stretch = try c.decode(BudgetScenario.self, forKey: .stretch)
+        ynabBudgetId = try c.decodeIfPresent(String.self, forKey: .ynabBudgetId)
+        ynabCategoryMappings = try c.decodeIfPresent([YNABCategoryMapping].self, forKey: .ynabCategoryMappings) ?? []
+        ynabIncomeSources = try c.decodeIfPresent([YNABIncomeSource].self, forKey: .ynabIncomeSources) ?? []
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(baseline, forKey: .baseline)
+        try c.encode(stretch, forKey: .stretch)
+        try c.encodeIfPresent(ynabBudgetId, forKey: .ynabBudgetId)
+        try c.encode(ynabCategoryMappings, forKey: .ynabCategoryMappings)
+        try c.encode(ynabIncomeSources, forKey: .ynabIncomeSources)
+    }
 }
 
 // MARK: - Math (pure; testable)
