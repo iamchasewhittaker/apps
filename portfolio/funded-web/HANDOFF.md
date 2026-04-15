@@ -6,7 +6,7 @@
 |-------|-------|
 | **Focus** | Stable v1.0 — fully functional YNAB dashboard |
 | **Next** | Monitor; potential improvements: save-to-spend notifications, multi-budget support |
-| **Last touch | 2026-04-15 — rename Conto → Funded; new logo FUNDED; all docs updated |
+| **Last touch** | 2026-04-15 — rename Conto → Funded; FUNDED logo; AppIcon; deployed https://funded-web.vercel.app |
 | **Status** | ✅ Deployed · https://funded-web.vercel.app |
 
 ## Release scope (deploy 2026-04-15)

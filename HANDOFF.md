@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Wellness Tracker (2026-04-14).** Site verified live (`wellness-tracker.vercel.app`). Portfolio text logo shipped: WELLNESS/TRACKER (`logo.svg`, `favicon.svg`, `logo-wordmark.svg`, iOS AppIcon). iOS companion built + installed on iPhone 12 Pro Max. TrackerTab split already done (ROADMAP updated). |
-| **Next**       | 1. **Split HistoryTab** (58 KB → analytics/export/AI summary). 2. **iOS palette parity** (`ClarityPalette.swift` → BASE tokens). 3. **WHI-60 — RollerTask Phase 2 iOS sync**. 4. **Sprint 1 setup in Linear UI** (cycle 2026-04-21 to 2026-05-04). |
+| **Focus**      | **Funded (2026-04-15).** Renamed YNAB Clarity → Conto → Funded. Both iOS + web fully renamed; FUNDED AppIcon generated; deployed https://funded-web.vercel.app; installed on iPhone 12 Pro Max. |
+| **Next**       | 1. **WHI-24 — Wave 3 #2 stage-specific prep templates** (Job Search HQ web). 2. **WHI-60 — RollerTask Phase 2 iOS sync**. 3. **Sprint 1 setup in Linear UI** (cycle 2026-04-21 to 2026-05-04). 4. **Fund from Overview** (Funded iOS V1 backlog #2). |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-14 — **Wellness Tracker:** logo (WELLNESS/TRACKER, #4f92f2), iOS AppIcon, iOS device install, deployment verified. |
+| **Last touch** | 2026-04-15 — **Funded:** renamed all folders/files/UI Conto → Funded; FUNDED logo + AppIcon; deployed web; installed iOS on device; docs + Linear updated. |
 
 
 ---

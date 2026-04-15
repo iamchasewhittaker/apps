@@ -8,10 +8,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Transaction analysis overhaul: payee cleanup, learning system, broader category suggestions |
-| **Status** | v0.3 — `xcodebuild` + `ContoTests` green on iPhone 15 simulator |
-| **Last touch** | 2026-04-15 |
-| **Next** | On **physical iPhone**: ⌘R with your development team; Bills tab → assign category → confirm `CategoryOverride` still suggests next time for that payee |
+| **Focus** | Stable v0.3 — rename Conto → Funded complete; AppIcon updated; installed on device |
+| **Status** | v0.3 — `Funded.xcodeproj` builds; `FundedTests` pass; installed on iPhone 12 Pro Max |
+| **Last touch** | 2026-04-15 — rename Conto → Funded; FUNDED AppIcon; reinstalled on device |
+| **Next** | V1 backlog: Fund from Overview underfunded goals card (PATCH parity with Bills tab) |
 
 ---
 

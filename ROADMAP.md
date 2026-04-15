@@ -13,9 +13,9 @@
 | Job Search HQ (iOS) | v0.1 | — | `chase_job_search_ios_v1` | 🟡 Local · [`portfolio/job-search-hq-ios`](portfolio/job-search-hq-ios) · [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | Clarity Hub | v0.2 | https://clarity-hub-lilac.vercel.app | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
-| YNAB Clarity Web | v1.0 | https://ynab-clarity-web.vercel.app | `chase_hub_ynab_v1` | ✅ Active · Standalone YNAB dashboard · [`portfolio/ynab-clarity-web`](portfolio/ynab-clarity-web) |
+| Funded Web | v1.0 | https://funded-web.vercel.app | `chase_hub_ynab_v1` | ✅ Active · Standalone YNAB dashboard · [`portfolio/funded-web`](portfolio/funded-web) |
 | RollerTask Tycoon Web | v1.0 | https://rollertask-tycoon-web.vercel.app | `chase_hub_rollertask_v1` | ✅ Active · Standalone task tracker · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
-| YNAB Clarity (iOS) | v0.2 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/ynab-clarity-ios`](portfolio/ynab-clarity-ios) |
+| Funded (iOS) | v0.3 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/funded-ios`](portfolio/funded-ios) |
 | Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
 | Clarity Command (iOS) | v0.1 | local Xcode | `chase_command_ios_v1` | ✅ Local · 14/14 tests · all 6 apps on iPhone · [`portfolio/clarity-command-ios`](portfolio/clarity-command-ios) |
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
@@ -234,6 +234,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-14 | Job Search HQ (web + iOS) | v8.5 / v0.1 | **Logo: JOB SEARCH spelled out** — `logo.svg` label expanded from "JOB" to "JOB SEARCH" above bold "HQ"; iOS AppIcon replaced with matching text-based mark (1024×1024); all PNGs regenerated. Web verified live (HTTP 200) + `npm run build` clean. iOS BUILD SUCCEEDED + installed on iPhone 12 Pro Max. HANDOFF + CHANGELOG + Linear updated. | `portfolio/job-search-hq/` + `portfolio/job-search-hq-ios/` |
+| 2026-04-14 | RollerTask Tycoon (iOS + Web) | v1.0 | **Branding + device install:** Portfolio-standard text logo (ROLLER amber / TASK white bold) applied to iOS AppIcon + all web assets; Clarity-family ring icon added to generator; `docs/BRANDING.md` + `docs/SYNC_PHASE2.md` scaffolded; iOS built + installed on iPhone 12 Pro Max; web redeployed; Linear updated (WHI-60 Phase 2 sync, WHI-61 V2 Game Feel) | `portfolio/roller-task-tycoon-ios/` + `portfolio/rollertask-tycoon-web/` |
 | 2026-04-14 | AI Dev Mastery, Shortcut Reference, Claude Usage Tool | — | **Portfolio promotion:** moved all three from `projects/` (and `projects/archive/`) to `portfolio/` as active apps. Full doc scaffolding (HANDOFF, LEARNINGS, BRANDING, CHANGELOG, ROADMAP per app), Cursor symlinks, root CLAUDE.md + ROADMAP.md + HANDOFF.md + MONOREPO_MIGRATION.md updated, Linear projects created/reactivated | AI Dev Mastery: React CRA course; Shortcut Reference: macOS Swift AX; Claude Usage Tool: Electron menu bar |
 | 2026-04-15 | YNAB Clarity Web | v1.0 | **Deploy + CI fix:** `typescript@4.9.5` devDependency + regenerated `package-lock.json` so `npm ci` matches `react-scripts@5`; `npm run build` + Vercel `--prod`; `HANDOFF` release scope table | https://ynab-clarity-web.vercel.app |
 | 2026-04-15 | YNAB Clarity (iOS) | v0.3 | **Tests + docs:** `MetricsEngineTests` updated for universal `No item details yet` subtitle; `xcodebuild test` green with `-derivedDataPath` (avoids `build.db` lock); `HANDOFF` deploy/test + optional YNAB test budget | `portfolio/ynab-clarity-ios/` |

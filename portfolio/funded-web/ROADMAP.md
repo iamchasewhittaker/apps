@@ -1,9 +1,9 @@
-# Roadmap — Conto Web
+# Roadmap — Funded Web
 
 MVP-first. Ship one slice at a time.
 
 ## Vision
-YNAB dashboard - web companion to conto-ios
+YNAB dashboard - web companion to funded-ios
 
 ## v0.1 — Now
 - [ ] Complete Phase 1-3 docs (Product Brief, PRD, App Flow)

@@ -82,6 +82,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-15 | **Rename Conto → Funded:** bundle ID `com.chasewhittaker.Funded`; `FundedApp` struct; `FundedTests`; AppIcon regenerated with FUNDED text; Rose accent retained; Keychain service immutable; installed on iPhone 12 Pro Max |
 | 2026-04-12 | **v0.3:** `CategoryOverride` SwiftData model + learning system (saves override after each manual assignment); `CategorySuggestionEngine` expanded to 80+ payee rules + override-first lookup; `PayeeDisplayFormatter` expanded to 70+ merchants; `itemContextSubtitle` universal (not Amazon-only); `BillsPlannerView` wired to overrides |
 | 2026-04-12 | **4-Rules redesign (v0.2):** tabs → Assign / Bills / Adjust / Age Money; Categorization Review on Bills tab with `CategorySuggestionEngine` + YNAB PATCH write-back; Age of Money card from `GET /budgets/{id}`; budget health + underfunded goals moved to Adjust; `patchRequest` accepts 209; `label:Receipt` pre-filter in Spend Clarity `gmail_client.py` |
 | 2026-04-11 | Layout rethink: `goal_target` decoding; Overview reorder + Budget Health + Underfunded Goals; Bills by status + Fund PATCH; `dueDay`; Income tab improvements; Cash Flow today marker + bill status; TipBanner; HowItWorksView; `YNABClient` PATCH; Xcode project includes new Swift files |
