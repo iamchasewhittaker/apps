@@ -33,14 +33,15 @@
 | RollerTask Tycoon (iOS)     | v1.0          | SwiftData + `UserDefaults` (`chase_roller_task_tycoon_ios_*`)                                                                | local Xcode                         | 🟡 Local · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)                                                                                                                               |
 | RollerTask Tycoon (web PWA) | v1.0          | `chase_roller_task_v1` (historical)                                                                                          | (optional Vercel)                   | 🗄️ Retired — `[portfolio/archive/roller-task-tycoon](portfolio/archive/roller-task-tycoon)`                                                                                                                            |
 | Growth Tracker              | v6            | retired                                                                                                                      | —                                   | 🗄️ Retired                                                                                                                                                                                                             |
-| AI Dev Mastery              | v1.0          | none (no persistence)                                                                                                        | not yet deployed                    | 🟡 Local                                                                                                                                                                                                                |
+| AI Dev Mastery              | v1.0.1        | none (no persistence)                                                                                                        | not yet deployed                    | ✅ Active · React CRA course · 13 tracks, 68+ modules · `[portfolio/ai-dev-mastery](portfolio/ai-dev-mastery)`                                                                                                           |
+| Shortcut Reference          | v0.1.0        | n/a (macOS native)                                                                                                           | local Xcode                         | ✅ Active · macOS Swift · AX keyboard shortcuts · `[portfolio/shortcut-reference](portfolio/shortcut-reference)`                                                                                                          |
+| Claude Usage Tool           | v0.10.0       | electron-store                                                                                                               | local Electron                      | ✅ Active · Electron + React + TS · menu bar usage monitor · [Linear](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688) · `[portfolio/claude-usage-tool](portfolio/claude-usage-tool)`                 |
 | Spend Clarity               | v0.1          | none (Python CLI; no localStorage); YNAB token in `.env`; Gmail OAuth tokens in `config/`                                    | local Python                        | 🟡 Local · `[portfolio/spend-clarity](portfolio/spend-clarity)`                                                                                                                                                         |
 | Knowledge Base              | v1.0          | `chase_knowledge_base_v1`                                                                                                    | knowledge-base-beta-five.vercel.app | ✅ Active · 48 bookmarks · 12 categories · `[portfolio/knowledge-base](portfolio/knowledge-base)`                                                                                                                        |
 | YNAB Clarity Web            | v1.0          | `chase_hub_ynab_v1`                                                                                                          | ynab-clarity-web.vercel.app         | ✅ Active · Standalone YNAB dashboard · split from clarity-hub · `[portfolio/ynab-clarity-web](portfolio/ynab-clarity-web)`                                                                                              |
 | RollerTask Tycoon Web       | v1.0          | `chase_hub_rollertask_v1`                                                                                                    | rollertask-tycoon-web.vercel.app    | ✅ Active · Standalone tasks/points tracker · split from clarity-hub · `[portfolio/rollertask-tycoon-web](portfolio/rollertask-tycoon-web)`                                                                              |
 
 
-> ⚠️ **AI Dev Mastery** also lives under this monorepo at `projects/ai-dev-mastery/` (and may be checked out elsewhere). When standalone, it is not wired to Supabase, no localStorage, pure course viewer.
 
 **Product framework:** **[PRODUCT_BUILD_FRAMEWORK.md](PRODUCT_BUILD_FRAMEWORK.md)** — universal 6-phase framework (Product Definition → PRD → UX Flow → Architecture → Milestones → Ship). **No coding starts until Phases 1–3 are documented for that app.**
 
@@ -79,7 +80,9 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 - **Most apps:** React (Create React App) + localStorage; inline styles (no CSS modules, no Tailwind); Vercel; PWA manifest.
 - **RollerTask Tycoon** (`portfolio/roller-task-tycoon-ios/`): **SwiftUI** + **SwiftData** + `@AppStorage` (native iOS; not the web portfolio stack). **Wellness Tracker** (`portfolio/wellness-tracker-ios/`): **SwiftUI** check-in, **local-only** (UserDefaults). **Archived** Vite PWA: `[portfolio/archive/roller-task-tycoon](portfolio/archive/roller-task-tycoon)` (`**VITE_*`** + `import.meta.env` when building that tree).
 - **Spend Clarity** (`portfolio/spend-clarity/`): **Python 3 CLI** — no React, no localStorage, no Supabase. YNAB + Gmail + Privacy.com APIs. Run via `python src/main.py`. Uses `python-dotenv`, `google-auth-oauthlib`, `requests`. Secrets in `.env` and `config/` (gitignored).
-- No TypeScript, no Redux, no external state libraries (portfolio-wide)
+- **Shortcut Reference** (`portfolio/shortcut-reference/`): **Swift 5.9+** / **SwiftUI** + **AppKit** — macOS 13+ keyboard shortcut viewer using Accessibility APIs. Bundle ID `dev.chase.shortcut-reference`. Build with Xcode or `swift run ShortcutReference`.
+- **Claude Usage Tool** (`portfolio/claude-usage-tool/`): **Electron 28** + **React 18** + **TypeScript** + **Vite** — macOS menu bar app. Exception to the portfolio "no TypeScript" norm. Run via `npm run electron:dev`.
+- No Redux, no external state libraries (portfolio-wide). TypeScript exception: Claude Usage Tool only.
 
 ## Monorepo Layout
 
@@ -125,14 +128,20 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
     tests/            ← pytest suite
     config/           ← category_rules.yaml; Gmail OAuth tokens (gitignored)
     CLAUDE.md, HANDOFF.md, LEARNINGS.md, PROMPT.md, requirements.txt
+  ai-dev-mastery/
+    src/
+      App.jsx      ← single-file course app (2,667 lines; curriculum + React UI)
+  shortcut-reference/
+    Sources/ShortcutReferenceLibrary/  ← SwiftUI + AX logic
+    MacApp/          ← @main for .app bundle
+    ShortcutReference.xcodeproj
+  claude-usage-tool/
+    electron/        ← main process (scraper, adminApi, preload, main)
+    src/             ← React + TypeScript frontend (App.tsx, components)
   archive/
     growth-tracker/  ← retired; merged into Wellness GrowthTab (`chase_wellness_v1.growthLogs`)
     roller-task-tycoon/  ← retired Vite PWA; APP_KEY roller_task_tycoon_v1 (historical Supabase rows may remain)
     money/  ← retired; Transaction Enricher (React) + Budget Dashboard (Python); superseded by spend-clarity
-/projects/
-  ai-dev-mastery/, shortcut-reference/  ← non-portfolio worktrees
-  archive/
-    claude-usage-tool/  ← retired fork (Electron menu bar; see README)
 /scripts/
   checkpoint   ← run before editing; saves a git snapshot (one command, no git knowledge needed)
   restore      ← run to roll back to any prior checkpoint

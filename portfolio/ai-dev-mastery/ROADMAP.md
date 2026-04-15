@@ -10,6 +10,13 @@ _Nothing currently in progress — add items here when you start a session._
 
 ---
 
+## Deployment & Portfolio Integration
+- [ ] Deploy to Vercel (not yet deployed — no Vercel project created)
+- [ ] Add logo per portfolio branding standard (`docs/templates/PORTFOLIO_APP_LOGO.md`)
+- [ ] Consider localStorage for quiz/study progress persistence (currently stateless between sessions)
+
+---
+
 > Last updated: 2026-03-25 (accessibility + learning overhaul complete)
 
 ---

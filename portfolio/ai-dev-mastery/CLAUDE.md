@@ -41,6 +41,8 @@ content:
 | 13 | apple-shortcuts | Apple Shortcuts | #5AC8FA |
 | 14 | gmat | GMAT Focus | #F4D06F |
 
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
+
 ---
 
 ## Rules for every edit

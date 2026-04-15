@@ -1,7 +1,5 @@
 # CLAUDE.md
 
-> **Archived (2026-04-04)** — retired in monorepo at `projects/archive/claude-usage-tool/`. See [README](README.md) banner and [Linear](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688).
-
 ## Project Overview
 macOS menu bar app that tracks Claude Max subscription usage and API costs. Built with Electron + React + TypeScript + Vite.
 
@@ -36,6 +34,7 @@ macOS menu bar app that tracks Claude Max subscription usage and API costs. Buil
 ## Config
 - `.env.local` — Set `ANTHROPIC_ADMIN_KEY=sk-ant-admin-...` for Admin API features (optional)
 - `electron-store` persists user preferences (e.g., Launch at Login)
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
 
 ## Build Output
 - `dist/` — Vite frontend build

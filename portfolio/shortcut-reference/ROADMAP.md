@@ -1,5 +1,8 @@
 # Roadmap
 
+> **Status:** Active portfolio app (promoted from `projects/` on 2026-04-14).
+> macOS keyboard shortcut viewer using Accessibility APIs. MVP functional.
+
 ## Now
 
 - [x] Repo scaffold: standard docs, license, gitignore

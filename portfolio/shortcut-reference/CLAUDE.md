@@ -34,6 +34,8 @@ CHANGELOG.md
 ROADMAP.md
 ```
 
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
+
 ## When editing this repo
 
 - **Small, focused changes**—one concern per commit when possible.

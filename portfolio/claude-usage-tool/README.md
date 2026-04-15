@@ -1,11 +1,3 @@
-# Claude Usage Tool (archived)
-
-**Retired** — this fork is kept for reference only (2026-04-04). It is **not** under active development in this monorepo.
-
-**Path:** `projects/archive/claude-usage-tool/` under `~/Developer/chase`. **Linear:** [Claude Usage Tool (Canceled)](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688).
-
----
-
 # Claude Usage Tool
 
 A lightweight macOS menu bar application that displays your Claude Pro/Max subscription usage and API credit balance at a glance.

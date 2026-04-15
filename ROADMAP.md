@@ -22,7 +22,9 @@
 | RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
 | App Hub | — | local only | — | 🔧 Utility |
-| AI Dev Mastery | v1.0 | local (port 3004) | not yet deployed | 🟡 Local |
+| AI Dev Mastery | v1.0.1 | local (port 3004) | not yet deployed | ✅ Active · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
+| Shortcut Reference | v0.1.0 | local Xcode | — | ✅ Active · macOS Swift · [`portfolio/shortcut-reference`](portfolio/shortcut-reference) |
+| Claude Usage Tool | v0.10.0 | local Electron | — | ✅ Active · Electron menu bar · [Linear](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688) · [`portfolio/claude-usage-tool`](portfolio/claude-usage-tool) |
 
 ---
 
@@ -232,6 +234,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-14 | AI Dev Mastery, Shortcut Reference, Claude Usage Tool | — | **Portfolio promotion:** moved all three from `projects/` (and `projects/archive/`) to `portfolio/` as active apps. Full doc scaffolding (HANDOFF, LEARNINGS, BRANDING, CHANGELOG, ROADMAP per app), Cursor symlinks, root CLAUDE.md + ROADMAP.md + HANDOFF.md + MONOREPO_MIGRATION.md updated, Linear projects created/reactivated | AI Dev Mastery: React CRA course; Shortcut Reference: macOS Swift AX; Claude Usage Tool: Electron menu bar |
 | 2026-04-15 | YNAB Clarity Web | v1.0 | **Deploy + CI fix:** `typescript@4.9.5` devDependency + regenerated `package-lock.json` so `npm ci` matches `react-scripts@5`; `npm run build` + Vercel `--prod`; `HANDOFF` release scope table | https://ynab-clarity-web.vercel.app |
 | 2026-04-15 | YNAB Clarity (iOS) | v0.3 | **Tests + docs:** `MetricsEngineTests` updated for universal `No item details yet` subtitle; `xcodebuild test` green with `-derivedDataPath` (avoids `build.db` lock); `HANDOFF` deploy/test + optional YNAB test budget | `portfolio/ynab-clarity-ios/` |
 | 2026-04-15 | Job Search HQ (iOS) | v0.1 | **Brand + device QA:** `tools/generate_brand_assets.py` (Pillow) → `AppIcon` + `Logo.imageset`; Debug `xcodebuild` + `xcrun devicectl device install app` to physical iPhone (UDID `00008101-000630D01161001E`); docs sync (`HANDOFF`, `README`, `ROADMAP`, `CLAUDE`, `AGENTS`, `LEARNINGS`, `docs/BRANDING`) · **Linear:** [Job Search HQ project](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — paste project update from root `HANDOFF.md` if MCP auth unavailable | Springboard may need delete-app reinstall to refresh icon |

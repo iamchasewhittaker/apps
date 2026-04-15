@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Promoted from `projects/` to `portfolio/` as active portfolio app
+- Added HANDOFF.md, LEARNINGS.md, docs/BRANDING.md (portfolio standard docs)
+- Added Cursor symlink for session handoff
+
 ### Added
 
 - **Docs / UI:** Explain why **Accessibility keeps re-prompting** (ad-hoc Xcode rebuilds): set a **Signing Team**; diagnostics pasteboard + Debug banner + README / LEARNING.
