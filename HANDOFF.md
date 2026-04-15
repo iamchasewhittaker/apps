@@ -209,9 +209,7 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 
 ## Notes (optional, human + long-lived context)
 
-- **Linear — Job Search HQ project description (paste into [Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) Overview, 2026-04-15):**  
-  *Companion iOS v0.1 lives at `portfolio/job-search-hq-ios/`. SwiftUI + ClarityUI, storage key `chase_job_search_ios_v1`, bundle `com.chasewhittaker.JobSearchHQ`. Shipped: four-tab shell (Focus / Pipeline / Contacts / More), web-shaped Codable blob, Phase 2 sync stub + `docs/SYNC_PHASE2.md`. Brand: `tools/generate_brand_assets.py` → AppIcon + Logo; physical device Debug build + `xcrun devicectl device install app` verified (iPhone 12 Pro Max). Next: unit tests (⌘U / CI), Supabase+OTP parity with web, import from web backup.*  
-  *(Optional: create a “Done” issue “JSHQ iOS v0.1 device install + brand” and link commits on `main`.)*
+- **Linear — Job Search HQ (applied 2026-04-15):** Project [Overview](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) updated via API (iOS companion section + commit link); short description mentions iOS v0.1. Done issue **[WHI-53](https://linear.app/whittaker/issue/WHI-53/jshq-ios-v01-device-install-brand)** — *JSHQ iOS v0.1 — device install + brand* (links [fdecbb1](https://github.com/iamchasewhittaker/apps/commit/fdecbb1)).
 
 - **Governance Phase 1 (2026-04-14):** `scripts/portfolio-health-check` (LOC, commits/30d, URL liveness, sync drift, npm audit, secrets scan, doc freshness) · `docs/governance/` (KPI_DICTIONARY.md, SECURITY_CHECKLIST.md, OPERATING_MODEL.md, ARCHIVE_POLICY.md, LAUNCH_CHECKLIST.md) · report templates rewritten · Linear project WHI-30 to WHI-51. **Phase 1 still missing: PRODUCT_LINES.md → WHI-52.**
 - **Health check baseline (2026-04-14):** 33,355 LOC / 19 apps / 8 live URLs all 200 / 6 sync.js drift instances / 0 hardcoded secrets / top monoliths: TrackerTab.jsx (1420), TasksTab.jsx (1192), HistoryTab.jsx (1113), App Forge App.jsx (1075) / most active 30d: job-search-hq (22), wellness-tracker (18), ynab-clarity-ios (16), knowledge-base (15).
