@@ -1,6 +1,9 @@
-# Changelog — YNAB Clarity iOS
+# Changelog — Funded iOS
 
 ## [Unreleased]
+
+### Changed
+- **Rename Conto → Funded:** bundle ID `com.chasewhittaker.Funded`; struct `FundedApp`; logo "FUNDED" bold main text; Rose `#f43f5e` accent retained; Keychain service `com.chasewhittaker.YNABClarity` preserved (immutable)
 
 - **Tests:** `MetricsEngineTests.testItemContextSubtitle_universalFallbackWhenMemoEmpty` — expects `No item details yet` when memo is empty (aligned with `PayeeDisplayFormatter.itemContextSubtitle`).
 
@@ -41,7 +44,7 @@
 ## [v0.3] — 2026-04-12
 
 ### Added
-- **`CategoryOverride` SwiftData model** (`Models/CategoryOverride.swift`) — persists learned categorization corrections: `payeeSubstring` + `ynabCategoryID` + `ynabCategoryName` + `createdAt`; registered in `YNABClarityApp` Schema
+- **`CategoryOverride` SwiftData model** (`Models/CategoryOverride.swift`) — persists learned categorization corrections: `payeeSubstring` + `ynabCategoryID` + `ynabCategoryName` + `createdAt`; registered in `ContoApp` Schema
 - **Learning system in `BillsPlannerView`** — after each successful manual category assignment, saves a `CategoryOverride` for the payee (skips if identical override already exists); future suggestions for that payee will use the learned rule at confidence 1.0
 
 ### Changed
@@ -51,7 +54,7 @@
 - **`BillsPlannerView`** — queries `[CategoryOverride]` via `@Query`; passes `overrides` array to `CategorySuggestionEngine.suggest()`; saves override to `modelContext` after each assignment
 
 ### Fixed
-- **`YNABClarityApp` Schema** — added `CategoryOverride.self` so SwiftData creates the table on first launch (existing installs migrate safely; model has no migration dependencies)
+- **`ContoApp` Schema** — added `CategoryOverride.self` so SwiftData creates the table on first launch (existing installs migrate safely; model has no migration dependencies)
 - **`project.pbxproj`** — `CategoryOverride.swift` added to Models group + Sources build phase
 
 ---
@@ -110,7 +113,7 @@
 
 ### Fixed
 - **App Icon asset catalog** — removed duplicate `ios-marketing` + `universal` 1024 entries (same file) that triggered Xcode “unassigned child” on `AppIcon`
-- **`YNABClarity.xcodeproj`** — `FundCategoryConfirmationSheet.swift` added to **Components** group and app target **Sources**
+- **`Conto.xcodeproj`** — `FundCategoryConfirmationSheet.swift` added to **Components** group and app target **Sources**
 - **`ProgressView` runtime warnings:** clamp coverage to `0...1` when YNAB `available` is negative so `funded / target` never goes below zero; `ClarityTheme.clampedProgressFraction` + defensive `progressColor` clamp
 - **`YNABClient.patchRequest`:** discard PATCH response body with `_` instead of unused `let data` — clears compiler warning (and builds with “Treat Warnings as Errors”)
 - **$0 metrics** when YNAB assigned (`budgeted`) was $0 but monthly goals were set — root cause was using assigned amount as `monthlyTarget` without reading `goal_target`
@@ -135,7 +138,7 @@
   Kassie ($200/mo) fun money budgets, redirect rules, and rule-of-thumb callout
 - `SettingsSheet` embedded in DashboardView — tax rate slider, budget name display,
   token re-entry, and reset setup action
-- Initial commit of entire project to monorepo git — `portfolio/ynab-clarity-ios/`
+- Initial commit of entire project to monorepo git — `portfolio/conto-ios/`
   was previously untracked, making file recovery impossible
 
 ### Fixed (earlier)

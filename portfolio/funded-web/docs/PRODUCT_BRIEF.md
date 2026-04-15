@@ -1,11 +1,11 @@
-# Product Brief — Ynab Clarity Web
+# Product Brief — Conto Web
 
 > Phase 1: Product Definition. Fill this out before writing any code.
 > See [PRODUCT_BUILD_FRAMEWORK.md](/PRODUCT_BUILD_FRAMEWORK.md) for guidance.
 
 ## App summary
 <!-- One sentence: "This app helps ___ do ___." -->
-YNAB dashboard - web companion to ynab-clarity-ios
+YNAB dashboard - web companion to conto-ios
 
 ## Target user
 <!-- Who specifically is this for? -->

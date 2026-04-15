@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- **Rename Conto → Funded:** package name `chase-funded-web`; manifest/title "Funded"; logo "FUNDED" bold main text; Rose `#f43f5e` accent retained; storage keys `chase_hub_ynab_v1` + `chase_hub_ynab_token` preserved (immutable)
+
 ### Fixed (2026-04-14)
 - **Lockfile / CI:** pinned `typescript@4.9.5` as a devDependency so `npm ci` matches `react-scripts@5` peer (`^3 || ^4`); regenerated `package-lock.json` (was resolving `typescript@6`, which broke clean installs)
 

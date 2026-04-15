@@ -1,4 +1,4 @@
-# Roadmap — YNAB Clarity iOS
+# Roadmap — Funded iOS
 
 > Local iOS app. Reads YNAB via API; can PATCH assigned amounts with confirmation.
 > Run in Xcode: ⌘B to build, ⌘R to run, ⌘U for tests.

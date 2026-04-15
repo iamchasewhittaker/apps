@@ -36,6 +36,12 @@
       "runtimeExecutable": "env",
       "runtimeArgs": ["PORT=3004", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/ai-dev-mastery", "start"],
       "port": 3004
+    },
+    {
+      "name": "funded-web",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3006", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/funded-web", "start"],
+      "port": 3006
     }
   ]
 }

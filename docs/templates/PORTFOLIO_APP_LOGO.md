@@ -31,7 +31,7 @@ Every app in this portfolio uses the same text-based logo format. When creating 
 | Clarity Command | Gold | `#c8a84b` |
 | Clarity Hub | Indigo | `#6366f1` |
 | RollerTask Tycoon | Amber | `#f59e0b` |
-| Conto | Rose | `#f43f5e` |
+| Funded | Rose | `#f43f5e` |
 | Clarity Check-in | Sky | `#38bdf8` |
 | Clarity Triage | Orange | `#fb923c` |
 | Clarity Time | Violet | `#a78bfa` |

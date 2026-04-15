@@ -67,7 +67,7 @@ function LoginScreen() {
   return (
     <div style={s.wrap}>
       <div style={s.card}>
-        <div style={s.title}>YNAB Clarity</div>
+        <div style={s.title}>Funded</div>
         <div style={s.sub}>Sign in to access your budget dashboard.</div>
         {!sent ? (
           <form onSubmit={e => { e.preventDefault(); if (email.trim()) sendOtp(); }}>
@@ -194,7 +194,7 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", maxWidth: 700, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: `1px solid ${T.border}`, background: T.surface, position: "sticky", top: 0, zIndex: 10 }}>
-        <div style={{ fontSize: 16, fontWeight: 700 }}>YNAB Clarity</div>
+        <div style={{ fontSize: 16, fontWeight: 700 }}>Funded</div>
         <button onClick={() => setShowSettings(true)} style={{ background: "none", border: "none", color: T.muted, fontSize: 20, cursor: "pointer", padding: 4 }}>{"\u2699"}</button>
       </div>
       <div style={{ padding: "0 0 80px" }}>

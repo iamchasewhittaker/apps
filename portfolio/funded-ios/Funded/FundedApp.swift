@@ -2,7 +2,7 @@ import SwiftData
 import SwiftUI
 
 @main
-struct YNABClarityApp: App {
+struct FundedApp: App {
     @StateObject private var appState = AppState()
 
     var sharedModelContainer: ModelContainer = {

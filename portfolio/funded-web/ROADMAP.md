@@ -1,9 +1,9 @@
-# Roadmap — Ynab Clarity Web
+# Roadmap — Conto Web
 
 MVP-first. Ship one slice at a time.
 
 ## Vision
-YNAB dashboard - web companion to ynab-clarity-ios
+YNAB dashboard - web companion to conto-ios
 
 ## v0.1 — Now
 - [ ] Complete Phase 1-3 docs (Product Brief, PRD, App Flow)

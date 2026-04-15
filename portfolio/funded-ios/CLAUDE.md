@@ -1,6 +1,8 @@
-# CLAUDE.md — YNAB Clarity iOS
+# CLAUDE.md — Funded iOS
 
 > Read this before touching any file in this project. Both Claude Code and Cursor use this file.
+
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
 
 ## What this app does
 
@@ -21,7 +23,7 @@ Writes require user confirmation and are equivalent to the user manually assigni
 
 - Swift 5.0 · SwiftUI · SwiftData · iOS 17.0+
 - No third-party dependencies
-- Bundle ID: `com.chasewhittaker.YNABClarity`
+- Bundle ID: `com.chasewhittaker.Funded`
 
 ## Security rules (non-negotiable)
 
@@ -35,7 +37,7 @@ Writes require user confirmation and are equivalent to the user manually assigni
 ## Architecture
 
 ```
-YNABClarityApp.swift         — @main, ModelContainer setup, AppState StateObject
+FundedApp.swift         — @main, ModelContainer setup, AppState StateObject
 ContentView.swift            — TabView (4 tabs) + setup gate, refresh on launch
 Theme/
   ClarityTheme.swift         — dark palette, semantic colors, card modifier, currency formatter
@@ -187,7 +189,7 @@ Both test targets compile without network access. No mocking of external APIs ne
 
 ## Git / file safety
 
-- Project lives at `portfolio/ynab-clarity-ios/` in the monorepo at `~/Developer/chase`
+- Project lives at `portfolio/funded-ios/` in the monorepo at `~/Developer/chase`
 - All source is committed — if a file disappears, `git checkout <path>` restores it
 - Never leave the project untracked; commit after every meaningful session
 - The `.gitignore` excludes Xcode build artifacts (`xcuserstate`, `DerivedData`, etc.) but

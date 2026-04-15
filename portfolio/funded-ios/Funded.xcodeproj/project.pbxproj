@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC010000000000000000001 /* YNABClarityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000001 /* YNABClarityApp.swift */; };
+		AC010000000000000000001 /* FundedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000001 /* FundedApp.swift */; };
 		AC010000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000002 /* ContentView.swift */; };
 		AC010000000000000000003 /* ClarityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000003 /* ClarityTheme.swift */; };
 		AC010000000000000000004 /* CategoryMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000004 /* CategoryMapping.swift */; };
@@ -48,12 +48,12 @@
 			containerPortal = AC060000000000000000001 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AC050000000000000000001;
-			remoteInfo = YNABClarity;
+			remoteInfo = Funded;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AC020000000000000000001 /* YNABClarityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABClarityApp.swift; sourceTree = "<group>"; };
+		AC020000000000000000001 /* FundedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundedApp.swift; sourceTree = "<group>"; };
 		AC020000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AC020000000000000000003 /* ClarityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClarityTheme.swift; sourceTree = "<group>"; };
 		AC020000000000000000004 /* CategoryMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryMapping.swift; sourceTree = "<group>"; };
@@ -75,8 +75,8 @@
 		AC020000000000000000014 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		AC020000000000000000015 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		AC020000000000000000016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AC020000000000000000017 /* YNABClarity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YNABClarity.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC020000000000000000018 /* YNABClarityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YNABClarityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC020000000000000000017 /* Funded.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Funded.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC020000000000000000018 /* FundedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FundedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC020000000000000000019 /* MetricsEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsEngineTests.swift; sourceTree = "<group>"; };
 		AC02000000000000000001A /* CashFlowEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashFlowEngineTests.swift; sourceTree = "<group>"; };
 		AC02000000000000000001B /* FunMoneyHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunMoneyHelpView.swift; sourceTree = "<group>"; };
@@ -111,16 +111,16 @@
 		AC040000000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				AC040000000000000000002 /* YNABClarity */,
-				AC040000000000000000009 /* YNABClarityTests */,
+				AC040000000000000000002 /* Funded */,
+				AC040000000000000000009 /* FundedTests */,
 				AC040000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AC040000000000000000002 /* YNABClarity */ = {
+		AC040000000000000000002 /* Funded */ = {
 			isa = PBXGroup;
 			children = (
-				AC020000000000000000001 /* YNABClarityApp.swift */,
+				AC020000000000000000001 /* FundedApp.swift */,
 				AC020000000000000000002 /* ContentView.swift */,
 				AC040000000000000000004 /* Theme */,
 				AC040000000000000000005 /* Models */,
@@ -131,14 +131,14 @@
 				AC04000000000000000000B /* Shared */,
 				AC020000000000000000016 /* Assets.xcassets */,
 			);
-			path = YNABClarity;
+			path = Funded;
 			sourceTree = "<group>";
 		};
 		AC040000000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AC020000000000000000017 /* YNABClarity.app */,
-				AC020000000000000000018 /* YNABClarityTests.xctest */,
+				AC020000000000000000017 /* Funded.app */,
+				AC020000000000000000018 /* FundedTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -193,13 +193,13 @@
 			path = Setup;
 			sourceTree = "<group>";
 		};
-		AC040000000000000000009 /* YNABClarityTests */ = {
+		AC040000000000000000009 /* FundedTests */ = {
 			isa = PBXGroup;
 			children = (
 				AC020000000000000000019 /* MetricsEngineTests.swift */,
 				AC02000000000000000001A /* CashFlowEngineTests.swift */,
 			);
-			path = YNABClarityTests;
+			path = FundedTests;
 			sourceTree = "<group>";
 		};
 		AC04000000000000000000A /* Views */ = {
@@ -240,9 +240,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AC050000000000000000001 /* YNABClarity */ = {
+		AC050000000000000000001 /* Funded */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AC060000000000000000003 /* Build configuration list for PBXNativeTarget "YNABClarity" */;
+			buildConfigurationList = AC060000000000000000003 /* Build configuration list for PBXNativeTarget "Funded" */;
 			buildPhases = (
 				AC050000000000000000002 /* Sources */,
 				AC030000000000000000001 /* Frameworks */,
@@ -252,14 +252,14 @@
 			);
 			dependencies = (
 			);
-			name = YNABClarity;
-			productName = YNABClarity;
-			productReference = AC020000000000000000017 /* YNABClarity.app */;
+			name = Funded;
+			productName = Funded;
+			productReference = AC020000000000000000017 /* Funded.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AC050000000000000000010 /* YNABClarityTests */ = {
+		AC050000000000000000010 /* FundedTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AC060000000000000000004 /* Build configuration list for PBXNativeTarget "YNABClarityTests" */;
+			buildConfigurationList = AC060000000000000000004 /* Build configuration list for PBXNativeTarget "FundedTests" */;
 			buildPhases = (
 				AC050000000000000000011 /* Sources */,
 				AC030000000000000000002 /* Frameworks */,
@@ -270,9 +270,9 @@
 			dependencies = (
 				AC080000000000000000002 /* PBXTargetDependency */,
 			);
-			name = YNABClarityTests;
-			productName = YNABClarityTests;
-			productReference = AC020000000000000000018 /* YNABClarityTests.xctest */;
+			name = FundedTests;
+			productName = FundedTests;
+			productReference = AC020000000000000000018 /* FundedTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -294,7 +294,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AC060000000000000000002 /* Build configuration list for PBXProject "YNABClarity" */;
+			buildConfigurationList = AC060000000000000000002 /* Build configuration list for PBXProject "Funded" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -307,8 +307,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AC050000000000000000001 /* YNABClarity */,
-				AC050000000000000000010 /* YNABClarityTests */,
+				AC050000000000000000001 /* Funded */,
+				AC050000000000000000010 /* FundedTests */,
 			);
 		};
 /* End PBXProject section */
@@ -336,7 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC010000000000000000001 /* YNABClarityApp.swift in Sources */,
+				AC010000000000000000001 /* FundedApp.swift in Sources */,
 				AC010000000000000000002 /* ContentView.swift in Sources */,
 				AC010000000000000000003 /* ClarityTheme.swift in Sources */,
 				AC010000000000000000004 /* CategoryMapping.swift in Sources */,
@@ -383,7 +383,7 @@
 /* Begin PBXTargetDependency section */
 		AC080000000000000000002 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AC050000000000000000001 /* YNABClarity */;
+			target = AC050000000000000000001 /* Funded */;
 			targetProxy = AC080000000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -518,7 +518,7 @@
 				DEVELOPMENT_TEAM = 9XVT527KP3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "YNAB Clarity";
+				INFOPLIST_KEY_CFBundleDisplayName = "Funded";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -529,7 +529,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.Funded;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -549,7 +549,7 @@
 				DEVELOPMENT_TEAM = 9XVT527KP3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "YNAB Clarity";
+				INFOPLIST_KEY_CFBundleDisplayName = "Funded";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -560,7 +560,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.Funded;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -580,12 +580,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarityTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.FundedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YNABClarity.app/YNABClarity";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Funded.app/Funded";
 			};
 			name = Debug;
 		};
@@ -599,19 +599,19 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.YNABClarityTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.FundedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YNABClarity.app/YNABClarity";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Funded.app/Funded";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AC060000000000000000002 /* Build configuration list for PBXProject "YNABClarity" */ = {
+		AC060000000000000000002 /* Build configuration list for PBXProject "Funded" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC070000000000000000001 /* Debug */,
@@ -620,7 +620,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AC060000000000000000003 /* Build configuration list for PBXNativeTarget "YNABClarity" */ = {
+		AC060000000000000000003 /* Build configuration list for PBXNativeTarget "Funded" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC070000000000000000003 /* Debug */,
@@ -629,7 +629,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AC060000000000000000004 /* Build configuration list for PBXNativeTarget "YNABClarityTests" */ = {
+		AC060000000000000000004 /* Build configuration list for PBXNativeTarget "FundedTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AC070000000000000000005 /* Debug */,

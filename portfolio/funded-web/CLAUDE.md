@@ -1,6 +1,8 @@
-# YNAB Clarity Web — Project Instructions
+# Funded Web — Project Instructions
 
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
+
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
 
 ## App Identity
 
@@ -8,13 +10,13 @@
 - **Storage key:** `chase_hub_ynab_v1` (localStorage — shared with clarity-hub for continuity)
 - **YNAB token key:** `chase_hub_ynab_token` (localStorage, never synced)
 - **Supabase `app_key`:** `ynab` (must not change — iOS sync depends on it)
-- **URL:** https://ynab-clarity-web.vercel.app
+- **URL:** https://funded-web.vercel.app
 - **Supabase:** project `unqtnnxlltiadzbqpyhh` — same as all portfolio apps
 - **Entry:** `src/App.jsx`
 
 ## Purpose
 
-Standalone YNAB budget dashboard — web companion to `ynab-clarity-ios`. Split out from Clarity Hub for focused access.
+Standalone YNAB budget dashboard — web companion to `funded-ios`. Split out from Clarity Hub for focused access.
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
@@ -51,14 +53,14 @@ src/
 ## Commands
 
 ```bash
-cd portfolio/ynab-clarity-web
+cd portfolio/funded-web
 
 npm start          # dev server at localhost:3000
 npm run build      # production build (verify before deploy)
 
 # Deploy:
 vercel link        # first time only
-scripts/vercel-add-env portfolio/ynab-clarity-web
+scripts/vercel-add-env portfolio/funded-web
 vercel --prod
 ```
 

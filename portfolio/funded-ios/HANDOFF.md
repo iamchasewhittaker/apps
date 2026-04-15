@@ -1,4 +1,4 @@
-# HANDOFF — YNAB Clarity iOS
+# HANDOFF — Funded iOS
 
 > Current session state for Claude Code / Cursor. Update before ending a session.
 
@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Focus** | Transaction analysis overhaul: payee cleanup, learning system, broader category suggestions |
-| **Status** | v0.3 — `xcodebuild` + `YNABClarityTests` green on iPhone 15 simulator |
+| **Status** | v0.3 — `xcodebuild` + `ContoTests` green on iPhone 15 simulator |
 | **Last touch** | 2026-04-15 |
 | **Next** | On **physical iPhone**: ⌘R with your development team; Bills tab → assign category → confirm `CategoryOverride` still suggests next time for that payee |
 
@@ -19,9 +19,9 @@
 
 | Step | Command / action |
 |------|------------------|
-| **Simulator tests** | `xcodebuild test -scheme YNABClarity -derivedDataPath /tmp/YNABClarity-dd-test -destination 'platform=iOS Simulator,id=<iPhone 15 UDID>' -only-testing:YNABClarityTests` — use a **separate** `-derivedDataPath` if Xcode GUI is also building (avoids `build.db` locked) |
-| **Device build (no signing)** | `xcodebuild -scheme YNABClarity -destination 'generic/platform=iOS' -configuration Debug build CODE_SIGNING_ALLOWED=NO` |
-| **Physical install** | Open `YNABClarity.xcodeproj` → select iPhone → Signing & Capabilities: Team + bundle `com.chasewhittaker.YNABClarity` → **⌘R** |
+| **Simulator tests** | `xcodebuild test --scheme Funded -derivedDataPath /tmp/Funded-dd-test -destination 'platform=iOS Simulator,id=<iPhone 15 UDID>' -only-testing:FundedTests` — use a **separate** `-derivedDataPath` if Xcode GUI is also building (avoids `build.db` locked) |
+| **Device build (no signing)** | `xcodebuild --scheme Funded -destination 'generic/platform=iOS' -configuration Debug build CODE_SIGNING_ALLOWED=NO` |
+| **Physical install** | Open `Funded.xcodeproj` → select iPhone → Signing & Capabilities: Team + bundle `com.chasewhittaker.Funded` → **⌘R** |
 
 ### Optional: YNAB test budget
 
@@ -33,7 +33,7 @@ Create a **second budget** in the YNAB app/website; use the **same** Personal Ac
 
 | Area | Detail |
 |------|--------|
-| **`CategoryOverride` model** | New SwiftData `@Model` — `payeeSubstring`, `ynabCategoryID`, `ynabCategoryName`, `createdAt`; registered in Schema in `YNABClarityApp.swift` |
+| **`CategoryOverride` model** | New SwiftData `@Model` — `payeeSubstring`, `ynabCategoryID`, `ynabCategoryName`, `createdAt`; registered in Schema in `FundedApp.swift` |
 | **Learning system** | `BillsPlannerView` saves a `CategoryOverride` after each manual category assignment via `AssignCategorySheet`; future suggestions for that payee use the override at confidence 1.0 |
 | **`CategorySuggestionEngine`** | 80+ `payeeRules` patterns; `suggest()` accepts `overrides: [CategoryOverride]` and checks them first; three-tier: overrides (1.0) → payeeRules (0.9) → flexible fallback (0.3) |
 | **`PayeeDisplayFormatter`** | Known merchant map expanded from 17 → 70+ entries; `itemContextSubtitle` shows "No item details yet" universally (not Amazon-only) |

@@ -1,5 +1,5 @@
 import XCTest
-@testable import YNABClarity
+@testable import Funded
 
 final class CashFlowEngineTests: XCTestCase {
 
