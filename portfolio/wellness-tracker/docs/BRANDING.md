@@ -16,9 +16,19 @@ For a **consistent visual family** with the YNAB + receipts toolchain, the Welln
 
 Hex values are **approximations** from `SwiftUI.Color` components; source of truth remains `ClarityTheme.swift`.
 
-## App mark (2026)
+## Portfolio text logo (2026)
 
-Unified logo for **web (PWA)** and **native iOS**:
+Standard Clarity-family typographic logo per `docs/templates/PORTFOLIO_APP_LOGO.md`:
+
+- **Label:** `WELLNESS` (accent `#4f92f2`, 52px, weight 600)
+- **Main:** `TRACK` (#f3f4f6, 130px, weight 800)
+- **Canvas:** 512×512, `#0f1117` background
+- **SVG:** `public/logo.svg` · **Favicon:** `public/favicon.svg`
+- **PNGs:** `logo512.png`, `logo192.png`, `apple-touch-icon.png` (generated from SVG)
+
+## iOS app mark (2026)
+
+Sunrise mark for **native iOS** (separate from the text logo):
 
 - **Concept:** Large sunrise / sun disk on **Clarity `bg`**, cream **W** integrated into the sun, **accent** blue horizon — aligned to the table above.
 - **Master raster (1024×1024):** `public/logo-1024.png` (same bytes as iOS `AppIcon.png` in-repo).
@@ -27,7 +37,8 @@ Unified logo for **web (PWA)** and **native iOS**:
 
 | Surface | Path |
 |--------|------|
-| Web PWA icons | `public/logo192.png`, `public/logo512.png`, `public/apple-touch-icon.png`, `public/favicon-32.png` |
+| Web text logo (SVG) | `public/logo.svg`, `public/favicon.svg` |
+| Web PWA icons (PNG) | `public/logo192.png`, `public/logo512.png`, `public/apple-touch-icon.png` |
 | Web manifest | `public/manifest.json` |
 | iOS App Store / home screen | `wellness-tracker-ios/WellnessTracker/Assets.xcassets/AppIcon.appiconset/AppIcon.png` |
 

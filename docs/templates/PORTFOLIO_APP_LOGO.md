@@ -31,12 +31,13 @@ Every app in this portfolio uses the same text-based logo format. When creating 
 | Clarity Command | Gold | `#c8a84b` |
 | Clarity Hub | Indigo | `#6366f1` |
 | RollerTask Tycoon | Amber | `#f59e0b` |
-| YNAB Clarity | Green | `#22c55e` |
+| Conto | Rose | `#f43f5e` |
 | Clarity Check-in | Sky | `#38bdf8` |
 | Clarity Triage | Orange | `#fb923c` |
 | Clarity Time | Violet | `#a78bfa` |
 | Clarity Budget | Teal | `#34d399` |
 | Clarity Growth | Green | `#4ade80` |
+| Wellness Tracker | Blue Horizon | `#4f92f2` |
 
 When adding a new app, pick an accent color that's visually distinct from existing ones.
 

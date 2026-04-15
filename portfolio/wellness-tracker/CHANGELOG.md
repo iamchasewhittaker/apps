@@ -12,6 +12,13 @@
 ## [Unreleased]
 
 ### Added (2026-04-14)
+- **Portfolio text logo:** WELLNESS/TRACK (`public/logo.svg`) + favicon (`public/favicon.svg`) following Clarity portfolio template; accent `#4f92f2` (Blue Horizon); PNG assets regenerated from SVG; `index.html` favicon switched from PNG to SVG
+
+### Changed (2026-04-15)
+- **Canonical production URL:** docs and in-app links now use **`https://wellness-tracker.vercel.app`** (correct spelling). Legacy **`wellnes-tracker.vercel.app`** should redirect in Vercel if still provisioned.
+
+### Added (2026-04-14)
+- **Wellness Tracker iOS** unarchived to `portfolio/wellness-tracker-ios` — optional Supabase sync + `wellness-daily` push for Clarity Command (see iOS `CHANGELOG.md`).
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/wellness`), session key consolidation (`chase_portfolio_auth_token`), OTP `emailRedirectTo`
 - **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo` (removes `window.location.origin` hardcoding)
 - **Auth diagnostics:** `local_mode_no_auth`, `initial_session`, `state_change` events logged when `REACT_APP_AUTH_DEBUG=true`
@@ -27,7 +34,7 @@
 - **Branding / PWA:** corrected master + derived icons to **1024×1024** square (fixes Xcode App Icon validation when syncing from non-square sources).
 - **Branding / PWA:** unified **W + sunrise** mark recolored to **Clarity family** palette (`#0e1015` canvas, blue horizon, amber sun — tokens per YNAB Clarity `ClarityTheme`; Spend Clarity CLI has no logo in-repo); refreshed `public/logo-*.png`, `apple-touch-icon`, `favicon-32`, `manifest.json` (`theme_color` / `background_color` `#0e1015`), `index.html` `theme-color`. Specs in `docs/BRANDING.md`. Added per-app [HANDOFF.md](HANDOFF.md).
 - **Monorepo:** app path is `portfolio/wellness-tracker` under `~/Developer/chase`; README, ROADMAP, AGENTS, `docs/ARCHITECTURE`, `docs/LEARNING`; Linear project linked in docs.
-- **Native iOS (Phase 1):** companion app at [`portfolio/wellness-tracker-ios`](../wellness-tracker-ios) — morning/evening check-in, **`chase_wellness_ios_*`** UserDefaults, **no cloud sync**; see that folder’s `CLAUDE.md` / `README.md`.
+- **Native iOS:** companion app at [`portfolio/wellness-tracker-ios`](../wellness-tracker-ios) — morning/evening check-in + tabs, **`chase_wellness_ios_*`** UserDefaults, optional **Supabase** (`wellness` + `wellness-daily`); see that folder’s `CLAUDE.md` / `README.md`.
 - **Docs:** `src/shared/sync.js` header lists known `app_key` values (kept in sync with `portfolio/shared/sync.js`).
 
 ## v15.9 — 2026-03-24 — Supabase sync live
@@ -36,7 +43,7 @@
 - Created `src/sync.js` (APP_KEY = `'wellness'`, `REACT_APP_*` env vars, offline-first fallback)
 - Copied `shared/sync.js` as `src/shared/sync.js` — real file copy, not symlink (symlinks break on Vercel)
 - `@supabase/supabase-js` installed
-- Supabase env vars (`REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY`) added to Vercel — deployed app at `wellnes-tracker.vercel.app` now has live sync
+- Supabase env vars (`REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY`) added to Vercel — deployed app at `wellness-tracker.vercel.app` now has live sync
 - Site URL and redirect URL allowlist confirmed set in Supabase dashboard; login verified on live URL
 - `_syncAt: Date.now()` stamped on every `save()` for last-write-wins sync comparison
 - Fallback: if `.env` missing or incomplete, app runs in localStorage-only mode (no crash)
