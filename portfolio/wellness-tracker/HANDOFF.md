@@ -9,10 +9,10 @@
 | Field | Value |
 |-------|--------|
 | **Paths** | Web: `portfolio/wellness-tracker/` · Native: [`../wellness-tracker-ios`](../wellness-tracker-ios/) |
-| **Focus** | **Branding:** Wellness app mark uses **Clarity family palette** (same RGB tokens as [`YNAB Clarity` `ClarityTheme`](../ynab-clarity-ios/YNABClarity/Theme/ClarityTheme.swift)). *Spend Clarity* is a Python CLI with no logo asset in-repo; palette choice aligns Wellness with the **YNAB Clarity** iOS surface in the receipts + YNAB toolchain. |
-| **Assets** | Master: `public/logo-1024.png` · PWA: `public/manifest.json`, `logo192` / `logo512`, `apple-touch-icon`, `favicon-32` · iOS: `wellness-tracker-ios/.../AppIcon.appiconset/AppIcon.png` — see [docs/BRANDING.md](docs/BRANDING.md). |
-| **Last touch** | 2026-04-13 — **Theme alignment (web):** `T` tokens updated in `theme.js` (`bg` `#0f1117`, `surface` `#161b27`, `border` `#1f2937`, `text` `#f3f4f6`, `muted` `#6b7280`); Georgia → DM Sans font in `App.jsx`; DM Sans Google Fonts link added to `public/index.html`. Portfolio-wide BASE token sync. |
-| **Next** | **iOS theme alignment** — see [`docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md`](../../docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md) for `ClarityPalette.swift` update spec. Then: split `TrackerTab` + `HistoryTab`. |
+| **Focus** | **Logos + deployment verified (2026-04-14).** Portfolio text logo created: `logo.svg` (WELLNESS small label / TRACKER large bold, accent `#4f92f2`). `favicon.svg`, `logo-wordmark.svg` added. iOS AppIcon updated with same design. App verified live at `wellness-tracker.vercel.app`. iOS companion built and installed on iPhone 12 Pro Max. |
+| **Assets** | Web text logo: `public/logo.svg`, `public/favicon.svg`, `public/logo-wordmark.svg` · PWA PNGs: `logo192`, `logo512`, `apple-touch-icon` · iOS icon: `wellness-tracker-ios/.../AppIcon.appiconset/AppIcon.png` — see [docs/BRANDING.md](docs/BRANDING.md). |
+| **Last touch** | 2026-04-14 — **Logo + deployment:** portfolio text logos (WELLNESS/TRACKER, #4f92f2), iOS AppIcon updated, build verified (149.96 KB gzip), live site confirmed, iOS device install on iPhone 12 Pro Max. |
+| **Next** | 1. **Split HistoryTab** (58 KB monolith → analytics / export / AI summary sub-components). 2. **iOS palette parity** — align `ClarityPalette.swift` to BASE tokens (see `docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md`). 3. **Wellness iOS Phase 2+** — tab bar, richer history, export parity. |
 
 ---
 
