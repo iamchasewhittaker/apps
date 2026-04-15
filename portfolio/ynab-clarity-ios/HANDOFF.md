@@ -10,8 +10,22 @@
 |-------|-------|
 | **Focus** | Transaction analysis overhaul: payee cleanup, learning system, broader category suggestions |
 | **Status** | v0.3 — `xcodebuild` + `YNABClarityTests` green on iPhone 15 simulator |
-| **Last touch** | 2026-04-12 |
-| **Next** | Run on device (⌘R in Xcode); test categorization review flow end-to-end; verify `CategoryOverride` persists after assignment |
+| **Last touch** | 2026-04-15 |
+| **Next** | On **physical iPhone**: ⌘R with your development team; Bills tab → assign category → confirm `CategoryOverride` still suggests next time for that payee |
+
+---
+
+## Deploy & test (CLI + device)
+
+| Step | Command / action |
+|------|------------------|
+| **Simulator tests** | `xcodebuild test -scheme YNABClarity -derivedDataPath /tmp/YNABClarity-dd-test -destination 'platform=iOS Simulator,id=<iPhone 15 UDID>' -only-testing:YNABClarityTests` — use a **separate** `-derivedDataPath` if Xcode GUI is also building (avoids `build.db` locked) |
+| **Device build (no signing)** | `xcodebuild -scheme YNABClarity -destination 'generic/platform=iOS' -configuration Debug build CODE_SIGNING_ALLOWED=NO` |
+| **Physical install** | Open `YNABClarity.xcodeproj` → select iPhone → Signing & Capabilities: Team + bundle `com.chasewhittaker.YNABClarity` → **⌘R** |
+
+### Optional: YNAB test budget
+
+Create a **second budget** in the YNAB app/website; use the **same** Personal Access Token. In setup, pick the test budget on both **iOS** and **Web** when exercising Fund / PATCH / categorization so production category assignments stay untouched.
 
 ---
 

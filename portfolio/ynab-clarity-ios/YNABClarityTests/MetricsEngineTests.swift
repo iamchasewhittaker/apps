@@ -222,10 +222,9 @@ final class MetricsEngineTests: XCTestCase {
         XCTAssertTrue(s!.localizedCaseInsensitiveContains("Widget"))
     }
 
-    func testItemContextSubtitle_amazonFallbackWhenMemoEmpty() {
+    func testItemContextSubtitle_universalFallbackWhenMemoEmpty() {
         let s = PayeeDisplayFormatter.itemContextSubtitle(payeeRaw: "ACH DEBIT AMZN MKTP US", memo: nil)
-        XCTAssertNotNil(s)
-        XCTAssertTrue(s!.localizedCaseInsensitiveContains("memo"))
+        XCTAssertEqual(s, "No item details yet")
     }
 
     // MARK: - underfundedGoals

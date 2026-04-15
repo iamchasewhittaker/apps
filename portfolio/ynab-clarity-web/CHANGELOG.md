@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed (2026-04-14)
+- **Lockfile / CI:** pinned `typescript@4.9.5` as a devDependency so `npm ci` matches `react-scripts@5` peer (`^3 || ^4`); regenerated `package-lock.json` (was resolving `typescript@6`, which broke clean installs)
+
 ### Added (2026-04-14)
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/ynab`), session key consolidation, OTP `emailRedirectTo`
 - **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`

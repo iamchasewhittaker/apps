@@ -61,3 +61,15 @@
 **Root cause:** No habit of committing before manual editing sessions. Xcode's undo does not survive file closes or app restarts, and there was no git safety net.
 **Fix / lesson:** Always run `checkpoint` in Terminal before opening Xcode to edit. The checkpoint + restore system was created specifically because of this incident. One command saves everything.
 **Tags:** data-loss, xcode, git
+
+### 2026-04-15 — `xcodebuild test` + Xcode GUI → `build.db` locked
+**What happened:** Running `xcodebuild test` from the CLI while Xcode (or another `xcodebuild`) was using the same DerivedData folder failed with `unable to attach DB` / `build.db` locked.
+**Root cause:** Shared DerivedData path; two processes contend for the same XCBuildData database.
+**Fix / lesson:** Use `-derivedDataPath /tmp/YNABClarity-dd-test` (or any empty temp dir) for CLI test runs, or quit other builders first.
+**Tags:** xcode, tests, gotcha
+
+### 2026-04-15 — `itemContextSubtitle` test drift after universal empty-memo copy
+**What happened:** `testItemContextSubtitle_amazonFallbackWhenMemoEmpty` failed — it still expected the old Amazon-specific hint containing "memo".
+**Root cause:** `PayeeDisplayFormatter.itemContextSubtitle` now returns the same string for all merchants when memo is empty: `No item details yet`.
+**Fix / lesson:** Renamed test to `testItemContextSubtitle_universalFallbackWhenMemoEmpty` and asserted equality with that string.
+**Tags:** swift, tests, ui-copy

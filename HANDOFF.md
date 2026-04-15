@@ -89,7 +89,7 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Focus**      | **Clarity Command iOS shipped (2026-04-14).** 26 Swift source files, 3-tab SwiftUI app (Mission/Scoreboard/Settings), gold accent, 14/14 unit tests passed, all 6 Clarity iOS apps installed on iPhone 12 Pro Max (UDID 00008101-000630D01161001E). **Job Search HQ iOS v0.1** at `portfolio/job-search-hq-ios/` — scaffold + **brand assets** (`tools/generate_brand_assets.py`) + **Debug build + `devicectl` install** verified on same device (2026-04-15). |
 | **Next**       | 1. **Sprint 1 setup in Linear UI** — create cycle 2026-04-21 to 2026-05-04, assign WHI-42 (8pt) + WHI-23 (2pt) + WHI-35 (2pt) + WHI-49 (1pt) = 13 pts. 2. **TrackerTab split (WHI-42)** — break 1420-line monolith into morning/evening sub-components. 3. Add AppIcon artwork to Clarity Command iOS. 4. **Job Search HQ iOS:** ⌘U / CI tests; Phase 2 Supabase per `job-search-hq-ios/docs/SYNC_PHASE2.md`. 5. **Linear:** paste **Job Search HQ — project description update** from Notes below (or authenticate Cursor Linear MCP and mirror the same text). |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-15 — **Clarity Budget iOS:** YNAB import + PATCH fund (`portfolio/clarity-budget-ios`), YNAB Clarity iOS PAT/Keychain docs (`TokenStepView` + `CLAUDE.md`), root `ROADMAP` / `CLAUDE` portfolio row. Prior: Job Search HQ iOS docs; Clarity Command iOS v0.1. |
+| **Last touch** | 2026-04-15 — **YNAB Clarity Web:** TS 4.9.5 pin + lockfile, Vercel prod deploy; **YNAB Clarity iOS:** subtitle test fix, full `YNABClarityTests` green (`-derivedDataPath`). Prior: Clarity Budget iOS YNAB; Job Search HQ iOS; Clarity Command iOS v0.1. |
 
 
 ---
