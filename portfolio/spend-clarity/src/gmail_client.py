@@ -3,6 +3,9 @@ gmail_client.py — Gmail API authentication and email fetching.
 
 Requires config/gmail_credentials.json (downloaded from Google Cloud Console).
 Stores OAuth token at config/gmail_token.json after first auth.
+
+Receipt fetches use ``label:Receipt`` so they align with the sibling **Inbox Zero**
+project (portfolio/inbox-zero), which labels transactional mail before Spend Clarity runs.
 """
 
 import base64

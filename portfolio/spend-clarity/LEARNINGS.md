@@ -18,6 +18,12 @@
 
 ## Entries
 
+### 2026-04-16 — Gmail was required even for Privacy API–only runs
+**What happened:** Running `python src/main.py --merchants privacy` with `PRIVACY_API_KEY` set still crashed before YNAB with `FileNotFoundError: config/gmail_credentials.json`, because `main.py` always called `gmail.authenticate()` up front.
+**Root cause:** OAuth was wired as a universal prerequisite even when Step 2 used only the Privacy.com HTTP API and never called `search_emails`.
+**Fix / lesson:** Initialize Chase Gmail only when `pipeline_auto` or at least one merchant still uses the email path (`_email_merchants_for_step2`). Treat `PRIVACY_API_KEY` values starting with `your_` as unset so `.env.example` placeholders do not count as “API mode.” For a real Privacy-only machine, put a developer key from https://privacy.com/developer in `.env`.
+**Tags:** python, gmail, privacy, api, ynab
+
 ### 2026-04-13 — Startup validation should fail only when all category IDs are invalid
 **What happened:** We needed guardrails for stale category IDs after the wrong-budget incident, but a strict "any invalid ID = fail" rule would break runs during normal incremental config edits.
 **Root cause:** Validation requirements were framed as safety only, but the runtime also needs resilience when only part of the mapping is in flux.

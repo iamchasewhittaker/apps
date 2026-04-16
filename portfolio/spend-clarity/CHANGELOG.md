@@ -5,12 +5,16 @@ All notable changes to this project will be documented here.
 ## [Unreleased]
 
 ### Added
+- `main.py` — `_email_merchants_for_step2()` helper; Chase Gmail OAuth runs only when pipeline mode or at least one merchant still uses Gmail (Privacy excluded when `PRIVACY_API_KEY` is set)
+- `prompts/SESSION_START.md` — copy-paste session bootstrap for new chats
 - `scripts/install_launchd_job.sh` + `ops/com.chase.spend-clarity.enrich.plist` — one-command launchd install/update flow (nightly schedule, dry-run default, optional `--live`)
 - `src/main.py --print-launchd-plist` — prints a fully resolved launchd plist for manual review/custom scheduling
 - `tests/test_matcher.py` — unmatched diagnostics coverage and merchant-candidate metadata assertion
 - `tests/test_categorizer.py` — startup-validation support coverage for configured category ID collection
 
 ### Changed
+- `main.py` — `PRIVACY_API_KEY` values starting with `your_` are ignored (`.env.example` placeholders)
+- `HANDOFF.md`, `CLAUDE.md`, `README.md`, `ROADMAP.md`, `PROMPT.md` — Privacy-only path, tests (`PYTHONPATH`), session prompt
 - `src/main.py` — startup category validation now checks configured IDs against live YNAB categories and fails fast if none resolve
 - `src/main.py` + `src/matcher.py` — unmatched report now includes merchant candidates and closest date/amount mismatch details
 - `src/ynab_client.py` + `src/categorizer.py` — expose category ID sets for startup validation (`get_category_ids`, `configured_category_ids`)

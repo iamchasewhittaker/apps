@@ -1,16 +1,17 @@
 # MVP Audit — Spend Clarity
-*Audit date: 2026-04-12 · Framework: 6-step MVP (Capture → Validate → Define → Build → Ship → Learn)*
+
+*Audit date: 2026-04-16 · Framework: 6-step MVP (Capture → Validate → Define → Build → Ship → Learn)*
 
 ---
 
-**What it is:** Python CLI that enriches YNAB transactions with item-level detail from Gmail receipts (Amazon, Apple) and Privacy.com merchant data.
+**What it is:** Python CLI that enriches YNAB transactions with item-level detail from Gmail receipts (Amazon, Apple, etc.) and from the Privacy.com API for virtual-card spend; optional payee-based categorization (Step 4.5).
 
-**Current step (per the framework):** Step 4 — Build (early Build)
+**Current step:** Step 5 — Ship / Learn (tool is in daily use; iteration on matchers and category rules continues)
 
-**Evidence for that step:** 9 source files, 3 test files, documented architecture. CHANGELOG shows v0.1.2 (March 30) with Privacy.com client and parser improvements. Requirements.txt exists. HANDOFF has a 3-phase roadmap. Recent commit was a security scrub (real financial data accidentally committed to public repo — since remediated).
+**Evidence:** `requirements.txt`, 90 passing tests (`PYTHONPATH=$(pwd) pytest tests/ -q`), `CHANGELOG.md`, live YNAB + API integration paths documented in `HANDOFF.md`. Privacy-only runs no longer require local Gmail OAuth when `PRIVACY_API_KEY` is a real developer key.
 
-**What's missing to legitimately be at this step:** The project docs reference `pyproject.toml` but the repo uses `requirements.txt` — gap between documentation and reality. Only 2 commits visible in the monorepo (consolidated recently from separate projects). No evidence it's been run end-to-end successfully post-consolidation.
+**What would move it to “fully shipped” for V1:** Reliable end-to-end enrichment for top merchants on a schedule (`launchd` script exists); user habit of reviewing `output/unmatched_report.txt`; optional summary stats at end of run (roadmap #7).
 
-**Biggest risk/red flag:** The security incident. Real financial data was committed to a public GitHub repo. It was scrubbed, but this is a process failure that should trigger a change — and it did (prevention rules added). Deeper risk: this tool touches real money APIs (YNAB writes, Privacy.com) with `DRY_RUN=true` as the only safety net. One config mistake writes real data.
+**Biggest risk:** Real-money writes (`DRY_RUN=false`) and category PATCHes (Step 4.5). Mitigations: dry-run default, `AUTO_CATEGORIZE` toggle, overrides file, startup category-ID validation.
 
-**Recommended next action:** Run it. `python src/main.py` with `DRY_RUN=true`. Confirm it works end-to-end in the new monorepo location. If it does, document that it works and push toward Ship. If it doesn't, fix it first.
+**Recommended next action:** Keep `PRIVACY_API_KEY` in `.env` for Privacy imports; run `python src/main.py --dry-run` before live; align Inbox Zero Receipt filters when adding merchants (`portfolio/inbox-zero/integrations/receipt-to-spend-clarity.md`).

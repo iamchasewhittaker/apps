@@ -111,6 +111,13 @@ MERCHANTS = {
 KASSIE_MERCHANTS = {"walmart", "target", "amazon", "doordash", "costco"}
 
 
+def _email_merchants_for_step2(active_merchants: list[str], privacy_api_key: str) -> list[str]:
+    """Merchants that use Gmail; Privacy is excluded when the API key supplies receipts."""
+    if "privacy" in active_merchants and privacy_api_key:
+        return [m for m in active_merchants if m != "privacy"]
+    return list(active_merchants)
+
+
 def main():
     parser = argparse.ArgumentParser(description="YNAB transaction enrichment tool")
     parser.add_argument("--auth", action="store_true", help="Complete Gmail OAuth for Chase's account and exit")
@@ -143,34 +150,45 @@ def main():
         log.info("DRY RUN mode — no changes will be written to YNAB")
 
     credentials_file = os.getenv("GMAIL_CREDENTIALS_FILE", "config/gmail_credentials.json")
+    chase_token_file = os.getenv("GMAIL_TOKEN_FILE", "config/gmail_token.json")
+    kassie_token_file = os.getenv("KASSIE_GMAIL_TOKEN_FILE", "")
 
     # --auth: OAuth only for Chase's account
-    gmail = GmailClient(
-        credentials_file=credentials_file,
-        token_file=os.getenv("GMAIL_TOKEN_FILE", "config/gmail_token.json"),
-    )
     if args.auth:
+        gmail = GmailClient(credentials_file=credentials_file, token_file=chase_token_file)
         gmail.authenticate()
         log.info("Gmail authentication complete (Chase). Token saved.")
         return
 
     # --auth-kassie: OAuth only for Kassie's account
-    kassie_token_file = os.getenv("KASSIE_GMAIL_TOKEN_FILE", "")
     if args.auth_kassie:
         if not kassie_token_file:
             log.error("KASSIE_GMAIL_TOKEN_FILE not set in .env")
             return
         kassie_login_hint = os.getenv("KASSIE_GMAIL_LOGIN_HINT", "")
-        kassie_gmail = GmailClient(credentials_file=credentials_file, token_file=kassie_token_file, login_hint=kassie_login_hint)
+        kassie_gmail = GmailClient(
+            credentials_file=credentials_file,
+            token_file=kassie_token_file,
+            login_hint=kassie_login_hint,
+        )
         kassie_gmail.authenticate()
         log.info("Gmail authentication complete (Kassie). Token saved.")
         return
 
-    gmail.authenticate()
+    active_merchants = args.merchants or list(MERCHANTS.keys())
+    privacy_api_key = os.getenv("PRIVACY_API_KEY", "").strip()
+    if privacy_api_key.lower().startswith("your_"):
+        privacy_api_key = ""
+    email_merchants_precalc = _email_merchants_for_step2(active_merchants, privacy_api_key)
+    need_chase_gmail = args.pipeline_auto or bool(email_merchants_precalc)
 
-    # Kassie's Gmail client (optional — only if token file is configured)
+    gmail = None
+    if need_chase_gmail:
+        gmail = GmailClient(credentials_file=credentials_file, token_file=chase_token_file)
+        gmail.authenticate()
+
     kassie_gmail = None
-    if kassie_token_file:
+    if kassie_token_file and any(m in KASSIE_MERCHANTS for m in email_merchants_precalc):
         try:
             kassie_gmail = GmailClient(credentials_file=credentials_file, token_file=kassie_token_file)
             kassie_gmail.authenticate()
@@ -191,7 +209,6 @@ def main():
 
     # Step 2 — Fetch and parse Gmail receipts per merchant
     log.info("Step 2: Fetching Gmail receipts...")
-    active_merchants = args.merchants or list(MERCHANTS.keys())
     all_receipts = []
     pipeline_summary = None
     state = None
@@ -228,7 +245,6 @@ def main():
 
     else:
         # Privacy.com: use API if key is available, otherwise fall back to email
-        privacy_api_key = os.getenv("PRIVACY_API_KEY", "")
         if "privacy" in active_merchants and privacy_api_key:
             log.info("  Fetching privacy receipts via API...")
             try:
@@ -238,9 +254,7 @@ def main():
                 log.info(f"    Privacy.com API: {len(privacy_receipts)} transactions")
             except Exception as e:
                 log.warning(f"  Privacy.com API failed ({e}), skipping")
-            email_merchants = [m for m in active_merchants if m != "privacy"]
-        else:
-            email_merchants = active_merchants
+        email_merchants = _email_merchants_for_step2(active_merchants, privacy_api_key)
 
         for merchant_name in email_merchants:
             merchant_cfg = MERCHANTS[merchant_name]

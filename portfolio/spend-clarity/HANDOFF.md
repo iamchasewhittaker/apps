@@ -8,49 +8,38 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Pipeline hardening: startup validation, launchd scheduling, unmatched diagnostics |
-| **Status** | v0.2.1 ready — roadmap #1/#3/#4 shipped + full test suite green (90/90) |
-| **Last touch** | 2026-04-13 |
-| **Next** | Run one live local dry-run with Gmail/YNAB credentials present (`python src/main.py --dry-run`) to inspect startup validation counts and unmatched diagnostics output, then install nightly launchd job (`scripts/install_launchd_job.sh`) |
+| **Focus** | Privacy.com API path + optional Gmail; YNAB memo/category enrichment |
+| **Status** | v0.2.2 — conditional Gmail init for Privacy-only runs; `PRIVACY_API_KEY` placeholder strip; test suite 90/90 |
+| **Last touch** | 2026-04-16 |
+| **Next** | Add real `PRIVACY_API_KEY` to `.env` (https://privacy.com/developer), then `python src/main.py --dry-run --merchants privacy` → live with `DRY_RUN=false`. Optional: `LOOKBACK_DAYS=30` + `AUTO_CATEGORIZE=false` for a narrow memo-only pass. |
 
 ---
 
 ## What this is
 
-Standalone Python CLI that enriches YNAB transactions with item-level detail from Gmail receipt emails (Amazon, Apple) and merchant data from Privacy.com. Also auto-categorizes transactions by payee. Personal tool, runs locally.
+Standalone Python CLI that enriches YNAB transactions with item-level detail from Gmail receipt emails (Amazon, Apple, DoorDash, etc.) and from the **Privacy.com API** for virtual-card charges. Optionally auto-categorizes by payee (Step 4.5). Personal tool; runs locally.
 
-Run: `python3 src/main.py` (from `portfolio/spend-clarity/`)
+Run from `portfolio/spend-clarity/`:
+
+```bash
+source .venv/bin/activate   # or: python3 -m venv .venv && pip install -r requirements.txt
+python src/main.py --dry-run
+```
 
 ---
 
-## Recent changes (2026-04-13)
+## 2026-04-16 — Privacy-only without Gmail
 
+**Problem:** `main.py` always called `gmail.authenticate()` before YNAB/Privacy work, so `--merchants privacy` with `PRIVACY_API_KEY` still required `config/gmail_credentials.json` + OAuth, contradicting the README (“API replaces email for Privacy”).
 
-### Pipeline hardening (roadmap #1, #3, #4)
-- **Startup validation** (`main.py` + `ynab_client.py` + `categorizer.py`): checks configured category IDs against live budget IDs before enrichment; logs valid/invalid counts; fails only when none resolve.
-- **launchd scheduling** (`ops/com.chase.spend-clarity.enrich.plist`, `scripts/install_launchd_job.sh`, `main.py --print-launchd-plist`): one-command install/update flow for nightly automation, dry-run default.
-- **Unmatched diagnostics** (`matcher.py` + `main.py`): report now includes merchant candidates and closest date/amount mismatch context to explain failure reasons.
+**Change:**
 
-### Test stability follow-up (2026-04-13)
-- Fixed `test_pipeline_auto.py` import stubs so full test collection works with Gmail auth request imports.
-- Aligned DoorDash parser test fixture with parser order-confirmation subject requirement.
-- Verified full suite: `PYTHONPATH=src python3 -m pytest` (90 passed).
+- `_email_merchants_for_step2()` — merchants that still use Gmail; when `PRIVACY_API_KEY` is set, `privacy` is excluded from the Gmail loop.
+- Chase Gmail is initialized only when `args.pipeline_auto` **or** there is at least one merchant still using email (`email_merchants_precalc` non-empty).
+- Kassie Gmail: unchanged — only connects when `KASSIE_GMAIL_TOKEN_FILE` is set **and** an active merchant is in `KASSIE_MERCHANTS` and still on the email list.
+- `PRIVACY_API_KEY` values starting with `your_` (`.env.example` placeholders) are treated as unset.
 
-### Categorization — root cause fix
-All 9 category IDs in `config/category_rules.yaml` were pointing to the wrong YNAB budget (`583fdbca` "ynab-enrichment"). Every prior categorization attempt was writing invalid IDs. All IDs updated to the correct budget (`ab0a40fe`).
-
-### New modules
-- **`src/payee_formatter.py`** — `display_payee(raw)` cleans bank-format payee strings → merchant names. Four stages: leading bank noise strip (ACH/withdrawal/debit/POS patterns) → known merchant map (50+) → trailing noise strip (`*ALPHANUM`, `#digits`) → ALL CAPS → title case.
-- **`config/category_overrides.yaml`** — user-editable corrections. Pattern + category_id + note. Checked first in every categorization run. Edit this file to fix mismatches.
-
-### Categorization pipeline (new three-tier system)
-1. **User overrides** (`category_overrides.yaml`) — checked first, highest priority
-2. **Payee rules** (`category_rules.yaml` > `payee_rules:`) — 50+ merchant patterns across 12 groups
-3. **Item keyword rules** (`category_rules.yaml` keyword sections) — receipt-based matching
-
-### main.py additions
-- **Step 4.5** — after receipt matching, ALL remaining blank-memo transactions are now categorized by payee (not just receipt-matched ones). Netflix, Spotify, gas stations, restaurants, pharmacies, etc. get auto-categorized even with no email receipt.
-- Uses `display_payee()` in unmatched report output for cleaner names
+**Testing:** `PYTHONPATH=<repo>/portfolio/spend-clarity pytest tests/ -q` → 90 passed. Dry-run/live against YNAB succeed without local Gmail files when a non-placeholder Privacy key is supplied via env.
 
 ---
 
@@ -59,70 +48,67 @@ All 9 category IDs in `config/category_rules.yaml` were pointing to the wrong YN
 ```
 portfolio/spend-clarity/
   src/
-    main.py              — entry point (7 steps; Step 4.5 added)
-    payee_formatter.py   — NEW: cleans raw bank payee strings → merchant names
-    categorizer.py       — REWRITTEN: three-tier Categorizer class
-    gmail_client.py      — Gmail API + OAuth (label:Receipt pre-filter)
-    receipt_parser.py    — extract transaction data from email HTML/text
-    matcher.py           — match receipts to YNAB transactions
-    ynab_client.py       — YNAB API reads + memo/category writes
-    setup_categories.py  — YNAB category ID resolution (emoji-stripping added)
+    main.py              — entry: optional Gmail, YNAB fetch, Privacy API or Gmail receipts, match, memo, Step 4.5 categorize, PATCH
+    gmail_client.py      — Gmail API + OAuth; receipt search uses label:Receipt (Inbox Zero alignment)
+    privacy_client.py    — Privacy.com API → ParsedReceipt
+    receipt_parser.py    — per-merchant email HTML/text
+    matcher.py           — receipt ↔ YNAB txn matching + unmatched diagnostics
+    ynab_client.py       — reads + bulk PATCH memos/categories
+    memo_formatter.py
+    categorizer.py       — overrides → payee rules → keywords
+    payee_formatter.py
+    pipeline_state.py    — --pipeline-auto dedupe
   config/
-    category_rules.yaml  — keyword rules + payee_rules (FIXED: correct budget IDs)
-    category_overrides.yaml  — NEW: user corrections (edit to fix mismatches)
-    gmail_token.json     — OAuth token (gitignored)
-    gmail_credentials.json — OAuth client (gitignored)
-  tests/
-    test_payee_formatter.py  — 37 tests
-    test_categorizer.py      — 20 tests
-    test_matcher.py          — 9 tests (pre-existing)
-    test_receipt_parser.py   — 9 tests (pre-existing; requires bs4)
-    test_memo_formatter.py   — 10 tests (pre-existing)
-  .env                   — YNAB_TOKEN, YNAB_BUDGET_ID (gitignored)
-  requirements.txt
+    category_rules.yaml
+    category_overrides.yaml
+  output/
+    enrichment_log.txt
+    unmatched_report.txt
+  scripts/               — launchd install
+  tests/                 — 90 tests (run with PYTHONPATH=project root)
 ```
+
+---
+
+## Environment quick reference
+
+| Variable | Role |
+|----------|------|
+| `YNAB_API_TOKEN` | Required |
+| `YNAB_BUDGET_ID` | Required |
+| `PRIVACY_API_KEY` | Required for Privacy **API** path; omit or placeholder → Gmail fallback for `support@privacy.com` (needs OAuth) |
+| `DRY_RUN` | Default `true`; set `false` for live YNAB writes |
+| `AUTO_CATEGORIZE` | Default `true`; Step 4.5 categorizes **all** remaining blank-memo txns — set `false` for memo-only / tighter tests |
+| `LOOKBACK_DAYS` | Default `365`; lower for faster runs |
 
 ---
 
 ## How to correct a miscategorization
 
-1. Run with `DRY_RUN=true` first; check the output
-2. If a transaction was assigned the wrong category, add to `config/category_overrides.yaml`:
-   ```yaml
-   overrides:
-     - pattern: "costco gas"
-       category_id: "3c8e117f-11ca-4202-9d4a-fc83f40a0913"
-       note: "Gas, not Groceries"
-   ```
-3. The pattern is case-insensitive and matched as a substring of the cleaned payee name
-4. Overrides are checked before payee rules and keyword rules — they always win
+1. Run with `DRY_RUN=true` first; check logs + `output/unmatched_report.txt`.
+2. Add a row to `config/category_overrides.yaml` (pattern substring on cleaned payee → `category_id`).
+3. Overrides win over payee rules and keyword rules.
 
 ---
 
 ## Key decisions
 
-- **Dry run default:** `DRY_RUN=true` — never writes to YNAB without explicit opt-in.
-- **Three-tier categorization:** overrides → payee rules → keyword rules. First match wins.
-- **AUTO_CATEGORIZE defaults true:** payee-based categorization is safe and high-confidence.
-- **Amazon excluded from payee rules:** Amazon purchases vary too much (groceries, electronics, household). Rely on receipt email parsing for Amazon categorization.
-- **Emoji stripping in code:** YNAB category names have emoji suffixes (💸, 🔒, etc.); `strip_emojis()` in `setup_categories.py` normalizes before matching rather than renaming in YNAB.
-- **Budget ID in .env only:** `YNAB_BUDGET_ID` stays in `.env` (gitignored); removed from `category_rules.yaml` comment to avoid public repo exposure.
-
----
-
-## Relationship to YNAB Clarity iOS
-
-`portfolio/ynab-clarity-ios/` is the companion iOS dashboard. The two apps share:
-- Same YNAB budget and category IDs
-- Same merchant pattern lists (iOS has `PayeeDisplayFormatter.swift`; Python has `payee_formatter.py`)
-- Same override concept (iOS has `CategoryOverride` SwiftData model; Python has `category_overrides.yaml`)
-
-They are separate codebases (different languages/runtimes) and do not share code.
+- **Dry run default:** `DRY_RUN=true` — no YNAB writes without explicit opt-in.
+- **Step 4.5:** With `AUTO_CATEGORIZE=true`, every blank-memo transaction that matches a rule gets a category PATCH — not only receipt-matched rows. Narrow tests: `AUTO_CATEGORIZE=false`.
+- **Privacy vs Gmail:** API preferred when key is valid; Inbox Zero `Receipt` label still matters for non-Privacy merchants.
+- **Never overwrite an existing memo** (transactions with blank memos only are fetched for enrichment — see `ynab_client` / `CLAUDE.md` safety notes).
 
 ---
 
 ## Related
 
-- YNAB Clarity iOS: `portfolio/ynab-clarity-ios/`
-- Inbox Zero: `portfolio/inbox-zero/` — source of truth for Gmail Receipt label filters
-- Monorepo CLAUDE.md: `~/Developer/chase/CLAUDE.md`
+- Inbox Zero: `portfolio/inbox-zero/` — Receipt label contract: [`integrations/receipt-to-spend-clarity.md`](../inbox-zero/integrations/receipt-to-spend-clarity.md)
+- YNAB Clarity iOS: `portfolio/ynab-clarity-ios/` — shared mental model for payee cleanup / overrides (separate codebase)
+- Monorepo: `chase/CLAUDE.md`, `chase/HANDOFF.md`
+
+---
+
+## Session prompts
+
+- New chat bootstrap: [`prompts/SESSION_START.md`](prompts/SESSION_START.md)
+- Legacy full spec: [`PROMPT.md`](PROMPT.md) (historical MVP spec; prefer HANDOFF + README for current behavior)
