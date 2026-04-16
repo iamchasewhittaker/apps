@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+- **Income setup:** YNAB hint flow no longer fails silently — loading state, API error banner, fallback to **last month’s** income when this month is $0, **Ready to Assign** info card when income is zero but RTA is non-zero, and a plain-text hint when everything is zero.
+- **Categorization triage:** Assign Category sheet collects **additional notes**, **who made the purchase**, and **Necessary expense** toggle; merged into YNAB **memo** (with existing import memo preserved) on write-back; optional `memo` on bulk `PATCH` with snake_case `category_id`.
+- **`TransactionMetadata` SwiftData model** — stores purchaser + necessary flag per YNAB transaction id after a successful assign.
+
 ### Changed
 - **Rename Conto → Funded:** bundle ID `com.chasewhittaker.Funded`; struct `FundedApp`; logo "FUNDED" bold main text; Rose `#f43f5e` accent retained; Keychain service `com.chasewhittaker.YNABClarity` preserved (immutable)
 

@@ -4,6 +4,7 @@ import ClarityUI
 @MainActor
 struct SettingsTabView: View {
     @Environment(CommandStore.self) private var store
+    @ObservedObject var commandSync: CommandCloudSync
     @State private var newReminderText = ""
     @State private var newScriptureRef = ""
     @State private var newScriptureText = ""
@@ -15,6 +16,8 @@ struct SettingsTabView: View {
 
         ScrollView {
             VStack(spacing: 20) {
+                CommandSyncSection(sync: commandSync)
+
                 // Layoff Date
                 VStack(alignment: .leading, spacing: 8) {
                     ClaritySectionLabel( "Layoff Date")

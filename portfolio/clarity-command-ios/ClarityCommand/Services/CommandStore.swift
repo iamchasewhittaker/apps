@@ -5,6 +5,9 @@ import ClarityUI
 @Observable @MainActor
 final class CommandStore {
 
+    /// Fired after each successful local save (for debounced cloud push).
+    var onPersisted: (() -> Void)?
+
     // MARK: - Persisted state
 
     private(set) var blob: CommandBlob = .init()
@@ -37,6 +40,16 @@ final class CommandStore {
     func save() {
         blob.syncAt = Int64(Date().timeIntervalSince1970 * 1000)
         StorageHelpers.save(blob, key: CommandConfig.storeKey)
+        onPersisted?()
+    }
+
+    /// After cloud pull: replace local state if server `updated_at` is newer than local `_syncAt`.
+    func applyRemoteBlobIfNewer(localSyncAtMs: Int64, remote: CommandBlob, remoteUpdated: Date) {
+        let remoteMs = Int64(remoteUpdated.timeIntervalSince1970 * 1000)
+        guard remoteMs > localSyncAtMs else { return }
+        blob = remote
+        StorageHelpers.save(blob, key: CommandConfig.storeKey)
+        missionMode = DateHelpers.isMorning ? .morning : .evening
     }
 
     // MARK: - Today's log
@@ -63,7 +76,6 @@ final class CommandStore {
     var yesterdayLog: DailyLog? {
         let cal = Calendar.current
         guard let yesterday = cal.date(byAdding: .day, value: -1, to: .now) else { return nil }
-        let fmt = DateHelpers.todayString.count  // reuse format length
         let yStr = DateHelpers.formatDate(yesterday)
         return blob.dailyLogs.first { $0.date == yStr }
     }

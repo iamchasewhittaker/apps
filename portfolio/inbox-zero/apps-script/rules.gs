@@ -54,11 +54,8 @@ var RULES = {
       'john@johnhiltoniii.com',
       'natia@space-leads.com',
     ],
-    toAliases: [
-      // iCloud Hide My Email aliases — replace placeholders with real values
-      // '[SUBSTACK-ALIAS]@icloud.com',
-      // '[CROSSWORD-ALIAS]@icloud.com',
-    ],
+    // Optional static aliases; prefer Script Property NEWSLETTER_TO_ALIASES (see apps-script/README.md)
+    toAliases: [],
   },
 
   'Notification': {

@@ -4,6 +4,15 @@
 
 ---
 
+## Status (implemented)
+
+1. **`gmail_client.py` uses `label:Receipt`:** `search_emails` builds `label:Receipt from:{sender} after:{date}`; `build_label_query` supports label-scoped queries. See tests in `tests/test_pipeline_auto.py`.
+2. **Shared sender list:** Keep Inbox Zero `gmail-filters.xml` / `apps-script/rules.gs` Receipt (and Amazon Notification) entries aligned with Spend Clarity `MERCHANTS` in `src/main.py`. Cross-project notes: [`integrations/receipt-to-spend-clarity.md`](../integrations/receipt-to-spend-clarity.md).
+
+---
+
+## Original ask (historical)
+
 I have a sibling project called **Inbox Zero** (`portfolio/inbox-zero/`) that auto-labels all my Gmail with native XML filters. One of the labels is **Receipt** — it catches every transactional email from these senders:
 
 | Sender | Domain |

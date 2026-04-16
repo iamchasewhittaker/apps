@@ -96,6 +96,7 @@ final class AppState: ObservableObject {
     func updateTransactionCategory(
         transactionID: String,
         categoryID: String,
+        memo: String? = nil,
         categoryMappings: [CategoryMapping],
         incomeSources: [IncomeSource]
     ) async throws {
@@ -106,7 +107,8 @@ final class AppState: ObservableObject {
         try await client.updateTransactionCategory(
             budgetID: activeBudgetID,
             transactionID: transactionID,
-            categoryID: categoryID
+            categoryID: categoryID,
+            memo: memo
         )
         await refresh(categoryMappings: categoryMappings, incomeSources: incomeSources)
     }

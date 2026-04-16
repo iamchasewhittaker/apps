@@ -42,7 +42,7 @@
  *     for each row execute function set_updated_at();
  *
  * Known app_key values in this monorepo:
- *   wellness, job-search, roller_task_tycoon_v1 (archived web)
+ *   wellness, job-search, roller_task_tycoon_v1 (archived web), clarity_budget (Clarity Budget web + future iOS Supabase)
  */
 
 import {

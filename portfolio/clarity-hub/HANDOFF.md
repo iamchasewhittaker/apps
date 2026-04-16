@@ -7,8 +7,8 @@
 | Field | Value |
 |-------|-------|
 | **Focus** | Stable — 5 remaining tabs (Check-in, Triage, Time, Budget, Growth) |
-| **Next** | Maintain remaining tabs; YNAB + RollerTask now live as standalone apps |
-| **Last touch** | 2026-04-13 — split YNAB + RollerTask into standalone apps; stripped engines + tabs; updated nav with external links; deployed v0.2 |
+| **Next** | **Maintenance mode** — bugfixes and small parity with iOS blobs only; no new tabs. Web role vs Wellness Tracker is documented in [`docs/governance/PRODUCT_LINES.md`](../../docs/governance/PRODUCT_LINES.md) (canonical surface for the five Clarity iOS `app_key` blobs). |
+| **Last touch** | 2026-04-15 — governance: Hub = companion to split Clarity iOS suite; Wellness = unified wellness web |
 | **Status** | ✅ Deployed · v0.2 · 5 tabs + external links to YNAB + Tasks |
 
 ## What's Built

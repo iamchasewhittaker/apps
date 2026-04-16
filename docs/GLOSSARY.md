@@ -18,7 +18,7 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 | **PWA** | Progressive Web App — **`manifest.json`**, installable on iPhone home screen; service worker patterns vary by app. |
 | **`localStorage` key** | Per-app storage namespace (e.g. **`chase_wellness_v1`**, **`chase_roller_task_v1`**). Do not rename shipped keys without a migration plan. |
 | **Linear** | Issue/project tracker; Whittaker team; app backlogs + [Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37). |
-| **`wellnes` vs `wellness`** | Production URL / Vercel project **`wellnes-tracker`** is the typo spelling; folder is **`portfolio/wellnes-tracker`**. Separate Vercel project **`wellness-tracker`** points at **`portfolio/wellness-tracker`**. |
+| **Wellness Tracker (deploy)** | Primary URL **`https://wellness-tracker.vercel.app`** (HTTP 200 as of 2026-04-15). CLI may also show **`https://wellness-tracker-kappa.vercel.app`**. Vercel project **`wellness-tracker`**, root **`portfolio/wellness-tracker`**. Typo project **`wellnes-tracker`** removed; **`wellnes-tracker.vercel.app`** returns 404 unless you add a redirect. |
 | **Retired / archive** | **`portfolio/archive/growth-tracker`**, **`projects/archive/claude-usage-tool`** — kept for reference; Linear projects often **Canceled**. |
 | **Git LFS** | Large File Storage — optional for big binaries (e.g. large GIFs) so GitHub does not warn about 50MB+ blobs. |
 | **`http.postBuffer`** | Git config; increase if **`git push`** fails with HTTP 400 on a large pack (e.g. **`git config http.postBuffer 524288000`**). |

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed (2026-04-14)
+- **Logo:** Portfolio-standard text logo applied — `ROLLER` amber (`#f59e0b`) + `TASK` white bold on dark background; `logo.svg` + `favicon.svg` follow `PORTFOLIO_APP_LOGO.md`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png` from 1024px `qlmanage` PNG; redeployed to Vercel
+
 ### Added (2026-04-14)
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/tasks`), session key consolidation, OTP `emailRedirectTo`
 - **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`

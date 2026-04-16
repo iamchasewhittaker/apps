@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { T, loadYnabToken, saveYnabToken, fmtDollars } from "../theme";
-import { fetchBudgets, fetchCategories, fetchMonth, fetchTransactions, updateCategoryBudgeted } from "../engines/YNABClient";
+import { fetchBudgets, fetchCategories, fetchMonth, fetchTransactions, updateCategoryBudgeted, updateTransactionCategory } from "../engines/YNABClient";
+import { suggestForTransaction, transactionNeedsReview } from "../engines/CategorySuggestionEngine";
 import { buildBalances, safeToSpend, safePerDay, safePerWeek, totalRequired, totalFunded, daysRemainingInMonth, expectedIncomeThisMonth, incomeGap, grossAnnualNeeded, spendingYesterday, spendingThisWeek, spendingThisMonth } from "../engines/MetricsEngine";
 import { buildTimeline } from "../engines/CashFlowEngine";
 
@@ -30,8 +31,27 @@ function mapTransaction(t) {
     deleted: t.deleted,
     transferAccountId: t.transfer_account_id ?? null,
     payeeName: t.payee_name ?? "",
+    memo: t.memo ?? null,
     categoryId: t.category_id ?? null,
+    categoryName: t.category_name ?? null,
   };
+}
+
+/** Merge import memo, user notes, and triage meta — matches Funded iOS (500 chars). */
+function composedMemoForYnab(transaction, triage) {
+  const base = (transaction.memo || "").trim();
+  const notes = (triage.memoNotes || "").trim();
+  const who = (triage.purchaser || "").trim();
+  const metaWho = who ? `Who: ${who}` : "";
+  const metaNeed = `Spending: ${triage.isNecessary ? "necessary" : "discretionary"}`;
+  const meta = [metaWho, metaNeed].filter(Boolean).join(" · ");
+  const pieces = [];
+  if (base) pieces.push(base);
+  if (notes) pieces.push(notes);
+  if (meta) pieces.push(meta);
+  const combined = pieces.join(" | ");
+  if (!combined) return null;
+  return combined.length <= 500 ? combined : `${combined.slice(0, 499)}…`;
 }
 
 // ── SUGGEST ROLE (ported from iOS CategorySetupView.swift:183-231) ──────────
@@ -274,6 +294,79 @@ function IncomeStep({ blob, setBlob }) {
   const [nextDate, setNextDate] = useState("");
   const [secondDay, setSecondDay] = useState(20);
   const [editing, setEditing] = useState(null);
+  const [hintLoading, setHintLoading] = useState(true);
+  const [hintError, setHintError] = useState("");
+  const [hintEmpty, setHintEmpty] = useState("");
+  const [hintBanner, setHintBanner] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setHintLoading(true);
+      setHintError("");
+      setHintEmpty("");
+      setHintBanner(null);
+      const token = loadYnabToken();
+      const budgetID = blob.preferences.activeBudgetID;
+      if (!token || !budgetID) {
+        if (!cancelled) {
+          setHintLoading(false);
+          if (!budgetID) setHintError("No budget selected. Go back and pick a budget.");
+        }
+        return;
+      }
+      try {
+        const thisMonth = await fetchMonth(token, budgetID, new Date());
+        const incomeThis = thisMonth.income ?? 0;
+        if (incomeThis > 0) {
+          if (!cancelled) {
+            setHintBanner({
+              amount: incomeThis / 1000,
+              title: "Income in YNAB (this month)",
+              subtitle: "Click to pre-fill a monthly income source.",
+              prefill: true,
+            });
+          }
+          return;
+        }
+        const d = new Date();
+        d.setMonth(d.getMonth() - 1);
+        const prevData = await fetchMonth(token, budgetID, d);
+        const incomePrev = prevData.income ?? 0;
+        if (incomePrev > 0) {
+          if (!cancelled) {
+            setHintBanner({
+              amount: incomePrev / 1000,
+              title: "Income in YNAB (last month)",
+              subtitle: "This month shows $0 in YNAB’s income total. Click to use last month as a starting point.",
+              prefill: true,
+            });
+          }
+          return;
+        }
+        const tbb = thisMonth.to_be_budgeted ?? 0;
+        if (tbb !== 0) {
+          if (!cancelled) {
+            setHintBanner({
+              amount: tbb / 1000,
+              title: "Ready to Assign",
+              subtitle: "Not income — cash waiting to be assigned in YNAB. Add paychecks below.",
+              prefill: false,
+            });
+          }
+          return;
+        }
+        if (!cancelled) {
+          setHintEmpty("YNAB shows $0 income for this month and no Ready to Assign. Add income manually, or check your budget in YNAB.");
+        }
+      } catch (e) {
+        if (!cancelled) setHintError(e.message || "Could not load YNAB.");
+      } finally {
+        if (!cancelled) setHintLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [blob.preferences.activeBudgetID]);
 
   const addOrUpdate = () => {
     const cents = Math.round(parseFloat(amount) * 100);
@@ -325,6 +418,57 @@ function IncomeStep({ blob, setBlob }) {
     <div>
       <div style={S.stepHeader}>Income Sources</div>
       <div style={S.stepSub}>Add your paychecks so Clarity can calculate income gaps.</div>
+
+      {sources.length === 0 && hintLoading && (
+        <div style={{ fontSize: 13, color: T.muted, textAlign: "center", marginBottom: 12 }}>Checking YNAB…</div>
+      )}
+      {hintError && (
+        <div style={{ ...S.card, borderColor: T.red, marginBottom: 12, fontSize: 13, color: T.red }}>
+          {hintError}
+        </div>
+      )}
+      {hintEmpty && !hintBanner && (
+        <div style={{ fontSize: 12, color: T.muted, textAlign: "center", marginBottom: 12 }}>{hintEmpty}</div>
+      )}
+      {hintBanner && sources.length === 0 && (
+        hintBanner.prefill ? (
+          <button
+            type="button"
+            onClick={() => {
+              setName("Monthly Income");
+              setAmount(String(Math.round(hintBanner.amount)));
+              setFreq("monthly");
+            }}
+            style={{
+              ...S.card,
+              width: "100%",
+              textAlign: "left",
+              cursor: "pointer",
+              marginBottom: 12,
+              border: `1px solid ${T.accent}`,
+            }}
+          >
+            <div style={{ fontSize: 14, fontWeight: 700, color: T.text, marginBottom: 4 }}>{hintBanner.title}</div>
+            <div style={{ fontSize: 12, color: T.muted, marginBottom: 6 }}>{hintBanner.subtitle}</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: T.text }}>{fmtDollars(hintBanner.amount)}</div>
+            <div style={{ fontSize: 11, color: T.accent, marginTop: 6 }}>Tap to pre-fill the form →</div>
+          </button>
+        ) : (
+          <div
+            style={{
+              ...S.card,
+              width: "100%",
+              textAlign: "left",
+              marginBottom: 12,
+              border: `1px solid ${T.border}`,
+            }}
+          >
+            <div style={{ fontSize: 14, fontWeight: 700, color: T.text, marginBottom: 4 }}>{hintBanner.title}</div>
+            <div style={{ fontSize: 12, color: T.muted, marginBottom: 6 }}>{hintBanner.subtitle}</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: T.text }}>{fmtDollars(hintBanner.amount)}</div>
+          </div>
+        )
+      )}
 
       {sources.map(s => (
         <div key={s.id} style={{ ...S.card, display: "flex", alignItems: "center", gap: 8 }}>
@@ -608,6 +752,308 @@ function SpendingSection({ transactions }) {
   );
 }
 
+// ── CATEGORIZATION REVIEW (parity with Funded iOS Bills tab) ────────────────
+
+const ROLE_ORDER = ["mortgage", "bill", "essential", "flexible"];
+
+function AssignCategoryModal({ transaction, suggestions, mappings, onConfirm, onCancel, assigning, error }) {
+  const [memoNotes, setMemoNotes] = useState("");
+  const [purchaser, setPurchaser] = useState("");
+  const [isNecessary, setIsNecessary] = useState(true);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    setMemoNotes("");
+    setPurchaser("");
+    setIsNecessary(true);
+    setQuery("");
+  }, [transaction.id]);
+
+  const assignable = mappings
+    .filter((m) => m.roleRaw !== "ignore")
+    .sort((a, b) => {
+      const ra = ROLE_ORDER.indexOf(a.roleRaw);
+      const rb = ROLE_ORDER.indexOf(b.roleRaw);
+      if (ra !== rb) return ra - rb;
+      return a.ynabCategoryName.localeCompare(b.ynabCategoryName);
+    });
+  const q = query.trim().toLowerCase();
+  const filtered = assignable.filter(
+    (m) =>
+      !q ||
+      m.ynabCategoryName.toLowerCase().includes(q) ||
+      (m.ynabGroupName || "").toLowerCase().includes(q),
+  );
+  const restAssignable = assignable.filter(
+    (m) => !suggestions.some((s) => s.mapping.ynabCategoryID === m.ynabCategoryID),
+  );
+
+  const triagePayload = () => ({ memoNotes, purchaser, isNecessary });
+
+  const pick = (mapping) => {
+    onConfirm(mapping, triagePayload());
+  };
+
+  const amtDollars = -transaction.amount / 1000;
+
+  const modal = {
+    overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 16 },
+    panel: { background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 20, maxWidth: 420, width: "100%", maxHeight: "90vh", overflow: "auto" },
+  };
+
+  return (
+    <div style={modal.overlay} onClick={onCancel}>
+      <div style={modal.panel} onClick={(e) => e.stopPropagation()}>
+        <div style={{ fontSize: 16, fontWeight: 700, color: T.text, marginBottom: 4 }}>Assign category</div>
+        <div style={{ fontSize: 13, color: T.muted, marginBottom: 8 }}>
+          {(transaction.payeeName || "(no payee)")} · {fmtDollars(amtDollars)} · {transaction.date}
+        </div>
+        {transaction.memo && (
+          <div style={{ fontSize: 12, color: T.accent, marginBottom: 12 }}>Import memo: {transaction.memo}</div>
+        )}
+
+        <div style={{ fontSize: 11, fontWeight: 700, color: T.muted, marginBottom: 6 }}>TRIAGE (SAVED TO YNAB MEMO)</div>
+        <textarea
+          value={memoNotes}
+          onChange={(e) => setMemoNotes(e.target.value)}
+          placeholder="Additional notes"
+          rows={3}
+          style={{ ...S.input, resize: "vertical", marginBottom: 8, fontFamily: "inherit" }}
+        />
+        <input style={{ ...S.input, marginBottom: 8 }} value={purchaser} onChange={(e) => setPurchaser(e.target.value)} placeholder="Who made this purchase?" />
+        <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: T.text, marginBottom: 12, cursor: "pointer" }}>
+          <input type="checkbox" checked={isNecessary} onChange={(e) => setIsNecessary(e.target.checked)} style={{ width: 18, height: 18 }} />
+          Necessary expense
+        </label>
+
+        <input style={{ ...S.input, marginBottom: 10 }} value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search categories…" />
+
+        {assigning && <div style={{ fontSize: 13, color: T.muted, marginBottom: 8 }}>Saving to YNAB…</div>}
+        {error && <div style={{ ...S.error, marginBottom: 8 }}>{error}</div>}
+
+        {q ? (
+          filtered.map((m) => (
+            <button
+              key={m.ynabCategoryID}
+              type="button"
+              disabled={assigning}
+              onClick={() => pick(m)}
+              style={{
+                width: "100%",
+                textAlign: "left",
+                padding: "8px 10px",
+                marginBottom: 4,
+                borderRadius: 8,
+                border: `1px solid ${T.border}`,
+                background: T.surfaceHigh,
+                color: T.text,
+                cursor: assigning ? "default" : "pointer",
+                fontSize: 13,
+              }}
+            >
+              {m.ynabCategoryName}
+              <span style={{ fontSize: 11, color: T.muted, marginLeft: 6 }}>{m.ynabGroupName}</span>
+            </button>
+          ))
+        ) : (
+          <>
+            {suggestions.length > 0 && (
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: T.muted, marginBottom: 6 }}>SUGGESTED</div>
+                {suggestions.map((s) => (
+                  <button
+                    key={`${s.mapping.ynabCategoryID}-${s.matchedKeyword || "f"}`}
+                    type="button"
+                    disabled={assigning}
+                    onClick={() => pick(s.mapping)}
+                    style={{
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "10px 12px",
+                      marginBottom: 4,
+                      borderRadius: 8,
+                      border: `1px solid ${T.border}`,
+                      background: T.surfaceHigh,
+                      color: T.text,
+                      cursor: assigning ? "default" : "pointer",
+                      fontSize: 13,
+                    }}
+                  >
+                    <span style={{ fontWeight: 600 }}>{s.mapping.ynabCategoryName}</span>
+                    {s.confidence >= 0.8 && s.matchedKeyword && (
+                      <span style={{ fontSize: 11, color: T.accent, marginLeft: 8 }}>Suggested</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div style={{ fontSize: 11, fontWeight: 700, color: T.muted, marginBottom: 6 }}>OTHER MAPPED</div>
+            {restAssignable.map((m) => (
+              <button
+                key={m.ynabCategoryID}
+                type="button"
+                disabled={assigning}
+                onClick={() => pick(m)}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  padding: "8px 10px",
+                  marginBottom: 2,
+                  borderRadius: 6,
+                  border: "none",
+                  background: "transparent",
+                  color: T.text,
+                  cursor: assigning ? "default" : "pointer",
+                  fontSize: 13,
+                }}
+              >
+                {m.ynabCategoryName}
+                <span style={{ fontSize: 11, color: T.muted, marginLeft: 6 }}>{m.ynabGroupName}</span>
+              </button>
+            ))}
+          </>
+        )}
+
+        <button type="button" style={{ ...S.btnOutline, marginTop: 12 }} onClick={onCancel} disabled={assigning}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CategorizationReviewSection({ transactions, blob, setBlob, token, budgetID, onReload }) {
+  const mappings = blob.categoryMappings || [];
+  const overrides = blob.categoryOverrides || [];
+  const needs = transactions.filter(transactionNeedsReview);
+  const [open, setOpen] = useState(null);
+  const [assigning, setAssigning] = useState(false);
+  const [assignError, setAssignError] = useState("");
+
+  const suggestionsFor = (txn) => suggestForTransaction(txn, mappings, overrides);
+
+  const onConfirm = async (mapping, triage) => {
+    if (!open) return;
+    const txn = open;
+    setAssigning(true);
+    setAssignError("");
+    try {
+      const memo = composedMemoForYnab(txn, triage);
+      await updateTransactionCategory(token, budgetID, txn.id, mapping.ynabCategoryID, memo);
+      const payeeSub = (txn.payeeName || "").toLowerCase().trim();
+      let newOverrides = [...overrides];
+      if (payeeSub) {
+        const exists = newOverrides.some(
+          (o) => o.payeeSubstring === payeeSub && o.ynabCategoryID === mapping.ynabCategoryID,
+        );
+        if (!exists) {
+          newOverrides.push({
+            payeeSubstring: payeeSub,
+            ynabCategoryID: mapping.ynabCategoryID,
+            ynabCategoryName: mapping.ynabCategoryName,
+          });
+        }
+      }
+      setBlob((prev) => ({
+        ...prev,
+        categoryOverrides: newOverrides,
+        transactionMetadata: {
+          ...(prev.transactionMetadata || {}),
+          [txn.id]: {
+            purchaserName: (triage.purchaser || "").trim(),
+            isNecessary: triage.isNecessary,
+            updatedAt: Date.now(),
+          },
+        },
+      }));
+      setOpen(null);
+      onReload();
+    } catch (e) {
+      setAssignError(e.message || "Could not update YNAB.");
+    } finally {
+      setAssigning(false);
+    }
+  };
+
+  if (needs.length === 0) {
+    return (
+      <div style={S.card}>
+        <div style={S.cardTitle}>Categorization Review</div>
+        <div style={{ fontSize: 13, color: T.green }}>All caught up — no uncategorized outflows this month.</div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={S.card}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <div style={S.cardTitle}>Categorization Review</div>
+        <div style={{ fontSize: 12, fontWeight: 700, color: T.yellow }}>{needs.length} to review</div>
+      </div>
+      {needs.map((txn) => {
+        const sug = suggestionsFor(txn);
+        const top = sug[0];
+        return (
+          <div
+            key={txn.id}
+            onClick={() => {
+              setAssignError("");
+              setOpen(txn);
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setAssignError("");
+                setOpen(txn);
+              }
+            }}
+            style={{ padding: "10px 0", borderBottom: `1px solid ${T.border}`, cursor: "pointer" }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start" }}>
+              <div style={{ minWidth: 0 }}>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: T.text,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {txn.payeeName || "(no payee)"}
+                </div>
+                <div style={{ fontSize: 11, color: T.muted }}>
+                  {txn.date} · {fmtDollars(-txn.amount / 1000)}
+                </div>
+              </div>
+              <div style={{ fontSize: 12, color: top ? T.accent : T.muted, flexShrink: 0, textAlign: "right" }}>
+                {top ? top.mapping.ynabCategoryName : "Choose…"}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      {open && (
+        <AssignCategoryModal
+          transaction={open}
+          suggestions={suggestionsFor(open)}
+          mappings={mappings}
+          onConfirm={onConfirm}
+          onCancel={() => {
+            setOpen(null);
+            setAssignError("");
+          }}
+          assigning={assigning}
+          error={assignError}
+        />
+      )}
+    </div>
+  );
+}
+
 // ── FUND CATEGORY MODAL ─────────────────────────────────────────────────────
 
 function FundModal({ target, token, budgetID, onDone, onCancel }) {
@@ -717,6 +1163,14 @@ function Dashboard({ blob, setBlob }) {
 
       <SafeToSpendSection balances={balances} tbb={tbb} />
       <BudgetHealthSection balances={balances} />
+      <CategorizationReviewSection
+        transactions={transactions}
+        blob={blob}
+        setBlob={setBlob}
+        token={token}
+        budgetID={budgetID}
+        onReload={loadData}
+      />
       <BillsSection balances={balances} onFund={setFundTarget} />
       <IncomeGapSection balances={balances} blob={blob} />
       <CashFlowSection blob={blob} balances={balances} />

@@ -169,6 +169,14 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // ── Refresh cross-app wellness summary when opening Mission (evening check-in may have landed) ──
+  useEffect(() => {
+    if (tab !== "mission") return;
+    pull("wellness-daily", {}, 0).then(d => {
+      if (d && d.date) setWellnessDaily(d);
+    });
+  }, [tab, session]);
+
   // ── Load from localStorage + pull from Supabase ──
   useEffect(() => {
     const stored = load();

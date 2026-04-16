@@ -26,6 +26,11 @@
 		CB010000000000000000011 /* YNABScenarioImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000012 /* YNABScenarioImport.swift */; };
 		CB010000000000000000012 /* BudgetYNABSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000013 /* BudgetYNABSettingsView.swift */; };
 		CB010000000000000000013 /* YNABScenarioImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000014 /* YNABScenarioImportTests.swift */; };
+		CB010000000000000000014 /* SafeToSpendHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000015 /* SafeToSpendHomeView.swift */; };
+		CB010000000000000000015 /* YNABDashboardSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000016 /* YNABDashboardSnapshot.swift */; };
+		CB010000000000000000016 /* BudgetMetricsEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000017 /* BudgetMetricsEngineTests.swift */; };
+		CB010000000000000000018 /* BudgetSupabaseSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000018 /* BudgetSupabaseSync.swift */; };
+		CB010000000000000000019 /* CategoryRole+Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB020000000000000000019 /* CategoryRole+Suggestion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +64,11 @@
 		CB020000000000000000012 /* YNABScenarioImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABScenarioImport.swift; sourceTree = "<group>"; };
 		CB020000000000000000013 /* BudgetYNABSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetYNABSettingsView.swift; sourceTree = "<group>"; };
 		CB020000000000000000014 /* YNABScenarioImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABScenarioImportTests.swift; sourceTree = "<group>"; };
+		CB020000000000000000015 /* SafeToSpendHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeToSpendHomeView.swift; sourceTree = "<group>"; };
+		CB020000000000000000016 /* YNABDashboardSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YNABDashboardSnapshot.swift; sourceTree = "<group>"; };
+		CB020000000000000000017 /* BudgetMetricsEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetMetricsEngineTests.swift; sourceTree = "<group>"; };
+		CB020000000000000000018 /* BudgetSupabaseSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetSupabaseSync.swift; sourceTree = "<group>"; };
+		CB020000000000000000019 /* CategoryRole+Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryRole+Suggestion.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +120,7 @@
 				CB02000000000000000000E /* YNABClient.swift */,
 				CB02000000000000000000F /* YNABModels.swift */,
 				CB020000000000000000010 /* BudgetYNABDTOs.swift */,
+				CB020000000000000000019 /* CategoryRole+Suggestion.swift */,
 				CB020000000000000000011 /* BudgetMetricsEngine.swift */,
 				CB020000000000000000012 /* YNABScenarioImport.swift */,
 			);
@@ -138,6 +149,8 @@
 			children = (
 				CB020000000000000000003 /* BudgetConfig.swift */,
 				CB020000000000000000004 /* BudgetStore.swift */,
+				CB020000000000000000016 /* YNABDashboardSnapshot.swift */,
+				CB020000000000000000018 /* BudgetSupabaseSync.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -146,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				CB020000000000000000005 /* ContentView.swift */,
+				CB020000000000000000015 /* SafeToSpendHomeView.swift */,
 				CB020000000000000000006 /* BudgetScenariosView.swift */,
 				CB020000000000000000013 /* BudgetYNABSettingsView.swift */,
 				CB020000000000000000007 /* WantsTrackerView.swift */,
@@ -166,6 +180,7 @@
 			children = (
 				CB020000000000000000009 /* BudgetBlobTests.swift */,
 				CB020000000000000000014 /* YNABScenarioImportTests.swift */,
+				CB020000000000000000017 /* BudgetMetricsEngineTests.swift */,
 			);
 			path = ClarityBudgetTests;
 			sourceTree = "<group>";
@@ -290,6 +305,10 @@
 				CB010000000000000000010 /* BudgetMetricsEngine.swift in Sources */,
 				CB010000000000000000011 /* YNABScenarioImport.swift in Sources */,
 				CB010000000000000000012 /* BudgetYNABSettingsView.swift in Sources */,
+				CB010000000000000000014 /* SafeToSpendHomeView.swift in Sources */,
+				CB010000000000000000015 /* YNABDashboardSnapshot.swift in Sources */,
+				CB010000000000000000018 /* BudgetSupabaseSync.swift in Sources */,
+				CB010000000000000000019 /* CategoryRole+Suggestion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +318,7 @@
 			files = (
 				CB010000000000000000009 /* BudgetBlobTests.swift in Sources */,
 				CB010000000000000000013 /* YNABScenarioImportTests.swift in Sources */,
+				CB010000000000000000016 /* BudgetMetricsEngineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +468,8 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_ClaritySupabaseURL = "";
+				INFOPLIST_KEY_ClaritySupabaseAnonKey = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -479,6 +501,8 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_ClaritySupabaseURL = "";
+				INFOPLIST_KEY_ClaritySupabaseAnonKey = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

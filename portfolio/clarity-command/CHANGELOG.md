@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added (2026-04-14)
+- **Mission + Wellness:** when `wellness-daily` for today differs from `areas.wellness`, show **Apply Wellness to mission** banner (explicit merge only); re-fetch `wellness-daily` whenever the Mission tab is opened.
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/command`), session key consolidation, OTP `emailRedirectTo`
 - **Refactored sync:** `src/shared/sync.js` + `src/sync.js` export app identity + `emailRedirectTo`; `App.jsx` uses shared `emailRedirectTo`
 - **Auth diagnostics:** `REACT_APP_AUTH_DEBUG` flag enables auth state event logging

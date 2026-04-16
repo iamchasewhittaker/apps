@@ -17,6 +17,10 @@ export default function Sidebar({
   onNewFolder, onNewBookmark,
   // Link click tracking
   onLinkClick,
+  // Tags (Forever-notes style cross-cutting filter)
+  tagSummaries = [],
+  selectedTag,
+  onSelectTag,
 }) {
   const favoriteBookmarks = favorites
     .map(id => bookmarks.find(b => b.id === id))
@@ -116,6 +120,27 @@ export default function Sidebar({
         </button>
       </div>
 
+      {tagSummaries.length > 0 && onSelectTag && (
+        <div style={s.sidebarSection}>
+          <span style={s.sidebarSectionLabel}>Tags</span>
+          <div style={s.tagBar}>
+            {tagSummaries.map(({ tag, count }) => (
+              <button
+                key={tag}
+                type="button"
+                className="kb-tag-chip"
+                onClick={() => onSelectTag(tag)}
+                style={{ ...s.tagChip, ...(selectedTag === tag ? s.tagChipActive : {}) }}
+                title={`${count} bookmarks`}
+              >
+                #{tag}
+                <span style={{ opacity: 0.65, marginLeft: 4 }}>{count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Favorites shelf */}
       {favoriteBookmarks.length > 0 && (
         <div style={s.sidebarSection}>
@@ -149,11 +174,11 @@ export default function Sidebar({
         </div>
         {/* All bookmarks row */}
         <button
-          className={`kb-folder-row${selectedFolderId === null ? " selected" : ""}`}
+          className={`kb-folder-row${selectedFolderId === null && !selectedTag ? " selected" : ""}`}
           onClick={() => onSelectFolder(null)}
-          style={{ ...s.allBooksBtn, background: selectedFolderId === null ? "#1f2937" : "transparent" }}
+          style={{ ...s.allBooksBtn, background: selectedFolderId === null && !selectedTag ? "#1f2937" : "transparent" }}
         >
-          <span style={{ ...s.folderName, color: selectedFolderId === null ? "#f3f4f6" : "#6b7280" }}>All Bookmarks</span>
+          <span style={{ ...s.folderName, color: selectedFolderId === null && !selectedTag ? "#f3f4f6" : "#6b7280" }}>All Bookmarks</span>
           <span style={s.folderCount}>{bookmarks.length}</span>
         </button>
         <FolderTree

@@ -1,9 +1,15 @@
-import { useState, useEffect, useRef } from "react";
-import { Menu, Plus, X, Check, Edit2, Trash2, FolderPlus, FolderOpen, AlertTriangle, Clock, Star } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { Menu, Plus, X, Check, Edit2, Trash2, FolderPlus, FolderOpen, AlertTriangle, Clock, Star, Copy } from "lucide-react";
 import {
   SEED, SEED_FOLDERS, SEED_VERSION, STORE_SEED_VERSION, categoryToFolderId,
+  FOLDER_LAYOUT_VERSION, STORE_FOLDER_LAYOUT_VERSION,
+  mergeFolderTrees, migrateLegacyBookmarkLayout, normalizeBookmarkUrl,
+  buildSeedUrlLookup, SEED_URL_OVERLAYS, SEED_URL_PATCH_IDS,
+  URL_PATCH_VERSION, STORE_URL_PATCH_VERSION,
+  DAILY_PROMPT_BOOKMARK_IDS,
   load, save, s, css,
   statusColor, statusLabel, importanceColor, importanceLabel,
+  normalizeBookmarkTags, parseTagsInput,
 } from "./constants";
 import ErrorBoundary from "./ErrorBoundary";
 import Sidebar from "./Sidebar";
@@ -11,7 +17,7 @@ import BookmarkList from "./BookmarkList";
 import BookmarkRow from "./BookmarkRow";
 import AddEditForm from "./AddEditForm";
 
-const EMPTY_FORM = { title: "", url: "", folderId: "", description: "", status: "not_started", progress: 0, notes: "", importance: 0 };
+const EMPTY_FORM = { title: "", url: "", folderId: "", description: "", status: "not_started", progress: 0, notes: "", importance: 0, tagsStr: "" };
 
 export default function App() {
   // ── Persisted data ────────────────────────────────────────────────────────
@@ -27,6 +33,7 @@ export default function App() {
   const [expandedFolderIds, setExpandedFolderIds] = useState(new Set());
   const [query, setQuery] = useState("");
   const [expandedId, setExpandedId] = useState(null);
+  const [selectedTag, setSelectedTag] = useState(null);
 
   // Form / edit
   const [showAdd, setShowAdd] = useState(false);
@@ -44,6 +51,8 @@ export default function App() {
   useEffect(() => {
     const data = load();
     const v = Number(localStorage.getItem(STORE_SEED_VERSION)) || 1;
+    const layoutVStored = Number(localStorage.getItem(STORE_FOLDER_LAYOUT_VERSION)) || 0;
+    const urlPatchStored = Number(localStorage.getItem(STORE_URL_PATCH_VERSION)) || 0;
 
     let storedBm = [], storedFolders = null, storedFavs = [];
     if (data) {
@@ -52,25 +61,47 @@ export default function App() {
       storedFavs = data.favorites || [];
     }
 
-    // Merge new seed bookmarks
+    // Merge new seed bookmarks (append-only by id)
     let mergedBm = storedBm;
     if (v < SEED_VERSION || !data) {
-      const ids = new Set(storedBm.map(b => b.id));
-      mergedBm = [...storedBm, ...SEED.filter(b => !ids.has(b.id))];
+      const ids = new Set(storedBm.map((b) => b.id));
+      mergedBm = [...storedBm, ...SEED.filter((b) => !ids.has(b.id))];
+    }
+
+    mergedBm = mergedBm.map((b) => normalizeBookmarkTags(b));
+    mergedBm = mergedBm.map(normalizeBookmarkUrl);
+    mergedBm = mergedBm.map(migrateLegacyBookmarkLayout);
+
+    if (urlPatchStored < URL_PATCH_VERSION) {
+      const seedUrls = buildSeedUrlLookup(SEED);
+      mergedBm = mergedBm.map((b) => {
+        if (SEED_URL_OVERLAYS[b.id] != null) {
+          return { ...b, url: SEED_URL_OVERLAYS[b.id] };
+        }
+        if (SEED_URL_PATCH_IDS.has(b.id) && seedUrls.has(b.id)) {
+          return { ...b, url: seedUrls.get(b.id) };
+        }
+        return b;
+      });
+      localStorage.setItem(STORE_URL_PATCH_VERSION, String(URL_PATCH_VERSION));
     }
 
     // Ensure every bookmark has a folderId
-    mergedBm = mergedBm.map(b => b.folderId ? b : { ...b, folderId: categoryToFolderId(b.category || "Other") });
+    mergedBm = mergedBm.map((b) =>
+      b.folderId ? b : { ...b, folderId: categoryToFolderId(b.category || "Other") },
+    );
 
-    // Use SEED_FOLDERS if first migration
-    const nextFolders = storedFolders && storedFolders.length > 0 ? storedFolders : SEED_FOLDERS;
+    const nextFolders = mergeFolderTrees(storedFolders || [], SEED_FOLDERS);
+    if (layoutVStored < FOLDER_LAYOUT_VERSION) {
+      localStorage.setItem(STORE_FOLDER_LAYOUT_VERSION, String(FOLDER_LAYOUT_VERSION));
+    }
 
     // Migrate pinned → favorites on first run
     let nextFavs = storedFavs;
     if (!storedFolders) {
-      const pinnedIds = mergedBm.filter(b => b.pinned).map(b => b.id);
+      const pinnedIds = mergedBm.filter((b) => b.pinned).map((b) => b.id);
       const favSet = new Set(storedFavs);
-      pinnedIds.forEach(id => favSet.add(id));
+      pinnedIds.forEach((id) => favSet.add(id));
       nextFavs = [...favSet];
     }
 
@@ -98,7 +129,13 @@ export default function App() {
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.tagName === "SELECT") return;
       if (e.key === "/" ) { e.preventDefault(); document.querySelector(".kb-sidebar-search")?.focus(); }
       if (e.key === "n" && !e.metaKey && !e.ctrlKey) { e.preventDefault(); openNewBookmark(); }
-      if (e.key === "Escape") { setContextMenu(null); setShowAdd(false); setMovingBookmarkId(null); }
+      if (e.key === "Escape") {
+        setContextMenu(null);
+        setShowAdd(false);
+        setMovingBookmarkId(null);
+        setSelectedTag(null);
+        setSelectedFolderId((fid) => (fid === "__tag_filter__" ? null : fid));
+      }
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
@@ -113,11 +150,49 @@ export default function App() {
   const persistFavorites = (nextFav) => { setFavorites(nextFav); saveAll(bookmarks, folders, nextFav); };
   const persistBmAndFolders = (nextBm, nextF) => { setBookmarks(nextBm); setFolders(nextF); saveAll(nextBm, nextF, favorites); };
 
+  const copyPromptNotes = async (b) => {
+    try {
+      await navigator.clipboard.writeText(b.notes || "");
+    } catch {
+      /* ignore */
+    }
+  };
+
   // ── Bookmark CRUD ─────────────────────────────────────────────────────────
   const handleLinkClick = (e, b) => {
     e.preventDefault();
     persist(bookmarks.map(x => x.id === b.id ? { ...x, visits: (x.visits || 0) + 1, lastVisited: new Date().toISOString() } : x));
     window.open(b.url, "_blank", "noopener,noreferrer");
+  };
+
+  const renderHomeBookmarkCard = (b, Icon, iconColor, metaLine) => {
+    const head = (
+      <>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <Icon size={12} style={{ color: iconColor, flexShrink: 0 }} />
+          <span style={s.homeCardTitle}>{b.title}</span>
+        </div>
+        {b.description && <span style={s.homeCardDesc}>{b.description}</span>}
+        <span style={s.homeCardMeta}>{metaLine}</span>
+      </>
+    );
+    if (DAILY_PROMPT_BOOKMARK_IDS.has(b.id)) {
+      return (
+        <div key={b.id} style={{ ...s.homeCard, padding: 0, overflow: "hidden" }} className="kb-home-card">
+          <a href={b.url} onClick={(e) => handleLinkClick(e, b)} style={{ ...s.homeCard, border: "none", borderRadius: 0, flex: 1, padding: "10px 14px" }}>
+            {head}
+          </a>
+          <button type="button" onClick={() => copyPromptNotes(b)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, width: "100%", border: "none", borderTop: "1px solid #1f2937", background: "#121620", color: "#a1a1aa", fontSize: 12, padding: "8px 14px", cursor: "pointer" }}>
+            <Copy size={12} /> Copy prompt
+          </button>
+        </div>
+      );
+    }
+    return (
+      <a key={b.id} href={b.url} onClick={(e) => handleLinkClick(e, b)} style={s.homeCard} className="kb-home-card">
+        {head}
+      </a>
+    );
   };
 
   const updateField = (id, field, value) => persist(bookmarks.map(b => b.id === id ? { ...b, [field]: value } : b));
@@ -138,7 +213,10 @@ export default function App() {
 
   const startEdit = (b) => {
     setEditId(b.id);
-    setForm({ title: b.title, url: b.url, folderId: b.folderId || "", description: b.description || "", status: b.status || "not_started", progress: b.progress || 0, notes: b.notes || "", importance: b.importance || 0 });
+    setForm({
+      title: b.title, url: b.url, folderId: b.folderId || "", description: b.description || "", status: b.status || "not_started", progress: b.progress || 0, notes: b.notes || "", importance: b.importance || 0,
+      tagsStr: (b.tags || []).join(", "),
+    });
     setShowAdd(true);
   };
 
@@ -149,10 +227,12 @@ export default function App() {
     const folderId = form.folderId || (folders[0]?.id || "f_other");
     const folder = folders.find(f => f.id === folderId);
     const category = folder ? folder.name : "Other";
+    const tags = parseTagsInput(form.tagsStr);
+    const { tagsStr, ...restForm } = form;
     if (editId !== null) {
-      persist(bookmarks.map(b => b.id === editId ? { ...b, ...form, url, folderId, category } : b));
+      persist(bookmarks.map(b => b.id === editId ? normalizeBookmarkTags({ ...b, ...restForm, url, folderId, category, tags }) : b));
     } else {
-      persist([...bookmarks, { id: Date.now(), ...form, url, folderId, category, visits: 0 }]);
+      persist([...bookmarks, normalizeBookmarkTags({ id: Date.now(), ...restForm, url, folderId, category, visits: 0, tags })]);
     }
     setEditId(null); setShowAdd(false);
   };
@@ -222,7 +302,7 @@ export default function App() {
 
   // ── Derived data ──────────────────────────────────────────────────────────
   const isSearch = !!query;
-  const isHome = selectedFolderId === null && !isSearch;
+  const isHome = selectedFolderId === null && !isSearch && !selectedTag;
 
   const applySearch = (list) => {
     if (!query) return list;
@@ -231,9 +311,43 @@ export default function App() {
       b.title.toLowerCase().includes(q) ||
       b.url.toLowerCase().includes(q) ||
       (b.category || "").toLowerCase().includes(q) ||
-      (b.description || "").toLowerCase().includes(q)
+      (b.description || "").toLowerCase().includes(q) ||
+      (b.tags || []).some((t) => t.includes(q))
     );
   };
+
+  const handleSelectFolder = (id) => {
+    setSelectedFolderId(id);
+    setSelectedTag(null);
+    setQuery("");
+    setSidebarMobileOpen(false);
+  };
+
+  const handleFilterByTag = (tag) => {
+    if (!tag) return;
+    if (selectedTag === tag && selectedFolderId === "__tag_filter__") {
+      setSelectedTag(null);
+      setSelectedFolderId(null);
+      return;
+    }
+    setSelectedTag(tag);
+    setSelectedFolderId("__tag_filter__");
+    setQuery("");
+    setSidebarMobileOpen(false);
+  };
+
+  const tagSummaries = useMemo(() => {
+    const m = new Map();
+    for (const b of bookmarks) {
+      for (const t of b.tags || []) {
+        m.set(t, (m.get(t) || 0) + 1);
+      }
+    }
+    return [...m.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, 48)
+      .map(([tag, count]) => ({ tag, count }));
+  }, [bookmarks]);
 
   const getDescendantFolderIds = (folderId) => {
     const result = new Set([folderId]);
@@ -261,26 +375,43 @@ export default function App() {
   // What to show in the content area
   const visibleBookmarks = (() => {
     if (isSearch) {
-      // Search: filter within selected folder (or all if no folder selected)
-      const pool = (selectedFolderId && !selectedFolderId.startsWith("__"))
-        ? bookmarks.filter(b => getDescendantFolderIds(selectedFolderId).has(b.folderId))
-        : bookmarks;
+      let pool = bookmarks;
+      if (selectedFolderId === "__tag_filter__") {
+        pool = selectedTag ? bookmarks.filter((b) => (b.tags || []).includes(selectedTag)) : [];
+      } else if (selectedFolderId && !selectedFolderId.startsWith("__")) {
+        pool = bookmarks.filter((b) => getDescendantFolderIds(selectedFolderId).has(b.folderId));
+      }
+      if (selectedTag && selectedFolderId !== "__tag_filter__") {
+        pool = pool.filter((b) => (b.tags || []).includes(selectedTag));
+      }
       return applySearch(pool);
     }
-    if (selectedFolderId === "__important__")
-      return bookmarks.filter(b => (b.importance || 0) >= 1).sort((a, b) => (b.importance || 0) - (a.importance || 0));
-    if (selectedFolderId === "__recent__")
-      return bookmarks.filter(b => b.lastVisited).sort((a, b) => new Date(b.lastVisited) - new Date(a.lastVisited)).slice(0, 15);
+    if (selectedFolderId === "__important__") {
+      let list = bookmarks.filter(b => (b.importance || 0) >= 1).sort((a, b) => (b.importance || 0) - (a.importance || 0));
+      if (selectedTag) list = list.filter((b) => (b.tags || []).includes(selectedTag));
+      return list;
+    }
+    if (selectedFolderId === "__recent__") {
+      let list = bookmarks.filter(b => b.lastVisited).sort((a, b) => new Date(b.lastVisited) - new Date(a.lastVisited)).slice(0, 15);
+      if (selectedTag) list = list.filter((b) => (b.tags || []).includes(selectedTag));
+      return list;
+    }
+    if (selectedFolderId === "__tag_filter__") {
+      if (!selectedTag) return [];
+      return bookmarks.filter((b) => (b.tags || []).includes(selectedTag));
+    }
     if (selectedFolderId === null) return []; // home view handled separately
-    // Folder selected: show bookmarks in this folder and all descendants
     const ids = getDescendantFolderIds(selectedFolderId);
-    return bookmarks.filter(b => ids.has(b.folderId));
+    let list = bookmarks.filter(b => ids.has(b.folderId));
+    if (selectedTag) list = list.filter((b) => (b.tags || []).includes(selectedTag));
+    return list;
   })();
 
   const selectedFolder = folders.find(f => f.id === selectedFolderId);
   const contentTitle = isSearch ? `"${query}"`
     : selectedFolderId === "__important__" ? "Important"
     : selectedFolderId === "__recent__" ? "Recent"
+    : selectedFolderId === "__tag_filter__" ? `Tag: ${selectedTag || ""}`
     : selectedFolder ? getFolderPath(selectedFolderId)
     : "Home";
 
@@ -294,7 +425,7 @@ export default function App() {
     collapsed: sidebarCollapsed,
     onToggleCollapse: () => setSidebarCollapsed(v => !v),
     query, onQueryChange: setQuery,
-    selectedFolderId, onSelectFolder: (id) => { setSelectedFolderId(id); setQuery(""); setSidebarMobileOpen(false); },
+    selectedFolderId, onSelectFolder: handleSelectFolder,
     folders, bookmarks, expandedFolderIds,
     onToggleFolderExpand: toggleFolderExpand,
     onFolderAction: handleFolderAction,
@@ -302,12 +433,17 @@ export default function App() {
     onNewFolder: () => createFolder(typeof selectedFolderId === "string" && !selectedFolderId.startsWith("__") ? selectedFolderId : null),
     onNewBookmark: openNewBookmark,
     onLinkClick: handleLinkClick,
+    tagSummaries,
+    selectedTag,
+    onSelectTag: handleFilterByTag,
   };
 
   const bookmarkRowProps = {
     expandedId, onToggleExpand: (id) => setExpandedId(prev => prev === id ? null : id),
     onTogglePin: togglePin, onEdit: startEdit, onDelete: del,
     onUpdateField: updateField, onLinkClick: handleLinkClick,
+    selectedTag,
+    onTagClick: handleFilterByTag,
   };
 
   return (
@@ -376,16 +512,7 @@ export default function App() {
                 <div style={s.homeSection}>
                   <p style={s.homeSectionTitle}>Favorites</p>
                   <div style={s.homeCardGrid}>
-                    {favoriteBookmarks.map(b => (
-                      <a key={b.id} href={b.url} onClick={(e) => handleLinkClick(e, b)} style={s.homeCard} className="kb-home-card">
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          <Star size={12} style={{ color: "#facc15", flexShrink: 0 }} />
-                          <span style={s.homeCardTitle}>{b.title}</span>
-                        </div>
-                        {b.description && <span style={s.homeCardDesc}>{b.description}</span>}
-                        <span style={s.homeCardMeta}>{b.category}</span>
-                      </a>
-                    ))}
+                    {favoriteBookmarks.map((b) => renderHomeBookmarkCard(b, Star, "#facc15", b.category))}
                   </div>
                 </div>
               )}
@@ -395,16 +522,9 @@ export default function App() {
                 <div style={s.homeSection}>
                   <p style={s.homeSectionTitle}>Recently Visited</p>
                   <div style={s.homeCardGrid}>
-                    {recentBookmarks.map(b => (
-                      <a key={b.id} href={b.url} onClick={(e) => handleLinkClick(e, b)} style={s.homeCard} className="kb-home-card">
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          <Clock size={12} style={{ color: "#3b82f6", flexShrink: 0 }} />
-                          <span style={s.homeCardTitle}>{b.title}</span>
-                        </div>
-                        {b.description && <span style={s.homeCardDesc}>{b.description}</span>}
-                        <span style={s.homeCardMeta}>{b.category} · {new Date(b.lastVisited).toLocaleDateString()}</span>
-                      </a>
-                    ))}
+                    {recentBookmarks.map((b) =>
+                      renderHomeBookmarkCard(b, Clock, "#3b82f6", `${b.category} · ${new Date(b.lastVisited).toLocaleDateString()}`),
+                    )}
                   </div>
                 </div>
               )}
@@ -414,16 +534,9 @@ export default function App() {
                 <div style={s.homeSection}>
                   <p style={s.homeSectionTitle}>Important</p>
                   <div style={s.homeCardGrid}>
-                    {importantBookmarks.map(b => (
-                      <a key={b.id} href={b.url} onClick={(e) => handleLinkClick(e, b)} style={s.homeCard} className="kb-home-card">
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          <AlertTriangle size={12} style={{ color: importanceColor[b.importance], flexShrink: 0 }} />
-                          <span style={s.homeCardTitle}>{b.title}</span>
-                        </div>
-                        {b.description && <span style={s.homeCardDesc}>{b.description}</span>}
-                        <span style={s.homeCardMeta}>{b.category}</span>
-                      </a>
-                    ))}
+                    {importantBookmarks.map((b) =>
+                      renderHomeBookmarkCard(b, AlertTriangle, importanceColor[b.importance], b.category),
+                    )}
                   </div>
                 </div>
               )}

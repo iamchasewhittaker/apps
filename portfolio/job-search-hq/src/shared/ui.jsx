@@ -124,7 +124,7 @@ export function NavTabs({
  * Uses REACT_APP_AUTH_CANONICAL_ORIGIN (already set on all Vercel apps).
  * Falls back to the provided URL when the env var is missing (local dev).
  *
- *   resolveAppUrl("/wellness", "https://wellnes-tracker.vercel.app")
+ *   resolveAppUrl("/wellness", "https://wellness-tracker-kappa.vercel.app")
  */
 export function resolveAppUrl(envPath, fallbackUrl) {
   const origin = String(
@@ -150,7 +150,7 @@ export function resolveAppUrl(envPath, fallbackUrl) {
  *   <AppNav
  *     currentApp="clarity-hub"
  *     links={[
- *       { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellnes-tracker.vercel.app") },
+ *       { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellness-tracker-kappa.vercel.app") },
  *       { key: "job-search", label: "Job Search", url: resolveAppUrl("/job-search", "https://job-search-hq.vercel.app") },
  *     ]}
  *   />

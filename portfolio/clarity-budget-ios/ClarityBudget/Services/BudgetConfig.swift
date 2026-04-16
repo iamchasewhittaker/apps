@@ -8,6 +8,9 @@ enum BudgetConfig {
     /// Mirrors YNAB Clarity’s budget id storage; **Clarity Budget only** (do not reuse `chase_ynab_clarity_ios_*`).
     static let ynabBudgetIdUserDefaultsKey = "chase_budget_ios_v1_ynab_budget_id"
 
+    /// `user_data.app_key` — distinct from Funded’s `ynab` row.
+    static let supabaseAppKey = "clarity_budget"
+
     static let bundleID = "com.chasewhittaker.ClarityBudget"
     static let appVersion = "0.1"
 }

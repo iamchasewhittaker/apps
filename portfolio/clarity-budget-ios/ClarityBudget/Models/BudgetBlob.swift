@@ -48,19 +48,27 @@ struct BudgetBlob: Equatable {
     var ynabCategoryMappings: [YNABCategoryMapping]
     /// Paycheck-style income for import when non-empty; otherwise month `income` is used.
     var ynabIncomeSources: [YNABIncomeSource]
+    /// YNAB category group ids for which roles are re-applied from name heuristics on each category merge.
+    var ynabAutoSuggestGroupIds: [String]
+    /// Last local edit time (ms since epoch), for Supabase merge — mirrors web `_syncAt`.
+    var syncAtMilliseconds: Int64?
 
     init(
         baseline: BudgetScenario,
         stretch: BudgetScenario,
         ynabBudgetId: String? = nil,
         ynabCategoryMappings: [YNABCategoryMapping] = [],
-        ynabIncomeSources: [YNABIncomeSource] = []
+        ynabIncomeSources: [YNABIncomeSource] = [],
+        ynabAutoSuggestGroupIds: [String] = [],
+        syncAtMilliseconds: Int64? = nil
     ) {
         self.baseline = baseline
         self.stretch = stretch
         self.ynabBudgetId = ynabBudgetId
         self.ynabCategoryMappings = ynabCategoryMappings
         self.ynabIncomeSources = ynabIncomeSources
+        self.ynabAutoSuggestGroupIds = ynabAutoSuggestGroupIds
+        self.syncAtMilliseconds = syncAtMilliseconds
     }
 
     enum CodingKeys: String, CodingKey {
@@ -69,6 +77,8 @@ struct BudgetBlob: Equatable {
         case ynabBudgetId
         case ynabCategoryMappings
         case ynabIncomeSources
+        case ynabAutoSuggestGroupIds
+        case syncAtMilliseconds = "_syncAt"
     }
 }
 
@@ -80,6 +90,8 @@ extension BudgetBlob: Codable {
         ynabBudgetId = try c.decodeIfPresent(String.self, forKey: .ynabBudgetId)
         ynabCategoryMappings = try c.decodeIfPresent([YNABCategoryMapping].self, forKey: .ynabCategoryMappings) ?? []
         ynabIncomeSources = try c.decodeIfPresent([YNABIncomeSource].self, forKey: .ynabIncomeSources) ?? []
+        ynabAutoSuggestGroupIds = try c.decodeIfPresent([String].self, forKey: .ynabAutoSuggestGroupIds) ?? []
+        syncAtMilliseconds = try c.decodeIfPresent(Int64.self, forKey: .syncAtMilliseconds)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -89,6 +101,8 @@ extension BudgetBlob: Codable {
         try c.encodeIfPresent(ynabBudgetId, forKey: .ynabBudgetId)
         try c.encode(ynabCategoryMappings, forKey: .ynabCategoryMappings)
         try c.encode(ynabIncomeSources, forKey: .ynabIncomeSources)
+        try c.encode(ynabAutoSuggestGroupIds, forKey: .ynabAutoSuggestGroupIds)
+        try c.encodeIfPresent(syncAtMilliseconds, forKey: .syncAtMilliseconds)
     }
 }
 
@@ -126,6 +140,10 @@ enum BudgetMoneyFormat {
     static func string(fromCents cents: Int) -> String {
         let number = NSDecimalNumber(value: Double(cents) / 100.0)
         return formatter.string(from: number) ?? "$0.00"
+    }
+
+    static func string(fromDollars dollars: Double) -> String {
+        string(fromCents: Int((dollars * 100.0).rounded()))
     }
 }
 

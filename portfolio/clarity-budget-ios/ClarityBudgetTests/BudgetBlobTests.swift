@@ -64,6 +64,49 @@ final class BudgetBlobTests: XCTestCase {
         XCTAssertNil(blob.ynabBudgetId)
         XCTAssertTrue(blob.ynabCategoryMappings.isEmpty)
         XCTAssertTrue(blob.ynabIncomeSources.isEmpty)
+        XCTAssertTrue(blob.ynabAutoSuggestGroupIds.isEmpty)
         XCTAssertEqual(blob.baseline.monthlyIncomeCents, 100_000)
+    }
+
+    func testBlobRoundTripIncludesYnabAutoSuggestGroupIds() throws {
+        var blob = BudgetBlob(
+            baseline: BudgetScenario(
+                id: "baseline",
+                label: "Baseline",
+                monthlyIncomeCents: 100_00,
+                fixedNeedsCents: 50_00,
+                flexibleNeedsEstimateCents: 10_00,
+                wantsBudgetCents: 5_00,
+                wantsSpentCents: 0
+            ),
+            stretch: BudgetScenario(
+                id: "stretch",
+                label: "Stretch",
+                monthlyIncomeCents: 100_00,
+                fixedNeedsCents: 40_00,
+                flexibleNeedsEstimateCents: 10_00,
+                wantsBudgetCents: 8_00,
+                wantsSpentCents: 0
+            ),
+            ynabBudgetId: "b1",
+            ynabCategoryMappings: [
+                YNABCategoryMapping(
+                    ynabCategoryID: "c1",
+                    ynabCategoryName: "Rent",
+                    ynabGroupName: "Bills",
+                    ynabGroupId: "g1",
+                    role: .bill,
+                    dueDay: 3
+                )
+            ],
+            ynabAutoSuggestGroupIds: ["g1"]
+        )
+
+        let data = try JSONEncoder().encode(blob)
+        let decoded = try JSONDecoder().decode(BudgetBlob.self, from: data)
+
+        XCTAssertEqual(decoded.ynabAutoSuggestGroupIds, ["g1"])
+        XCTAssertEqual(decoded.ynabCategoryMappings.first?.ynabGroupId, "g1")
+        XCTAssertEqual(decoded.ynabCategoryMappings.first?.dueDay, 3)
     }
 }

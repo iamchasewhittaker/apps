@@ -144,9 +144,27 @@ struct YNABBudgetDetailResponse: Decodable {
 // MARK: - Bulk transaction update (for category write-back)
 
 struct YNABBulkTransactionUpdate: Encodable {
+    /// PATCH body uses snake_case keys per YNAB API.
     struct TransactionPatch: Encodable {
         let id: String
         let categoryId: String
+        /// When non-nil and non-empty, updates the transaction memo in YNAB.
+        let memo: String?
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case categoryId = "category_id"
+            case memo
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var c = encoder.container(keyedBy: CodingKeys.self)
+            try c.encode(id, forKey: .id)
+            try c.encode(categoryId, forKey: .categoryId)
+            if let m = memo?.trimmingCharacters(in: .whitespacesAndNewlines), !m.isEmpty {
+                try c.encode(m, forKey: .memo)
+            }
+        }
     }
     let transactions: [TransactionPatch]
 }

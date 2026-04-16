@@ -44,8 +44,8 @@ PWA / favicon assets and the canonical icon spec: **`docs/BRANDING.md`** and **`
 
 A personal daily wellness tracker. It exists because standard task and wellness tools don't account for day-to-day cognitive variability. Used daily on Safari on iPhone. Deployed on Vercel.
 
-**Live URL:** `https://wellnes-tracker.vercel.app`
-**GitHub repo:** `github.com/iamchasewhittaker/wellnes-tracker` (private)
+**Live URL:** `https://wellness-tracker-kappa.vercel.app`
+**GitHub repo:** `github.com/iamchasewhittaker/apps` (monorepo; this app is `portfolio/wellness-tracker`)
 **Local folder (monorepo):** `portfolio/wellness-tracker` under `~/Developer/chase`
 **Current version:** `v15.10`
 **Supabase sign-in email:** Dashboard → Authentication → Email Templates → **Magic link** must include `{{ .Token }}` so OTP works (see `CLAUDE.md`).
@@ -145,7 +145,7 @@ These two apps are intentionally separate but connected:
 
 | App | Purpose |
 |-----|---------|
-| **Wellness Tracker** (`wellnes-tracker.vercel.app`) | Capacity tracking, daily check-ins, mood, meds, streaks |
+| **Wellness Tracker** (`wellness-tracker.vercel.app`) | Capacity tracking, daily check-ins, mood, meds, streaks |
 | **Job Search HQ** (`job-search-hq.vercel.app`) | Pipeline, contacts, AI tools, resume tailoring |
 
 **How they connect:**
@@ -362,6 +362,30 @@ useEffect(() => {
 ## File Delivery Format
 
 **With Claude Code:** Files are edited directly — no move commands needed. Claude Code knows the full path to every file.
+
+---
+
+## Audit findings — 2026-04-15
+
+**Compliance score:** 100/100
+**Status assessment:** Active — ready for Step 6 (Learn)
+
+**Findings:**
+- Highest compliance in portfolio (tied with job-search-hq). All 10 standard files present, README substantive, MVP-AUDIT honest, CHANGELOG current, LEARNINGS has real entries.
+- Claims Step 5 (Ship) — v15.10 is live, Supabase sync working, auth working. Recommend moving to Step 6 (Learn) for honest reflection.
+- Missing LICENSE (universal gap across all 29 projects).
+- React 18.2.0 — 3 other web apps have upgraded to React 19. Standardize during monorepo dissolution.
+- Feature overlap: BudgetTab duplicates functionality in funded-web, funded-ios, clarity-budget-ios, and clarity-hub BudgetTab. GrowthTab duplicates clarity-growth-ios and clarity-hub GrowthTab. TimeTrackerTab duplicates clarity-time-ios and clarity-hub TimeTab. Acceptable for now.
+- 6,126 LOC across 25 files — largest web app in portfolio.
+
+**Recommended actions:**
+- [ ] Move to Step 6 (Learn) — block out 30 min for honest retro
+- [ ] Add MIT LICENSE
+- [ ] Consider upgrading to React 19 during monorepo dissolution
+
+**See full audit:** ~/Developer/audits/2026-04-15-audit-report.md
+
+---
 
 **Without Claude Code (chat interface):**
 

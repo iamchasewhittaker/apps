@@ -10,6 +10,7 @@ struct FundedApp: App {
             CategoryMapping.self,
             IncomeSource.self,
             CategoryOverride.self,
+            TransactionMetadata.self,
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {

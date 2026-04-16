@@ -3,7 +3,7 @@
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions.
 
 ## App Identity
-- **Version:** v0.1
+- **Version:** v0.1 (v0.2 Supabase slice in `[Unreleased]` — see CHANGELOG)
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — gold accent, icon spec, suite table; do not restate full rules in session prompts. **Change launcher (any Clarity app):** paste [`docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md`](../../docs/templates/SESSION_START_CLARITY_IOS_LOGOS.md) in a new chat.
 - **Bundle ID:** `com.chasewhittaker.ClarityCommand`
 - **Storage key:** `chase_command_ios_v1`
@@ -18,7 +18,7 @@ Daily accountability hub — morning mission commit, evening reflection, scorebo
 > *"For Reese. For Buzz. Forward — no excuses."*
 
 ## Tech Stack
-SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. Gold accent (`#c8a84b`) via app-local `CommandPalette`. No SwiftData, no external dependencies beyond ClarityUI.
+SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. Gold accent (`#c8a84b`) via app-local `CommandPalette`. **Supabase Swift** (`supabase-swift` SPM) for optional cloud sync — same `user_data` row as web Clarity Command (`app_key = command`). No SwiftData.
 
 ## Commands
 - Open `ClarityCommand.xcodeproj` in Xcode → ⌘B to build, ⌘R to run
@@ -35,7 +35,9 @@ ClarityCommand/
   Services/
     CommandConfig.swift          — UserDefaults keys enum + defaults
     CommandPalette.swift         — Gold accent color system (app-local, extends ClarityPalette)
-    CommandStore.swift           — @Observable store (load, save, targets, streaks, scoring)
+    CommandStore.swift           — @Observable store (load, save, targets, streaks, scoring, `applyRemoteBlobIfNewer`)
+    CommandSupabaseConfig.swift  — shared portfolio Supabase URL + anon key
+    CommandCloudSync.swift       — OTP auth + REST push/pull for `command`
   Constants/
     Scriptures.swift             — Daily scripture rotation (BoM, D&C, KJV)
     Reminders.swift              — Motivational reminders and conviction phrases
@@ -57,7 +59,8 @@ ClarityCommand/
       AreaStreaksView.swift       — Per-area streak counters
       StatsRow.swift             — Summary stats row
     Settings/
-      SettingsTabView.swift      — Preferences, reset, about
+      SettingsTabView.swift      — Preferences, reset, about, sync
+      CommandSyncSection.swift   — Supabase OTP + pull/push
     Components/
       GoldButton.swift           — Gold-accented action button
       StatusBadge.swift          — Morning/evening status indicator

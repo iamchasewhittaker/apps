@@ -1,8 +1,17 @@
-import { ExternalLink, Star, ChevronDown, ChevronRight, Edit2, Trash2 } from "lucide-react";
-import { s, statusColor, statusLabel, importanceColor, importanceLabel } from "./constants";
+import { ExternalLink, Star, ChevronDown, ChevronRight, Edit2, Trash2, Copy } from "lucide-react";
+import { s, statusColor, statusLabel, importanceColor, importanceLabel, DAILY_PROMPT_BOOKMARK_IDS } from "./constants";
 
-export default function BookmarkRow({ bookmark: b, isExpanded, onToggleExpand, onTogglePin, onEdit, onDelete, onUpdateField, onLinkClick, isLastRow }) {
+async function copyPromptNotes(b) {
+  try {
+    await navigator.clipboard.writeText(b.notes || "");
+  } catch {
+    /* ignore */
+  }
+}
+
+export default function BookmarkRow({ bookmark: b, isExpanded, onToggleExpand, onTogglePin, onEdit, onDelete, onUpdateField, onLinkClick, isLastRow, selectedTag, onTagClick }) {
   const isPinned = b.pinned;
+  const showCopyPrompt = DAILY_PROMPT_BOOKMARK_IDS.has(b.id);
   return (
     <div>
       <div
@@ -29,6 +38,25 @@ export default function BookmarkRow({ bookmark: b, isExpanded, onToggleExpand, o
             <ExternalLink size={12} style={s.linkIcon} />
           </a>
           {b.description && <div style={s.descText}>{b.description}</div>}
+          {(b.tags && b.tags.length > 0 && onTagClick) && (
+            <div style={s.tagRow}>
+              {b.tags.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className="kb-tag-chip"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onTagClick(t);
+                  }}
+                  style={{ ...s.tagChip, ...(selectedTag === t ? s.tagChipActive : {}) }}
+                >
+                  #{t}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Importance badge */}
@@ -59,6 +87,22 @@ export default function BookmarkRow({ bookmark: b, isExpanded, onToggleExpand, o
         >
           {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
         </button>
+
+        {showCopyPrompt && (
+          <button
+            type="button"
+            className="kb-copy-prompt"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              copyPromptNotes(b);
+            }}
+            style={s.actionBtn}
+            title="Copy prompt text from Notes"
+          >
+            <Copy size={14} />
+          </button>
+        )}
 
         {/* Edit / delete */}
         <div className="kb-actions" style={{ display: "flex", gap: 4 }}>

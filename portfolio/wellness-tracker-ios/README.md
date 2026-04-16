@@ -40,3 +40,5 @@ open portfolio/wellness-tracker-ios/WellnessTracker.xcodeproj
 
 - [CLAUDE.md](./CLAUDE.md) — architecture, storage keys, sync
 - [ROADMAP.md](./ROADMAP.md)
+
+Paused 2026-04-15 — focusing on clarity-command per WIP limit.

@@ -23,10 +23,12 @@ enum CategoryRole: String, Codable, CaseIterable, Identifiable {
 }
 
 /// Persisted category → role mapping (Codable; replaces SwiftData `CategoryMapping` from YNAB Clarity).
-struct YNABCategoryMapping: Codable, Equatable, Identifiable {
+struct YNABCategoryMapping: Equatable, Identifiable {
     var ynabCategoryID: String
     var ynabCategoryName: String
     var ynabGroupName: String
+    /// YNAB category group id (stable across renames); legacy blobs decode as `""`.
+    var ynabGroupId: String
     var roleRaw: String
     var dueDay: Int
 
@@ -41,14 +43,47 @@ struct YNABCategoryMapping: Codable, Equatable, Identifiable {
         ynabCategoryID: String,
         ynabCategoryName: String,
         ynabGroupName: String = "",
+        ynabGroupId: String = "",
         role: CategoryRole = .ignore,
         dueDay: Int = 0
     ) {
         self.ynabCategoryID = ynabCategoryID
         self.ynabCategoryName = ynabCategoryName
         self.ynabGroupName = ynabGroupName
+        self.ynabGroupId = ynabGroupId
         self.roleRaw = role.rawValue
         self.dueDay = dueDay
+    }
+}
+
+extension YNABCategoryMapping: Codable {
+    enum CodingKeys: String, CodingKey {
+        case ynabCategoryID
+        case ynabCategoryName
+        case ynabGroupName
+        case ynabGroupId
+        case roleRaw
+        case dueDay
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        ynabCategoryID = try c.decode(String.self, forKey: .ynabCategoryID)
+        ynabCategoryName = try c.decode(String.self, forKey: .ynabCategoryName)
+        ynabGroupName = try c.decodeIfPresent(String.self, forKey: .ynabGroupName) ?? ""
+        ynabGroupId = try c.decodeIfPresent(String.self, forKey: .ynabGroupId) ?? ""
+        roleRaw = try c.decodeIfPresent(String.self, forKey: .roleRaw) ?? CategoryRole.ignore.rawValue
+        dueDay = try c.decodeIfPresent(Int.self, forKey: .dueDay) ?? 0
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(ynabCategoryID, forKey: .ynabCategoryID)
+        try c.encode(ynabCategoryName, forKey: .ynabCategoryName)
+        try c.encode(ynabGroupName, forKey: .ynabGroupName)
+        try c.encode(ynabGroupId, forKey: .ynabGroupId)
+        try c.encode(roleRaw, forKey: .roleRaw)
+        try c.encode(dueDay, forKey: .dueDay)
     }
 }
 

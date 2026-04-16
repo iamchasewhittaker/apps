@@ -1,7 +1,74 @@
+import { EXPANDED_SEED } from "./expandedSeeds.js";
+import { TAXONOMY_SEED } from "./taxonomySeeds.js";
+
 // Storage
 export const STORE = "chase_knowledge_base_v1";
 export const STORE_SEED_VERSION = "chase_knowledge_base_seed_version";
-export const SEED_VERSION = 7;
+export const SEED_VERSION = 9;
+
+/** Bump when `SEED_FOLDERS` structure changes; triggers folder merge in App. */
+export const FOLDER_LAYOUT_VERSION = 1;
+export const STORE_FOLDER_LAYOUT_VERSION = "chase_knowledge_base_folder_layout_v";
+
+/** Merge stored folders with canonical seed (by id: update name, parentId, order; keep user-only folders). */
+export const mergeFolderTrees = (stored, seed) => {
+  if (!stored || stored.length === 0) return [...seed];
+  const byId = new Map(stored.map((f) => [f.id, { ...f }]));
+  const seedIds = new Set(seed.map((s) => s.id));
+  const merged = seed.map((sf) => {
+    const cur = byId.get(sf.id);
+    return cur ? { ...cur, name: sf.name, parentId: sf.parentId, order: sf.order } : { ...sf };
+  });
+  for (const f of stored) {
+    if (!seedIds.has(f.id)) merged.push({ ...f });
+  }
+  return merged;
+};
+
+const LEGACY_WEB_APP_IDS = new Set([156, 157, 158, 159, 162, 169, 261, 262, 263, 264]);
+const LEGACY_IOS_APP_IDS = new Set([160, 161, 163, 164, 165, 166, 167, 168]);
+
+/** Idempotent layout fixes: My Projects split + Community category rename. */
+export const migrateLegacyBookmarkLayout = (b) => {
+  let x = { ...b };
+  if (LEGACY_WEB_APP_IDS.has(b.id) && (b.folderId === "f_my_projects" || b.category === "My Projects")) {
+    x = { ...x, folderId: "f_my_projects_web", category: "Web apps" };
+  } else if (LEGACY_IOS_APP_IDS.has(b.id) && (b.folderId === "f_my_projects" || b.category === "My Projects")) {
+    x = { ...x, folderId: "f_my_projects_ios", category: "iOS apps" };
+  }
+  if (x.category === "Community") {
+    x = { ...x, category: "Newsletters & voices" };
+  }
+  return x;
+};
+
+export const normalizeBookmarkUrl = (b) => {
+  let url = String(b.url || "").trim();
+  if (!url) return b;
+  if (!/^https?:\/\//i.test(url)) url = `https://${url.replace(/^\/+/, "")}`;
+  return { ...b, url };
+};
+
+/** Optional: map bookmark id → canonical URL from latest seed (one-time URL hygiene). */
+export const buildSeedUrlLookup = (seedList) => {
+  const m = new Map();
+  for (const row of seedList) {
+    if (row.id != null && row.url) m.set(row.id, row.url);
+  }
+  return m;
+};
+
+/** Optional id → URL corrections applied once per `STORE_URL_PATCH_VERSION`. */
+export const SEED_URL_OVERLAYS = {};
+
+export const STORE_URL_PATCH_VERSION = "chase_knowledge_base_url_patch_v";
+export const URL_PATCH_VERSION = 2;
+
+/** On URL patch bump, sync these bookmark ids from current `SEED` URLs (one-time hygiene). */
+export const SEED_URL_PATCH_IDS = new Set([396, 397, 425]);
+
+/** Daily Prompt workflow rows — copy-prompt UX in BookmarkRow / home. */
+export const DAILY_PROMPT_BOOKMARK_IDS = new Set([265, 266, 267]);
 export const load = () => {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORE));
@@ -35,28 +102,53 @@ const CATEGORY_TO_FOLDER = {
   "Coding": "f_coding", "Architecture": "f_architecture",
   "Learning": "f_learning",
   "Job Search": "f_job_search", "GMAT": "f_gmat", "Making Money": "f_making_money",
-  "Community": "f_community", "Blogs": "f_blogs", "Reddit": "f_reddit",
+  "Sales Tools": "f_sales_tools",
+  "Newsletters & voices": "f_community", "Community": "f_community", "Blogs": "f_blogs", "Reddit": "f_reddit",
   "Low Vision & RP": "f_low_vision", "Gospel Study": "f_gospel", "Tools": "f_tools",
   "Scripting": "f_scripting", "Python": "f_python",
   "Design": "f_design", "Idea Generation": "f_idea_gen",
-  "My Projects": "f_my_projects",
+  "Web apps": "f_my_projects_web",
+  "iOS apps": "f_my_projects_ios",
+  "Skills & guides": "f_my_projects_skills",
+  "My Projects": "f_my_projects_web",
   "Daily Prompts": "f_my_projects_prompts",
   "Theme & Colors": "f_my_projects_theme",
   "Development Details": "f_my_projects_dev",
 };
 export const categoryToFolderId = (cat) => CATEGORY_TO_FOLDER[cat] || "f_other";
 
+/**
+ * Seed policy — AI Tools vs Learning: default is “by job” (daily reference vs structured study).
+ * Duplicate URLs are OK when titles clarify intent; use description cross-pointers sparingly.
+ */
+
+/** Lowercase unique tags for bookmarks (Forever-notes style cross-links). */
+export const normalizeBookmarkTags = (b) => ({
+  ...b,
+  tags: Array.isArray(b.tags)
+    ? [...new Set(b.tags.map((t) => String(t).toLowerCase().trim()).filter(Boolean))]
+    : [],
+});
+
+export const parseTagsInput = (s) =>
+  String(s || "")
+    .split(/[,#\s]+/)
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean);
+
 export const SEED_FOLDERS = [
-  // Top-level parent folders
-  { id: "f_ai_tools", name: "AI Tools", parentId: null, order: 0 },
-  { id: "f_apple", name: "Apple", parentId: null, order: 1 },
-  { id: "f_web_and_dev", name: "Web & Dev", parentId: null, order: 2 },
-  { id: "f_learning_parent", name: "Learning", parentId: null, order: 3 },
-  { id: "f_career", name: "Career", parentId: null, order: 4 },
-  { id: "f_community_parent", name: "Community", parentId: null, order: 5 },
-  { id: "f_life", name: "Life", parentId: null, order: 6 },
-  { id: "f_creative", name: "Creative", parentId: null, order: 7 },
-  { id: "f_my_projects", name: "My Projects", parentId: null, order: 8 },
+  // Top-level parent folders (My Projects + Job Search + Sales first)
+  { id: "f_my_projects", name: "My Projects", parentId: null, order: 0 },
+  { id: "f_job_search_parent", name: "Job Search", parentId: null, order: 1 },
+  { id: "f_sales_tools_parent", name: "Sales Tools", parentId: null, order: 2 },
+  { id: "f_ai_tools", name: "AI Tools", parentId: null, order: 3 },
+  { id: "f_apple", name: "Apple", parentId: null, order: 4 },
+  { id: "f_web_and_dev", name: "Web & Dev", parentId: null, order: 5 },
+  { id: "f_learning_parent", name: "Learning", parentId: null, order: 6 },
+  { id: "f_career", name: "Career", parentId: null, order: 7 },
+  { id: "f_community_parent", name: "Industry radar", parentId: null, order: 8 },
+  { id: "f_life", name: "Life", parentId: null, order: 9 },
+  { id: "f_creative", name: "Creative", parentId: null, order: 10 },
 
   // AI Tools children
   { id: "f_claude", name: "Claude", parentId: "f_ai_tools", order: 0 },
@@ -71,41 +163,49 @@ export const SEED_FOLDERS = [
   { id: "f_apple_dev", name: "Apple Developer", parentId: "f_apple", order: 1 },
   { id: "f_ios_dev", name: "iOS Dev", parentId: "f_apple", order: 2 },
 
-  // Web & Dev children
+  // Web & Dev children (Scripting + Python live here)
   { id: "f_web_dev", name: "Web Dev", parentId: "f_web_and_dev", order: 0 },
   { id: "f_dev_tools", name: "Dev Tools", parentId: "f_web_and_dev", order: 1 },
   { id: "f_github", name: "GitHub", parentId: "f_web_and_dev", order: 2 },
   { id: "f_coding", name: "Coding", parentId: "f_web_and_dev", order: 3 },
-  { id: "f_architecture", name: "Architecture", parentId: "f_web_and_dev", order: 4 },
+  { id: "f_scripting", name: "Scripting", parentId: "f_web_and_dev", order: 4 },
+  { id: "f_python", name: "Python", parentId: "f_web_and_dev", order: 5 },
+  { id: "f_architecture", name: "Architecture", parentId: "f_web_and_dev", order: 6 },
 
-  // Learning child (same name as parent — the leaf holds bookmarks)
+  // Learning child
   { id: "f_learning", name: "Learning", parentId: "f_learning_parent", order: 0 },
 
-  // Career children
-  { id: "f_job_search", name: "Job Search", parentId: "f_career", order: 0 },
-  { id: "f_gmat", name: "GMAT", parentId: "f_career", order: 1 },
-  { id: "f_making_money", name: "Making Money", parentId: "f_career", order: 2 },
+  // Job Search (top-level section)
+  { id: "f_job_search", name: "Job Search", parentId: "f_job_search_parent", order: 0 },
 
-  // Community children
-  { id: "f_community", name: "Community", parentId: "f_community_parent", order: 0 },
+  // Sales Tools (top-level section)
+  { id: "f_sales_tools", name: "Sales Tools", parentId: "f_sales_tools_parent", order: 0 },
+
+  // Career children (GMAT + Making Money only)
+  { id: "f_gmat", name: "GMAT", parentId: "f_career", order: 0 },
+  { id: "f_making_money", name: "Making Money", parentId: "f_career", order: 1 },
+
+  // Industry radar children (was Community)
+  { id: "f_community", name: "Newsletters & voices", parentId: "f_community_parent", order: 0 },
   { id: "f_blogs", name: "Blogs", parentId: "f_community_parent", order: 1 },
   { id: "f_reddit", name: "Reddit", parentId: "f_community_parent", order: 2 },
 
-  // Life children
+  // Life children (no Scripting / Python)
   { id: "f_low_vision", name: "Low Vision & RP", parentId: "f_life", order: 0 },
   { id: "f_gospel", name: "Gospel Study", parentId: "f_life", order: 1 },
   { id: "f_tools", name: "Tools", parentId: "f_life", order: 2 },
-  { id: "f_scripting", name: "Scripting", parentId: "f_life", order: 3 },
-  { id: "f_python", name: "Python", parentId: "f_life", order: 4 },
 
   // Creative children
   { id: "f_design", name: "Design", parentId: "f_creative", order: 0 },
   { id: "f_idea_gen", name: "Idea Generation", parentId: "f_creative", order: 1 },
 
   // My Projects children
-  { id: "f_my_projects_prompts", name: "Daily Prompts", parentId: "f_my_projects", order: 0 },
-  { id: "f_my_projects_theme", name: "Theme & Colors", parentId: "f_my_projects", order: 1 },
-  { id: "f_my_projects_dev", name: "Development Details", parentId: "f_my_projects", order: 2 },
+  { id: "f_my_projects_web", name: "Web apps", parentId: "f_my_projects", order: 0 },
+  { id: "f_my_projects_prompts", name: "Daily Prompts", parentId: "f_my_projects", order: 1 },
+  { id: "f_my_projects_skills", name: "Skills & guides", parentId: "f_my_projects", order: 2 },
+  { id: "f_my_projects_theme", name: "Theme & Colors", parentId: "f_my_projects", order: 3 },
+  { id: "f_my_projects_dev", name: "Development Details", parentId: "f_my_projects", order: 4 },
+  { id: "f_my_projects_ios", name: "iOS apps", parentId: "f_my_projects", order: 5 },
 ];
 
 // Seed bookmarks — folderId links each bookmark to its folder in SEED_FOLDERS
@@ -181,14 +281,14 @@ export const SEED = [
   { id: 54, title: "GitHub Copilot Docs", url: "https://docs.github.com/en/copilot", category: "Dev Tools", folderId: "f_dev_tools", description: "Official docs for GitHub Copilot AI coding assistant setup and features" },
 
   // --- Community (55–62) ---
-  { id: 55, title: "Simon Willison's Blog", url: "https://simonwillison.net", category: "Community", folderId: "f_community", description: "Daily AI and developer news from a leading practitioner and OSS author" },
-  { id: 56, title: "Latent Space", url: "https://www.latent.space", category: "Community", folderId: "f_community", description: "The top AI engineering podcast and newsletter by swyx and Alessio" },
-  { id: 57, title: "TLDR AI", url: "https://tldr.tech/ai", category: "Community", folderId: "f_community", description: "Daily 5-minute newsletter covering the most important AI news" },
-  { id: 58, title: "The Batch", url: "https://www.deeplearning.ai/the-batch", category: "Community", folderId: "f_community", description: "Andrew Ng's weekly newsletter on AI research and industry trends" },
-  { id: 59, title: "Chip Huyen's Blog", url: "https://huyenchip.com/blog", category: "Community", folderId: "f_community", description: "In-depth writing on ML systems, AI engineering, and production ML" },
-  { id: 60, title: "r/ClaudeAI", url: "https://www.reddit.com/r/ClaudeAI", category: "Community", folderId: "f_community", description: "Reddit community for Claude users and developers" },
-  { id: 61, title: "r/LocalLLaMA", url: "https://www.reddit.com/r/LocalLLaMA", category: "Community", folderId: "f_community", description: "Reddit's largest community for running and discussing local LLMs" },
-  { id: 62, title: "Hacker News", url: "https://news.ycombinator.com", category: "Community", folderId: "f_community", description: "Tech-focused link aggregator; consistently surfaces important AI news" },
+  { id: 55, title: "Simon Willison's Blog", url: "https://simonwillison.net", category: "Newsletters & voices", folderId: "f_community", description: "Daily AI and developer news from a leading practitioner and OSS author" },
+  { id: 56, title: "Latent Space", url: "https://www.latent.space", category: "Newsletters & voices", folderId: "f_community", description: "The top AI engineering podcast and newsletter by swyx and Alessio" },
+  { id: 57, title: "TLDR AI", url: "https://tldr.tech/ai", category: "Newsletters & voices", folderId: "f_community", description: "Daily 5-minute newsletter covering the most important AI news" },
+  { id: 58, title: "The Batch", url: "https://www.deeplearning.ai/the-batch", category: "Newsletters & voices", folderId: "f_community", description: "Andrew Ng's weekly newsletter on AI research and industry trends" },
+  { id: 59, title: "Chip Huyen's Blog", url: "https://huyenchip.com/blog", category: "Newsletters & voices", folderId: "f_community", description: "In-depth writing on ML systems, AI engineering, and production ML" },
+  { id: 60, title: "r/ClaudeAI", url: "https://www.reddit.com/r/ClaudeAI", category: "Newsletters & voices", folderId: "f_community", description: "Reddit community for Claude users and developers" },
+  { id: 61, title: "r/LocalLLaMA", url: "https://www.reddit.com/r/LocalLLaMA", category: "Newsletters & voices", folderId: "f_community", description: "Reddit's largest community for running and discussing local LLMs" },
+  { id: 62, title: "Hacker News", url: "https://news.ycombinator.com", category: "Newsletters & voices", folderId: "f_community", description: "Tech-focused link aggregator; consistently surfaces important AI news" },
 
   // --- GitHub (63–70) ---
   { id: 63, title: "GitHub", url: "https://github.com", category: "GitHub", folderId: "f_github", description: "The world's largest code hosting platform for version control and collaboration" },
@@ -302,24 +402,24 @@ export const SEED = [
   { id: 153, title: "GMAT Club Error Log", url: "https://gmatclub.com/blog/gmat-club-error-log-the-best-tool-for-gmat-preparation", category: "GMAT", folderId: "f_gmat", description: "Free error log tool that auto-saves timed practice and tracks question patterns" },
 
   // --- Tools (154–155) ---
-  { id: 154, title: "Sunsama", url: "https://sunsama.com", category: "Tools", folderId: "f_tools", description: "Daily planning tool that pulls from Linear, GitHub, and calendars into one view" },
-  { id: 155, title: "Linear", url: "https://linear.app", category: "Tools", folderId: "f_tools", description: "Fast, opinionated project and issue tracker built for software teams" },
+  { id: 154, title: "Sunsama", url: "https://sunsama.com", category: "Tools", folderId: "f_tools", description: "Daily planning tool that pulls from Linear, GitHub, and calendars into one view", tags: ["sunsama", "planning"] },
+  { id: 155, title: "Linear", url: "https://linear.app", category: "Tools", folderId: "f_tools", description: "Fast, opinionated project and issue tracker built for software teams", tags: ["linear", "issues"] },
 
   // --- My Projects (156–169) ---
-  { id: 156, title: "Wellness Tracker", url: "https://wellnes-tracker.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Personal wellness check-in and habit tracker web app" },
-  { id: 157, title: "Job Search HQ", url: "https://job-search-hq.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Job search pipeline and application tracker web app" },
-  { id: 158, title: "App Forge", url: "https://app-forge-fawn.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "App idea generator and product planning tool web app" },
-  { id: 159, title: "Knowledge Base", url: "https://knowledge-base-beta-five.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "This bookmark manager and personal knowledge base" },
-  { id: 160, title: "RollerTask Tycoon (iOS)", url: "https://github.com/iamchasewhittaker/roller-task-tycoon", category: "My Projects", folderId: "f_my_projects", description: "Task management iOS app with gamification elements" },
-  { id: 161, title: "YNAB Clarity (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/ynab-clarity-ios", category: "My Projects", folderId: "f_my_projects", description: "iOS app for YNAB budget review and category funding" },
-  { id: 162, title: "Spend Clarity", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/spend-clarity", category: "My Projects", folderId: "f_my_projects", description: "Python CLI tool for enriching YNAB transactions from Gmail receipts" },
-  { id: 163, title: "ClarityUI (Swift pkg)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-ui", category: "My Projects", folderId: "f_my_projects", description: "Shared SwiftUI component library used across the Clarity iOS app suite" },
-  { id: 164, title: "Clarity Check-in (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-checkin-ios", category: "My Projects", folderId: "f_my_projects", description: "Daily wellness check-in iOS app with mood, meds, and scripture tracking" },
-  { id: 165, title: "Clarity Triage (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-triage-ios", category: "My Projects", folderId: "f_my_projects", description: "iOS app for capacity planning: tasks, ideas, and wins" },
-  { id: 166, title: "Clarity Time (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-time-ios", category: "My Projects", folderId: "f_my_projects", description: "iOS app for time session tracking and scripture streak" },
-  { id: 167, title: "Clarity Budget (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-budget-ios", category: "My Projects", folderId: "f_my_projects", description: "iOS app for dual-scenario budget planning and wants tracking" },
-  { id: 168, title: "Clarity Growth (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-growth-ios", category: "My Projects", folderId: "f_my_projects", description: "iOS app for tracking 7 growth areas with streaks and progress" },
-  { id: 169, title: "AI Dev Mastery", url: "https://github.com/iamchasewhittaker/apps/tree/main/projects/ai-dev-mastery", category: "My Projects", folderId: "f_my_projects", description: "AI developer course viewer app" },
+  { id: 156, title: "Wellness Tracker", url: "https://wellness-tracker-kappa.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Personal wellness check-in and habit tracker web app" },
+  { id: 157, title: "Job Search HQ", url: "https://job-search-hq.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Job search pipeline and application tracker web app" },
+  { id: 158, title: "App Forge", url: "https://app-forge-fawn.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "App idea generator and product planning tool web app" },
+  { id: 159, title: "Knowledge Base", url: "https://knowledge-base-beta-five.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "This bookmark manager and personal knowledge base" },
+  { id: 160, title: "RollerTask Tycoon (iOS)", url: "https://github.com/iamchasewhittaker/roller-task-tycoon", category: "iOS apps", folderId: "f_my_projects_ios", description: "Task management iOS app with gamification elements" },
+  { id: 161, title: "YNAB Clarity (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/ynab-clarity-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "iOS app for YNAB budget review and category funding" },
+  { id: 162, title: "Spend Clarity", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/spend-clarity", category: "Web apps", folderId: "f_my_projects_web", description: "Python CLI tool for enriching YNAB transactions from Gmail receipts" },
+  { id: 163, title: "ClarityUI (Swift pkg)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-ui", category: "iOS apps", folderId: "f_my_projects_ios", description: "Shared SwiftUI component library used across the Clarity iOS app suite" },
+  { id: 164, title: "Clarity Check-in (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-checkin-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "Daily wellness check-in iOS app with mood, meds, and scripture tracking" },
+  { id: 165, title: "Clarity Triage (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-triage-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "iOS app for capacity planning: tasks, ideas, and wins" },
+  { id: 166, title: "Clarity Time (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-time-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "iOS app for time session tracking and scripture streak" },
+  { id: 167, title: "Clarity Budget (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-budget-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "iOS app for dual-scenario budget planning and wants tracking" },
+  { id: 168, title: "Clarity Growth (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/clarity-growth-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "iOS app for tracking 7 growth areas with streaks and progress" },
+  { id: 169, title: "AI Dev Mastery", url: "https://github.com/iamchasewhittaker/apps/tree/main/projects/ai-dev-mastery", category: "Web apps", folderId: "f_my_projects_web", description: "AI developer course viewer app" },
 
   // --- Scripting (170–177) ---
   { id: 170, title: "Shortcuts User Guide", url: "https://support.apple.com/guide/shortcuts/welcome/ios", category: "Scripting", folderId: "f_scripting", description: "Apple's official guide to creating and using Shortcuts on iOS and Mac" },
@@ -380,11 +480,11 @@ export const SEED = [
   { id: 217, title: "r/retinitispigmentosa", url: "https://www.reddit.com/r/retinitispigmentosa", category: "Low Vision & RP", folderId: "f_low_vision", description: "RP-specific subreddit for lived experience, gene therapy updates, peer support" },
 
   // --- Tools additions (218–222) ---
-  { id: 218, title: "YNAB", url: "https://app.ynab.com", category: "Tools", folderId: "f_tools", description: "YNAB web app — zero-based budgeting where you assign every dollar a job" },
-  { id: 219, title: "YNAB API Docs", url: "https://api.ynab.com", category: "Tools", folderId: "f_tools", description: "Official YNAB REST API reference — primary ref for YNAB Clarity and Spend Clarity" },
-  { id: 220, title: "YNAB Python SDK", url: "https://github.com/ynab/ynab-sdk-python", category: "Tools", folderId: "f_tools", description: "Official Python client for the YNAB API" },
-  { id: 221, title: "YNAB Blog", url: "https://www.ynab.com/blog", category: "Tools", folderId: "f_tools", description: "Official YNAB blog with budgeting guides and product updates" },
-  { id: 222, title: "The YNAB Method", url: "https://www.ynab.com/ynab-method", category: "Tools", folderId: "f_tools", description: "The four-rule budgeting framework: Give Every Dollar a Job, Embrace True Expenses" },
+  { id: 218, title: "YNAB", url: "https://app.ynab.com", category: "Tools", folderId: "f_tools", description: "YNAB web app — zero-based budgeting where you assign every dollar a job", tags: ["ynab", "budget"] },
+  { id: 219, title: "YNAB API Docs", url: "https://api.ynab.com", category: "Tools", folderId: "f_tools", description: "Official YNAB REST API reference — primary ref for YNAB Clarity and Spend Clarity", tags: ["ynab", "docs", "api"] },
+  { id: 220, title: "YNAB Python SDK", url: "https://github.com/ynab/ynab-sdk-python", category: "Tools", folderId: "f_tools", description: "Official Python client for the YNAB API", tags: ["ynab", "api", "python"] },
+  { id: 221, title: "YNAB Blog", url: "https://www.ynab.com/blog", category: "Tools", folderId: "f_tools", description: "Official YNAB blog with budgeting guides and product updates", tags: ["ynab", "blog"] },
+  { id: 222, title: "The YNAB Method", url: "https://www.ynab.com/ynab-method", category: "Tools", folderId: "f_tools", description: "The four-rule budgeting framework: Give Every Dollar a Job, Embrace True Expenses", tags: ["ynab", "method"] },
 
   // --- Job Search additions (223–228) ---
   { id: 223, title: "Work at a Startup (YC)", url: "https://www.workatastartup.com", category: "Job Search", folderId: "f_job_search", description: "Y Combinator's job board — direct access to funded YC startups hiring engineers" },
@@ -433,10 +533,10 @@ export const SEED = [
   { id: 260, title: "Google Trends", url: "https://trends.google.com", category: "Idea Generation", folderId: "f_idea_gen", description: "Free tool to explore search interest over time — validate idea demand" },
 
   // --- My Projects additions (261–264) ---
-  { id: 261, title: "Clarity Command", url: "https://clarity-command.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Daily accountability hub focused on faith, family, and high-priority execution" },
-  { id: 262, title: "Clarity Hub", url: "https://clarity-hub-lilac.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Unified hub for Check-in, Triage, Time, Budget, and Growth workflows" },
-  { id: 263, title: "YNAB Clarity Web", url: "https://ynab-clarity-web.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Standalone YNAB dashboard split out from Clarity Hub for budgeting focus" },
-  { id: 264, title: "RollerTask Tycoon Web", url: "https://rollertask-tycoon-web.vercel.app", category: "My Projects", folderId: "f_my_projects", description: "Standalone tasks-and-points web tracker split out from Clarity Hub" },
+  { id: 261, title: "Clarity Command", url: "https://clarity-command.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Daily accountability hub focused on faith, family, and high-priority execution" },
+  { id: 262, title: "Clarity Hub", url: "https://clarity-hub-lilac.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Unified hub for Check-in, Triage, Time, Budget, and Growth workflows" },
+  { id: 263, title: "YNAB Clarity Web", url: "https://ynab-clarity-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone YNAB dashboard split out from Clarity Hub for budgeting focus" },
+  { id: 264, title: "RollerTask Tycoon Web", url: "https://rollertask-tycoon-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone tasks-and-points web tracker split out from Clarity Hub" },
 
   // --- Daily Prompts (265–267) ---
   {
@@ -445,8 +545,8 @@ export const SEED = [
     url: "https://mail.google.com",
     category: "Daily Prompts",
     folderId: "f_my_projects_prompts",
-    description: "Use this prompt to clear inbox priorities fast and capture follow-ups.",
-    notes: "You are my executive email assistant. Review today's inbox and produce: 1) critical replies to send today, 2) quick wins under 2 minutes, 3) messages to defer with a proposed reply date, and 4) draft replies for the top 3 priority emails in my tone."
+    description: "Opens Gmail — the prompt text is below; use Copy prompt. See Skills & guides for Cursor skills + app doc map.",
+    notes: "You are my executive email assistant. Review today's inbox and produce: 1) critical replies to send today, 2) quick wins under 2 minutes, 3) messages to defer with a proposed reply date, and 4) draft replies for the top 3 priority emails in my tone.\n\n(Sidebar → My Projects → Skills & guides for skills index and portfolio documentation map.)"
   },
   {
     id: 266,
@@ -454,8 +554,8 @@ export const SEED = [
     url: "https://app.sunsama.com",
     category: "Daily Prompts",
     folderId: "f_my_projects_prompts",
-    description: "Use this prompt to create a realistic day plan with focus blocks.",
-    notes: "Act as my planning coach. Given my tasks, calendar, and current energy level, build a realistic day plan with: top 3 outcomes, time-boxed focus blocks, admin block, communication block, and one buffer block. Flag any overload and suggest what to cut."
+    description: "Opens Sunsama — prompt in notes; use Copy prompt. Skills & guides has your skills + per-app doc map.",
+    notes: "Act as my planning coach. Given my tasks, calendar, and current energy level, build a realistic day plan with: top 3 outcomes, time-boxed focus blocks, admin block, communication block, and one buffer block. Flag any overload and suggest what to cut.\n\n(Skills & guides folder in My Projects links the Cursor skills index and portfolio documentation map.)"
   },
   {
     id: 267,
@@ -463,8 +563,8 @@ export const SEED = [
     url: "https://linear.app",
     category: "Daily Prompts",
     folderId: "f_my_projects_prompts",
-    description: "Use this prompt to close the day, capture wins, and prep tomorrow.",
-    notes: "Run an end-of-day review using my completed and open tasks. Return: wins, blockers, carry-overs, and tomorrow's first task. Then write a short standup-style summary I can paste into my planning notes."
+    description: "Opens Linear — prompt in notes; use Copy prompt. See Skills & guides for skills + app docs.",
+    notes: "Run an end-of-day review using my completed and open tasks. Return: wins, blockers, carry-overs, and tomorrow's first task. Then write a short standup-style summary I can paste into my planning notes.\n\n(Skills & guides in My Projects → Cursor Skills index + Portfolio docs by app.)"
   },
 
   // --- Theme & Colors (268–270) ---
@@ -477,6 +577,8 @@ export const SEED = [
   { id: 271, title: "Portfolio HANDOFF", url: "https://github.com/iamchasewhittaker/apps/blob/main/HANDOFF.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Current development focus, next steps, and session continuity notes" },
   { id: 272, title: "Portfolio Root ROADMAP", url: "https://github.com/iamchasewhittaker/apps/blob/main/ROADMAP.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Cross-app roadmap and priority queue for planning what ships next" },
   { id: 273, title: "Product Build Framework", url: "https://github.com/iamchasewhittaker/apps/blob/main/PRODUCT_BUILD_FRAMEWORK.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Standard product build phases used to define and ship apps consistently" },
+  ...EXPANDED_SEED,
+  ...TAXONOMY_SEED,
 ];
 
 // Inline styles (replaces Tailwind classes)
@@ -615,6 +717,14 @@ export const s = {
   // Bookmark row additions
   descText: { fontSize: 12, color: "#71717a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 },
   visitsBadge: { fontSize: 11, color: "#52525b", whiteSpace: "nowrap", minWidth: 28, textAlign: "right" },
+  tagRow: { display: "flex", flexWrap: "wrap", gap: 4, marginTop: 4, alignItems: "center" },
+  tagChip: {
+    fontSize: 10, fontWeight: 500, color: "#a1a1aa", background: "#1f2937", border: "1px solid #27272a",
+    borderRadius: 9999, padding: "2px 8px", cursor: "pointer", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis",
+  },
+  tagChipActive: { color: "#fafafa", background: "#3f3f46", borderColor: "#52525b" },
+  tagBar: { display: "flex", flexWrap: "wrap", gap: 4, padding: "6px 10px 8px", borderBottom: "1px solid #1f2937", maxHeight: 120, overflowY: "auto" },
+  tagBarLabel: { fontSize: 10, fontWeight: 600, color: "#52525b", width: "100%", marginBottom: 2 },
   starBtn: { padding: 6, borderRadius: 4, border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center" },
 
   // Status pills

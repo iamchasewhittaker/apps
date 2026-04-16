@@ -12,9 +12,9 @@
 | **Version** | v1.0 |
 | **Platform** | Native iOS — SwiftUI + SwiftData |
 | **Bundle ID** | `com.chasewhittaker.ParkChecklist` |
-| **Focus** | Shipped V1 — stable. |
-| **Last touch** | 2026-04-15 — brighter AppIcon; `devicectl` uninstall + reinstall on physical iPhone; README/CLAUDE/HANDOFF device notes |
-| **Next** | No immediate work planned. Future ideas: Supabase sync (local-first → cloud), App Store submission |
+| **Focus** | V1 stable. Branding complete. Phase 2 (Supabase sync) planned. |
+| **Last touch** | 2026-04-14 — ROLLER/TASK text logo installed on iPhone 12 Pro Max; `docs/BRANDING.md` + `docs/SYNC_PHASE2.md` added; quick-start prompts in HANDOFF |
+| **Next** | 1. **Phase 2 — Supabase sync** (see `docs/SYNC_PHASE2.md`) · 2. **V2 — Game Feel** (subtasks, templates, haptics, drag-to-reorder) |
 
 ---
 
@@ -50,6 +50,40 @@ From repo root, with the phone **unlocked** and **Developer Mode** on (iOS 16+):
 If the home icon looks **dim**, trust the cert (**Settings → General → VPN & Device Management**) then reinstall; see [README.md](README.md#dim--gray-home-screen-icon-development--sideload).
 
 ## Known gaps / future
-- No Supabase sync yet (local-only)
+- No Supabase sync yet (local-only) — see [`docs/SYNC_PHASE2.md`](docs/SYNC_PHASE2.md)
 - App Store not submitted
 - Subtasks and templates were cut for V1 simplicity
+
+---
+
+## Quick-start prompts
+
+### General work on this app
+```
+Read CLAUDE.md and portfolio/roller-task-tycoon-ios/HANDOFF.md first.
+Goal: Work on RollerTask Tycoon iOS at portfolio/roller-task-tycoon-ios/.
+Run checkpoint before edits; update CHANGELOG / ROADMAP / HANDOFF when done.
+Build check: xcodebuild build -scheme RollerTaskTycoon -project RollerTaskTycoon.xcodeproj
+  -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
+```
+
+### Phase 2 — Supabase sync
+```
+Read CLAUDE.md, portfolio/roller-task-tycoon-ios/HANDOFF.md,
+and portfolio/roller-task-tycoon-ios/docs/SYNC_PHASE2.md first.
+
+Goal: Wire RollerTask Tycoon iOS to Supabase so tasks sync with the web app.
+
+Context:
+- iOS app: portfolio/roller-task-tycoon-ios/ (SwiftUI + SwiftData, local-only today)
+- Web app: portfolio/rollertask-tycoon-web/ (React CRA, already live at rollertask-tycoon-web.vercel.app)
+- Web sync: app_key = 'rollertask', Supabase project unqtnnxlltiadzbqpyhh (shared)
+- Blob shape: { schemaVersion, cash, tasks, ledger, _syncAt }
+- Conflict rule: remote wins when remote _syncAt > local _syncAt
+- Auth pattern: email OTP (same as web) — see web src/App.jsx for reference flow
+- Creds: pull from repo root .env.supabase (REACT_APP_SUPABASE_URL + REACT_APP_SUPABASE_ANON_KEY)
+- Reference: portfolio/job-search-hq-ios/docs/SYNC_PHASE2.md for the same pattern on another app
+
+Implementation sketch in docs/SYNC_PHASE2.md.
+Run checkpoint before any changes. Build check after each step.
+```

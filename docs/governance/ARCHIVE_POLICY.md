@@ -40,7 +40,7 @@
 | Growth Tracker | `portfolio/archive/growth-tracker/` | Merge Candidate | Absorbed into Wellness GrowthTab |
 | RollerTask Tycoon (web PWA) | `portfolio/archive/roller-task-tycoon/` | Frozen Reference | Replaced by RollerTask Tycoon Web (CRA) |
 | Money (Transaction Enricher) | `portfolio/archive/money/` | Merge Candidate | Superseded by Spend Clarity |
-| Wellness Tracker iOS | `portfolio/archive/wellness-tracker-ios/` | Merge Candidate | Replaced by 5 Clarity iOS apps |
+| Wellness Tracker iOS | `portfolio/wellness-tracker-ios/` | Active | Unarchived 2026-04-14; companion to web + Command cross-read |
 | Claude Usage Tool | `projects/archive/claude-usage-tool/` | Full Retirement | Retired fork, no active use |
 
 > Update this table when archiving or reclassifying projects.

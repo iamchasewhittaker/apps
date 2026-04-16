@@ -5,8 +5,8 @@
 | Field | Value |
 |-------|-------|
 | **Focus** | Stable v1.0 — fully functional task/points tracker |
-| **Next** | Ship + monitor; potential improvements: task categories filter, ledger pagination |
-| **Last touch** | 2026-04-13 — created as standalone app split from clarity-hub; deployed to Vercel |
+| **Next** | Task categories filter · ledger pagination · task metadata (due date, ride type) |
+| **Last touch** | 2026-04-14 — portfolio-standard text logo (ROLLER amber / TASK white bold); `logo.svg` + `favicon.svg` + PNGs updated; redeployed |
 | **Status** | ✅ Deployed · https://rollertask-tycoon-web.vercel.app |
 
 ## What Shipped (Session 1 — 2026-04-13)

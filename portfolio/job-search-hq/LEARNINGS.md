@@ -18,6 +18,18 @@
 
 ## Entries
 
+### 2026-04-14 — iOS AppIcon should be full-bleed (no rx); web logo keeps rx
+**What happened:** The web `logo.svg` uses `rx="96"` rounded corners per the portfolio template — those are intentional for browser/PWA display. The iOS AppIcon PNG however must be a full-bleed square with no corner radius; Apple applies its own squircle mask at render time.
+**Root cause:** Two different rendering contexts: browser shows the SVG rect corners directly; iOS crops with its own mask regardless of what the PNG contains. Putting rx on the AppIcon source wastes the safe area and the mask alignment doesn't match.
+**Fix / lesson:** Keep `rx="96"` in `public/logo.svg` (web). For the iOS icon, strip rx before rasterizing: `sed 's/rx="96" //' logo.svg > /tmp/icon.svg && qlmanage -t -s 1024 -o /tmp /tmp/icon.svg`. Copy result to `Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
+**Tags:** icons · svg · ios · deploy
+
+### 2026-04-14 — `docs/templates/PORTFOLIO_APP_LOGO.md` is the source of truth for svg attributes
+**What happened:** An earlier session removed `rx` rounded corners from the web logo as a "fix", but the portfolio template explicitly requires `rx="96"`. This created a drift between the template and the live file that had to be corrected.
+**Root cause:** Logo SVG was edited without checking the canonical template. The template at `docs/templates/PORTFOLIO_APP_LOGO.md` specifies canvas size, rx value, font-family, font-size, letter-spacing, and positioning. Deviating from it causes visual inconsistency across apps.
+**Fix / lesson:** Before editing any logo SVG, read `docs/templates/PORTFOLIO_APP_LOGO.md` first. Treat it as the single source of truth — don't remove or change attributes unless you're also updating the template.
+**Tags:** icons · svg · tooling · gotcha
+
 ### 2026-04-13 — Extension imports need the authenticated shell
 **What happened:** Opening Job Search HQ with `?importContact=` while the login screen was showing meant import state never reached the contact/application modals.
 **Root cause:** URL import ran on first mount before session was resolved; the main app tree (modals) is not mounted until after Supabase auth.

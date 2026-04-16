@@ -1,6 +1,59 @@
 import SwiftData
 import SwiftUI
 
+private struct TransactionTriageInput {
+    var memoNotes: String
+    var purchaser: String
+    var isNecessary: Bool
+}
+
+private enum TransactionTriageHelpers {
+    /// Merges existing YNAB memo, user notes, and structured triage into one memo line (capped for API safety).
+    static func composedMemo(for transaction: YNABTransaction, triage: TransactionTriageInput) -> String? {
+        let base = transaction.memo?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let notes = triage.memoNotes.trimmingCharacters(in: .whitespacesAndNewlines)
+        let who = triage.purchaser.trimmingCharacters(in: .whitespacesAndNewlines)
+        let metaWho = who.isEmpty ? nil : "Who: \(who)"
+        let metaNeed = "Spending: \(triage.isNecessary ? "necessary" : "discretionary")"
+        let meta = [metaWho, metaNeed].compactMap { $0 }.joined(separator: " · ")
+        var pieces: [String] = []
+        if !base.isEmpty { pieces.append(base) }
+        if !notes.isEmpty { pieces.append(notes) }
+        if !meta.isEmpty { pieces.append(meta) }
+        let combined = pieces.joined(separator: " | ")
+        if combined.isEmpty { return nil }
+        let maxLen = 500
+        if combined.count <= maxLen { return combined }
+        return String(combined.prefix(maxLen - 1)) + "…"
+    }
+
+    static func upsertTransactionMetadata(
+        context: ModelContext,
+        transactionID: String,
+        purchaser: String,
+        isNecessary: Bool
+    ) {
+        let tid = transactionID
+        let fd = FetchDescriptor<TransactionMetadata>(
+            predicate: #Predicate<TransactionMetadata> { $0.ynabTransactionID == tid }
+        )
+        let trimmed = purchaser.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let existing = try? context.fetch(fd).first {
+            existing.purchaserName = trimmed
+            existing.isNecessary = isNecessary
+            existing.updatedAt = Date()
+        } else {
+            context.insert(
+                TransactionMetadata(
+                    ynabTransactionID: transactionID,
+                    purchaserName: trimmed,
+                    isNecessary: isNecessary
+                )
+            )
+        }
+    }
+}
+
 struct BillsPlannerView: View {
     @EnvironmentObject private var appState: AppState
     @Environment(\.modelContext) private var modelContext
@@ -13,6 +66,7 @@ struct BillsPlannerView: View {
     @State private var isFunding = false
     @State private var reviewSheet: CategoryReviewConfig? = nil
     @State private var isAssigning = false
+    @State private var categoryAssignError: String?
 
     private var balances: [CategoryBalance] { appState.buildBalances(mappings: mappings) }
 
@@ -98,30 +152,44 @@ struct BillsPlannerView: View {
                     suggestions: config.suggestions,
                     mappings: mappings,
                     isAssigning: $isAssigning,
-                    onAssign: { mapping in
-                        try? await appState.updateTransactionCategory(
-                            transactionID: config.transaction.id,
-                            categoryID: mapping.ynabCategoryID,
-                            categoryMappings: mappings,
-                            incomeSources: sources
-                        )
-                        // Learn from this assignment: save override if not already present
-                        if let payeeSub = config.transaction.payeeName?
-                            .lowercased()
-                            .trimmingCharacters(in: .whitespacesAndNewlines),
-                           !payeeSub.isEmpty {
-                            let alreadyExists = overrides.contains {
-                                $0.payeeSubstring == payeeSub && $0.ynabCategoryID == mapping.ynabCategoryID
+                    errorMessage: $categoryAssignError,
+                    onAssign: { mapping, triage in
+                        let memo = TransactionTriageHelpers.composedMemo(for: config.transaction, triage: triage)
+                        do {
+                            try await appState.updateTransactionCategory(
+                                transactionID: config.transaction.id,
+                                categoryID: mapping.ynabCategoryID,
+                                memo: memo,
+                                categoryMappings: mappings,
+                                incomeSources: sources
+                            )
+                            TransactionTriageHelpers.upsertTransactionMetadata(
+                                context: modelContext,
+                                transactionID: config.transaction.id,
+                                purchaser: triage.purchaser,
+                                isNecessary: triage.isNecessary
+                            )
+                            if let payeeSub = config.transaction.payeeName?
+                                .lowercased()
+                                .trimmingCharacters(in: .whitespacesAndNewlines),
+                               !payeeSub.isEmpty {
+                                let alreadyExists = overrides.contains {
+                                    $0.payeeSubstring == payeeSub && $0.ynabCategoryID == mapping.ynabCategoryID
+                                }
+                                if !alreadyExists {
+                                    modelContext.insert(CategoryOverride(
+                                        payeeSubstring: payeeSub,
+                                        ynabCategoryID: mapping.ynabCategoryID,
+                                        ynabCategoryName: mapping.ynabCategoryName
+                                    ))
+                                }
                             }
-                            if !alreadyExists {
-                                modelContext.insert(CategoryOverride(
-                                    payeeSubstring: payeeSub,
-                                    ynabCategoryID: mapping.ynabCategoryID,
-                                    ynabCategoryName: mapping.ynabCategoryName
-                                ))
-                            }
+                            try? modelContext.save()
+                            categoryAssignError = nil
+                            reviewSheet = nil
+                        } catch {
+                            categoryAssignError = error.localizedDescription
                         }
-                        reviewSheet = nil
                     },
                     onDismiss: { reviewSheet = nil }
                 )
@@ -380,6 +448,7 @@ struct BillsPlannerView: View {
         .frame(maxWidth: .infinity)
         .padding(40)
     }
+
 }
 
 // MARK: - Assign category sheet (suggestions + full mapped list + search)
@@ -389,10 +458,18 @@ private struct AssignCategorySheet: View {
     let suggestions: [CategorySuggestion]
     let mappings: [CategoryMapping]
     @Binding var isAssigning: Bool
-    let onAssign: (CategoryMapping) async -> Void
+    @Binding var errorMessage: String?
+    let onAssign: (CategoryMapping, TransactionTriageInput) async -> Void
     let onDismiss: () -> Void
 
     @State private var query = ""
+    @State private var memoNotes = ""
+    @State private var purchaser = ""
+    @State private var isNecessary = true
+
+    private var triage: TransactionTriageInput {
+        TransactionTriageInput(memoNotes: memoNotes, purchaser: purchaser, isNecessary: isNecessary)
+    }
 
     private let roleOrder: [CategoryRole] = [.mortgage, .bill, .essential, .flexible]
 
@@ -465,6 +542,36 @@ private struct AssignCategorySheet: View {
                             .listRowBackground(ClarityTheme.surface)
                         }
 
+                        Section {
+                            Text("Confirm details before assigning a category. Notes are saved to the transaction memo in YNAB.")
+                                .font(ClarityTheme.captionFont)
+                                .foregroundStyle(ClarityTheme.muted)
+                                .listRowBackground(ClarityTheme.bg)
+                            TextField("Additional notes", text: $memoNotes, axis: .vertical)
+                                .lineLimit(3...6)
+                                .foregroundStyle(ClarityTheme.text)
+                                .listRowBackground(ClarityTheme.surface)
+                            TextField("Who made this purchase?", text: $purchaser)
+                                .foregroundStyle(ClarityTheme.text)
+                                .textInputAutocapitalization(.words)
+                                .listRowBackground(ClarityTheme.surface)
+                            Toggle("Necessary expense", isOn: $isNecessary)
+                                .tint(ClarityTheme.accent)
+                                .foregroundStyle(ClarityTheme.text)
+                                .listRowBackground(ClarityTheme.surface)
+                        } header: {
+                            Text("Triage").foregroundStyle(ClarityTheme.muted)
+                        }
+
+                        if let err = errorMessage, !err.isEmpty {
+                            Section {
+                                Text(err)
+                                    .font(ClarityTheme.captionFont)
+                                    .foregroundStyle(ClarityTheme.danger)
+                                    .listRowBackground(ClarityTheme.bg)
+                            }
+                        }
+
                         if isAssigning {
                             Section {
                                 HStack {
@@ -518,6 +625,12 @@ private struct AssignCategorySheet: View {
                         .foregroundStyle(ClarityTheme.accent)
                 }
             }
+            .onAppear {
+                memoNotes = ""
+                purchaser = ""
+                isNecessary = true
+                errorMessage = nil
+            }
         }
     }
 
@@ -527,7 +640,7 @@ private struct AssignCategorySheet: View {
             Task {
                 isAssigning = true
                 defer { isAssigning = false }
-                await onAssign(suggestion.mapping)
+                await onAssign(suggestion.mapping, triage)
             }
         } label: {
             HStack {
@@ -565,7 +678,7 @@ private struct AssignCategorySheet: View {
             Task {
                 isAssigning = true
                 defer { isAssigning = false }
-                await onAssign(mapping)
+                await onAssign(mapping, triage)
             }
         } label: {
             HStack {
@@ -606,5 +719,8 @@ private struct CategoryReviewConfig: Identifiable {
 #Preview {
     BillsPlannerView()
         .environmentObject(AppState.preview)
-        .modelContainer(for: [CategoryMapping.self, IncomeSource.self, CategoryOverride.self], inMemory: true)
+        .modelContainer(
+            for: [CategoryMapping.self, IncomeSource.self, CategoryOverride.self, TransactionMetadata.self],
+            inMemory: true
+        )
 }

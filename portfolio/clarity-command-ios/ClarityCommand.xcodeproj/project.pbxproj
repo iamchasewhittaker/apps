@@ -35,6 +35,10 @@
 		CD01000000000000000001A /* CommandBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD02000000000000000001A /* CommandBlobTests.swift */; };
 		CD01000000000000000001B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD02000000000000000001B /* Assets.xcassets */; };
 		CD01000000000000000001C /* ClarityUI in Frameworks */ = {isa = PBXBuildFile; productRef = CD0A0000000000000000001 /* ClarityUI */; };
+		CD010000000000000000020 /* CommandSupabaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD02000000000000000001E /* CommandSupabaseConfig.swift */; };
+		CD010000000000000000021 /* CommandCloudSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD02000000000000000001F /* CommandCloudSync.swift */; };
+		CD010000000000000000022 /* CommandSyncSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD020000000000000000020 /* CommandSyncSection.swift */; };
+		CD010000000000000000023 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = CD0A2000000000000000001 /* Supabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,9 @@
 		CD02000000000000000001B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD02000000000000000001C /* ClarityCommand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClarityCommand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD02000000000000000001D /* ClarityCommandTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClarityCommandTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD02000000000000000001E /* CommandSupabaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandSupabaseConfig.swift; sourceTree = "<group>"; };
+		CD02000000000000000001F /* CommandCloudSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCloudSync.swift; sourceTree = "<group>"; };
+		CD020000000000000000020 /* CommandSyncSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandSyncSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +92,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD01000000000000000001C /* ClarityUI in Frameworks */,
+				CD010000000000000000023 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +151,8 @@
 				CD020000000000000000003 /* CommandConfig.swift */,
 				CD020000000000000000004 /* CommandPalette.swift */,
 				CD020000000000000000005 /* CommandStore.swift */,
+				CD02000000000000000001E /* CommandSupabaseConfig.swift */,
+				CD02000000000000000001F /* CommandCloudSync.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -190,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				CD020000000000000000016 /* SettingsTabView.swift */,
+				CD020000000000000000020 /* CommandSyncSection.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -239,6 +250,7 @@
 			name = ClarityCommand;
 			packageProductDependencies = (
 				CD0A0000000000000000001 /* ClarityUI */,
+				CD0A2000000000000000001 /* Supabase */,
 			);
 			productName = ClarityCommand;
 			productReference = CD02000000000000000001C /* ClarityCommand.app */;
@@ -292,6 +304,7 @@
 			mainGroup = CD040000000000000000001;
 			packageReferences = (
 				CD090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */,
+				CD091000000000000000001 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			productRefGroup = CD040000000000000000003 /* Products */;
 			projectDirPath = "";
@@ -351,6 +364,9 @@
 				CD010000000000000000017 /* TargetRow.swift in Sources */,
 				CD010000000000000000018 /* StatusBadge.swift in Sources */,
 				CD010000000000000000019 /* GoldButton.swift in Sources */,
+				CD010000000000000000020 /* CommandSupabaseConfig.swift in Sources */,
+				CD010000000000000000021 /* CommandCloudSync.swift in Sources */,
+				CD010000000000000000022 /* CommandSyncSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,11 +647,27 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		CD091000000000000000001 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		CD0A0000000000000000001 /* ClarityUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD090000000000000000001 /* XCLocalSwiftPackageReference "../../clarity-ui" */;
+			package = CD090000000000000000001 /* XCLocalSwiftPackageReference "../clarity-ui" */;
 			productName = ClarityUI;
+		};
+		CD0A2000000000000000001 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD091000000000000000001 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -4,7 +4,7 @@
 
 ## App identity
 
-- **Version:** v0.1
+- **Version:** v0.2 (v0.1 scenarios/wants + YNAB + Today + web; see `HANDOFF.md`)
 - **Bundle ID:** `com.chasewhittaker.ClarityBudget`
 - **Storage key:** `chase_budget_ios_v1`
 - **Entry:** `ClarityBudget/ClarityBudgetApp.swift`
@@ -14,7 +14,7 @@
 
 ## Purpose
 
-Dual-scenario budget (baseline vs stretch) plus wants tracking — local-first, same patterns as Clarity Check-in / Triage / Time. Optional **YNAB** link: token in Keychain (`BudgetYNABKeychain`), same API client/models/metrics patterns as **YNAB Clarity iOS**; **Import** refreshes the **Baseline** scenario from mapped category roles; **Fund category** PATCHes assigned amount with confirmation.
+Dual-scenario budget (baseline vs stretch) plus wants tracking — local-first, same patterns as Clarity Check-in / Triage / Time. **Today** tab: YNAB **safe to spend** (month / week / day) via `BudgetMetricsEngine` + `refreshYNABSnapshot()`. Optional **YNAB** link: token in Keychain (`BudgetYNABKeychain`), same API client/models/metrics patterns as **Funded** / YNAB stack; **Import** refreshes the **Baseline** scenario from mapped category roles; **Fund category** PATCHes assigned amount with confirmation. **Web:** [`../clarity-budget-web`](../clarity-budget-web) mirrors STS math and optional Supabase blob sync (`clarity_budget`).
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
@@ -38,6 +38,8 @@ xcodebuild test -scheme ClarityBudget \
   CODE_SIGNING_ALLOWED=NO
 ```
 
+If **test** fails to boot the Simulator (`launchd_sim`, “Clone 1 of …”), see **`LEARNINGS.md`** (Simulator / CI) — `build` can still succeed.
+
 Open in Xcode: `open ClarityBudget.xcodeproj`
 
 ## File structure
@@ -48,6 +50,8 @@ ClarityBudget/
   Models/BudgetBlob.swift
   Services/BudgetConfig.swift
   Services/BudgetStore.swift
+  Services/YNABDashboardSnapshot.swift
+  Services/BudgetSupabaseSync.swift
   YNAB/
     BudgetYNABKeychain.swift
     YNABClient.swift
@@ -57,6 +61,7 @@ ClarityBudget/
     YNABScenarioImport.swift   — month + mappings → Baseline cents
   Constants/Quotes.swift
   Views/ContentView.swift
+  Views/SafeToSpendHomeView.swift
   Views/BudgetScenariosView.swift
   Views/BudgetYNABSettingsView.swift
   Views/WantsTrackerView.swift
@@ -64,6 +69,7 @@ ClarityBudget/
 ClarityBudgetTests/
   BudgetBlobTests.swift
   YNABScenarioImportTests.swift
+  BudgetMetricsEngineTests.swift
 ```
 
 ## Architecture
@@ -74,6 +80,7 @@ ClarityBudgetTests/
 
 ## Constraints
 
+- **Issue tracking:** This app opts out of portfolio Linear for MVP. Use [`ROADMAP.md`](ROADMAP.md), [`CHANGELOG.md`](CHANGELOG.md), and [`HANDOFF.md`](HANDOFF.md) only—do not add `TODO`/`FIXME` that assume an external issue tracker for this repo.
 - Do not change `BudgetConfig.storeKey` once real devices hold data
 - **`BudgetConfig.ynabBudgetIdUserDefaultsKey`** — optional mirror of selected budget id; do not reuse `chase_ynab_clarity_ios_*` keys
 - **`YNABClient`** must never log the `Authorization` header (same rule as YNAB Clarity iOS)

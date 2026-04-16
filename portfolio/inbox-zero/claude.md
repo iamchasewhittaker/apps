@@ -6,7 +6,7 @@ Chase Whittaker's Gmail Inbox Zero system. Three-layer architecture: XML filters
 **Owner:** chase.t.whittaker@gmail.com  
 **Asana GID:** 1213891408033292  
 **Filter file:** `gmail-filters.xml` (import into Gmail when updated)  
-**Apps Script:** `apps-script/auto-sort.gs` + `rules.gs` (deploy to script.google.com)  
+**Apps Script:** `apps-script/auto-sort.gs` + `rules.gs` (deploy via [apps-script/DEPLOY-CLASP.md](apps-script/DEPLOY-CLASP.md) or paste in script.google.com)  
 **Extension:** `extension/` (load unpacked in Chrome)
 
 ---
@@ -62,7 +62,18 @@ When Chase says **"report"**, **"email report"**, or **"what's in my inbox"**, r
 - [sender] — [subject]
 ```
 
-Omit any category with zero emails. After the report, flag any **inbox leakers** (senders not yet covered by a filter) so Chase can decide whether to add them.
+Omit any category with zero emails.
+
+### Inbox leakers (Phase 2)
+
+After the categorized sections, if any **inbox** mail is not explained by job-search whitelist or intentional “keep in inbox” labels, add:
+
+```
+📬 Inbox leakers (unlabeled / wrong bucket)
+- [sender or domain] — [subject] — why it matters (optional)
+```
+
+Log confirmed patterns in [roadmap/inbox-leakers.md](roadmap/inbox-leakers.md) and mislabels in [roadmap/mislabel-audit.md](roadmap/mislabel-audit.md) before editing `gmail-filters.xml`.
 
 ---
 
@@ -143,13 +154,18 @@ When Chase identifies a new sender to filter:
 - **Files:** `apps-script/auto-sort.gs` (engine) + `apps-script/rules.gs` (sender rules)
 - **Trigger:** 5-minute timer via `setupTrigger()`
 - **Flow:** Find unlabeled inbox emails → match against rules.gs → if no match, classify via Gemini (or skip in Rules-only mode) → apply label + archive → log new senders to Google Sheet
-- **Config:** Script Properties: `CLASSIFIER_MODE` (`GEMINI`/`RULES_ONLY`), `GEMINI_API_KEY` (for Gemini mode), `SHEET_ID` (optional)
+- **Config:** Script Properties: `CLASSIFIER_MODE` (`GEMINI`/`RULES_ONLY`), `GEMINI_API_KEY` (for Gemini mode), `SHEET_ID` (optional), `NEWSLETTER_TO_ALIASES` (optional comma-separated **To:** addresses for iCloud newsletter aliases)
 - **Job search protection:** Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn job addresses are whitelisted — never touched
 
 ### Chrome Extension
 - **Files:** `extension/` directory (MV3)
 - **Features:** Label tab bar (matches screenshot), Sort button (AI classification), settings popup
 - **Install:** `chrome://extensions` → Developer mode → Load unpacked → select `extension/`
+- **Sanity check:** `cd extension && npm install && npm run validate` (manifest + required files)
+
+### Spend Clarity (Receipt pipeline)
+
+- **Doc:** [integrations/receipt-to-spend-clarity.md](integrations/receipt-to-spend-clarity.md) — Spend Clarity reads `label:Receipt`; keep merchant senders in sync with this repo’s Receipt filters.
 
 ---
 

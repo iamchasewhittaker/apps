@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Updated (2026-04-14)
+- **Logo: "JOB SEARCH" spelled out** — updated `public/logo.svg` label from "JOB" to "JOB SEARCH" (font-size 50, letter-spacing 6); bold white "HQ" remains the dominant anchor; `rx="96"` rounded corners per portfolio template. Regenerated `logo512.png`, `logo192.png`, `apple-touch-icon.png`. Verified live at [job-search-hq.vercel.app](https://job-search-hq.vercel.app) (HTTP 200) and `npm run build` clean on Node 20.
+
 ### Added (2026-04-15)
 
 - **iOS companion (v0.1 scaffold):** new Xcode project at `../job-search-hq-ios/` — SwiftUI + ClarityUI, web-shaped `Codable` blob, Focus / Pipeline / Contacts / More tabs; see that folder’s `README.md` and `docs/SYNC_PHASE2.md` for Phase 2 sync.

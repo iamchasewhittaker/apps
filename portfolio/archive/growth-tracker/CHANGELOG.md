@@ -4,7 +4,7 @@
 > All 7 growth areas have been merged into the Wellness Tracker as the 🌱 Growth tab (v15).
 > Data now lives under `growthLogs` in `chase_wellness_v1`.
 > This app is no longer actively developed. Do not deploy new versions.
-> Active app: https://wellnes-tracker.vercel.app
+> Active app: https://wellness-tracker.vercel.app
 
 ## [Unreleased]
 

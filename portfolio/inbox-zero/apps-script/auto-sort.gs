@@ -12,6 +12,8 @@
  *      - CLASSIFIER_MODE: GEMINI (default) or RULES_ONLY
  *      - GEMINI_API_KEY: your Gemini API key (required only for GEMINI mode)
  *      - SHEET_ID: (optional) Google Sheet ID for new-sender logging
+ *      - NEWSLETTER_TO_ALIASES: (optional) comma-separated recipient emails for iCloud Hide My
+ *        Substack / Daily Crossword (etc.) — merged into Newsletter toAliases at runtime
  *   4. Run setupTrigger() once to create the 5-minute timer
  *   5. Authorize when prompted (Gmail + Sheets access)
  *   6. Run healthCheck() once to verify mode, keys (presence only), trigger, and sheet access
@@ -39,6 +41,7 @@ function autoSort() {
 
   var labelCache = {};
   var newSenderRows = [];
+  var unknownSenderRows = [];
 
   for (var i = 0; i < threads.length; i++) {
     var thread = threads[i];
@@ -68,7 +71,9 @@ function autoSort() {
           result,
           classification.source,
         ]);
-      } else if (classification.source && classification.source !== 'RULES_ONLY') {
+      } else if (classification.source === 'RULES_ONLY') {
+        unknownSenderRows.push([new Date(), senderEmail, senderDomain, from, subject, '', false]);
+      } else {
         Logger.log('No label assigned for ' + senderEmail + ' (source=' + classification.source + ')');
       }
     }
@@ -85,6 +90,10 @@ function autoSort() {
 
   if (newSenderRows.length > 0) {
     logToSheet_(newSenderRows);
+  }
+
+  if (unknownSenderRows.length > 0) {
+    logUnknownToSheet_(unknownSenderRows);
   }
 }
 
@@ -119,11 +128,48 @@ function isJobSearchSender_(email, domain) {
 // Rule matching — same logic as gmail-filters.xml
 // ---------------------------------------------------------------------------
 
+/**
+ * Returns a shallow copy of RULES with Newsletter.toAliases extended from
+ * Script Property NEWSLETTER_TO_ALIASES (comma-separated), so iCloud aliases
+ * are never committed to the repo.
+ */
+function getRulesForMatching_() {
+  var extra = PropertiesService.getScriptProperties().getProperty('NEWSLETTER_TO_ALIASES');
+  var fromProps = [];
+  if (extra) {
+    var parts = extra.split(',');
+    for (var p = 0; p < parts.length; p++) {
+      var s = parts[p].replace(/^\s+|\s+$/g, '');
+      if (s) fromProps.push(s);
+    }
+  }
+
+  var keys = Object.keys(RULES);
+  var out = {};
+  for (var i = 0; i < keys.length; i++) {
+    var label = keys[i];
+    var rule = RULES[label];
+    var toAliases = rule.toAliases ? rule.toAliases.slice() : [];
+    if (label === 'Newsletter' && fromProps.length) {
+      for (var j = 0; j < fromProps.length; j++) {
+        toAliases.push(fromProps[j]);
+      }
+    }
+    out[label] = {
+      domains: rule.domains,
+      addresses: rule.addresses,
+      toAliases: toAliases,
+    };
+  }
+  return out;
+}
+
 function matchRules_(email, domain, to) {
-  var labels = Object.keys(RULES);
+  var rulesMap = getRulesForMatching_();
+  var labels = Object.keys(rulesMap);
   for (var i = 0; i < labels.length; i++) {
     var label = labels[i];
-    var rule = RULES[label];
+    var rule = rulesMap[label];
 
     for (var d = 0; d < rule.domains.length; d++) {
       if (domain.indexOf(rule.domains[d]) !== -1) return label;
@@ -322,6 +368,50 @@ function logToSheet_(rows) {
 }
 
 // ---------------------------------------------------------------------------
+// Google Sheets logging — unknown senders for manual review (RULES_ONLY mode)
+// ---------------------------------------------------------------------------
+
+/**
+ * Appends unknown senders to a "Review Queue" sheet tab, deduplicated by email.
+ * Columns: First Seen | Email | Domain | From Header | Subject | Assign Label | Added to rules.gs?
+ * Chase fills in "Assign Label" and checks "Added to rules.gs?" after adding the rule.
+ */
+function logUnknownToSheet_(rows) {
+  var sheetId = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  if (!sheetId) return;
+
+  try {
+    var ss = SpreadsheetApp.openById(sheetId);
+    var sheet = ss.getSheetByName('Review Queue') || ss.insertSheet('Review Queue');
+
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(['First Seen', 'Email', 'Domain', 'From Header', 'Subject', 'Assign Label', 'Added to rules.gs?']);
+      sheet.getRange(1, 1, 1, 7).setFontWeight('bold');
+    }
+
+    // Build set of already-logged emails to avoid duplicates
+    var existing = {};
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      var emailValues = sheet.getRange(2, 2, lastRow - 1, 1).getValues();
+      for (var i = 0; i < emailValues.length; i++) {
+        existing[String(emailValues[i][0]).toLowerCase()] = true;
+      }
+    }
+
+    for (var i = 0; i < rows.length; i++) {
+      var email = String(rows[i][1]).toLowerCase();
+      if (!existing[email]) {
+        sheet.appendRow(rows[i]);
+        existing[email] = true;
+      }
+    }
+  } catch (e) {
+    Logger.log('Review Queue logging failed: ' + e.message);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -386,6 +476,16 @@ function healthCheck() {
   Logger.log('GEMINI_API_KEY: ' + (geminiKey ? 'set (length ' + String(geminiKey.length) + ')' : 'missing'));
   Logger.log('SHEET_ID: ' + (sheetId ? 'set' : 'missing'));
 
+  var newsletterAliases = props.getProperty('NEWSLETTER_TO_ALIASES');
+  if (newsletterAliases) {
+    var n = newsletterAliases.split(',').filter(function (s) {
+      return s.replace(/^\s+|\s+$/g, '').length > 0;
+    }).length;
+    Logger.log('NEWSLETTER_TO_ALIASES: set (' + n + ' recipient(s))');
+  } else {
+    Logger.log('NEWSLETTER_TO_ALIASES: missing (optional — iCloud Substack/Crossword aliases)');
+  }
+
   if (mode === 'GEMINI' && !geminiKey) {
     Logger.log('WARN: GEMINI mode but no GEMINI_API_KEY — unknown senders will not be classified.');
   }
@@ -408,3 +508,4 @@ function healthCheck() {
 
   Logger.log('=== end healthCheck ===');
 }
+

@@ -76,15 +76,16 @@ final class YNABClient {
         return response.data.budget
     }
 
-    /// Update the category assigned to a transaction (write-back to YNAB).
-    /// Uses the bulk PATCH endpoint with a single-item array so only `category_id` is changed.
+    /// Update the category (and optionally memo) on a transaction (write-back to YNAB).
+    /// Uses the bulk PATCH endpoint with a single-item array.
     func updateTransactionCategory(
         budgetID: String,
         transactionID: String,
-        categoryID: String
+        categoryID: String,
+        memo: String? = nil
     ) async throws {
         let body = YNABBulkTransactionUpdate(
-            transactions: [.init(id: transactionID, categoryId: categoryID)]
+            transactions: [.init(id: transactionID, categoryId: categoryID, memo: memo)]
         )
         try await patchRequest(path: "/budgets/\(budgetID)/transactions", body: body)
     }

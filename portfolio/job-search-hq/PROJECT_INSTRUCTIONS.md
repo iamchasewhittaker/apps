@@ -4,6 +4,28 @@
 
 ---
 
+## Audit findings — 2026-04-15
+
+**Compliance score:** 100/100
+**Status assessment:** Active — ready for Step 6 (Learn)
+
+**Findings:**
+- Highest compliance in portfolio (tied with wellness-tracker). All 10 standard files present.
+- Claims Step 5 (Ship) — v8.5 live, Supabase + OTP working, Chrome extension shipped. Recommend Step 6 (Learn).
+- MASTER_PROJECT_FRAMEWORK.md has path drift: references `apps/your-app/` in one spot where other copies say `portfolio/your-app/`.
+- React 19.2.4 (good — already on latest major).
+- Missing LICENSE (universal gap).
+- 4,209 LOC across 21 files — second largest web app.
+
+**Recommended actions:**
+- [ ] Move to Step 6 (Learn)
+- [ ] Fix MASTER_PROJECT_FRAMEWORK.md path reference (apps/ → portfolio/)
+- [ ] Add MIT LICENSE
+
+**See full audit:** ~/Developer/audits/2026-04-15-audit-report.md
+
+---
+
 ## How to Start Every Session
 
 **After every deploy, the sync script runs automatically and copies a summary to your clipboard. Just paste it into Claude — no template needed.**
@@ -54,13 +76,13 @@ These two apps are intentionally separate but connected:
 
 | App | Purpose |
 |-----|---------|
-| **Wellness Tracker** (`wellnes-tracker.vercel.app`) | Capacity tracking, daily check-ins, mood, meds, streaks |
+| **Wellness Tracker** (`https://wellness-tracker-kappa.vercel.app`) | Capacity tracking, daily check-ins, mood, meds, streaks |
 | **Job Search HQ** (`job-search-hq.vercel.app`) | Pipeline, contacts, AI tools, resume tailoring, interview prep |
 
 **How they connect:**
 - Wellness tracker Growth tab → Job Search card shows live pipeline stats (active apps, follow-ups overdue) read from `chase_job_search_v1`
 - Wellness tracker Job Search card has an "Open Job Tracker →" deep-link button
-- Job Search HQ header has a `← Wellness` back-link to `wellnes-tracker.vercel.app`
+- Job Search HQ header has a `← Wellness` back-link to `https://wellness-tracker-kappa.vercel.app`
 - Daily Focus blocks in Job Search HQ have a "✓ Done + Log to Wellness" button that writes a job search session directly into `chase_wellness_v1` growthLogs — keeping the Growth tab streak alive without double-entry
 
 **Storage keys are separate — never mix them:**

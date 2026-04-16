@@ -23,7 +23,19 @@ export const T = {
 const STORE_KEY = "chase_hub_ynab_v1";
 
 export const loadBlob = () => {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || null; } catch { return null; }
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORE_KEY));
+    if (!raw || typeof raw !== "object") return null;
+    return {
+      ...DEFAULT_YNAB,
+      ...raw,
+      preferences: { ...DEFAULT_YNAB.preferences, ...(raw.preferences || {}) },
+      categoryOverrides: raw.categoryOverrides || [],
+      transactionMetadata: raw.transactionMetadata || {},
+    };
+  } catch {
+    return null;
+  }
 };
 export const saveBlob = (data) => {
   try { localStorage.setItem(STORE_KEY, JSON.stringify({ ...data, _syncAt: Date.now() })); } catch {}
@@ -47,6 +59,8 @@ export const yesterday = () => {
 export const DEFAULT_YNAB = {
   categoryMappings: [],
   incomeSources: [],
+  categoryOverrides: [],
+  transactionMetadata: {},
   preferences: { activeBudgetID: "", activeBudgetName: "", setupComplete: false, taxRate: 0.28, annualSalary: 0 },
 };
 

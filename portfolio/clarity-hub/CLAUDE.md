@@ -28,6 +28,10 @@ YNAB and RollerTask were split into standalone apps (see `portfolio/ynab-clarity
 | Budget | clarity-budget-ios | `budget` |
 | Growth | clarity-growth-ios | `growth` |
 
+## Product line role (web)
+
+**Canonical web companion for the five Clarity iOS apps** — same Supabase `app_key` blobs as native Check-in, Triage, Time, Budget, and Growth. This is separate from [**Wellness Tracker**](../wellness-tracker/CLAUDE.md), which owns the unified `chase_wellness_v1` wellness stack. Portfolio decision: [`docs/governance/PRODUCT_LINES.md`](../../docs/governance/PRODUCT_LINES.md) (Clarity Life OS — web roles table).
+
 ## Tech Stack
 
 React (CRA) · localStorage · Supabase sync · inline styles (no CSS modules, no Tailwind) · no TypeScript · no component libraries

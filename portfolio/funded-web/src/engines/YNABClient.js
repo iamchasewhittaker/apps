@@ -72,8 +72,12 @@ export async function updateCategoryBudgeted(token, budgetID, month, categoryID,
   });
 }
 
-export async function updateTransactionCategory(token, budgetID, transactionID, categoryID) {
+export async function updateTransactionCategory(token, budgetID, transactionID, categoryID, memo) {
+  const row = { id: transactionID, category_id: categoryID };
+  if (memo != null && String(memo).trim()) {
+    row.memo = String(memo).trim();
+  }
   await patchRequest(`/budgets/${budgetID}/transactions`, token, {
-    transactions: [{ id: transactionID, category_id: categoryID }],
+    transactions: [row],
   });
 }

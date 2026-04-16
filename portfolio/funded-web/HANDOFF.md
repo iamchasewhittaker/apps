@@ -1,44 +1,55 @@
 # Handoff — Funded Web
 
-## State
+## State (living)
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Stable v1.0 — fully functional YNAB dashboard |
-| **Next** | Monitor; potential improvements: save-to-spend notifications, multi-budget support |
-| **Last touch** | 2026-04-15 — rename Conto → Funded; FUNDED logo; AppIcon; deployed https://funded-web.vercel.app |
-| **Status** | ✅ Deployed · https://funded-web.vercel.app |
+| **Focus** | Parity with Funded iOS for income hints + categorization triage; stable production deploy |
+| **Last updated** | 2026-04-16 |
+| **Production** | https://funded-web.vercel.app |
+| **Status** | Shipped — `npm run build` green; Vercel prod deploy verified |
 
-## Release scope (deploy 2026-04-15)
+## What’s in the tree (2026-04-15)
 
 | Area | Detail |
 |------|--------|
-| **Build / CI** | Pinned **TypeScript 4.9.5** so `package-lock.json` matches `react-scripts@5` peer (`^3 \|\| ^4`); `npm ci` + `npm run build` green locally and on Vercel |
-| **Already in tree** | Shared auth (`src/shared/auth.js`), sync refactor (`src/shared/sync.js` + `src/sync.js`), canonical OTP redirect envs (see `.env.example`) |
-| **Smoke** | `GET /` → 200, `title` = Funded; JS bundle loads from `/static/js/` |
-| **Deploy** | `cd portfolio/funded-web && vercel deploy --prod` (requires Vercel CLI + linked project) |
+| **Income setup (step 4)** | Fetches YNAB this month → last month → Ready to Assign; loading + errors; prefill banner for income; informational card for RTA |
+| **Categorization Review** | Dashboard card: uncategorized **outflows**; `CategorySuggestionEngine.js`; assign modal with notes / purchaser / necessary → merged YNAB memo + `categoryOverrides` + `transactionMetadata` in blob |
+| **Blob** | `categoryOverrides`, `transactionMetadata`; `loadBlob()` merges `DEFAULT_YNAB` keys for older localStorage |
+| **YNAB API** | `mapTransaction` includes `memo`, `category_name`; `updateTransactionCategory(..., memo)` optional |
+| **iOS parity** | Same mental model as Funded iOS Bills flow + Income setup hints (see `portfolio/funded-ios`) |
 
-## What Shipped (Session 1 — 2026-04-13)
+## Deploy
 
-- Full app split from `clarity-hub` — standalone CRA with single-blob state
-- `src/theme.js` — T palette, `chase_hub_ynab_v1` storage key, YNAB token helpers, format helpers
-- `src/sync.js` — `pushYnab` / `pullYnab` using `app_key = 'ynab'`
-- `src/App.jsx` — auth gate (email OTP), settings modal (token update + re-run setup + sign out), gear icon nav
-- `src/tabs/YnabTab.jsx` — full YNAB tab: setup flow + dashboard
-- `src/engines/` — MetricsEngine.js, CashFlowEngine.js, YNABClient.js (copied from clarity-hub)
-- CI job added to `.github/workflows/portfolio-web-build.yml`
-- Deployed to https://funded-web.vercel.app
+- **Path:** `~/Developer/chase/portfolio/funded-web` (repo root is `~/Developer/chase`)
+- **Build:** `npm run build`
+- **Vercel:** `npx vercel --prod` from app dir (project linked) — aliases **funded-web.vercel.app**
 
-## Key Constraints
+If Vercel **Root Directory** is set to `portfolio/funded-web` or `chase/portfolio/funded-web`, match that when using the CLI (running from the wrong cwd can double the path — see LEARNINGS).
 
-- Storage key `chase_hub_ynab_v1` — must never change (existing user data)
-- Supabase `app_key = 'ynab'` — must never change (iOS sync)
-- YNAB token key `chase_hub_ynab_token` — must never change (shared with clarity-hub)
+## Auth
 
-## Quick-start prompt
+- App supports **email OTP** (`signInWithOtp` + `verifyOtp`) and **Sign in with Google** (OAuth).
+- **Email OTP:** Supabase Dashboard → Authentication → Email Templates → Magic link must include **`{{ .Token }}`** in the body. If no email arrives: spam folder; rate limits; check `auth.audit_log_entries` in SQL Editor.
+- **Google OAuth:** configured in Supabase → Authentication → Providers → Google (Client ID + Secret from Google Cloud Console). `redirectTo` uses `window.location.origin`. **Critical:** `https://funded-web.vercel.app` must be in Supabase → Authentication → URL Configuration → Redirect URLs — without this, Google auth redirects to the Site URL instead.
+- Shared Supabase project: **`unqtnnxlltiadzbqpyhh`** — same as other portfolio apps.
+
+## Constraints (do not change)
+
+- Storage key **`chase_hub_ynab_v1`**
+- Supabase sync **`app_key` = `'ynab'`**
+- YNAB token key **`chase_hub_ynab_token`**
+- Keep **`src/shared/sync.js`** aligned with `portfolio/shared/sync.js` (copy)
+
+## Next session prompt
 
 ```
-Read CLAUDE.md and portfolio/funded-web/HANDOFF.md first.
-Goal: Work on Funded Web at portfolio/funded-web/.
-Run checkpoint before edits; update CHANGELOG / ROADMAP / HANDOFF when done.
+Read chase/portfolio/funded-web/CLAUDE.md and HANDOFF.md.
+Work only under chase/portfolio/funded-web unless touching shared sync.
+Run npm run build before handoff; update CHANGELOG [Unreleased], HANDOFF, LEARNINGS if behavior or ops changed.
 ```
+
+## Related
+
+- **Funded iOS:** `portfolio/funded-ios` — native companion; SwiftData `TransactionMetadata` vs web blob `transactionMetadata`
+- **Repo root:** `~/Developer/chase/CLAUDE.md` for monorepo conventions

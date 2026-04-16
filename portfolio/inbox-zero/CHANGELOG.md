@@ -1,5 +1,31 @@
 # Inbox Zero — Changelog
 
+## [Apr 16, 2026] — Phase 3 Go-Live
+
+### Google-Side Setup (complete)
+- Set all Script Properties: `CLASSIFIER_MODE`, `GEMINI_API_KEY`, `SHEET_ID`, `NEWSLETTER_TO_ALIASES` (2 iCloud aliases)
+- Confirmed 5-min `autoSort` trigger was already active from prior session (`setupTrigger()` skipped gracefully)
+- `healthCheck()` — all green: mode, keys, trigger count (1), sheet access
+- `testRun()` — first live sweep; hit Gemini free-tier quota wall (`limit: 0` on all calls)
+- Switched `CLASSIFIER_MODE` to `RULES_ONLY` — deterministic rules handle all known senders; unknown senders logged for manual review
+
+### Review Queue (new feature)
+- Added `logUnknownToSheet_()` to `apps-script/auto-sort.gs` — logs unmatched senders in RULES_ONLY mode to a "Review Queue" sheet tab
+- Deduplicates by email address — each sender appears once regardless of how many sweeps hit them
+- Columns: First Seen, Email, Domain, From Header, Subject, Assign Label (Chase fills in), Added to rules.gs? (checkbox)
+- Pushed via `clasp push --force`; confirmed working on second `testRun()`
+
+### Chrome Extension
+- `npm install` + `npm run validate` — passed clean (0 vulnerabilities, manifest + files OK)
+- Ready to load unpacked; not yet loaded in Chrome (remaining step)
+
+### Subscriptions Tab (new feature)
+- Added `refreshSubscriptions()` + `onOpen()` menu to `apps-script/auto-sort.gs`
+- Scans `label:Receipt newer_than:180d`, groups by sender, keeps recurring senders (≥2 receipts) — writes a new "Subscriptions" tab in the Sheet
+- Columns: Service, Sender Domain, Sender Email, Last Amount, Cadence (Weekly/Monthly/Quarterly/Yearly/Irregular), Last Charge, Est. Next Charge, Receipts (180d), Status (Active / Lapsed?)
+- Manual trigger only — accessible via the "Inbox Zero → Refresh Subscriptions" menu in the Sheet. Clears and rewrites the tab on every run (no stale rows)
+- Pushed via `clasp push --force`
+
 ## [Unreleased]
 
 - Added `healthCheck()` in `apps-script/auto-sort.gs` — logs classifier mode, key presence (length only), trigger count, and sheet access without calling Gemini

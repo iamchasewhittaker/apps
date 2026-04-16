@@ -49,4 +49,4 @@ Logo and icon specs: [docs/BRANDING.md](docs/BRANDING.md). Favicon, Apple touch 
 
 ## Deploy
 
-Production: **https://wellnes-tracker.vercel.app** — set Vercel **Root Directory** to `portfolio/wellness-tracker` when deploying from this monorepo.
+Production: **https://wellness-tracker-kappa.vercel.app** — set Vercel **Root Directory** to `portfolio/wellness-tracker` when deploying from this monorepo.

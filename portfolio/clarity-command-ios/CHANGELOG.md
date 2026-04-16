@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 
-_(nothing yet)_
+- **Supabase v0.2:** `CommandSupabaseConfig` + `CommandCloudSync` (OTP, pull, push, debounced push on `CommandStore.save`) — `app_key = command`, same project as web.
+- **UI:** `CommandSyncSection` in Settings; `ContentView` / `SettingsTabView` take `CommandCloudSync`.
+- **Blob parity:** `CommandBlob` encodes `syncAt` as `_syncAt` for JSON matching web `theme.js`.
+- **App icon:** `tools/generate_app_icon.py` (opaque RGB PNG + PNG signature); interim suite-style tile until final glyph.
+- **Docs:** `docs/DEVICE_QA.md` physical-device checklist.
 
 ## v0.1 — 2026-04-14 — Initial source
 

@@ -5,7 +5,7 @@
 > All 7 areas (gmat, job, ai, pm, claude, bom, cfm) now live in Wellness under `growthLogs` in `chase_wellness_v1`.
 > Do not start new development sessions on this app.
 > For all future Growth tracking work, use the Wellness Tracker project instead.
-> Active app: https://wellnes-tracker.vercel.app
+> Active app: https://wellness-tracker.vercel.app
 
 ---
 
@@ -58,7 +58,7 @@ bash audit.sh 2>&1 | tee "$(git rev-parse --show-toplevel)/portfolio/app-hub/las
 **Live URL (archived):** `https://growth-tracker-rouge.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/growth-tracker` (private, no further development)
 **Local folder:** `portfolio/archive/growth-tracker` (monorepo root: `~/Developer/chase`)
-**Replacement:** Wellness Tracker Growth tab — `https://wellnes-tracker.vercel.app`
+**Replacement:** Wellness Tracker Growth tab — `https://wellness-tracker.vercel.app`
 
 ---
 

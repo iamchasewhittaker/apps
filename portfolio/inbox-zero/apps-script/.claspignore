@@ -1,0 +1,7 @@
+README.md
+DEPLOY-CLASP.md
+node_modules/**
+package.json
+package-lock.json
+pnpm-lock.yaml
+.clasp.json.example

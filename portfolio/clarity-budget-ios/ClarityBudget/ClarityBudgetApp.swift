@@ -2,6 +2,7 @@ import SwiftUI
 import ClarityUI
 
 @main
+@MainActor
 struct ClarityBudgetApp: App {
     @State private var store = BudgetStore()
 
@@ -10,6 +11,9 @@ struct ClarityBudgetApp: App {
             ContentView()
                 .environment(store)
                 .onAppear { store.load() }
+                .task {
+                    await BudgetSupabaseSync.pullIntoStore(store)
+                }
         }
     }
 }

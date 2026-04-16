@@ -6,6 +6,8 @@ import ClarityUI
 struct BudgetYNABSettingsView: View {
     @Environment(BudgetStore.self) private var store
     @Binding var isPresented: Bool
+    /// When `false`, hides the trailing **Done** button (e.g. embedded in the Settings tab).
+    var showDismiss: Bool = true
 
     @State private var tokenDraft: String = ""
     @State private var budgets: [YNABBudgetSummary] = []
@@ -19,7 +21,7 @@ struct BudgetYNABSettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                if let err = store.ynabLastError, !err.isEmpty {
+                if let err = store.ynabDashboardCache.lastError, !err.isEmpty {
                     Section {
                         Text(err)
                             .font(.footnote)
@@ -85,25 +87,29 @@ struct BudgetYNABSettingsView: View {
                         Text("Select a budget to load categories, then assign a role to each category you want included in import.")
                             .foregroundStyle(ClarityPalette.muted)
                     } else {
-                        ForEach(store.blob.ynabCategoryMappings) { m in
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text(m.ynabCategoryName)
-                                    .font(.subheadline.weight(.semibold))
-                                Text(m.ynabGroupName)
-                                    .font(.caption)
-                                    .foregroundStyle(ClarityPalette.muted)
-                                Picker("Role", selection: roleBinding(for: m.ynabCategoryID)) {
-                                    ForEach(CategoryRole.allCases) { role in
-                                        Text(role.displayName).tag(role)
+                        ForEach(categoryRoleGroups) { group in
+                            Section {
+                                ForEach(group.mappings) { m in
+                                    categoryRoleRow(m: m)
+                                }
+                            } header: {
+                                HStack(alignment: .firstTextBaseline) {
+                                    Text(group.groupName)
+                                        .font(.subheadline.weight(.semibold))
+                                    Spacer(minLength: 8)
+                                    if !group.groupId.isEmpty {
+                                        Toggle("Auto", isOn: autoSuggestBinding(for: group.groupId))
+                                            .labelsHidden()
+                                            .accessibilityLabel("Auto from names for \(group.groupName)")
                                     }
                                 }
-                                .pickerStyle(.menu)
                             }
-                            .padding(.vertical, 4)
                         }
                     }
                 } header: {
                     Text("Category roles")
+                } footer: {
+                    Text("Grouped by YNAB category group. Turn on Auto to keep roles on that group aligned with name-based suggestions whenever categories refresh.")
                 }
 
                 Section {
@@ -204,8 +210,10 @@ struct BudgetYNABSettingsView: View {
             .navigationTitle("YNAB")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { isPresented = false }
+                if showDismiss {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Done") { isPresented = false }
+                    }
                 }
             }
             .scrollContentBackground(.hidden)
@@ -216,6 +224,7 @@ struct BudgetYNABSettingsView: View {
             if let id = store.blob.ynabBudgetId, !id.isEmpty {
                 await reloadCategories(budgetID: id)
             }
+            await store.refreshYNABSnapshot()
         }
     }
 
@@ -231,12 +240,72 @@ struct BudgetYNABSettingsView: View {
         )
     }
 
+    private var categoryRoleGroups: [CategoryRoleGroupModel] {
+        let byKey = Dictionary(grouping: store.blob.ynabCategoryMappings) { m -> String in
+            if !m.ynabGroupId.isEmpty { return m.ynabGroupId }
+            return "name:\(m.ynabGroupName)"
+        }
+        return byKey.map { key, list in
+            let sorted = list.sorted {
+                $0.ynabCategoryName.localizedCaseInsensitiveCompare($1.ynabCategoryName) == .orderedAscending
+            }
+            let first = sorted[0]
+            let gid = first.ynabGroupId.isEmpty ? "" : first.ynabGroupId
+            return CategoryRoleGroupModel(id: key, groupId: gid, groupName: first.ynabGroupName, mappings: sorted)
+        }
+        .sorted {
+            $0.groupName.localizedCaseInsensitiveCompare($1.groupName) == .orderedAscending
+        }
+    }
+
+    @ViewBuilder
+    private func categoryRoleRow(m: YNABCategoryMapping) -> some View {
+        let role = store.blob.ynabCategoryMappings.first(where: { $0.ynabCategoryID == m.ynabCategoryID })?.role ?? .ignore
+        let showDue = role == .mortgage || role == .bill || role == .essential
+        VStack(alignment: .leading, spacing: 6) {
+            Text(m.ynabCategoryName)
+                .font(.subheadline.weight(.semibold))
+            Picker("Role", selection: roleBinding(for: m.ynabCategoryID)) {
+                ForEach(CategoryRole.allCases) { r in
+                    Text(r.displayName).tag(r)
+                }
+            }
+            .pickerStyle(.menu)
+            if showDue {
+                Picker("Due day", selection: dueDayBinding(for: m.ynabCategoryID)) {
+                    Text("Auto").tag(0)
+                    ForEach(1...31, id: \.self) { day in
+                        Text("\(day)").tag(day)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func autoSuggestBinding(for groupId: String) -> Binding<Bool> {
+        Binding(
+            get: { store.blob.ynabAutoSuggestGroupIds.contains(groupId) },
+            set: { store.setYNABGroupAutoSuggest(groupId: groupId, isEnabled: $0) }
+        )
+    }
+
     private func roleBinding(for categoryID: String) -> Binding<CategoryRole> {
         Binding(
             get: {
                 store.blob.ynabCategoryMappings.first(where: { $0.ynabCategoryID == categoryID })?.role ?? .ignore
             },
             set: { store.updateYNABCategoryRole(categoryID: categoryID, role: $0) }
+        )
+    }
+
+    private func dueDayBinding(for categoryID: String) -> Binding<Int> {
+        Binding(
+            get: {
+                store.blob.ynabCategoryMappings.first(where: { $0.ynabCategoryID == categoryID })?.dueDay ?? 0
+            },
+            set: { store.updateYNABCategoryDueDay(categoryID: categoryID, dueDay: $0) }
         )
     }
 
@@ -276,6 +345,15 @@ struct BudgetYNABSettingsView: View {
         let normalized = trimmed.replacingOccurrences(of: ",", with: "")
         return Double(normalized) ?? 0
     }
+}
+
+// MARK: - Category role grouping
+
+private struct CategoryRoleGroupModel: Identifiable {
+    let id: String
+    let groupId: String
+    let groupName: String
+    let mappings: [YNABCategoryMapping]
 }
 
 // MARK: - Income editor (nested navigation)

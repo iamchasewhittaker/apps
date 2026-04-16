@@ -40,6 +40,7 @@
 		AC010000000000000000021 /* PayeeDisplayFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000021 /* PayeeDisplayFormatter.swift */; };
 		AC010000000000000000022 /* FundCategoryConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000022 /* FundCategoryConfirmationSheet.swift */; };
 		AC010000000000000000023 /* CategoryOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000023 /* CategoryOverride.swift */; };
+		AC010000000000000000024 /* TransactionMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC020000000000000000024 /* TransactionMetadata.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		AC020000000000000000021 /* PayeeDisplayFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayeeDisplayFormatter.swift; sourceTree = "<group>"; };
 		AC020000000000000000022 /* FundCategoryConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FundCategoryConfirmationSheet.swift; sourceTree = "<group>"; };
 		AC020000000000000000023 /* CategoryOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryOverride.swift; sourceTree = "<group>"; };
+		AC020000000000000000024 /* TransactionMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionMetadata.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				AC020000000000000000004 /* CategoryMapping.swift */,
 				AC020000000000000000005 /* IncomeSource.swift */,
 				AC020000000000000000023 /* CategoryOverride.swift */,
+				AC020000000000000000024 /* TransactionMetadata.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				AC010000000000000000021 /* PayeeDisplayFormatter.swift in Sources */,
 				AC010000000000000000022 /* FundCategoryConfirmationSheet.swift in Sources */,
 				AC010000000000000000023 /* CategoryOverride.swift in Sources */,
+				AC010000000000000000024 /* TransactionMetadata.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,21 @@ New email arrives
 
 ## Setup (10 minutes)
 
+### Option A — clasp CLI (recommended)
+
+From this directory:
+
+```bash
+npm install
+npx clasp login
+npx clasp create --type standalone --title "Inbox Zero Auto-Sort" --rootDir .
+npm run deploy
+```
+
+See [DEPLOY-CLASP.md](DEPLOY-CLASP.md) for linking an existing browser project.
+
+### Option B — Browser editor (paste)
+
 ### 1. Create the Apps Script project
 
 1. Go to [script.google.com](https://script.google.com)
@@ -45,8 +60,11 @@ New email arrives
 | `CLASSIFIER_MODE` | `GEMINI` or `RULES_ONLY` | No (defaults to `GEMINI`) |
 | `GEMINI_API_KEY` | Your Gemini API key | Only for `GEMINI` mode |
 | `SHEET_ID` | Google Sheet ID for new-sender logging | No (falls back to Apps Script log) |
+| `NEWSLETTER_TO_ALIASES` | Comma-separated **To:** addresses (e.g. iCloud Hide My Email) for Substack, Daily Crossword, etc. | No (merged into Newsletter matching) |
 
 **To get a Sheet ID:** Create a new Google Sheet, copy the long string from the URL between `/d/` and `/edit`.
+
+**Example `NEWSLETTER_TO_ALIASES`:** `newsletters.xxxx@icloud.com,crossword.yyyy@icloud.com` (no secrets in git — set only in Script Properties).
 
 ### 4. Create the trigger
 
@@ -67,18 +85,11 @@ New email arrives
 2. Click **Run**
 3. Open **Executions** → latest run → **View** logs
 
-You should see: resolved `CLASSIFIER_MODE`, whether `GEMINI_API_KEY` is set (character count only — never the key itself), whether `SHEET_ID` is set, how many `autoSort` triggers exist (expect `1`), and whether the spreadsheet opens (if `SHEET_ID` is set). No network call to Gemini is made.
+You should see: resolved `CLASSIFIER_MODE`, whether `GEMINI_API_KEY` is set (character count only — never the key itself), whether `SHEET_ID` is set, whether `NEWSLETTER_TO_ALIASES` is set (entry count only), how many `autoSort` triggers exist (expect `1`), and whether the spreadsheet opens (if `SHEET_ID` is set). No network call to Gemini is made.
 
-## iCloud Alias Setup
+## iCloud / Hide My Email (Substack, Daily Crossword)
 
-If you use iCloud Hide My Email aliases for Substack or Daily Crossword Links, uncomment and fill in the real alias values in `rules.gs` under the Newsletter `toAliases` array:
-
-```javascript
-toAliases: [
-  'your-real-alias@icloud.com',
-  'your-crossword-alias@icloud.com',
-],
-```
+Add **Script Property** `NEWSLETTER_TO_ALIASES` with comma-separated recipient addresses. They are merged at runtime with Newsletter rules (see `getRulesForMatching_()` in `auto-sort.gs`). `healthCheck` logs how many entries are set (not the raw values).
 
 ## New Sender Log (Google Sheet)
 

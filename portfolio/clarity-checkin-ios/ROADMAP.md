@@ -1,5 +1,7 @@
 # Roadmap — Clarity Check-in (iOS)
 
+> **Portfolio:** First Clarity **domain** app for **v0.2 depth** — see [`docs/governance/CLARITY_IOS_V02_PRIORITY.md`](../../docs/governance/CLARITY_IOS_V02_PRIORITY.md).
+
 ## v0.1 — Now (in progress)
 - [x] Models (CheckinBlob, MorningData, EveningData, PulseCheck, DraftBlob)
 - [x] CheckinStore (@Observable, draft autosave, same-day merge, pulse, meds)

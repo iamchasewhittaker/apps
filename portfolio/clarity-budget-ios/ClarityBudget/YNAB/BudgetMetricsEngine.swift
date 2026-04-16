@@ -77,6 +77,24 @@ enum BudgetMetricsEngine {
         return max(0, discretionary + tbb - currentShortfall(balances))
     }
 
+    /// Pace for the rest of the calendar month (`safeToSpend / daysRemaining`), matching Funded `MetricsEngine.safePerDay`.
+    static func safePerDay(
+        balances: [CategoryBalance],
+        daysRemaining: Int,
+        toBeBudgeted: Double = 0
+    ) -> Double {
+        guard daysRemaining > 0 else { return 0 }
+        return safeToSpend(balances: balances, toBeBudgeted: toBeBudgeted) / Double(daysRemaining)
+    }
+
+    static func safePerWeek(
+        balances: [CategoryBalance],
+        daysRemaining: Int,
+        toBeBudgeted: Double = 0
+    ) -> Double {
+        safePerDay(balances: balances, daysRemaining: daysRemaining, toBeBudgeted: toBeBudgeted) * 7.0
+    }
+
     static func daysRemainingInMonth(from date: Date = Date(), calendar: Calendar = .current) -> Int {
         guard let range = calendar.range(of: .day, in: .month, for: date) else { return 1 }
         let today = calendar.component(.day, from: date)

@@ -13,7 +13,7 @@
 | **Time** | Clock + progress arc |
 | **Budget** | Stacked coins |
 | **Growth** | Sprout |
-| **Command** | Command glyph (chevron-in-shield concept — TBD) |
+| **Command** | Interim: programmatic tile + gold chevron (`tools/generate_app_icon.py`) — replace with final chevron-in-shield when designed |
 
 ---
 
@@ -53,10 +53,10 @@ Gold accent is defined in `CommandPalette.swift` (app-local) — not in shared C
 
 | Checklist | Done |
 |-----------|------|
-| `AppIcon.appiconset/AppIcon.png` — **1024x1024**, opaque | [ ] (placeholder) |
-| `Contents.json` — `"filename": "AppIcon.png"` on universal iOS slot | [ ] |
-| Icon uses shared shell + unique center glyph per spec | [ ] (glyph TBD) |
-| `AccentColor.colorset` aligned with gold accent | [ ] |
+| `AppIcon.appiconset/AppIcon.png` — **1024x1024**, opaque | [x] interim (regenerate via `tools/generate_app_icon.py`) |
+| `Contents.json` — `"filename": "AppIcon.png"` on universal iOS slot | [x] |
+| Icon uses shared shell + unique center glyph per spec | [ ] interim glyph — revise to final Command mark |
+| `AccentColor.colorset` aligned with gold accent | [x] |
 | Wide mockup in `docs/design/` | [ ] |
 
 **App-specific asset paths:**

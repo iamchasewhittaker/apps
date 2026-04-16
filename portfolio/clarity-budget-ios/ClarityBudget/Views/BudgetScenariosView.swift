@@ -4,7 +4,6 @@ import ClarityUI
 @MainActor
 struct BudgetScenariosView: View {
     @Environment(BudgetStore.self) private var store
-    @State private var showYNABSettings = false
 
     var body: some View {
         List {
@@ -45,20 +44,7 @@ struct BudgetScenariosView: View {
                 Text("Stretch scenario")
             }
         }
-        .navigationTitle("Budget")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showYNABSettings = true
-                } label: {
-                    Image(systemName: "link.circle")
-                }
-                .accessibilityLabel("YNAB settings")
-            }
-        }
-        .sheet(isPresented: $showYNABSettings) {
-            BudgetYNABSettingsView(isPresented: $showYNABSettings)
-        }
+        .navigationTitle("Scenarios")
         .scrollContentBackground(.hidden)
         .background(ClarityPalette.bg)
     }

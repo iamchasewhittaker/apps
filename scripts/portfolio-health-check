@@ -41,7 +41,7 @@ done
 # --- Web apps with live URLs (parallel arrays for shell compat) ---
 WEB_APP_NAMES=(wellness-tracker job-search-hq app-forge clarity-hub clarity-command ynab-clarity-web rollertask-tycoon-web knowledge-base)
 WEB_APP_URLS=(
-  "https://wellnes-tracker.vercel.app"
+  "https://wellness-tracker.vercel.app"
   "https://job-search-hq.vercel.app"
   "https://app-forge-fawn.vercel.app"
   "https://clarity-hub-lilac.vercel.app"

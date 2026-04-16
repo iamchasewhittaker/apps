@@ -60,3 +60,5 @@ Create a **second budget** in the YNAB app/website; use the **same** Personal Ac
 - **`CategoryOverride` matching** uses `payee.contains(override.payeeSubstring)` — the stored substring is the full lowercased raw payee name. This is intentionally broad (catches all future transactions from the same merchant) but could over-match if payee names are ambiguous. Tune via `category_overrides.yaml` on the Python side.
 - **actool** may still warn about missing icon sizes (60×60@2x etc.) — build and tests succeed regardless.
 - **Tests:** pass `-destination 'platform=iOS Simulator,id=…'` if a physical iPhone is connected and locked.
+
+Paused 2026-04-15 — focusing on clarity-command per WIP limit.

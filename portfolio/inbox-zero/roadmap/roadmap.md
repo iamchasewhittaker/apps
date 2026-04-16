@@ -61,9 +61,9 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 | Sender rules in JS (mirrors XML) | ✅ Done | `apps-script/rules.gs` — 69 filters as JS objects |
 | New-sender Google Sheets logging | ✅ Done | Built into auto-sort.gs — logs AI classifications to "New Senders" sheet |
 | Chrome extension (label tab bar) | ✅ Done | `extension/` — MV3, tab bar + Sort button + settings popup |
-| Deploy Apps Script to script.google.com | ⬜ Pending | Copy `.gs` files, set Script Properties, run `setupTrigger()` |
-| Deploy Chrome extension (load unpacked) | ⬜ Pending | `chrome://extensions` → Load unpacked → select `extension/` |
-| Spend Clarity integration | ⬜ Pending | Receipt label → auto-feed into portfolio/spend-clarity Python CLI |
+| Deploy Apps Script to script.google.com | ⬜ Pending | **clasp:** `apps-script/` → `npm install` + [DEPLOY-CLASP.md](../apps-script/DEPLOY-CLASP.md); then Script Properties, `setupTrigger()`, `healthCheck`, `testRun()` |
+| Deploy Chrome extension (load unpacked) | ⬜ Pending | `extension/` → `npm run validate` then Chrome load unpacked (see extension README) |
+| Spend Clarity integration | ✅ Doc | [integrations/receipt-to-spend-clarity.md](../integrations/receipt-to-spend-clarity.md); Spend Clarity already queries `label:Receipt` |
 | Gmail AI labels (Google's native feature) | ⬜ Pending | Monitor if Google expands this natively |
 
 ---

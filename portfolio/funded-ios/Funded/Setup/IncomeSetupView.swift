@@ -17,6 +17,13 @@ struct IncomeSetupView: View {
 
     @State private var activeSheet: IncomeSheetConfig? = nil
     @State private var ynabIncomeHint: Double? = nil
+    @State private var hintBannerTitle: String = ""
+    @State private var hintBannerSubtitle: String = ""
+    /// When true, tapping the banner pre-fills the add-income sheet from `ynabIncomeHint`.
+    @State private var hintTapPrefillsIncome = false
+    @State private var isLoadingHint = false
+    @State private var incomeHintError: String? = nil
+    @State private var hintEmptyMessage: String? = nil
 
     var body: some View {
         ZStack {
@@ -27,8 +34,8 @@ struct IncomeSetupView: View {
                 } else {
                     sourceList
                 }
-                if let hint = ynabIncomeHint, sources.isEmpty {
-                    ynabSuggestionBanner(amount: hint)
+                if sources.isEmpty {
+                    incomeHintSection
                 }
                 buttons
             }
@@ -61,7 +68,48 @@ struct IncomeSetupView: View {
                 .foregroundStyle(ClarityTheme.muted)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
+            if isLoadingHint {
+                ProgressView("Checking YNAB…")
+                    .tint(ClarityTheme.accent)
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+                    .padding(.top, 8)
+            }
             Spacer()
+        }
+    }
+
+    @ViewBuilder
+    private var incomeHintSection: some View {
+        if let err = incomeHintError, !err.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                Label(err, systemImage: "exclamationmark.triangle.fill")
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.danger)
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(ClarityTheme.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(ClarityTheme.danger.opacity(0.35)))
+            .padding(.horizontal, 20)
+            .padding(.bottom, 8)
+        } else if let msg = hintEmptyMessage, !msg.isEmpty, ynabIncomeHint == nil, !isLoadingHint {
+            Text(msg)
+                .font(ClarityTheme.captionFont)
+                .foregroundStyle(ClarityTheme.muted)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 8)
+        }
+
+        if let amount = ynabIncomeHint, !hintBannerTitle.isEmpty {
+            ynabSuggestionBanner(
+                amount: amount,
+                title: hintBannerTitle,
+                subtitle: hintBannerSubtitle,
+                prefillOnTap: hintTapPrefillsIncome
+            )
         }
     }
 
@@ -96,38 +144,77 @@ struct IncomeSetupView: View {
         .listRowBackground(ClarityTheme.surface)
     }
 
-    private func ynabSuggestionBanner(amount: Double) -> some View {
-        Button {
-            activeSheet = IncomeSheetConfig(
-                name: "Monthly Income",
-                amount: "\(Int(amount))",
-                frequency: .monthly
-            )
-        } label: {
-            HStack(spacing: 10) {
-                Image(systemName: "wand.and.stars")
-                    .foregroundStyle(ClarityTheme.accent)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("YNAB shows \(ClarityTheme.currency(amount)) income this month")
-                        .font(ClarityTheme.headlineFont)
-                        .foregroundStyle(ClarityTheme.text)
-                    Text("Tap to pre-fill as a monthly source")
-                        .font(ClarityTheme.captionFont)
-                        .foregroundStyle(ClarityTheme.muted)
+    private func ynabSuggestionBanner(
+        amount: Double,
+        title: String,
+        subtitle: String,
+        prefillOnTap: Bool
+    ) -> some View {
+        Group {
+            if prefillOnTap {
+                Button {
+                    activeSheet = IncomeSheetConfig(
+                        name: "Monthly Income",
+                        amount: "\(Int(amount.rounded()))",
+                        frequency: .monthly
+                    )
+                } label: {
+                    bannerLabel(
+                        amount: amount,
+                        title: title,
+                        subtitle: subtitle,
+                        showChevron: true,
+                        iconName: "wand.and.stars"
+                    )
                 }
-                Spacer()
+                .buttonStyle(.plain)
+            } else {
+                bannerLabel(
+                    amount: amount,
+                    title: title,
+                    subtitle: subtitle,
+                    showChevron: false,
+                    iconName: "info.circle"
+                )
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 8)
+    }
+
+    private func bannerLabel(
+        amount: Double,
+        title: String,
+        subtitle: String,
+        showChevron: Bool,
+        iconName: String
+    ) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: iconName)
+                .foregroundStyle(ClarityTheme.accent)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(ClarityTheme.headlineFont)
+                    .foregroundStyle(ClarityTheme.text)
+                Text(subtitle)
+                    .font(ClarityTheme.captionFont)
+                    .foregroundStyle(ClarityTheme.muted)
+                Text(ClarityTheme.currency(amount))
+                    .font(ClarityTheme.bodyFont.weight(.semibold))
+                    .foregroundStyle(ClarityTheme.text)
+                    .padding(.top, 2)
+            }
+            Spacer()
+            if showChevron {
                 Image(systemName: "chevron.right")
                     .font(ClarityTheme.captionFont)
                     .foregroundStyle(ClarityTheme.muted)
             }
-            .padding(14)
-            .background(ClarityTheme.surface)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(ClarityTheme.accent.opacity(0.4)))
         }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 8)
+        .padding(14)
+        .background(ClarityTheme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(ClarityTheme.accent.opacity(0.4)))
     }
 
     private var buttons: some View {
@@ -163,12 +250,80 @@ struct IncomeSetupView: View {
     // MARK: - Income hint from YNAB
 
     private func fetchIncomeHint() async {
-        guard let token = KeychainHelper.readToken(), !appState.activeBudgetID.isEmpty else { return }
+        await MainActor.run {
+            isLoadingHint = true
+            incomeHintError = nil
+            hintEmptyMessage = nil
+            ynabIncomeHint = nil
+            hintBannerTitle = ""
+            hintBannerSubtitle = ""
+            hintTapPrefillsIncome = false
+        }
+
+        guard let token = KeychainHelper.readToken(), !appState.activeBudgetID.isEmpty else {
+            await MainActor.run {
+                incomeHintError = "No budget selected yet. Go back and pick a budget."
+                isLoadingHint = false
+            }
+            return
+        }
+
         let client = YNABClient(token: token)
-        guard let monthDetail = try? await client.fetchMonth(budgetID: appState.activeBudgetID, month: Date()),
-              let incomeMilliunits = monthDetail.income,
-              incomeMilliunits > 0 else { return }
-        ynabIncomeHint = Double(incomeMilliunits) / 1000.0
+        let budgetID = appState.activeBudgetID
+
+        do {
+            let thisMonth = try await client.fetchMonth(budgetID: budgetID, month: Date())
+            let incomeThis = thisMonth.income ?? 0
+            if incomeThis > 0 {
+                await MainActor.run {
+                    ynabIncomeHint = Double(incomeThis) / 1000.0
+                    hintBannerTitle = "Income in YNAB (this month)"
+                    hintBannerSubtitle = "Tap to pre-fill a monthly income source."
+                    hintTapPrefillsIncome = true
+                    isLoadingHint = false
+                }
+                return
+            }
+
+            let cal = Calendar.current
+            if let prevDate = cal.date(byAdding: .month, value: -1, to: Date()) {
+                let prevMonth = try await client.fetchMonth(budgetID: budgetID, month: prevDate)
+                let incomePrev = prevMonth.income ?? 0
+                if incomePrev > 0 {
+                    await MainActor.run {
+                        ynabIncomeHint = Double(incomePrev) / 1000.0
+                        hintBannerTitle = "Income in YNAB (last month)"
+                        hintBannerSubtitle = "This month shows $0 in YNAB’s income total. Tap to use last month’s amount as a starting point."
+                        hintTapPrefillsIncome = true
+                        isLoadingHint = false
+                    }
+                    return
+                }
+            }
+
+            let tbb = thisMonth.toBeBudgeted ?? 0
+            if tbb != 0 {
+                await MainActor.run {
+                    ynabIncomeHint = Double(tbb) / 1000.0
+                    hintBannerTitle = "Ready to Assign"
+                    hintBannerSubtitle = "Not income — cash waiting to be assigned in YNAB. Add paychecks with “Add Income Source.”"
+                    hintTapPrefillsIncome = false
+                    isLoadingHint = false
+                }
+                return
+            }
+
+            await MainActor.run {
+                hintEmptyMessage =
+                    "YNAB shows $0 income for this month and no Ready to Assign. Add income manually, or check your budget in YNAB."
+                isLoadingHint = false
+            }
+        } catch {
+            await MainActor.run {
+                incomeHintError = error.localizedDescription
+                isLoadingHint = false
+            }
+        }
     }
 }
 

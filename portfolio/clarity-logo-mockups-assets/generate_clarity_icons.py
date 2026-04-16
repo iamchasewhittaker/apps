@@ -163,6 +163,27 @@ def draw_growth_center_v3(draw: ImageDraw.ImageDraw) -> None:
     draw.line((392, 614, 392, 648), fill=COL_SAFE, width=12)
 
 
+def draw_rollertask_center(draw: ImageDraw.ImageDraw) -> None:
+    """Roller coaster track arc — peaked curve with gold accent at summit."""
+    # Main track rail (wider stroke)
+    track = [
+        (375, 600), (410, 565), (445, 520), (480, 470), (512, 430),
+        (544, 470), (579, 520), (614, 565), (649, 600),
+    ]
+    draw.line(track, fill=COL_TEXT, width=26, joint="curve")
+    # Parallel lower rail (thinner, offset ~28px below)
+    rail = [
+        (375, 628), (410, 593), (445, 548), (480, 498), (512, 458),
+        (544, 498), (579, 548), (614, 593), (649, 628),
+    ]
+    draw.line(rail, fill=COL_TEXT, width=14, joint="curve")
+    # Cross-ties connecting the two rails
+    for tx, ty_top, ty_bot in [(445, 520, 548), (512, 430, 458), (579, 520, 548)]:
+        draw.line((tx, ty_top, tx, ty_bot), fill=COL_TEXT, width=10)
+    # Gold accent dot at peak (tycoon / reward feel)
+    draw.ellipse((512 - 15, 422 - 15, 512 + 15, 422 + 15), fill=COL_CAUTION)
+
+
 def make_icon(name: str, draw_center) -> Path:
     img = make_base_tile().convert("RGBA")
     draw = ImageDraw.Draw(img)
@@ -261,8 +282,12 @@ def main() -> None:
     build_homescreen(names_v3, labels, "clarity-homescreen-mockup-v3.png")
     build_comparison_board(names_v3, labels, "clarity-icon-comparison-board-v3.png", title_suffix="v3")
 
+    # RollerTask Tycoon (Clarity family style)
+    make_icon("rollertask-tycoon-icon.png", draw_rollertask_center)
+
     print("v2:", *[OUT_DIR / n for n, _ in specs_v2], sep="\n")
     print("v3 + canonical:", OUT_DIR / "clarity-time-icon-canonical.png", *[OUT_DIR / n for n, _ in specs_v3], sep="\n")
+    print("RollerTask:", OUT_DIR / "rollertask-tycoon-icon.png")
 
 
 if __name__ == "__main__":

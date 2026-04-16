@@ -17,10 +17,11 @@
 - [x] ClarityUI shared package integration
 - [x] Standard portfolio docs (CLAUDE, CHANGELOG, HANDOFF, LEARNINGS, ROADMAP, BRANDING)
 
-## v0.2 — Next
-- [ ] Physical device deploy + signing verification
-- [ ] App icon: command glyph design (chevron-in-shield concept) for AppIcon 1024
-- [ ] CloudKit sync for multi-device data
+## v0.2 — In progress
+- [ ] Physical device deploy + signing verification — see `docs/DEVICE_QA.md`
+- [x] Supabase sync — same `user_data` / `app_key = command` as web (`CommandCloudSync`, Settings UI, `_syncAt` on `CommandBlob`)
+- [ ] App icon: replace interim programmatic PNG with final command glyph (1024)
+- [ ] ~~CloudKit~~ — dropped in favor of Supabase (one sync story with web)
 - [ ] Today widget (WidgetKit) — morning/evening status + current streak
 - [ ] Push notification reminders (configurable morning + evening times)
 - [ ] Siri Shortcuts ("Start my morning commit", "Evening review")
@@ -36,5 +37,4 @@
 
 ## Out of scope (for now)
 - Check-in, triage, time, budget, growth (separate Clarity apps)
-- Web sync with Clarity Command web app (different storage backends)
 - Social/sharing features

@@ -60,6 +60,12 @@ export default function AddEditForm({ form, setForm, folders, editId, onSubmit, 
           </button>
         ))}
       </div>
+      <input
+        value={form.tagsStr || ""}
+        onChange={(e) => setForm({ ...form, tagsStr: e.target.value })}
+        placeholder="Tags — comma separated (e.g. changelog, linear, study)"
+        style={s.formInput}
+      />
       <textarea
         value={form.notes}
         onChange={(e) => setForm({ ...form, notes: e.target.value })}

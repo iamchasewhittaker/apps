@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Added
+- **Google OAuth:** "Sign in with Google" button on login screen via `signInWithOAuth`; uses `window.location.origin` as `redirectTo`; requires Supabase Dashboard → Authentication → Providers → Google (Client ID + Secret) and URL Configuration → Redirect URLs to include `https://funded-web.vercel.app`.
+
+### Changed
+- **Docs:** `README.md` added; `CLAUDE.md`, `HANDOFF.md`, `LEARNINGS.md`, `ROADMAP.md` refreshed — monorepo paths, Supabase OTP email (`{{ .Token }}`), auth audit troubleshooting, deploy notes.
+
+### Added
+- **Income setup (parity with Funded iOS):** YNAB hint banner with loading state, API errors surfaced, fallbacks for last month’s income and Ready to Assign when this month’s income is $0; non-interactive card for RTA-only.
+- **Categorization Review:** uncategorized outflows for the month with payee-based suggestions (`CategorySuggestionEngine.js`), assign modal with triage fields (notes, purchaser, necessary) merged into YNAB memo on `PATCH`; persisted `categoryOverrides` + `transactionMetadata` in the YNAB blob (synced via Supabase like other fields).
+- **`updateTransactionCategory`:** optional memo on bulk transaction PATCH; transaction mapping includes `memo` and `category_name` for review logic.
+
 ### Changed
 - **Rename Conto → Funded:** package name `chase-funded-web`; manifest/title "Funded"; logo "FUNDED" bold main text; Rose `#f43f5e` accent retained; storage keys `chase_hub_ynab_v1` + `chase_hub_ynab_token` preserved (immutable)
 

@@ -273,6 +273,65 @@ function SectionHeader({ title, subtitle }) {
   );
 }
 
+/** Map `wellness-daily` row (from Wellness web / iOS) to Command `areas.wellness` booleans for today (UTC date). */
+function wellnessSuggestionFromDaily(wellnessDaily) {
+  if (!wellnessDaily || wellnessDaily.date !== today()) return null;
+  return {
+    morning: !!wellnessDaily.morningDone,
+    evening: !!wellnessDaily.eveningDone,
+    activity: wellnessDaily.activityDone === "yes",
+  };
+}
+
+function WellnessMissionSyncBanner({ wellnessDaily, areas, patchAreas }) {
+  const sugg = wellnessSuggestionFromDaily(wellnessDaily);
+  if (!sugg) return null;
+  const w = areas.wellness || { morning: false, evening: false, activity: false };
+  const differs =
+    !!w.morning !== sugg.morning ||
+    !!w.evening !== sugg.evening ||
+    !!w.activity !== sugg.activity;
+  if (!differs) return null;
+  return (
+    <div style={{ margin: "12px 16px 0", background: T.blueLight, border: `1px solid ${T.blue}`, borderRadius: 12, padding: "12px 14px" }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: T.blue, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>
+        Wellness app (synced)
+      </div>
+      <div style={{ fontSize: 13, color: T.text, lineHeight: 1.5, marginBottom: 10 }}>
+        Your Wellness Tracker check-in for today does not match this mission log yet. Apply it to align the scorecard (you can still edit toggles after).
+      </div>
+      <div style={{ fontSize: 12, color: T.muted, marginBottom: 10 }}>
+        Suggested: morning {sugg.morning ? "✓" : "—"} · evening {sugg.evening ? "✓" : "—"} · activity {sugg.activity ? "✓" : "—"}
+      </div>
+      <button
+        type="button"
+        onClick={() =>
+          patchAreas({
+            wellness: {
+              ...w,
+              morning: sugg.morning,
+              evening: sugg.evening,
+              activity: sugg.activity,
+            },
+          })}
+        style={{
+          width: "100%",
+          padding: "10px 12px",
+          borderRadius: 8,
+          border: `1px solid ${T.accent}`,
+          background: T.accent,
+          color: "#0a0d14",
+          fontWeight: 700,
+          fontSize: 14,
+          cursor: "pointer",
+        }}
+      >
+        Apply Wellness to mission
+      </button>
+    </div>
+  );
+}
+
 // ── MAIN MISSION TAB ───────────────────────────────────────────────────────
 export default function MissionTab({ layoffDate, scriptures, reminders, targets, dailyLogs, getTodayLog, upsertTodayLog, jobSearchDaily, wellnessDaily }) {
   const [mode, setMode] = useState("morning"); // "morning" | "evening"
@@ -320,6 +379,8 @@ export default function MissionTab({ layoffDate, scriptures, reminders, targets,
           </button>
         ))}
       </div>
+
+      <WellnessMissionSyncBanner wellnessDaily={wellnessDaily} areas={areas} patchAreas={patchAreas} />
 
       {mode === "morning" && (
         <>
@@ -440,7 +501,7 @@ export default function MissionTab({ layoffDate, scriptures, reminders, targets,
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {[
             { label: "Job Search HQ", url: "https://job-search-hq.vercel.app" },
-            { label: "Wellness", url: "https://wellnes-tracker.vercel.app" },
+            { label: "Wellness", url: "https://wellness-tracker-kappa.vercel.app" },
             { label: "Clarity Hub", url: "https://clarity-hub-lilac.vercel.app" },
             { label: "Knowledge Base", url: "https://knowledge-base-beta-five.vercel.app" },
             { label: "YNAB Clarity", url: "https://ynab-clarity-web.vercel.app" },

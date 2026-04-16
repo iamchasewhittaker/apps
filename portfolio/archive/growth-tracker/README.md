@@ -1,6 +1,6 @@
 # Growth Tracker (archived)
 
-**Retired** — merged into [Wellness Tracker](https://wellnes-tracker.vercel.app) as the Growth tab (2026-03-23). Data: `chase_wellness_v1.growthLogs`.
+**Retired** — merged into [Wellness Tracker](https://wellness-tracker.vercel.app) as the Growth tab (2026-03-23). Data: `chase_wellness_v1.growthLogs`.
 
 **Monorepo path:** `portfolio/archive/growth-tracker/` under `~/Developer/chase`. **Linear:** [Growth Tracker (canceled)](https://linear.app/whittaker/project/growth-tracker-9e99390538d6).
 

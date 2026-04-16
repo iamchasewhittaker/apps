@@ -18,12 +18,20 @@
 | Clarity Check-in (iOS) | iOS (SwiftUI) | Active v0.1 | Daily emotional/physical check-in |
 | Clarity Triage (iOS) | iOS (SwiftUI) | Active v0.1 | Priority decision-making and capacity planning |
 | Clarity Time (iOS) | iOS (SwiftUI) | Active v0.1 | Time sessions and scripture streak |
-| Clarity Budget (iOS) | iOS (SwiftUI) | Active v0.1 | Dual-scenario budget and wants tracking |
+| Clarity Budget (iOS) | iOS (SwiftUI) | Active v0.2 | YNAB-first Today (safe to spend) + dual scenarios + wants; web companion [`clarity-budget-web`](../../portfolio/clarity-budget-web) |
 | Clarity Growth (iOS) | iOS (SwiftUI) | Active v0.1 | 7 growth areas and streaks |
 | ClarityUI | Swift Package | Active v0.1 | Shared iOS design system |
 | Clarity Command | Web (CRA) | Active v1.0 | Faith/family accountability and daily mission flow |
 
-**Overlap to resolve:** Wellness Tracker (web) vs Clarity Hub (web) — both cover the same life domains. Define which is the primary web experience.
+**Web roles (updated 2026-04-16):** Multiple web surfaces touch “life domains,” but they are **not competing canonical surfaces** — they own different data and jobs.
+
+| Surface | Canonical for | Storage / sync | When to use |
+|---------|----------------|----------------|-------------|
+| **Wellness Tracker** (web) | Unified daily wellness — tracker, history, growth, tasks, meds, exports | `chase_wellness_v1` (+ related keys), Supabase `wellness` / companion rows | Full wellness journey in one app; see [`portfolio/wellness-tracker/CLAUDE.md`](../../portfolio/wellness-tracker/CLAUDE.md) |
+| **Clarity Hub** (web) | The **five Clarity iOS domain apps** on desktop — same blobs as native Check-in, Triage, Time, Budget, Growth | Per-tab keys + Supabase `app_key` `checkin` / `triage` / `time` / `budget` / `growth` | Edit the same data as the split iOS suite from a browser; see [`portfolio/clarity-hub/CLAUDE.md`](../../portfolio/clarity-hub/CLAUDE.md) |
+| **Clarity Budget** (web) | **YNAB safe-to-spend** companion for **Clarity Budget iOS** — month/week/day pace, optional blob merge | `chase_budget_web_v1` + YNAB PAT in `localStorage` only; Supabase `user_data` `app_key` **`clarity_budget`** | Browser STS + sync without replacing Clarity Hub’s budget tab; see [`portfolio/clarity-budget-web/README.md`](../../portfolio/clarity-budget-web/README.md) |
+
+Daily “check-in” style input may exist in both products; **source of truth** is by stack: **Clarity Check-in iOS ↔ Clarity Hub** for the five-app OS; **Wellness Tracker** for the integrated wellness record. Prefer linking between apps in UI (cross-app nav) rather than duplicating features across blobs.
 
 **Key metric:** Daily active use (even if just Chase). Are all 5 domains being exercised weekly?
 
@@ -97,5 +105,5 @@ See `docs/governance/ARCHIVE_POLICY.md` for full inventory and classifications.
 
 1. **New feature?** Check if it belongs in an existing app in the same product line before creating a new app.
 2. **New app?** Must pass Gate 1 (Strategy/Problem Fit) from `LAUNCH_CHECKLIST.md` and map to a product line.
-3. **Overlap detected?** Document in this file under the relevant product line's "Overlap to resolve" note.
+3. **Overlap detected?** Document in this file under the relevant product line (use a short **Roles** or **Decision** note — see Clarity Life OS web roles table as an example).
 4. **Kill candidate?** Use kill criteria from `ARCHIVE_POLICY.md`. Product hat reviews this bi-weekly.

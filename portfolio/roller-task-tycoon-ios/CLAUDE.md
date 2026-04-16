@@ -45,6 +45,7 @@ For a **clean reinstall** (e.g. dim SpringBoard icon after sideload): `xcrun dev
 
 ## References
 
+- **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) -- icons, asset paths, visual system
 - Portfolio master: [`/CLAUDE.md`](../../CLAUDE.md)
 - **Archived** Win95-style web PWA (historical): [`/portfolio/archive/roller-task-tycoon`](../archive/roller-task-tycoon)
 

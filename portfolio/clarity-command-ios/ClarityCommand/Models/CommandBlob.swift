@@ -9,6 +9,11 @@ struct CommandBlob: Codable {
     var targets: Targets = .init()
     var dailyLogs: [DailyLog] = []
     var syncAt: Int64 = 0
+
+    enum CodingKeys: String, CodingKey {
+        case layoffDate, scriptures, reminders, targets, dailyLogs
+        case syncAt = "_syncAt"
+    }
 }
 
 // MARK: - Targets

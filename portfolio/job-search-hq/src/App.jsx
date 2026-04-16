@@ -20,7 +20,7 @@ import ResourcesTab from "./tabs/ResourcesTab";
 import { AppNav, resolveAppUrl } from "./shared/ui";
 
 const APP_NAV_LINKS = [
-  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellnes-tracker.vercel.app") },
+  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellness-tracker-kappa.vercel.app") },
   { key: "clarity-hub", label: "Clarity Hub", url: resolveAppUrl("/hub", "https://clarity-hub-lilac.vercel.app") },
 ];
 

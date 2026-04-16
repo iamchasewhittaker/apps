@@ -13,11 +13,12 @@ A Chrome extension that adds a label-based tab bar to Gmail and an AI-powered "S
 
 ## Install (Developer Mode)
 
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable **Developer mode** (toggle in the top-right)
-3. Click **Load unpacked**
-4. Select the `extension/` folder (this directory)
-5. The extension icon appears in your toolbar
+1. (Optional) From this directory run `npm install` then `npm run validate` to confirm `manifest.json` and required files are present.
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable **Developer mode** (toggle in the top-right)
+4. Click **Load unpacked**
+5. Select the `extension/` folder (this directory)
+6. The extension icon appears in your toolbar
 
 ## Configure
 
@@ -54,8 +55,10 @@ When you select one or more emails in the inbox and click the Sort button:
 ```
 extension/
   manifest.json         — Chrome MV3 manifest
+  package.json          — `npm run validate` checks manifest + required paths
   icons/                — Extension icons (SVG placeholders)
   scripts/
+    validate-extension.mjs — CI/local sanity check (no Chrome required)
     generate-icons.js   — Script to regenerate icon placeholders
   src/
     content.js          — Injected into Gmail: tab bar, sort button, toast UI

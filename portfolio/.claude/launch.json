@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "funded-web",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3006", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/funded-web", "start"],
+      "port": 3006
+    }
+  ]
+}

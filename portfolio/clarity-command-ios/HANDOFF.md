@@ -1,16 +1,18 @@
 # Handoff — Clarity Command (iOS)
 
-## Current status: Phase 1 complete
+## Current status: Phase 2 (sync + QA) in progress
 
-- **Version:** v0.1
-- **Last session:** 2026-04-14 (initial build + documentation)
-- **Build status:** `xcodebuild build` pass (simulator) | `xcodebuild test` pass (CommandBlobTests)
+- **Version:** v0.1 → v0.2 sync slice shipped in-repo
+- **Last session:** 2026-04-15 — Supabase `command` row (same as web), Settings sync UI, `_syncAt` Codable parity, device QA doc, programmatic AppIcon (`tools/generate_app_icon.py`)
+- **Build status:** `xcodebuild build` pass (simulator, `CODE_SIGNING_ALLOWED=NO`) after SPM Supabase add
 
 ## What's shipped
 
 - `ClarityCommand.xcodeproj` — generated programmatically, no manual Xcode setup needed
 - All 26 source files registered in project, ClarityUI linked as local package (`../clarity-ui`)
-- `Assets.xcassets` with AccentColor (gold) + AppIcon placeholder
+- `Assets.xcassets` with AccentColor (gold) + AppIcon 1024 (programmatic shell + gold chevron — replace with marketing glyph when ready)
+- **Supabase** — `CommandCloudSync` + `CommandSupabaseConfig` (shared project `unqtnnxlltiadzbqpyhh`, `app_key = command`); Settings **Cloud sync** section (OTP, pull, push); debounced push on local `save()`
+- **Device QA:** [`docs/DEVICE_QA.md`](docs/DEVICE_QA.md)
 - Gold accent system via `CommandPalette` (`#c8a84b`) extending `ClarityPalette`
 - 3-tab layout: Mission, Scoreboard, Settings
 - Morning commit flow: conviction panel, scripture card, target list, counter banner
@@ -50,14 +52,15 @@ Run on iPhone 16 simulator (command+R) or tests (command+U).
 - [x] Unit tests pass (CommandBlobTests)
 - [ ] End-to-end run on physical device — **next step**
 
-## Next for this app (Phase 2)
+## Next for this app (Phase 2 remainder)
 
-- Deploy to physical device (DEVELOPMENT_TEAM: `9XVT527KP3`)
-- CloudKit sync for multi-device
-- Today widget (WidgetKit) — morning/evening status + streak
-- Push notification reminders (morning commit, evening reflection)
-- Siri Shortcuts ("Start my morning" / "Evening review")
-- App icon: design command glyph (chevron-in-shield concept) for AppIcon 1024
+- [ ] Complete checklist in [`docs/DEVICE_QA.md`](docs/DEVICE_QA.md) on physical device (DEVELOPMENT_TEAM: `9XVT527KP3`)
+- [ ] App icon: replace programmatic asset with final **chevron-in-shield** mark per [`docs/BRANDING.md`](docs/BRANDING.md) + [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md)
+- [ ] Today widget (WidgetKit) — morning/evening status + streak
+- [ ] Push notification reminders (morning commit, evening reflection)
+- [ ] Siri Shortcuts ("Start my morning" / "Evening review")
+
+**Deferred:** CloudKit — superseded by **Supabase** for parity with web Clarity Command (`chase_command_v1` / `command` row).
 
 ## Learnings from this session
 

@@ -3,6 +3,7 @@ import ClarityUI
 
 struct ContentView: View {
     @Environment(CommandStore.self) private var store
+    @ObservedObject var commandSync: CommandCloudSync
 
     var body: some View {
         TabView {
@@ -21,7 +22,7 @@ struct ContentView: View {
             }
 
             NavigationStack {
-                SettingsTabView()
+                SettingsTabView(commandSync: commandSync)
             }
             .tabItem {
                 Label("Settings", systemImage: "gearshape.fill")

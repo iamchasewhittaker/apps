@@ -83,3 +83,44 @@
 ## Gmail label search: hyphens replace spaces
 
 **Rule:** When searching by label in Gmail, spaces in label names become hyphens. `label:Cold Email` → `label:Cold-Email`. The Apps Script search query and Chrome extension tab queries must use hyphenated versions.
+
+---
+
+## Gemini free tier: limit: 0 when billing project exists
+
+**What happened:** `testRun()` in GEMINI mode hit quota errors on every call with `limit: 0` for the free tier. This means the GCP project tied to the API key has billing enabled, which zeroes out the free tier quota. Pay-as-you-go must be configured to use it.
+
+**Fix options:** (A) Switch `CLASSIFIER_MODE` to `RULES_ONLY` — deterministic, free, works immediately. (B) Enable pay-as-you-go on the GCP project; Gemini Flash is ~$0.075/1M tokens (pennies/month for inbox volume).
+
+**Current state:** Running `RULES_ONLY`. Switch back to `GEMINI` in Script Properties once billing is active.
+
+---
+
+## Apps Script: function dropdown is between Debug button and Run button
+
+**Gotcha:** The Apps Script editor toolbar shows a function name dropdown (not obviously labeled) between the Debug and Run buttons. You must select the target function there before clicking Run — clicking Run without changing it runs whatever function was last selected.
+
+---
+
+## Apps Script: setupTrigger() is idempotent
+
+**Behavior:** `setupTrigger()` checks for an existing `autoSort` trigger before creating one. If a trigger already exists (from a prior session), it logs "Trigger already exists — skipping" and exits cleanly. Safe to run multiple times.
+
+---
+
+## Review Queue: tab is auto-created on first write, not on setup
+
+**Gotcha:** The "Review Queue" sheet tab doesn't exist until the first unknown sender is logged. If the tab is missing, it just means all swept emails matched existing rules — not a bug. The tab appears automatically on the next unmatched sender.
+
+---
+
+## Google-side setup steps (reference for future sessions)
+
+Complete sequence for a fresh Apps Script deployment:
+1. Push `.gs` files via `cd apps-script && npx clasp push --force`
+2. Open editor: `cd apps-script && npx clasp open`
+3. In editor → ⚙️ Project Settings → Script Properties → add: `CLASSIFIER_MODE`, `GEMINI_API_KEY`, `SHEET_ID`, `NEWSLETTER_TO_ALIASES`
+4. Function dropdown → `setupTrigger` → Run (accepts Gmail OAuth on first run)
+5. Function dropdown → `healthCheck` → Run (verify all green)
+6. Function dropdown → `testRun` → Run (live sweep; check Execution log for errors)
+7. Check Google Sheet for "New Senders" tab (GEMINI mode) or "Review Queue" tab (RULES_ONLY mode)

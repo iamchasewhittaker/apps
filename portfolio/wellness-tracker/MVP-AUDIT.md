@@ -7,7 +7,7 @@
 
 **Current step (per the framework):** Step 5 — Ship
 
-**Evidence for that step:** v15.10 is live at wellnes-tracker.vercel.app. Supabase sync working. Email OTP auth working. 15 versions shipped. The check-in flow assumes daily use. No major feature work in the last week — recent commits are housekeeping (checkpoint, docs, Cursor symlinks). You could argue it's already past Step 5 and into Step 6 territory — last feature commit was April 5, and the app has been live with Supabase since March 24.
+**Evidence for that step:** v15.10 is live at wellness-tracker.vercel.app. Supabase sync working. Email OTP auth working. 15 versions shipped. The check-in flow assumes daily use. No major feature work in the last week — recent commits are housekeeping (checkpoint, docs, Cursor symlinks). You could argue it's already past Step 5 and into Step 6 territory — last feature commit was April 5, and the app has been live with Supabase since March 24.
 
 **What's missing to legitimately be at this step:** Nothing critical. The "use it for a week without daily fixes" bar appears met.
 

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed (2026-04-14)
+- **App icon:** Portfolio-standard text logo (ROLLER amber / TASK white bold on dark) — generated 1024×1024 PNG from `logo.svg` via `qlmanage`; replaced Clarity-family ring icon; installed on physical iPhone 12 Pro Max via `xcrun devicectl`
+- **Branding:** Added [`docs/BRANDING.md`](docs/BRANDING.md) — visual system, asset paths, web companion icons; `CLAUDE.md` branding link added
+- **Phase 2 plan:** Added [`docs/SYNC_PHASE2.md`](docs/SYNC_PHASE2.md) — Supabase sync implementation plan (Swift package, xcconfig, `SupabaseService.swift` sketch, auth gate, push/pull hooks)
+- **HANDOFF.md:** General + Phase 2 quick-start prompts added
+
+---
+
 ## [1.0.0] — 2026-04-12
 
 ### Changed (2026-04-15 ship polish)

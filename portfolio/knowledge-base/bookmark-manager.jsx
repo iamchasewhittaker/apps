@@ -36,7 +36,7 @@ const SEED = [
   { id: 22, title: "Hacker News", url: "https://news.ycombinator.com", category: "Community" },
 
   // My Projects
-  { id: 23, title: "Wellness Tracker", url: "https://wellnes-tracker.vercel.app", category: "My Projects" },
+  { id: 23, title: "Wellness Tracker", url: "https://wellness-tracker.vercel.app", category: "My Projects" },
   { id: 24, title: "Job Search HQ", url: "https://job-search-hq.vercel.app", category: "My Projects" },
   { id: 25, title: "App Forge", url: "https://app-forge-fawn.vercel.app", category: "My Projects" },
   { id: 26, title: "RollerTask Tycoon (iOS)", url: "https://github.com/iamchasewhittaker/roller-task-tycoon", category: "My Projects" },

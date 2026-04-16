@@ -8,6 +8,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             NavigationStack {
+                SafeToSpendHomeView()
+            }
+            .tabItem {
+                Label("Today", systemImage: "sparkles")
+            }
+
+            NavigationStack {
                 BudgetScenariosView()
             }
             .tabItem {
@@ -19,6 +26,13 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("Wants", systemImage: "heart.circle")
+            }
+
+            NavigationStack {
+                BudgetYNABSettingsView(isPresented: .constant(true), showDismiss: false)
+            }
+            .tabItem {
+                Label("Settings", systemImage: "gearshape.fill")
             }
         }
         .background(ClarityPalette.bg.ignoresSafeArea())

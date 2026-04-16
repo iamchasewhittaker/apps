@@ -1,0 +1,14 @@
+{
+  "name": "spend-radar-apps-script",
+  "private": true,
+  "scripts": {
+    "clasp:login": "clasp login",
+    "clasp:push": "clasp push --force",
+    "clasp:pull": "clasp pull",
+    "clasp:open": "clasp open",
+    "deploy": "clasp push --force"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.5.0"
+  }
+}

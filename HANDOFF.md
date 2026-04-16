@@ -170,18 +170,18 @@ Use a **new** chat after `checkpoint`. Paste:
 ```
 Read CLAUDE.md and this HANDOFF.md first, then portfolio/clarity-budget-ios/CLAUDE.md and portfolio/clarity-budget-ios/HANDOFF.md.
 
-Goal: Continue Clarity Budget iOS at portfolio/clarity-budget-ios/.
+Goal: Continue Clarity Budget iOS (+ optional web in portfolio/clarity-budget-web) at portfolio/clarity-budget-ios/.
 
-Current state: v0.1 + **YNAB** — dual scenarios + wants; Budget tab toolbar (link icon) → YNAB settings (token, budget, category roles, income sources, import Baseline, PATCH fund); PBX prefix **CB**; store key `chase_budget_ios_v1`; ClarityUI via `../clarity-ui`; **launcher** = stacked coins + [`docs/BRANDING.md`](portfolio/clarity-budget-ios/docs/BRANDING.md).
+Current state: **v0.2 MVP shipped** — **Today** tab (YNAB safe to spend month/week/day) + **web companion** (same STS math, optional Supabase blob); **Settings** = full YNAB (token, budget, roles, import Baseline, PATCH fund); dual scenarios + wants; `_syncAt` + **stub** `BudgetSupabaseSync` on iOS (wire supabase-swift next); PBX prefix **CB**; store key `chase_budget_ios_v1`; ClarityUI via `../clarity-ui`; launcher = stacked coins + [`docs/BRANDING.md`](portfolio/clarity-budget-ios/docs/BRANDING.md).
 
-Pick next work from portfolio/clarity-budget-ios/ROADMAP.md (or fix bugs). Follow existing patterns: @Observable @MainActor store, @MainActor on views that mutate the store from nested Button builders, StorageHelpers persistence.
+Pick next work from portfolio/clarity-budget-ios/ROADMAP.md (or fix bugs). Follow existing patterns: `@MainActor` `@Observable` store (`BudgetStore`), `@MainActor` on views that mutate the store from nested Button builders, `StorageHelpers` persistence.
 
 Verify:
   cd portfolio/clarity-budget-ios && xcodebuild -scheme ClarityBudget -showdestinations
   xcodebuild build -scheme ClarityBudget -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
   xcodebuild test  -scheme ClarityBudget -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' CODE_SIGNING_ALLOWED=NO
 
-Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file's State when you stop.
+Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log, and this file's Notes (clarity-budget-ios bullet) when you stop.
 ```
 
 ## Fresh session prompt — continue Clarity Growth (v0.2+)
@@ -224,9 +224,9 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **clarity-checkin-ios HANDOFF:** `portfolio/clarity-checkin-ios/HANDOFF.md` — Phase 1 complete; **`docs/BRANDING.md`** + **AppIcon** 1024; new apps copy **`docs/templates/PORTFOLIO_APP_BRANDING.md`** once; shared icon geometry **`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`**.
 - **clarity-triage-ios HANDOFF:** `portfolio/clarity-triage-ios/HANDOFF.md` — Phase 2 complete; **`docs/BRANDING.md` + AppIcon** (nested chevron). `xcodebuild -showdestinations` if "iPhone 16" is missing.
 - **clarity-time-ios (Phase 3):** `portfolio/clarity-time-ios/HANDOFF.md` — **v0.1**; `CX*`; **`docs/BRANDING.md` + AppIcon** (clock + arc + badge).
-- **clarity-budget-ios:** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.1 + YNAB** (Keychain `com.chasewhittaker.ClarityBudget`, import Baseline, fund category); **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins).
+- **clarity-budget-ios:** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.2** — Today (STS) + **clarity-budget-web** + YNAB (Keychain `com.chasewhittaker.ClarityBudget`, import Baseline, fund category); stub iOS Supabase; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); **`xcodebuild test`** ✅ + Simulator recovery notes in app **`LEARNINGS.md`**.
 - **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
-- **clarity-command-ios (Phase 6):** `portfolio/clarity-command-ios/HANDOFF.md` — **v0.1**; **`CD`**; gold accent (`#c8a84b`); 3 tabs (Mission/Scoreboard/Settings); conviction system; 14/14 tests; all 6 apps on iPhone 2026-04-14. Next: AppIcon artwork, CloudKit sync (v0.2).
+- **clarity-command-ios (Phase 6):** `portfolio/clarity-command-ios/HANDOFF.md` — **v0.1+**; **`CD`**; gold accent (`#c8a84b`); 3 tabs; **Supabase** `command` row + Settings sync UI; interim AppIcon (`tools/generate_app_icon.py`); `docs/DEVICE_QA.md`. Next: device QA checklist, final AppIcon glyph, widgets/push/Siri.
 - **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — v0.2; 5 tabs (Check-in, Triage, Time, Budget, Growth); YNAB + RollerTask split to standalone apps; nav links to both. Deployed at https://clarity-hub-lilac.vercel.app.
 - **YNAB Clarity Web (2026-04-13):** `portfolio/ynab-clarity-web/HANDOFF.md` — v1.0; standalone YNAB dashboard; storage key `chase_hub_ynab_v1`; Supabase `app_key = 'ynab'`. Deployed at https://ynab-clarity-web.vercel.app.
 - **RollerTask Tycoon Web (2026-04-13):** `portfolio/rollertask-tycoon-web/HANDOFF.md` — v1.0; standalone task/points tracker; storage key `chase_hub_rollertask_v1`; Supabase `app_key = 'rollertask'`. Deployed at https://rollertask-tycoon-web.vercel.app.

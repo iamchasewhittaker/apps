@@ -108,7 +108,7 @@ const TABS = [
 ];
 
 const APP_NAV_LINKS = [
-  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellnes-tracker.vercel.app") },
+  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellness-tracker-kappa.vercel.app") },
   { key: "job-search", label: "Job Search", url: resolveAppUrl("/job-search", "https://job-search-hq.vercel.app") },
   { key: "ynab", label: "YNAB", url: resolveAppUrl(process.env.REACT_APP_YNAB_APP_PATH || "/ynab", "https://ynab-clarity-web.vercel.app") },
   { key: "tasks", label: "Tasks", url: resolveAppUrl(process.env.REACT_APP_TASKS_APP_PATH || "/tasks", "https://rollertask-tycoon-web.vercel.app") },

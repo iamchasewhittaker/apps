@@ -74,3 +74,5 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 - Seed folder IDs (`f_claude`, `f_chatgpt`, etc.) are stored in user localStorage — never rename
 - Smart folder IDs are `"__important__"` and `"__recent__"` (double underscores, not real folders)
 - `getDescendantFolderIds(folderId)` returns Set including folder + all nested children
+
+Paused 2026-04-15 — focusing on clarity-command per WIP limit.

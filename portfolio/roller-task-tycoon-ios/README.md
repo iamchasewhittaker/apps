@@ -105,3 +105,5 @@ SwiftData store: app container (attractions, subtasks, ledger).
 ## License
 
 Follow the license of the parent monorepo repository.
+
+Paused 2026-04-15 — focusing on clarity-command per WIP limit.
