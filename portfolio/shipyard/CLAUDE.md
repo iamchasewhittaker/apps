@@ -3,7 +3,8 @@
 > Fleet command for your app portfolio.
 
 - **Version:** v0.1
-- **URL:** shipyard.vercel.app (pending deploy)
+- **Status:** v0.1 — Phase 1 live
+- **URL:** https://shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app
 - **Entry point:** src/app/page.tsx
 - **Tech stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Supabase + Vercel
 - **Package manager:** npm
