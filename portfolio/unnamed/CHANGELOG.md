@@ -2,7 +2,14 @@
 
 ## [Unreleased]
 
-### Added
+### Added — iOS (2026-04-17)
+- Native SwiftUI iOS app at `portfolio/unnamed-ios/` — all 5 flows, matches web behavior exactly
+- `AppStore` (@Observable @MainActor) with UserDefaults persistence (`unnamed_ios_v1`)
+- Hand-crafted Xcode project (UN* UUIDs, no xcodegen)
+- AppIcon: amber triangle (▲) on near-black background, 1024×1024 PNG
+- 10/10 unit tests passing; installed and launched on iPhone 12 Pro Max
+
+### Added — Web
 - v0.1 MVP: 5 core flows (capture, sort, lane lock, focus, end-of-day check)
 - 4 fixed lanes: Regulation, Maintenance, Support Others, Future
 - Bottom navigation with active state, inbox badge, lock/check indicators

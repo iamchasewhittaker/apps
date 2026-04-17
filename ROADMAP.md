@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-17 (Summit Push v0.1 — MVP built) | Maintained by Chase
+> Last updated: 2026-04-17 (Unnamed iOS v0.1 — built, tested, on-device) | Maintained by Chase
 
 ---
 
@@ -21,7 +21,8 @@
 | Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
 | RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
 | RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
-| Summit Push | v0.1 | pending Vercel | `summit_push_v1` | 🟡 Local · Daily OS for ADHD brains · [`portfolio/summit-push`](portfolio/summit-push) |
+| Unnamed (web) | v0.1 | pending Vercel | `unnamed_v1` | 🟡 Local · Daily OS for ADHD brains · [`portfolio/unnamed`](portfolio/unnamed) |
+| Unnamed (iOS) | v0.1 | local Xcode | `unnamed_ios_v1` | 🟡 On-device · SwiftUI + @Observable · 10/10 tests · [`portfolio/unnamed-ios`](portfolio/unnamed-ios) |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0.1 | local (port 3004) | not yet deployed | ✅ Active · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
 | Shortcut Reference | v0.1.0 | local Xcode | — | ✅ Active · macOS Swift · [`portfolio/shortcut-reference`](portfolio/shortcut-reference) |

@@ -263,13 +263,16 @@ UnnamedTests/
 
 Build exactly what the web app has. Nothing more.
 
-- [ ] All 5 flows functional
-- [ ] Persistent state via UserDefaults (`unnamed_ios_v1`)
-- [ ] Bottom tab navigation with badges
-- [ ] Lane lock irreversible until midnight
-- [ ] Check result shows correct phrase
-- [ ] Dark UI matching web app palette
-- [ ] Haptic feedback on Done and Lock
+- [x] All 5 flows functional
+- [x] Persistent state via UserDefaults (`unnamed_ios_v1`)
+- [x] Bottom tab navigation with badges
+- [x] Lane lock irreversible until midnight
+- [x] Check result shows correct phrase
+- [x] Dark UI matching web app palette
+- [x] Haptic feedback on Done and Lock
+- [x] AppIcon (amber triangle, 1024×1024)
+- [x] 10/10 unit tests passing
+- [x] Installed on iPhone 12 Pro Max (2026-04-17)
 
 **Phase 1 rule:** No features until Chase has used it for 7 days.
 

@@ -8,11 +8,11 @@
 
 | Field | Value |
 |-------|-------|
-| **Path** | `portfolio/summit-push/` |
-| **Focus** | **v0.1 MVP built (2026-04-17).** 5 core screens live: Capture (inbox), Sort (lane assignment), Today (lane lock + one-at-a-time focus), Check (end-of-day). Dark UI, mobile-first, localStorage, PWA manifest. Builds clean. Dev server verified at localhost:3000. Not yet deployed to Vercel. |
-| **Stack** | Next.js 16 (App Router) + TypeScript + Tailwind CSS 4 + localStorage + pnpm |
-| **Last touch** | 2026-04-17 — **MVP v0.1 built:** 4 screens, bottom nav, lane system, dark theme, PWA manifest, clean build. |
-| **Next** | 1. Deploy to Vercel (connect GitHub, set up project). 2. Generate PWA icons (192px + 512px). 3. Test on phone (install as PWA). 4. Use it for 7 days before adding any feature. |
+| **Path** | `portfolio/unnamed/` (web) · `portfolio/unnamed-ios/` (iOS) |
+| **Focus** | **iOS v0.1 complete (2026-04-17).** Native SwiftUI app built, 10/10 tests passing, installed and launched on iPhone 12 Pro Max. Web MVP also live at localhost:3000 (not yet deployed to Vercel). |
+| **Stack** | Web: Next.js 16 + TypeScript + Tailwind 4 + localStorage. iOS: SwiftUI + @Observable + UserDefaults |
+| **Last touch** | 2026-04-17 — **iOS Phase 1 complete:** all 5 flows, logo, tests pass, on-device. |
+| **Next** | 1. Use the iOS app for 7 days — no features until then. 2. Deploy web app to Vercel. 3. Generate PWA icons for web (192px + 512px). |
 
 ---
 

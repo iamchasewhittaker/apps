@@ -26,3 +26,13 @@ The auto-generated `AGENTS.md` warns that Next.js APIs change frequently and to 
 
 **The overlay of "what to build" problem is meta to the build itself.**
 Chase's core loop is building systems instead of using them. This app was designed to be the LAST system he builds for a while — one he uses himself. Keep this in mind when he wants to add features. Ask: "Have you used it for 7 days first?"
+
+---
+
+## 2026-04-17 — iOS Phase 1
+
+iOS-specific learnings are in [`portfolio/unnamed-ios/LEARNINGS.md`](../unnamed-ios/LEARNINGS.md). Highlights:
+
+**The hand-crafted xcodeproj approach works.** xcodegen failed to install (macOS 13/Xcode 15.3 mismatch). Adapting an existing `project.pbxproj` with fresh sequential UUIDs took ~15 minutes and xcodebuild accepted it cleanly. Good pattern to know.
+
+**`@MainActor` must be explicit on view helper methods.** SwiftUI view body runs on MainActor, but private `func` inside a view struct does not inherit it. Calls to the `@MainActor`-isolated store produce a compile error. Mark the method explicitly.

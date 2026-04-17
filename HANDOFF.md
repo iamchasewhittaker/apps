@@ -86,26 +86,27 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Summit Push v0.1 (2026-04-17).** New app built from scratch: 5 core flows (capture/sort/lock/focus/check), 4 fixed lanes, dark UI, mobile-first, localStorage, PWA manifest. Builds clean. Dev server verified at localhost:3000. Not yet deployed to Vercel. |
-| **Next**       | 1. **Summit Push:** Deploy to Vercel (connect GitHub, set up project). 2. **Summit Push:** Generate PWA icons (192px + 512px cairn/mountain logo). 3. **Summit Push:** Install on phone as PWA. 4. **Summit Push:** Use for 7 days — no features until then. 5. **WHI-24 — Wave 3 #2 stage-specific prep templates** (Job Search HQ web). |
+| **Focus**      | **Unnamed iOS v0.1 complete (2026-04-17).** Native SwiftUI app: all 5 flows, @Observable store, UserDefaults persistence, 10/10 tests passing, amber-triangle AppIcon, installed and launched on iPhone 12 Pro Max. Web app (portfolio/unnamed/) also live at localhost:3000, not yet deployed to Vercel. |
+| **Next**       | 1. **Unnamed iOS:** Use for 7 days — no features until then. 2. **Unnamed web:** Deploy to Vercel + generate PWA icons. 3. **WHI-24 — Wave 3 #2 stage-specific prep templates** (Job Search HQ web). |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-17 — **Summit Push v0.1 built:** 4 screens, bottom nav, lane system, dark theme, PWA manifest, clean build. Handoff docs + memory files complete. |
+| **Last touch** | 2026-04-17 — **Unnamed iOS Phase 1:** scaffolded 16 Swift files, hand-crafted xcodeproj, built+tested+installed on device. All docs updated. |
 
 
 ---
 
-## Fresh session prompt — continue Summit Push (v0.1+)
+## Fresh session prompt — continue Unnamed
 
 Use a **new** chat after `checkpoint`. Paste:
 
 ```
-Read CLAUDE.md and HANDOFF.md first, then portfolio/summit-push/CLAUDE.md and portfolio/summit-push/HANDOFF.md.
+Read CLAUDE.md and HANDOFF.md first, then portfolio/unnamed-ios/CLAUDE.md and portfolio/unnamed-ios/HANDOFF.md.
 
-Goal: Continue Summit Push at portfolio/summit-push/.
+Goal: Continue Unnamed iOS at portfolio/unnamed-ios/.
 
-Current state (2026-04-17): MVP v0.1 built — 5 flows (capture/sort/lock/focus/check), 4 fixed lanes, dark UI, localStorage, PWA manifest. Builds clean (pnpm build). Dev server verified. NOT yet deployed.
+State (2026-04-17): Phase 1 complete. All 5 flows (capture/sort/lock/focus/check), @Observable store, UserDefaults, 10/10 tests, installed on iPhone 12 Pro Max.
+Phase 1 rule: NO new features until Chase has used the app for 7 days.
 
-Phase 1 rule: NO new features until Chase has used it for 7 days.
+Web app is at portfolio/unnamed/ — also Phase 1, not yet deployed to Vercel.
 
 Priority:
 1. Deploy to Vercel: vercel project add summit-push --scope iamchasewhittakers-projects → vercel link → vercel git connect → vercel --prod
