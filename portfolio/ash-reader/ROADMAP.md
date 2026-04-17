@@ -1,24 +1,19 @@
 # Roadmap — Ash Reader
 
 ## Shipped ✅
-- v1.0: Reader, Themes, Actions, Settings tabs
-- Deployed to ash-reader.vercel.app
-- Shipyard integration
+- v1.0: Reader, Themes, Actions, Settings tabs — deployed to ash-reader.vercel.app
+- v1.1: Smart Q&A chunker (`chunkSmart`), paste-in mode, graceful missing-file handling
+- iOS v0.1: SwiftUI app scaffolded (`ash-reader-ios`), built + deployed to iPhone
 
-## Next: iOS App 📱
-**Priority: High**
-
-Native SwiftUI version of ash-reader for iPhone. Goals:
-- Offline-first (no network needed)
-- Native share sheet (copy chunk → share directly to Ash app or Safari)
+## iOS Next 📱
 - Haptic feedback on mark-as-sent
+- Native share sheet (copy chunk → share directly to Ash)
 - iCloud sync for progress (instead of JSON export/import)
-- Larger touch targets, native scroll behavior
 - Push notification reminders ("You have 12 chunks left")
-
-Stack: SwiftUI + `@AppStorage` / `UserDefaults` for progress
+- App icon + branding (`docs/BRANDING.md`)
 
 ## Phase 2 (web)
+- **Deploy v1.1** to ash-reader.vercel.app (`vercel --prod`)
 - **Import new document**: Upload a new `.txt` conversation file to process through the app
 - **Export full document**: Download the chunked text as a formatted PDF
 - **Chunk jump**: Tap chunk number to jump directly to any chunk

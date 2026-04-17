@@ -1,5 +1,5 @@
 {
-  "name": "inbox-zero-apps-script",
+  "name": "gmail-forge-apps-script",
   "private": true,
   "scripts": {
     "clasp:login": "clasp login",

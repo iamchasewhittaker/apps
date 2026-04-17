@@ -1,7 +1,7 @@
-# Inbox Zero — Claude Instructions
+# Gmail Forge — Claude Instructions
 
 ## Project
-Chase Whittaker's Gmail Inbox Zero system. Three-layer architecture: XML filters (instant) → Apps Script auto-sorter (5-min sweep + AI) → Chrome extension (manual UI). No paid tools.
+Chase Whittaker's Gmail Forge system. Three-layer architecture: XML filters (instant) → Apps Script auto-sorter (5-min sweep + AI) → Chrome extension (manual UI). No paid tools.
 
 **Owner:** chase.t.whittaker@gmail.com  
 **Asana GID:** 1213891408033292  
@@ -22,14 +22,17 @@ Chase Whittaker's Gmail Inbox Zero system. Three-layer architecture: XML filters
 
 ## Daily Report
 
-When Chase says **"report"**, **"email report"**, or **"what's in my inbox"**, run this:
+When Chase says **”report”**, **”email report”**, or **”what's in my inbox”**, run this:
 
-1. Search Gmail for today's emails (`after:YYYY/MM/DD`) — include **all emails**, both read and unread
-2. Read each message (subject + sender + snippet is enough)
-3. Output the report in this exact format:
+1. Search Gmail for today's **inbox** emails (`after:YYYY/MM/DD in:inbox`) — include read and unread
+2. Search Gmail for today's **archived** emails (`after:YYYY/MM/DD -in:inbox -in:sent -in:drafts -in:trash -in:spam`)
+3. Read each message (subject + sender + snippet is enough)
+4. Output the report in the format below
 
 ```
 📧 Email Report — [Date]
+
+--- INBOX ---
 
 🚨 Needs Attention
 - [sender] — [subject]
@@ -60,9 +63,20 @@ When Chase says **"report"**, **"email report"**, or **"what's in my inbox"**, r
 
 🔐 Security
 - [sender] — [subject]
+
+--- AUTO-ARCHIVED ---
+
+🗄️ Auto-archived today ([count] emails)
+- [sender] — [subject] — [label applied]
 ```
 
-Omit any category with zero emails.
+Omit any category with zero emails. Omit the AUTO-ARCHIVED section if zero.
+
+**Totals line** at the bottom:
+
+```
+📊 Total: [X] inbox / [Y] archived / [X+Y] received today
+```
 
 ### Inbox leakers (Phase 2)
 
@@ -171,6 +185,6 @@ When Chase identifies a new sender to filter:
 
 ## Asana Project
 
-**Project:** Inbox Zero Build  
+**Project:** Gmail Forge Build  
 **GID:** 1213891408033292  
 **Status:** 🟢 Green — Phase 3 automation built, pending deployment

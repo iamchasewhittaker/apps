@@ -1,0 +1,259 @@
+#!/bin/zsh
+# Gmail Forge — Handoff Health Check
+#
+# Usage:
+#   ./scripts/handoff
+#
+# Read-only, idempotent. Run at session start to assess project state.
+
+set -e
+
+# --- Paths ---
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(git -C "$PROJECT_ROOT" rev-parse --show-toplevel 2>/dev/null || echo "")"
+if [[ -n "$REPO_ROOT" ]]; then
+  PROJECT_REL="${PROJECT_ROOT#$REPO_ROOT/}"
+else
+  PROJECT_REL=""
+fi
+
+# --- Colors (matches portfolio-health-check) ---
+BOLD=$'\033[1m'
+DIM=$'\033[2m'
+GREEN=$'\033[0;32m'
+RED=$'\033[0;31m'
+YELLOW=$'\033[0;33m'
+CYAN=$'\033[0;36m'
+NC=$'\033[0m'
+
+ok()   { echo "  ${GREEN}✓${NC} $1"; }
+warn() { echo "  ${YELLOW}!${NC} $1"; }
+fail() { echo "  ${RED}✗${NC} $1"; }
+dim()  { echo "  ${DIM}$1${NC}"; }
+
+# --- Constants ---
+PROJECT_NAME="Gmail Forge"
+PHASE="Phase 3 LIVE"
+CLASSIFIER_MODE="RULES_ONLY"
+SCRIPT_ID="1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI"
+EDITOR_URL="https://script.google.com/d/${SCRIPT_ID}/edit"
+SHEET_ID="1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54"
+SHEET_URL="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit"
+ASANA_GID="1213891408033292"
+
+# ============================================================
+# Section 1: Project Identity
+# ============================================================
+echo ""
+echo "${BOLD}=== Gmail Forge — Handoff ===${NC}"
+echo ""
+echo "  Project:    ${CYAN}${PROJECT_NAME}${NC}"
+echo "  Phase:      ${GREEN}${PHASE}${NC}"
+echo "  Mode:       ${YELLOW}${CLASSIFIER_MODE}${NC}"
+dim "Script:     ${EDITOR_URL}"
+dim "Sheet:      ${SHEET_URL}"
+dim "Asana GID:  ${ASANA_GID}"
+
+# ============================================================
+# Section 2: Filter Rule Counts
+# ============================================================
+echo ""
+echo "${BOLD}=== Filter Rules ===${NC}"
+echo ""
+
+XML_FILE="$PROJECT_ROOT/gmail-filters.xml"
+RULES_FILE="$PROJECT_ROOT/apps-script/rules.gs"
+
+if [[ -f "$XML_FILE" ]]; then
+  XML_COUNT=$(grep -c '<entry>' "$XML_FILE" 2>/dev/null || echo 0)
+  echo "  XML filters (gmail-filters.xml):  ${BOLD}${XML_COUNT}${NC}"
+else
+  fail "gmail-filters.xml not found"
+  XML_COUNT=0
+fi
+
+if [[ -f "$RULES_FILE" ]]; then
+  # Count all quoted domain/address entries (lines like '  'something.com',')
+  JS_TOTAL=$(grep -cE "^\s+'[^']+',\s*$" "$RULES_FILE" 2>/dev/null || echo 0)
+
+  # Count job search whitelist entries separately
+  JS_JOB=$( awk '/^var JOB_SEARCH_DOMAINS/,/\];/' "$RULES_FILE" | grep -cE "^\s+'[^']+'" 2>/dev/null || echo 0)
+  JS_JOB=$(( JS_JOB + $(awk '/^var JOB_SEARCH_ADDRESSES/,/\];/' "$RULES_FILE" | grep -cE "^\s+'[^']+'" 2>/dev/null || echo 0) ))
+
+  # Count NEVER_ARCHIVE entries
+  JS_NEVER=$( awk '/^var NEVER_ARCHIVE/,/\];/' "$RULES_FILE" | grep -cE "^\s+'[^']+'" 2>/dev/null || echo 0)
+
+  JS_RULES=$(( JS_TOTAL - JS_JOB - JS_NEVER ))
+
+  echo "  JS rules (rules.gs):              ${BOLD}${JS_RULES}${NC} rules + ${JS_JOB} job whitelist + ${JS_NEVER} never-archive = ${JS_TOTAL} entries"
+
+  # Sync check: XML entries should roughly match JS_RULES + JS_JOB
+  JS_COMPARABLE=$(( JS_RULES + JS_JOB ))
+  if (( XML_COUNT == JS_COMPARABLE )); then
+    ok "Sync: XML (${XML_COUNT}) matches JS rules + job whitelist (${JS_COMPARABLE})"
+  elif (( XML_COUNT > 0 && JS_COMPARABLE > 0 )); then
+    warn "Sync: XML (${XML_COUNT}) != JS rules + job whitelist (${JS_COMPARABLE}) — check for drift"
+  fi
+else
+  fail "apps-script/rules.gs not found"
+fi
+
+# ============================================================
+# Section 3: Git Status
+# ============================================================
+echo ""
+echo "${BOLD}=== Git Status ===${NC}"
+echo ""
+
+if [[ -n "$REPO_ROOT" ]]; then
+  BRANCH=$(git -C "$PROJECT_ROOT" branch --show-current 2>/dev/null || echo "detached")
+  echo "  Branch:          ${CYAN}${BRANCH}${NC}"
+
+  # Working tree changes scoped to this project
+  CHANGES=$(git -C "$REPO_ROOT" status --short -- "$PROJECT_REL/" 2>/dev/null)
+  CHANGE_COUNT=$(echo "$CHANGES" | grep -c '.' 2>/dev/null || echo 0)
+  if (( CHANGE_COUNT == 0 )); then
+    ok "Working tree clean"
+  else
+    warn "Working tree: ${CHANGE_COUNT} uncommitted changes"
+    echo "$CHANGES" | head -5 | while read -r line; do
+      dim "  $line"
+    done
+    if (( CHANGE_COUNT > 5 )); then
+      dim "  ... and $(( CHANGE_COUNT - 5 )) more"
+    fi
+  fi
+
+  # Last commit
+  LAST_COMMIT=$(git -C "$REPO_ROOT" log -1 --format="%h %s (%ar)" -- "$PROJECT_REL/" 2>/dev/null || echo "none")
+  echo "  Last commit:     ${DIM}${LAST_COMMIT}${NC}"
+
+  # Recent activity
+  RECENT=$(git -C "$REPO_ROOT" log --since="7 days ago" --oneline -- "$PROJECT_REL/" 2>/dev/null | wc -l | tr -d ' ')
+  echo "  Recent (7d):     ${RECENT} commits"
+else
+  warn "Not in a git repository — skipping git checks"
+fi
+
+# ============================================================
+# Section 4: Apps Script Dependencies
+# ============================================================
+echo ""
+echo "${BOLD}=== Apps Script ===${NC}"
+echo ""
+
+AS_DIR="$PROJECT_ROOT/apps-script"
+
+if [[ -d "$AS_DIR/node_modules" ]]; then
+  ok "node_modules installed"
+else
+  fail "node_modules missing — run: cd apps-script && npm install"
+fi
+
+if [[ -f "$AS_DIR/.clasp.json" ]]; then
+  ok ".clasp.json configured"
+else
+  fail ".clasp.json missing — see apps-script/DEPLOY-CLASP.md"
+fi
+
+if [[ -d "$AS_DIR/node_modules/@google/clasp" ]]; then
+  ok "@google/clasp available"
+elif [[ -d "$AS_DIR/node_modules" ]]; then
+  fail "@google/clasp not found in node_modules"
+fi
+
+# ============================================================
+# Section 5: Chrome Extension
+# ============================================================
+echo ""
+echo "${BOLD}=== Chrome Extension ===${NC}"
+echo ""
+
+EXT_DIR="$PROJECT_ROOT/extension"
+MANIFEST="$EXT_DIR/manifest.json"
+
+# Manifest validation
+if [[ -f "$MANIFEST" ]]; then
+  if command -v node &>/dev/null; then
+    EXT_VERSION=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$MANIFEST')).version)" 2>/dev/null || echo "")
+    MV=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$MANIFEST')).manifest_version)" 2>/dev/null || echo "")
+    if [[ -n "$EXT_VERSION" ]]; then
+      ok "manifest.json valid (v${EXT_VERSION}, MV${MV})"
+    else
+      fail "manifest.json failed to parse"
+    fi
+  else
+    ok "manifest.json exists"
+    dim "node not available — skipping JSON validation"
+  fi
+else
+  fail "manifest.json not found"
+fi
+
+# Required files (from extension/scripts/validate-extension.mjs)
+EXT_REQUIRED=(
+  "src/background.js"
+  "src/content.js"
+  "src/inboxsdk.js"
+  "src/popup.html"
+  "src/styles.css"
+  "icons/icon16.svg"
+  "icons/icon48.svg"
+  "icons/icon128.svg"
+)
+EXT_MISSING=0
+for rel in "${EXT_REQUIRED[@]}"; do
+  if [[ ! -f "$EXT_DIR/$rel" ]]; then
+    fail "Missing: $rel"
+    (( EXT_MISSING++ ))
+  fi
+done
+if (( EXT_MISSING == 0 )); then
+  ok "All ${#EXT_REQUIRED[@]} required files present"
+fi
+
+# ============================================================
+# Section 6: Pending Tasks
+# ============================================================
+echo ""
+echo "${BOLD}=== Pending Tasks (from HANDOFF.md) ===${NC}"
+echo ""
+
+HANDOFF="$PROJECT_ROOT/HANDOFF.md"
+if [[ -f "$HANDOFF" ]]; then
+  PENDING_LINES=()
+  while IFS= read -r line; do
+    # Strip markdown bold and leading "- [ ] "
+    clean="${line#- \[ \] }"
+    clean="${clean//\*\*/}"
+    # Truncate to 90 chars
+    if (( ${#clean} > 90 )); then
+      clean="${clean:0:87}..."
+    fi
+    PENDING_LINES+=("$clean")
+  done < <(grep -E '^\- \[ \]' "$HANDOFF" 2>/dev/null)
+
+  PENDING_COUNT=${#PENDING_LINES[@]}
+  if (( PENDING_COUNT == 0 )); then
+    ok "No pending tasks"
+  else
+    for item in "${PENDING_LINES[@]}"; do
+      echo "  ${YELLOW}[ ]${NC} $item"
+    done
+    echo ""
+    dim "${PENDING_COUNT} pending items"
+  fi
+else
+  warn "HANDOFF.md not found"
+fi
+
+# ============================================================
+# Section 7: Summary
+# ============================================================
+echo ""
+echo "${BOLD}=== Summary ===${NC}"
+echo ""
+echo "  ${CYAN}${PROJECT_NAME}${NC} | ${GREEN}${PHASE}${NC} | ${YELLOW}${CLASSIFIER_MODE}${NC} | ${XML_COUNT} XML / ${JS_TOTAL:-?} JS rules | ${PENDING_COUNT:-0} pending"
+dim "Run: $(date '+%Y-%m-%d %H:%M')"
+echo ""

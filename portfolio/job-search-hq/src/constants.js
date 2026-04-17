@@ -1,6 +1,5 @@
 // ── STORAGE ─────────────────────────────────────────────────────────────────
 export const STORAGE_KEY = "chase_job_search_v1";
-export const API_KEY_STORAGE = "chase_anthropic_key";
 export const BACKUP_FOLDER_KEY = "chase_job_search_backup_folder";
 
 // ── DATE HELPER ───────────────────────────────────────────────────────────────
@@ -265,46 +264,13 @@ export function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
-export function getApiKey() {
-  return localStorage.getItem(API_KEY_STORAGE) || "";
-}
-
-export async function callClaude(system, userMsg, maxTokens = 1000) {
-  const apiKey = getApiKey();
-  if (!apiKey) throw new Error("NO_API_KEY");
-  let res;
-  try {
-    res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: maxTokens,
-        system,
-        messages: [{ role: "user", content: userMsg }],
-      }),
-    });
-  } catch {
-    throw new Error("NETWORK_ERROR");
-  }
-  if (res.status === 401) throw new Error("AUTH_ERROR");
-  if (res.status === 529) throw new Error("OVERLOADED");
-  const json = await res.json();
-  if (json.error) throw new Error(json.error.message || "API error");
-  return json.content?.map(b => b.text || "").join("") || "Error — no response.";
-}
-
 export function blankApp() {
   return {
     id: generateId(), company: "", title: "", stage: "Interested", appliedDate: "", url: "",
     nextStep: "", nextStepDate: "", nextStepType: "", jobDescription: "", notes: "",
     prepNotes: "", // legacy fallback
     prepSections: blankPrepSections(),
+    prepStageKey: "", // phone_screen | interview | final_round — last template applied (optional)
   };
 }
 
@@ -609,8 +575,7 @@ export const DAILY_BLOCKS = [
     tagColor: "#10b981",
     steps: [
       "Open a job posting you've already researched",
-      "Go to AI Tools → Tailor Resume — paste the JD, pick PM or AE, generate",
-      "Copy the output into your Word template (in Google Drive)",
+      "Go to Apply Tools → Tailor Resume — paste the JD, copy the prompt into ChatGPT or Claude, paste the tailored resume into your template",
       "Apply on their careers page or LinkedIn Easy Apply",
       "Add to Pipeline tracker immediately — set follow-up date to +7 days",
     ],
@@ -625,8 +590,8 @@ export const DAILY_BLOCKS = [
     tagColor: "#8b5cf6",
     steps: [
       "Search LinkedIn for 1 person at a target company in an Implementation, CS, or Sales role",
-      "Go to AI Tools → LinkedIn → Connection Request, select the contact, generate message",
-      "Send the connection request with the generated note",
+      "Go to Apply Tools → LinkedIn → Connection Request, select the contact, copy the prompt, paste the draft from your assistant",
+      "Send the connection request with your note",
       "Log them in the Contacts tab linked to the company",
     ],
     adhd: "Template: \"Hi [Name] — I have 6+ years in digital payments (Authorize.Net/Visa) and am exploring roles at [Company]. Love to hear about your experience on the team.\"",
@@ -640,7 +605,7 @@ export const DAILY_BLOCKS = [
     tagColor: "#f59e0b",
     steps: [
       "Open Pipeline — look for any Applied applications older than 7 days",
-      "Go to AI Tools → LinkedIn → Follow-up, generate a message",
+      "Go to Apply Tools → LinkedIn → Follow-up, copy the prompt and draft a message in your assistant",
       "Send it and update the card's Next Step",
       "Mark any applications 3+ weeks old with no response as Withdrawn",
     ],

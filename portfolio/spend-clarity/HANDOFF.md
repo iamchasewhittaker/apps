@@ -49,7 +49,7 @@ python src/main.py --dry-run
 portfolio/spend-clarity/
   src/
     main.py              — entry: optional Gmail, YNAB fetch, Privacy API or Gmail receipts, match, memo, Step 4.5 categorize, PATCH
-    gmail_client.py      — Gmail API + OAuth; receipt search uses label:Receipt (Inbox Zero alignment)
+    gmail_client.py      — Gmail API + OAuth; receipt search uses label:Receipt (Gmail Forge alignment)
     privacy_client.py    — Privacy.com API → ParsedReceipt
     receipt_parser.py    — per-merchant email HTML/text
     matcher.py           — receipt ↔ YNAB txn matching + unmatched diagnostics
@@ -95,14 +95,14 @@ portfolio/spend-clarity/
 
 - **Dry run default:** `DRY_RUN=true` — no YNAB writes without explicit opt-in.
 - **Step 4.5:** With `AUTO_CATEGORIZE=true`, every blank-memo transaction that matches a rule gets a category PATCH — not only receipt-matched rows. Narrow tests: `AUTO_CATEGORIZE=false`.
-- **Privacy vs Gmail:** API preferred when key is valid; Inbox Zero `Receipt` label still matters for non-Privacy merchants.
+- **Privacy vs Gmail:** API preferred when key is valid; Gmail Forge `Receipt` label still matters for non-Privacy merchants.
 - **Never overwrite an existing memo** (transactions with blank memos only are fetched for enrichment — see `ynab_client` / `CLAUDE.md` safety notes).
 
 ---
 
 ## Related
 
-- Inbox Zero: `portfolio/inbox-zero/` — Receipt label contract: [`integrations/receipt-to-spend-clarity.md`](../inbox-zero/integrations/receipt-to-spend-clarity.md)
+- Gmail Forge: `portfolio/gmail-forge/` — Receipt label contract: [`integrations/receipt-to-spend-clarity.md`](../gmail-forge/integrations/receipt-to-spend-clarity.md)
 - YNAB Clarity iOS: `portfolio/ynab-clarity-ios/` — shared mental model for payee cleanup / overrides (separate codebase)
 - Monorepo: `chase/CLAUDE.md`, `chase/HANDOFF.md`
 

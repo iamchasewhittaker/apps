@@ -1,5 +1,24 @@
 # Changelog — Ash Reader
 
+## [1.1.0] — 2026-04-17
+
+### Added
+- **Smart Q&A chunker** (`chunkSmart`): breaks at Human/Assistant exchange boundaries instead of mid-word-count; ±20% size tolerance for clean cuts; falls back to paragraph → sentence if no Q&A markers found
+- **Paste-in mode** on Reader tab: textarea with live word count, `ash_reader_pasted_text` localStorage persistence (survives refresh), Clear button, "Read Chunks →" submit
+- Reader page gracefully handles missing `doc.txt` — shows paste-only mode instead of crashing
+
+### Changed
+- `ChunkReader` now uses `chunkSmart` instead of `chunkByWords` everywhere
+- Reader page now shows "📂 Load File / 📋 Paste Text" tabs when `doc.txt` is present
+
+### iOS
+- **ash-reader-ios** companion SwiftUI app scaffolded at `portfolio/ash-reader-ios/`
+  - `PasteInputView`: TextEditor with word count + chunk size picker (1k/1.5k/2k)
+  - `ChunkReaderView`: chunk cards, tap-to-copy, Mark Sent checkmark, progress bar, Prev/Next nav
+  - `Chunker.swift`: Swift port of the Q&A smart chunker (same algorithm, same ±20% tolerance)
+  - `ProgressStore`: UserDefaults persistence, auto-jumps to first unsent chunk on open
+  - Built + deployed to iPhone 12 Pro Max
+
 ## [1.0.0] — 2026-04-17
 
 ### Added

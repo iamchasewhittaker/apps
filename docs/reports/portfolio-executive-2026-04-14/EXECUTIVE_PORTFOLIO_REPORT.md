@@ -50,7 +50,7 @@ Evaluation dimensions:
 | YNAB Clarity iOS            | Client mobile       | Local         | Native YNAB companion + assign flow                | Promising                            | Incubate to release readiness             |
 | RollerTask Tycoon iOS       | Client mobile       | Local/shipped | Native gamified productivity                       | Strong local product                 | Keep, align with web story                |
 | Spend Clarity               | Internal Python CLI | Local         | Finance enrichment automation                      | Strong operator tool                 | Keep private/internal                     |
-| Inbox Zero                  | Internal system     | Active        | Email triage automation + AI/rules                 | Useful ops layer                     | Keep internal                             |
+| Gmail Forge                  | Internal system     | Active        | Email triage automation + AI/rules                 | Useful ops layer                     | Keep internal                             |
 | AI Dev Mastery              | Learning/content    | Local         | AI curriculum/course product                       | Undeployed                           | Incubate with go/no-go test               |
 | Shortcut Reference          | Utility app         | Local         | macOS shortcut reference tool                      | Distinct but isolated                | Incubate or bundle strategically          |
 | Archived apps/projects      | Archived            | Retired       | Historical lineage and experiments                 | Mixed archival quality               | Retire with explicit criteria             |
@@ -64,7 +64,7 @@ Evaluation dimensions:
 | Clarity life domains | Wellness Tracker, Clarity Hub, Clarity iOS suite                   | Same life categories (check-in/triage/time/budget/growth) | Unified web monolith vs decomposed native ecosystem      | Keep both short-term; define one canonical user journey and data model |
 | Money/YNAB           | YNAB Clarity Web, YNAB Clarity iOS, Spend Clarity, archive `money` | Budget clarity and transaction enrichment                 | End-user dashboard vs operator automation                | Keep first 3; formally retire archive assets                           |
 | Task gamification    | RollerTask Web, RollerTask iOS, archived RollerTask web PWA        | Same motivation/game concept                              | Platform and UX form factor                              | Keep web+iOS; maintain archive as frozen reference only                |
-| Career productivity  | Job Search HQ, Clarity Command, Inbox Zero                         | Daily execution and communication flow                    | Job pipeline vs faith accountability vs inbox operations | Keep separate but introduce integrated narrative/links                 |
+| Career productivity  | Job Search HQ, Clarity Command, Gmail Forge                         | Daily execution and communication flow                    | Job pipeline vs faith accountability vs inbox operations | Keep separate but introduce integrated narrative/links                 |
 | Portfolio operations | App Forge, Knowledge Base, App Hub                                 | Portfolio memory and navigation                           | Audit/ops vs knowledge curation vs scripts               | Keep all; tighten boundaries and data flow                             |
 
 

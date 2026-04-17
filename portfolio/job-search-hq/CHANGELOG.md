@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Removed / changed (v8.6)
+
+- **In-browser Anthropic API removed** — no `callClaude`, no API key modal, no `fetch` to `api.anthropic.com`. Apply Tools (`AITab.jsx`) uses **copy-to-clipboard prompts** (`src/applyPrompts.js`) for external assistants; users paste results back into text areas for their records.
+- **Interview prep modal** — stage presets (Phone screen / Interview / Final round), "Fill empty fields from template", "Copy external prep brief"; optional `prepStageKey` on applications. iOS `JobApplication` includes `prepStageKey` for JSON parity.
+- **Pipeline quick-add** — URL + optional JD textarea (replaces URL-only Claude parse).
+- **Find Jobs** — opens LinkedIn / Indeed / Google search in a new tab (no in-app search API).
+- Legacy `apiKey` field stripped from saved blob on load if present.
+
 ### Updated (2026-04-14)
 - **Logo: "JOB SEARCH" spelled out** — updated `public/logo.svg` label from "JOB" to "JOB SEARCH" (font-size 50, letter-spacing 6); bold white "HQ" remains the dominant anchor; `rx="96"` rounded corners per portfolio template. Regenerated `logo512.png`, `logo192.png`, `apple-touch-icon.png`. Verified live at [job-search-hq.vercel.app](https://job-search-hq.vercel.app) (HTTP 200) and `npm run build` clean on Node 20.
 

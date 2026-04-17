@@ -75,7 +75,7 @@ struct JobSearchDataBlob: Codable, Equatable, Sendable {
 struct JobApplication: Codable, Equatable, Identifiable, Hashable, Sendable {
     enum CodingKeys: String, CodingKey {
         case id, company, title, stage, appliedDate, url, nextStep, nextStepDate, nextStepType
-        case jobDescription, notes, prepNotes, prepSections
+        case jobDescription, notes, prepNotes, prepSections, prepStageKey
     }
 
     var id: String
@@ -91,6 +91,8 @@ struct JobApplication: Codable, Equatable, Identifiable, Hashable, Sendable {
     var notes: String
     var prepNotes: String
     var prepSections: PrepSections
+    /// Mirrors web `prepStageKey` — phone_screen, interview, final_round (optional).
+    var prepStageKey: String
 
     init(
         id: String,
@@ -105,7 +107,8 @@ struct JobApplication: Codable, Equatable, Identifiable, Hashable, Sendable {
         jobDescription: String = "",
         notes: String = "",
         prepNotes: String = "",
-        prepSections: PrepSections = .empty
+        prepSections: PrepSections = .empty,
+        prepStageKey: String = ""
     ) {
         self.id = id
         self.company = company
@@ -120,6 +123,7 @@ struct JobApplication: Codable, Equatable, Identifiable, Hashable, Sendable {
         self.notes = notes
         self.prepNotes = prepNotes
         self.prepSections = prepSections
+        self.prepStageKey = prepStageKey
     }
 
     init(from decoder: Decoder) throws {
@@ -141,6 +145,7 @@ struct JobApplication: Codable, Equatable, Identifiable, Hashable, Sendable {
         } else {
             prepSections = PrepSections.normalized(from: nil, prepNotes: prepNotes)
         }
+        prepStageKey = try c.decodeIfPresent(String.self, forKey: .prepStageKey) ?? ""
     }
 
     func encode(to encoder: Encoder) throws {
@@ -158,6 +163,7 @@ struct JobApplication: Codable, Equatable, Identifiable, Hashable, Sendable {
         try c.encode(notes, forKey: .notes)
         try c.encode(prepNotes, forKey: .prepNotes)
         try c.encode(prepSections, forKey: .prepSections)
+        try c.encode(prepStageKey, forKey: .prepStageKey)
     }
 }
 

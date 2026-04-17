@@ -1,4 +1,4 @@
-# Inbox Zero — Chrome Extension
+# Gmail Forge — Chrome Extension
 
 A Chrome extension that adds a label-based tab bar to Gmail and an AI-powered "Sort" button for classifying emails on the fly.
 
@@ -22,7 +22,7 @@ A Chrome extension that adds a label-based tab bar to Gmail and an AI-powered "S
 
 ## Configure
 
-1. Click the Inbox Zero extension icon in the Chrome toolbar
+1. Click the Gmail Forge extension icon in the Chrome toolbar
 2. Choose classifier mode:
    - `GEMINI` for AI labels
    - `RULES_ONLY` for zero-API heuristic fallback

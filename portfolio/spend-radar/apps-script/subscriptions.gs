@@ -1,59 +1,54 @@
 /**
- * Spend Radar — Subscriptions Engine
+ * Spend Radar — Subscriptions tab + menu + installable onOpen trigger
  *
- * Scans Gmail label:Receipt emails (last 180 days), detects recurring senders,
- * and writes a "Subscriptions" tab to a Google Sheet.
+ * This file owns:
+ *   - onOpen()              — the Sheet menu
+ *   - setupOnOpenTrigger()  — one-time installer (run once from editor)
+ *   - createDedicatedSheet() — one-time Sheet factory (Phase C migration helper)
+ *   - refreshSubscriptions() — aggregated recurring detector
+ *   - debugSubscriptions()   — diagnostic log for empty Subscriptions tab
+ *   - healthCheck()          — Script Properties + trigger status
+ *
+ * Per-receipt extraction + Receipts tab → receipts.gs
+ * SENDER_RULES + heuristic fallback         → extraction.gs
+ * Rules-based audit                          → audit.gs
+ * refreshAll / refreshAllApps / openDashboard → triggers.gs
+ * Shared utilities                           → helpers.gs
  *
  * Setup:
  *   1. Create a new Apps Script project at script.google.com
- *   2. Paste this file into the project (or deploy via clasp)
- *   3. Set Script Properties (Settings > Script Properties):
- *      - SHEET_ID: Google Sheet ID (same sheet as Inbox Zero, or its own)
- *   4. Run setupOnOpenTrigger() once to wire up the Sheet menu
- *   5. Open the Sheet — click "Spend Radar → Refresh Subscriptions"
+ *   2. Paste all 6 .gs files (or deploy via clasp — see DEPLOY-CLASP.md)
+ *   3. Run createDedicatedSheet() once → copy the logged ID
+ *   4. Script Properties → SHEET_ID = <id>, GMAIL_FORGE_WEB_APP_URL, GMAIL_FORGE_TRIGGER_TOKEN, DASHBOARD_URL
+ *   5. Run setupOnOpenTrigger() once → authorize Gmail + Sheets + UrlFetch
+ *   6. Open the Sheet → "Spend Radar" menu appears
  */
 
 // ---------------------------------------------------------------------------
-// Config
+// Subscriptions tab shape
 // ---------------------------------------------------------------------------
 
-var AMOUNT_RE = /\$\s?([0-9]{1,5}(?:,[0-9]{3})*(?:\.[0-9]{2}))/;
-
-// Pretty service names for known Receipt senders. Domain matched with indexOf
-// so subdomain variants (e.g. mail.anthropic.com → Anthropic) work.
-var DOMAIN_TO_SERVICE = {
-  'spotify.com': 'Spotify',
-  'anthropic.com': 'Anthropic',
-  'apple.com': 'Apple',
-  'paypal.com': 'PayPal',
-  'venmo.com': 'Venmo',
-  'privacy.com': 'Privacy.com',
-  'citi.com': 'Citi',
-  'safeco.com': 'Safeco',
-  'costco.com': 'Costco',
-  'target.com': 'Target',
-  'uber.com': 'Uber',
-  'doordash.com': 'DoorDash',
-  'chewy.com': 'Chewy',
-  'nike.com': 'Nike',
-  'google.com': 'Google',
-  'rockymountainpower.net': 'Rocky Mountain Power',
-  'domenergyuteb.com': 'Enbridge Gas',
-  'fastel.com': 'FASTEL',
-};
+var SUBSCRIPTIONS_SHEET_NAME = 'Subscriptions';
+var SUBSCRIPTIONS_HEADERS = [
+  'Service', 'Category', 'Sender Domain', 'Sender Email', 'Last Amount',
+  'Cadence', 'Last Charge', 'Est. Next Charge', 'Receipts (180d)', 'Status',
+];
 
 // ---------------------------------------------------------------------------
 // Sheet menu — installable trigger (standalone scripts can't use simple triggers)
 // ---------------------------------------------------------------------------
 
-/**
- * Adds the "Spend Radar" menu to the Sheet.
- * Fired by an installable onOpen trigger — run setupOnOpenTrigger() once to install.
- */
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('Spend Radar')
     .addItem('Refresh Subscriptions', 'refreshSubscriptions')
+    .addItem('Refresh Receipts', 'refreshReceipts')
+    .addItem('Refresh All', 'refreshAll')
+    .addItem('Refresh All Apps', 'refreshAllApps')
+    .addSeparator()
+    .addItem('Audit Last Run', 'auditLastRun')
+    .addSeparator()
+    .addItem('Open Dashboard', 'openDashboard')
     .addItem('Debug (check Receipt label)', 'debugSubscriptions')
     .addToUi();
 }
@@ -68,7 +63,6 @@ function setupOnOpenTrigger() {
     Logger.log('No SHEET_ID set — cannot install onOpen trigger');
     return;
   }
-
   var triggers = ScriptApp.getProjectTriggers();
   for (var i = 0; i < triggers.length; i++) {
     if (triggers[i].getHandlerFunction() === 'onOpen') {
@@ -76,13 +70,24 @@ function setupOnOpenTrigger() {
       return;
     }
   }
-
-  ScriptApp.newTrigger('onOpen')
-    .forSpreadsheet(sheetId)
-    .onOpen()
-    .create();
-
+  ScriptApp.newTrigger('onOpen').forSpreadsheet(sheetId).onOpen().create();
   Logger.log('Installed onOpen trigger for spreadsheet ' + sheetId);
+}
+
+// ---------------------------------------------------------------------------
+// Phase C helper — create the dedicated Spend Radar Sheet
+// ---------------------------------------------------------------------------
+
+/**
+ * Run ONCE from the editor. Creates a new Google Sheet titled "Spend Radar",
+ * logs the ID and URL. Paste the ID into Script Properties as SHEET_ID, then
+ * re-run setupOnOpenTrigger() to wire the menu to the new Sheet.
+ */
+function createDedicatedSheet() {
+  var ss = SpreadsheetApp.create('Spend Radar');
+  Logger.log('Created Sheet. ID: ' + ss.getId());
+  Logger.log('URL: ' + ss.getUrl());
+  Logger.log('Next: paste the ID into Script Properties as SHEET_ID, then re-run setupOnOpenTrigger()');
 }
 
 // ---------------------------------------------------------------------------
@@ -98,7 +103,7 @@ function refreshSubscriptions() {
   if (!sheetId) {
     Logger.log('No SHEET_ID set — cannot write Subscriptions tab');
     try { SpreadsheetApp.getUi().alert('SHEET_ID is not set in Script Properties.'); } catch (e) {}
-    return;
+    return 0;
   }
 
   var threads = GmailApp.search('label:Receipt newer_than:180d', 0, 500);
@@ -112,8 +117,9 @@ function refreshSubscriptions() {
       email: email,
       domain: domain,
       subject: msg.getSubject(),
-      body: msg.getPlainBody().substring(0, 2000),
+      body: (msg.getPlainBody() || '').substring(0, 2000),
       date: msg.getDate(),
+      msg: msg,
     };
     if (!groups[email]) groups[email] = [];
     groups[email].push(receipt);
@@ -128,57 +134,61 @@ function refreshSubscriptions() {
     rows.push(summarizeSubscription_(list));
   }
 
-  // Active first (by last charge desc), then Lapsed
+  // Active first (by last charge desc), then Lapsed. Status is column 9 (0-based).
   rows.sort(function (a, b) {
-    var aActive = a[8] === 'Active' ? 0 : 1;
-    var bActive = b[8] === 'Active' ? 0 : 1;
+    var aActive = a[9] === 'Active' ? 0 : 1;
+    var bActive = b[9] === 'Active' ? 0 : 1;
     if (aActive !== bActive) return aActive - bActive;
-    return b[5] - a[5];
+    return b[6] - a[6];
   });
 
   var ss = SpreadsheetApp.openById(sheetId);
-  var sheet = ss.getSheetByName('Subscriptions') || ss.insertSheet('Subscriptions');
+  var sheet = ss.getSheetByName(SUBSCRIPTIONS_SHEET_NAME) || ss.insertSheet(SUBSCRIPTIONS_SHEET_NAME);
   sheet.clear();
-  sheet.appendRow([
-    'Service', 'Sender Domain', 'Sender Email', 'Last Amount',
-    'Cadence', 'Last Charge', 'Est. Next Charge', 'Receipts (180d)', 'Status',
-  ]);
-  sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
+  sheet.appendRow(SUBSCRIPTIONS_HEADERS);
+  sheet.getRange(1, 1, 1, SUBSCRIPTIONS_HEADERS.length).setFontWeight('bold');
   sheet.setFrozenRows(1);
 
   if (rows.length > 0) {
-    sheet.getRange(2, 1, rows.length, 9).setValues(rows);
+    sheet.getRange(2, 1, rows.length, SUBSCRIPTIONS_HEADERS.length).setValues(rows);
   }
 
+  // Append Monthly est. + Yearly est. summary rows (Active only)
+  var monthly = 0;
+  for (var r = 0; r < rows.length; r++) {
+    if (rows[r][9] !== 'Active') continue;
+    monthly += monthlyEquivalent_(rows[r][5], rows[r][4]);
+  }
+  var yearly = monthly * 12;
+  var summaryStart = rows.length + 2;
+  var summaryRows = [
+    ['Monthly est.', '', '', '', formatDollar_(monthly), '', '', '', '', ''],
+    ['Yearly est.',  '', '', '', formatDollar_(yearly),  '', '', '', '', ''],
+  ];
+  sheet.getRange(summaryStart, 1, 2, SUBSCRIPTIONS_HEADERS.length).setValues(summaryRows);
+  sheet.getRange(summaryStart, 1, 2, SUBSCRIPTIONS_HEADERS.length).setFontWeight('bold');
+
   try { ss.toast('Refreshed ' + rows.length + ' subscriptions', 'Spend Radar', 5); } catch (e) {}
-  Logger.log('Subscriptions refresh: ' + rows.length + ' rows written');
+  Logger.log('Subscriptions refresh: ' + rows.length + ' rows, monthly ' + formatDollar_(monthly));
+  return rows.length;
 }
 
 // ---------------------------------------------------------------------------
-// Helpers
+// Helpers — subscription summarization
 // ---------------------------------------------------------------------------
 
 function summarizeSubscription_(receipts) {
   var n = receipts.length;
   var last = receipts[n - 1];
 
-  var gaps = [];
-  for (var i = 1; i < n; i++) {
-    gaps.push((receipts[i].date - receipts[i - 1].date) / (1000 * 60 * 60 * 24));
-  }
-  gaps.sort(function (a, b) { return a - b; });
-  var cadenceDays = gaps.length % 2 === 1
-    ? gaps[(gaps.length - 1) / 2]
-    : (gaps[gaps.length / 2 - 1] + gaps[gaps.length / 2]) / 2;
+  var dates = [];
+  for (var i = 0; i < n; i++) dates.push(receipts[i].date);
+  var cadenceDays = medianGapDays_(dates);
+  var cadenceLabel = cadenceLabelForDays_(cadenceDays);
 
-  var cadenceLabel;
-  if (cadenceDays >= 5 && cadenceDays <= 10) cadenceLabel = 'Weekly';
-  else if (cadenceDays >= 25 && cadenceDays <= 35) cadenceLabel = 'Monthly';
-  else if (cadenceDays >= 80 && cadenceDays <= 100) cadenceLabel = 'Quarterly';
-  else if (cadenceDays >= 340 && cadenceDays <= 400) cadenceLabel = 'Yearly';
-  else cadenceLabel = 'Irregular (~' + Math.round(cadenceDays) + 'd)';
+  // Use extraction.gs for consistent merchant/item/category/amount
+  var extracted = extractReceipt_(last.msg);
 
-  var amount = extractAmount_(last.subject, last.body);
   var nextEst = cadenceLabel.indexOf('Irregular') === 0
     ? ''
     : new Date(last.date.getTime() + cadenceDays * 24 * 60 * 60 * 1000);
@@ -187,43 +197,17 @@ function summarizeSubscription_(receipts) {
   var status = ageDays < 1.5 * cadenceDays ? 'Active' : 'Lapsed?';
 
   return [
-    serviceNameForDomain_(last.domain),
+    extracted.merchant || last.domain,
+    extracted.category || 'Other',
     last.domain,
     last.email,
-    amount,
+    extracted.amount,
     cadenceLabel,
     last.date,
     nextEst,
     n,
     status,
   ];
-}
-
-function serviceNameForDomain_(domain) {
-  var keys = Object.keys(DOMAIN_TO_SERVICE);
-  for (var i = 0; i < keys.length; i++) {
-    if (domain.indexOf(keys[i]) !== -1) return DOMAIN_TO_SERVICE[keys[i]];
-  }
-  var root = domain.split('.').slice(-2)[0] || domain;
-  return root.charAt(0).toUpperCase() + root.slice(1);
-}
-
-function extractAmount_(subject, body) {
-  var subjectMatch = subject.match(AMOUNT_RE);
-  if (subjectMatch) return '$' + subjectMatch[1];
-  var bodyMatch = body.match(AMOUNT_RE);
-  if (bodyMatch) return '$' + bodyMatch[1];
-  return '';
-}
-
-function extractEmail_(fromHeader) {
-  var match = fromHeader.match(/<(.+?)>/);
-  return match ? match[1].toLowerCase() : fromHeader.toLowerCase().trim();
-}
-
-function extractDomain_(email) {
-  var parts = email.split('@');
-  return parts.length > 1 ? parts[1] : '';
 }
 
 // ---------------------------------------------------------------------------
@@ -245,7 +229,7 @@ function debugSubscriptions() {
     } else {
       var msg = allReceipts[0].getMessages()[0];
       Logger.log('Receipt label exists. Most recent email date: ' + msg.getDate());
-      Logger.log('All Receipt emails are older than 180 days — try wider_than:400d.');
+      Logger.log('All Receipt emails are older than 180 days — try newer_than:400d.');
     }
     Logger.log('=== end ===');
     return;
@@ -282,9 +266,18 @@ function debugSubscriptions() {
 // ---------------------------------------------------------------------------
 
 function healthCheck() {
-  var sheetId = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  var props = PropertiesService.getScriptProperties();
+  var sheetId = props.getProperty('SHEET_ID');
+  var gmailForgeUrl = props.getProperty('GMAIL_FORGE_WEB_APP_URL');
+  var gmailForgeToken = props.getProperty('GMAIL_FORGE_TRIGGER_TOKEN');
+  var dashboardUrl = props.getProperty('DASHBOARD_URL');
+
   Logger.log('=== Spend Radar — healthCheck ===');
   Logger.log('SHEET_ID: ' + (sheetId ? 'set' : 'MISSING — set this in Script Properties'));
+  Logger.log('GMAIL_FORGE_WEB_APP_URL: ' + (gmailForgeUrl ? 'set' : 'missing (Refresh All Apps will skip Gmail Forge)'));
+  Logger.log('GMAIL_FORGE_TRIGGER_TOKEN: ' + (gmailForgeToken ? 'set' : 'missing (Refresh All Apps will skip Gmail Forge)'));
+  Logger.log('DASHBOARD_URL: ' + (dashboardUrl ? 'set' : 'missing (Open Dashboard will alert)'));
+
   if (sheetId) {
     try {
       SpreadsheetApp.openById(sheetId);

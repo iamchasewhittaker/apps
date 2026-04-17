@@ -1,6 +1,6 @@
 # Job Search HQ
 
-Your personal job-search command center. Track every company in your pipeline, manage contacts, prep STAR stories, and generate tailored application drafts with AI — all in one fast, offline-first app.
+Your personal job-search command center. Track every company in your pipeline, manage contacts, prep STAR stories, and copy ready-made prompts for resume/cover/prep into ChatGPT or Claude — all in one fast, offline-first app.
 
 **Live:** https://job-search-hq.vercel.app · **Product line:** Career Toolkit
 
@@ -9,19 +9,19 @@ Your personal job-search command center. Track every company in your pipeline, m
 - **Pipeline tab** — track companies by stage (Research → Applied → Interview → Offer/Pass) with daily focus scoring
 - **By Company view** — everything about one company on one screen: contacts, notes, timeline, next action
 - **Contacts tab** — store people you've met, their role, warmth level, and follow-up reminders
-- **AI tab** — Claude-powered cover letter drafts, email follow-ups, and interview prep tailored to each role
+- **Apply Tools tab** — copy-to-clipboard prompts for tailored resumes, cover letters, LinkedIn notes, and interview prep (use any external assistant)
 - **Resources tab** — STAR story bank, salary research, and company research templates
 - **Chrome extension** — capture LinkedIn profiles and job postings into your pipeline with one click, badge shows Action Queue count
 
 ## Tech
 
-React CRA · localStorage (`chase_job_search_v1`) · Supabase sync (`job-search`) · Anthropic API key (user-supplied in-app) · Chrome MV3 extension in `extension/`
+React CRA · localStorage (`chase_job_search_v1`) · Supabase sync (`job-search`) · Chrome MV3 extension in `extension/`
 
 ## Run locally
 
 ```bash
 cd portfolio/job-search-hq
-cp .env.example .env   # REACT_APP_SUPABASE_* + use in-app API key UI for Claude
+cp .env.example .env   # REACT_APP_SUPABASE_* for sync
 npm install
 npm start              # default CRA port 3000; see .claude/launch.json for 3001
 npm run build

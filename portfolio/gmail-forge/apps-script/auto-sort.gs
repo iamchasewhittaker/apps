@@ -1,5 +1,5 @@
 /**
- * Inbox Zero — Auto-Sort Engine
+ * Gmail Forge — Auto-Sort Engine
  *
  * Runs on a time-driven trigger (every 5 min). Finds unlabeled inbox emails,
  * classifies them via local rules or AI, applies the correct Gmail label,
@@ -471,7 +471,7 @@ function healthCheck() {
   var geminiKey = props.getProperty('GEMINI_API_KEY');
   var sheetId = props.getProperty('SHEET_ID');
 
-  Logger.log('=== Inbox Zero — healthCheck ===');
+  Logger.log('=== Gmail Forge — healthCheck ===');
   Logger.log('CLASSIFIER_MODE (resolved): ' + mode);
   Logger.log('GEMINI_API_KEY: ' + (geminiKey ? 'set (length ' + String(geminiKey.length) + ')' : 'missing'));
   Logger.log('SHEET_ID: ' + (sheetId ? 'set' : 'missing'));
@@ -507,5 +507,32 @@ function healthCheck() {
   }
 
   Logger.log('=== end healthCheck ===');
+}
+
+// ---------------------------------------------------------------------------
+// Tokenized web app — lets Spend Radar's "Refresh All Apps" button trigger
+// autoSort() over HTTP. Deploy: script.google.com → Deploy → New deployment →
+// Web app (Execute as Me, Anyone has access) → copy URL. Script Property
+// TRIGGER_TOKEN must be set to a UUID that matches Spend Radar's
+// GMAIL_FORGE_TRIGGER_TOKEN Script Property.
+// ---------------------------------------------------------------------------
+
+function doGet(e) {
+  var expected = PropertiesService.getScriptProperties().getProperty('TRIGGER_TOKEN');
+  if (!expected || !e || !e.parameter || e.parameter.token !== expected) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: 'unauthorized' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  try {
+    autoSort();
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true, ran: 'autoSort' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 

@@ -86,11 +86,37 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Funded (2026-04-15).** Renamed YNAB Clarity → Conto → Funded. Both iOS + web fully renamed; FUNDED AppIcon generated; deployed https://funded-web.vercel.app; installed on iPhone 12 Pro Max. |
-| **Next**       | 1. **WHI-24 — Wave 3 #2 stage-specific prep templates** (Job Search HQ web). 2. **WHI-60 — RollerTask Phase 2 iOS sync**. 3. **Sprint 1 setup in Linear UI** (cycle 2026-04-21 to 2026-05-04). 4. **Fund from Overview** (Funded iOS V1 backlog #2). |
+| **Focus**      | **Summit Push v0.1 (2026-04-17).** New app built from scratch: 5 core flows (capture/sort/lock/focus/check), 4 fixed lanes, dark UI, mobile-first, localStorage, PWA manifest. Builds clean. Dev server verified at localhost:3000. Not yet deployed to Vercel. |
+| **Next**       | 1. **Summit Push:** Deploy to Vercel (connect GitHub, set up project). 2. **Summit Push:** Generate PWA icons (192px + 512px cairn/mountain logo). 3. **Summit Push:** Install on phone as PWA. 4. **Summit Push:** Use for 7 days — no features until then. 5. **WHI-24 — Wave 3 #2 stage-specific prep templates** (Job Search HQ web). |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-15 — **Funded:** renamed all folders/files/UI Conto → Funded; FUNDED logo + AppIcon; deployed web; installed iOS on device; docs + Linear updated. |
+| **Last touch** | 2026-04-17 — **Summit Push v0.1 built:** 4 screens, bottom nav, lane system, dark theme, PWA manifest, clean build. Handoff docs + memory files complete. |
 
+
+---
+
+## Fresh session prompt — continue Summit Push (v0.1+)
+
+Use a **new** chat after `checkpoint`. Paste:
+
+```
+Read CLAUDE.md and HANDOFF.md first, then portfolio/summit-push/CLAUDE.md and portfolio/summit-push/HANDOFF.md.
+
+Goal: Continue Summit Push at portfolio/summit-push/.
+
+Current state (2026-04-17): MVP v0.1 built — 5 flows (capture/sort/lock/focus/check), 4 fixed lanes, dark UI, localStorage, PWA manifest. Builds clean (pnpm build). Dev server verified. NOT yet deployed.
+
+Phase 1 rule: NO new features until Chase has used it for 7 days.
+
+Priority:
+1. Deploy to Vercel: vercel project add summit-push --scope iamchasewhittakers-projects → vercel link → vercel git connect → vercel --prod
+2. Generate PWA icons (192px + 512px) — cairn/mountain theme, dark background
+3. Install on phone as PWA, verify all 5 flows work on mobile
+
+Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS 4 + pnpm + localStorage
+Key: summit_push_v1 | Anti-features: no settings, no priorities, no tags, 4 lanes max forever
+
+Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
+```
 
 ---
 

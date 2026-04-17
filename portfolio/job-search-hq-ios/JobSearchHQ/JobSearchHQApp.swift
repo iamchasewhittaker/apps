@@ -8,7 +8,10 @@ struct JobSearchHQApp: App {
         WindowGroup {
             ContentView()
                 .environment(store)
-                .onAppear { store.load() }
+                .onAppear {
+                    store.load()
+                    Task { await store.refreshFromRemote() }
+                }
         }
     }
 }

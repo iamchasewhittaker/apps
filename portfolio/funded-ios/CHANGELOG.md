@@ -31,7 +31,7 @@
 - **`YNABTransaction.categoryId: String?`** — decoded from existing `category_id` field in transactions API response
 - Budget health row + underfunded goals card moved to **Adjust tab** (was Overview/Dashboard)
 - **TipBanner messages updated** per rule: Assign → "Give every dollar a job…", Bills → "Embrace your true expenses…", Adjust → "Roll with the punches…", Age Money → "Age your money…"
-- **`label:Receipt` pre-filter** added to `spend-clarity/src/gmail_client.py` `search_emails()` — aligns with Inbox Zero Gmail filter taxonomy
+- **`label:Receipt` pre-filter** added to `spend-clarity/src/gmail_client.py` `search_emails()` — aligns with Gmail Forge Gmail filter taxonomy
 
 ### Fixed
 - **`MetricsEngineTests`:** added `categoryId: nil` to all 4 `YNABTransaction` memberwise initializers — new field added to the struct broke the test build

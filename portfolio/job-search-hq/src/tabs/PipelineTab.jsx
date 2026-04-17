@@ -1,32 +1,26 @@
 import React, { useState } from "react";
-import { s, STAGES, STAGE_COLORS, callClaude, blankApp, getOutcomeAnalytics } from "../constants";
+import { s, STAGES, STAGE_COLORS, blankApp, getOutcomeAnalytics } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import AppCard from "../components/AppCard";
 
-export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab, apiKey }) {
+export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab }) {
   const [urlInput, setUrlInput] = useState("");
-  const [urlLoading, setUrlLoading] = useState(false);
-  const outcomes = getOutcomeAnalytics([...(activeApps || []), ...(archivedApps || [])]);
+  const [jdPaste, setJdPaste] = useState("");
 
-  async function parseJobUrl() {
+  function quickAddFromPaste() {
     const url = urlInput.trim();
-    if (!url || !apiKey) return;
-    setUrlLoading(true);
-    try {
-      const raw = await callClaude(
-        `You are a job posting parser. Extract key details from job posting pages. Return ONLY a JSON object with these fields: title, company, location, jobDescription (full text of the posting, preserve all requirements and responsibilities). If a field is unknown use an empty string.`,
-        `Parse this job posting URL and extract the details: ${url}\n\nReturn valid JSON only, no other text.`,
-        2000
-      );
-      let parsed;
-      try { parsed = JSON.parse(raw.replace(/```json|```/g, "").trim()); } catch { parsed = {}; }
-      setAppModal({ mode: "new", app: { ...blankApp(), url, title: parsed.title || "", company: parsed.company || "", jobDescription: parsed.jobDescription || "" } });
-      setUrlInput("");
-    } catch {
-      setAppModal({ mode: "new", app: { ...blankApp(), url } });
-      setUrlInput("");
-    }
-    setUrlLoading(false);
+    if (!url) return;
+    setAppModal({
+      mode: "new",
+      app: {
+        ...blankApp(),
+        url,
+        jobDescription: jdPaste.trim(),
+        stage: "Interested",
+      },
+    });
+    setUrlInput("");
+    setJdPaste("");
   }
 
   function openKit(app) {
@@ -37,23 +31,35 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
     setResumeTab("kit");
   }
 
+  const outcomes = getOutcomeAnalytics([...(activeApps || []), ...(archivedApps || [])]);
+
   return (
     <ErrorBoundary name="Pipeline">
       <div style={s.content}>
-        {apiKey && (
-          <div style={s.urlPasteBar}>
+        <div style={{ ...s.urlPasteBar, flexDirection: "column", alignItems: "stretch", gap: 8 }}>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <input
-              style={s.urlPasteInput}
+              style={{ ...s.urlPasteInput, minWidth: 200 }}
               value={urlInput}
               onChange={e => setUrlInput(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && parseJobUrl()}
-              placeholder="Paste a job URL to auto-fill title, company & JD…"
+              onKeyDown={e => e.key === "Enter" && quickAddFromPaste()}
+              placeholder="Job posting URL (required)"
             />
-            <button style={{ ...s.btnPrimary, opacity: (!urlInput.trim() || urlLoading) ? 0.5 : 1 }} disabled={!urlInput.trim() || urlLoading} onClick={parseJobUrl}>
-              {urlLoading ? "Parsing…" : "Import"}
+            <button
+              style={{ ...s.btnPrimary, opacity: !urlInput.trim() ? 0.5 : 1 }}
+              disabled={!urlInput.trim()}
+              onClick={quickAddFromPaste}
+            >
+              + Add application
             </button>
           </div>
-        )}
+          <textarea
+            style={{ ...s.textarea, minHeight: 72 }}
+            value={jdPaste}
+            onChange={e => setJdPaste(e.target.value)}
+            placeholder="Optional: paste the full job description here (recommended for Apply Tools + prep). You can also paste it later when editing the card."
+          />
+        </div>
         <div style={s.stageBar}>
           {STAGES.filter(st => !["Rejected", "Withdrawn"].includes(st)).map(st => {
             const count = activeApps.filter(a => a.stage === st).length;

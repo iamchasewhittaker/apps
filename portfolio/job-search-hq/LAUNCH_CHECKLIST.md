@@ -11,13 +11,13 @@
 - [x] **Target user defined:** Active job seekers managing 10–50 companies simultaneously, who benefit from AI-assisted drafting and structured daily focus.
 - [x] **Success metric chosen:** User can review their full pipeline, identify today's top priority, and generate a tailored application draft in under 10 minutes.
 - [x] **Product line assigned:** Career Toolkit (see `docs/governance/PRODUCT_LINES.md`)
-- [x] **No unresolved overlap:** No active app in portfolio covers job pipeline management. Inbox Zero (future) would complement, not overlap.
+- [x] **No unresolved overlap:** No active app in portfolio covers job pipeline management. Gmail Forge (future) would complement, not overlap.
 
 ---
 
 ## Gate 2 — Build ✅
 
-- [x] **Scope frozen:** v8.5 shipped — pipeline, contacts, STAR stories, AI drafts, Focus tab, company research, By-Company view, Chrome extension.
+- [x] **Scope frozen:** v8.6 — pipeline, contacts, STAR bank, Apply Tools (copy prompts), Focus tab, company research, By-Company view, Chrome extension, stage prep templates.
 - [x] **BRANDING.md exists:** `docs/BRANDING.md` — DM Sans, dark palette, 5-accent system.
 - [x] **Security checklist started:** See security scan items in Gate 3 below.
 - [x] **Shared files pulled from portfolio/shared/:** `src/shared/sync.js`, `src/shared/auth.js` present.
@@ -29,7 +29,7 @@
 
 - [x] **Build passes CI:** `npm ci && npm run build` — tracked in `.github/workflows/portfolio-web-build.yml`
 - [x] **Security checklist complete:**
-  - [x] No hardcoded API keys in tracked files (Anthropic key stored in localStorage `chase_anthropic_key` only)
+  - [x] No LLM API keys in app (v8.6+ — copy prompts only)
   - [x] `.env` gitignored; `.env.example` committed
   - [x] Supabase anon key only (RLS enforced)
   - [x] `npm audit` — 0 critical, 0 high (verify before each deploy)
@@ -55,5 +55,4 @@
 ## Notes
 
 - Chrome extension (MV3) loads unpacked from `extension/` — not yet published to Chrome Web Store
-- Anthropic API key is user-supplied via in-app UI modal (not a deploy-time env var)
-- App is personal-use today; external launch would require API key proxy to protect billing
+- v8.6+: No in-browser Anthropic integration; optional future: server-side proxy (see `ROADMAP.md`)

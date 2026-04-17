@@ -1,4 +1,4 @@
-# Inbox Zero — Inbox leaker log (Phase 2)
+# Gmail Forge — Inbox leaker log (Phase 2)
 
 **Purpose:** During the 30-day iteration (through ~2026-05-12), record senders that still hit the **inbox** without the intended label so they can be promoted into `gmail-filters.xml` / `apps-script/rules.gs`.
 

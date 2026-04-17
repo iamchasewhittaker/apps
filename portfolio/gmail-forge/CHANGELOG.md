@@ -1,4 +1,4 @@
-# Inbox Zero — Changelog
+# Gmail Forge — Changelog
 
 ## [Apr 16, 2026] — Phase 3 Go-Live
 
@@ -23,8 +23,22 @@
 - Added `refreshSubscriptions()` + `onOpen()` menu to `apps-script/auto-sort.gs`
 - Scans `label:Receipt newer_than:180d`, groups by sender, keeps recurring senders (≥2 receipts) — writes a new "Subscriptions" tab in the Sheet
 - Columns: Service, Sender Domain, Sender Email, Last Amount, Cadence (Weekly/Monthly/Quarterly/Yearly/Irregular), Last Charge, Est. Next Charge, Receipts (180d), Status (Active / Lapsed?)
-- Manual trigger only — accessible via the "Inbox Zero → Refresh Subscriptions" menu in the Sheet. Clears and rewrites the tab on every run (no stale rows)
+- Manual trigger only — accessible via the "Gmail Forge → Refresh Subscriptions" menu in the Sheet. Clears and rewrites the tab on every run (no stale rows)
 - Pushed via `clasp push --force`
+
+## [Apr 16, 2026] — Rename + Archived Mail Visibility
+
+### Renamed: Inbox Zero → Gmail Forge
+- Directory moved: `portfolio/inbox-zero/` → `portfolio/gmail-forge/`
+- ~130 text replacements across 48 files: project name, paths, env var names, package names, Chrome extension manifest, Apps Script file headers, all downstream docs (spend-radar, spend-clarity, job-search-hq, funded-ios, portfolio root CLAUDE.md, ROADMAP.md, governance docs, executive reports)
+- Env vars renamed: `INBOX_ZERO_WEB_APP_URL` → `GMAIL_FORGE_WEB_APP_URL`, `INBOX_ZERO_TRIGGER_TOKEN` → `GMAIL_FORGE_TRIGGER_TOKEN`
+- Off-filesystem renames still pending: Google Apps Script console, Spend Radar Script Properties, Asana
+
+### Daily Report: archived mail now visible
+- `CLAUDE.md` / `claude.md` report prompt updated: now runs two Gmail searches — inbox AND archived
+- Added `🗄️ Auto-archived today` section showing every email the Apps Script swept + archived
+- Added `📊 Total: X inbox / Y archived / X+Y received today` line at report bottom
+- Previously invisible: emails auto-archived by the 5-min Apps Script sweep never appeared in the report
 
 ## [Unreleased]
 
@@ -56,7 +70,7 @@
 - Added 3 inbox leakers from daily report: Jack Carr (Marketing), Obsidian, Supabase (Notification)
 - Added Natia Kurdadze (Newsletter); moved PEAK ENT from Notification → Calendar
 - Created CLAUDE.md for auto-load in future sessions
-- Organized all files into /Users/chase/Developer/chase/portfolio/inbox-zero/
+- Organized all files into /Users/chase/Developer/chase/portfolio/gmail-forge/
 - Created prompts/ folder with Spend Clarity integration prompts
 - Fixed cross-session file location: was flat in ~/Downloads/, now in portfolio/
 

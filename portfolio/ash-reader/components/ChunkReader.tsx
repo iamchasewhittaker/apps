@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { chunkByWords, stripMarkdown, wordCount, charCount } from "@/lib/chunker";
+import { chunkSmart, stripMarkdown, wordCount, charCount } from "@/lib/chunker";
 import { markSent, isSent, getSentCount, resetProgress, getPromptPrefix, isPromptPrefixEnabled } from "@/lib/progress";
 
 interface Props {
@@ -19,7 +19,7 @@ export default function ChunkReader({ text, storageKey, defaultSize = 2000 }: Pr
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const c = chunkByWords(text, size);
+    const c = chunkSmart(text, size);
     setChunks(c);
     setIdx(0);
     // Find first unsent chunk

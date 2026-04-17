@@ -24,4 +24,6 @@ This milestone wires the iOS app to the **same** Supabase `user_data` row semant
 
 ## Stub in codebase
 
-`NoOpRemoteSync` is the default until Phase 2 is implemented; `JobSearchStore` owns the hook point.
+`NoOpJobSearchRemoteSync` is the default until Phase 2 is implemented; `JobSearchStore` calls `push` after each save and `pullIfNewerThan` from `JobSearchHQApp.onAppear` (no-op until a real `JobSearchRemoteSync` is wired).
+
+**Next:** Add `supabase-swift` SPM dependency to the Xcode project, then implement `JobSearchRemoteSync` using the same `user_data` REST contract as [`../../job-search-hq/src/sync.js`](../../job-search-hq/src/sync.js) + [`../../shared/sync.js`](../../shared/sync.js).

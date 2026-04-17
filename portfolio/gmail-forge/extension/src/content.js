@@ -1,5 +1,5 @@
 /**
- * Inbox Zero — Content Script
+ * Gmail Forge — Content Script
  *
  * Injected into Gmail. Renders a label tab bar at the top of the inbox
  * and adds a "Sort" button to the toolbar for AI classification.

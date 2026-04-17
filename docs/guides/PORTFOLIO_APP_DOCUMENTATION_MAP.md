@@ -73,7 +73,7 @@ For each: **ClarityUI**, **Clarity Check-in**, **Clarity Triage**, **Clarity Tim
 | --- | --- |
 | `archive/ai-dev-mastery` | Course material; `CLAUDE.md` for structure. |
 | `archive/app-forge` | Historical; see `CLAUDE.md` if reviving. |
-| `inbox-zero` | `claude.md` (lowercase) — email workflow tooling. |
+| `gmail-forge` | `claude.md` (lowercase) — email workflow tooling. |
 
 ## Monorepo root (`chase/`)
 

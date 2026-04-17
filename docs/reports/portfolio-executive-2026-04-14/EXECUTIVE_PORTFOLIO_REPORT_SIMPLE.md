@@ -52,7 +52,7 @@ These help with tasks and career work.
 ### 4) Internal helper apps
 - App Forge
 - Knowledge Base
-- Inbox Zero
+- Gmail Forge
 - App Hub
 
 These help the team stay organized and move faster.

@@ -1,4 +1,4 @@
-# MVP Audit — Inbox Zero
+# MVP Audit — Gmail Forge
 
 **Current step:** [Chase to confirm]
 **Last updated:** 2026-04-15

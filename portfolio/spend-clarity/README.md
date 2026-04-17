@@ -148,4 +148,4 @@ Set `AUTO_CATEGORIZE=true` in `.env` to enable automatic category assignment (in
 - **`prompts/SESSION_START.md`** — paste into a new chat  
 - **`CLAUDE.md`** — agent conventions  
 
-Inbox Zero labels mail with **Receipt** so Spend Clarity can align queries; see `portfolio/inbox-zero/integrations/receipt-to-spend-clarity.md`.
+Gmail Forge labels mail with **Receipt** so Spend Clarity can align queries; see `portfolio/gmail-forge/integrations/receipt-to-spend-clarity.md`.

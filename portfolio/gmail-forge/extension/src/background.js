@@ -1,5 +1,5 @@
 /**
- * Inbox Zero — Background Service Worker
+ * Gmail Forge — Background Service Worker
  *
  * Handles AI classification requests from the content script.
  * Runs as a MV3 service worker (no DOM access).

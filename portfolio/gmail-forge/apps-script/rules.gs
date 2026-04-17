@@ -1,5 +1,5 @@
 /**
- * Inbox Zero — Sender/Domain Rules
+ * Gmail Forge — Sender/Domain Rules
  *
  * Mirrors the 69 Gmail XML filters so Apps Script can match known senders
  * without an AI call. Keep this in sync when you add new XML filters.

@@ -1,6 +1,6 @@
-# Resume — Inbox Zero Phase 3 (Live)
+# Resume — Gmail Forge Phase 3 (Live)
 
-> Paste this into a new Claude Code session opened from the `inbox-zero/` folder.
+> Paste this into a new Claude Code session opened from the `gmail-forge/` folder.
 
 ---
 
@@ -14,7 +14,7 @@
 > Check the **"Review Queue"** tab for unknown senders to add as rules.
 >
 > **Remaining steps:**
-> 1. **Load Chrome extension** — `chrome://extensions` → Developer mode → Load unpacked → `inbox-zero/extension/`; configure popup
+> 1. **Load Chrome extension** — `chrome://extensions` → Developer mode → Load unpacked → `gmail-forge/extension/`; configure popup
 > 2. **Review Queue habit** — check sheet periodically; fill "Assign Label"; add domain to `rules.gs` + `gmail-filters.xml`; `clasp push --force`
 > 3. **Enable Gemini** (optional) — enable billing on GCP project → change `CLASSIFIER_MODE` to `GEMINI`
 >

@@ -1,6 +1,6 @@
-# Session Start — Inbox Zero Google-Side Setup
+# Session Start — Gmail Forge Google-Side Setup
 
-Paste this into a new chat opened from `/Users/chase/Developer/chase/portfolio/inbox-zero/`.
+Paste this into a new chat opened from `/Users/chase/Developer/chase/portfolio/gmail-forge/`.
 
 ---
 
@@ -26,13 +26,13 @@ https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_9
 
 5. **Chrome extension** — in terminal:
    ```bash
-   cd /Users/chase/Developer/chase/portfolio/inbox-zero/extension
+   cd /Users/chase/Developer/chase/portfolio/gmail-forge/extension
    npm install && npm run validate
    ```
    Then: Chrome → `chrome://extensions` → Developer mode (toggle on) → Load unpacked → select the `extension/` folder. Open popup, set mode + API key.
 
 **If anything goes wrong or needs code changes**, the local files are at `apps-script/` and you can re-push anytime with:
 ```bash
-cd /Users/chase/Developer/chase/portfolio/inbox-zero/apps-script
+cd /Users/chase/Developer/chase/portfolio/gmail-forge/apps-script
 npx clasp push --force
 ```

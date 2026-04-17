@@ -9,7 +9,7 @@ Work in **`portfolio/job-search-hq`** unless told otherwise.
 ## Conventions
 
 1. Prefer adding logic to `constants.js` or tab/components — keep `App.jsx` as shell.
-2. Use `callClaude` / `handleClaudeCall` patterns from `constants.js` for AI calls.
+2. Apply Tools use `src/applyPrompts.js` — copy prompts only, no in-app LLM API.
 3. Update [CHANGELOG.md](CHANGELOG.md) under `## [Unreleased]` for shipped changes (include **`extension/`** when the Chrome package changes).
 4. Keep `src/shared/sync.js` aligned with [`portfolio/shared/sync.js`](../shared/sync.js).
 5. Extension docs live in [extension/README.md](extension/README.md); web copy in Resources tab points there.

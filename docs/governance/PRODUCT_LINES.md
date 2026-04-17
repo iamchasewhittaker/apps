@@ -46,7 +46,7 @@ Daily “check-in” style input may exist in both products; **source of truth**
 | App | Platform | Status | Role in Line |
 |-----|----------|--------|-------------|
 | Job Search HQ | Web (CRA) + Chrome Extension | Active v8.5 | Primary pipeline manager with AI-assisted execution |
-| Inbox Zero | Internal system | Active | Email triage automation and AI rules |
+| Gmail Forge | Internal system | Active | Email triage automation and AI rules |
 
 **Most market-ready line.** Job Search HQ is the closest to external launch.
 

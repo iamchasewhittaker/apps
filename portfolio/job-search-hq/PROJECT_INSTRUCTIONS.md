@@ -60,12 +60,12 @@ bash "$(git rev-parse --show-toplevel)/portfolio/app-hub/sync.sh"
 
 ## What This App Is
 
-A personal job search command center. Tracks applications, contacts, interview prep (structured sections + legacy migration), outreach cadence, pipeline analytics, a STAR story bank, and uses Claude AI to generate tailored resumes, cover letters, apply kits, and interview prep. Optional **Chrome extension** (`extension/`) imports LinkedIn profile/job rows and shows an Action Queue badge on the HQ tab. Used on Mac browser and iPhone (added to home screen). Deployed on Vercel.
+A personal job search command center. Tracks applications, contacts, interview prep (structured sections + stage templates + legacy migration), outreach cadence, pipeline analytics, a STAR story bank, and **copy-to-clipboard prompts** for tailored resumes, cover letters, apply kits, and interview prep (use ChatGPT, Claude, or any assistant in another tab). Optional **Chrome extension** (`extension/`) imports LinkedIn profile/job rows and shows an Action Queue badge on the HQ tab. Used on Mac browser and iPhone (added to home screen). Deployed on Vercel.
 
 **Live URL:** `https://job-search-hq.vercel.app`
 **GitHub repo:** `github.com/iamchasewhittaker/job-search-hq` (private)
 **Local folder (monorepo):** `portfolio/job-search-hq` under `~/Developer/chase`
-**Current version:** `v8.5` (see `CLAUDE.md` — shell + tabs; Wave 2 shipped; Wave 3 #1 Chrome extension in `extension/`)
+**Current version:** `v8.6` (see `CLAUDE.md` — Apply Tools copy prompts; no in-browser LLM API; Wave 3 #2 stage prep templates)
 **Supabase sign-in email:** Shared project with Wellness — **Magic link** template must include `{{ .Token }}` (see Wellness or Job Search `CLAUDE.md`).
 
 ---
@@ -77,7 +77,7 @@ These two apps are intentionally separate but connected:
 | App | Purpose |
 |-----|---------|
 | **Wellness Tracker** (`https://wellness-tracker-kappa.vercel.app`) | Capacity tracking, daily check-ins, mood, meds, streaks |
-| **Job Search HQ** (`job-search-hq.vercel.app`) | Pipeline, contacts, AI tools, resume tailoring, interview prep |
+| **Job Search HQ** (`job-search-hq.vercel.app`) | Pipeline, contacts, Apply Tools (copy prompts), resume/cover prep, interview prep |
 
 **How they connect:**
 - Wellness tracker Growth tab → Job Search card shows live pipeline stats (active apps, follow-ups overdue) read from `chase_job_search_v1`
@@ -123,8 +123,8 @@ git tag vN && git push origin vN
 - **Deployment:** Vercel — connected to GitHub, auto-deploys on push
 - **Storage:** `localStorage` only — key: `chase_job_search_v1`
 - **Cross-app write:** also writes to `chase_wellness_v1` (growthLogs only) for wellness streak sync
-- **AI:** Anthropic Claude API via `callClaude()` — model: `claude-sonnet-4-20250514`
-- **Web search:** enabled via `tools: [{ type: "web_search_20250305" }]` in Find Jobs tab
+- **Apply Tools:** Markdown prompts in `src/applyPrompts.js` — copy to clipboard only; no LLM API in the browser (v8.6+)
+- **Find Jobs:** Opens LinkedIn / Indeed / Google search in a new tab (no in-app search API)
 - **Theme:** Dark mode only — locked, never change
 - **Primary device:** Mac browser + iPhone (PWA, added to home screen)
 
@@ -142,12 +142,11 @@ git tag vN && git push origin vN
 | **Always run `bash audit.sh` before `bash pre-deploy.sh`** | Audit first, then pre-deploy |
 | **Always verify brace balance before delivering** | Imbalanced braces cause silent JS failures |
 | **Never rewrite sections that aren't changing** | Surgical edits only |
-| **Claude model string must stay `claude-sonnet-4-20250514`** | Wrong model string = AI calls fail silently |
+| **Prompt builders live in `applyPrompts.js`** | Keep copy-prompt UX consistent across tabs |
 | **`logSessionToWellness()` writes to `chase_wellness_v1`** | This is intentional — do not remove |
 | **`WELLNESS_KEY` constant must stay `chase_wellness_v1`** | Must match wellness tracker's storage key exactly |
-| **`runInterviewPrep` uses `maxTokens: 1500`** | Needs extra tokens for 5 full Q&A blocks — do not reduce |
+| **`PrepModal` uses stage templates + external prep brief** | See `PREP_STAGE_PRESETS` in `applyPrompts.js` |
 | **`BACKUP_FOLDER_KEY` must stay `chase_job_search_backup_folder`** | Stores the user's chosen backup folder handle — changing it breaks folder memory |
-| **`callClaude()` throws `NETWORK_ERROR`, `AUTH_ERROR`, `OVERLOADED`** | `handleClaudeCall()` routes these to specific user messages — do not change error string literals |
 | **`showError(msg)` is the global error toast helper** | Always use this for API/network errors — do not use alert() or inline error text for these |
 | **`ErrorBoundary` wraps all 5 tabs** | Each tab is individually guarded — never remove these wrappers |
 | **`restoreData()` must validate `parsed.applications` array** | Prevents corrupt restores — do not weaken this check |
@@ -213,34 +212,9 @@ Called when user taps "✓ Done + Log to Wellness" on a Daily Focus block. Minut
 
 ---
 
-## Claude API
+## Apply Tools (v8.6+)
 
-```js
-const MODEL = "claude-sonnet-4-20250514";
-
-async function callClaude(system, userMsg, maxTokens = 1000) {
-  const apiKey = getApiKey();
-  if (!apiKey) throw new Error("NO_API_KEY");
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
-    },
-    body: JSON.stringify({
-      model: MODEL, max_tokens: maxTokens, system,
-      messages: [{ role: "user", content: userMsg }],
-    }),
-  });
-  const json = await res.json();
-  if (json.error) throw new Error(json.error.message || "API error");
-  return json.content?.map(b => b.text || "").join("") || "Error — no response.";
-}
-```
-
-API key stored separately in `chase_anthropic_key` — never in `chase_job_search_v1`.
+All drafting prompts live in `src/applyPrompts.js`. The app **only copies markdown to the clipboard** — users paste into ChatGPT, Claude, or another assistant, then paste results back into text areas. No `fetch` to LLM providers.
 
 ---
 
@@ -279,7 +253,9 @@ useEffect(() => {
       nextStep: string,
       jobDescription: string,
       notes: string,
-      prepNotes: string,      // saved interview prep output — empty string if not yet generated
+      prepNotes: string,      // legacy
+      prepSections: { companyResearch, roleAnalysis, starStories, questionsToAsk },
+      prepStageKey: string,  // optional: phone_screen | interview | final_round
     }
   ],
   contacts: [ ... ],
@@ -292,57 +268,38 @@ useEffect(() => {
 
 ## Key State & Architecture Notes
 
-- **`profileComplete`** — `!!(data.baseResume && data.profile.name && data.profile.targetRoles)`. AI buttons disabled until true.
+- **`profileComplete`** — `!!(data.baseResume && data.profile.name && data.profile.targetRoles)`. Prompts assume profile is filled.
 - **`jd` state is shared** between Tailor Resume and Cover Letter tabs — intentional.
-- **Apply Kit uses `Promise.all`** — fires resume + cover letter in parallel. Don't serialize them.
-- **`kitApp`** — set from both the Apply Kit selector AND the 🚀 button on pipeline cards.
+- **`kitApp`** — set from the Apply Kit selector AND the 🚀 button on pipeline cards.
 - **`activeApps` / `archivedApps`** — Rejected and Withdrawn = archived.
-- **`profileContext()`** — builds AI prompt context from profile. Called in every AI function.
-- **LinkedIn state** is all ephemeral — not saved to localStorage. Intentional.
-- **Job search results** are ephemeral — not saved. Intentional.
-- **`prepModal`** state — `{ app }` or `null`. Opens PrepModal for that specific app.
-- **`prepNotes`** is saved directly to the application object via `saveApp()` inside `runInterviewPrep`. It persists through the unified save useEffect like all other app data.
-- **`callClaude` helper** handles all AI calls except `searchJobs`.
+- **LinkedIn / keyword draft state** in Apply Tools is ephemeral — not saved to localStorage (pasted assistant output is optional in text areas).
+- **`prepModal`** state — `{ app }` or `null`. Opens PrepModal for structured prep + stage templates.
+- **`buildProfileContextBlock` / prompt builders** — `applyPrompts.js` (import `CHASE_CONTEXT` from `constants.js` where needed).
 
 ---
 
 ## Key Functions
 
-- `callClaude(system, userMsg, maxTokens?)` — base AI call helper, returns text string
-- `callClaude(system, userMsg, maxTokens?)` — wraps fetch in try/catch for network errors; checks status 401 → AUTH_ERROR, 529 → OVERLOADED before parsing JSON
-- `handleClaudeCall(fn, errorSetter)` — routes NETWORK_ERROR / OVERLOADED / AUTH_ERROR to `showError()`; AUTH_ERROR also clears key + opens ApiKeyModal
-- `showError(msg)` — sets `errorToast` state; auto-clears after 6 seconds; renders as fixed red toast at top of screen
-- `backupData()` — saves full `chase_job_search_v1` to a dated JSON file; uses File System Access API on Chrome (folder remembered in `BACKUP_FOLDER_KEY`), falls back to standard download on Safari
-- `restoreData()` — opens file picker, validates `parsed.applications` array exists, confirms via `window.confirm()`, writes to localStorage, reloads
-- `runTailorResume()` — tailors base resume to current `jd` state
-- `runCoverLetter()` — writes cover letter for current `jd` state
-- `runApplyKit(app)` — parallel resume + cover letter from `app.jobDescription`
-- `runInterviewPrep(app, onResult)` — generates 5 interview questions + talking points, saves to `app.prepNotes`, calls `onResult(text, updatedApp)` on completion. Uses `maxTokens: 1500`.
-- `searchJobs()` — web search via Anthropic API with `web_search` tool
-- `runLinkedInProfile()` — parallel headline + About rewrite
-- `runKeywordOptimizer()` — analyzes pasted LinkedIn text for keyword gaps
-- `runConnectMessage()` — connection request for selected contact
-- `runFollowupMessage()` — follow-up message for selected contact
-- `profileContext()` — builds AI prompt context string from profile data
+- `showError(msg)` — sets `errorToast` state; auto-clears after 6 seconds
+- `backupData()` / `restoreData()` — backup/restore (see Resources tab)
+- Prompt builders in `applyPrompts.js` — e.g. `buildTailorResumePrompt`, `buildInterviewPrepExternalPrompt`, `mergePrepStageTemplate`
 - `saveApp(app)` — upserts application
 - `saveContact(c)` — upserts contact
 - `saveProfile(p)` — replaces profile
-- `deleteApp(id)` — removes application by id
-- `deleteContact(id)` — removes contact by id
-- `generateId()` — stable ID generator, never change
+- `deleteApp(id)` / `deleteContact(id)`
+- `generateId()` — stable ID generator
 
 ---
 
 ## Key Components
 
-- `AppCard` — pipeline card. Props: `app, contacts, onEdit, onStageChange, onApplyKit, onPrep, archived`. Shows 🎯 Prep button when `app.stage` is Phone Screen, Interview, or Final Round. Shows "✓ Interview prep saved" indicator when `app.prepNotes` exists.
-- `PrepModal` — interview prep modal. Props: `app, onRun, onClose`. Loads saved prep on open if `app.prepNotes` exists. Generate/Regenerate button triggers `onRun`. Copy all button copies full prep text.
-- `AppModal` — add/edit application. Includes all app fields.
+- `AppCard` — pipeline card. Shows prep indicator when `prepSections` has content (see `prepSectionsHasContent` in `constants.js`).
+- `PrepModal` — structured prep sections, stage template selector, copy external brief. Props: `app`, `data`, `onSave`, `onClose`, `showError`.
+- `AppModal` — add/edit application.
 - `ContactModal` — add/edit contact.
 - `ProfileModal` — edit master profile + base resume.
 - `AIResult` — reusable result box with copy button.
-- `ApiKeyModal` — API key entry. Security notice: key stored locally, sent directly to Anthropic, never passes through a server.
-- `ErrorBoundary` — class component; wraps each of the 5 tabs. Shows error + "Try again" on crash.
+- `ErrorBoundary` — wraps each tab.
 - `Field` — reusable form field (text, textarea, select, date).
 
 ---

@@ -11,8 +11,9 @@
 - [x] Logo: "JOB / HQ" mark, favicon.svg, PWA icons (v8.5)
 - [x] Action Queue on Focus tab — overdue tasks, stale contacts, prep reminders (v8.5)
 - [x] Next step due dates + types on application cards (v8.5)
-- [x] URL paste quick-capture on Pipeline tab (v8.5)
-- [x] Outreach scenario chips on AI Tools (v8.5)
+- [x] URL + optional JD paste quick-capture on Pipeline tab (v8.6; replaces URL-only AI parse)
+- [x] Outreach scenario chips on Apply Tools (v8.5; tab renamed v8.6)
+- [x] **v8.6 — No in-browser Anthropic API.** Apply Tools uses copy-to-clipboard prompts for external assistants; interview prep modal uses stage templates + optional external prep brief.
 
 ## Wave 2 — Shipped
 
@@ -20,41 +21,47 @@
 - [x] "Who should I message today?" prioritized list on Focus tab (2026-04-13)
 - [x] Outreach cadence suggestions on ContactCard (day 3, day 7 follow-up nudges) (2026-04-13)
 - [x] Structured prep framework — replace freetext prepNotes with sections (company research, role analysis, STAR stories, questions to ask) (2026-04-13)
-- [x] STAR story bank — reusable competency stories, AI-assisted drafting from resume (2026-04-13)
+- [x] STAR story bank — reusable competency stories; copy-prompt for external drafting (2026-04-13; prompt-only v8.6)
 - [x] Win/loss analytics — bar chart of applications by final stage outcome (2026-04-13)
 
 ## Wave 3 — Later
 
 - [x] Chrome Extension MVP: popup capture for LinkedIn profiles (contact) + job postings (JD + apply URL), badge count for overdue items (2026-04-13)
-- [ ] Stage-specific prep templates (Phone Screen vs Interview vs Final Round)
+- [x] **Stage-specific prep templates (WHI-24)** — static presets for Phone screen, Interview, Final Round; fill empty section fields; optional `prepStageKey` on application; "Copy external prep brief" for ChatGPT/Claude (v8.6)
 - [ ] Post-interview debrief log (`interviewLog` array on application)
-- [ ] Mock interview mode in AI Tools tab
+- [ ] Mock interview mode in Apply Tools tab (would use copy-prompts or deferred in-app AI)
 - [ ] Application velocity dashboard (weekly targets + trend line)
+
+## Deferred — in-app LLM (intentional)
+
+**Removed in v8.6:** browser `fetch` to `api.anthropic.com`, `callClaude`, and API key UI. Rationale: no user API key in the client; use external assistants with HQ as system of record.
+
+**Possible re-entry (pick one later):**
+
+- Server-side proxy (Vercel Function) with your key in env — never exposed to the browser.
+- OAuth / marketplace integration if Anthropic or another provider offers a hosted widget.
+- Bring-your-own-key behind a security review and explicit opt-in (still not ideal for a PWA).
+
+Until then: **Apply Tools** = copy prompts + paste results; **Find Jobs** = deep links to LinkedIn / Indeed / Google.
 
 ## Wave 3 — Execution order (current recommendation)
 
-1. Stage-specific prep templates (next ship target)
+1. ~~Stage-specific prep templates~~ **Done (v8.6)** — static templates + external brief
 2. Post-interview debrief log
 3. Application velocity dashboard
-4. Mock interview mode
+4. Mock interview mode (copy-prompt based or revisit deferred AI)
 
-### Wave 3 #2 scope — stage-specific prep templates
+### Wave 3 #2 — delivered scope (v8.6)
 
-- Add a stage preset selector in prep flows: `phone_screen`, `interview`, `final_round`.
-- Generate different question emphasis and prep prompts per stage.
-- Keep current structured sections (`companyResearch`, `roleAnalysis`, `starStories`, `questionsToAsk`) so existing data remains compatible.
-- Ensure legacy `prepNotes` migration behavior remains unchanged.
-- Ship with manual smoke validation: App card prep button → modal generate/regenerate → save sections → Focus/Pipeline indicators.
-
-### Follow-on sequencing rationale
-
-- **Debrief log after templates:** capture outcome quality per stage while the prep context is still fresh.
-- **Velocity dashboard after debrief log:** use both application stage flow and debrief signal quality for better trend visibility.
-- **Mock interview mode last:** depends on stabilized stage templates + debrief data to generate higher-quality simulations.
+- Stage preset selector in prep modal: `phone_screen`, `interview`, `final_round` (`PREP_STAGE_PRESETS` in `src/applyPrompts.js`).
+- "Fill empty fields from template" merges templates without wiping user text.
+- "Copy external prep brief" builds markdown for an external assistant; user pastes structured JSON or prose back into section textareas.
+- Optional field `prepStageKey` on applications for last template choice.
+- iOS `JobApplication` includes `prepStageKey` for blob parity.
 
 ## Release readiness + dependencies
 
-- App status: **go for current v8.5 shipped scope** (no code-level blockers documented).
+- App status: **go** for v8.6 shipped scope.
 - Keep these dependencies healthy:
   - Supabase email OTP template includes `{{ .Token }}`.
   - Vercel root directory remains `portfolio/job-search-hq`.
@@ -69,7 +76,7 @@
 - [ ] Weekly review prompt with auto-populated stats
 - [ ] Email forward parsing (paste recruiter email → extract contact + job)
 - [ ] PWA share target (mobile URL sharing)
-- [ ] AITab "Draft Message" context: pre-fill contact name/company/role when navigating from ContactCard
+- [ ] Apply Tools "Draft Message" context: pre-fill contact name/company/role when navigating from ContactCard
 
 ## Project tracking
 

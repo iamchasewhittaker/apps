@@ -13,7 +13,7 @@ Python CLI at `portfolio/spend-clarity/` in the monorepo (`chase/`). Enriches YN
 ```
 src/
   main.py           — orchestrator (YNAB → receipts → match → memo → categorize → PATCH)
-  gmail_client.py   — OAuth + Gmail search (`label:Receipt` alignment with Inbox Zero)
+  gmail_client.py   — OAuth + Gmail search (`label:Receipt` alignment with Gmail Forge)
   privacy_client.py — Privacy.com API
   ynab_client.py    — GET transactions / PATCH bulk
   matcher.py, memo_formatter.py, categorizer.py, receipt_parser.py, payee_formatter.py
@@ -42,5 +42,5 @@ Hosted service, multi-tenant UI, scraping beyond email/API parsers — local CLI
 
 ## Related repos
 
-- **`portfolio/inbox-zero/`** — Receipt label filters; keep sender lists aligned with `MERCHANTS` in `main.py`.
+- **`portfolio/gmail-forge/`** — Receipt label filters; keep sender lists aligned with `MERCHANTS` in `main.py`.
 - **`portfolio/ynab-clarity-ios/`** — companion app; payee display rules conceptually aligned, not shared code.

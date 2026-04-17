@@ -1,4 +1,4 @@
-# Inbox Zero — Mislabeled Sender Audit Log
+# Gmail Forge — Mislabeled Sender Audit Log
 
 Purpose: Track confirmed Newsletter vs Cold Email misclassifications from daily reports before editing `gmail-filters.xml`.
 

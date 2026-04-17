@@ -3,8 +3,15 @@ import path from "path";
 import ReaderClient from "./ReaderClient";
 
 export default async function ReaderPage() {
-  const filePath = path.join(process.cwd(), "public", "doc.txt");
-  const text = await readFile(filePath, "utf-8");
+  let fileText: string | null = null;
+  try {
+    const filePath = path.join(process.cwd(), "public", "doc.txt");
+    fileText = await readFile(filePath, "utf-8");
+  } catch {
+    // doc.txt not present — paste mode only
+  }
+
+  const wc = fileText ? Math.round(fileText.split(/\s+/).length / 1000) : null;
 
   return (
     <div>
@@ -12,9 +19,9 @@ export default async function ReaderPage() {
         📖 Reader
       </h1>
       <p style={{ color: "#777", fontSize: 14, marginTop: 0, marginBottom: 24 }}>
-        {Math.round(text.split(/\s+/).length / 1000)}k words total · Copy chunks into Ash
+        {wc ? `${wc}k words total · ` : ""}Copy chunks into Ash
       </p>
-      <ReaderClient text={text} />
+      <ReaderClient fileText={fileText} />
     </div>
   );
 }

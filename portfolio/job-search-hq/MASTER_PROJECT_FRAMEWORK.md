@@ -1,6 +1,6 @@
 # Chase's App Development Framework
 > This is the master document. Every project follows these standards.
-> Last updated: 2026-04-13 — Job Search HQ v8.5 in version table (Wave 2 + extension MVP)
+> Last updated: 2026-04-16 — Job Search HQ v8.6 (no in-app LLM; Apply Tools copy prompts; stage prep templates)
 
 ---
 
@@ -9,7 +9,7 @@
 | Project | Repo | Local Folder | Storage Key | Live URL | Current Version |
 |---------|------|-------------|-------------|----------|----------------|
 | Wellness Tracker | wellness-tracker | ~/Developer/chase/portfolio/wellness-tracker | chase_wellness_v1 | wellness-tracker-kappa.vercel.app | v15.10 |
-| Job Search HQ | job-search-hq | ~/Developer/chase/portfolio/job-search-hq | chase_job_search_v1 | job-search-hq.vercel.app | v8.5 |
+| Job Search HQ | job-search-hq | ~/Developer/chase/portfolio/job-search-hq | chase_job_search_v1 | job-search-hq.vercel.app | v8.6 |
 | App Forge | app-forge | ~/Developer/chase/portfolio/app-forge | chase_forge_v1 | app-forge-fawn.vercel.app | v8.1 |
 
 > **Growth Tracker retired 2026-03-23** — merged into Wellness Tracker as the 🌱 Growth tab. Storage key `chase_growth_v1` no longer in active use.

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Inbox Zero",
+  "name": "Gmail Forge",
   "version": "1.0.0",
   "description": "Label tab bar and AI-powered email sorting for Gmail",
   "permissions": [

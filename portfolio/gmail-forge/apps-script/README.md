@@ -1,4 +1,4 @@
-# Inbox Zero — Apps Script Auto-Sorter
+# Gmail Forge — Apps Script Auto-Sorter
 
 Automatically classifies and labels Gmail emails that slip past the 69 static XML filters. Runs every 5 minutes inside your Google account — no installs, no extensions, no servers.
 
@@ -28,7 +28,7 @@ From this directory:
 ```bash
 npm install
 npx clasp login
-npx clasp create --type standalone --title "Inbox Zero Auto-Sort" --rootDir .
+npx clasp create --type standalone --title "Gmail Forge Auto-Sort" --rootDir .
 npm run deploy
 ```
 
@@ -40,7 +40,7 @@ See [DEPLOY-CLASP.md](DEPLOY-CLASP.md) for linking an existing browser project.
 
 1. Go to [script.google.com](https://script.google.com)
 2. Click **New project**
-3. Name it "Inbox Zero Auto-Sort"
+3. Name it "Gmail Forge Auto-Sort"
 
 ### 2. Add the code
 

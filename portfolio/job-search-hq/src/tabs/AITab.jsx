@@ -1,13 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { s, CHASE_CONTEXT, JOB_SEARCH_QUERIES, API_KEY_STORAGE, callClaude, blankApp, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories } from "../constants";
+import { s, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import AIResult from "../components/AIResult";
+import {
+  buildTailorResumePrompt,
+  buildCoverLetterPrompt,
+  buildApplyKitPrompt,
+  buildLinkedInHeadlinePrompt,
+  buildLinkedInAboutPrompt,
+  buildKeywordAnalysisPrompt,
+  buildConnectMessagePrompt,
+  buildFollowupMessagePrompt,
+  buildStarDraftPrompt,
+  JOB_SEARCH_EXTERNAL_LINKS,
+} from "../applyPrompts";
+
+async function copyToClipboard(text, showError, okMsg) {
+  try {
+    await navigator.clipboard.writeText(text);
+    if (okMsg) showError(okMsg);
+  } catch {
+    showError("Could not copy — select text manually.");
+  }
+}
 
 export default function AITab({
-  data, apiKey, hasApiKey, profileComplete,
+  data, profileComplete,
   kitApp, setKitApp, resumeTab, setResumeTab,
   setTab, saveApp, saveStarStories,
-  showError, setShowApiKeyModal, setProfileModal,
+  showError, setProfileModal,
 }) {
   const [resumeType, setResumeType] = useState("PM");
   const [jd, setJd] = useState("");
@@ -15,243 +36,28 @@ export default function AITab({
   const [coverResult, setCoverResult] = useState("");
   const [kitResumeResult, setKitResumeResult] = useState("");
   const [kitCoverResult, setKitCoverResult] = useState("");
-  const [loadingResume, setLoadingResume] = useState(false);
-  const [loadingCover, setLoadingCover] = useState(false);
-  const [loadingKit, setLoadingKit] = useState(false);
 
-  const [jobResults, setJobResults] = useState([]);
   const [jobQuery, setJobQuery] = useState("");
-  const [searchingJobs, setSearchingJobs] = useState(false);
 
   const [liTab, setLiTab] = useState("profile");
   const [currentHeadline, setCurrentHeadline] = useState("");
   const [currentAbout, setCurrentAbout] = useState("");
   const [liHeadlineResult, setLiHeadlineResult] = useState("");
   const [liAboutResult, setLiAboutResult] = useState("");
-  const [loadingLiProfile, setLoadingLiProfile] = useState(false);
   const [keywordText, setKeywordText] = useState("");
   const [keywordResult, setKeywordResult] = useState("");
-  const [loadingKeywords, setLoadingKeywords] = useState(false);
   const [connectContact, setConnectContact] = useState(null);
   const [connectContext, setConnectContext] = useState("");
-  const [connectResult, setConnectResult] = useState("");
-  const [loadingConnect, setLoadingConnect] = useState(false);
   const [followupContact, setFollowupContact] = useState(null);
   const [followupContext, setFollowupContext] = useState("");
-  const [followupResult, setFollowupResult] = useState("");
-  const [loadingFollowup, setLoadingFollowup] = useState(false);
   const [stories, setStories] = useState(normalizeStarStories(data.starStories));
   const [storyDraft, setStoryDraft] = useState(blankStarStory());
   const [editingStoryId, setEditingStoryId] = useState(null);
   const [storySource, setStorySource] = useState("");
-  const [loadingStoryDraft, setLoadingStoryDraft] = useState(false);
 
   useEffect(() => {
     setStories(normalizeStarStories(data.starStories));
   }, [data.starStories]);
-
-  function profileContext() {
-    const p = data.profile;
-    return `${CHASE_CONTEXT}\n\nPROFILE DETAILS:\nTarget Roles: ${p.targetRoles}\nTarget Industries: ${p.targetIndustries}\nSalary Target: ${p.salaryTarget}\nTop Achievements: ${p.topAchievements}\nAdditional Context: ${p.notes}`.trim();
-  }
-
-  function resumeSystemPrompt(type) {
-    const antiAI = `CRITICAL WRITING RULES — these override everything:
-- Write like a human wrote it, not an AI. No buzzwords: no "leveraged", "spearheaded", "championed", "orchestrated", "passionate", "results-driven", "dynamic", "innovative", "synergized", "facilitated", "utilized".
-- Use plain direct verbs: handled, built, resolved, managed, worked, helped, ran, cut, grew, trained.
-- Bullets should read like someone talking about their job, not a LinkedIn headline. Vary sentence length. Some short. Some with more context.
-- Keep the voice consistent with the base resume — conversational, specific, grounded. Do not elevate the tone.
-- ATS rules: single-column plain text, no tables, no columns, no graphics. Section headers in ALL CAPS. Dates right-aligned (use spaces). No special characters except bullets (•) and pipes (|).
-- Output ONLY the resume text. No preamble, no markdown, no commentary.`;
-    if (type === "PM") {
-      return `You are an expert resume coach helping Chase Whittaker target Implementation Specialist, Customer Success, and Project Manager roles in fintech/payments. ${CHASE_CONTEXT}\n\n${antiAI}\n\nKey framing rules:\n- Lead with his Authorize.Net merchant onboarding work — this IS implementation/PM experience\n- Frame his work as project management: he owned merchant lifecycles from application to live transactions\n- Emphasize: 98% resolution rate, onboarding materials he built, systematic processes, CRM hygiene\n- Include: Google PM Certificate (in progress), Asana, Jira, Linear knowledge\n- Do NOT frame him as a cold-outbound salesperson`;
-    }
-    return `You are an expert resume coach helping Chase Whittaker target Account Executive roles at inbound-heavy or product-led fintech/payments companies (Stripe, Plaid, Chargebee). ${CHASE_CONTEXT}\n\n${antiAI}\n\nKey framing rules:\n- Target consultative, inbound-heavy AE roles only — NOT pure cold outbound\n- Lead with his payments expertise and merchant relationship skills\n- Emphasize: 10-15% above KPI, inbound pipeline management, consultative selling, technical knowledge\n- Highlight: Authorize.Net product knowledge, CyberSource, fraud prevention\n- Do NOT frame him as a quota-chasing SDR`;
-  }
-
-  async function handleClaudeCall(fn, errorSetter) {
-    if (!apiKey) { setShowApiKeyModal(true); return; }
-    try { await fn(); }
-    catch (e) {
-      if (e.message === "NO_API_KEY") { setShowApiKeyModal(true); return; }
-      if (e.message === "NETWORK_ERROR") {
-        showError("Network error — check your connection and try again");
-      } else if (e.message === "OVERLOADED") {
-        showError("Claude is overloaded right now — wait 30 seconds and try again");
-      } else if (e.message === "AUTH_ERROR") {
-        localStorage.removeItem(API_KEY_STORAGE);
-        setShowApiKeyModal(true);
-        showError("API key rejected — please re-enter your key");
-      } else {
-        showError(e.message || "Something went wrong — check your API key and try again");
-        errorSetter?.("Something went wrong. Check your API key in Settings and try again.");
-      }
-    }
-  }
-
-  async function runTailorResume() {
-    if (!jd.trim() || !data.baseResume.trim()) return;
-    setLoadingResume(true); setResumeResult("");
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        resumeSystemPrompt(resumeType),
-        `${profileContext()}\n\nBASE RESUME:\n${data.baseResume}\n\nJOB DESCRIPTION:\n${jd}\n\nProduce tailored resume now.`
-      );
-      setResumeResult(result);
-    }, setResumeResult);
-    setLoadingResume(false);
-  }
-
-  async function runCoverLetter() {
-    if (!jd.trim() || !data.baseResume.trim()) return;
-    setLoadingCover(true); setCoverResult("");
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        `You are an expert cover letter writer for implementation and sales professionals in payments/fintech. ${CHASE_CONTEXT}\n\nWrite a compelling, concise cover letter (3 paragraphs). CRITICAL: Sound like a real human wrote this — not an AI. No buzzwords (leveraged, spearheaded, passionate, results-driven, dynamic). Use plain direct language. Open with a hook about his Authorize.Net implementation results — not 'I am writing to apply'. Be specific, confident, direct. Match the tone of the base resume. Output ONLY the cover letter text.`,
-        `${profileContext()}\n\nBASE RESUME:\n${data.baseResume}\n\nJOB DESCRIPTION:\n${jd}\n\nWrite the cover letter now.`
-      );
-      setCoverResult(result);
-    }, setCoverResult);
-    setLoadingCover(false);
-  }
-
-  async function runApplyKit(app) {
-    const jobDesc = app?.jobDescription || "";
-    if (!jobDesc.trim() || !data.baseResume.trim()) return;
-    setLoadingKit(true); setKitResumeResult(""); setKitCoverResult("");
-    await handleClaudeCall(async () => {
-      const [resume, cover] = await Promise.all([
-        callClaude(resumeSystemPrompt(resumeType), `${profileContext()}\n\nBASE RESUME:\n${data.baseResume}\n\nJOB DESCRIPTION:\n${jobDesc}\n\nTailor now.`),
-        callClaude(
-          `You are an expert cover letter writer for implementation/fintech roles. ${CHASE_CONTEXT} Write a compelling 3-paragraph cover letter. CRITICAL: Sound like a real human — no buzzwords, no AI-speak. No generic opener. Lead with Authorize.Net implementation results. Use plain direct language. Output ONLY the letter.`,
-          `${profileContext()}\n\nBASE RESUME:\n${data.baseResume}\n\nJOB DESCRIPTION:\n${jobDesc}\n\nWrite now.`
-        ),
-      ]);
-      setKitResumeResult(resume);
-      setKitCoverResult(cover);
-    }, setKitResumeResult);
-    setLoadingKit(false);
-  }
-
-  async function searchJobs() {
-    const q = jobQuery.trim() || "Implementation Specialist fintech payments remote";
-    setSearchingJobs(true); setJobResults([]);
-    try {
-      if (!apiKey) { setShowApiKeyModal(true); setSearchingJobs(false); return; }
-      let res;
-      try {
-        res = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-            "anthropic-version": "2023-06-01",
-            "anthropic-dangerous-direct-browser-access": "true",
-          },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 1000,
-            tools: [{ type: "web_search_20250305", name: "web_search" }],
-            system: `You help Chase Whittaker find implementation, customer success, and inbound AE roles in fintech/payments. Search for remote-friendly roles matching the query. Return results as a JSON array ONLY — no markdown, no preamble, no backticks. Each item: { "title": "", "company": "", "location": "", "url": "", "snippet": "" }. Return 6-8 results max. Prioritize roles at companies like Stripe, Plaid, Sift, Chargebee, Checkout.com and similar.`,
-            messages: [{ role: "user", content: `Search for job listings: ${q}. Return JSON array only.` }],
-          }),
-        });
-      } catch {
-        showError("Network error — check your connection and try again");
-        setSearchingJobs(false);
-        return;
-      }
-      if (res.status === 401) {
-        localStorage.removeItem(API_KEY_STORAGE);
-        setShowApiKeyModal(true);
-        showError("API key rejected — please re-enter your key");
-        setSearchingJobs(false);
-        return;
-      }
-      if (res.status === 529) {
-        showError("Claude is overloaded right now — wait 30 seconds and try again");
-        setSearchingJobs(false);
-        return;
-      }
-      const json = await res.json();
-      if (json.error) {
-        showError(json.error.message || "Search failed — try again");
-        setSearchingJobs(false);
-        return;
-      }
-      const text = json.content?.filter(b => b.type === "text").map(b => b.text).join("") || "[]";
-      const clean = text.replace(/```json|```/g, "").trim();
-      try {
-        const parsed = JSON.parse(clean);
-        setJobResults(Array.isArray(parsed) ? parsed : []);
-      } catch {
-        setJobResults([{ title: "Search complete", company: "Results below", location: "", url: "", snippet: clean.slice(0, 400) }]);
-      }
-    } catch (e) {
-      showError(e.message || "Search failed — try again");
-      setJobResults([]);
-    }
-    setSearchingJobs(false);
-  }
-
-  async function runLinkedInProfile() {
-    if (!data.baseResume.trim()) return;
-    setLoadingLiProfile(true); setLiHeadlineResult(""); setLiAboutResult("");
-    await handleClaudeCall(async () => {
-      const [headline, about] = await Promise.all([
-        callClaude(
-          `You are a LinkedIn expert for implementation and payments professionals. Write a punchy, keyword-rich LinkedIn headline (under 220 characters). Lead with implementation/payments value. Include: digital payments, Authorize.Net, implementation, open to opportunities. Output ONLY the headline text.`,
-          `${profileContext()}\n\nCURRENT HEADLINE: ${currentHeadline || "(none)"}\n\nBASE RESUME:\n${data.baseResume}\n\nWrite the optimized headline now.`
-        ),
-        callClaude(
-          `You are a LinkedIn expert for implementation and payments professionals. Write a compelling LinkedIn About section (1st person, 3 paragraphs, ~250 words). Open with a hook about his Authorize.Net merchant implementation results — not 'I am a sales professional'. Show personality. Reference 98% resolution rate, merchant onboarding, payment gateways. End with a soft CTA about seeking implementation/CS/AE roles. Output ONLY the About section text.`,
-          `${profileContext()}\n\nCURRENT ABOUT: ${currentAbout || "(none)"}\n\nBASE RESUME:\n${data.baseResume}\n\nWrite the optimized About section now.`
-        ),
-      ]);
-      setLiHeadlineResult(headline);
-      setLiAboutResult(about);
-    }, setLiHeadlineResult);
-    setLoadingLiProfile(false);
-  }
-
-  async function runKeywordOptimizer() {
-    if (!keywordText.trim()) return;
-    setLoadingKeywords(true); setKeywordResult("");
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        `You are a LinkedIn SEO expert for implementation and fintech roles. Analyze the LinkedIn profile text and identify: (1) missing high-value keywords for implementation/CS/payments roles, (2) keywords already present, (3) specific edits to headline and about section. Key terms for Chase's space: implementation specialist, customer success, payment gateway, Authorize.Net, CyberSource, merchant onboarding, fraud prevention, chargeback. Be concrete and actionable.`,
-        `${profileContext()}\n\nLINKEDIN PROFILE TEXT TO ANALYZE:\n${keywordText}\n\nProvide keyword analysis now.`
-      );
-      setKeywordResult(result);
-    }, setKeywordResult);
-    setLoadingKeywords(false);
-  }
-
-  async function runConnectMessage() {
-    if (!connectContact) return;
-    setLoadingConnect(true); setConnectResult("");
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        `You are a LinkedIn messaging expert. Write a short, personalized LinkedIn connection request (under 300 characters — LinkedIn's limit). Sound like a real human. Be specific. No 'I'd love to connect' cliches. Reference Chase's payments background briefly. Output ONLY the message text.`,
-        `${profileContext()}\n\nPERSON I'M CONNECTING WITH:\nName: ${connectContact.name}\nRole: ${connectContact.role}\nCompany: ${connectContact.company}\n\nCONTEXT:\n${connectContext || "Cold outreach — exploring implementation/CS roles in their space"}\n\nWrite the connection request now.`
-      );
-      setConnectResult(result);
-    }, setConnectResult);
-    setLoadingConnect(false);
-  }
-
-  async function runFollowupMessage() {
-    if (!followupContact) return;
-    setLoadingFollowup(true); setFollowupResult("");
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        `You are a LinkedIn messaging expert. Write a warm, professional follow-up message. 2-3 sentences max. Genuine, not salesy. Reference the conversation context. Output ONLY the message text.`,
-        `${profileContext()}\n\nPERSON I'M FOLLOWING UP WITH:\nName: ${followupContact.name}\nRole: ${followupContact.role}\nCompany: ${followupContact.company}\n\nCONVERSATION CONTEXT:\n${followupContext || "Had a brief conversation about my job search"}\n\nWrite the follow-up message now.`
-      );
-      setFollowupResult(result);
-    }, setFollowupResult);
-    setLoadingFollowup(false);
-  }
 
   function persistStories(nextStories) {
     const normalized = normalizeStarStories(nextStories);
@@ -295,66 +101,71 @@ export default function AITab({
     }
   }
 
-  async function draftStarStoryWithAI() {
+  async function copyTailorPrompt() {
+    if (!jd.trim() || !data.baseResume.trim()) return;
+    const text = buildTailorResumePrompt(resumeType, data, jd);
+    await copyToClipboard(text, showError, "Copied tailor prompt — paste into your assistant, then paste the resume back here.");
+  }
+
+  async function copyCoverPrompt() {
+    if (!jd.trim() || !data.baseResume.trim()) return;
+    const text = buildCoverLetterPrompt(data, jd);
+    await copyToClipboard(text, showError, "Copied cover letter prompt — paste the letter back here when done.");
+  }
+
+  async function copyApplyKitPrompts() {
+    const app = kitApp;
+    const jobDesc = app?.jobDescription || "";
+    if (!app || !jobDesc.trim() || !data.baseResume.trim()) return;
+    const text = buildApplyKitPrompt(resumeType, data, app);
+    await copyToClipboard(text, showError, "Copied apply kit prompt — includes resume + cover instructions in one paste.");
+  }
+
+  async function copyLinkedInPrompts() {
+    if (!data.baseResume.trim()) return;
+    const h = buildLinkedInHeadlinePrompt(data, currentHeadline);
+    const a = buildLinkedInAboutPrompt(data, currentAbout);
+    await copyToClipboard(`${h}\n\n---\n\n${a}`, showError, "Copied headline + About prompts (stacked).");
+  }
+
+  async function copyKeywordPrompt() {
+    if (!keywordText.trim()) return;
+    const text = buildKeywordAnalysisPrompt(data, keywordText);
+    await copyToClipboard(text, showError, "Copied keyword analysis prompt.");
+  }
+
+  async function copyConnectPrompt() {
+    if (!connectContact) return;
+    const text = buildConnectMessagePrompt(data, connectContact, connectContext);
+    await copyToClipboard(text, showError, "Copied connection prompt — paste the short note LinkedIn allows.");
+  }
+
+  async function copyFollowupPrompt() {
+    if (!followupContact) return;
+    const text = buildFollowupMessagePrompt(data, followupContact, followupContext);
+    await copyToClipboard(text, showError, "Copied follow-up prompt.");
+  }
+
+  async function copyStarDraftPrompt() {
     const source = storySource.trim() || data.profile.topAchievements || data.baseResume || "";
     if (!source) return;
-    setLoadingStoryDraft(true);
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        `You are a STAR story writing coach.
-Return ONLY valid JSON with this exact shape:
-{
-  "title": "",
-  "competency": "",
-  "situation": "",
-  "task": "",
-  "action": "",
-  "result": "",
-  "takeaway": ""
-}
-
-Rules:
-- Build one concise, interview-ready STAR story from the source text.
-- Use specific details from Chase's payments background when possible.
-- "action" should be the longest field (2-4 bullets in plain text).
-- "result" must include clear business impact or measurable outcome.
-- No markdown, no code fences, JSON only.`,
-        `${profileContext()}\n\nSOURCE MATERIAL:\n${source}\n\nReturn the STAR story JSON now.`,
-        1200
-      );
-      let parsed;
-      try {
-        parsed = JSON.parse(result.replace(/```json|```/g, "").trim());
-      } catch {
-        parsed = { title: "Drafted story", action: result };
-      }
-      const merged = {
-        ...blankStarStory(),
-        ...storyDraft,
-        ...parsed,
-      };
-      setStoryDraft(merged);
-    });
-    setLoadingStoryDraft(false);
+    const text = buildStarDraftPrompt(data, source);
+    await copyToClipboard(text, showError, "Copied STAR JSON prompt — paste assistant output into the fields below.");
   }
 
   return (
-    <ErrorBoundary name="AI Tools">
+    <ErrorBoundary name="Apply Tools">
       <div style={s.content}>
-        {!hasApiKey && (
-          <div style={s.warnBanner}>
-            ⚠️ <strong>API key required for AI features.</strong> Add your Anthropic API key to use resume tailoring, cover letters, and LinkedIn tools.
-            <button style={s.warnBtn} onClick={() => setShowApiKeyModal(true)}>Add API Key →</button>
-          </div>
-        )}
+        <div style={{ ...s.tipBox, marginBottom: 16 }}>
+          <p><strong>Apply Tools</strong> — no API keys. Use <strong>Copy prompt</strong>, paste into ChatGPT or Claude (or any assistant), then paste results into the text areas below for your records.</p>
+        </div>
         {!profileComplete && (
           <div style={s.warnBanner}>
-            ⚠️ <strong>Set up your profile first</strong> — the AI uses it to personalize everything.
+            ⚠️ <strong>Set up your profile first</strong> — prompts use it for personalization.
             <button style={s.warnBtn} onClick={() => setProfileModal(true)}>Set up now →</button>
           </div>
         )}
 
-        {/* PM / AE Toggle */}
         <div style={s.resumeTypeRow}>
           <span style={s.resumeTypeLabel}>Resume type:</span>
           {[["PM", "📋 Implementation / PM"], ["AE", "💼 Account Executive"]].map(([type, label]) => (
@@ -374,20 +185,21 @@ Rules:
           ))}
         </div>
 
-        {/* TAILOR RESUME */}
         {resumeTab === "tailor" && (
           <div style={s.aiLayout}>
             <div style={s.aiLeft}>
               <div style={s.sectionLabel}>Paste Job Description</div>
               <textarea style={s.textarea} placeholder="Paste the full job description here…" value={jd} onChange={e => setJd(e.target.value)} rows={10} />
               <button
-                style={{ ...s.btnPrimary, width: "100%", opacity: (!jd.trim() || !data.baseResume || loadingResume) ? 0.5 : 1 }}
-                disabled={!jd.trim() || !data.baseResume || loadingResume}
-                onClick={runTailorResume}
+                style={{ ...s.btnPrimary, width: "100%", opacity: (!jd.trim() || !data.baseResume) ? 0.5 : 1 }}
+                disabled={!jd.trim() || !data.baseResume}
+                onClick={copyTailorPrompt}
               >
-                {loadingResume ? "Tailoring…" : `✨ Tailor My ${resumeType} Resume`}
+                📋 Copy tailor prompt
               </button>
               {!data.baseResume && <div style={s.warnSmall}>⚠️ Add your base resume in Profile first.</div>}
+              <div style={s.sectionLabel}>Paste tailored resume (optional)</div>
+              <textarea style={s.textarea} placeholder="Paste assistant output here to keep a copy…" value={resumeResult} onChange={e => setResumeResult(e.target.value)} rows={12} />
               {resumeResult && <AIResult label={`Tailored ${resumeType} Resume`} text={resumeResult} />}
             </div>
             <div style={s.aiRight}>
@@ -399,18 +211,14 @@ Rules:
                 {data.applications.filter(a => a.jobDescription).length === 0 && <span style={{ color: "#4b5563", fontSize: 12 }}>No saved JDs yet — paste them when adding applications.</span>}
               </div>
               <div style={{ marginTop: 16 }}>
-                <div style={s.sectionLabel}>What the AI does ({resumeType} mode)</div>
+                <div style={s.sectionLabel}>PM vs AE prompts</div>
                 <div style={s.tipBox}>
                   {resumeType === "PM" ? <>
                     <p>✓ Leads with Authorize.Net merchant onboarding as PM proof</p>
                     <p>✓ Frames your work as project lifecycle management</p>
-                    <p>✓ Emphasizes 98% resolution rate + onboarding materials</p>
-                    <p>✓ Avoids framing you as a cold-outbound SDR</p>
                   </> : <>
                     <p>✓ Targets consultative, inbound-heavy AE roles</p>
                     <p>✓ Leads with payments expertise and merchant relationships</p>
-                    <p>✓ Highlights 10–15% KPI overachievement</p>
-                    <p>✓ Positions Authorize.Net as customer-facing sales success</p>
                   </>}
                 </div>
               </div>
@@ -424,19 +232,20 @@ Rules:
           </div>
         )}
 
-        {/* COVER LETTER */}
         {resumeTab === "cover" && (
           <div style={s.aiLayout}>
             <div style={s.aiLeft}>
               <div style={s.sectionLabel}>Paste Job Description</div>
               <textarea style={s.textarea} placeholder="Paste the full job description here…" value={jd} onChange={e => setJd(e.target.value)} rows={10} />
               <button
-                style={{ ...s.btnPrimary, width: "100%", opacity: (!jd.trim() || !data.baseResume || loadingCover) ? 0.5 : 1 }}
-                disabled={!jd.trim() || !data.baseResume || loadingCover}
-                onClick={runCoverLetter}
+                style={{ ...s.btnPrimary, width: "100%", opacity: (!jd.trim() || !data.baseResume) ? 0.5 : 1 }}
+                disabled={!jd.trim() || !data.baseResume}
+                onClick={copyCoverPrompt}
               >
-                {loadingCover ? "Writing…" : "✉️ Write Cover Letter"}
+                📋 Copy cover letter prompt
               </button>
+              <div style={s.sectionLabel}>Paste cover letter (optional)</div>
+              <textarea style={s.textarea} placeholder="Paste assistant output here…" value={coverResult} onChange={e => setCoverResult(e.target.value)} rows={14} />
               {coverResult && <AIResult label="Cover Letter" text={coverResult} />}
             </div>
             <div style={s.aiRight}>
@@ -446,23 +255,13 @@ Rules:
                   <button key={a.id} style={s.appToggleChip} onClick={() => setJd(a.jobDescription)}>{a.company} — {a.title}</button>
                 ))}
               </div>
-              <div style={{ marginTop: 16 }}>
-                <div style={s.sectionLabel}>What the AI does</div>
-                <div style={s.tipBox}>
-                  <p>✓ Opens with your Authorize.Net implementation results — not a generic opener</p>
-                  <p>✓ Pulls from your real achievements</p>
-                  <p>✓ Matches the company's tone from the JD</p>
-                  <p>✓ 3 tight paragraphs, no filler</p>
-                </div>
-              </div>
             </div>
           </div>
         )}
 
-        {/* APPLY KIT */}
         {resumeTab === "kit" && (
           <div style={s.kitLayout}>
-            <div style={s.sectionLabel}>🚀 Apply Kit — tailored resume + cover letter in one click</div>
+            <div style={s.sectionLabel}>🚀 Apply Kit — copy one prompt, get resume + cover letter instructions</div>
             <div style={s.sectionLabel}>Select application (must have a saved job description)</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
               {data.applications.filter(a => a.jobDescription).map(a => (
@@ -485,79 +284,59 @@ Rules:
                   <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>Stage: {kitApp.stage} · Resume type: {resumeType}</div>
                 </div>
                 <button
-                  style={{ ...s.btnPrimary, opacity: (loadingKit || !data.baseResume) ? 0.5 : 1 }}
-                  disabled={loadingKit || !data.baseResume}
-                  onClick={() => runApplyKit(kitApp)}
+                  style={{ ...s.btnPrimary, opacity: !data.baseResume ? 0.5 : 1 }}
+                  disabled={!data.baseResume}
+                  onClick={copyApplyKitPrompts}
                 >
-                  {loadingKit ? "Generating both…" : "🚀 Generate Apply Kit"}
+                  📋 Copy apply kit prompt
                 </button>
               </div>
             )}
             {!data.baseResume && <div style={s.warnSmall}>⚠️ Add your base resume in Profile first.</div>}
-            {(kitResumeResult || kitCoverResult) && (
-              <div style={s.kitResults}>
-                <div style={s.kitResultCol}><AIResult label={`Tailored ${resumeType} Resume`} text={kitResumeResult} /></div>
-                <div style={s.kitResultCol}><AIResult label="Cover Letter" text={kitCoverResult} /></div>
+            <div style={s.sectionLabel}>Paste results (optional)</div>
+            <div style={s.kitResults}>
+              <div style={s.kitResultCol}>
+                <textarea style={s.textarea} placeholder="Tailored resume from assistant…" value={kitResumeResult} onChange={e => setKitResumeResult(e.target.value)} rows={14} />
+                {kitResumeResult && <AIResult label={`Tailored ${resumeType} Resume`} text={kitResumeResult} />}
               </div>
-            )}
+              <div style={s.kitResultCol}>
+                <textarea style={s.textarea} placeholder="Cover letter from assistant…" value={kitCoverResult} onChange={e => setKitCoverResult(e.target.value)} rows={14} />
+                {kitCoverResult && <AIResult label="Cover Letter" text={kitCoverResult} />}
+              </div>
+            </div>
           </div>
         )}
 
-        {/* FIND JOBS */}
         {resumeTab === "jobs" && (
           <div style={s.jobsLayout}>
-            <div style={s.sectionLabel}>Find implementation and CS roles matching your background</div>
+            <div style={s.sectionLabel}>Open job search on the web (no in-app search)</div>
             <div style={s.jobSearchRow}>
               <input
                 style={{ ...s.input, flex: 1 }}
                 value={jobQuery}
                 onChange={e => setJobQuery(e.target.value)}
                 placeholder="e.g. Implementation Specialist payments fintech remote"
-                onKeyDown={e => e.key === "Enter" && searchJobs()}
               />
-              <button style={{ ...s.btnPrimary, opacity: searchingJobs ? 0.5 : 1 }} disabled={searchingJobs} onClick={searchJobs}>
-                {searchingJobs ? "Searching…" : "🔍 Search"}
-              </button>
             </div>
-            <div style={s.quickSearches}>
-              {JOB_SEARCH_QUERIES.map(q => (
-                <button key={q} style={s.quickChip} onClick={() => setJobQuery(q)}>{q}</button>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+              {JOB_SEARCH_EXTERNAL_LINKS.map(({ label, buildUrl }) => (
+                <a
+                  key={label}
+                  href={buildUrl(jobQuery.trim() || "Implementation Specialist fintech payments remote")}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ ...s.jobLink, textAlign: "center" }}
+                >
+                  {label} ↗
+                </a>
               ))}
             </div>
-            {jobResults.length > 0 && (
-              <div style={s.jobResultsList}>
-                {jobResults.map((job, i) => (
-                  <div key={i} style={s.jobResultCard}>
-                    <div style={s.jobResultTop}>
-                      <div>
-                        <div style={s.jobResultTitle}>{job.title}</div>
-                        <div style={s.jobResultCompany}>{job.company}{job.location ? ` · ${job.location}` : ""}</div>
-                      </div>
-                      <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-                        {job.url && <a href={job.url} target="_blank" rel="noreferrer" style={s.jobLink}>Apply ↗</a>}
-                        <button style={s.actionBtn} onClick={() => {
-                          const app = blankApp();
-                          app.company = job.company || "";
-                          app.title = job.title || "";
-                          app.url = job.url || "";
-                          app.notes = job.snippet || "";
-                          saveApp(app);
-                          setTab("pipeline");
-                        }}>+ Pipeline</button>
-                      </div>
-                    </div>
-                    {job.snippet && <div style={s.jobResultSnippet}>{job.snippet}</div>}
-                  </div>
-                ))}
-              </div>
-            )}
-            {!searchingJobs && jobResults.length === 0 && (
-              <div style={s.empty}>Click a quick search or type your own to find relevant roles.</div>
-            )}
+            <div style={{ ...s.tipBox, marginTop: 12 }}>
+              <p>Use LinkedIn, Indeed, or Google in another tab. Save interesting roles with the Pipeline tab or the Chrome extension.</p>
+            </div>
           </div>
         )}
 
-        {/* LINKEDIN */}
         {resumeTab === "linkedin" && (
           <div style={s.liLayout}>
             <div style={s.liSubNav}>
@@ -572,13 +351,13 @@ Rules:
                   <div style={s.sectionLabel}>Current Headline (optional)</div>
                   <input style={s.input} value={currentHeadline} onChange={e => setCurrentHeadline(e.target.value)} placeholder="Your current LinkedIn headline…" />
                   <div style={s.sectionLabel}>Current About Section (optional)</div>
-                  <textarea style={s.textarea} rows={5} value={currentAbout} onChange={e => setCurrentAbout(e.target.value)} placeholder="Paste your current About section so AI can improve it, or leave blank for a fresh rewrite…" />
+                  <textarea style={s.textarea} rows={5} value={currentAbout} onChange={e => setCurrentAbout(e.target.value)} placeholder="Paste your current About section…" />
                   <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: (!data.baseResume || loadingLiProfile) ? 0.5 : 1 }}
-                    disabled={!data.baseResume || loadingLiProfile}
-                    onClick={runLinkedInProfile}
+                    style={{ ...s.btnPrimary, width: "100%", opacity: !data.baseResume ? 0.5 : 1 }}
+                    disabled={!data.baseResume}
+                    onClick={copyLinkedInPrompts}
                   >
-                    {loadingLiProfile ? "Rewriting…" : "✨ Rewrite Headline & About"}
+                    📋 Copy headline + About prompts
                   </button>
                   {!data.baseResume && <div style={s.warnSmall}>⚠️ Add your base resume in Profile first.</div>}
                   {liHeadlineResult && (
@@ -589,14 +368,9 @@ Rules:
                   )}
                 </div>
                 <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>What makes a great LinkedIn for implementation roles</div>
-                  <div style={s.tipBox}>
-                    <p>✓ Headline: Lead with implementation/payments value, not "SDR"</p>
-                    <p>✓ Use: "implementation specialist", "merchant onboarding", "payment gateway", "Authorize.Net"</p>
-                    <p>✓ About: Open with your 98% resolution rate or merchant onboarding results</p>
-                    <p>✓ First 2 lines show before "see more" — make them count</p>
-                    <p>✓ End with: "Open to implementation and customer success roles in fintech"</p>
-                  </div>
+                  <div style={s.sectionLabel}>Paste assistant output below (optional)</div>
+                  <textarea style={s.textarea} placeholder="Headline…" value={liHeadlineResult} onChange={e => setLiHeadlineResult(e.target.value)} rows={2} />
+                  <textarea style={s.textarea} placeholder="About…" value={liAboutResult} onChange={e => setLiAboutResult(e.target.value)} rows={8} />
                 </div>
               </div>
             )}
@@ -607,21 +381,20 @@ Rules:
                   <div style={s.sectionLabel}>Paste your current LinkedIn profile text</div>
                   <textarea style={s.textarea} rows={10} value={keywordText} onChange={e => setKeywordText(e.target.value)} placeholder="Paste your headline + about + experience sections here." />
                   <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: (!keywordText.trim() || loadingKeywords) ? 0.5 : 1 }}
-                    disabled={!keywordText.trim() || loadingKeywords}
-                    onClick={runKeywordOptimizer}
+                    style={{ ...s.btnPrimary, width: "100%", opacity: !keywordText.trim() ? 0.5 : 1 }}
+                    disabled={!keywordText.trim()}
+                    onClick={copyKeywordPrompt}
                   >
-                    {loadingKeywords ? "Analyzing…" : "🔑 Analyze Keywords"}
+                    📋 Copy keyword analysis prompt
                   </button>
+                  <textarea style={s.textarea} placeholder="Paste analysis here…" value={keywordResult} onChange={e => setKeywordResult(e.target.value)} rows={10} />
                   {keywordResult && <AIResult label="Keyword Analysis" text={keywordResult} />}
                 </div>
                 <div style={s.aiRight}>
                   <div style={s.sectionLabel}>Key terms for your target roles</div>
                   <div style={s.tipBox}>
-                    <p>✓ Implementation: "implementation specialist", "merchant onboarding", "go-live support"</p>
-                    <p>✓ Payments: "Authorize.Net", "CyberSource", "payment gateway", "fraud prevention"</p>
-                    <p>✓ CS: "customer success", "client onboarding", "retention", "technical support"</p>
-                    <p>✓ AE: "consultative selling", "inbound sales", "B2B", "fintech"</p>
+                    <p>✓ Implementation, payments, Authorize.Net, merchant onboarding</p>
+                    <p>✓ Customer success, consultative selling, B2B fintech</p>
                   </div>
                 </div>
               </div>
@@ -636,7 +409,7 @@ Rules:
                       <button
                         key={c.id}
                         style={{ ...s.appToggleChip, ...(connectContact?.id === c.id ? s.appToggleChipActive : {}) }}
-                        onClick={() => { setConnectContact(c); setConnectResult(""); }}
+                        onClick={() => { setConnectContact(c); }}
                       >
                         {c.name} · {c.company}
                       </button>
@@ -657,25 +430,21 @@ Rules:
                       <button key={sc.label} style={{ ...s.scenarioChip, ...(connectContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setConnectContext(sc.text)}>{sc.label}</button>
                     ))}
                   </div>
-                  <div style={s.sectionLabel}>Context / Why you're reaching out</div>
-                  <textarea style={s.textarea} rows={2} value={connectContext} onChange={e => setConnectContext(e.target.value)} placeholder="e.g. Saw their post about payments trends, cold outreach exploring implementation roles at their company…" />
+                  <div style={s.sectionLabel}>Context / Why you&apos;re reaching out</div>
+                  <textarea style={s.textarea} rows={2} value={connectContext} onChange={e => setConnectContext(e.target.value)} placeholder="e.g. Saw their post about payments trends…" />
                   <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: (!connectContact || loadingConnect) ? 0.5 : 1 }}
-                    disabled={!connectContact || loadingConnect}
-                    onClick={runConnectMessage}
+                    style={{ ...s.btnPrimary, width: "100%", opacity: !connectContact ? 0.5 : 1 }}
+                    disabled={!connectContact}
+                    onClick={copyConnectPrompt}
                   >
-                    {loadingConnect ? "Writing…" : "🤝 Write Connection Request"}
+                    📋 Copy connection prompt
                   </button>
-                  {connectResult && <AIResult label="Connection Request (copy & paste)" text={connectResult} />}
                 </div>
                 <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>Connection request tips</div>
+                  <div style={s.sectionLabel}>Tips</div>
                   <div style={s.tipBox}>
-                    <p>✓ Max 300 characters — LinkedIn's limit</p>
-                    <p>✓ One specific reason you're connecting</p>
-                    <p>✓ No pitch in the request — just open the door</p>
-                    <p>✓ Reference their company or a payments/fintech angle</p>
-                    <p>✓ Don't ask for a job — just connect</p>
+                    <p>✓ Max 300 characters for the LinkedIn note</p>
+                    <p>✓ One specific reason you&apos;re connecting</p>
                   </div>
                 </div>
               </div>
@@ -690,7 +459,7 @@ Rules:
                       <button
                         key={c.id}
                         style={{ ...s.appToggleChip, ...(followupContact?.id === c.id ? s.appToggleChipActive : {}) }}
-                        onClick={() => { setFollowupContact(c); setFollowupResult(""); }}
+                        onClick={() => { setFollowupContact(c); }}
                       >
                         {c.name} · {c.company}
                       </button>
@@ -712,24 +481,20 @@ Rules:
                     ))}
                   </div>
                   <div style={s.sectionLabel}>What did you discuss / when did you speak?</div>
-                  <textarea style={s.textarea} rows={2} value={followupContext} onChange={e => setFollowupContext(e.target.value)} placeholder="e.g. Had a 15-min call about their implementation team, they mentioned they're hiring in Q2…" />
+                  <textarea style={s.textarea} rows={2} value={followupContext} onChange={e => setFollowupContext(e.target.value)} placeholder="e.g. Had a 15-min call about their implementation team…" />
                   <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: (!followupContact || loadingFollowup) ? 0.5 : 1 }}
-                    disabled={!followupContact || loadingFollowup}
-                    onClick={runFollowupMessage}
+                    style={{ ...s.btnPrimary, width: "100%", opacity: !followupContact ? 0.5 : 1 }}
+                    disabled={!followupContact}
+                    onClick={copyFollowupPrompt}
                   >
-                    {loadingFollowup ? "Writing…" : "💬 Write Follow-up"}
+                    📋 Copy follow-up prompt
                   </button>
-                  {followupResult && <AIResult label="Follow-up Message" text={followupResult} />}
                 </div>
                 <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>Follow-up best practices</div>
+                  <div style={s.sectionLabel}>Tips</div>
                   <div style={s.tipBox}>
-                    <p>✓ Send within 24 hours of the conversation</p>
                     <p>✓ Reference one specific thing from your conversation</p>
                     <p>✓ 2–3 sentences max</p>
-                    <p>✓ No hard ask — just reinforce the relationship</p>
-                    <p>✓ End with an open door, not a deadline</p>
                   </div>
                 </div>
               </div>
@@ -737,13 +502,12 @@ Rules:
           </div>
         )}
 
-        {/* STAR STORY BANK */}
         {resumeTab === "stories" && (
           <div style={s.aiLayout}>
             <div style={s.aiLeft}>
               <div style={s.sectionLabel}>STAR Story Bank</div>
               <div style={s.tipBox}>
-                <p>Build reusable interview stories by competency. Keep each one concise and outcome-focused.</p>
+                <p>Build reusable interview stories by competency.</p>
               </div>
 
               <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
@@ -776,7 +540,7 @@ Rules:
             </div>
 
             <div style={s.aiRight}>
-              <div style={s.sectionLabel}>AI-assisted draft from resume</div>
+              <div style={s.sectionLabel}>Copy STAR drafting prompt</div>
               <textarea
                 style={s.textarea}
                 rows={5}
@@ -784,8 +548,11 @@ Rules:
                 onChange={e => setStorySource(e.target.value)}
                 placeholder="Paste a resume bullet or achievement to draft into STAR format."
               />
-              <button style={{ ...s.btnPrimary, width: "100%", opacity: loadingStoryDraft ? 0.6 : 1 }} disabled={loadingStoryDraft} onClick={draftStarStoryWithAI}>
-                {loadingStoryDraft ? "Drafting…" : "✨ Draft STAR Story"}
+              <button
+                style={{ ...s.btnPrimary, width: "100%" }}
+                onClick={copyStarDraftPrompt}
+              >
+                📋 Copy STAR JSON prompt
               </button>
 
               <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>

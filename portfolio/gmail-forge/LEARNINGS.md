@@ -1,4 +1,4 @@
-# Inbox Zero — Learnings
+# Gmail Forge — Learnings
 
 > Gotchas, fixes, and non-obvious decisions. Read at session start.
 
@@ -70,7 +70,7 @@
 
 ## Keep a no-AI fallback mode available
 
-**Decision:** Keep Route A available permanently with `CLASSIFIER_MODE=RULES_ONLY`. This lets Inbox Zero run with deterministic rules + sender logging even when API keys are missing, budgets are paused, or model output quality is in question.
+**Decision:** Keep Route A available permanently with `CLASSIFIER_MODE=RULES_ONLY`. This lets Gmail Forge run with deterministic rules + sender logging even when API keys are missing, budgets are paused, or model output quality is in question.
 
 ---
 
@@ -111,6 +111,30 @@
 ## Review Queue: tab is auto-created on first write, not on setup
 
 **Gotcha:** The "Review Queue" sheet tab doesn't exist until the first unknown sender is logged. If the tab is missing, it just means all swept emails matched existing rules — not a bug. The tab appears automatically on the next unmatched sender.
+
+---
+
+## macOS git mv: tracked files keep history; untracked don't auto-follow
+
+**What happened:** `git mv portfolio/inbox-zero portfolio/gmail-forge` successfully tracked the rename in git. However the two `package-lock.json` files still contained `inbox-zero` in their `name` fields — those are regenerated on `npm install`, not worth editing manually.
+
+**Rule:** After a `git mv` rename, run a grep for the old name (excluding `node_modules`, `.git`, `package-lock.json`) to find all stale text references that need manual updates.
+
+---
+
+## Daily report "all emails" ≠ all emails received
+
+**What happened:** The original report prompt searched `after:YYYY/MM/DD` without `in:inbox`, which sounds like "all mail" but Gmail's default search scope still prioritizes inbox. Archived emails were invisible.
+
+**Fix:** Explicitly split into two searches: `after:YYYY/MM/DD in:inbox` and `after:YYYY/MM/DD -in:inbox -in:sent -in:drafts -in:trash -in:spam`. The second query surfaces exactly what the Apps Script auto-archived.
+
+---
+
+## Renaming a project: downstream impact is bigger than it looks
+
+**What happened:** Renaming "Inbox Zero" to "Gmail Forge" touched 48 files across 6 projects (gmail-forge itself, spend-radar, spend-clarity, job-search-hq, funded-ios, portfolio root). Env var keys also needed renaming in two Apps Script files.
+
+**Rule:** Before renaming anything with downstream consumers, run `rg -i "old-name" ~/Developer/chase --glob '!**/node_modules/**' --glob '!**/.git/**'` first to scope the blast radius. Then batch with parallel agents by ownership zone (own-project / root-docs / downstream).
 
 ---
 

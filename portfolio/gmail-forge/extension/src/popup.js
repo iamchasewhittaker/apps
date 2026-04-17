@@ -1,5 +1,5 @@
 /**
- * Inbox Zero — Popup Settings
+ * Gmail Forge — Popup Settings
  */
 
 var ALL_TABS = [

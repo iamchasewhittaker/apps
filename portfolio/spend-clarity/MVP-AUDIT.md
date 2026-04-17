@@ -14,4 +14,4 @@
 
 **Biggest risk:** Real-money writes (`DRY_RUN=false`) and category PATCHes (Step 4.5). Mitigations: dry-run default, `AUTO_CATEGORIZE` toggle, overrides file, startup category-ID validation.
 
-**Recommended next action:** Keep `PRIVACY_API_KEY` in `.env` for Privacy imports; run `python src/main.py --dry-run` before live; align Inbox Zero Receipt filters when adding merchants (`portfolio/inbox-zero/integrations/receipt-to-spend-clarity.md`).
+**Recommended next action:** Keep `PRIVACY_API_KEY` in `.env` for Privacy imports; run `python src/main.py --dry-run` before live; align Gmail Forge Receipt filters when adding merchants (`portfolio/gmail-forge/integrations/receipt-to-spend-clarity.md`).

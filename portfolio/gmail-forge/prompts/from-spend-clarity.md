@@ -2,9 +2,9 @@
 
 > Generated from Spend Clarity's parser targets and reference repos. Add any missing entries to `gmail-filters.xml` as **Receipt** filters so Spend Clarity can query `label:Receipt` cleanly.
 
-## Already covered by Inbox Zero
+## Already covered by Gmail Forge
 
-| Sender | Domain/Address | Inbox Zero Label | Status |
+| Sender | Domain/Address | Gmail Forge Label | Status |
 |---|---|---|---|
 | Venmo | venmo@venmo.com | Receipt | ✅ |
 | Privacy.com | support@privacy.com | Receipt | ✅ |
@@ -13,9 +13,9 @@
 | Safeco | safeco.com | Receipt | ✅ |
 | Amazon (orders + shipping) | amazon.com | Notification | ✅ (see note) |
 
-> **Note on Amazon:** Inbox Zero labels Amazon as Notification (covers orders, shipping, and account alerts). Spend Clarity can query `from:amazon.com label:Notification subject:(order OR shipped)` to isolate receipt-relevant emails without needing a separate Receipt filter.
+> **Note on Amazon:** Gmail Forge labels Amazon as Notification (covers orders, shipping, and account alerts). Spend Clarity can query `from:amazon.com label:Notification subject:(order OR shipped)` to isolate receipt-relevant emails without needing a separate Receipt filter.
 
-## Recommended additions to Inbox Zero
+## Recommended additions to Gmail Forge
 
 These senders are parsed by Spend Clarity or its reference repos. Adding them to `gmail-filters.xml` as **Receipt** will pre-label them for Spend Clarity's `label:Receipt` query.
 
@@ -51,7 +51,7 @@ Then update filter counts in `claude.md` and `roadmap/roadmap.md`, and reimport 
 
 ```
 ┌─────────────────┐         ┌──────────────────┐
-│   Inbox Zero    │         │  Spend Clarity   │
+│   Gmail Forge   │         │  Spend Clarity   │
 │                 │         │                  │
 │  Gmail filter   │ labels  │  gmail_client.py │
 │  gmail-filters  │───────►│  query:          │
@@ -63,4 +63,4 @@ Then update filter counts in `claude.md` and `roadmap/roadmap.md`, and reimport 
 └─────────────────┘         └──────────────────┘
 ```
 
-When Spend Clarity discovers a new receipt sender during YNAB matching that isn't already labeled, it should log the sender domain — Chase can then add it to Inbox Zero during the daily report.
+When Spend Clarity discovers a new receipt sender during YNAB matching that isn't already labeled, it should log the sender domain — Chase can then add it to Gmail Forge during the daily report.

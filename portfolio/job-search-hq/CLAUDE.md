@@ -5,8 +5,8 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
-- **Version:** v8.5 (Wave 2 complete; Wave 3 #1 Chrome extension shipped; iOS companion scaffold in `../job-search-hq-ios/`)
-- **Storage key:** `chase_job_search_v1` (data) · `chase_anthropic_key` (API key — separate)
+- **Version:** v8.6 (no in-browser Anthropic API; Apply Tools = copy prompts + external assistants; Wave 3 #2 stage prep templates shipped)
+- **Storage key:** `chase_job_search_v1` (data only)
 - **URL:** job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, typography, component patterns; do not restate in session prompts.
@@ -19,35 +19,35 @@
   launch.json      ← Claude Code dev registry (port 3001; other `.claude/*` gitignored)
 extension/         ← Chrome MV3 MVP: LinkedIn capture + HQ badge (see extension/README.md)
 src/
-  App.jsx          ← shell (~280 lines): state, load/save, helpers, modals, nav
+  App.jsx          ← shell: state, load/save, helpers, modals, nav
+  applyPrompts.js  ← markdown prompts + PREP_STAGE_PRESETS (no network)
   constants.js     ← ALL data/config/styles — no React (import from here first)
   ErrorBoundary.jsx
   tabs/
     FocusTab.jsx       ← daily focus blocks + weekly rhythm
-    PipelineTab.jsx    ← application pipeline + stage bar
+    PipelineTab.jsx    ← application pipeline + stage bar + URL/JD paste
     ContactsTab.jsx    ← contacts list
-    AITab.jsx          ← all AI tools: resume, cover, kit, jobs, LinkedIn (~636 lines)
+    AITab.jsx          ← Apply Tools: copy prompts, STAR bank, job search links
     ResourcesTab.jsx   ← resources grid + backup/restore
   components/
     Field.jsx          ← generic form field (text/textarea/select/date)
     AIResult.jsx       ← result display box with copy button
-    ApiKeyModal.jsx    ← Anthropic API key entry
     AppCard.jsx        ← pipeline application card
     AppModal.jsx       ← add/edit application modal
     ContactCard.jsx    ← contact display card
     ContactModal.jsx   ← add/edit contact modal
     ProfileModal.jsx   ← master profile + base resume editor
-    PrepModal.jsx      ← interview prep generator modal
+    PrepModal.jsx      ← interview prep: stage templates + external prep brief copy
 ```
 
 ## What Lives Where
 
 ### `constants.js` — import from here, don't duplicate
-- `STORAGE_KEY`, `API_KEY_STORAGE`, `BACKUP_FOLDER_KEY`
+- `STORAGE_KEY`, `BACKUP_FOLDER_KEY`
 - `STAGES`, `STAGE_COLORS`
 - `CHASE_CONTEXT`, `JOB_SEARCH_QUERIES`
 - `RESUME_TEMPLATE_PM`, `RESUME_TEMPLATE_AE`
-- `defaultData`, `generateId`, `getApiKey`, `callClaude`
+- `defaultData`, `generateId`
 - `blankApp()`, `blankContact()`, `blankStarStory()`, `normalizeStarStories()`, `blankPrepSections()`, `normalizePrepSections()`
 - `buildOutreachPriorityList()`, `getOutreachCadenceNudge()`, `getOutcomeAnalytics()`
 - `DAILY_BLOCKS`, `RESOURCES`
@@ -55,15 +55,15 @@ src/
 - `backupData()`, `restoreData()`
 
 ### `App.jsx` — shell only
-Owns: `data`, `tab`, `apiKey`, `showApiKeyModal`, `appModal`, `contactModal`, `profileModal`, `prepModal`, `kitApp`, `resumeTab`, `expandedBlock`, `completedBlocks`, `errorToast`
+Owns: `data`, `tab`, `appModal`, `contactModal`, `profileModal`, `prepModal`, `kitApp`, `resumeTab`, `expandedBlock`, `completedBlocks`, `errorToast`
 
-Functions: `saveApp`, `deleteApp`, `saveContact`, `deleteContact`, `saveProfile`, `saveApiKey`, `showError`, `handleClaudeCall`, `runInterviewPrep`, `profileContext`, `saveStarStories`
+Functions: `saveApp`, `deleteApp`, `saveContact`, `deleteContact`, `saveProfile`, `showError`, `saveStarStories`
 
 **URL / hash imports (Chrome extension):** After Supabase session + `hasLoaded`, consumes `?importContact=1`, `?importJob=1`, or `#importJob=<encodeURIComponent(JSON)>` once (`importUrlConsumed` ref) so modals open only when logged in.
 
-### `AITab.jsx` — owns all its AI state locally
-Owns all loading/result state (resumeType, jd, resumeResult, coverResult, loadingResume, all LinkedIn state, etc.)
-Receives from shell: `data`, `apiKey`, `hasApiKey`, `profileComplete`, `kitApp`, `setKitApp`, `resumeTab`, `setResumeTab`, `setTab`, `saveApp`, `saveStarStories`, `showError`, `setShowApiKeyModal`, `setProfileModal`
+### `AITab.jsx` — Apply Tools (copy prompts only)
+Owns local UI state (resumeType, jd, pasted results, LinkedIn fields, STAR bank, etc.)
+Receives from shell: `data`, `profileComplete`, `kitApp`, `setKitApp`, `resumeTab`, `setResumeTab`, `saveStarStories`, `showError`, `setProfileModal`
 
 ## Data Shape
 ```js
@@ -73,7 +73,8 @@ Receives from shell: `data`, `apiKey`, `hasApiKey`, `profileComplete`, `kitApp`,
     nextStep, nextStepDate, nextStepType, // next-step scheduling (v8.5)
     jobDescription, notes,
     prepNotes,   // legacy string; hydrated from prepSections where needed
-    prepSections // structured interview prep (companyResearch, roleAnalysis, starStories, questionsToAsk)
+    prepSections, // structured interview prep
+    prepStageKey // optional: phone_screen | interview | final_round
   }],
   contacts: [{
     id, name, company, role, email, linkedin, lastContact, notes, appIds,
@@ -86,21 +87,13 @@ Receives from shell: `data`, `apiKey`, `hasApiKey`, `profileComplete`, `kitApp`,
 ```
 
 ## Key Behaviours to Preserve
-- API key stored separately under `chase_anthropic_key`, never in the main data blob
-- API key migration: if old data has `parsed.apiKey`, move it to separate key on load
-- `handleClaudeCall` in App.jsx covers `runInterviewPrep` (called by PrepModal)
-- `handleClaudeCall` in AITab covers all AI tool calls (local copy — same logic)
-- `kitApp` + `resumeTab` live in App shell because Pipeline sets them when navigating to AI tab
+- On load: strip legacy `parsed.apiKey` from saved blob if present (do not store keys in data)
+- `kitApp` + `resumeTab` live in App shell because Pipeline sets them when navigating to Apply Tools tab
 - `completedBlocks` resets on page reload (intentional — daily tracker)
 - Optional **Chrome extension** (`extension/`) opens HQ with import query params; app defers handling until auth is ready (see `extension/README.md`)
 
-## Claude API Usage
-```js
-import { callClaude, getApiKey } from './constants';
-// callClaude(systemPrompt, userMessage, maxTokens=1000) → string
-// Always wrap in handleClaudeCall for error handling
-```
-Model: `claude-sonnet-4-20250514` (hardcoded in constants.js — update when upgrading)
+## Apply Tools (v8.6+)
+Prompts live in `src/applyPrompts.js`. Users copy markdown into ChatGPT, Claude, or another assistant; optional paste-back into text areas. No `fetch` to LLM providers from the app.
 
 ## Supabase Sync — LIVE ✅ (wired in v8.1; email OTP auth in v8.3)
 
@@ -123,11 +116,9 @@ Sync is fully wired. Files involved:
 
 **Fallback:** If `.env` is missing or incomplete, `createSync()` returns no-op stubs and the app runs in localStorage-only mode (no crash).
 
-**Important:** The Anthropic API key (`chase_anthropic_key`) is stored in localStorage only and is never included in the synced data blob.
-
 ## Pending Work (from ROADMAP)
-- Wave 3 #2+: stage-specific prep templates, deeper interview tooling — see `ROADMAP.md`
-- AITab is large — could split into sub-components per tool if it grows further
+- Wave 3+: debrief log, velocity dashboard, mock interview mode — see `ROADMAP.md`
+- Deferred in-app LLM options — see `ROADMAP.md` "Deferred — in-app LLM"
 
 ## CI (GitHub Actions)
 This app is built by **`.github/workflows/portfolio-web-build.yml`** on **Node 20** (`npm ci` then `npm run build`). Keep **`package-lock.json`** in sync with `package.json` using **Node 20’s npm** — see repo root **[`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](../../docs/templates/SESSION_START_FIX_CI_LOCKFILES.md)**.

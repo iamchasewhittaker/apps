@@ -30,7 +30,7 @@
 | **`CategorySuggestionEngine`** — payee keyword rules → `CategoryRole` → ranked suggestions | ✅ Done |
 | **Age of Money card** — `GET /budgets/{id}` → `ageOfMoney` → color-coded days display | ✅ Done |
 | **`YNABClient.updateTransactionCategory`** — bulk PATCH `/transactions` (HTTP 209) | ✅ Done |
-| **Spend Clarity `label:Receipt` pre-filter** — `gmail_client.py` aligned with Inbox Zero taxonomy | ✅ Done |
+| **Spend Clarity `label:Receipt` pre-filter** — `gmail_client.py` aligned with Gmail Forge taxonomy | ✅ Done |
 | `CategorySuggestionEngine.swift` — added to `.pbxproj` (Engine group + Sources phase) | ✅ Done |
 | **`CategoryOverride` SwiftData model** — persists learned categorizations; Schema registered | ✅ Done |
 | **Learning system** — `BillsPlannerView` saves override after each manual assignment | ✅ Done |

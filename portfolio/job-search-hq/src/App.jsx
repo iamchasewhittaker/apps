@@ -1,13 +1,11 @@
-// APP_META: { "app": "jobsearch", "version": "8.5" }
+// APP_META: { "app": "jobsearch", "version": "8.6" }
 import React, { useState, useEffect, useRef } from "react";
 import {
-  STORAGE_KEY, API_KEY_STORAGE,
-  defaultData, blankApp, blankContact, normalizeApplication, normalizePrepSections, normalizeStarStories,
-  callClaude, getApiKey, CHASE_CONTEXT,
+  STORAGE_KEY,
+  defaultData, blankApp, blankContact, normalizeApplication, normalizeStarStories,
   s, css, today, generateId,
 } from "./constants";
 import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
-import ApiKeyModal from "./components/ApiKeyModal";
 import AppModal from "./components/AppModal";
 import ContactModal from "./components/ContactModal";
 import ProfileModal from "./components/ProfileModal";
@@ -187,9 +185,6 @@ export default function JobSearchTracker() {
   const [data, setData] = useState(defaultData);
   const [tab, setTab] = useState("focus");
   const hasLoaded = useRef(false);
-  const [apiKey, setApiKey] = useState("");
-  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
-
   // ── Auth session ─────────────────────────────────────────────────────────
   // null = not yet checked, false = no session, object = logged in
   const [session, setSession] = useState(null);
@@ -246,15 +241,12 @@ export default function JobSearchTracker() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.apiKey) {
-          localStorage.setItem(API_KEY_STORAGE, parsed.apiKey);
           delete parsed.apiKey;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
         }
         stored = parsed;
         hydrateState(parsed);
       }
-      const savedKey = localStorage.getItem(API_KEY_STORAGE);
-      if (savedKey) setApiKey(savedKey);
     } catch (e) {}
     hasLoaded.current = true;
 
@@ -362,12 +354,6 @@ export default function JobSearchTracker() {
     errorToastTimer.current = setTimeout(() => setErrorToast(""), 6000);
   }
 
-  function saveApiKey(key) {
-    localStorage.setItem(API_KEY_STORAGE, key.trim()); // pre-deploy-ignore: separate key, not app data
-    setApiKey(key.trim());
-    setShowApiKeyModal(false);
-  }
-
   function saveApp(app) {
     setData(d => {
       const exists = d.applications.find(a => a.id === app.id);
@@ -393,74 +379,9 @@ export default function JobSearchTracker() {
     setData(d => ({ ...d, dailyActions: (d.dailyActions || []).filter(a => a.id !== id) }));
   }
 
-  function profileContext() {
-    const p = data.profile;
-    return `${CHASE_CONTEXT}\n\nPROFILE DETAILS:\nTarget Roles: ${p.targetRoles}\nTarget Industries: ${p.targetIndustries}\nSalary Target: ${p.salaryTarget}\nTop Achievements: ${p.topAchievements}\nAdditional Context: ${p.notes}`.trim();
-  }
-
-  async function handleClaudeCall(fn, errorSetter) {
-    if (!getApiKey()) { setShowApiKeyModal(true); return; }
-    try { await fn(); }
-    catch (e) {
-      if (e.message === "NO_API_KEY") { setShowApiKeyModal(true); return; }
-      if (e.message === "NETWORK_ERROR") {
-        showError("Network error — check your connection and try again");
-      } else if (e.message === "OVERLOADED") {
-        showError("Claude is overloaded right now — wait 30 seconds and try again");
-      } else if (e.message === "AUTH_ERROR") {
-        localStorage.removeItem(API_KEY_STORAGE);
-        setApiKey("");
-        setShowApiKeyModal(true);
-        showError("API key rejected — please re-enter your key");
-      } else {
-        showError(e.message || "Something went wrong — check your API key and try again");
-        errorSetter?.("Something went wrong. Check your API key in Settings and try again.");
-      }
-    }
-  }
-
-  async function runInterviewPrep(app, onResult) {
-    const jdText = app.jobDescription || "";
-    await handleClaudeCall(async () => {
-      const result = await callClaude(
-        `You are an expert interview coach for enterprise sales and payments professionals.
-Generate structured interview prep for Chase Whittaker and return ONLY valid JSON.
-
-Required JSON shape:
-{
-  "companyResearch": "string",
-  "roleAnalysis": "string",
-  "starStories": "string",
-  "questionsToAsk": "string"
-}
-
-Rules:
-- Each field must be concise, practical, and specific to the role/JD.
-- Use plain language; no buzzword-heavy phrasing.
-- Ground points in Chase's real background (Authorize.Net, 98% integration resolution, ~200 merchants/month, KPI overachievement, CyberSource enterprise accounts, Select Bankcard risk/chargeback experience).
-- "starStories" should include at least 3 STAR-ready story bullets.
-- "questionsToAsk" should include at least 5 thoughtful interviewer questions.
-- No markdown code fences. Output JSON only.`,
-        `${profileContext()}\n\nROLE BEING INTERVIEWED FOR:\nCompany: ${app.company}\nTitle: ${app.title}\nStage: ${app.stage}\n\nJOB DESCRIPTION:\n${jdText || "(no JD saved — generate structured prep from the role title and Chase's background)"}\n\nReturn the structured prep JSON now.`,
-        1500
-      );
-      let parsed;
-      try {
-        parsed = JSON.parse(result.replace(/```json|```/g, "").trim());
-      } catch {
-        parsed = { roleAnalysis: result };
-      }
-      const prepSections = normalizePrepSections(parsed, "");
-      const updated = { ...app, prepSections, prepNotes: "" };
-      saveApp(updated);
-      onResult(prepSections, updated);
-    }, onResult);
-  }
-
   const activeApps = data.applications.filter(a => !["Rejected", "Withdrawn"].includes(a.stage));
   const archivedApps = data.applications.filter(a => ["Rejected", "Withdrawn"].includes(a.stage));
   const profileComplete = !!(data.baseResume && data.profile.name && data.profile.targetRoles);
-  const hasApiKey = !!apiKey;
   const todayDone = Object.values(completedBlocks).filter(Boolean).length;
 
   // Auth gate — session=null means still checking, session=false means not logged in
@@ -483,11 +404,6 @@ Rules:
         </div>
       )}
 
-      {/* API Key Modal */}
-      {showApiKeyModal && (
-        <ApiKeyModal current={apiKey} onSave={saveApiKey} onClose={() => setShowApiKeyModal(false)} />
-      )}
-
       {/* Header */}
       <div style={s.header}>
         <div>
@@ -495,17 +411,11 @@ Rules:
           <div style={s.headerSub}>{activeApps.length} active · {data.contacts.length} contacts · {todayDone} done today</div>
         </div>
         <div style={s.headerActions}>
-          {!hasApiKey && (
-            <button style={s.btnWarn} onClick={() => setShowApiKeyModal(true)}>⚠️ Add API Key</button>
-          )}
           {!profileComplete && (
             <button style={s.btnWarn} onClick={() => setProfileModal(true)}>⚠️ Setup Profile</button>
           )}
           {profileComplete && (
             <button style={s.btnSecondary} onClick={() => setProfileModal(true)}>👤 Profile</button>
-          )}
-          {hasApiKey && (
-            <button style={s.btnSecondary} onClick={() => setShowApiKeyModal(true)}>🔑 API Key</button>
           )}
           {tab === "pipeline" && <button style={s.btnPrimary} onClick={() => setAppModal({ mode: "new", app: blankApp() })}>+ Application</button>}
           {tab === "contacts" && <button style={s.btnPrimary} onClick={() => setContactModal({ mode: "new", contact: blankContact() })}>+ Contact</button>}
@@ -517,7 +427,7 @@ Rules:
 
       {/* Nav Tabs */}
       <div style={s.tabs}>
-        {[["focus","🎯 Daily Focus"],["pipeline","📋 Pipeline"],["contacts","👥 Contacts"],["ai","✨ AI Tools"],["resources","📚 Resources"]].map(([key, label]) => (
+        {[["focus","🎯 Daily Focus"],["pipeline","📋 Pipeline"],["contacts","👥 Contacts"],["ai","✨ Apply Tools"],["resources","📚 Resources"]].map(([key, label]) => (
           <button key={key} style={{ ...s.tabBtn, ...(tab === key ? s.tabBtnActive : {}) }} onClick={() => setTab(key)}>{label}</button>
         ))}
       </div>
@@ -541,7 +451,7 @@ Rules:
           contacts={data.contacts} saveApp={saveApp}
           setAppModal={setAppModal} setPrepModal={setPrepModal}
           setKitApp={setKitApp} setKitResumeResult={setKitResumeResult} setKitCoverResult={setKitCoverResult}
-          setTab={setTab} setResumeTab={setResumeTab} apiKey={apiKey}
+          setTab={setTab} setResumeTab={setResumeTab}
         />
       )}
       {tab === "contacts" && (
@@ -555,11 +465,11 @@ Rules:
       )}
       {tab === "ai" && (
         <AITab
-          data={data} apiKey={apiKey} hasApiKey={hasApiKey} profileComplete={profileComplete}
+          data={data} profileComplete={profileComplete}
           kitApp={kitApp} setKitApp={setKitApp}
           resumeTab={resumeTab} setResumeTab={setResumeTab}
-          setTab={setTab} saveApp={saveApp} saveStarStories={saveStarStories}
-          showError={showError} setShowApiKeyModal={setShowApiKeyModal} setProfileModal={setProfileModal}
+          saveStarStories={saveStarStories}
+          showError={showError} setProfileModal={setProfileModal}
         />
       )}
       {tab === "resources" && <ResourcesTab />}
@@ -590,9 +500,10 @@ Rules:
       {prepModal && (
         <PrepModal
           app={prepModal.app}
-          onRun={runInterviewPrep}
+          data={data}
           onSave={saveApp}
           onClose={() => setPrepModal(null)}
+          showError={showError}
         />
       )}
     </div>

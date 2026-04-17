@@ -1,17 +1,17 @@
-# Inbox Zero — Handoff
+# Gmail Forge — Handoff
 
 ## Quick State
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 — LIVE in RULES_ONLY mode; Review Queue + Subscriptions tab active |
-| **Last touch** | Apr 16, 2026 — Subscriptions tab added (manual refresh via Sheet menu) |
-| **Next** | Load Chrome extension → run "Inbox Zero → Refresh Subscriptions" from Sheet menu to backfill → monitor Review Queue → eventually enable GEMINI mode |
+| **Focus** | Phase 3 LIVE · daily report extended to show archived mail · project renamed from "Inbox Zero" |
+| **Last touch** | Apr 16, 2026 — renamed to Gmail Forge; daily report now includes auto-archived section + totals line |
+| **Next** | Load Chrome extension → run "Gmail Forge → Refresh Subscriptions" from Sheet menu to backfill → monitor Review Queue → eventually enable GEMINI mode → rename Apps Script project + update Spend Radar Script Properties (manual, off-filesystem) |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |
 | **Filter count** | 69 (XML) + 69 (JS rules mirroring XML) |
-| **File location** | `/Users/chase/Developer/chase/portfolio/inbox-zero/` |
+| **File location** | `/Users/chase/Developer/chase/portfolio/gmail-forge/` |
 | **Classifier mode** | `RULES_ONLY` (Gemini free-tier quota exhausted; switch to `GEMINI` once billing enabled) |
 
 ---
@@ -31,9 +31,20 @@
 
 ## Remaining / Next Steps
 
-- [ ] **Load Chrome extension** — Chrome → `chrome://extensions` → Developer mode → Load unpacked → select `/Users/chase/Developer/chase/portfolio/inbox-zero/extension/`; configure popup (mode + API key)
+### Code (done this session ✅)
+- [x] **Daily report extended** — searches inbox AND archived separately; new `🗄️ Auto-archived today` section + `📊 Total` line
+- [x] **Renamed to Gmail Forge** — directory, all docs, downstream references (spend-radar, spend-clarity, job-search-hq, funded-ios, portfolio root)
+
+### Still pending
+- [ ] **Load Chrome extension** — Chrome → `chrome://extensions` → Developer mode → Load unpacked → select `/Users/chase/Developer/chase/portfolio/gmail-forge/extension/`; configure popup (mode + API key)
 - [ ] **Review Queue habit** — check "Review Queue" tab in the Google Sheet periodically; fill in "Assign Label" column; add confirmed senders to `rules.gs` + `gmail-filters.xml`
 - [ ] **Enable Gemini** — when ready: enable billing on the GCP project tied to `GEMINI_API_KEY`, then change `CLASSIFIER_MODE` back to `GEMINI` in Script Properties
+
+### Manual off-filesystem renames (not in git)
+- [ ] **Google Apps Script console** — rename project "Inbox Zero" → "Gmail Forge" at script.google.com
+- [ ] **Spend Radar Script Properties** — add `GMAIL_FORGE_WEB_APP_URL` + `GMAIL_FORGE_TRIGGER_TOKEN` (same values as the old `INBOX_ZERO_*` keys), verify Refresh All Apps works, delete old keys
+- [ ] **Chrome extension** — after loading unpacked, verify popup title shows "Gmail Forge" (manifest.json already updated)
+- [ ] **Asana** — rename project "Inbox Zero Build" → "Gmail Forge Build" (GID `1213891408033292` unchanged)
 
 ---
 
@@ -79,4 +90,4 @@ Layer 3: Chrome extension (manual)
 
 ## Resuming in a New Session
 
-Open Claude Code from `/Users/chase/Developer/chase/portfolio/inbox-zero/` — CLAUDE.md auto-loads full context. See `prompts/resume-phase3-live.md` for a ready-to-paste session starter.
+Run `./scripts/handoff` for a quick project health check. Open Claude Code from `/Users/chase/Developer/chase/portfolio/gmail-forge/` — CLAUDE.md auto-loads full context. See `prompts/resume-phase3-live.md` for a ready-to-paste session starter.
