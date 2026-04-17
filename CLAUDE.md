@@ -44,6 +44,7 @@
 | Spend Radar                 | v0.1          | none (Apps Script Script Properties: `SHEET_ID`, `GMAIL_FORGE_WEB_APP_URL`, `GMAIL_FORGE_TRIGGER_TOKEN`, `DASHBOARD_URL`)       | Apps Script backend                 | 🟡 Active · Gmail `label:Receipt` → Subscriptions + Receipts + Audit tabs · rule-based extraction (`SENDER_RULES`) · cross-project Refresh All Apps (Gmail Forge) · `[portfolio/spend-radar](portfolio/spend-radar)`      |
 | Spend Radar (web)           | v0.1          | `chase_spend_radar_web_v1`                                                                                                    | local / pending Vercel deploy       | 🟡 Active · Read-only CRA dashboard reading Sheet published CSV · monthly/yearly totals + cancel candidates · `[portfolio/spend-radar-web](portfolio/spend-radar-web)`                                                   |
 | Shipyard                    | v0.1          | n/a                                                                                                                           | shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app | ✅ Active · Fleet command center · Phase 1 live · `[portfolio/shipyard](portfolio/shipyard)` |
+| Ash Reader                  | v1.0          | `ash_reader_` prefix (localStorage)                                                                                           | ash-reader.vercel.app               | ✅ Active · Mobile chunker for capture system conversation → Ash · iOS app next · `[portfolio/ash-reader](portfolio/ash-reader)` |
 
 
 

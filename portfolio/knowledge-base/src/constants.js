@@ -4,7 +4,7 @@ import { TAXONOMY_SEED } from "./taxonomySeeds.js";
 // Storage
 export const STORE = "chase_knowledge_base_v1";
 export const STORE_SEED_VERSION = "chase_knowledge_base_seed_version";
-export const SEED_VERSION = 9;
+export const SEED_VERSION = 10;
 
 /** Bump when `SEED_FOLDERS` structure changes; triggers folder merge in App. */
 export const FOLDER_LAYOUT_VERSION = 1;
@@ -577,6 +577,15 @@ export const SEED = [
   { id: 271, title: "Portfolio HANDOFF", url: "https://github.com/iamchasewhittaker/apps/blob/main/HANDOFF.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Current development focus, next steps, and session continuity notes" },
   { id: 272, title: "Portfolio Root ROADMAP", url: "https://github.com/iamchasewhittaker/apps/blob/main/ROADMAP.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Cross-app roadmap and priority queue for planning what ships next" },
   { id: 273, title: "Product Build Framework", url: "https://github.com/iamchasewhittaker/apps/blob/main/PRODUCT_BUILD_FRAMEWORK.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Standard product build phases used to define and ship apps consistently" },
+  // --- My Projects additions (275–281) ---
+  { id: 275, title: "Ash Reader", url: "https://ash-reader.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Mobile tool for chunking and copying the capture system ChatGPT conversation into Ash for therapeutic processing" },
+  { id: 276, title: "Shipyard", url: "https://shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Fleet command center — tracks all portfolio projects, compliance, and status in one dashboard" },
+  { id: 277, title: "Funded Web", url: "https://funded-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone YNAB dashboard for budget review and category funding" },
+  { id: 278, title: "Summit Push", url: "https://summit-push.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Daily OS for ADHD brains: 4 fixed lanes, lane lock, one-at-a-time focus — mountain-themed accountability" },
+  { id: 279, title: "Spend Radar Web", url: "https://spend-radar-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Read-only dashboard for Gmail receipt scanning and subscription tracking" },
+  { id: 280, title: "Gmail Forge", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/gmail-forge", category: "Web apps", folderId: "f_my_projects_web", description: "DIY Gmail automation: XML filters + Apps Script + Chrome extension for inbox management" },
+  { id: 281, title: "Talk to Ash", url: "https://www.talktoash.com", category: "Tools", folderId: "f_tools", description: "Ash — AI mental health companion; the app used to process capture system conversation chunks" },
+
   ...EXPANDED_SEED,
   ...TAXONOMY_SEED,
 ];
