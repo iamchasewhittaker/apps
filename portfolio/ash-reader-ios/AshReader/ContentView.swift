@@ -13,9 +13,36 @@ extension Color {
 }
 
 struct ContentView: View {
+    var body: some View {
+        TabView {
+            ReaderTab()
+                .tabItem { Label("Reader", systemImage: "book") }
+
+            ThemesView()
+                .tabItem { Label("Themes", systemImage: "square.stack") }
+
+            ActionsView()
+                .tabItem { Label("Actions", systemImage: "checkmark.circle") }
+
+            SettingsView()
+                .tabItem { Label("Settings", systemImage: "gearshape") }
+        }
+        .tint(Color(hex: "#f5e300"))
+        .preferredColorScheme(.dark)
+    }
+}
+
+private struct ReaderTab: View {
     @State private var chunks: [Chunk] = []
     @State private var targetSize: Int = 2000
     @State private var isLoading = true
+    @AppStorage("ash_reader_ios_prompt_prefix") private var storedPrefix: String = ""
+    @AppStorage("ash_reader_ios_prompt_prefix_on") private var storedPrefixOn: String = ""
+
+    private var activePrefix: String? {
+        guard storedPrefixOn == "1" else { return nil }
+        return storedPrefix.isEmpty ? defaultPromptPrefix : storedPrefix
+    }
 
     var body: some View {
         ZStack {
@@ -23,18 +50,19 @@ struct ContentView: View {
 
             if isLoading {
                 ProgressView()
-                    .tint(Color(hex: "#7c9cff"))
+                    .tint(Color(hex: "#f5e300"))
             } else {
                 ChunkReaderView(
                     chunks: chunks,
                     targetSize: $targetSize,
-                    onRechunk: rechunk
+                    onRechunk: rechunk,
+                    storageKey: "ash_reader_ios_sent",
+                    promptPrefix: activePrefix
                 )
                 .transition(.opacity)
             }
         }
         .animation(.easeInOut(duration: 0.2), value: isLoading)
-        .preferredColorScheme(.dark)
         .onAppear { loadDocument() }
     }
 

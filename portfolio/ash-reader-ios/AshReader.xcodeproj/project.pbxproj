@@ -16,6 +16,13 @@
 		A1000008 /* AshReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008 /* AshReaderTests.swift */; };
 		A1000009 /* doc.txt in Resources */ = {isa = PBXBuildFile; fileRef = A2000009 /* doc.txt */; };
 		A100000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A200000A /* Assets.xcassets */; };
+		A100000B /* themes.md in Resources */ = {isa = PBXBuildFile; fileRef = A200000B /* themes.md */; };
+		A100000C /* summary.json in Resources */ = {isa = PBXBuildFile; fileRef = A200000C /* summary.json */; };
+		A1000010 /* ThemeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* ThemeParser.swift */; };
+		A1000011 /* ThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000011 /* ThemesView.swift */; };
+		A1000012 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* SummaryView.swift */; };
+		A1000013 /* ActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013 /* ActionsView.swift */; };
+		A1000014 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +35,13 @@
 		A2000008 /* AshReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AshReaderTests.swift; sourceTree = "<group>"; };
 		A2000009 /* doc.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "doc.txt"; path = "doc.txt"; sourceTree = "<group>"; };
 		A200000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A200000B /* themes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "themes.md"; path = "themes.md"; sourceTree = "<group>"; };
+		A200000C /* summary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "summary.json"; path = "summary.json"; sourceTree = "<group>"; };
+		A2000010 /* ThemeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeParser.swift; sourceTree = "<group>"; };
+		A2000011 /* ThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesView.swift; sourceTree = "<group>"; };
+		A2000012 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		A2000013 /* ActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsView.swift; sourceTree = "<group>"; };
+		A2000014 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A3000001 /* AshReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AshReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3000002 /* AshReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AshReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -51,7 +65,14 @@
 				A2000004 /* ProgressStore.swift */,
 				A2000005 /* Chunker.swift */,
 				A2000007 /* ChunkReaderView.swift */,
+				A2000010 /* ThemeParser.swift */,
+				A2000011 /* ThemesView.swift */,
+				A2000012 /* SummaryView.swift */,
+				A2000013 /* ActionsView.swift */,
+				A2000014 /* SettingsView.swift */,
 				A2000009 /* doc.txt */,
+				A200000B /* themes.md */,
+				A200000C /* summary.json */,
 				A200000A /* Assets.xcassets */,
 			);
 			path = AshReader;
@@ -160,6 +181,11 @@
 				A1000004 /* ProgressStore.swift in Sources */,
 				A1000005 /* Chunker.swift in Sources */,
 				A1000007 /* ChunkReaderView.swift in Sources */,
+				A1000010 /* ThemeParser.swift in Sources */,
+				A1000011 /* ThemesView.swift in Sources */,
+				A1000012 /* SummaryView.swift in Sources */,
+				A1000013 /* ActionsView.swift in Sources */,
+				A1000014 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +201,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000009 /* doc.txt in Resources */,
+				A100000B /* themes.md in Resources */,
+				A100000C /* summary.json in Resources */,
 				A100000A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

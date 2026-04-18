@@ -1,33 +1,61 @@
 import SwiftUI
+import UIKit
 
 private let SIZES = [1000, 1500, 2000]
+
+private let ACCENT = Color(hex: "#f5e300")
+private let ACCENT_INK = Color(hex: "#0f0f0f")
+private let ACCENT_DIM = Color(hex: "#5a5200")
 
 struct ChunkReaderView: View {
     let chunks: [Chunk]
     @Binding var targetSize: Int
-    let onRechunk: (Int) -> Void
+    let onRechunk: ((Int) -> Void)?
+    var storageKey: String = "ash_reader_ios_sent"
+    var promptPrefix: String? = nil
+    var showSizeControl: Bool = true
 
-    @StateObject private var store = ProgressStore()
+    @StateObject private var store: ProgressStore
     @State private var currentIndex: Int = 0
     @State private var copied = false
     @State private var showSettings = false
     @State private var selectedSize: Int = 2000
 
+    init(
+        chunks: [Chunk],
+        targetSize: Binding<Int>,
+        onRechunk: ((Int) -> Void)? = nil,
+        storageKey: String = "ash_reader_ios_sent",
+        promptPrefix: String? = nil,
+        showSizeControl: Bool = true
+    ) {
+        self.chunks = chunks
+        self._targetSize = targetSize
+        self.onRechunk = onRechunk
+        self.storageKey = storageKey
+        self.promptPrefix = promptPrefix
+        self.showSizeControl = showSizeControl
+        self._store = StateObject(wrappedValue: ProgressStore(key: storageKey))
+    }
+
     var sentCount: Int { store.sent.count }
 
     var body: some View {
         VStack(spacing: 0) {
-            // Top bar
             HStack {
-                Button {
-                    selectedSize = targetSize
-                    showSettings = true
-                } label: {
-                    Image(systemName: "gearshape")
-                        .font(.system(size: 16))
-                        .foregroundStyle(Color(hex: "#7c9cff"))
+                if showSizeControl {
+                    Button {
+                        selectedSize = targetSize
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .font(.system(size: 16))
+                            .foregroundStyle(ACCENT)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Spacer().frame(width: 16)
                 }
-                .buttonStyle(.plain)
 
                 Spacer()
 
@@ -46,7 +74,6 @@ struct ChunkReaderView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 14)
 
-            // Progress bar
             VStack(spacing: 6) {
                 HStack {
                     Text("\(sentCount) / \(chunks.count) sent")
@@ -59,7 +86,7 @@ struct ChunkReaderView: View {
                         RoundedRectangle(cornerRadius: 2)
                             .fill(Color(hex: "#2e2e2e"))
                         RoundedRectangle(cornerRadius: 2)
-                            .fill(Color(hex: "#7c9cff"))
+                            .fill(ACCENT)
                             .frame(width: chunks.isEmpty ? 0 : geo.size.width * CGFloat(sentCount) / CGFloat(chunks.count))
                             .animation(.easeOut(duration: 0.3), value: sentCount)
                     }
@@ -82,7 +109,6 @@ struct ChunkReaderView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 12) {
-                        // Chunk meta + action buttons
                         HStack(alignment: .top) {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("Chunk \(currentIndex + 1)")
@@ -94,20 +120,18 @@ struct ChunkReaderView: View {
                             Spacer()
                             HStack(spacing: 8) {
                                 Button(copied ? "Copied ✓" : "Copy") {
-                                    UIPasteboard.general.string = chunk.text
-                                    copied = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { copied = false }
+                                    copyCurrent(chunk: chunk)
                                 }
                                 .font(.system(size: 14, weight: .semibold))
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 7)
-                                .background(copied ? Color(hex: "#2a3a2a") : Color(hex: "#3d4f80"))
-                                .foregroundStyle(copied ? Color(hex: "#6dbf6d") : .white)
+                                .background(copied ? Color(hex: "#2a3a2a") : ACCENT)
+                                .foregroundStyle(copied ? Color(hex: "#6dbf6d") : ACCENT_INK)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .buttonStyle(.plain)
 
                                 Button(isSent ? "Sent ✓" : "Mark sent") {
-                                    store.toggle(currentIndex)
+                                    toggleSent()
                                 }
                                 .font(.system(size: 14))
                                 .padding(.horizontal, 14)
@@ -120,7 +144,6 @@ struct ChunkReaderView: View {
                             }
                         }
 
-                        // Chunk text card
                         Text(chunk.text)
                             .font(.system(size: 16))
                             .lineSpacing(6)
@@ -134,7 +157,6 @@ struct ChunkReaderView: View {
                     .padding(20)
                 }
 
-                // Navigation
                 HStack(spacing: 12) {
                     Button("← Prev") {
                         if currentIndex > 0 { currentIndex -= 1 }
@@ -152,8 +174,8 @@ struct ChunkReaderView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
-                    .background(currentIndex == chunks.count - 1 ? Color(hex: "#252525") : Color(hex: "#3d4f80"))
-                    .foregroundStyle(currentIndex == chunks.count - 1 ? Color(hex: "#444444") : .white)
+                    .background(currentIndex == chunks.count - 1 ? Color(hex: "#252525") : ACCENT)
+                    .foregroundStyle(currentIndex == chunks.count - 1 ? Color(hex: "#444444") : ACCENT_INK)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .disabled(currentIndex == chunks.count - 1)
                     .buttonStyle(.plain)
@@ -175,9 +197,28 @@ struct ChunkReaderView: View {
                 showSettings = false
                 store.reset()
                 currentIndex = 0
-                onRechunk(size)
+                onRechunk?(size)
             }
         }
+    }
+
+    private func copyCurrent(chunk: Chunk) {
+        let body = stripMarkdown(chunk.text)
+        let text: String
+        if let prefix = promptPrefix, !prefix.isEmpty {
+            text = "\(prefix)\n\n\(body)"
+        } else {
+            text = body
+        }
+        UIPasteboard.general.string = text
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        copied = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { copied = false }
+    }
+
+    private func toggleSent() {
+        store.toggle(currentIndex)
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 }
 
@@ -208,10 +249,10 @@ private struct SettingsSheet: View {
                             .font(.system(size: 15, weight: selectedSize == size ? .semibold : .regular))
                             .padding(.horizontal, 18)
                             .padding(.vertical, 10)
-                            .background(selectedSize == size ? Color(hex: "#3d4f80") : Color(hex: "#1e1e1e"))
-                            .foregroundStyle(selectedSize == size ? .white : Color(hex: "#777777"))
+                            .background(selectedSize == size ? ACCENT : Color(hex: "#1e1e1e"))
+                            .foregroundStyle(selectedSize == size ? ACCENT_INK : Color(hex: "#777777"))
                             .clipShape(Capsule())
-                            .overlay(Capsule().stroke(selectedSize == size ? Color(hex: "#7c9cff") : Color(hex: "#2e2e2e"), lineWidth: 1))
+                            .overlay(Capsule().stroke(selectedSize == size ? ACCENT : Color(hex: "#2e2e2e"), lineWidth: 1))
                     }
                     .buttonStyle(.plain)
                 }
@@ -227,8 +268,8 @@ private struct SettingsSheet: View {
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .background(Color(hex: "#3d4f80"))
-            .foregroundStyle(.white)
+            .background(ACCENT)
+            .foregroundStyle(ACCENT_INK)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal, 20)
             .buttonStyle(.plain)

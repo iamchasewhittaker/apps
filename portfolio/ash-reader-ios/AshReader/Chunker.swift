@@ -1,5 +1,29 @@
 import Foundation
 
+/// Strip common Markdown syntax so copied text pastes cleanly into a chat UI.
+/// Mirrors `stripMarkdown` in ash-reader/lib/chunker.ts.
+func stripMarkdown(_ text: String) -> String {
+    let replacements: [(pattern: String, replacement: String, options: NSRegularExpression.Options)] = [
+        (#"^#{1,6}\s+"#,          "",    [.anchorsMatchLines]),
+        (#"\*\*(.+?)\*\*"#,       "$1",  []),
+        (#"\*(.+?)\*"#,           "$1",  []),
+        (#"`(.+?)`"#,             "$1",  []),
+        (#"^\s*[-*+]\s+"#,        "• ",  [.anchorsMatchLines]),
+        (#"^\s*\d+\.\s+"#,        "",    [.anchorsMatchLines]),
+        (#"\[(.+?)\]\(.+?\)"#,    "$1",  []),
+        (#"^>\s+"#,               "",    [.anchorsMatchLines]),
+        (#"---+"#,                "",    []),
+        (#"\n{3,}"#,              "\n\n",[]),
+    ]
+    var out = text
+    for (pattern, replacement, options) in replacements {
+        guard let re = try? NSRegularExpression(pattern: pattern, options: options) else { continue }
+        let range = NSRange(out.startIndex..., in: out)
+        out = re.stringByReplacingMatches(in: out, options: [], range: range, withTemplate: replacement)
+    }
+    return out.trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
 private let turnPattern = try! NSRegularExpression(
     pattern: #"^(Human|User|You|ChatGPT|Assistant|GPT-4|GPT-3\.5|AI)\s*:"#,
     options: [.caseInsensitive, .anchorsMatchLines]

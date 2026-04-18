@@ -1,11 +1,12 @@
 import Foundation
 
 class ProgressStore: ObservableObject {
-    private let key = "ash_reader_ios_sent"
+    private let key: String
 
     @Published var sent: Set<Int> = []
 
-    init() {
+    init(key: String = "ash_reader_ios_sent") {
+        self.key = key
         let saved = UserDefaults.standard.array(forKey: key) as? [Int] ?? []
         sent = Set(saved)
     }
