@@ -4,7 +4,8 @@
 Chase's Hide My Email alias tracker. One alias per company — when spam arrives, you know exactly who leaked or sold the data. Single-file HTML app, `localStorage`-only, no build step.
 
 - **Owner:** chase.t.whittaker@gmail.com
-- **Primary file:** `alias-tracker.html` — open directly in browser, no server needed
+- **URL:** https://alias-ledger.vercel.app
+- **Primary file:** `index.html` — open directly in browser or via Vercel URL
 - **Storage key:** `hme_alias_tracker_v1`
 - **Shortcut constant:** `SHORTCUT_NAME` near top of the `<script>` block — must match the iOS Shortcut name exactly
 
@@ -43,11 +44,5 @@ Chase has Retinitis Pigmentosa. Always preserve:
 
 ---
 
-## Integration
-This tool is designed to eventually be embedded as a section in `../my-mvp-playbook.html`. See `HANDOFF.md` for full integration instructions including token mapping, storage namespacing, and placement guidance.
-
----
-
 ## Related
-- `../my-mvp-playbook.html` — integration target
 - `../job-search-hq/` — job search tracking (sister tool)

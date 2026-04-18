@@ -49,6 +49,7 @@
 | Ash Reader (iOS)            | v0.3          | `ash_reader_ios_` prefix (UserDefaults)                                                                                       | local Xcode                         | 🟡 Local · Full parity with web v1.1 · 4 tabs: Reader/Themes/Actions/Settings · P6 yellow icon · 26/26 tests · `[portfolio/ash-reader-ios](portfolio/ash-reader-ios)` |
 | Unnamed (web)               | v0.1          | `unnamed_v1`                                                                                                                  | pending Vercel                      | 🟡 Local · Daily OS for ADHD brains · Next.js + Tailwind 4 + localStorage · Phase 1: 7-day rule · `[portfolio/unnamed](portfolio/unnamed)` |
 | Unnamed (iOS)               | v0.1          | `unnamed_ios_v1`                                                                                                              | local Xcode                         | 🟡 On-device · SwiftUI + @Observable · 5 flows · 10/10 tests · amber-triangle AppIcon · xcodeproj (`UN*`) · `[portfolio/unnamed-ios](portfolio/unnamed-ios)` |
+| Alias Ledger                | v1.0          | `hme_alias_tracker_v1`                                                                                                        | alias-ledger.vercel.app             | ✅ Active · Hide My Email alias tracker · single-file HTML · `[portfolio/alias-ledger](portfolio/alias-ledger)` |
 
 
 
