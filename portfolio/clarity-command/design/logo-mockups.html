@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clarity Command — Bright & Punchy (P6-inspired)</title>
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: #161618;
+    --border: #27272b;
+    --text: #e8e8e8;
+    --muted: #888;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  header { padding: 40px 32px 24px; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0 0 6px; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5; max-width: 760px; }
+  main { padding: 32px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; max-width: 1500px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .card h2 { margin: 0; font-size: 15px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 10px; }
+  .card h2 .tag { background: #2a2a2e; color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; letter-spacing: 0.3px; }
+  .logos { display: flex; align-items: flex-end; gap: 20px; justify-content: center; background: radial-gradient(circle at 50% 0%, #1a1a1e, #0e0e10); padding: 24px 16px; border-radius: 12px; }
+  .logo-big svg { width: 180px; height: 180px; border-radius: 32px; display: block; }
+  .logo-small svg { width: 60px; height: 60px; border-radius: 12px; display: block; }
+  .desc { font-size: 13px; color: #cfcfcf; line-height: 1.55; margin: 0; }
+  .palette { display: flex; gap: 6px; font-size: 11px; color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; flex-wrap: wrap; }
+  .palette span { display: inline-flex; align-items: center; gap: 6px; }
+  .palette span i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--border); display: inline-block; }
+  footer { padding: 24px 32px 48px; color: var(--muted); font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Clarity Command — bright &amp; punchy</h1>
+  <p>Daily accountability hub. "CC" / "C" monograms with "CLARITY COMMAND" subtitle, mixed across 6 color variants. 60pt (home-screen) and 180pt (showcase) previews side-by-side.</p>
+</header>
+
+<main>
+
+  <!-- P1: Electric yellow on black, lettermark C -->
+  <article class="card">
+    <h2>P1 — Electric yellow on black <span class="tag">C</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="620" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="620" fill="#f5e300" text-anchor="middle">C</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#f5e300" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="620" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="620" fill="#f5e300" text-anchor="middle">C</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#f5e300" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">High-voltage caution-tape yellow. Reads like a highlighter on a page — alert, unignorable, almost chemical.</p>
+    <p class="palette"><span><i style="background:#f5e300"></i>#f5e300</span><span><i style="background:#0f0f0f"></i>#0f0f0f</span></p>
+  </article>
+
+  <!-- P2: Neon green on black, lettermark CC -->
+  <article class="card">
+    <h2>P2 — Neon green on black <span class="tag">CC</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#39ff14" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#39ff14" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#39ff14" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#39ff14" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Terminal-green, radioactive lime. Hacker-core, The Matrix, night-vision. Feels technical and a little rebellious.</p>
+    <p class="palette"><span><i style="background:#39ff14"></i>#39ff14</span><span><i style="background:#0f0f0f"></i>#0f0f0f</span></p>
+  </article>
+
+  <!-- P3: Hot magenta on black, lettermark CC -->
+  <article class="card">
+    <h2>P3 — Hot magenta on black <span class="tag">CC</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#ff2d95" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#ff2d95" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#ff2d95" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#ff2d95" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Neon club pink. Unapologetic, loud, maximalist. Reads like a streetwear drop — demands the home screen.</p>
+    <p class="palette"><span><i style="background:#ff2d95"></i>#ff2d95</span><span><i style="background:#0f0f0f"></i>#0f0f0f</span></p>
+  </article>
+
+  <!-- P4: Electric cyan on black, lettermark C -->
+  <article class="card">
+    <h2>P4 — Electric cyan on black <span class="tag">C</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="620" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="620" fill="#00e5ff" text-anchor="middle">C</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#00e5ff" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="620" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="620" fill="#00e5ff" text-anchor="middle">C</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#00e5ff" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Ice-cold neon cyan. Electric blue that practically glows — futuristic, Tron-core, ice-cream-truck sign.</p>
+    <p class="palette"><span><i style="background:#00e5ff"></i>#00e5ff</span><span><i style="background:#0f0f0f"></i>#0f0f0f</span></p>
+  </article>
+
+  <!-- P5: Hot orange on black, lettermark CC -->
+  <article class="card">
+    <h2>P5 — Hot orange on black <span class="tag">CC</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#ff6b1a" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#ff6b1a" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#0f0f0f"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#ff6b1a" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#ff6b1a" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Construction-cone, flame-tip orange. Warm but loud — feels urgent, alive, not cold like the blues and cyans.</p>
+    <p class="palette"><span><i style="background:#ff6b1a"></i>#ff6b1a</span><span><i style="background:#0f0f0f"></i>#0f0f0f</span></p>
+  </article>
+
+  <!-- P6: Inverted — black on electric sky, lettermark CC -->
+  <article class="card">
+    <h2>P6 — Black on electric sky (inverted) <span class="tag">CC</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#7DF9FF"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#0f0f0f" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#0f0f0f" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="180" fill="#7DF9FF"/>
+          <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#0f0f0f" text-anchor="middle" letter-spacing="-24">CC</text>
+          <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#0f0f0f" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Clarity in the name, clarity in the color. Calm but commanding — feels like a clear sky on a mission day.</p>
+    <p class="palette"><span><i style="background:#0f0f0f"></i>#0f0f0f</span><span><i style="background:#7DF9FF"></i>#7DF9FF</span></p>
+  </article>
+
+</main>
+
+<footer>Pick a variant — the canonical SVG + icon script can be generated from the winner.</footer>
+
+</body>
+</html>

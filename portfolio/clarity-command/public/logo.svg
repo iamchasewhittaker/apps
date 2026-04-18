@@ -1,9 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#0f1117"/>
-  <text x="256" y="200" text-anchor="middle"
-        font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="52"
-        fill="#c8a84b" letter-spacing="14">CLARITY</text>
-  <text x="256" y="310" text-anchor="middle" dominant-baseline="central"
-        font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="95"
-        fill="#f3f4f6" letter-spacing="-4">COMMAND</text>
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" rx="180" fill="#7DF9FF"/>
+  <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#0f0f0f" text-anchor="middle" letter-spacing="-24">CC</text>
+  <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="68" fill="#0f0f0f" text-anchor="middle" letter-spacing="10" opacity="0.75">CLARITY COMMAND</text>
 </svg>

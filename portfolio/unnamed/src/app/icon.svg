@@ -1,0 +1,5 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" rx="180" fill="#F5F5F0"/>
+  <text x="512" y="600" font-family="Futura, 'Futura Bold', sans-serif" font-weight="800" font-size="520" fill="#0f0f0f" text-anchor="middle" letter-spacing="-24">UN</text>
+  <text x="512" y="830" font-family="Futura, sans-serif" font-weight="500" font-size="82" fill="#0f0f0f" text-anchor="middle" letter-spacing="14" opacity="0.75">UNNAMED</text>
+</svg>
