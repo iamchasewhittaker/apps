@@ -78,6 +78,18 @@
 **Fix / lesson:** For this project, always run `vercel --prod` from the **monorepo root** (`~/Developer/chase/`) with a temp `.vercel/project.json` pointing at the job-search-hq project ID. Remove the temp file after deploying. And fix all ESLint warnings before deploying — Vercel CI has zero tolerance.
 **Tags:** deploy · vercel · lint
 
+### 2026-04-18 — Pillow can't do fill="none" — simulate outline text with fill=BG
+**What happened:** Wanted stroke-only ("outline") logo text in the iOS brand asset generator. SVG supports `fill="none" stroke="white"` natively, but Pillow's `ImageDraw.text()` doesn't have a fill=none mode.
+**Root cause:** Pillow renders text as filled glyphs; stroke_width just adds an outline around the fill. There's no built-in way to suppress the fill.
+**Fix / lesson:** Simulate outline by drawing text with `fill=BG_COLOR` (same as background) and `stroke_fill=WHITE, stroke_width=N`. The letter interior blends with the background, leaving only the white stroke visible. Works well for thick-stroke designs; breaks if there are background gradients or images behind the text.
+**Tags:** python · pillow · icons · ios · svg
+
+### 2026-04-18 — HTML mockup files are the right review tool for logo design choices
+**What happened:** User wanted to pick a logo color/style without going back and forth on described options.
+**Root cause:** Logo aesthetics are subjective — text descriptions of colors don't translate well.
+**Fix / lesson:** Generate a standalone `design/logo-mockup.html` file with all options rendered as inline SVG. User picks by visual review before any code is committed. Two rounds (colors first, then styles) worked well. Keep mockup files in `design/` for reference.
+**Tags:** design · workflow · svg
+
 ### 2026-04-13 — FocusTab needs app/contact data props from App.jsx
 **What happened:** FocusTab previously only received `completedBlocks` / `expandedBlock` state. Adding the action queue required passing `applications`, `contacts`, `setAppModal`, `setPrepModal`, `setTab` from App.jsx.
 **Root cause:** The queue is derived from live data, not persisted state — it belongs in FocusTab as computed logic.

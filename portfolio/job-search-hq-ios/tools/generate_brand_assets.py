@@ -12,8 +12,8 @@ APP_ICON = ROOT / "JobSearchHQ/Assets.xcassets/AppIcon.appiconset/AppIcon.png"
 LOGO_DIR = ROOT / "JobSearchHQ/Assets.xcassets/Logo.imageset"
 LOGO_PNG = LOGO_DIR / "Logo.png"
 
-BG = (0x0B, 0x0F, 0x1A)
-BAND = (0x10, 0x16, 0x24)
+BG = (0x1D, 0x4E, 0xD8)   # deep blue #1d4ed8
+BAND = (0x1E, 0x40, 0xAF)  # slightly darker blue band
 WHITE = (0xFF, 0xFF, 0xFF)
 BLUE = (0x3B, 0x82, 0xF6)
 
@@ -57,24 +57,20 @@ def draw_app_icon(size: int = 1024) -> Image.Image:
 
 
 def draw_logo(size: int = 256) -> Image.Image:
-    img = Image.new("RGB", (size, size), BLUE)
+    img = Image.new("RGB", (size, size), BG)
     d = ImageDraw.Draw(img)
-    margin = int(size * 0.08)
-    d.rounded_rectangle(
-        [margin, margin, size - margin, size - margin],
-        radius=int(size * 0.18),
-        fill=(0x0F, 0x11, 0x17),
-    )
     try:
-        font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", int(size * 0.28))
+        font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", int(size * 0.40))
     except OSError:
         font = ImageFont.load_default()
     text = "HQ"
     bbox = d.textbbox((0, 0), text, font=font)
     tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    tx = (size - tw) // 2
-    ty = (size - th) // 2 - int(size * 0.02)
-    d.text((tx, ty), text, fill=WHITE, font=font)
+    tx = (size - tw) // 2 - bbox[0]
+    ty = (size - th) // 2 - bbox[1] + int(size * 0.02)
+    stroke_w = max(int(size * 0.025), 3)
+    # Draw outline-only: stroke with transparent fill (simulate by drawing stroke then bg-fill)
+    d.text((tx, ty), text, fill=BG, font=font, stroke_width=stroke_w, stroke_fill=WHITE)
     return img
 
 

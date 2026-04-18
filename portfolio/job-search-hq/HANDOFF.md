@@ -8,40 +8,27 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.5 |
+| **Version** | v8.7 |
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 3 #2 — stage-specific prep templates (phone screen / interview / final round presets) |
-| **Next** | Web Wave 3: prep templates → debrief log → velocity dashboard → mock interview. iOS Phase 2: Supabase sync + email OTP → profile editor → STAR stories → JSON import → AI + Keychain |
-| **Blockers** | None (code-level). External dependency: LinkedIn DOM stability for extension capture. |
-| **Last touch** | 2026-04-14 — verified web live (200 OK), web build clean, iOS BUILD SUCCEEDED. Fixed logo SVGs (rx rounded corners) + regenerated PNGs. |
+| **Focus** | Wave 3 complete — debrief log, velocity dashboard, mock interview, logo redesign all shipped |
+| **Next** | Deploy to Vercel (build is clean). iOS Phase 2: Supabase sync + email OTP → profile editor → STAR stories → JSON import → AI + Keychain |
+| **Blockers** | None. |
+| **Last touch** | 2026-04-18 — Wave 3 shipped: outline logo (deep blue + white stroke), post-interview debrief log, weekly velocity dashboard, mock interview mode. Build clean. |
 
 ---
 
 ## What's Next
 
-### Web — Wave 3 (in order)
-1. **Stage-specific prep templates** ← next ship target
-   - Preset selector in prep flows: `phone_screen` / `interview` / `final_round`
-   - Different question emphasis and prep prompts per stage
-   - Keep existing `prepSections` structure (backward-compatible; no data migration needed)
-   - Legacy `prepNotes` migration behavior must remain unchanged
-   - Smoke test: App card prep button → modal generate/regenerate → save sections → Focus/Pipeline indicators
+### Web — Wave 3 ✅ Complete
+All four Wave 3 items shipped in v8.7:
+- ✅ Logo redesign (outline, deep blue)
+- ✅ Post-interview debrief log
+- ✅ Application velocity dashboard
+- ✅ Mock interview mode
 
-2. **Post-interview debrief log**
-   - Add `interviewLog[]` array to application data model
-   - Capture outcome quality per stage while prep context is fresh
-   - Depends on stable stage templates
-
-3. **Application velocity dashboard**
-   - Weekly targets + trend line
-   - Uses application stage flow + debrief signal quality for visibility
-   - Depends on debrief log data
-
-4. **Mock interview mode**
-   - AI-driven Q&A in AI Tools tab
-   - Depends on stabilized stage templates + debrief data for higher-quality simulations
+**Next for web:** Deploy to Vercel (build clean), then evaluate Wave 4 ideas (see ROADMAP.md).
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`
@@ -59,12 +46,8 @@ Read CLAUDE.md and HANDOFF.md first, then portfolio/job-search-hq/CLAUDE.md and 
 
 Goal: Continue Job Search HQ at portfolio/job-search-hq/.
 
-Current state: v8.5 — Wave 2 complete (#1–#6). Wave 3 #1 done: Chrome extension MVP in `extension/` (see `extension/README.md`).
-
-Next: Wave 3 item #2 — stage-specific prep templates (Phone Screen vs Interview vs Final Round).
-- Add stage preset selector in PrepModal + prep generation prompt
-- Backward-compatible with existing prepSections structure
-- See HANDOFF.md "What's Next" section for full scope
+Current state: v8.7 — Wave 3 fully shipped (logo, debrief log, velocity dashboard, mock interview).
+Build is clean. Ready to deploy or start Wave 4.
 
 Follow existing patterns:
 - constants.js for all data/config/styles — no React
@@ -105,7 +88,28 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 | `src/components/AppModal.jsx` | Add/edit application (next step date + type + structured prep) |
 | `src/components/AppCard.jsx` | Pipeline card (urgency + prep status from `prepSections`) |
 | `src/components/PrepModal.jsx` | Interview prep — sectioned `prepSections` + regenerate |
+| `src/components/DebriefModal.jsx` | Post-interview debrief log — per-round entry form + history list |
+| `src/mockInterviewQuestions.js` | Static question bank for mock interview mode (5 scenarios) |
 | `extension/*` | Chrome MV3: LinkedIn scrape → HQ import; `content-jobhq-bridge.js` sets Action Queue badge |
+
+## Data model additions (v8.7)
+
+```js
+// New field on every application (blankApp):
+interviewLog: []   // array of debrief entries (see blankDebriefEntry)
+
+// New helpers:
+blankDebriefEntry()      // { id, date, interviewerName, roundType, impression, confidence, strengths, gaps, redFlags, keyQuestions, notes }
+normalizeInterviewLog(entries)  // normalizes/migrates saved entries
+getWeeklyVelocityData(applications, weeksBack=8)  // → [{ weekStart, label, count, isCurrent }]
+
+// New constants:
+DEBRIEF_ROUND_TYPES     // array of { value, label }
+DEBRIEF_IMPRESSIONS     // array of { value, label, color }
+
+// Profile field:
+weeklyTarget: 5         // weekly application target for velocity dashboard
+```
 
 ## Data model additions (v8.5)
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { s, DAILY_BLOCKS, JOB_ACTION_TYPES, today, nextStepUrgency, buildOutreachPriorityList, prepSectionsHasContent } from "../constants";
+import { s, DAILY_BLOCKS, JOB_ACTION_TYPES, today, nextStepUrgency, buildOutreachPriorityList, prepSectionsHasContent, getWeeklyVelocityData } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 
 // ── DAILY ACTION COUNTER ──────────────────────────────────────────────────────
@@ -197,10 +197,89 @@ function buildQueue(applications, contacts) {
   return items;
 }
 
+function VelocityDashboard({ applications, profile, saveProfile }) {
+  const [editingTarget, setEditingTarget] = useState(false);
+  const [targetInput, setTargetInput] = useState(String(profile?.weeklyTarget ?? 5));
+  const weeks = getWeeklyVelocityData(applications || []);
+  const target = profile?.weeklyTarget ?? 5;
+  const thisWeek = weeks[weeks.length - 1]?.count ?? 0;
+  const maxCount = Math.max(...weeks.map(w => w.count), target, 1);
+  const fourWkAvg = Math.round(weeks.slice(-4).reduce((s, w) => s + w.count, 0) / 4 * 10) / 10;
+  const bestWeek = Math.max(...weeks.map(w => w.count));
+
+  function saveTarget() {
+    const n = parseInt(targetInput, 10);
+    if (!isNaN(n) && n > 0) saveProfile({ ...profile, weeklyTarget: n });
+    setEditingTarget(false);
+  }
+
+  return (
+    <div style={{ background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 16 }}>📈</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>Weekly Pace</span>
+        </div>
+        <div style={{ display: "flex", gap: 12, fontSize: 11, color: "#6b7280" }}>
+          <span>This wk: <strong style={{ color: thisWeek >= target ? "#10b981" : "#f3f4f6" }}>{thisWeek}/{target}</strong></span>
+          <span>4-wk avg: <strong style={{ color: "#9ca3af" }}>{fourWkAvg}</strong></span>
+          <span>Best: <strong style={{ color: "#9ca3af" }}>{bestWeek}</strong></span>
+          {editingTarget ? (
+            <span style={{ display: "flex", gap: 4, alignItems: "center" }}>
+              Target:
+              <input
+                autoFocus
+                type="number" min="1" max="30"
+                value={targetInput}
+                onChange={e => setTargetInput(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") saveTarget(); if (e.key === "Escape") setEditingTarget(false); }}
+                style={{ width: 36, padding: "1px 4px", fontSize: 11, background: "#161b27", border: "1px solid #3b82f6", borderRadius: 4, color: "#f3f4f6", fontFamily: "inherit" }}
+              />
+              <button onClick={saveTarget} style={{ fontSize: 11, padding: "1px 6px", borderRadius: 4, background: "#3b82f6", border: "none", color: "#fff", cursor: "pointer", fontFamily: "inherit" }}>✓</button>
+            </span>
+          ) : (
+            <button onClick={() => { setEditingTarget(true); setTargetInput(String(target)); }} style={{ fontSize: 11, color: "#4b5563", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+              Edit target
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Bar chart */}
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 56 }}>
+        {weeks.map(w => {
+          const barH = Math.round((w.count / maxCount) * 50);
+          const targetH = Math.round((target / maxCount) * 50);
+          const atTarget = w.count >= target;
+          return (
+            <div key={w.weekStart} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 2, position: "relative" }}>
+              {/* Target line marker */}
+              <div style={{ position: "absolute", bottom: targetH + 14, left: 0, right: 0, borderTop: "1px dashed #1f2937" }} />
+              <div style={{
+                width: "100%", borderRadius: "3px 3px 0 0",
+                height: Math.max(barH, w.count > 0 ? 4 : 0),
+                background: w.isCurrent
+                  ? (atTarget ? "#10b981" : "#3b82f6")
+                  : (atTarget ? "#10b98155" : "#1e3a5f"),
+                transition: "height 0.2s",
+                marginTop: "auto",
+              }} />
+              <div style={{ fontSize: 9, color: w.isCurrent ? "#9ca3af" : "#374151", whiteSpace: "nowrap", lineHeight: 1 }}>
+                {w.isCurrent ? "now" : w.label.replace(/\w+ /, "")}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function FocusTab({
   expandedBlock, setExpandedBlock, completedBlocks, setCompletedBlocks, todayDone,
   applications, contacts, dailyActions, addDailyAction, removeDailyAction,
   setAppModal, setPrepModal, setContactModal, setTab, showError,
+  profile, saveProfile,
 }) {
   const queue = buildQueue(applications || [], contacts || []);
   const outreachList = buildOutreachPriorityList(contacts || [], applications || []);
@@ -230,6 +309,12 @@ export default function FocusTab({
           dailyActions={dailyActions}
           addDailyAction={addDailyAction}
           removeDailyAction={removeDailyAction}
+        />
+
+        <VelocityDashboard
+          applications={applications}
+          profile={profile}
+          saveProfile={saveProfile}
         />
 
         <div style={s.focusHeader}>

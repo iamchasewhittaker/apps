@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Search HQ — Logo Variations</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f1117;
+    color: #e5e7eb;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    padding: 40px 32px;
+  }
+  h1 { font-size: 22px; font-weight: 800; color: #f9fafb; margin-bottom: 6px; }
+  .meta { font-size: 13px; color: #4b5563; margin-bottom: 40px; }
+  .section { margin-bottom: 48px; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: #374151; margin-bottom: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    cursor: pointer; padding: 8px; border-radius: 12px;
+    border: 2px solid transparent; transition: border-color 0.15s;
+  }
+  .card:hover { border-color: #1f2937; }
+  .card.selected { border-color: #1d4ed8; background: #111827; }
+  .label { font-size: 13px; font-weight: 600; color: #9ca3af; text-align: center; }
+  .sub { font-size: 11px; color: #4b5563; text-align: center; margin-top: -4px; }
+</style>
+</head>
+<body>
+
+<h1>Deep Blue — Text & Layout Variations</h1>
+<p class="meta">Background #1d4ed8 · Click to select</p>
+
+<!-- Row 1: HQ-only variations -->
+<div class="section">
+  <p class="section-label">HQ Lettermark</p>
+  <div class="grid">
+
+    <!-- HQ ultra large, no subtitle -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="360" text-anchor="middle" dominant-baseline="auto"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="290"
+          fill="#ffffff" letter-spacing="-14">HQ</text>
+      </svg>
+      <div class="label">HQ Only</div>
+      <div class="sub">oversized, no subtitle</div>
+    </div>
+
+    <!-- HQ with dot -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="340" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="250"
+          fill="#ffffff" letter-spacing="-12">HQ</text>
+        <circle cx="256" cy="410" r="18" fill="#ffffff" opacity="0.6"/>
+      </svg>
+      <div class="label">HQ + Dot</div>
+      <div class="sub">dot accent below</div>
+    </div>
+
+    <!-- HQ with underline bar -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="330" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="250"
+          fill="#ffffff" letter-spacing="-12">HQ</text>
+        <rect x="156" y="365" width="200" height="8" rx="4" fill="#ffffff" opacity="0.4"/>
+      </svg>
+      <div class="label">HQ + Bar</div>
+      <div class="sub">underline accent</div>
+    </div>
+
+    <!-- HQ stacked in two rows of one letter each -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="240" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="220"
+          fill="#ffffff" opacity="1" letter-spacing="0">H</text>
+        <text x="256" y="460" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="220"
+          fill="#ffffff" opacity="0.55" letter-spacing="0">Q</text>
+      </svg>
+      <div class="label">H / Q Stacked</div>
+      <div class="sub">vertical split, Q faded</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Row 2: JOB SEARCH + HQ combos -->
+<div class="section">
+  <p class="section-label">JOB SEARCH + HQ</p>
+  <div class="grid">
+
+    <!-- Original: subtitle above, HQ below -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="172" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="700" font-size="62"
+          fill="#ffffff" opacity="0.6" letter-spacing="6">JOB SEARCH</text>
+        <text x="256" y="360" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="220"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+      </svg>
+      <div class="label">Subtitle Above</div>
+      <div class="sub">"JOB SEARCH" top</div>
+    </div>
+
+    <!-- HQ above, subtitle below -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="300" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="220"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+        <text x="256" y="390" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="700" font-size="52"
+          fill="#ffffff" opacity="0.6" letter-spacing="8">JOB SEARCH</text>
+      </svg>
+      <div class="label">Subtitle Below</div>
+      <div class="sub">"JOB SEARCH" bottom</div>
+    </div>
+
+    <!-- Tight stack: JOB / HQ -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="220" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="130"
+          fill="#ffffff" opacity="0.45" letter-spacing="8">JOB</text>
+        <text x="256" y="400" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="240"
+          fill="#ffffff" letter-spacing="-12">HQ</text>
+      </svg>
+      <div class="label">JOB / HQ</div>
+      <div class="sub">tight, JOB faded</div>
+    </div>
+
+    <!-- Three line stack: JOB / SEARCH / HQ -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="160" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="700" font-size="80"
+          fill="#ffffff" opacity="0.45" letter-spacing="6">JOB</text>
+        <text x="256" y="270" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="700" font-size="80"
+          fill="#ffffff" opacity="0.45" letter-spacing="2">SEARCH</text>
+        <text x="256" y="430" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="200"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+      </svg>
+      <div class="label">Three Lines</div>
+      <div class="sub">JOB / SEARCH / HQ</div>
+    </div>
+
+    <!-- HQ with side-by-side label -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="310" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="240"
+          fill="#ffffff" letter-spacing="-12">HQ</text>
+        <rect x="86" y="355" width="340" height="2" fill="#ffffff" opacity="0.25"/>
+        <text x="256" y="415" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="600" font-size="46"
+          fill="#ffffff" opacity="0.5" letter-spacing="12">JOB SEARCH</text>
+      </svg>
+      <div class="label">HQ + Rule</div>
+      <div class="sub">divider line + small sub</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Row 3: Initials / Monogram variations -->
+<div class="section">
+  <p class="section-label">Initials & Monogram</p>
+  <div class="grid">
+
+    <!-- JSHQ four letters -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="330" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="145"
+          fill="#ffffff" letter-spacing="-6">JSHQ</text>
+      </svg>
+      <div class="label">JSHQ</div>
+      <div class="sub">four-letter initials</div>
+    </div>
+
+    <!-- JS · HQ -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="240" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="150"
+          fill="#ffffff" opacity="0.45" letter-spacing="-4">JS</text>
+        <text x="256" y="410" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="200"
+          fill="#ffffff" letter-spacing="-8">HQ</text>
+      </svg>
+      <div class="label">JS / HQ Split</div>
+      <div class="sub">JS faded above</div>
+    </div>
+
+    <!-- Two rows: JOB | SEARCH in small + HQ big, left-aligned feel -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <!-- left aligned block -->
+        <text x="80" y="190" text-anchor="start"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="600" font-size="70"
+          fill="#ffffff" opacity="0.5" letter-spacing="2">JOB</text>
+        <text x="80" y="280" text-anchor="start"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="600" font-size="70"
+          fill="#ffffff" opacity="0.5" letter-spacing="2">SEARCH</text>
+        <rect x="80" y="300" width="352" height="5" rx="2.5" fill="#ffffff" opacity="0.3"/>
+        <text x="80" y="450" text-anchor="start"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="200"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+      </svg>
+      <div class="label">Left-Aligned</div>
+      <div class="sub">editorial / badge feel</div>
+    </div>
+
+    <!-- HQ in a circle inset -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <circle cx="256" cy="230" r="170" fill="#ffffff" opacity="0.12"/>
+        <text x="256" y="290" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="220"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+        <text x="256" y="420" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="600" font-size="48"
+          fill="#ffffff" opacity="0.55" letter-spacing="8">JOB SEARCH</text>
+      </svg>
+      <div class="label">Circle Inset</div>
+      <div class="sub">frosted ring behind HQ</div>
+    </div>
+
+    <!-- HQ with bold bracket marks -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <text x="256" y="340" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="220"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+        <!-- left bracket -->
+        <rect x="72" y="130" width="10" height="60" rx="4" fill="#ffffff" opacity="0.35"/>
+        <rect x="72" y="130" width="36" height="10" rx="4" fill="#ffffff" opacity="0.35"/>
+        <!-- right bracket -->
+        <rect x="430" y="130" width="10" height="60" rx="4" fill="#ffffff" opacity="0.35"/>
+        <rect x="404" y="130" width="36" height="10" rx="4" fill="#ffffff" opacity="0.35"/>
+      </svg>
+      <div class="label">HQ + Brackets</div>
+      <div class="sub">structural accent corners</div>
+    </div>
+
+    <!-- Pill/badge: "HQ" in rounded pill shape inside the square -->
+    <div class="card" onclick="this.classList.toggle('selected')">
+      <svg viewBox="0 0 512 512" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="512" height="512" rx="96" fill="#1d4ed8"/>
+        <rect x="60" y="155" width="392" height="200" rx="100" fill="#ffffff" opacity="0.15"/>
+        <text x="256" y="300" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="900" font-size="200"
+          fill="#ffffff" letter-spacing="-10">HQ</text>
+        <text x="256" y="408" text-anchor="middle"
+          font-family="'DM Sans',system-ui,sans-serif" font-weight="600" font-size="46"
+          fill="#ffffff" opacity="0.5" letter-spacing="10">JOB SEARCH</text>
+      </svg>
+      <div class="label">Pill Behind</div>
+      <div class="sub">ghost pill inset</div>
+    </div>
+
+  </div>
+</div>
+
+<p style="font-size:12px; color:#374151; margin-top:8px; line-height:1.8">
+  Click to select · Deep Blue <strong style="color:#4b5563">#1d4ed8</strong> throughout ·
+  Tell me which variation (or mix of elements) to apply and I'll update both the web SVG and iOS Python script.
+</p>
+
+</body>
+</html>

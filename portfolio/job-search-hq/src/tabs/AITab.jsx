@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { s, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories } from "../constants";
+import { MOCK_INTERVIEW_SCENARIOS } from "../mockInterviewQuestions";
 import ErrorBoundary from "../ErrorBoundary";
 import AIResult from "../components/AIResult";
 import {
@@ -180,7 +181,7 @@ export default function AITab({
         </div>
 
         <div style={s.subTabs}>
-          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"]].map(([key, label]) => (
+          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"],["mock","🎤 Mock Interview"]].map(([key, label]) => (
             <button key={key} style={{ ...s.subTabBtn, ...(resumeTab === key ? s.subTabBtnActive : {}) }} onClick={() => setResumeTab(key)}>{label}</button>
           ))}
         </div>
@@ -589,7 +590,126 @@ Takeaway: ${story.takeaway}`}
             </div>
           </div>
         )}
+
+        {resumeTab === "mock" && (
+          <MockInterviewPanel showError={showError} />
+        )}
       </div>
     </ErrorBoundary>
+  );
+}
+
+function MockInterviewPanel({ showError }) {
+  const [scenarioKey, setScenarioKey] = useState(MOCK_INTERVIEW_SCENARIOS[0].key);
+  const [qIndex, setQIndex] = useState(0);
+  const [answer, setAnswer] = useState("");
+  const [sessionLog, setSessionLog] = useState([]);
+
+  const scenario = MOCK_INTERVIEW_SCENARIOS.find(s => s.key === scenarioKey) || MOCK_INTERVIEW_SCENARIOS[0];
+  const question = scenario.questions[qIndex];
+  const isLast = qIndex >= scenario.questions.length - 1;
+
+  function changeScenario(key) {
+    setScenarioKey(key);
+    setQIndex(0);
+    setAnswer("");
+  }
+
+  function nextQuestion() {
+    if (answer.trim()) {
+      setSessionLog(prev => [...prev, { question, answer: answer.trim(), scenario: scenario.label }]);
+    }
+    setAnswer("");
+    setQIndex(i => Math.min(i + 1, scenario.questions.length - 1));
+  }
+
+  function restart() {
+    setQIndex(0);
+    setAnswer("");
+    setSessionLog([]);
+  }
+
+  async function copyFeedbackPrompt() {
+    if (!answer.trim()) return;
+    const text = `You are a senior hiring manager coaching a candidate.\n\nQuestion: "${question}"\n\nCandidate answer:\n"${answer.trim()}"\n\nPlease give structured feedback:\n1. What worked well\n2. What was missing or unclear\n3. A suggested improved version (2-3 sentences)\n4. One follow-up question the interviewer might ask`;
+    try {
+      await navigator.clipboard.writeText(text);
+      showError("Copied feedback prompt — paste into ChatGPT or Claude, then paste the feedback back here.");
+    } catch {
+      showError("Could not copy — select manually.");
+    }
+  }
+
+  return (
+    <div style={s.aiLayout}>
+      <div style={s.aiLeft}>
+        <div style={s.sectionLabel}>Scenario</div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+          {MOCK_INTERVIEW_SCENARIOS.map(sc => (
+            <button
+              key={sc.key}
+              onClick={() => changeScenario(sc.key)}
+              style={{
+                padding: "6px 12px", borderRadius: 6, fontSize: 12, fontWeight: 600,
+                cursor: "pointer", fontFamily: "inherit",
+                background: scenarioKey === sc.key ? "#1e3a5f" : "#161b27",
+                border: `1.5px solid ${scenarioKey === sc.key ? "#3b82f6" : "#1f2937"}`,
+                color: scenarioKey === sc.key ? "#3b82f6" : "#6b7280",
+              }}
+            >{sc.label}</button>
+          ))}
+        </div>
+
+        <div style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: "#4b5563", marginBottom: 6 }}>
+            Question {qIndex + 1} of {scenario.questions.length}
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: "#f3f4f6", lineHeight: 1.5 }}>{question}</div>
+        </div>
+
+        <div style={s.sectionLabel}>Your answer</div>
+        <textarea
+          style={{ ...s.textarea, minHeight: 120 }}
+          value={answer}
+          onChange={e => setAnswer(e.target.value)}
+          placeholder="Type your answer here — or speak aloud, then summarize key points…"
+        />
+
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+          <button
+            style={{ ...s.btnSecondary, opacity: !answer.trim() ? 0.5 : 1 }}
+            disabled={!answer.trim()}
+            onClick={copyFeedbackPrompt}
+          >
+            📋 Copy feedback prompt
+          </button>
+          <button style={s.btnPrimary} onClick={nextQuestion} disabled={isLast && !answer.trim()}>
+            {isLast ? "Finish" : "Next question →"}
+          </button>
+          <button style={s.btnSecondary} onClick={restart}>Restart</button>
+        </div>
+
+        <div style={{ ...s.tipBox, marginTop: 14 }}>
+          <p>Copy the feedback prompt → paste into ChatGPT or Claude → paste the coach feedback back here as a note.</p>
+        </div>
+      </div>
+
+      <div style={s.aiRight}>
+        <div style={s.sectionLabel}>Session log ({sessionLog.length})</div>
+        {sessionLog.length === 0 ? (
+          <div style={{ fontSize: 12, color: "#4b5563" }}>Complete a question to see it here. Resets on reload.</div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {sessionLog.map((entry, i) => (
+              <div key={i} style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 8, padding: "10px 12px" }}>
+                <div style={{ fontSize: 11, color: "#4b5563", marginBottom: 4 }}>{entry.scenario} · Q{i + 1}</div>
+                <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6, fontStyle: "italic" }}>"{entry.question}"</div>
+                <div style={{ fontSize: 12, color: "#d1d5db" }}>{entry.answer}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import { s, STAGES, STAGE_COLORS, nextStepUrgency, prepSectionsHasContent } from "../constants";
 
-export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, archived }) {
+export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, onDebrief, archived }) {
   const linked = contacts.filter(c => c.appIds?.includes(app.id));
   const showPrep = ["Phone Screen", "Interview", "Final Round"].includes(app.stage);
+  const hasDebriefs = (app.interviewLog || []).length > 0;
   return (
     <div style={{ ...s.card, opacity: archived ? 0.7 : 1 }} className="card-hover">
       <div style={s.cardTop}>
@@ -38,6 +39,11 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
         )}
         {showPrep && (
           <button style={s.actionBtnPrep} onClick={onPrep}>🎯 Prep</button>
+        )}
+        {(showPrep || hasDebriefs) && (
+          <button style={{ ...s.actionBtnPrep, background: "#1a1608", borderColor: "#c8a84b44", color: "#c8a84b" }} onClick={onDebrief}>
+            {hasDebriefs ? `📋 ${(app.interviewLog || []).length}` : "📋 Debrief"}
+          </button>
         )}
       </div>
     </div>

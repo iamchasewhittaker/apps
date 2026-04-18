@@ -256,6 +256,7 @@ export const defaultData = {
     topAchievements: "• Onboarded ~200 merchants/month at Authorize.Net — guided each from application through first live transaction\n• 98% integration issue resolution rate — resolved the vast majority without escalation\n• Exceeded KPI targets 10–15% consistently across four-plus years\n• Built onboarding docs and process guides adopted by the full team\n• Managed both SMB accounts solo and larger deals up to $100K alongside AEs",
     salaryTarget: "",
     notes: "6+ years digital payments. Strongest experience: Authorize.Net merchant onboarding and implementation (inbound, 98% resolution rate). Remote only. Looking for implementation, CS, or inbound AE roles — NOT cold outbound SDR.",
+    weeklyTarget: 5,
   },
 };
 
@@ -271,7 +272,55 @@ export function blankApp() {
     prepNotes: "", // legacy fallback
     prepSections: blankPrepSections(),
     prepStageKey: "", // phone_screen | interview | final_round — last template applied (optional)
+    interviewLog: [],
   };
+}
+
+export const DEBRIEF_ROUND_TYPES = [
+  { value: "phone_screen", label: "Phone Screen" },
+  { value: "technical",    label: "Technical" },
+  { value: "onsite",       label: "On-site / Panel" },
+  { value: "final_round",  label: "Final Round" },
+  { value: "other",        label: "Other" },
+];
+
+export const DEBRIEF_IMPRESSIONS = [
+  { value: "positive", label: "Positive", color: "#10b981" },
+  { value: "neutral",  label: "Neutral",  color: "#f59e0b" },
+  { value: "negative", label: "Negative", color: "#ef4444" },
+];
+
+export function blankDebriefEntry() {
+  return {
+    id: generateId(),
+    date: today(),
+    interviewerName: "",
+    roundType: "phone_screen",
+    impression: "neutral",
+    confidence: 3,
+    strengths: "",
+    gaps: "",
+    redFlags: "",
+    keyQuestions: "",
+    notes: "",
+  };
+}
+
+export function normalizeInterviewLog(log = []) {
+  if (!Array.isArray(log)) return [];
+  return log.map(entry => ({
+    id: entry.id || generateId(),
+    date: entry.date || today(),
+    interviewerName: entry.interviewerName || "",
+    roundType: entry.roundType || "other",
+    impression: entry.impression || "neutral",
+    confidence: entry.confidence ?? 3,
+    strengths: entry.strengths || "",
+    gaps: entry.gaps || "",
+    redFlags: entry.redFlags || "",
+    keyQuestions: entry.keyQuestions || "",
+    notes: entry.notes || "",
+  }));
 }
 
 export function nextStepUrgency(nextStepDate) {
@@ -519,6 +568,36 @@ export function normalizeStarStories(stories = []) {
     result: story.result || "",
     takeaway: story.takeaway || "",
   }));
+}
+
+export function getWeeklyVelocityData(applications = [], weeksBack = 8) {
+  const weeks = [];
+  const now = new Date();
+  // Find Monday of current week
+  const dayOfWeek = now.getDay(); // 0=Sun
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((dayOfWeek + 6) % 7));
+  monday.setHours(0, 0, 0, 0);
+
+  for (let i = weeksBack - 1; i >= 0; i--) {
+    const weekStart = new Date(monday);
+    weekStart.setDate(monday.getDate() - i * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 7);
+
+    const count = applications.filter(app => {
+      if (!app.appliedDate) return false;
+      const d = new Date(app.appliedDate + "T00:00:00");
+      return d >= weekStart && d < weekEnd;
+    }).length;
+
+    const label = i === 0
+      ? "This wk"
+      : `${weekStart.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`;
+
+    weeks.push({ weekStart: weekStart.toISOString().slice(0, 10), label, count, isCurrent: i === 0 });
+  }
+  return weeks;
 }
 
 export function getOutcomeAnalytics(applications = []) {

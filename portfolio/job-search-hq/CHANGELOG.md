@@ -1,6 +1,30 @@
 # Changelog
 
-## [Unreleased]
+## [Unreleased] — 2026-04-18 — Wave 3: Logo + Debrief + Velocity + Mock Interview (v8.7)
+
+### Logo redesign
+- **Outline logo** — `public/logo.svg` and `public/favicon.svg` updated to deep blue (`#1d4ed8`) background with white stroke-only "HQ" lettering (fill: none, stroke: #ffffff). Clean at all sizes; matches portfolio bright-bg standard.
+- Two HTML mockup files generated for design review before committing: `design/logo-mockup.html` (11 color/gradient options) and `design/logo-mockup-2.html` (style variants: solid/outline/gradient/shadow).
+- iOS `tools/generate_brand_assets.py` updated: `BG = (0x1D, 0x4E, 0xD8)`, `BAND = (0x1E, 0x40, 0xAF)`; outline effect rendered via `fill=BG + stroke_fill=WHITE` (Pillow doesn't support fill="none" natively).
+
+### Post-interview debrief log (A1)
+- Added `interviewLog: []` to `blankApp()` in `src/constants.js`.
+- New constants: `DEBRIEF_ROUND_TYPES` (phone_screen / technical / on_site / panel / final / other), `DEBRIEF_IMPRESSIONS` (positive/neutral/negative with color tokens).
+- New helpers: `blankDebriefEntry()`, `normalizeInterviewLog()`.
+- New `src/components/DebriefModal.jsx` — per-round entry form (date, interviewer, round type, impression buttons, confidence 1–5, strengths/gaps/redFlags/keyQuestions/notes); entry history with inline edit + delete; saves on each action via `onSave`.
+- `AppCard.jsx` updated: "📋 Debrief" button added; shows count badge when entries exist.
+- `App.jsx` wired: `debriefModal` state, `setDebriefModal` passed to `PipelineTab`, `DebriefModal` rendered.
+- `PipelineTab.jsx` updated: `setDebriefModal` prop + `onDebrief` on both active and archived AppCards.
+
+### Weekly velocity dashboard (A2)
+- Added `weeklyTarget: 5` to default `profile` object in `src/constants.js`.
+- New helper: `getWeeklyVelocityData(applications, weeksBack=8)` — Monday-aligned ISO weeks, current week flagged.
+- `FocusTab.jsx` updated: new `VelocityDashboard` component — inline SVG bar chart (8 bars), dashed target line, current week highlight, editable weekly target (calls `saveProfile`), stats row (this wk/target, 4-wk avg, best).
+- `App.jsx` updated: `profile` + `saveProfile` threaded to `FocusTab`.
+
+### Mock interview mode (A3)
+- New `src/mockInterviewQuestions.js` — `MOCK_INTERVIEW_SCENARIOS` (5 scenarios: Behavioral/STAR, Situational, Implementation/CS, Payments Domain, Role Fit); 6–7 questions each.
+- `AITab.jsx` updated: new "🎤 Mock Interview" sub-tab; `MockInterviewPanel` component — scenario selector, question card, answer textarea, copy-feedback-prompt button, next/restart, session log with completed Q&A.
 
 ### Removed / changed (v8.6)
 

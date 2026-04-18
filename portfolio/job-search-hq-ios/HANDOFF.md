@@ -4,9 +4,9 @@
 
 | Field | Value |
 |-------|--------|
-| **Focus** | v0.1 on device — text logo (JOB SEARCH / HQ) installed on iPhone 12 Pro Max |
-| **Next** | Run **⌘U** in Xcode for unit tests; Phase 2 Supabase sync + OTP per `docs/SYNC_PHASE2.md` |
-| **Last touch** | 2026-04-14 — AppIcon replaced with text-based brand mark (JOB SEARCH + HQ); installed on device `A0C65578-B1E0-4E96-A1EC-EEB8913BD11C` |
+| **Focus** | v0.1 on device — deep blue outline logo (regenerated 2026-04-18) |
+| **Next** | Phase 2 Supabase sync + OTP per `docs/SYNC_PHASE2.md` (B1–B6 in plan) |
+| **Last touch** | 2026-04-18 — Logo updated to deep blue (`#1d4ed8`) outline style; `tools/generate_brand_assets.py` updated; AppIcon.png + Logo.png regenerated. |
 
 ## Notes
 

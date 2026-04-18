@@ -10,6 +10,7 @@ import AppModal from "./components/AppModal";
 import ContactModal from "./components/ContactModal";
 import ProfileModal from "./components/ProfileModal";
 import PrepModal from "./components/PrepModal";
+import DebriefModal from "./components/DebriefModal";
 import FocusTab from "./tabs/FocusTab";
 import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
@@ -212,6 +213,7 @@ export default function JobSearchTracker() {
   const [contactModal, setContactModal] = useState(null);
   const [profileModal, setProfileModal] = useState(false);
   const [prepModal, setPrepModal] = useState(null);
+  const [debriefModal, setDebriefModal] = useState(null);
 
   // Shared state that multiple tabs read or set
   const [kitApp, setKitApp] = useState(null);
@@ -443,13 +445,14 @@ export default function JobSearchTracker() {
           addDailyAction={addDailyAction} removeDailyAction={removeDailyAction}
           setAppModal={setAppModal} setPrepModal={setPrepModal}
           setContactModal={setContactModal} setTab={setTab} showError={showError}
+          profile={data.profile} saveProfile={saveProfile}
         />
       )}
       {tab === "pipeline" && (
         <PipelineTab
           activeApps={activeApps} archivedApps={archivedApps}
           contacts={data.contacts} saveApp={saveApp}
-          setAppModal={setAppModal} setPrepModal={setPrepModal}
+          setAppModal={setAppModal} setPrepModal={setPrepModal} setDebriefModal={setDebriefModal}
           setKitApp={setKitApp} setKitResumeResult={setKitResumeResult} setKitCoverResult={setKitCoverResult}
           setTab={setTab} setResumeTab={setResumeTab}
         />
@@ -504,6 +507,13 @@ export default function JobSearchTracker() {
           onSave={saveApp}
           onClose={() => setPrepModal(null)}
           showError={showError}
+        />
+      )}
+      {debriefModal && (
+        <DebriefModal
+          app={debriefModal.app}
+          onSave={app => { saveApp(app); setDebriefModal({ app }); }}
+          onClose={() => setDebriefModal(null)}
         />
       )}
     </div>

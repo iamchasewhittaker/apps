@@ -3,7 +3,7 @@ import { s, STAGES, STAGE_COLORS, blankApp, getOutcomeAnalytics } from "../const
 import ErrorBoundary from "../ErrorBoundary";
 import AppCard from "../components/AppCard";
 
-export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab }) {
+export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setDebriefModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab }) {
   const [urlInput, setUrlInput] = useState("");
   const [jdPaste, setJdPaste] = useState("");
 
@@ -112,6 +112,7 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
                 onStageChange={stage => saveApp({ ...app, stage })}
                 onApplyKit={() => openKit(app)}
                 onPrep={() => setPrepModal({ app })}
+                onDebrief={() => setDebriefModal({ app })}
               />
             ))}
         </div>
@@ -126,6 +127,7 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
                   onStageChange={stage => saveApp({ ...app, stage })}
                   onApplyKit={() => openKit(app)}
                   onPrep={() => setPrepModal({ app })}
+                  onDebrief={() => setDebriefModal({ app })}
                   archived
                 />
               ))}
