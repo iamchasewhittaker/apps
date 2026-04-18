@@ -29,10 +29,6 @@ private let turnPattern = try! NSRegularExpression(
     options: [.caseInsensitive, .anchorsMatchLines]
 )
 
-private func wordCount(_ text: String) -> Int {
-    text.split(whereSeparator: { $0.isWhitespace }).count
-}
-
 private func splitIntoTurns(_ text: String) -> [String] {
     let lines = text.components(separatedBy: "\n")
     var segments: [String] = []
@@ -79,93 +75,90 @@ private func splitIntoSentences(_ text: String) -> [String] {
                    .filter { !$0.isEmpty }
 }
 
-/// Recursively split any segment larger than `maxWords` using the finer-grained splitters.
-private func refineSegments(_ segments: [String], maxWords: Int) -> [String] {
-    var result: [String] = []
-    for seg in segments {
-        if wordCount(seg) <= maxWords {
-            result.append(seg)
-            continue
+/// Recursively split `text` into segments each ≤ maxChars.
+/// Strategy order: Q&A turns → paragraphs → sentences → greedy word pack → hard slice.
+private func splitToFit(_ text: String, maxChars: Int) -> [String] {
+    if text.count <= maxChars { return [text] }
+
+    for splitter in [splitIntoTurns, splitIntoParagraphs, splitIntoSentences] {
+        let parts = splitter(text)
+        if parts.count > 1 {
+            return parts.flatMap { splitToFit($0, maxChars: maxChars) }
         }
-        // Too big — try paragraphs
-        let paras = splitIntoParagraphs(seg)
-        if paras.count > 1 {
-            result.append(contentsOf: refineSegments(paras, maxWords: maxWords))
-            continue
-        }
-        // Try sentences
-        let sentences = splitIntoSentences(seg)
-        if sentences.count > 1 {
-            result.append(contentsOf: refineSegments(sentences, maxWords: maxWords))
-            continue
-        }
-        // Can't split further — keep as is
-        result.append(seg)
     }
-    return result
+
+    // Greedy-pack words
+    let words = text.split(whereSeparator: { $0.isWhitespace }).map(String.init)
+    if words.count > 1 {
+        var out: [String] = []
+        var buf: [String] = []
+        var bufLen = 0
+        for w in words {
+            let projected = bufLen == 0 ? w.count : bufLen + 1 + w.count
+            if projected > maxChars && !buf.isEmpty {
+                out.append(buf.joined(separator: " "))
+                buf = []
+                bufLen = 0
+            }
+            if w.count > maxChars {
+                var start = w.startIndex
+                while start < w.endIndex {
+                    let end = w.index(start, offsetBy: maxChars, limitedBy: w.endIndex) ?? w.endIndex
+                    out.append(String(w[start..<end]))
+                    start = end
+                }
+            } else {
+                buf.append(w)
+                bufLen = bufLen == 0 ? w.count : bufLen + 1 + w.count
+            }
+        }
+        if !buf.isEmpty { out.append(buf.joined(separator: " ")) }
+        return out
+    }
+
+    // Hard slice
+    var out: [String] = []
+    var start = text.startIndex
+    while start < text.endIndex {
+        let end = text.index(start, offsetBy: maxChars, limitedBy: text.endIndex) ?? text.endIndex
+        out.append(String(text[start..<end]))
+        start = end
+    }
+    return out
 }
 
-func chunkSmart(_ text: String, targetWords: Int) -> [Chunk] {
-    let lo = Int(Double(targetWords) * 0.8)
-    let hi = Int(Double(targetWords) * 1.2)
-
+/// Character-based chunker. Never exceeds maxChars.
+/// Greedy-packs turn/paragraph atoms joined by "\n\n".
+/// Mirrors `chunkByChars` in ash-reader/lib/chunker.ts.
+func chunkByChars(_ text: String, maxChars: Int) -> [Chunk] {
     let turns = splitIntoTurns(text)
-    let initial: [String]
-    if turns.count > 1 {
-        initial = turns
-    } else {
-        let paras = splitIntoParagraphs(text)
-        initial = paras.count > 1 ? paras : splitIntoSentences(text)
-    }
+    let segments = turns.count > 1 ? turns : splitIntoParagraphs(text)
 
-    // Guarantee no single segment exceeds the upper bound
-    let segments = refineSegments(initial, maxWords: hi)
+    let atoms = segments.flatMap { splitToFit($0, maxChars: maxChars) }
 
+    let join = "\n\n"
     var chunks: [Chunk] = []
-    var current: [String] = []
-    var currentWords = 0
+    var cur: [String] = []
+    var curLen = 0
     var chunkIndex = 0
 
-    var i = 0
-    while i < segments.count {
-        let seg = segments[i]
-        let segWords = wordCount(seg)
-
-        if currentWords >= lo && currentWords + segWords > hi {
-            let joined = current.joined(separator: "\n\n").trimmingCharacters(in: .whitespacesAndNewlines)
-            chunks.append(Chunk(id: chunkIndex, text: joined))
-            chunkIndex += 1
-            current = [seg]
-            currentWords = segWords
-            i += 1
-            continue
-        }
-
-        current.append(seg)
-        currentWords += segWords
-
-        if currentWords >= targetWords {
-            let nextIdx = i + 1
-            if nextIdx < segments.count {
-                let nextWords = wordCount(segments[nextIdx])
-                if currentWords + nextWords <= hi {
-                    current.append(segments[nextIdx])
-                    currentWords += nextWords
-                    i += 1
-                }
+    for atom in atoms {
+        let projected = curLen == 0 ? atom.count : curLen + join.count + atom.count
+        if projected > maxChars && !cur.isEmpty {
+            let joined = cur.joined(separator: join).trimmingCharacters(in: .whitespacesAndNewlines)
+            if !joined.isEmpty {
+                chunks.append(Chunk(id: chunkIndex, text: joined))
+                chunkIndex += 1
             }
-            let joined = current.joined(separator: "\n\n").trimmingCharacters(in: .whitespacesAndNewlines)
-            chunks.append(Chunk(id: chunkIndex, text: joined))
-            chunkIndex += 1
-            current = []
-            currentWords = 0
+            cur = []
+            curLen = 0
         }
-
-        i += 1
+        cur.append(atom)
+        curLen = curLen == 0 ? atom.count : curLen + join.count + atom.count
     }
 
-    if !current.isEmpty {
-        let joined = current.joined(separator: "\n\n").trimmingCharacters(in: .whitespacesAndNewlines)
+    if !cur.isEmpty {
+        let joined = cur.joined(separator: join).trimmingCharacters(in: .whitespacesAndNewlines)
         if !joined.isEmpty {
             chunks.append(Chunk(id: chunkIndex, text: joined))
         }

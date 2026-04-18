@@ -34,7 +34,7 @@ struct ContentView: View {
 
 private struct ReaderTab: View {
     @State private var chunks: [Chunk] = []
-    @State private var targetSize: Int = 2000
+    @State private var targetSize: Int = 4000
     @State private var isLoading = true
     @AppStorage("ash_reader_ios_prompt_prefix") private var storedPrefix: String = ""
     @AppStorage("ash_reader_ios_prompt_prefix_on") private var storedPrefixOn: String = ""
@@ -72,7 +72,7 @@ private struct ReaderTab: View {
             isLoading = false
             return
         }
-        chunks = chunkSmart(text, targetWords: targetSize)
+        chunks = chunkByChars(text, maxChars: targetSize)
         isLoading = false
     }
 
@@ -80,6 +80,6 @@ private struct ReaderTab: View {
         targetSize = size
         guard let url = Bundle.main.url(forResource: "doc", withExtension: "txt"),
               let text = try? String(contentsOf: url, encoding: .utf8) else { return }
-        chunks = chunkSmart(text, targetWords: size)
+        chunks = chunkByChars(text, maxChars: size)
     }
 }

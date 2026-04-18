@@ -63,7 +63,7 @@ private struct ThemeAccordion: View {
 
     @State private var expanded = false
     @State private var themeChunks: [Chunk] = []
-    @State private var chunkSize: Int = 1000
+    @State private var chunkSize: Int = 4000
 
     private var storageKey: String {
         "ash_reader_ios_theme_\(section.id)_sent"
@@ -127,7 +127,7 @@ private struct ThemeAccordion: View {
 
     private func toggle() {
         if !expanded && themeChunks.isEmpty {
-            themeChunks = chunkSmart(section.content, targetWords: chunkSize)
+            themeChunks = chunkByChars(section.content, maxChars: chunkSize)
         }
         withAnimation(.easeInOut(duration: 0.18)) {
             expanded.toggle()

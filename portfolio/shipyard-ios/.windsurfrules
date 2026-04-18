@@ -1,0 +1,35 @@
+# Shipyard iOS — AI Coding Instructions
+
+Read `CLAUDE.md` + `HANDOFF.md` first. This file is a short-form summary for tools that don't auto-load `CLAUDE.md`.
+
+## Tech Stack
+- SwiftUI + iOS 17 + `@Observable` + `@MainActor`
+- No external deps in Phase 1 (no ClarityUI, no Supabase yet)
+- Hand-crafted `Shipyard.xcodeproj/project.pbxproj` — UUID prefix `SY`
+- Bundle ID: `com.chasewhittaker.Shipyard`
+
+## Coding Style
+- Pragmatic, no over-engineering, minimal comments
+- Single store (`FleetStore`) injected via `.environment(store)`
+- `nonisolated init()` so `@State private var store = FleetStore()` works in `@main`
+- All data as `Codable` structs — never `[String: Any]`
+- Field names stay snake_case on models (match web `Project` TS type for future Supabase decode)
+
+## Nautical Lexicon (user-facing copy)
+- Projects → **Ships**
+- Fleet (not dashboard)
+- Under Construction (not building)
+- Launched (not shipped)
+- Drydock (not paused)
+- Captain's Log (not learnings)
+
+## Phase 1 Scope
+- Read-only fleet list from hardcoded mock data in `FleetStore.loadMockFleet()`
+- No Supabase, no auth, no write ops
+- Source of truth is `portfolio/shipyard/` (web) — mirror types + labels, don't invent
+
+## Build
+```bash
+xcodebuild build -project Shipyard.xcodeproj -scheme Shipyard \
+  -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO
+```

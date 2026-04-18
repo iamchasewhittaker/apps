@@ -53,22 +53,19 @@ func parseThemes(_ md: String) -> [ThemeSection] {
     var parts: [String] = []
     let nsString = md as NSString
     var cursor = 0
-    for match in matches {
-        if match.range.location > cursor {
-            let prev = nsString.substring(with: NSRange(
+    for (i, match) in matches.enumerated() {
+        if i > 0 && match.range.location > cursor {
+            parts.append(nsString.substring(with: NSRange(
                 location: cursor,
                 length: match.range.location - cursor
-            ))
-            parts.append(prev)
+            )))
         }
         cursor = match.range.location + match.range.length
     }
-    if cursor < nsString.length {
+    if !matches.isEmpty && cursor < nsString.length {
         parts.append(nsString.substring(from: cursor))
     }
 
-    // First "part" is whatever preceded the first ## — discard it (matches JS `.filter(Boolean)`
-    // after splitting, which here means dropping the preamble)
     let sections = parts.filter { !$0.isEmpty }
 
     let titlePrefix = try! NSRegularExpression(pattern: #"^\d+\.\s*"#)

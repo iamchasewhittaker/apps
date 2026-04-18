@@ -114,7 +114,7 @@ function ThemeAccordion({ section, index }: { section: ThemeSection; index: numb
           <ChunkReader
             text={section.content}
             storageKey={`theme_${section.id}`}
-            defaultSize={2000}
+            defaultSize={4000}
           />
         </div>
       )}

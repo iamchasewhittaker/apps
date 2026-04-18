@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { chunkSmart, stripMarkdown, wordCount, charCount } from "@/lib/chunker";
+import { chunkByChars, stripMarkdown, charCount } from "@/lib/chunker";
 import { markSent, isSent, getSentCount, resetProgress, getPromptPrefix, isPromptPrefixEnabled } from "@/lib/progress";
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
   defaultSize?: number;
 }
 
-const SIZES = [1000, 1500, 2000];
+const SIZES = [2000, 3000, 4000];
 
-export default function ChunkReader({ text, storageKey, defaultSize = 2000 }: Props) {
+export default function ChunkReader({ text, storageKey, defaultSize = 4000 }: Props) {
   const [size, setSize] = useState(defaultSize);
   const [idx, setIdx] = useState(0);
   const [chunks, setChunks] = useState<string[]>([]);
@@ -19,7 +19,7 @@ export default function ChunkReader({ text, storageKey, defaultSize = 2000 }: Pr
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const c = chunkSmart(text, size);
+    const c = chunkByChars(text, size);
     setChunks(c);
     setIdx(0);
     // Find first unsent chunk
@@ -61,7 +61,6 @@ export default function ChunkReader({ text, storageKey, defaultSize = 2000 }: Pr
   const chunk = chunks[idx];
   const sent = sentMap[idx] ?? false;
   const sentCount = sentMap.filter(Boolean).length;
-  const wc = wordCount(chunk);
   const cc = charCount(stripMarkdown(chunk));
 
   return (
@@ -84,7 +83,7 @@ export default function ChunkReader({ text, storageKey, defaultSize = 2000 }: Pr
               fontWeight: size === s ? 600 : 400,
             }}
           >
-            {s.toLocaleString()}w
+            {s.toLocaleString()}c
           </button>
         ))}
       </div>
@@ -124,8 +123,8 @@ export default function ChunkReader({ text, storageKey, defaultSize = 2000 }: Pr
           <span style={{ fontWeight: 600, fontSize: 15 }}>
             Chunk {idx + 1} of {chunks.length}
           </span>
-          <span style={{ color: "#777", fontSize: 13, marginLeft: 8 }}>
-            {wc.toLocaleString()} words · ~{cc.toLocaleString()} chars
+          <span style={{ color: cc > size ? "#ff8080" : "#777", fontSize: 13, marginLeft: 8 }}>
+            {cc.toLocaleString()} / {size.toLocaleString()} chars
           </span>
         </div>
         <div style={{ display: "flex", gap: 8 }}>

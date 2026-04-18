@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-private let SIZES = [1000, 1500, 2000]
+private let SIZES = [2000, 3000, 4000]
 
 private let ACCENT = Color(hex: "#f5e300")
 private let ACCENT_INK = Color(hex: "#0f0f0f")
@@ -19,7 +19,7 @@ struct ChunkReaderView: View {
     @State private var currentIndex: Int = 0
     @State private var copied = false
     @State private var showSettings = false
-    @State private var selectedSize: Int = 2000
+    @State private var selectedSize: Int = 4000
 
     init(
         chunks: [Chunk],
@@ -113,9 +113,9 @@ struct ChunkReaderView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("Chunk \(currentIndex + 1)")
                                     .font(.system(size: 15, weight: .semibold))
-                                Text("\(chunk.wordCount.formatted()) words")
+                                Text("\(chunk.charCount.formatted()) / \(targetSize.formatted()) chars")
                                     .font(.system(size: 12))
-                                    .foregroundStyle(Color(hex: "#777777"))
+                                    .foregroundStyle(chunk.charCount > targetSize ? Color(hex: "#ff8080") : Color(hex: "#777777"))
                             }
                             Spacer()
                             HStack(spacing: 8) {
@@ -223,11 +223,7 @@ struct ChunkReaderView: View {
 }
 
 private func sizeLabel(_ size: Int) -> String {
-    let k = Double(size) / 1000
-    let trimmed = k.truncatingRemainder(dividingBy: 1) == 0
-        ? String(Int(k))
-        : String(format: "%.1f", k)
-    return "\(trimmed)k words"
+    "\(size.formatted())c"
 }
 
 private struct SettingsSheet: View {

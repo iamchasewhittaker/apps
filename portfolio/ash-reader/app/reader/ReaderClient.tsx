@@ -76,7 +76,7 @@ export default function ReaderClient({ fileText }: Props) {
       </div>
 
       {tab === "file" && fileText && (
-        <ChunkReader text={fileText} storageKey="reader_file" defaultSize={2000} />
+        <ChunkReader text={fileText} storageKey="reader_file" defaultSize={4000} />
       )}
 
       {tab === "paste" && (
@@ -98,7 +98,7 @@ export default function ReaderClient({ fileText }: Props) {
               >
                 ← Edit text
               </button>
-              <ChunkReader text={submitted} storageKey="reader_paste" defaultSize={2000} />
+              <ChunkReader text={submitted} storageKey="reader_paste" defaultSize={4000} />
             </>
           ) : (
             <div>

@@ -5,7 +5,7 @@ final class AshReaderTests: XCTestCase {
 
     // MARK: - Chunker (existing)
 
-    func testChunkSmartQA() {
+    func testChunkByCharsQA() {
         let text = """
         Human: What is anxiety?
 
@@ -20,18 +20,30 @@ final class AshReaderTests: XCTestCase {
         Finally, regular exercise, sleep hygiene, and limiting caffeine all significantly reduce baseline anxiety levels.
         """
 
-        let chunks = chunkSmart(text, targetWords: 30)
+        let chunks = chunkByChars(text, maxChars: 200)
         XCTAssertGreaterThan(chunks.count, 0)
         for chunk in chunks {
             let trimmed = chunk.text.trimmingCharacters(in: .whitespacesAndNewlines)
             XCTAssertFalse(trimmed.isEmpty)
+            XCTAssertLessThanOrEqual(chunk.charCount, 200, "Chunk \(chunk.id) exceeds maxChars: \(chunk.charCount)")
         }
     }
 
-    func testChunkSmartFallbackToParagraphs() {
+    func testChunkByCharsFallbackToParagraphs() {
         let text = "This is paragraph one with some words in it.\n\nThis is paragraph two with more content here.\n\nParagraph three keeps going with additional material."
-        let chunks = chunkSmart(text, targetWords: 8)
+        let chunks = chunkByChars(text, maxChars: 60)
         XCTAssertGreaterThan(chunks.count, 1)
+        for chunk in chunks {
+            XCTAssertLessThanOrEqual(chunk.charCount, 60, "Chunk \(chunk.id) exceeds maxChars: \(chunk.charCount)")
+        }
+    }
+
+    func testChunkByCharsHardCapNeverExceeded() {
+        let longParagraph = String(repeating: "word ", count: 1000) // 5000 chars
+        let chunks = chunkByChars(longParagraph, maxChars: 4000)
+        for chunk in chunks {
+            XCTAssertLessThanOrEqual(chunk.charCount, 4000, "Chunk \(chunk.id) exceeds 4000: \(chunk.charCount)")
+        }
     }
 
     // MARK: - ProgressStore

@@ -16,12 +16,7 @@ export function stripMarkdown(text: string): string {
 // Patterns that signal the start of a new Q&A turn
 const QA_TURN_RE = /^(?:Human|User|You|ChatGPT|Assistant|GPT-4|GPT-3\.5|AI)\s*:/im;
 
-/**
- * Split text into segments at Q&A turn boundaries.
- * Each segment is one full "turn" (everything up to the next turn marker).
- */
 function splitIntoTurns(text: string): string[] {
-  // Find all positions where a new turn starts
   const lines = text.split("\n");
   const segments: string[] = [];
   let current: string[] = [];
@@ -38,98 +33,84 @@ function splitIntoTurns(text: string): string[] {
   return segments.filter((s) => s.trim().length > 0);
 }
 
-/**
- * Split text into segments at paragraph boundaries (double newline).
- */
 function splitIntoParagraphs(text: string): string[] {
   return text.split(/\n\n+/).filter((s) => s.trim().length > 0);
 }
 
-/**
- * Split text into segments at sentence boundaries.
- */
 function splitIntoSentences(text: string): string[] {
   return text
     .split(/(?<=[.!?])\s+/)
     .filter((s) => s.trim().length > 0);
 }
 
-function countWords(text: string): number {
-  return text.split(/\s+/).filter(Boolean).length;
+/**
+ * Recursively split `text` into segments each ≤ maxChars.
+ * Strategy order: Q&A turns → paragraphs → sentences → greedy word pack → hard slice.
+ */
+function splitToFit(text: string, maxChars: number): string[] {
+  if (text.length <= maxChars) return [text];
+
+  for (const splitter of [splitIntoTurns, splitIntoParagraphs, splitIntoSentences]) {
+    const parts = splitter(text);
+    if (parts.length > 1) return parts.flatMap((p) => splitToFit(p, maxChars));
+  }
+
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length > 1) {
+    const out: string[] = [];
+    let buf: string[] = [];
+    let bufLen = 0;
+    for (const w of words) {
+      const projected = bufLen === 0 ? w.length : bufLen + 1 + w.length;
+      if (projected > maxChars && buf.length > 0) {
+        out.push(buf.join(" "));
+        buf = [];
+        bufLen = 0;
+      }
+      if (w.length > maxChars) {
+        for (let i = 0; i < w.length; i += maxChars) out.push(w.slice(i, i + maxChars));
+      } else {
+        buf.push(w);
+        bufLen = bufLen === 0 ? w.length : bufLen + 1 + w.length;
+      }
+    }
+    if (buf.length) out.push(buf.join(" "));
+    return out;
+  }
+
+  const out: string[] = [];
+  for (let i = 0; i < text.length; i += maxChars) out.push(text.slice(i, i + maxChars));
+  return out;
 }
 
 /**
- * Smart chunker that breaks at Q&A exchange boundaries.
- * Falls back to paragraph → sentence if no Q&A markers detected.
- * Allows ±20% variance from target word count for clean breaks.
+ * Character-based chunker. Never exceeds maxChars.
+ * Greedy-packs turn/paragraph atoms joined by "\n\n".
  */
-export function chunkSmart(text: string, wordsPerChunk: number): string[] {
-  const lo = wordsPerChunk * 0.8;
-  const hi = wordsPerChunk * 1.2;
-
-  // Detect Q&A structure
+export function chunkByChars(text: string, maxChars: number): string[] {
   const turns = splitIntoTurns(text);
-  const hasQA = turns.length > 1;
+  const segments = turns.length > 1 ? turns : splitIntoParagraphs(text);
 
-  const segments = hasQA
-    ? turns
-    : splitIntoParagraphs(text).length > 1
-    ? splitIntoParagraphs(text)
-    : splitIntoSentences(text);
+  const atoms = segments.flatMap((s) => splitToFit(s, maxChars));
 
+  const JOIN = "\n\n";
   const chunks: string[] = [];
-  let current: string[] = [];
-  let currentWords = 0;
+  let cur: string[] = [];
+  let curLen = 0;
 
-  for (let i = 0; i < segments.length; i++) {
-    const seg = segments[i];
-    const segWords = countWords(seg);
-
-    // If adding this segment would exceed hi AND we're already past lo, close the chunk
-    if (currentWords >= lo && currentWords + segWords > hi) {
-      chunks.push(current.join("\n\n").trim());
-      current = [seg];
-      currentWords = segWords;
-      continue;
+  for (const a of atoms) {
+    const projected = curLen === 0 ? a.length : curLen + JOIN.length + a.length;
+    if (projected > maxChars && cur.length > 0) {
+      chunks.push(cur.join(JOIN).trim());
+      cur = [];
+      curLen = 0;
     }
-
-    current.push(seg);
-    currentWords += segWords;
-
-    // If we've hit or passed the target, look ahead one segment
-    if (currentWords >= wordsPerChunk) {
-      const next = segments[i + 1];
-      const nextWords = next ? countWords(next) : Infinity;
-
-      // Include next segment if it keeps us within hi (cleaner boundary)
-      if (next && currentWords + nextWords <= hi) {
-        current.push(next);
-        currentWords += nextWords;
-        i++; // skip next in outer loop
-      }
-
-      chunks.push(current.join("\n\n").trim());
-      current = [];
-      currentWords = 0;
-    }
+    cur.push(a);
+    curLen = curLen === 0 ? a.length : curLen + JOIN.length + a.length;
   }
-
-  // Flush remaining
-  if (current.length > 0) {
-    chunks.push(current.join("\n\n").trim());
-  }
+  if (cur.length > 0) chunks.push(cur.join(JOIN).trim());
 
   return chunks.filter((c) => c.trim().length > 0);
-}
-
-/** Legacy word-based chunker — kept for backward compat */
-export function chunkByWords(text: string, wordsPerChunk: number): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
-  const chunks: string[] = [];
-  for (let i = 0; i < words.length; i += wordsPerChunk) {
-    chunks.push(words.slice(i, i + wordsPerChunk).join(" "));
-  }
-  return chunks;
 }
 
 export function wordCount(text: string): number {

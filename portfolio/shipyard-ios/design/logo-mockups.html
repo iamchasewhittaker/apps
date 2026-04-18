@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shipyard — App Icon Palette Options</title>
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: #161618;
+    --border: #27272b;
+    --text: #e8e8e8;
+    --muted: #888;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  header { padding: 40px 32px 24px; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0 0 6px; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5; max-width: 760px; }
+  main { padding: 32px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; max-width: 1500px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .card h2 { margin: 0; font-size: 15px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 10px; }
+  .card h2 .tag { background: #2a2a2e; color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; letter-spacing: 0.3px; }
+  .logos { display: flex; align-items: flex-end; gap: 20px; justify-content: center; background: radial-gradient(circle at 50% 0%, #1a1a1e, #0e0e10); padding: 24px 16px; border-radius: 12px; }
+  .logo-big svg { width: 280px; height: 280px; border-radius: 62px; display: block; }
+  .logo-small svg { width: 80px; height: 80px; border-radius: 18px; display: block; }
+  .desc { font-size: 13px; color: #cfcfcf; line-height: 1.55; margin: 0; }
+  .palette { display: flex; gap: 6px; font-size: 11px; color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; flex-wrap: wrap; }
+  .palette span { display: inline-flex; align-items: center; gap: 6px; }
+  .palette span i { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--border); display: inline-block; }
+  footer { padding: 24px 32px 48px; color: var(--muted); font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Shipyard — icon palette options</h1>
+  <p>Compass rose mark on 6 color grounds. Large (280pt) and small (80pt) iOS rounded-rect previews side by side.</p>
+</header>
+
+<main>
+
+  <!-- P1: Navy + Gold (current) -->
+  <article class="card">
+    <h2>P1 — Navy + Gold <span class="tag">current</span></h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0A1E3F"/>
+          <!-- Compass rose: N arm -->
+          <polygon points="512,160 468,512 512,460 556,512" fill="#D4A84B"/>
+          <!-- S arm -->
+          <polygon points="512,864 468,512 512,564 556,512" fill="#D4A84B"/>
+          <!-- W arm -->
+          <polygon points="160,512 512,468 460,512 512,556" fill="#D4A84B"/>
+          <!-- E arm -->
+          <polygon points="864,512 512,468 564,512 512,556" fill="#D4A84B"/>
+          <!-- Center circle -->
+          <circle cx="512" cy="512" r="44" fill="#D4A84B"/>
+          <circle cx="512" cy="512" r="22" fill="#0A1E3F"/>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0A1E3F"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#D4A84B"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#D4A84B"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#D4A84B"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#D4A84B"/>
+          <circle cx="512" cy="512" r="44" fill="#D4A84B"/>
+          <circle cx="512" cy="512" r="22" fill="#0A1E3F"/>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Deep sea gold. The flagship. Navy command presence with warm brass — feels like a ship's wheel in lantern light.</p>
+    <p class="palette"><span><i style="background:#0A1E3F"></i>#0A1E3F</span><span><i style="background:#D4A84B"></i>#D4A84B</span></p>
+  </article>
+
+  <!-- P2: Midnight + Electric Teal -->
+  <article class="card">
+    <h2>P2 — Midnight + Electric Teal</h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0D1B2A"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#00C4B4"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#00C4B4"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#00C4B4"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#00C4B4"/>
+          <circle cx="512" cy="512" r="44" fill="#00C4B4"/>
+          <circle cx="512" cy="512" r="22" fill="#0D1B2A"/>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0D1B2A"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#00C4B4"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#00C4B4"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#00C4B4"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#00C4B4"/>
+          <circle cx="512" cy="512" r="44" fill="#00C4B4"/>
+          <circle cx="512" cy="512" r="22" fill="#0D1B2A"/>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Sonar ping. Tactical and alive. The teal cuts through midnight like a depth-finder return — active, technical, urgent.</p>
+    <p class="palette"><span><i style="background:#0D1B2A"></i>#0D1B2A</span><span><i style="background:#00C4B4"></i>#00C4B4</span></p>
+  </article>
+
+  <!-- P3: Storm Grey + Signal Orange -->
+  <article class="card">
+    <h2>P3 — Storm Grey + Signal Orange</h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#1C1C1E"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#FF6B35"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#FF6B35"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#FF6B35"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#FF6B35"/>
+          <circle cx="512" cy="512" r="44" fill="#FF6B35"/>
+          <circle cx="512" cy="512" r="22" fill="#1C1C1E"/>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#1C1C1E"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#FF6B35"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#FF6B35"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#FF6B35"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#FF6B35"/>
+          <circle cx="512" cy="512" r="44" fill="#FF6B35"/>
+          <circle cx="512" cy="512" r="22" fill="#1C1C1E"/>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Red sky at night. Urgency mode. iOS-native grey ground with a distress-signal flare — attention-demanding without being harsh.</p>
+    <p class="palette"><span><i style="background:#1C1C1E"></i>#1C1C1E</span><span><i style="background:#FF6B35"></i>#FF6B35</span></p>
+  </article>
+
+  <!-- P4: Ocean Slate + Ice White -->
+  <article class="card">
+    <h2>P4 — Ocean Slate + Ice White</h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#1A2744"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#F0F4FF"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#F0F4FF"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#F0F4FF"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#F0F4FF"/>
+          <circle cx="512" cy="512" r="44" fill="#F0F4FF"/>
+          <circle cx="512" cy="512" r="22" fill="#1A2744"/>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#1A2744"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#F0F4FF"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#F0F4FF"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#F0F4FF"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#F0F4FF"/>
+          <circle cx="512" cy="512" r="44" fill="#F0F4FF"/>
+          <circle cx="512" cy="512" r="22" fill="#1A2744"/>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Ghost fleet. Clean and minimal. Slate sea with an ice-white rose — ghostly, precise, like a chart traced in moonlight.</p>
+    <p class="palette"><span><i style="background:#1A2744"></i>#1A2744</span><span><i style="background:#F0F4FF; border-color:#3a3a3f"></i>#F0F4FF</span></p>
+  </article>
+
+  <!-- P5: Black + Brass -->
+  <article class="card">
+    <h2>P5 — Black + Brass</h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0D0D0D"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#C9A84C"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#C9A84C"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#C9A84C"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#C9A84C"/>
+          <circle cx="512" cy="512" r="44" fill="#C9A84C"/>
+          <circle cx="512" cy="512" r="22" fill="#0D0D0D"/>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0D0D0D"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#C9A84C"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#C9A84C"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#C9A84C"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#C9A84C"/>
+          <circle cx="512" cy="512" r="44" fill="#C9A84C"/>
+          <circle cx="512" cy="512" r="22" fill="#0D0D0D"/>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Shipwright's tool. Maximum contrast. Pure black makes the brass rose glow like a sextant under a bare bulb. No noise, just craft.</p>
+    <p class="palette"><span><i style="background:#0D0D0D"></i>#0D0D0D</span><span><i style="background:#C9A84C"></i>#C9A84C</span></p>
+  </article>
+
+  <!-- P6: Deep Teal + Sail Cream -->
+  <article class="card">
+    <h2>P6 — Deep Teal + Sail Cream</h2>
+    <div class="logos">
+      <div class="logo-small">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0E2D2D"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#F4EAD5"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#F4EAD5"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#F4EAD5"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#F4EAD5"/>
+          <circle cx="512" cy="512" r="44" fill="#F4EAD5"/>
+          <circle cx="512" cy="512" r="22" fill="#0E2D2D"/>
+        </svg>
+      </div>
+      <div class="logo-big">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="224" fill="#0E2D2D"/>
+          <polygon points="512,160 468,512 512,460 556,512" fill="#F4EAD5"/>
+          <polygon points="512,864 468,512 512,564 556,512" fill="#F4EAD5"/>
+          <polygon points="160,512 512,468 460,512 512,556" fill="#F4EAD5"/>
+          <polygon points="864,512 512,468 564,512 512,556" fill="#F4EAD5"/>
+          <circle cx="512" cy="512" r="44" fill="#F4EAD5"/>
+          <circle cx="512" cy="512" r="22" fill="#0E2D2D"/>
+        </svg>
+      </div>
+    </div>
+    <p class="desc">Nautical chart. Warm and wayfinding. Deep teal sea with aged-sail cream — old maps, worn brass fittings, the smell of cedar and brine.</p>
+    <p class="palette"><span><i style="background:#0E2D2D"></i>#0E2D2D</span><span><i style="background:#F4EAD5; border-color:#3a3a3f"></i>#F4EAD5</span></p>
+  </article>
+
+</main>
+
+<footer>Pick a variant — update the canonical SVG + icon generation script to match.</footer>
+
+</body>
+</html>

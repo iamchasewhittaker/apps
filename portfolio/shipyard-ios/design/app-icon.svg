@@ -1,0 +1,45 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Navy background (iOS applies the rounded-corner mask) -->
+  <rect width="1024" height="1024" fill="#0A1E3F"/>
+
+  <!-- Outer compass ring -->
+  <circle cx="512" cy="512" r="360"
+          fill="none" stroke="#D4A84B" stroke-width="10" opacity="0.55"/>
+
+  <!-- Inner compass ring -->
+  <circle cx="512" cy="512" r="108"
+          fill="none" stroke="#D4A84B" stroke-width="10"/>
+
+  <!-- Compass rose: 4 cardinal points as dual-tone diamonds -->
+  <!-- North (up) -->
+  <polygon points="512,80 552,512 512,472 472,512"
+           fill="#D4A84B"/>
+  <polygon points="512,80 512,472 472,512"
+           fill="#F4EAD5" opacity="0.85"/>
+
+  <!-- South (down) -->
+  <polygon points="512,944 472,512 512,552 552,512"
+           fill="#D4A84B"/>
+  <polygon points="512,944 512,552 552,512"
+           fill="#F4EAD5" opacity="0.55"/>
+
+  <!-- East (right) -->
+  <polygon points="944,512 512,472 552,512 512,552"
+           fill="#D4A84B"/>
+  <polygon points="944,512 552,512 512,552"
+           fill="#F4EAD5" opacity="0.55"/>
+
+  <!-- West (left) -->
+  <polygon points="80,512 512,552 472,512 512,472"
+           fill="#D4A84B"/>
+  <polygon points="80,512 472,512 512,472"
+           fill="#F4EAD5" opacity="0.85"/>
+
+  <!-- Center dot (pivot) -->
+  <circle cx="512" cy="512" r="34" fill="#D4A84B"/>
+
+  <!-- Tiny cardinal-letter tick marks on the outer ring -->
+  <text x="512" y="170" font-family="'Futura', 'Helvetica Neue', sans-serif"
+        font-weight="700" font-size="56" fill="#F4EAD5"
+        text-anchor="middle" opacity="0.75">N</text>
+</svg>
