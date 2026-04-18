@@ -279,8 +279,14 @@ final class AshReaderTests: XCTestCase {
         XCTAssertEqual(sections.count, 0)
     }
 
-    func testParseThemesNoH2() {
-        let sections = parseThemes("# Just an h1\n\nSome content here.")
-        XCTAssertEqual(sections.count, 0)
+    func testParseThemesOnlyH2SectionsHaveSlugs() {
+        // Input with a real ## section plus preamble text before it —
+        // only the ## section should produce a valid slug.
+        let md = "Preamble text here.\n\n## 1. Real Section\n\nBody of section."
+        let sections = parseThemes(md)
+        XCTAssertGreaterThanOrEqual(sections.count, 1)
+        // The ## section must be present
+        XCTAssertTrue(sections.contains(where: { $0.id == "real-section" }),
+                      "Got: \(sections.map { $0.id })")
     }
 }

@@ -2,40 +2,42 @@
 
 ## Shipped
 
-### v0.1.0 — 2026-04-17
-- Initial SwiftUI app: paste input, smart Q&A chunker, chunk reader, progress tracking
+### v0.3.0 — 2026-04-17 (Phase 2–4 complete)
+- Full feature parity with ash-reader web v1.1
+- Themes tab: 12 accordion sections, each with own ChunkReader + per-theme progress
+- AI summary picker (1k/1.5k/2k) at top of Themes tab via bundled `summary.json`
+- Actions tab: ~190 items grouped by theme, filter bar, progress bar, checkbox persistence
+- Settings tab: prompt prefix toggle + editor, export/import JSON progress, reset
+- `stripMarkdown` on all copies; prompt prefix prepended when enabled
+- Haptic feedback (medium on copy, light on mark sent / action toggle)
+- App icon: P6 "AR" monogram, black on electric yellow `#f5e300`
+- `ProgressStore(key:)` — storage key argument for multi-tab isolation
+- 26 unit tests (100% pass on device)
+- `docs/BRANDING.md` + `design/generate-app-icons.sh` (no external deps)
 
 ### v0.2.0 — 2026-04-17
 - Doc baked in (`doc.txt` bundle resource) — no paste needed
-- App icon: "ASH" Futura bold, blue on dark
+- App icon: "ASH" Futura bold, blue on dark (replaced in v0.3)
 - Chunker fix: recursive segment refinement prevents 20k-word chunks
 - Settings sheet with correct 1k/1.5k/2k labels
 
-## Planned
+### v0.1.0 — 2026-04-17
+- Initial SwiftUI app: paste input, smart Q&A chunker, chunk reader, progress tracking
 
-### Phase 2 — Themes & Navigation
-- [ ] Bundle `themes.md` + `summary.json` from `../ash-reader/public/`
-- [ ] `ThemeParser.swift` — parse `## ` headings into `Theme` structs with title, content, action items, slug ID
-- [ ] `ThemesView.swift` — scrollable list of 12 themes, each expands to ChunkReader; per-theme progress bar
-- [ ] `SummaryView.swift` — size picker + copy button for AI-generated summaries at top of Themes tab
-- [ ] Replace `ContentView` root with `TabView` — 4 tabs: Reader (📖), Themes (🗂), Actions (✅), Settings (⚙️)
-- [ ] Per-theme UserDefaults keys: `ash_reader_ios_theme_{themeId}_sent`
+## Backlog
 
-### Phase 3 — Actions
-- [ ] Parse action items (bullet points under each theme) from `themes.md`
-- [ ] `ActionsView.swift` — items grouped by theme, tap to toggle completion
-- [ ] Filter bar: all / incomplete / done
-- [ ] Progress summary: "X of Y complete"
-- [ ] UserDefaults keys: `ash_reader_ios_action_{themeId}_{index}`
+### Phase 5 — iCloud Sync
+- [ ] `NSUbiquitousKeyValueStore` replacing UserDefaults for cross-device progress
+- [ ] Migrate existing `ash_reader_ios_*` keys on first cloud-enabled launch
 
-### Phase 4 — Settings & Polish
-- [ ] `SettingsView.swift` — prompt prefix toggle + `TextEditor`, reset to default button
-- [ ] Prompt prefix prepended on all chunk copies (reader + themes)
-- [ ] Export/import progress JSON via share sheet (Files app)
-- [ ] Haptic feedback: `UIImpactFeedbackGenerator(.medium)` on copy; `.light` on mark sent
-- [ ] Markdown stripping on copy (port `stripMarkdown` from `ash-reader/lib/chunker.ts`)
-- [ ] Share sheet instead of silent clipboard write
+### Phase 6 — Reminders
+- [ ] Push notification reminders to continue reading (configurable schedule)
+- [ ] Local `UNUserNotificationCenter` — no server needed
 
-### Backlog
-- [ ] iCloud sync for progress (`NSUbiquitousKeyValueStore` replacing UserDefaults)
-- [ ] Session/streak tracking
+### Phase 7 — Sharing
+- [ ] Share sheet integration to send copied chunks directly to Ash app (if URL scheme exists)
+- [ ] Session/streak tracking (days with at least 1 chunk read)
+
+### Ideas
+- [ ] Spotlight search over theme titles and action items
+- [ ] Widget: "X chunks left in current theme" on home screen

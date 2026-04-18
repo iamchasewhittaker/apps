@@ -2,19 +2,43 @@
 
 Native SwiftUI companion to [ash-reader](../ash-reader) — the full 138k-word capture system conversation is baked in. Opens directly to the reader, no paste needed.
 
+**Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, app icon spec (P6 electric yellow "AR"), generation pipeline.
+
 ## Stack
 - SwiftUI + iOS 17+
-- UserDefaults for progress persistence
+- UserDefaults for progress persistence (`ash_reader_ios_` prefix)
 - No backend, no network — fully offline
 
 ## Key files
-- `AshReader/Chunker.swift` — Q&A-aware smart chunker; recursively refines oversized segments (paragraphs → sentences)
-- `AshReader/ChunkReaderView.swift` — chunk cards, copy, mark-sent, progress bar, nav, size settings sheet
-- `AshReader/ProgressStore.swift` — UserDefaults persistence for sent chunk tracking
-- `AshReader/ContentView.swift` — root view, loads doc.txt from bundle, passes chunks to reader; `Color(hex:)` extension lives here
+
+### App
+- `AshReader/AshReaderApp.swift` — `@main` entry point
+- `AshReader/ContentView.swift` — `TabView` (Reader / Themes / Actions / Settings); `Color(hex:)` extension; `ReaderTab` subview
 - `AshReader/Models.swift` — `Chunk` struct
-- `AshReader/doc.txt` — bundled 138k-word capture system conversation (gitignored in ash-reader web, baked here)
-- `AshReader/Assets.xcassets` — app icon ("ASH" Futura bold, blue #7c9cff on dark)
+- `AshReader/ProgressStore.swift` — UserDefaults persistence; `init(key:)` for per-tab isolation
+
+### Reader tab
+- `AshReader/Chunker.swift` — Q&A-aware smart chunker + `stripMarkdown(_:)` helper
+- `AshReader/ChunkReaderView.swift` — chunk cards, copy (+stripMarkdown +prefix), mark-sent, progress bar, haptics, optional size settings
+- `AshReader/doc.txt` — bundled 138k-word capture system conversation (gitignored)
+
+### Themes tab
+- `AshReader/ThemesView.swift` — 12 accordion cards; `SummaryView` at top
+- `AshReader/ThemeParser.swift` — `parseThemes(_:)` + `ThemeSection` struct
+- `AshReader/SummaryView.swift` — summary.json picker (1k/1.5k/2k) + copy
+- `AshReader/themes.md` — 12 thematic sections with actions (gitignored)
+- `AshReader/summary.json` — precomputed AI summaries (gitignored)
+
+### Actions tab
+- `AshReader/ActionsView.swift` — grouped checklist, filter bar (All/Incomplete/Done), progress bar, light haptic on toggle
+
+### Settings tab
+- `AshReader/SettingsView.swift` — prompt prefix toggle + editor, export/import JSON progress, reset; `defaultPromptPrefix` constant
+
+### Assets
+- `AshReader/Assets.xcassets/AppIcon.appiconset/` — 12 PNGs from P6 SVG
+- `design/app-icon.svg` — canonical P6 source ("AR" monogram, black on `#f5e300`)
+- `design/generate-app-icons.sh` — renders SVG → 12 PNGs via `qlmanage` + `sips` (no external deps)
 
 ## Bundle ID
 `com.chasewhittaker.AshReader`
@@ -36,11 +60,26 @@ xcrun devicectl device install app --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C
 xcrun devicectl device process launch --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C com.chasewhittaker.AshReader
 ```
 
-Or open `AshReader.xcodeproj` in Xcode and hit ⌘R.
+## Run tests
+```bash
+xcodebuild \
+  -project AshReader.xcodeproj \
+  -scheme AshReader \
+  -destination "id=A0C65578-B1E0-4E96-A1EC-EEB8913BD11C" \
+  -configuration Debug \
+  CODE_SIGN_STYLE=Automatic \
+  DEVELOPMENT_TEAM=9XVT527KP3 \
+  -allowProvisioningUpdates \
+  test 2>&1 | grep -E "(Test case|TEST|Executed)"
+```
 
-## UserDefaults keys
-- `ash_reader_ios_sent` — array of Int chunk indices marked as sent (reader tab)
-- (planned) `ash_reader_ios_prompt_prefix` — custom Claude prompt text
-- (planned) `ash_reader_ios_prompt_prefix_on` — "1" if prompt prefix enabled
-- (planned) `ash_reader_ios_theme_{themeId}_sent` — sent chunks per theme
-- (planned) `ash_reader_ios_action_{themeId}_{index}` — action item completion
+Or open `AshReader.xcodeproj` in Xcode and hit ⌘U.
+
+## UserDefaults keys (`ash_reader_ios_` prefix)
+- `ash_reader_ios_sent` — `[Int]` chunk indices marked sent (Reader tab)
+- `ash_reader_ios_theme_{themeId}_sent` — `[Int]` chunk indices sent per theme (Themes tab)
+- `ash_reader_ios_action_{themeId}_{index}` — `"1"` / absent — action done state
+- `ash_reader_ios_prompt_prefix` — `String` — custom Claude prompt prefix
+- `ash_reader_ios_prompt_prefix_on` — `"1"` / absent — prefix enabled
+
+Export/import via Settings tab writes all `ash_reader_ios_*` keys as JSON.
