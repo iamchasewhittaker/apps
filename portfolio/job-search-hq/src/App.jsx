@@ -1,4 +1,4 @@
-// APP_META: { "app": "jobsearch", "version": "8.6" }
+// APP_META: { "app": "jobsearch", "version": "8.9" }
 import React, { useState, useEffect, useRef } from "react";
 import {
   STORAGE_KEY,
@@ -216,6 +216,7 @@ export default function JobSearchTracker() {
   const [debriefModal, setDebriefModal] = useState(null);
 
   // Shared state that multiple tabs read or set
+  const [draftContact, setDraftContact] = useState(null);
   const [kitApp, setKitApp] = useState(null);
   const [resumeTab, setResumeTab] = useState("tailor");
   const [, setKitResumeResult] = useState("");
@@ -464,6 +465,7 @@ export default function JobSearchTracker() {
           saveContact={saveContact} setTab={setTab}
           setAppModal={setAppModal}
           showError={showError}
+          onDraftMessage={(c) => { setDraftContact(c); setTab("ai"); }}
         />
       )}
       {tab === "ai" && (
@@ -471,6 +473,7 @@ export default function JobSearchTracker() {
           data={data} profileComplete={profileComplete}
           kitApp={kitApp} setKitApp={setKitApp}
           resumeTab={resumeTab} setResumeTab={setResumeTab}
+          draftContact={draftContact} clearDraftContact={() => setDraftContact(null)}
           saveStarStories={saveStarStories}
           showError={showError} setProfileModal={setProfileModal}
         />

@@ -28,9 +28,9 @@
 
 - [x] Chrome Extension MVP: popup capture for LinkedIn profiles (contact) + job postings (JD + apply URL), badge count for overdue items (2026-04-13)
 - [x] **Stage-specific prep templates (WHI-24)** — static presets for Phone screen, Interview, Final Round; fill empty section fields; optional `prepStageKey` on application; "Copy external prep brief" for ChatGPT/Claude (v8.6)
-- [ ] Post-interview debrief log (`interviewLog` array on application)
-- [ ] Mock interview mode in Apply Tools tab (would use copy-prompts or deferred in-app AI)
-- [ ] Application velocity dashboard (weekly targets + trend line)
+- [x] **Post-interview debrief log** — `interviewLog[]` on each app, `DebriefModal`, AppCard badge (v8.7)
+- [x] **Mock interview mode** — `MockInterviewPanel` in AITab, 5 scenario presets (v8.7)
+- [x] **Application velocity dashboard** — `VelocityDashboard` in FocusTab, weekly target + trend line (v8.7)
 
 ## Deferred — in-app LLM (intentional)
 
@@ -44,12 +44,15 @@
 
 Until then: **Apply Tools** = copy prompts + paste results; **Find Jobs** = deep links to LinkedIn / Indeed / Google.
 
-## Wave 3 — Execution order (current recommendation)
+## Wave 3 — Complete (v8.7)
 
-1. ~~Stage-specific prep templates~~ **Done (v8.6)** — static templates + external brief
-2. Post-interview debrief log
-3. Application velocity dashboard
-4. Mock interview mode (copy-prompt based or revisit deferred AI)
+All Wave 3 items shipped 2026-04-18. Wave 4 is next.
+
+### Wave 3 delivered scope (v8.7)
+
+- **Debrief log:** `interviewLog[]` on each application; `DebriefModal` (round type, impression, confidence 1–5, strengths, gaps, red flags, key questions); AppCard badge shows count.
+- **Velocity dashboard:** `VelocityDashboard` in FocusTab; `getWeeklyVelocityData()` in constants; weekly target + trend line.
+- **Mock interview:** `MockInterviewPanel` in AITab; `mockInterviewQuestions.js` with 5 scenarios (PM behavioral, PM situational, AE demo, leadership, STAR).
 
 ### Wave 3 #2 — delivered scope (v8.6)
 
@@ -61,7 +64,7 @@ Until then: **Apply Tools** = copy prompts + paste results; **Find Jobs** = deep
 
 ## Release readiness + dependencies
 
-- App status: **go** for v8.6 shipped scope.
+- App status: **go** for v8.7 shipped scope.
 - Keep these dependencies healthy:
   - Supabase email OTP template includes `{{ .Token }}`.
   - Vercel root directory remains `portfolio/job-search-hq`.
@@ -69,14 +72,14 @@ Until then: **Apply Tools** = copy prompts + paste results; **Find Jobs** = deep
   - Lockfile remains Node 20 compatible for CI (`npm ci` + `npm run build`).
   - Chrome extension capture remains subject to LinkedIn DOM changes (known external dependency).
 
-## Wave 4 — Ideas
+## Wave 4
 
+- [x] **Weekly Review prompt** — `WeeklyReviewPanel` in AITab; stat cards (apps/interviews/contacts/active pipeline this week); `buildWeeklyReviewPrompt()` in `applyPrompts.js`; copy coaching brief for ChatGPT/Claude (v8.8)
+- [x] **Apply Tools "Draft Message" context** — `draftContact` state in App.jsx; ContactCard → ContactsTab passes contact; AITab useEffect pre-selects contact in LinkedIn → Connection Request sub-tab (v8.9)
 - [ ] Outreach cadence timeline per contact (visual touchpoint history)
 - [ ] Offer comparison side-by-side mode
-- [ ] Weekly review prompt with auto-populated stats
 - [ ] Email forward parsing (paste recruiter email → extract contact + job)
 - [ ] PWA share target (mobile URL sharing)
-- [ ] Apply Tools "Draft Message" context: pre-fill contact name/company/role when navigating from ContactCard
 
 ## Project tracking
 

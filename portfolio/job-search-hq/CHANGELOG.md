@@ -1,5 +1,28 @@
 # Changelog
 
+## [Unreleased] — 2026-04-18 — Wave 4 #2: Draft Message context (v8.9)
+
+### Added
+- **Apply Tools "Draft Message" context** — clicking "✍️ Draft Message" on any ContactCard now navigates directly to Apply Tools → LinkedIn → Connection Request with that contact pre-selected. No more manually hunting for the contact after switching tabs.
+- `draftContact` state in `App.jsx`; `onDraftMessage(contact)` prop on `ContactsTab`; `useEffect` in `AITab` that fires on `draftContact`, sets sub-tabs (`linkedin` / `connect`), and pre-selects the contact via `setConnectContact`.
+
+---
+
+## [Unreleased] — 2026-04-18 — Wave 4 #1: Weekly Review + normalizeApplication fix (v8.8)
+
+### Added
+- **Weekly Review tab** in Apply Tools (`AITab.jsx`) — new "📊 Weekly Review" sub-tab; `WeeklyReviewPanel` component shows stat cards (apps submitted / interviews logged / contacts touched / active pipeline, all scoped to last 7 days), pipeline snapshot by stage, and a "Copy weekly review prompt" button.
+- **`buildWeeklyReviewPrompt(data)`** in `src/applyPrompts.js` — builds a markdown coaching brief pre-filled with real pipeline data (stage breakdown, active roles, this-week stats, debrief summaries, contacts outreached); paste into ChatGPT or Claude for a weekly coaching review.
+
+### Fixed
+- **`normalizeApplication`** (`src/constants.js`) — added `interviewLog: normalizeInterviewLog(app.interviewLog)` so apps loaded from localStorage/Supabase have their debrief log fully hydrated on startup, consistent with how `prepSections` is handled.
+
+### Docs
+- `ROADMAP.md` — Wave 3 items (debrief, velocity, mock interview) checked off with v8.7 notes; Wave 3 Complete section added; app status updated to v8.7.
+- `CLAUDE.md` — version bumped v8.6 → v8.7.
+
+---
+
 ## [Unreleased] — 2026-04-18 — Wave 3: Logo + Debrief + Velocity + Mock Interview (v8.7)
 
 ### Logo redesign

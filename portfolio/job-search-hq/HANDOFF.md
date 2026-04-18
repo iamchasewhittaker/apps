@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.7 |
+| **Version** | v8.9 |
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 3 complete — debrief log, velocity dashboard, mock interview, logo redesign all shipped |
-| **Next** | Deploy to Vercel (build is clean). iOS Phase 2: Supabase sync + email OTP → profile editor → STAR stories → JSON import → AI + Keychain |
+| **Focus** | Wave 4 #2 shipped (v8.9): Draft Message context — ContactCard "Draft Message" navigates to Apply Tools → LinkedIn → Connection Request with contact pre-selected. |
+| **Next** | Wave 4 #3: Outreach cadence timeline per contact (visual touchpoint history). |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-18 — Wave 3 shipped: outline logo (deep blue + white stroke), post-interview debrief log, weekly velocity dashboard, mock interview mode. Build clean. |
+| **Last touch** | 2026-04-18 — v8.9: draftContact state in App.jsx; ContactsTab passes contact to onDraftMessage; AITab useEffect pre-selects contact in connect sub-tab. |
 
 ---
 
@@ -28,7 +28,7 @@ All four Wave 3 items shipped in v8.7:
 - ✅ Application velocity dashboard
 - ✅ Mock interview mode
 
-**Next for web:** Deploy to Vercel (build clean), then evaluate Wave 4 ideas (see ROADMAP.md).
+**Next for web:** Wave 4 #3 — Outreach cadence timeline per contact (visual touchpoint history). See ROADMAP.md.
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`

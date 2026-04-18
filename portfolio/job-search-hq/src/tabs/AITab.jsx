@@ -13,6 +13,7 @@ import {
   buildConnectMessagePrompt,
   buildFollowupMessagePrompt,
   buildStarDraftPrompt,
+  buildWeeklyReviewPrompt,
   JOB_SEARCH_EXTERNAL_LINKS,
 } from "../applyPrompts";
 
@@ -28,6 +29,7 @@ async function copyToClipboard(text, showError, okMsg) {
 export default function AITab({
   data, profileComplete,
   kitApp, setKitApp, resumeTab, setResumeTab,
+  draftContact, clearDraftContact,
   setTab, saveApp, saveStarStories,
   showError, setProfileModal,
 }) {
@@ -59,6 +61,14 @@ export default function AITab({
   useEffect(() => {
     setStories(normalizeStarStories(data.starStories));
   }, [data.starStories]);
+
+  useEffect(() => {
+    if (!draftContact) return;
+    setResumeTab("linkedin");
+    setLiTab("connect");
+    setConnectContact(draftContact);
+    clearDraftContact();
+  }, [draftContact]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function persistStories(nextStories) {
     const normalized = normalizeStarStories(nextStories);
@@ -181,7 +191,7 @@ export default function AITab({
         </div>
 
         <div style={s.subTabs}>
-          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"],["mock","🎤 Mock Interview"]].map(([key, label]) => (
+          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"],["mock","🎤 Mock Interview"],["weekly","📊 Weekly Review"]].map(([key, label]) => (
             <button key={key} style={{ ...s.subTabBtn, ...(resumeTab === key ? s.subTabBtnActive : {}) }} onClick={() => setResumeTab(key)}>{label}</button>
           ))}
         </div>
@@ -594,8 +604,115 @@ Takeaway: ${story.takeaway}`}
         {resumeTab === "mock" && (
           <MockInterviewPanel showError={showError} />
         )}
+
+        {resumeTab === "weekly" && (
+          <WeeklyReviewPanel data={data} showError={showError} />
+        )}
       </div>
     </ErrorBoundary>
+  );
+}
+
+function WeeklyReviewPanel({ data, showError }) {
+  const now = new Date();
+  const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  const isThisWeek = dateStr => dateStr && new Date(dateStr + "T12:00:00") >= weekAgo;
+
+  const apps = data.applications || [];
+  const contacts = data.contacts || [];
+
+  const newAppsThisWeek = apps.filter(a => isThisWeek(a.appliedDate));
+  const interviewsThisWeek = apps.flatMap(a => (a.interviewLog || []).filter(e => isThisWeek(e.date)));
+  const contactsThisWeek = contacts.filter(c => isThisWeek(c.outreachDate) || isThisWeek(c.lastContact));
+  const activeStages = ["Phone Screen", "Interview", "Final Round", "Offer"];
+  const activeApps = apps.filter(a => activeStages.includes(a.stage));
+
+  const stageCount = {};
+  for (const app of apps) stageCount[app.stage] = (stageCount[app.stage] || 0) + 1;
+
+  async function copyPrompt() {
+    const text = buildWeeklyReviewPrompt(data);
+    try {
+      await navigator.clipboard.writeText(text);
+      showError("Copied weekly review prompt — paste into ChatGPT or Claude for coaching feedback.");
+    } catch {
+      showError("Could not copy — select manually.");
+    }
+  }
+
+  const statCard = (label, value, sub) => (
+    <div style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 10, padding: "12px 16px", flex: "1 1 120px", minWidth: 100 }}>
+      <div style={{ fontSize: 24, fontWeight: 800, color: "#f3f4f6" }}>{value}</div>
+      <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>{label}</div>
+      {sub && <div style={{ fontSize: 11, color: "#4b5563", marginTop: 2 }}>{sub}</div>}
+    </div>
+  );
+
+  return (
+    <div style={s.aiLayout}>
+      <div style={s.aiLeft}>
+        <div style={s.sectionLabel}>This week at a glance</div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
+          {statCard("apps submitted", newAppsThisWeek.length, "this week")}
+          {statCard("interviews logged", interviewsThisWeek.length, "debrief entries")}
+          {statCard("contacts touched", contactsThisWeek.length, "outreach / follow-up")}
+          {statCard("active pipeline", activeApps.length, "phone screen → offer")}
+        </div>
+
+        <div style={s.sectionLabel}>Pipeline snapshot</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+          {Object.entries(stageCount).length === 0
+            ? <div style={s.empty}>No applications yet.</div>
+            : Object.entries(stageCount).map(([stage, n]) => (
+              <div key={stage} style={{ display: "flex", justifyContent: "space-between", background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 8, padding: "8px 12px" }}>
+                <span style={{ fontSize: 13, color: "#d1d5db" }}>{stage}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>{n}</span>
+              </div>
+            ))}
+        </div>
+
+        <button style={{ ...s.btnPrimary, width: "100%" }} onClick={copyPrompt}>
+          📋 Copy weekly review prompt
+        </button>
+        <div style={{ ...s.tipBox, marginTop: 12 }}>
+          <p>Paste into ChatGPT or Claude for a coaching review — what moved, what stalled, 3 actions for next week.</p>
+        </div>
+      </div>
+
+      <div style={s.aiRight}>
+        {activeApps.length > 0 && (
+          <>
+            <div style={s.sectionLabel}>Active roles ({activeApps.length})</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+              {activeApps.map(a => (
+                <div key={a.id} style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 8, padding: "10px 12px" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>{a.company}</div>
+                  <div style={{ fontSize: 12, color: "#6b7280" }}>{a.title} · {a.stage}</div>
+                  {a.nextStep && <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>→ {a.nextStep}</div>}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {interviewsThisWeek.length > 0 && (
+          <>
+            <div style={s.sectionLabel}>Debriefs this week ({interviewsThisWeek.length})</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {interviewsThisWeek.map((e, i) => {
+                const impColors = { positive: "#10b981", neutral: "#f59e0b", negative: "#ef4444" };
+                const col = impColors[e.impression] || "#6b7280";
+                return (
+                  <div key={i} style={{ background: "#0a0d14", border: `1.5px solid ${col}33`, borderRadius: 8, padding: "8px 12px" }}>
+                    <div style={{ fontSize: 12, color: col, fontWeight: 700 }}>{e.roundType} · {e.impression} · {e.confidence}/5</div>
+                    {e.gaps && <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>△ {e.gaps.slice(0, 80)}{e.gaps.length > 80 ? "…" : ""}</div>}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 

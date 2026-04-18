@@ -85,7 +85,7 @@ function SalesNavGuide() {
   );
 }
 
-export default function ContactsTab({ contacts, applications, setContactModal, deleteContact, saveContact, setTab, setAppModal, showError }) {
+export default function ContactsTab({ contacts, applications, setContactModal, deleteContact, saveContact, setTab, setAppModal, showError, onDraftMessage }) {
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [view, setView] = useState("list");
@@ -281,7 +281,7 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
                   onEdit={() => setContactModal({ mode: "edit", contact: { ...c } })}
                   onDelete={() => { if (window.confirm("Delete this contact?")) deleteContact(c.id); }}
                   onStatusChange={status => updateStatus(c, status)}
-                  onDraftMessage={() => setTab("ai")}
+                  onDraftMessage={() => onDraftMessage(c)}
                   showError={showError}
                 />
               ))}
@@ -359,7 +359,7 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
                           onEdit={() => setContactModal({ mode: "edit", contact: { ...c } })}
                           onDelete={() => { if (window.confirm("Delete this contact?")) deleteContact(c.id); }}
                           onStatusChange={status => updateStatus(c, status)}
-                          onDraftMessage={() => setTab("ai")}
+                          onDraftMessage={() => onDraftMessage(c)}
                           showError={showError}
                         />
                       ))}
