@@ -48,7 +48,7 @@ async function handleClassify(emails) {
         source = source.indexOf('RULES_ONLY') === 0 ? source : 'RULES_ONLY';
       }
 
-      results.push({ sender: email.sender, subject: email.subject, label: label, source: source });
+      results.push({ sender: email.sender, subject: email.subject, label: label, source: source, messageId: email.messageId || '' });
     } catch (e) {
       results.push({ sender: email.sender, subject: email.subject, label: null, error: e.message });
     }

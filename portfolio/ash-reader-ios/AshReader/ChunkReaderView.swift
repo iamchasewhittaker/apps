@@ -144,7 +144,7 @@ struct ChunkReaderView: View {
                             }
                         }
 
-                        Text(chunk.text)
+                        Text(stripMarkdown(chunk.text))
                             .font(.system(size: 16))
                             .lineSpacing(6)
                             .frame(maxWidth: .infinity, alignment: .leading)

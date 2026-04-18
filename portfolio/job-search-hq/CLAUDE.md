@@ -5,7 +5,7 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
-- **Version:** v8.6 (no in-browser Anthropic API; Apply Tools = copy prompts + external assistants; Wave 3 #2 stage prep templates shipped)
+- **Version:** v8.8 (Wave 4 #1: weekly review prompt; Wave 3 complete: debrief log, velocity dashboard, mock interview; Apply Tools = copy prompts + external assistants)
 - **Storage key:** `chase_job_search_v1` (data only)
 - **URL:** job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`

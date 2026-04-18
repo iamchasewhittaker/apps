@@ -536,3 +536,44 @@ function doGet(e) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Label-apply endpoint — called by the Chrome extension Sort button.
+// Accepts POST { token, applications: [{ messageId, label }] }
+// Returns { results: [{ messageId, label, ok, error? }] }
+// ---------------------------------------------------------------------------
+
+function doPost(e) {
+  var expected = PropertiesService.getScriptProperties().getProperty('TRIGGER_TOKEN');
+  var payload;
+  try {
+    payload = JSON.parse(e.postData.contents);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: 'invalid JSON' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  if (!expected || payload.token !== expected) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: 'unauthorized' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var results = [];
+  (payload.applications || []).forEach(function (item) {
+    try {
+      var msg = GmailApp.getUserMessageById(item.messageId);
+      var gmailLabel = GmailApp.getUserLabelByName(item.label);
+      if (!gmailLabel) gmailLabel = GmailApp.createLabel(item.label);
+      msg.getThread().addLabel(gmailLabel);
+      results.push({ messageId: item.messageId, label: item.label, ok: true });
+    } catch (err) {
+      results.push({ messageId: item.messageId, ok: false, error: err.message });
+    }
+  });
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ results: results }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+

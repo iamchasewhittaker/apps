@@ -1,5 +1,29 @@
 # Gmail Forge — Changelog
 
+## [Apr 18, 2026] — Sort wired + Guide + Context fix
+
+### Sort button — label apply (complete)
+- Added `doPost(e)` to `apps-script/auto-sort.gs` — accepts `{ token, applications: [{messageId, label}] }`, applies Gmail labels via `GmailApp.getUserMessageById`, returns `{ results: [{ok, messageId, label}] }`
+- `extension/src/content.js` — extracts `data-legacy-message-id` / `data-message-id` from selected `tr` rows; passes `messageId` through `CLASSIFY` message; after results calls `applyLabels()` which POSTs batch to Apps Script web app
+- `extension/src/background.js` — threads `messageId` through classify results
+- `extension/src/popup.html` + `popup.js` — added Web App URL + Trigger Token fields; saved to `chrome.storage.sync`
+- `extension/manifest.json` — added `https://script.google.com/*` + `https://script.googleusercontent.com/*` to `host_permissions`
+- Deployed via `cd apps-script && npx clasp push --force`
+
+### Guide button + overlay
+- Added `?` circle button to right end of toolbar (after Sort)
+- Clicking opens a modal overlay inside Gmail — 5 sections: Toolbar, How Sort Works, Label Guide, Architecture, Settings
+- Click outside or `✕` to dismiss; click `?` again to toggle; full dark mode support
+
+### Standalone guide minisite
+- `guide.html` — dark-mode single-file minisite; no build step; open directly in browser
+- 6 sections: Toolbar preview, Sort flow, Architecture, Labels, Settings, Adding rules
+
+### Extension context invalidation fix
+- Added `isContextAlive()` / `onContextDead()` / `safeSendMessage()` / `safeStorageGet()` wrappers in `content.js`
+- On context death: removes toolbar, shows "extension reloaded — refresh tab" toast, clears intervals
+- Removed now-unused `loadSettings()` function
+
 ## [Apr 16, 2026] — Phase 3 Go-Live
 
 ### Google-Side Setup (complete)

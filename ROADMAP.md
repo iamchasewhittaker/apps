@@ -9,7 +9,7 @@
 |-----|---------|-----|-------------|--------|
 | Wellness Tracker | v15.10 | https://wellnes-tracker.vercel.app | chase_wellness_v1 | ✅ Active |
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
-| Job Search HQ | v8.5 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
+| Job Search HQ | v8.9 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | Job Search HQ (iOS) | v0.1 | — | `chase_job_search_ios_v1` | 🟡 Local · [`portfolio/job-search-hq-ios`](portfolio/job-search-hq-ios) · [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
 | App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
 | Clarity Hub | v0.2 | https://clarity-hub-lilac.vercel.app | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
@@ -236,6 +236,9 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-17 | Ash Reader (iOS) | v0.3 | **Fix: clean Reader display** — `stripMarkdown()` now applied to `Text()` render in `ChunkReaderView`; markdown symbols (`#`, `**`, etc.) no longer visible in Reader tab; emojis preserved | `ChunkReaderView.swift:147` — one-line fix |
+| 2026-04-18 | Job Search HQ | v8.9 | **Wave 4 #2:** Draft Message context — ContactCard "✍️ Draft Message" button now navigates to Apply Tools → LinkedIn → Connection Request with the contact pre-selected. `draftContact` state in App.jsx; `onDraftMessage(contact)` prop wired through ContactsTab; `useEffect` in AITab pre-selects and clears. | `portfolio/job-search-hq/` |
+| 2026-04-18 | Job Search HQ | v8.8 | **Wave 4 #1 + fix:** Weekly Review tab in AITab (`WeeklyReviewPanel` + `buildWeeklyReviewPrompt`) — stat cards (apps/interviews/contacts/active pipeline this week), pipeline snapshot, coaching brief copy-prompt. `normalizeApplication` fixed to hydrate `interviewLog` on load. Wave 3 ROADMAP/CLAUDE.md docs cleaned up. | `portfolio/job-search-hq/` |
 | 2026-04-17 | Summit Push | v0.1 | **MVP built:** New app — daily operating system for ADHD brains. 5 flows (capture/sort/lock/focus/check), 4 fixed lanes (Regulation/Maintenance/Support Others/Future), dark UI, mobile-first, localStorage, PWA manifest. Next.js 16 + Tailwind 4 + pnpm. Builds clean. Not yet deployed. | `portfolio/summit-push/` · Phase 1 rule: use for 7 days before adding any feature |
 | 2026-04-14 | Job Search HQ (web + iOS) | v8.5 / v0.1 | **Logo: JOB SEARCH spelled out** — `logo.svg` label expanded from "JOB" to "JOB SEARCH" above bold "HQ"; iOS AppIcon replaced with matching text-based mark (1024×1024); all PNGs regenerated. Web verified live (HTTP 200) + `npm run build` clean. iOS BUILD SUCCEEDED + installed on iPhone 12 Pro Max. HANDOFF + CHANGELOG + Linear updated. | `portfolio/job-search-hq/` + `portfolio/job-search-hq-ios/` |
 | 2026-04-14 | RollerTask Tycoon (iOS + Web) | v1.0 | **Branding + device install:** Portfolio-standard text logo (ROLLER amber / TASK white bold) applied to iOS AppIcon + all web assets; Clarity-family ring icon added to generator; `docs/BRANDING.md` + `docs/SYNC_PHASE2.md` scaffolded; iOS built + installed on iPhone 12 Pro Max; web redeployed; Linear updated (WHI-60 Phase 2 sync, WHI-61 V2 Game Feel) | `portfolio/roller-task-tycoon-ios/` + `portfolio/rollertask-tycoon-web/` |

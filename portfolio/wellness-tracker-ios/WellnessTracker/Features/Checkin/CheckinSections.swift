@@ -116,6 +116,7 @@ struct SleepSectionView: View {
                     if let v = Int(t) { set(key, v) }
                 }
             ))
+            .font(.body)
             .keyboardType(.numberPad)
             .multilineTextAlignment(.center)
             .frame(width: 64)

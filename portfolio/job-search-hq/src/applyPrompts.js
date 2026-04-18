@@ -273,6 +273,61 @@ export const PREP_STAGE_PRESETS = {
   },
 };
 
+export function buildWeeklyReviewPrompt(data) {
+  const now = new Date();
+  const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  const fmt = d => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const isThisWeek = dateStr => dateStr && new Date(dateStr + "T12:00:00") >= weekAgo;
+
+  const apps = data.applications || [];
+  const contacts = data.contacts || [];
+
+  const stageCount = {};
+  for (const app of apps) stageCount[app.stage] = (stageCount[app.stage] || 0) + 1;
+  const pipelineLines = Object.entries(stageCount).map(([stage, n]) => `  - ${stage}: ${n}`).join("\n");
+
+  const newAppsThisWeek = apps.filter(a => isThisWeek(a.appliedDate));
+  const interviewsThisWeek = apps.flatMap(a => (a.interviewLog || []).filter(e => isThisWeek(e.date)));
+  const contactsThisWeek = contacts.filter(c => isThisWeek(c.outreachDate) || isThisWeek(c.lastContact));
+  const activeStages = ["Phone Screen", "Interview", "Final Round", "Offer"];
+  const activeApps = apps.filter(a => activeStages.includes(a.stage));
+
+  const profileName = data.profile?.name || "Chase";
+  const weekLabel = `${fmt(weekAgo)} – ${fmt(now)}`;
+
+  return `# Weekly Job Search Review — ${weekLabel}
+
+You are a job search coach reviewing ${profileName}'s weekly progress. Give:
+1. An honest read of the week — what moved, what stalled
+2. The #1 bottleneck based on the data
+3. 3 specific actions for next week (concrete, not vague)
+
+---
+
+## Pipeline snapshot (total: ${apps.length})
+${pipelineLines || "  No applications yet."}
+
+## Active / in-progress (${activeApps.length})
+${activeApps.map(a => `  - ${a.company} — ${a.title} (${a.stage})${a.nextStep ? ` | Next: ${a.nextStep}` : ""}`).join("\n") || "  None in active stages."}
+
+## This week (${weekLabel})
+- Applications submitted: ${newAppsThisWeek.length}
+- Interviews / debrief entries logged: ${interviewsThisWeek.length}
+- Contacts outreached or touched: ${contactsThisWeek.length}
+
+## Interview debrief notes (this week)
+${interviewsThisWeek.length === 0
+  ? "  None this week."
+  : interviewsThisWeek.map(e => `  - ${e.roundType} · ${e.impression} · confidence ${e.confidence}/5${e.gaps ? ` | gaps: ${e.gaps.slice(0, 80)}` : ""}`).join("\n")}
+
+## Contacts outreached this week
+${contactsThisWeek.map(c => `  - ${c.name} (${c.company}) · ${c.outreachStatus || "no status"}`).join("\n") || "  None logged this week."}
+
+---
+
+Please give a focused coaching review based on this data.`;
+}
+
 export function mergePrepStageTemplate(stageId, existingPrep) {
   const preset = PREP_STAGE_PRESETS[stageId];
   if (!preset) return normalizePrepSections(existingPrep, "");

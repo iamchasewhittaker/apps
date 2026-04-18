@@ -173,9 +173,17 @@ When Chase identifies a new sender to filter:
 
 ### Chrome Extension
 - **Files:** `extension/` directory (MV3)
-- **Features:** Label tab bar (matches screenshot), Sort button (AI classification), settings popup
+- **Features:**
+  - Label tab bar (10 label tabs, active state, URL sync)
+  - Unsorted badge (inbox emails with no label, 60s refresh)
+  - **Sort button** — select emails → classify (rules / Gemini) → POST to Apps Script `doPost` → apply labels; requires Web App URL + Trigger Token in popup
+  - **Guide button (`?`)** — overlay inside Gmail with full feature reference; toggle on click or click outside
+  - Toast notifications with graceful teardown on extension context invalidation
+- **Settings popup:** Classifier Mode, Gemini API Key, Web App URL, Trigger Token, Visible Tabs
+- **Guide minisite:** `guide.html` — standalone dark-mode reference; open directly in browser
 - **Install:** `chrome://extensions` → Developer mode → Load unpacked → select `extension/`
 - **Sanity check:** `cd extension && npm install && npm run validate` (manifest + required files)
+- **After reloading extension:** refresh any open Gmail tabs to reconnect (content script shows a toast if context is invalidated)
 
 ### Spend Clarity (Receipt pipeline)
 

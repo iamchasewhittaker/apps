@@ -11,14 +11,18 @@ document.addEventListener('DOMContentLoaded', function () {
   var tabListEl = document.getElementById('tabList');
   var geminiApiKeyEl = document.getElementById('geminiApiKey');
   var classifierModeEl = document.getElementById('classifierMode');
+  var webAppUrlEl = document.getElementById('webAppUrl');
+  var triggerTokenEl = document.getElementById('triggerToken');
   var saveBtnEl = document.getElementById('saveBtn');
   var statusEl = document.getElementById('status');
 
-  chrome.storage.sync.get(['geminiApiKey', 'classifierMode', 'visibleTabs'], function (data) {
+  chrome.storage.sync.get(['geminiApiKey', 'classifierMode', 'visibleTabs', 'webAppUrl', 'triggerToken'], function (data) {
     if (data.geminiApiKey) {
       geminiApiKeyEl.value = data.geminiApiKey;
     }
     classifierModeEl.value = data.classifierMode || 'GEMINI';
+    if (data.webAppUrl) webAppUrlEl.value = data.webAppUrl;
+    if (data.triggerToken) triggerTokenEl.value = data.triggerToken;
 
     var visible = data.visibleTabs || ALL_TABS;
 
@@ -48,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
       geminiApiKey: geminiApiKeyEl.value.trim(),
       classifierMode: classifierModeEl.value,
       visibleTabs: visibleTabs,
+      webAppUrl: webAppUrlEl.value.trim(),
+      triggerToken: triggerTokenEl.value.trim(),
     }, function () {
       statusEl.style.display = 'block';
       setTimeout(function () { statusEl.style.display = 'none'; }, 2000);

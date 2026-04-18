@@ -529,6 +529,7 @@ export function normalizeApplication(app = {}) {
   return {
     ...app,
     prepSections: normalizePrepSections(app.prepSections, app.prepNotes),
+    interviewLog: normalizeInterviewLog(app.interviewLog),
   };
 }
 

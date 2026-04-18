@@ -1,5 +1,10 @@
 # Changelog — Ash Reader iOS
 
+## [Unreleased]
+
+### Fixed
+- Reader tab now displays clean prose — `stripMarkdown` applied to `Text()` render in `ChunkReaderView`, not just on copy
+
 ## [0.3.0] — 2026-04-17
 
 ### Added

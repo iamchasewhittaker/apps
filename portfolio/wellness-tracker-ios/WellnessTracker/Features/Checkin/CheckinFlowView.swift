@@ -20,7 +20,7 @@ struct CheckinFlowView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 12) {
                     header
                     if store.savedForCurrentMode {
                         completionCard
@@ -30,8 +30,10 @@ struct CheckinFlowView: View {
                         navButtons
                     }
                 }
-                .padding(16)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
             }
+            .dynamicTypeSize(.medium ... .xxxLarge)
             .background(WellnessTheme.bg.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -56,7 +58,7 @@ struct CheckinFlowView: View {
                 .textCase(.uppercase)
                 .tracking(2)
             Text(Date().formatted(date: .complete, time: .omitted))
-                .font(.title2.weight(.bold))
+                .font(.title3.weight(.bold))
                 .foregroundStyle(WellnessTheme.text)
             HStack {
                 Text(store.checkinMode == .morning ? "Morning check-in" : "Evening check-in")
@@ -131,13 +133,13 @@ struct CheckinFlowView: View {
                 .tint(WellnessTheme.accent)
             }
         }
-        .padding(.top, 8)
+        .padding(.top, 6)
     }
 
     private var completionCard: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             Text(store.checkinMode == .morning ? "Morning check-in saved" : "Evening check-in saved")
-                .font(.title3.weight(.bold))
+                .font(.headline.weight(.bold))
                 .foregroundStyle(WellnessTheme.text)
             Text("Great work. Your check-in is saved on this device.")
                 .font(.subheadline)
@@ -153,7 +155,7 @@ struct CheckinFlowView: View {
                 .tint(WellnessTheme.accent)
             }
         }
-        .padding(24)
+        .padding(20)
         .frame(maxWidth: .infinity)
         .background(WellnessTheme.surface)
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(WellnessTheme.accent.opacity(0.4)))

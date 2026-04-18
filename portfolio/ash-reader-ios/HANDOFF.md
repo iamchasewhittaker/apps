@@ -7,6 +7,7 @@
 | Status | 🟡 Local (v0.3) |
 | Device | iPhone 12 Pro Max (A0C65578-B1E0-4E96-A1EC-EEB8913BD11C) |
 | Last build | 2026-04-17 |
+| Last touch | 2026-04-17 — fix: strip markdown in Reader display |
 | Focus | Phase 5 — iCloud sync + push reminders (backlog) |
 | Blocking | None |
 
@@ -39,7 +40,7 @@ Hit ⌘R to run on connected iPhone, or ⌘U to run 26 unit tests.
 | Actions tab — grouped checklist, filter bar, progress | ✅ | ✅ |
 | Settings — prompt prefix toggle + editor | ✅ | ✅ |
 | Export/import progress JSON | ✅ | ✅ |
-| Markdown stripping on copy | ✅ | ✅ |
+| Markdown stripping on copy + display | ✅ | ✅ |
 | Haptic feedback | — | ✅ |
 | iCloud sync | ❌ | ❌ |
 | Push reminders | ❌ | ❌ |

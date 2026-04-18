@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hide My Email — Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #14141a;
+    --surface-2: #1b1b22;
+    --border: #2a2a33;
+    --border-strong: #3a3a47;
+    --text: #f2f2f5;
+    --text-dim: #a8a8b3;
+    --text-mute: #6e6e7a;
+    --accent: #ff5e9c;      /* pink envelope nod */
+    --accent-dim: #5a2339;
+    --ok: #58e08b;
+    --warn: #ffb454;
+    --burn: #ff5c5c;
+    --burn-dim: #3d1e1e;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .title-block h1 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .title-block h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .title-block p {
+    color: var(--text-dim);
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 28px;
+  }
+  .stat {
+    text-align: right;
+  }
+  .stat .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .stat .lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mute);
+    margin-top: 2px;
+  }
+  .stat.burned .num { color: var(--burn); }
+
+  /* Action bar */
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  button, .btn {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1;
+  }
+  button:hover, .btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0d0f;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: #ff7aaf; border-color: #ff7aaf; }
+
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--border);
+  }
+
+  .btn-danger {
+    color: var(--burn);
+    border-color: var(--burn-dim);
+  }
+  .btn-danger:hover { background: var(--burn-dim); border-color: var(--burn); color: #fff; }
+
+  /* Filter chips */
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  /* Table */
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mute);
+    font-weight: 500;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr.burned { opacity: 0.55; }
+  tr.burned td.alias { text-decoration: line-through; }
+
+  td.alias {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  td.company { font-weight: 500; }
+  td.date, td.channel {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .badge.active { background: rgba(88, 224, 139, 0.12); color: var(--ok); }
+  .badge.burned { background: var(--burn-dim); color: var(--burn); }
+  .badge.retired { background: var(--surface-2); color: var(--text-mute); }
+
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  td.actions-cell {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .icon-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-dim);
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Inter Tight', sans-serif;
+    margin-left: 4px;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border); background: var(--surface-2); }
+  .icon-btn.danger:hover { color: var(--burn); border-color: var(--burn-dim); }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--text-mute);
+  }
+  .empty h3 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+  .empty p { margin: 0 0 20px; max-width: 420px; margin-inline: auto; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 24px;
+  }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 32px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 28px;
+    margin: 0 0 4px;
+  }
+  .modal p.sub {
+    color: var(--text-dim);
+    margin: 0 0 24px;
+    font-size: 14px;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mute);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .field input.mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .field textarea { resize: vertical; min-height: 72px; }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+  .hint a { color: var(--accent); text-decoration: none; }
+  .hint a:hover { text-decoration: underline; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 200;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 640px) {
+    .app { padding: 24px 16px 64px; }
+    .title-block h1 { font-size: 32px; }
+    th:nth-child(4), td:nth-child(4), th:nth-child(5), td:nth-child(5) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="title-block">
+      <h1>Hide My <em>Email</em> — Tracker</h1>
+      <p>One alias per company. Trace who leaks your data.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num" id="stat-active">0</div><div class="lbl">Active</div></div>
+      <div class="stat burned"><div class="num" id="stat-burned">0</div><div class="lbl">Burned</div></div>
+      <div class="stat"><div class="num" id="stat-total">0</div><div class="lbl">Total</div></div>
+    </div>
+  </header>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="openShortcut()">↗ Generate Alias in Shortcuts</button>
+    <button onclick="openModal()">+ Log Alias</button>
+    <button class="btn-ghost" onclick="exportData()">Export JSON</button>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="active">Active</button>
+    <button class="chip" data-filter="burned">Burned</button>
+    <button class="chip" data-filter="retired">Retired</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Alias</th>
+          <th>Company</th>
+          <th>Channel</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty" class="empty" style="display:none">
+      <h3>No aliases yet</h3>
+      <p>Run the Shortcut to create one, then log it here with the company you gave it to.</p>
+      <button class="btn-primary" onclick="openShortcut()">Generate Your First Alias</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h2 id="modal-title">Log a new alias</h2>
+    <p class="sub">Paste the alias you just generated and tag where it's going.</p>
+    <div class="field">
+      <label for="f-alias">Alias email</label>
+      <input type="email" id="f-alias" class="mono" placeholder="random.words.123@icloud.com" />
+    </div>
+    <div class="field">
+      <label for="f-company">Company / destination</label>
+      <input type="text" id="f-company" placeholder="Qualtrics, Alpine School District, etc." />
+    </div>
+    <div class="field">
+      <label for="f-channel">Channel</label>
+      <select id="f-channel">
+        <option>Direct site</option>
+        <option>LinkedIn Easy Apply</option>
+        <option>LinkedIn (manual)</option>
+        <option>Indeed</option>
+        <option>ZipRecruiter</option>
+        <option>Recruiter outreach</option>
+        <option>Referral / warm intro</option>
+        <option>Newsletter / signup</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-notes">Notes (role, context)</label>
+      <textarea id="f-notes" placeholder="Corporate AE role, applied via LinkedIn…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveAlias()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---- Storage ----
+  const KEY = 'hme_alias_tracker_v1';
+  const SHORTCUT_NAME = 'New Hide My Email'; // <-- change if you named yours differently
+
+  let editingId = null;
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || []; }
+    catch { return []; }
+  }
+  function save(data) {
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  // ---- Rendering ----
+  let activeFilter = 'all';
+
+  function render() {
+    const data = load();
+    const tbody = document.getElementById('tbody');
+    const empty = document.getElementById('empty');
+    const tableWrap = document.querySelector('.table-wrap table');
+
+    // Stats
+    document.getElementById('stat-active').textContent =
+      data.filter(a => a.status === 'active').length;
+    document.getElementById('stat-burned').textContent =
+      data.filter(a => a.status === 'burned').length;
+    document.getElementById('stat-total').textContent = data.length;
+
+    // Filter
+    const filtered = data.filter(a =>
+      activeFilter === 'all' ? true : a.status === activeFilter
+    );
+
+    if (data.length === 0) {
+      tbody.innerHTML = '';
+      tableWrap.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    tableWrap.style.display = '';
+    empty.style.display = 'none';
+
+    // Sort: active first, then by date desc
+    filtered.sort((a, b) => {
+      if (a.status !== b.status) {
+        const order = { active: 0, burned: 1, retired: 2 };
+        return order[a.status] - order[b.status];
+      }
+      return (b.created || '').localeCompare(a.created || '');
+    });
+
+    tbody.innerHTML = filtered.map(a => `
+      <tr class="${a.status}">
+        <td class="alias" title="${escapeHtml(a.alias)}">${escapeHtml(a.alias)}</td>
+        <td class="company">${escapeHtml(a.company || '—')}</td>
+        <td class="channel">${escapeHtml(a.channel || '—')}</td>
+        <td class="date">${formatDate(a.created)}</td>
+        <td><span class="badge ${a.status}"><span class="dot"></span>${a.status}</span></td>
+        <td class="actions-cell">
+          <button class="icon-btn" onclick="copyAlias('${a.id}')">Copy</button>
+          ${a.status === 'active'
+            ? `<button class="icon-btn danger" onclick="burnAlias('${a.id}')">Burn</button>`
+            : `<button class="icon-btn" onclick="restoreAlias('${a.id}')">Restore</button>`
+          }
+          <button class="icon-btn" onclick="editAlias('${a.id}')">Edit</button>
+          <button class="icon-btn danger" onclick="deleteAlias('${a.id}')">✕</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function escapeHtml(s) {
+    if (!s) return '';
+    return s.replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // ---- Actions ----
+  function openShortcut() {
+    const url = `shortcuts://run-shortcut?name=${encodeURIComponent(SHORTCUT_NAME)}`;
+    window.location.href = url;
+    toast('Opening Shortcuts…');
+  }
+
+  function openModal(id = null) {
+    editingId = id;
+    const modal = document.getElementById('modal');
+    const title = document.getElementById('modal-title');
+    if (id) {
+      const a = load().find(x => x.id === id);
+      if (!a) return;
+      title.textContent = 'Edit alias';
+      document.getElementById('f-alias').value = a.alias || '';
+      document.getElementById('f-company').value = a.company || '';
+      document.getElementById('f-channel').value = a.channel || 'Direct site';
+      document.getElementById('f-notes').value = a.notes || '';
+    } else {
+      title.textContent = 'Log a new alias';
+      document.getElementById('f-alias').value = '';
+      document.getElementById('f-company').value = '';
+      document.getElementById('f-channel').value = 'Direct site';
+      document.getElementById('f-notes').value = '';
+    }
+    modal.style.display = 'flex';
+    setTimeout(() => document.getElementById('f-alias').focus(), 50);
+  }
+
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+    editingId = null;
+  }
+
+  function saveAlias() {
+    const alias = document.getElementById('f-alias').value.trim();
+    const company = document.getElementById('f-company').value.trim();
+    const channel = document.getElementById('f-channel').value;
+    const notes = document.getElementById('f-notes').value.trim();
+
+    if (!alias) { toast('Alias is required'); return; }
+    if (!alias.includes('@')) { toast('That doesn\'t look like an email'); return; }
+
+    const data = load();
+    if (editingId) {
+      const idx = data.findIndex(a => a.id === editingId);
+      if (idx >= 0) {
+        data[idx] = { ...data[idx], alias, company, channel, notes };
+      }
+    } else {
+      data.push({
+        id: uid(),
+        alias, company, channel, notes,
+        status: 'active',
+        created: new Date().toISOString()
+      });
+    }
+    save(data);
+    closeModal();
+    render();
+    toast(editingId ? 'Updated' : 'Alias logged');
+  }
+
+  function editAlias(id) { openModal(id); }
+
+  function burnAlias(id) {
+    const data = load();
+    const a = data.find(x => x.id === id);
+    if (!a) return;
+    const note = prompt('Burn this alias. What kind of spam? (optional)', '');
+    a.status = 'burned';
+    a.burnedAt = new Date().toISOString();
+    if (note) a.burnReason = note;
+    save(data);
+    render();
+    toast('Alias burned');
+  }
+
+  function restoreAlias(id) {
+    const data = load();
+    const a = data.find(x => x.id === id);
+    if (!a) return;
+    a.status = 'active';
+    delete a.burnedAt;
+    save(data);
+    render();
+    toast('Restored');
+  }
+
+  function deleteAlias(id) {
+    if (!confirm('Delete this alias record? This cannot be undone.')) return;
+    save(load().filter(a => a.id !== id));
+    render();
+    toast('Deleted');
+  }
+
+  function copyAlias(id) {
+    const a = load().find(x => x.id === id);
+    if (!a) return;
+    navigator.clipboard.writeText(a.alias).then(() => toast('Copied'));
+  }
+
+  function exportData() {
+    const blob = new Blob([JSON.stringify(load(), null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `hme-aliases-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ---- Filter chips ----
+  document.getElementById('filters').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.filter;
+    render();
+  });
+
+  // ---- Toast ----
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  // ---- Keyboard ----
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+    if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+      e.preventDefault();
+      openModal();
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>

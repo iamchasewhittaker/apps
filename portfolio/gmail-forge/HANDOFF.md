@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 LIVE · daily report extended to show archived mail · project renamed from "Inbox Zero" |
-| **Last touch** | Apr 16, 2026 — renamed to Gmail Forge; daily report now includes auto-archived section + totals line |
-| **Next** | Load Chrome extension → run "Gmail Forge → Refresh Subscriptions" from Sheet menu to backfill → monitor Review Queue → eventually enable GEMINI mode → rename Apps Script project + update Spend Radar Script Properties (manual, off-filesystem) |
+| **Focus** | Phase 3 LIVE · Sort button fully wired (classifies + applies labels via Apps Script doPost) · Guide button + in-extension overlay + standalone guide.html minisite · extension context invalidation bug fixed |
+| **Last touch** | Apr 18, 2026 — wired Sort to apply labels; added ? Guide button to toolbar with full overlay; built guide.html minisite; fixed "Extension context invalidated" crash on extension reload |
+| **Next** | Off-filesystem renames → Subscriptions backfill → enter Web App URL + Token in popup settings → Gemini when ready |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |
@@ -16,35 +16,44 @@
 
 ---
 
-## System Status — All Green ✅
+## System Status
 
 - [x] Apps Script deployed via clasp (Apr 16)
 - [x] Script Properties set: `CLASSIFIER_MODE=RULES_ONLY`, `GEMINI_API_KEY`, `SHEET_ID`, `NEWSLETTER_TO_ALIASES` (2 aliases)
-- [x] `setupTrigger()` confirmed — 5-min trigger already existed from prior session
-- [x] `healthCheck()` — all green: config OK, trigger present (1), sheet accessible
-- [x] `testRun()` — clean run; all swept emails matched existing rules
-- [x] Chrome extension — `npm install` + `npm run validate` passed; ready to load unpacked
-- [x] Review Queue sheet tab — auto-created on first unknown sender; deduplicates by email
-- [x] Subscriptions tab — menu-driven refresh; scans `label:Receipt` last 180d for recurring senders
+- [x] `setupTrigger()` confirmed — 5-min trigger active
+- [x] `healthCheck()` — all green
+- [x] Chrome extension — **loaded in Chrome** (Apr 18)
+- [x] Tab bar — working (all 10 tabs visible)
+- [x] Sort button — **fully wired**: classifies selected emails + applies labels via Apps Script `doPost` handler
+- [x] Guide button (`?`) — added to toolbar; opens overlay with full feature reference inside Gmail
+- [x] Standalone `guide.html` minisite — dark-mode, 6 sections, lives at `portfolio/gmail-forge/guide.html`
+- [x] Extension context invalidation bug — fixed; graceful teardown + "refresh tab" toast when extension reloads with Gmail open
+- [x] Review Queue sheet tab — auto-created on first unknown sender
+- [x] Subscriptions tab — menu-driven refresh available; **not yet run**
 
 ---
 
 ## Remaining / Next Steps
 
-### Code (done this session ✅)
-- [x] **Daily report extended** — searches inbox AND archived separately; new `🗄️ Auto-archived today` section + `📊 Total` line
-- [x] **Renamed to Gmail Forge** — directory, all docs, downstream references (spend-radar, spend-clarity, job-search-hq, funded-ios, portfolio root)
+### 1. ~~Wire Sort Button to Apply Labels~~ ✅ DONE (Apr 18)
 
-### Still pending
-- [ ] **Load Chrome extension** — Chrome → `chrome://extensions` → Developer mode → Load unpacked → select `/Users/chase/Developer/chase/portfolio/gmail-forge/extension/`; configure popup (mode + API key)
-- [ ] **Review Queue habit** — check "Review Queue" tab in the Google Sheet periodically; fill in "Assign Label" column; add confirmed senders to `rules.gs` + `gmail-filters.xml`
-- [ ] **Enable Gemini** — when ready: enable billing on the GCP project tied to `GEMINI_API_KEY`, then change `CLASSIFIER_MODE` back to `GEMINI` in Script Properties
+`doPost(e)` added to `auto-sort.gs`. Extension extracts `data-legacy-message-id` from selected rows, POSTs `{ token, applications: [{messageId, label}] }` to web app. Toast shows "Labeled X email(s)".
 
-### Manual off-filesystem renames (not in git)
-- [ ] **Google Apps Script console** — rename project "Inbox Zero" → "Gmail Forge" at script.google.com
-- [ ] **Spend Radar Script Properties** — add `GMAIL_FORGE_WEB_APP_URL` + `GMAIL_FORGE_TRIGGER_TOKEN` (same values as the old `INBOX_ZERO_*` keys), verify Refresh All Apps works, delete old keys
-- [ ] **Chrome extension** — after loading unpacked, verify popup title shows "Gmail Forge" (manifest.json already updated)
-- [ ] **Asana** — rename project "Inbox Zero Build" → "Gmail Forge Build" (GID `1213891408033292` unchanged)
+**One remaining setup step:** open extension popup → enter Web App URL + Trigger Token (see Script Properties for `TRIGGER_TOKEN`; get deployment URL from script.google.com → Deploy → Manage deployments).
+
+### 2. Off-Filesystem Renames (MANUAL, ~5 min)
+- [ ] **Google Apps Script console** — rename "Inbox Zero" → "Gmail Forge" at script.google.com
+- [ ] **Spend Radar Script Properties** — rename `INBOX_ZERO_*` keys → `GMAIL_FORGE_*` (same values); verify Refresh All Apps; delete old keys
+- [ ] **Asana** — rename "Inbox Zero Build" → "Gmail Forge Build" (GID `1213891408033292`)
+
+### 3. Subscriptions Backfill (MANUAL, ~1 min)
+Open [Google Sheet](https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit) → Gmail Forge menu → Refresh Subscriptions. Scans 180 days of `label:Receipt`, surfaces recurring charges.
+
+### 4. Enable Gemini AI (when budget allows)
+Enable billing on GCP project tied to `GEMINI_API_KEY` → set `CLASSIFIER_MODE = GEMINI` in Script Properties. Estimated cost: ~pennies/month.
+
+### 5. Review Queue (ongoing habit)
+Check "Review Queue" tab in the Sheet weekly. For new senders: add to `rules.gs` + `gmail-filters.xml` → `clasp push --force` → re-import XML in Gmail.
 
 ---
 

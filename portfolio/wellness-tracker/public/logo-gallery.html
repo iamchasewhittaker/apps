@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logo mockups — Wellness Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #12141a;
+      --panel: #1a1d26;
+      --text: #e8e9ec;
+      --muted: #8b92a3;
+      --yellow: #f5e300;
+      --ink: #0f0f0f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "DM Sans", system-ui, sans-serif;
+      line-height: 1.5;
+      padding: 32px 20px 64px;
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 52ch;
+      margin-bottom: 28px;
+    }
+    .grid {
+      display: grid;
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #2a3040;
+    }
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .card p.meta {
+      margin: 0 0 20px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .swatch {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 28px 16px;
+      border-radius: 12px;
+      background: #0d0f14;
+      margin-bottom: 16px;
+    }
+    .swatch.on-yellow { background: #2a2610; }
+    .label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: center;
+      width: 100%;
+      margin: -8px 0 0;
+    }
+    .tokens {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.75rem;
+      font-family: ui-monospace, monospace;
+    }
+    .tokens span {
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: #0d0f14;
+      border: 1px solid #2a3040;
+    }
+    .tokens .y { color: var(--yellow); }
+    .tokens .k { color: var(--text); }
+    footer {
+      max-width: 960px;
+      margin: 40px auto 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <h1>Logo mockups</h1>
+  <p class="sub">
+    Electric yellow and ink black on a squircle. Two wordmarks: <strong>Wellness Tracker</strong> (WT) for this app, and
+    <strong>Ash Reader</strong> (AR) for the reference design. Open this file from the dev server or double-click for a quick preview.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>WT — Wellness Tracker (512)</h2>
+      <p class="meta">Large app icon / marketing size</p>
+      <div class="swatch">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="200" height="200" role="img" aria-label="WT Wellness Tracker logo large">
+          <rect width="512" height="512" rx="112" fill="#f5e300"/>
+          <text x="256" y="228" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="132" fill="#0f0f0f">WT</text>
+          <text x="256" y="332" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="34" fill="#0f0f0f" letter-spacing="0.28em">WELLNESS TRACKER</text>
+        </svg>
+        <span class="label">200×200 preview (vector scales)</span>
+      </div>
+      <div class="tokens">
+        <span class="y">#f5e300</span>
+        <span class="k">#0f0f0f</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>AR — Ash Reader (512)</h2>
+      <p class="meta">Reference sheet style (P6 inverted)</p>
+      <div class="swatch">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="200" height="200" role="img" aria-label="AR Ash Reader logo large">
+          <rect width="512" height="512" rx="112" fill="#f5e300"/>
+          <text x="256" y="228" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="132" fill="#0f0f0f">AR</text>
+          <text x="256" y="332" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="34" fill="#0f0f0f" letter-spacing="0.28em">ASH READER</text>
+        </svg>
+      </div>
+      <div class="tokens">
+        <span class="y">#f5e300</span>
+        <span class="k">#0f0f0f</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Home screen scale (~180)</h2>
+      <p class="meta">Dense type — export PNGs with padding for iOS safe zone</p>
+      <div class="swatch">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="120" height="120" role="img" aria-label="WT small icon">
+          <rect width="180" height="180" rx="40" fill="#f5e300"/>
+          <text x="90" y="82" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="48" fill="#0f0f0f">WT</text>
+          <text x="90" y="128" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="11" fill="#0f0f0f" letter-spacing="0.2em">WELLNESS TRACKER</text>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="120" height="120" role="img" aria-label="AR small icon">
+          <rect width="180" height="180" rx="40" fill="#f5e300"/>
+          <text x="90" y="82" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="48" fill="#0f0f0f">AR</text>
+          <text x="90" y="128" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="11" fill="#0f0f0f" letter-spacing="0.2em">ASH READER</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Favicon scale (64)</h2>
+      <p class="meta">Initials only — wordmark unreadable below ~128px</p>
+      <div class="swatch on-yellow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="WT favicon">
+          <rect width="64" height="64" rx="14" fill="#f5e300"/>
+          <text x="32" y="40" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="28" fill="#0f0f0f">WT</text>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AR favicon">
+          <rect width="64" height="64" rx="14" fill="#f5e300"/>
+          <text x="32" y="40" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="28" fill="#0f0f0f">AR</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <strong>Reliable URLs (SPA):</strong> add <code>?gallery=logos</code> or <code>#logo-gallery</code> to your site root
+    (e.g. <code>https://yoursite.vercel.app/?gallery=logos</code>) — works on Vercel without relying on this static file.
+    <br /><br />
+    <strong>Static file:</strong> <code>/logo-gallery.html</code> when the host serves files from <code>public/</code>
+    (local: <code>npm start</code> → <code>http://localhost:3000/logo-gallery.html</code>).
+  </footer>
+</body>
+</html>
