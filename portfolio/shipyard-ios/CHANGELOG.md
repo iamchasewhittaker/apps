@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- App icon replaced: compass-rose → SY monogram (P6 style, nautical blue `#1e3a5f`, Arial Bold 560px, SHIPYARD sub-label 88px, 180px gap)
+
 ### Added
 - Phase 1 scaffold: `Shipyard.xcodeproj` with `SY*` UUID prefix, SwiftUI shell, mock fleet
 - `Ship` Codable model mirroring the web `Project` type

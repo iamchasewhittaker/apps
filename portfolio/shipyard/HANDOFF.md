@@ -6,7 +6,7 @@
 | ---------- | ------------------------------------------------------------------ |
 | Focus      | Phase 1 live                                                       |
 | Next       | Set up Supabase RLS + Phase 2 (editable fields + learnings ingestion) |
-| Last touch | 2026-04-16                                                         |
+| Last touch | 2026-04-18                                                         |
 
 ## Phase 1 — Complete
 

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shipyard — Logo Mockup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #070c18;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      padding: 48px 40px;
+    }
+    h1 {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #475569;
+      margin-bottom: 48px;
+    }
+
+    /* ── Sizes row ── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #475569;
+      margin-bottom: 24px;
+    }
+
+    .sizes-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 56px;
+    }
+
+    .size-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .size-tag {
+      font-size: 9px;
+      color: #475569;
+      font-family: monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── The badge itself ── */
+    .badge {
+      background: #1e3a5f;
+      border: 1px solid #2d5a8f;
+      border-radius: calc(var(--size) * 0.22);
+      width: var(--size);
+      height: var(--size);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .badge .initials {
+      color: #e2e8f0;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .badge .sub {
+      color: #e2e8f0;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      line-height: 1;
+      opacity: 0.75;
+    }
+
+    /* Size variants */
+    .badge-lg  { --size: 96px; }
+    .badge-lg .initials { font-size: 36px; margin-bottom: 4px; }
+    .badge-lg .sub      { font-size: 8px; }
+
+    .badge-md  { --size: 56px; }
+    .badge-md .initials { font-size: 21px; margin-bottom: 2px; }
+    .badge-md .sub      { font-size: 5px; }
+
+    .badge-sm  { --size: 36px; }
+    .badge-sm .initials { font-size: 13px; margin-bottom: 1px; }
+    .badge-sm .sub      { font-size: 3.5px; }
+
+    .badge-xs  { --size: 24px; }
+    .badge-xs .initials { font-size: 9px; margin-bottom: 1px; }
+    .badge-xs .sub      { font-size: 2.5px; }
+
+    /* ── Sidebar simulation ── */
+    .sidebar-wrap {
+      margin-bottom: 56px;
+    }
+
+    .sidebar {
+      background: #131b2e;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      width: 220px;
+      padding: 24px 16px;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .wordmark {
+      font-size: 17px;
+      font-weight: 600;
+      color: #d4a853;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 2px;
+    }
+
+    .nav-item.active {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+
+    .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+    /* ── Large hero version ── */
+    .hero-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 56px;
+    }
+
+    .hero-wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #e2e8f0;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .hero-tagline {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Shipyard — Nautical Blue Logo · #1e3a5f</h1>
+
+  <!-- Sizes -->
+  <div class="section-label">Icon at all sizes</div>
+  <div class="sizes-row">
+    <div class="size-group">
+      <div class="badge badge-lg">
+        <span class="initials">SY</span>
+        <span class="sub">SHIPYARD</span>
+      </div>
+      <span class="size-tag">96px · hero</span>
+    </div>
+    <div class="size-group">
+      <div class="badge badge-md">
+        <span class="initials">SY</span>
+        <span class="sub">SHIPYARD</span>
+      </div>
+      <span class="size-tag">56px · card</span>
+    </div>
+    <div class="size-group">
+      <div class="badge badge-sm">
+        <span class="initials">SY</span>
+        <span class="sub">SHIPYARD</span>
+      </div>
+      <span class="size-tag">36px · sidebar</span>
+    </div>
+    <div class="size-group">
+      <div class="badge badge-xs">
+        <span class="initials">SY</span>
+        <span class="sub">SHIPYARD</span>
+      </div>
+      <span class="size-tag">24px · favicon</span>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="section-label">In the sidebar</div>
+  <div class="sidebar-wrap">
+    <div class="sidebar">
+      <div class="logo-row">
+        <div class="badge badge-sm">
+          <span class="initials">SY</span>
+          <span class="sub">SHIPYARD</span>
+        </div>
+        <span class="wordmark">Shipyard</span>
+      </div>
+      <div class="nav-item active"><span class="nav-icon">⚓</span> Fleet</div>
+      <div class="nav-item"><span class="nav-icon">🛠</span> WIP</div>
+      <div class="nav-item"><span class="nav-icon">🔍</span> Review</div>
+      <div class="nav-item"><span class="nav-icon">📖</span> Learnings</div>
+      <div class="nav-item"><span class="nav-icon">🎨</span> Themes</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="section-label">Hero / header lock-up</div>
+  <div class="hero-wrap">
+    <div class="badge badge-lg">
+      <span class="initials">SY</span>
+      <span class="sub">SHIPYARD</span>
+    </div>
+    <div class="hero-wordmark">
+      <span class="hero-name">Shipyard</span>
+      <span class="hero-tagline">Fleet command for your app portfolio</span>
+    </div>
+  </div>
+
+</body>
+</html>

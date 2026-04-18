@@ -19,7 +19,7 @@ interface Props {
 
 export default async function FleetDashboard({ searchParams }: Props) {
   const sp = await searchParams;
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const [{ data: allProjects }, { data: cadenceRows }] = await Promise.all([
     supabase

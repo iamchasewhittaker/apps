@@ -4,7 +4,7 @@ import { createServerClient } from '@/lib/supabase';
 import type { Project } from '@/lib/types';
 
 export default async function LinearPage() {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const { data: allProjects } = await supabase
     .from('projects')

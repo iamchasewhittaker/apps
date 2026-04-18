@@ -12,7 +12,7 @@ interface Props {
 
 export default async function ReviewPage({ searchParams }: Props) {
   const sp = await searchParams;
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   // Fetch cadence rows to determine most overdue kind
   const { data: cadenceRows } = await supabase
@@ -194,7 +194,7 @@ function CadenceEditor({
     const days = parseInt(formData.get('cadence_days') as string, 10);
     if (isNaN(days) || days < 1) return;
 
-    const supabase = createServerClient();
+    const supabase = await createServerClient();
     await supabase
       .from('review_cadence')
       .update({ cadence_days: days })

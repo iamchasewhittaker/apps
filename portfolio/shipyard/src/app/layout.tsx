@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { LogoIcon } from "@/components/LogoIcon";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -41,7 +42,7 @@ export default function RootLayout({
       <body className="min-h-full flex">
         <nav className="fixed left-0 top-0 bottom-0 w-[220px] bg-card border-r border-border flex flex-col py-6 px-4 z-10">
           <div className="flex items-center gap-2 px-2 mb-8">
-            <span className="text-2xl">&#9875;</span>
+            <LogoIcon size="sm" />
             <span className="text-lg font-semibold text-accent tracking-tight">
               Shipyard
             </span>

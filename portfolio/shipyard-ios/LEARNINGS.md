@@ -18,5 +18,17 @@ The original plan called for wiring ClarityUI as a local Swift package reference
 **`qlmanage` + `sips` is the reliable macOS-native icon pipeline.**
 No need for rsvg-convert, ImageMagick, or Python PIL. Single SVG → 1024 PNG → downscaled to all required sizes. Borrowed the approach from `portfolio/ash-reader-ios/design/generate-app-icons.sh`.
 
+**iOS icon cache is aggressive — delete + reinstall to see icon changes.**
+After reinstalling an app with a new `Icon-1024.png`, iOS often shows the cached old icon on the home screen. The only reliable fix is to delete the app and reinstall. Long-press → wiggle → delete, then `xcrun devicectl device install app ...`.
+
+**`devicectl process launch` fails with error -10814 or "device locked" when screen is off.**
+These are not real errors — the app installed fine. Just unlock the phone and tap the icon. Don't retry the launch command; it won't help.
+
+**Gap between initials and sub-label needs to be ~18% of icon canvas (180px at 1024px).**
+48px and 110px both rendered too close on device. 180px is the correct value for the SY/SHIPYARD layout. Arrived at iteratively — save time and start at 180px for future P6-style icons.
+
+**Python Pillow works for programmatic icon generation when no SVG source exists.**
+`qlmanage + sips` (the ash-reader approach) requires an SVG. For Shipyard, the design is purely typographic so Pillow is cleaner — no SVG authoring needed. Use `draw.textbbox` (not deprecated `textsize`) for accurate bounds.
+
 **`AppIcon.appiconset` with a single `1024x1024` image works on iOS 17.**
 No need to generate all 12 traditional sizes. Setting `ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon` in build settings plus a single `Icon-1024.png` referenced in `Contents.json` (with `idiom = universal, platform = ios`) is enough for iOS 17+ simulator builds.

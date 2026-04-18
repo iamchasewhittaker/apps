@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
-import { resolve, join, basename } from 'path';
+import { resolve, join } from 'path';
 import { execSync } from 'child_process';
+import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 import { inferMvpStep } from '../src/lib/mvp-step';
 import type { Compliance } from '../src/lib/types';
@@ -16,11 +17,18 @@ try {
 } catch {}
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Use service role key to bypass RLS (required after 0002_rls.sql is applied).
+// Add SUPABASE_SERVICE_ROLE_KEY to .env.local from Supabase → Settings → API.
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local');
+  console.error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env.local');
   process.exit(1);
+}
+
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.warn('⚠️  SUPABASE_SERVICE_ROLE_KEY not set — using anon key. Writes will fail if RLS is enabled.');
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -180,6 +188,38 @@ function parseClaudeMd(dir: string): {
   }
 }
 
+function parseLearnings(dir: string, slug: string): Array<Record<string, unknown>> {
+  const learningsPath = join(dir, 'LEARNINGS.md');
+  if (!existsSync(learningsPath)) return [];
+
+  let content: string;
+  try {
+    content = readFileSync(learningsPath, 'utf-8');
+  } catch {
+    return [];
+  }
+
+  // Split by ## headings; each section becomes one learning entry
+  const sections = content.split(/\n(?=## )/g).filter((s) => s.trim().startsWith('## '));
+
+  return sections.map((section) => {
+    const lines = section.split('\n');
+    const heading = lines[0].replace(/^##\s*/, '').trim();
+    const body = lines.slice(1).join('\n').trim();
+    const text = body ? `${heading}\n\n${body}` : heading;
+    const rawRef = createHash('md5').update(`${slug}::${heading}`).digest('hex').slice(0, 16);
+
+    return {
+      project_slug: slug,
+      text,
+      tags: ['auto:scan'],
+      source: 'auto:audit',
+      reviewed: false,
+      raw_source_ref: rawRef,
+    };
+  });
+}
+
 function daysSince(dateStr: string | null): number | null {
   if (!dateStr) return null;
   const d = new Date(dateStr);
@@ -209,6 +249,7 @@ async function main() {
   console.log(`Found ${entries.length} directories\n`);
 
   const projects: Record<string, unknown>[] = [];
+  const allLearnings: Record<string, unknown>[] = [];
   const errors: Record<string, string>[] = [];
 
   for (const name of entries) {
@@ -237,6 +278,8 @@ async function main() {
       });
 
       const relPath = `portfolio/${name}`;
+
+      const learningRows = parseLearnings(dir, name);
 
       projects.push({
         slug: name,
@@ -268,7 +311,11 @@ async function main() {
         secrets_p0_count: 0,
       });
 
-      console.log(`  [OK] ${name} (${type}, step ${mvp_step_actual}, ${status})`);
+      if (learningRows.length > 0) {
+        allLearnings.push(...learningRows);
+      }
+
+      console.log(`  [OK] ${name} (${type}, step ${mvp_step_actual}, ${status}${learningRows.length ? `, ${learningRows.length} learnings` : ''})`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       errors.push({ project: name, error: msg });
@@ -288,6 +335,21 @@ async function main() {
     console.log(`Upserted ${projects.length} projects`);
   }
 
+  // Upsert learnings
+  let learningsCaptured = 0;
+  if (allLearnings.length > 0) {
+    console.log(`\nUpserting ${allLearnings.length} learnings...`);
+    const { error: lErr, count: lCount } = await supabase
+      .from('learnings')
+      .upsert(allLearnings, { onConflict: 'project_slug,source,raw_source_ref', ignoreDuplicates: true });
+    if (lErr) {
+      console.error('Learnings upsert error:', lErr.message);
+    } else {
+      learningsCaptured = allLearnings.length;
+      console.log(`Upserted ${allLearnings.length} learnings (deduped)`);
+    }
+  }
+
   // Write scan row
   const finishedAt = new Date().toISOString();
   const scanRow = {
@@ -295,7 +357,7 @@ async function main() {
     finished_at: finishedAt,
     projects_found: entries.length,
     projects_updated: upsertErr ? 0 : projects.length,
-    learnings_captured: 0,
+    learnings_captured: learningsCaptured,
     themes_updated: 0,
     errors: errors.length ? errors : null,
   };

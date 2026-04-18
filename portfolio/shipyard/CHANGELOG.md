@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+- Sidebar logo replaced: anchor emoji → `LogoIcon` component (SY monogram, nautical blue `#1e3a5f`, P6 style)
+- Added `src/components/LogoIcon.tsx` with sm/md/lg size variants
+- Added `src/app/icon.tsx` dynamic favicon (32×32 nautical blue SY badge)
+
 ## [0.1.0] — 2026-04-16
 
 Initial release.

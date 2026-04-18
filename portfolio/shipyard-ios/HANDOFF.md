@@ -6,7 +6,7 @@
 | ---------- | ------------------------------------------------------------------------- |
 | Focus      | Phase 1 scaffold complete — simulator build green, mock fleet renders     |
 | Next       | Phase 2 — Supabase read-only fleet pull (after web RLS + auth lands)      |
-| Last touch | 2026-04-17                                                                |
+| Last touch | 2026-04-18                                                                |
 
 ## Phase 1 — Complete
 
@@ -16,7 +16,7 @@
 - `FleetStore` @Observable with 6 mock ships
 - `NauticalLabels` ported from web `STEP_NAUTICAL`
 - `Palette` nautical token set (navy, gold, sail-cream)
-- AppIcon 1024 — compass-rose mark on navy (generated from `design/app-icon.svg`)
+- AppIcon 1024 — SY monogram on nautical blue `#1e3a5f` (P6 style, generated via Python Pillow)
 - `docs/BRANDING.md` using portfolio template
 - `ShipyardTests/FleetStoreTests.swift` — smoke tests for model decode + grouping
 
@@ -31,5 +31,5 @@
 ## Known Limitations
 
 - No ClarityUI dependency yet — deferred to keep the bare pbxproj minimal. See `LEARNINGS.md`.
-- AppIcon is a placeholder compass rose — can be restyled once brand direction is final.
+- AppIcon is now SY monogram (P6 style) — brand direction final, see `docs/BRANDING.md`.
 - Mock data only — nothing reads from Supabase yet.

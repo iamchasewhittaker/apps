@@ -19,7 +19,7 @@ const SOURCE_COLORS: Record<string, string> = {
 export default async function LearningsPage({ searchParams }: Props) {
   const sp = await searchParams;
   const tab = sp.tab ?? 'all';
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const { data: allLearnings } = await supabase
     .from('learnings')

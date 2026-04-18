@@ -8,8 +8,10 @@ struct FleetListView: View {
             ForEach(store.groupedByBucket(), id: \.bucket) { group in
                 Section {
                     ForEach(group.ships) { ship in
-                        ShipRowView(ship: ship)
-                            .listRowBackground(Palette.deepSea)
+                        NavigationLink(value: ship) {
+                            ShipRowView(ship: ship)
+                        }
+                        .listRowBackground(Palette.deepSea)
                     }
                 } header: {
                     HStack {
@@ -27,6 +29,18 @@ struct FleetListView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Palette.navy)
+        .navigationDestination(for: Ship.self) { ship in
+            ShipDetailView(ship: ship)
+        }
+        .refreshable {
+            await store.loadFleet()
+        }
+        .overlay {
+            if store.isLoading && store.ships.isEmpty {
+                ProgressView("Loading fleet…")
+                    .tint(Palette.gold)
+            }
+        }
     }
 }
 
@@ -37,7 +51,7 @@ struct FleetListView: View {
     }
     .environment({
         let s = FleetStore()
-        s.loadMockFleet()
+        s.signIn()
         return s
     }())
 }

@@ -6,7 +6,7 @@ import WipActions from './WipActions';
 import type { Project, WipDecision } from '@/lib/types';
 
 export default async function WipPage() {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const [{ data: buildShips }, { data: recentDecisions }] = await Promise.all([
     supabase

@@ -4,18 +4,98 @@ import Observation
 @Observable @MainActor
 final class FleetStore {
     private(set) var ships: [Ship] = []
+    private(set) var isLoading = false
+    private(set) var isSignedIn = false
+    var errorMessage: String?
 
     nonisolated init() {}
 
-    // Phase 1 — hardcoded mock fleet. Phase 2 will replace with Supabase pull.
-    func loadMockFleet() {
+    // MARK: - Auth (Phase 2 stub)
+
+    /// Sign in with magic link — real Supabase call goes here once supabase-swift is added.
+    func signIn() {
+        // TODO: replace with Supabase session check once supabase-swift package is added:
+        //   isSignedIn = supabase.auth.currentSession != nil
+        isSignedIn = true
+        Task { await loadFleet() }
+    }
+
+    func signOut() {
+        isSignedIn = false
+        ships = []
+        clearCache()
+    }
+
+    // MARK: - Load
+
+    /// Phase 2: tries Supabase, falls back to cache, falls back to mock.
+    func loadFleet() async {
+        isLoading = true
+        defer { isLoading = false }
+
+        // 1. Try live Supabase fetch (stubbed until supabase-swift package is added).
+        // TODO: uncomment once supabase-swift is added in Xcode and Config values are set:
+        //   let fetched = try? await fetchFromSupabase()
+        //   if let fetched { ships = fetched; saveToCache(fetched); return }
+        let fetched: [Ship]? = nil  // remove this line when uncommenting above
+
+        if let fetched {
+            ships = fetched
+            saveToCache(fetched)
+            return
+        }
+
+        // 2. Fall back to UserDefaults cache
+        if let cached = loadFromCache(), !cached.isEmpty {
+            ships = cached
+            return
+        }
+
+        // 3. Fall back to mock fleet
         ships = FleetStore.mockFleet
+    }
+
+    // MARK: - Supabase fetch (Phase 2 — activate after adding supabase-swift in Xcode)
+    //
+    // Steps to activate:
+    //   1. In Xcode: File → Add Package Dependencies → https://github.com/supabase/supabase-swift
+    //   2. Add SUPABASE_ANON_KEY to a gitignored Secrets.xcconfig
+    //   3. Wire Secrets.xcconfig into the Shipyard target build settings
+    //   4. Reference in Info.plist: SUPABASE_ANON_KEY = $(SUPABASE_ANON_KEY)
+    //   5. Uncomment the import and function below, remove the nil stub above.
+    //
+    // import Supabase
+    //
+    // private func fetchFromSupabase() async throws -> [Ship] {
+    //     let client = SupabaseClient(supabaseURL: Config.supabaseURL, supabaseKey: Config.supabaseAnonKey)
+    //     let rows: [Ship] = try await client
+    //         .from("projects")
+    //         .select()
+    //         .order("last_commit_date", ascending: false)
+    //         .execute()
+    //         .value
+    //     return rows
+    // }
+
+    // MARK: - Cache
+
+    private func saveToCache(_ fleet: [Ship]) {
+        guard let data = try? JSONEncoder().encode(fleet) else { return }
+        UserDefaults.standard.set(data, forKey: Config.userDefaultsKey)
+    }
+
+    private func loadFromCache() -> [Ship]? {
+        guard let data = UserDefaults.standard.data(forKey: Config.userDefaultsKey),
+              let fleet = try? JSONDecoder().decode([Ship].self, from: data) else { return nil }
+        return fleet
+    }
+
+    private func clearCache() {
+        UserDefaults.standard.removeObject(forKey: Config.userDefaultsKey)
     }
 
     // MARK: - Grouping
 
-    /// Ships grouped by a display-oriented status bucket.
-    /// Order: Under Construction → Launched → Drydock → Archived.
     func groupedByBucket() -> [(bucket: FleetBucket, ships: [Ship])] {
         FleetBucket.allCases.compactMap { bucket in
             let filtered = ships.filter { bucket.contains($0) }
@@ -61,7 +141,7 @@ final class FleetStore {
             type: .web,
             family: .portfolio,
             status: .active,
-            tech_stack: "Next.js 15 + Supabase",
+            tech_stack: "Next.js 16 + Supabase",
             mvp_step_actual: 4,
             last_commit_date: Date().addingTimeInterval(-1 * 86_400),
             days_since_commit: 1,

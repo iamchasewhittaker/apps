@@ -38,7 +38,7 @@ const KIND_ORDER: ThemeKind[] = [
 ];
 
 export default async function ThemesPage() {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const { data: allThemes } = await supabase
     .from('themes')

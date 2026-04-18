@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase';
 import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
+import { EditableText, EditableStatus, BlockerManager } from '@/components/EditableField';
 import type { Project, Blocker, Compliance } from '@/lib/types';
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 
 export default async function ShipDetailPage({ params }: Props) {
   const { slug } = await params;
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const [{ data: project }, { data: blockers }] = await Promise.all([
     supabase.from('projects').select('*').eq('slug', slug).single(),
@@ -47,7 +48,7 @@ export default async function ShipDetailPage({ params }: Props) {
         <div className="flex flex-wrap gap-2">
           <Badge color={TYPE_COLORS[p.type]}>{p.type}</Badge>
           <Badge color="border-border text-muted">{p.family}</Badge>
-          <Badge color={STATUS_COLORS[p.status]}>{p.status}</Badge>
+          <EditableStatus slug={p.slug} value={p.status} />
           <Badge color="border-accent/30 bg-accent/10 text-accent">
             Step {step}: {STEP_LABELS[step] ?? '?'} &middot;{' '}
             {STEP_NAUTICAL[step] ?? ''}
@@ -69,36 +70,12 @@ export default async function ShipDetailPage({ params }: Props) {
 
       {/* Next Action */}
       <Section title="Next Action">
-        {p.next_action ? (
-          <p className="text-sm text-foreground">{p.next_action}</p>
-        ) : (
-          <p className="text-sm italic text-muted">No next action set.</p>
-        )}
+        <EditableText slug={p.slug} field="next_action" value={p.next_action} placeholder="No next action set. Click to add…" />
       </Section>
 
       {/* Blockers */}
       <Section title="Blockers">
-        {blockerList.length === 0 ? (
-          <p className="text-sm italic text-muted">No blockers recorded.</p>
-        ) : (
-          <ul className="space-y-2">
-            {blockerList.map((b) => (
-              <li
-                key={b.id}
-                className={`flex items-start gap-2 rounded-md border px-3 py-2 text-sm ${
-                  b.resolved_at
-                    ? 'border-border bg-card/50 text-muted line-through'
-                    : 'border-danger/30 bg-danger/5 text-foreground'
-                }`}
-              >
-                <span className="mt-0.5 shrink-0">
-                  {b.resolved_at ? '\u2713' : '\u25CF'}
-                </span>
-                <span>{b.text}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+        <BlockerManager slug={p.slug} initialBlockers={blockerList} />
       </Section>
 
       {/* Compliance Checklist */}

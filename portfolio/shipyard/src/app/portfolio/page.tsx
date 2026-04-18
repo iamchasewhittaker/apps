@@ -5,7 +5,7 @@ import PortfolioActions from './PortfolioActions';
 import type { Project } from '@/lib/types';
 
 export default async function PortfolioPage() {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const { data: launchedShips } = await supabase
     .from('projects')

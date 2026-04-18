@@ -8,7 +8,6 @@ struct ShipyardApp: App {
         WindowGroup {
             ContentView()
                 .environment(store)
-                .onAppear { store.loadMockFleet() }
                 .preferredColorScheme(.dark)
                 .tint(Palette.gold)
         }

@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createServerClient();
+    const supabase = await createServerClient();
     const now = new Date().toISOString();
 
     // 1. Create review row
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const kind = searchParams.get('kind') as ReviewKind | null;
 
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   let query = supabase
     .from('reviews')

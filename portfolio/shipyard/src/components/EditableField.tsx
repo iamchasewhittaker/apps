@@ -1,0 +1,201 @@
+'use client';
+
+import { useState, useRef } from 'react';
+
+interface EditableTextProps {
+  slug: string;
+  field: 'next_action' | 'recommendation';
+  value: string | null;
+  placeholder?: string;
+}
+
+export function EditableText({ slug, field, value, placeholder = 'Click to add…' }: EditableTextProps) {
+  const [editing, setEditing] = useState(false);
+  const [current, setCurrent] = useState(value ?? '');
+  const [saving, setSaving] = useState(false);
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  async function save() {
+    setSaving(true);
+    await fetch(`/api/ship/${slug}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ [field]: current }),
+    });
+    setSaving(false);
+    setEditing(false);
+  }
+
+  if (editing) {
+    return (
+      <div className="space-y-2">
+        <textarea
+          ref={ref}
+          autoFocus
+          value={current}
+          onChange={(e) => setCurrent(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) save();
+            if (e.key === 'Escape') { setCurrent(value ?? ''); setEditing(false); }
+          }}
+          rows={3}
+          className="w-full rounded-md border border-accent/50 bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:border-accent resize-none"
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={save}
+            disabled={saving}
+            className="rounded-md border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+          >
+            {saving ? 'Saving…' : 'Save'}
+          </button>
+          <button
+            onClick={() => { setCurrent(value ?? ''); setEditing(false); }}
+            className="rounded-md border border-border px-3 py-1 text-xs font-medium text-muted hover:text-foreground transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setEditing(true)}
+      className="w-full text-left text-sm group"
+    >
+      {current ? (
+        <span className="text-foreground group-hover:text-accent transition-colors">
+          {current}
+        </span>
+      ) : (
+        <span className="italic text-muted group-hover:text-accent/60 transition-colors">
+          {placeholder}
+        </span>
+      )}
+      <span className="ml-1.5 text-[10px] text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+        edit
+      </span>
+    </button>
+  );
+}
+
+interface EditableStatusProps {
+  slug: string;
+  value: string;
+}
+
+const STATUS_OPTIONS = ['active', 'stalled', 'frozen', 'archived'] as const;
+
+export function EditableStatus({ slug, value }: EditableStatusProps) {
+  const [current, setCurrent] = useState(value);
+  const [saving, setSaving] = useState(false);
+
+  async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const next = e.target.value;
+    setCurrent(next);
+    setSaving(true);
+    await fetch(`/api/ship/${slug}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: next }),
+    });
+    setSaving(false);
+  }
+
+  return (
+    <select
+      value={current}
+      onChange={handleChange}
+      disabled={saving}
+      className="rounded-md border border-border bg-card px-2 py-1 text-xs font-medium text-foreground focus:border-accent focus:outline-none disabled:opacity-50 cursor-pointer"
+    >
+      {STATUS_OPTIONS.map((s) => (
+        <option key={s} value={s}>{s}</option>
+      ))}
+    </select>
+  );
+}
+
+interface BlockerManagerProps {
+  slug: string;
+  initialBlockers: Array<{ id: string; text: string; resolved_at: string | null }>;
+}
+
+export function BlockerManager({ slug, initialBlockers }: BlockerManagerProps) {
+  const [blockers, setBlockers] = useState(initialBlockers);
+  const [newText, setNewText] = useState('');
+  const [adding, setAdding] = useState(false);
+
+  async function addBlocker() {
+    if (!newText.trim()) return;
+    setAdding(true);
+    const res = await fetch(`/api/ship/${slug}/blockers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: newText.trim() }),
+    });
+    const { blocker } = await res.json();
+    if (blocker) setBlockers((prev) => [blocker, ...prev]);
+    setNewText('');
+    setAdding(false);
+  }
+
+  async function resolveBlocker(id: string) {
+    await fetch(`/api/ship/${slug}/blockers/${id}`, { method: 'DELETE' });
+    setBlockers((prev) =>
+      prev.map((b) => b.id === id ? { ...b, resolved_at: new Date().toISOString() } : b),
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {blockers.length === 0 ? (
+        <p className="text-sm italic text-muted">No blockers recorded.</p>
+      ) : (
+        <ul className="space-y-2">
+          {blockers.map((b) => (
+            <li
+              key={b.id}
+              className={`flex items-start gap-2 rounded-md border px-3 py-2 text-sm ${
+                b.resolved_at
+                  ? 'border-border bg-card/50 text-muted line-through'
+                  : 'border-danger/30 bg-danger/5 text-foreground'
+              }`}
+            >
+              <span className="mt-0.5 shrink-0">{b.resolved_at ? '✓' : '●'}</span>
+              <span className="flex-1">{b.text}</span>
+              {!b.resolved_at && (
+                <button
+                  onClick={() => resolveBlocker(b.id)}
+                  className="shrink-0 text-[10px] text-muted hover:text-success transition-colors"
+                >
+                  resolve
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={newText}
+          onChange={(e) => setNewText(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && addBlocker()}
+          placeholder="Add a blocker…"
+          className="flex-1 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+        />
+        <button
+          onClick={addBlocker}
+          disabled={adding || !newText.trim()}
+          className="rounded-md border border-danger/40 bg-danger/10 px-3 py-1.5 text-xs font-medium text-danger hover:bg-danger/20 transition-colors disabled:opacity-50"
+        >
+          {adding ? '…' : 'Add'}
+        </button>
+      </div>
+    </div>
+  );
+}
