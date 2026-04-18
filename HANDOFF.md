@@ -88,8 +88,8 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
 | **Focus**      | **Job Search HQ v8.9 (2026-04-18).** Wave 4 #2 shipped: Draft Message context — ContactCard now pre-selects contact in Apply Tools → LinkedIn → Connection Request. |
 | **Next**       | 1. **Job Search HQ:** Wave 4 #3 — Outreach cadence timeline per contact (visual touchpoint history). 2. **Unnamed iOS:** Use for 7 days — no features until streak. 3. **Vercel/GitHub limit:** disconnect a stale project to unblock Unnamed auto-deploy. |
-| **Blockers**   | **Vercel/GitHub connection limit:** GitHub repo `iamchasewhittaker/apps` is already connected to 10 Vercel projects — Unnamed auto-deploy could not be wired up. To fix: go to Vercel dashboard → disconnect a stale/retired project from the repo → then run `vercel git connect https://github.com/iamchasewhittaker/apps.git --yes` from `portfolio/unnamed/`. |
-| **Last touch** | 2026-04-18 — Job Search HQ v8.9: Draft Message context feature (Wave 4 #2). |
+| **Blockers**   | **Vercel/GitHub connection limit:** GitHub repo `iamchasewhittaker/apps` is already connected to 10 Vercel projects — Unnamed auto-deploy could not be wired up. To fix: go to Vercel dashboard → disconnect a stale/retired project from the repo → then run `vercel git connect https://github.com/iamchasewhittaker/apps.git --yes` from `portfolio/unnamed/`. Note: alias-ledger may have consumed one slot — check current count before trying. |
+| **Last touch** | 2026-04-18 — Alias Ledger v1.0: new project, deployed to alias-ledger.vercel.app. |
 
 
 ---
