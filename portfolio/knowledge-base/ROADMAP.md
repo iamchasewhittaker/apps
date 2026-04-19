@@ -63,10 +63,10 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **Operational prompt library** — added daily email/planning/end-of-day prompt bookmarks with copy-ready prompt text in notes
 - [x] **SEED_VERSION 6 migration** — new folders/bookmarks auto-merge for existing users
 
-## v2.1 — Next
-- [ ] **Deploy v2.0 to Vercel** — push and verify live URL works with migrated localStorage data
-- [ ] **Import / export JSON** — backup + portability (export downloads file; import merges without duplicating)
-- [ ] **Favicons** — show site favicons next to each bookmark row
+## v2.1 — Shipped (2026-04-19)
+- [x] **Deploy v2.0.2 to Vercel** — pushed and verified live
+- [x] **Import / export JSON** — Export button downloads dated backup; Import button merges without duplicating
+- [x] **Favicons** — site favicons on all bookmark rows and home cards via Google favicon CDN; graceful fallback
 
 ## v2.2 — Quality of life
 - [ ] Drag-and-drop reordering within a folder and between folders

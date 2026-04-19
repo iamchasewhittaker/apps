@@ -1,7 +1,12 @@
 # Changelog — Knowledge Base
 
-## [Unreleased]
+## [v2.1.0] — 2026-04-19
+### Added
+- **Favicons** — site favicons on all bookmark rows and home cards via Google favicon CDN (`s2/favicons`); graceful `onError` fallback (hides broken img)
+- **Export JSON** — downloads full localStorage blob as `knowledge-base-YYYY-MM-DD.json` via `Download` button in sidebar footer
+- **Import JSON** — merges a backup file without duplicating existing bookmarks, folders, or favorites; `Upload` button in sidebar footer
 
+## [v2.0.2] — 2026-04-14
 ### Fixed (2026-04-14)
 - **Favicon/logo white corners:** removed `rx` rounded corners from `favicon.svg` and `logo.svg`; regenerated `logo192.png`, `logo512.png`, `apple-touch-icon.png` — solid `#0f1117` fill covers full square
 

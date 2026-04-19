@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v2.0.2 |
+| **Version** | v2.1.0 |
 | **Branch** | `main` |
 | **URL** | knowledge-base-beta-five.vercel.app |
 | **Storage key** | `chase_knowledge_base_v1` — blob: `{ bookmarks, folders, favorites, categoryOrder }` |
-| **Focus** | My Projects sections refresh — missing active project links added; new nested sections for Daily Prompts, Theme & Colors, and Development Details |
-| **Next** | Deploy v2.0.2 update, then continue v2.1 import/export and favicon work |
+| **Focus** | v2.1 shipped — favicons, import/export JSON |
+| **Next** | v2.2 — drag-and-drop reorder, tags cross-folder filter, sort options |
 | **Blockers** | None |
-| **Last touch** | 2026-04-14 — `SEED_VERSION` 6: added My Projects child folders (`Daily Prompts`, `Theme & Colors`, `Development Details`), added missing active projects (`Clarity Command`, `Clarity Hub`, `YNAB Clarity Web`, `RollerTask Tycoon Web`), and seeded daily prompt/theme/dev reference bookmarks |
+| **Last touch** | 2026-04-19 — v2.1: site favicons on all rows/home cards (Google CDN), Export/Import JSON buttons in sidebar footer |
 
 ---
 
