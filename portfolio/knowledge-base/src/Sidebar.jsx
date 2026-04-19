@@ -1,4 +1,4 @@
-import { Search, Star, Clock, AlertTriangle, Plus, FolderPlus, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { Search, Star, Clock, AlertTriangle, Plus, FolderPlus, ChevronLeft, ChevronRight, ExternalLink, Download, Upload } from "lucide-react";
 import { s } from "./constants";
 import FolderTree from "./FolderTree";
 
@@ -15,6 +15,8 @@ export default function Sidebar({
   favorites,
   // Actions
   onNewFolder, onNewBookmark,
+  // Import / export
+  onExport, onImport,
   // Link click tracking
   onLinkClick,
   // Tags (Forever-notes style cross-cutting filter)
@@ -193,10 +195,18 @@ export default function Sidebar({
       </div>
 
       {/* Bottom actions */}
-      <div style={s.sidebarFooter}>
+      <div style={{ ...s.sidebarFooter, flexDirection: "column", gap: 6 }}>
         <button className="kb-add" onClick={onNewBookmark} style={s.sidebarAddBtn}>
           <Plus size={14} /> New Bookmark
         </button>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button className="kb-sidebar-act" onClick={onExport} style={{ ...s.sidebarActBtn, flex: 1, justifyContent: "center", gap: 5, fontSize: 12, padding: "5px 8px", color: "#a1a1aa" }} title="Export bookmarks as JSON">
+            <Download size={13} /> Export
+          </button>
+          <button className="kb-sidebar-act" onClick={onImport} style={{ ...s.sidebarActBtn, flex: 1, justifyContent: "center", gap: 5, fontSize: 12, padding: "5px 8px", color: "#a1a1aa" }} title="Import bookmarks from JSON">
+            <Upload size={13} /> Import
+          </button>
+        </div>
       </div>
     </div>
   );

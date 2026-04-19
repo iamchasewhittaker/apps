@@ -17,6 +17,11 @@ import BookmarkList from "./BookmarkList";
 import BookmarkRow from "./BookmarkRow";
 import AddEditForm from "./AddEditForm";
 
+function faviconUrl(url) {
+  try { return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=16`; }
+  catch { return null; }
+}
+
 const EMPTY_FORM = { title: "", url: "", folderId: "", description: "", status: "not_started", progress: 0, notes: "", importance: 0, tagsStr: "" };
 
 export default function App() {
@@ -146,6 +151,40 @@ export default function App() {
     save({ bookmarks: nextBm, categoryOrder: null, folders: nextFolders, favorites: nextFavs });
 
   const persist = (nextBm) => { setBookmarks(nextBm); saveAll(nextBm, folders, favorites); };
+
+  const importInputRef = useRef(null);
+
+  const handleExport = () => {
+    const blob = new Blob(
+      [JSON.stringify({ bookmarks, folders, favorites, categoryOrder: null }, null, 2)],
+      { type: "application/json" }
+    );
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `knowledge-base-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const handleImport = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        const incomingBm = data.bookmarks || [];
+        const incomingFolders = data.folders || [];
+        const incomingFavs = data.favorites || [];
+        const existingIds = new Set(bookmarks.map(b => b.id));
+        const newBm = [...bookmarks, ...incomingBm.filter(b => !existingIds.has(b.id))];
+        const existingFolderIds = new Set(folders.map(f => f.id));
+        const newFolders = [...folders, ...incomingFolders.filter(f => !existingFolderIds.has(f.id))];
+        const newFavs = [...new Set([...favorites, ...incomingFavs])];
+        setBookmarks(newBm); setFolders(newFolders); setFavorites(newFavs);
+        saveAll(newBm, newFolders, newFavs);
+      } catch { /* invalid file */ }
+    };
+    reader.readAsText(file);
+  };
   const persistFolders = (nextF) => { setFolders(nextF); saveAll(bookmarks, nextF, favorites); };
   const persistFavorites = (nextFav) => { setFavorites(nextFav); saveAll(bookmarks, folders, nextFav); };
   const persistBmAndFolders = (nextBm, nextF) => { setBookmarks(nextBm); setFolders(nextF); saveAll(nextBm, nextF, favorites); };
@@ -166,10 +205,14 @@ export default function App() {
   };
 
   const renderHomeBookmarkCard = (b, Icon, iconColor, metaLine) => {
+    const fav = faviconUrl(b.url);
     const head = (
       <>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <Icon size={12} style={{ color: iconColor, flexShrink: 0 }} />
+          {fav
+            ? <img src={fav} width={12} height={12} style={{ flexShrink: 0, borderRadius: 2 }} alt=""
+                onError={e => { e.target.style.display = "none"; }} />
+            : <Icon size={12} style={{ color: iconColor, flexShrink: 0 }} />}
           <span style={s.homeCardTitle}>{b.title}</span>
         </div>
         {b.description && <span style={s.homeCardDesc}>{b.description}</span>}
@@ -436,6 +479,8 @@ export default function App() {
     tagSummaries,
     selectedTag,
     onSelectTag: handleFilterByTag,
+    onExport: handleExport,
+    onImport: () => importInputRef.current?.click(),
   };
 
   const bookmarkRowProps = {
@@ -450,6 +495,11 @@ export default function App() {
     <ErrorBoundary name="Knowledge Base">
       <div style={s.root}>
         <style>{css}</style>
+        <input
+          ref={importInputRef} type="file" accept=".json"
+          style={{ display: "none" }}
+          onChange={e => { if (e.target.files[0]) handleImport(e.target.files[0]); e.target.value = ""; }}
+        />
 
         {/* Mobile overlay backdrop */}
         {sidebarMobileOpen && (

@@ -1,6 +1,11 @@
 import { ExternalLink, Star, ChevronDown, ChevronRight, Edit2, Trash2, Copy } from "lucide-react";
 import { s, statusColor, statusLabel, importanceColor, importanceLabel, DAILY_PROMPT_BOOKMARK_IDS } from "./constants";
 
+function faviconUrl(url) {
+  try { return `https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=16`; }
+  catch { return null; }
+}
+
 async function copyPromptNotes(b) {
   try {
     await navigator.clipboard.writeText(b.notes || "");
@@ -34,6 +39,11 @@ export default function BookmarkRow({ bookmark: b, isExpanded, onToggleExpand, o
         {/* Title link + description */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <a href={b.url} onClick={(e) => onLinkClick(e, b)} style={s.linkArea}>
+            {faviconUrl(b.url) && (
+              <img src={faviconUrl(b.url)} width={14} height={14}
+                style={{ flexShrink: 0, borderRadius: 2, marginRight: 4 }} alt=""
+                onError={e => { e.target.style.display = "none"; }} />
+            )}
             <span style={s.linkTitle}>{b.title}</span>
             <ExternalLink size={12} style={s.linkIcon} />
           </a>
