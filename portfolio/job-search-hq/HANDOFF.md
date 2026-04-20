@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.9 |
+| **Version** | v8.10 |
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 4 #2 shipped (v8.9): Draft Message context — ContactCard "Draft Message" navigates to Apply Tools → LinkedIn → Connection Request with contact pre-selected. |
-| **Next** | Wave 4 #3: Outreach cadence timeline per contact (visual touchpoint history). |
+| **Focus** | Wave 4 #3 shipped (v8.10): outreach cadence timeline — `outreachLog[]` on each contact, `OutreachTimeline` rendered on ContactCard, modal entry form + delete, quick-log on status-dropdown change, legacy `outreachDate`/`outreachStatus` seeded into one-entry log on load. |
+| **Next** | Wave 4 #4: Offer comparison side-by-side mode. |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-18 — v8.9: draftContact state in App.jsx; ContactsTab passes contact to onDraftMessage; AITab useEffect pre-selects contact in connect sub-tab. |
+| **Last touch** | 2026-04-20 — v8.10: new `OutreachTimeline.jsx`; `OUTREACH_EVENT_TYPES`/`OUTREACH_METHODS`/`blankOutreachEntry`/`normalizeOutreachLog`/`normalizeContact` in constants.js; ContactsTab `updateStatus` appends log entry on meaningful status change; ContactModal "Outreach Log" section added. Verified modal-add and quick-log paths in browser; build clean. |
 
 ---
 
@@ -28,7 +28,7 @@ All four Wave 3 items shipped in v8.7:
 - ✅ Application velocity dashboard
 - ✅ Mock interview mode
 
-**Next for web:** Wave 4 #3 — Outreach cadence timeline per contact (visual touchpoint history). See ROADMAP.md.
+**Next for web:** Wave 4 #4 — Offer comparison side-by-side mode. See ROADMAP.md.
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`

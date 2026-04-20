@@ -1,11 +1,27 @@
 import React, { useState } from "react";
-import { s, CONTACT_TYPES, OUTREACH_STATUSES } from "../constants";
+import { s, CONTACT_TYPES, OUTREACH_STATUSES, OUTREACH_EVENT_TYPES, OUTREACH_METHODS, blankOutreachEntry } from "../constants";
 import Field from "./Field";
 
 export default function ContactModal({ modal, apps, onSave, onClose }) {
   const [c, setC] = useState(modal.contact);
+  const [draftEntry, setDraftEntry] = useState(() => blankOutreachEntry());
   const set = (k, v) => setC(x => ({ ...x, [k]: v }));
   const toggleApp = id => set("appIds", c.appIds?.includes(id) ? c.appIds.filter(x => x !== id) : [...(c.appIds || []), id]);
+
+  const log = Array.isArray(c.outreachLog) ? c.outreachLog : [];
+  const sortedLog = [...log].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
+  function addEntry() {
+    if (!draftEntry.date || !draftEntry.type) return;
+    set("outreachLog", [...log, { ...draftEntry }]);
+    setDraftEntry(blankOutreachEntry());
+  }
+  function deleteEntry(id) {
+    set("outreachLog", log.filter(e => e.id !== id));
+  }
+  function setDraft(k, v) {
+    setDraftEntry(d => ({ ...d, [k]: v }));
+  }
 
   return (
     <div style={s.overlay} onClick={onClose}>
@@ -90,6 +106,61 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
               <input type="checkbox" checked={!!c.isHiring} onChange={e => set("isHiring", e.target.checked)} />
               Company is currently hiring
             </label>
+          </div>
+
+          {/* Outreach log — Wave 4 #3 */}
+          <div style={s.profileSectionLabel}>Outreach Log</div>
+          <div style={{ background: "#0f1117", border: "1px solid #1f2937", borderRadius: 8, padding: 12, marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "120px 1fr 1fr", gap: 8, marginBottom: 8 }}>
+              <Field label="Date" type="date" value={draftEntry.date} onChange={v => setDraft("date", v)} />
+              <div style={s.fieldGroup}>
+                <label style={s.fieldLabel}>Type</label>
+                <select
+                  style={s.stageSelect}
+                  value={draftEntry.type}
+                  onChange={e => setDraft("type", e.target.value)}
+                >
+                  {OUTREACH_EVENT_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                </select>
+              </div>
+              <div style={s.fieldGroup}>
+                <label style={s.fieldLabel}>Method</label>
+                <select
+                  style={s.stageSelect}
+                  value={draftEntry.method}
+                  onChange={e => setDraft("method", e.target.value)}
+                >
+                  {OUTREACH_METHODS.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
+                </select>
+              </div>
+            </div>
+            <Field label="Notes (optional)" type="textarea" rows={2} value={draftEntry.notes} onChange={v => setDraft("notes", v)} placeholder="What did you say / what did they say?" />
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
+              <button style={s.btnPrimary} onClick={addEntry}>+ Add entry</button>
+            </div>
+
+            {sortedLog.length > 0 && (
+              <div style={{ marginTop: 12, borderTop: "1px solid #1f2937", paddingTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+                {sortedLog.map(entry => {
+                  const typeInfo = OUTREACH_EVENT_TYPES.find(t => t.value === entry.type) || OUTREACH_EVENT_TYPES[OUTREACH_EVENT_TYPES.length - 1];
+                  const methodLabel = (OUTREACH_METHODS.find(m => m.value === entry.method) || {}).label || "";
+                  return (
+                    <div key={entry.id} style={{ display: "flex", gap: 8, alignItems: "flex-start", fontSize: 12 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: typeInfo.color, marginTop: 6, flexShrink: 0 }} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: "flex", gap: 6, alignItems: "baseline", flexWrap: "wrap" }}>
+                          <span style={{ color: "#9ca3af", fontVariantNumeric: "tabular-nums" }}>{entry.date}</span>
+                          <span style={{ color: typeInfo.color, fontWeight: 600 }}>{typeInfo.label}</span>
+                          {methodLabel && <span style={{ color: "#6b7280" }}>· {methodLabel}</span>}
+                        </div>
+                        {entry.notes && <div style={{ color: "#d1d5db", marginTop: 1, lineHeight: 1.4, wordBreak: "break-word" }}>{entry.notes}</div>}
+                      </div>
+                      <button style={s.actionBtnDanger} onClick={() => deleteEntry(entry.id)} aria-label="Delete entry">🗑</button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Link to applications */}

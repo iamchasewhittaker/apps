@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   STORAGE_KEY,
-  defaultData, blankApp, blankContact, normalizeApplication, normalizeStarStories,
+  defaultData, blankApp, blankContact, normalizeApplication, normalizeStarStories, normalizeContact,
   s, css, today, generateId,
 } from "./constants";
 import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
@@ -233,6 +233,7 @@ export default function JobSearchTracker() {
   function hydrateState(parsed) {
     const next = { ...defaultData, ...parsed, profile: { ...defaultData.profile, ...(parsed.profile || {}) } };
     next.applications = (next.applications || []).map(normalizeApplication);
+    next.contacts = (next.contacts || []).map(normalizeContact);
     next.starStories = normalizeStarStories(next.starStories);
     setData(next);
   }

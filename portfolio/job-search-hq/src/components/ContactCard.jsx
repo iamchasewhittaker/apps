@@ -1,5 +1,6 @@
 import React from "react";
 import { s, CONTACT_TYPES, OUTREACH_STATUSES, getOutreachCadenceNudge } from "../constants";
+import OutreachTimeline from "./OutreachTimeline";
 
 export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusChange, onDraftMessage, showError }) {
   const linked = apps.filter(a => contact.appIds?.includes(a.id));
@@ -50,6 +51,7 @@ export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusC
       {contact.email && <div style={s.cardMeta}>✉️ {contact.email}</div>}
       {contact.lastContact && <div style={s.cardMeta}>Last contact: {contact.lastContact}</div>}
       {contact.outreachDate && <div style={s.cardMeta}>Outreach sent: {contact.outreachDate}</div>}
+      <OutreachTimeline log={contact.outreachLog} />
       {nudge && (
         <div style={{ ...s.warnSmall, marginTop: 6, display: "flex", gap: 8, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>

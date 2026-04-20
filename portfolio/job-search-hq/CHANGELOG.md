@@ -1,5 +1,24 @@
 # Changelog
 
+## [Unreleased] — 2026-04-20 — Wave 4 #3: Outreach cadence timeline (v8.10)
+
+### Added
+- **Per-contact outreach timeline** — every contact now carries an `outreachLog[]` history of touchpoints. New `src/components/OutreachTimeline.jsx` renders a compact vertical list on `ContactCard` (colored type dot + date + type label + method + notes), default 4 visible with "Show all (N)" toggle, empty state "No touchpoints yet".
+- **`OUTREACH_EVENT_TYPES`** (sent/replied/meeting/intro_made/note, each with color token) and **`OUTREACH_METHODS`** (linkedin/email/phone/in_person/other) in `src/constants.js`.
+- **`blankOutreachEntry()`** + **`normalizeOutreachLog()`** helpers; mirror the Wave 3 `interviewLog[]` pattern.
+- **`normalizeContact()`** — new helper run in `hydrateState` that seeds a single migration entry from legacy `outreachDate` + `outreachStatus` when `outreachLog` is empty, so existing contacts show their last known touch without manual re-entry.
+- **Modal entry form** in `ContactModal.jsx` — Date / Type / Method grid + Notes textarea + "+ Add entry" button; existing entries list (newest first) with delete (🗑) per row.
+- **Quick-log on status change** — `updateStatus` in `ContactsTab.jsx` now appends an `outreachLog` entry whenever the card's status dropdown moves to a meaningful status (not "none", not same as previous). Method inferred from `contact.source` (default "linkedin"). One change = one log entry, no extra UI.
+
+### Changed
+- `blankContact()` — added `outreachLog: []`.
+- `ContactCard.jsx` — `<OutreachTimeline />` mounted between `outreachDate` metadata and the cadence nudge warning.
+
+### Notes
+- `buildOutreachPriorityList` and `getOutreachCadenceNudge` continue to read the `outreachDate` / `outreachStatus` rollups — both are maintained on every quick-action, so day-3/day-7 nudges and Focus-tab ordering are unchanged. Future pass can make them read from `outreachLog[last]` once useful.
+
+---
+
 ## [Unreleased] — 2026-04-18 — Wave 4 #2: Draft Message context (v8.9)
 
 ### Added

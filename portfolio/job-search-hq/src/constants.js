@@ -323,6 +323,63 @@ export function normalizeInterviewLog(log = []) {
   }));
 }
 
+// ── OUTREACH LOG (Wave 4 #3) ──────────────────────────────────────────────────
+export const OUTREACH_EVENT_TYPES = [
+  { value: "sent",       label: "Sent",       color: "#f59e0b" },
+  { value: "replied",    label: "Replied",    color: "#3b82f6" },
+  { value: "meeting",    label: "Meeting",    color: "#10b981" },
+  { value: "intro_made", label: "Intro Made", color: "#8b5cf6" },
+  { value: "note",       label: "Note",       color: "#6b7280" },
+];
+
+export const OUTREACH_METHODS = [
+  { value: "linkedin",  label: "LinkedIn" },
+  { value: "email",     label: "Email" },
+  { value: "phone",     label: "Phone" },
+  { value: "in_person", label: "In person" },
+  { value: "other",     label: "Other" },
+];
+
+export function blankOutreachEntry() {
+  return {
+    id: generateId(),
+    date: today(),
+    type: "sent",
+    method: "linkedin",
+    notes: "",
+  };
+}
+
+export function normalizeOutreachLog(log = []) {
+  if (!Array.isArray(log)) return [];
+  return log.map(entry => ({
+    id: entry.id || generateId(),
+    date: entry.date || today(),
+    type: entry.type || "sent",
+    method: entry.method || "linkedin",
+    notes: entry.notes || "",
+  }));
+}
+
+// Migrate legacy single outreachDate/outreachStatus into a seed log entry
+// when the log is empty and those fields exist.
+export function normalizeContact(contact = {}) {
+  const c = { ...contact };
+  c.appIds = Array.isArray(c.appIds) ? c.appIds : [];
+  const existingLog = normalizeOutreachLog(c.outreachLog);
+  if (existingLog.length === 0 && c.outreachDate && c.outreachStatus && c.outreachStatus !== "none") {
+    existingLog.push({
+      id: generateId(),
+      date: c.outreachDate,
+      type: c.outreachStatus,
+      method: c.source || "linkedin",
+      notes: "",
+    });
+  }
+  c.outreachLog = existingLog;
+  return c;
+}
+
 export function nextStepUrgency(nextStepDate) {
   if (!nextStepDate) return null;
   const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -626,6 +683,8 @@ export function blankContact() {
     // v8.4 networking fields
     type: "other", outreachStatus: "none", outreachDate: "",
     source: "linkedin", companySize: "", industry: "", isHiring: false,
+    // v8.10 — outreach touchpoint history (Wave 4 #3)
+    outreachLog: [],
   };
 }
 

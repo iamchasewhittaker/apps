@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { s, CONTACT_TYPES, OUTREACH_STATUSES, STAGE_COLORS, blankApp } from "../constants";
+import { s, CONTACT_TYPES, OUTREACH_STATUSES, STAGE_COLORS, blankApp, generateId, today } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import ContactCard from "../components/ContactCard";
 
@@ -170,11 +170,28 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
   }
 
   function updateStatus(contact, newStatus) {
+    const prevStatus = contact.outreachStatus || "none";
+    const todayStr = today();
+    const nextDate = newStatus !== "none" && !contact.outreachDate ? todayStr : contact.outreachDate;
+
+    const prevLog = Array.isArray(contact.outreachLog) ? contact.outreachLog : [];
+    // Append a log entry when the status meaningfully changes to a real event
+    const shouldLog = newStatus !== "none" && newStatus !== prevStatus;
+    const nextLog = shouldLog
+      ? [...prevLog, {
+          id: generateId(),
+          date: todayStr,
+          type: newStatus,
+          method: contact.source || "linkedin",
+          notes: "",
+        }]
+      : prevLog;
+
     saveContact({
       ...contact,
       outreachStatus: newStatus,
-      outreachDate: newStatus !== "none" && !contact.outreachDate
-        ? new Date().toISOString().slice(0, 10) : contact.outreachDate,
+      outreachDate: nextDate,
+      outreachLog: nextLog,
     });
   }
 
