@@ -50,18 +50,14 @@ Stable alias updates automatically on each production deploy.
 
 ## Auto-Scan Cron
 
+Schedule: **3:00 AM local, daily.** If the Mac is asleep at 3am, launchd fires on next wake.
+
+Full walkthrough (trigger on demand, watch logs, change the schedule, troubleshoot): **[docs/AUTO_SCAN.md](docs/AUTO_SCAN.md)**.
+
+Quick commands:
+
 ```bash
-# Check status
-launchctl list | grep shipyard-scan
-
-# Trigger a scan on demand
-launchctl start com.chasewhittaker.shipyard-scan
-
-# Tail logs
-tail -f ~/Library/Logs/shipyard-scan/scan.log
-
-# Unload (disable)
-launchctl unload -w ~/Library/LaunchAgents/com.chasewhittaker.shipyard-scan.plist
+launchctl list | grep shipyard-scan              # status
+launchctl start com.chasewhittaker.shipyard-scan # run now
+tail -f ~/Library/Logs/shipyard-scan/scan.log    # watch logs
 ```
-
-Schedule: **3:00 AM local, daily.** If the Mac is asleep at 3am, launchd fires on next wake. The agent sources a zsh login shell so `npx`/`node` resolve correctly.
