@@ -1,27 +1,11 @@
-import { createServerClient as createSSRServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createClient } from '@supabase/supabase-js';
 
+// Service role client: bypasses RLS for server-side reads.
+// Safe because this file is never bundled into client code.
 export async function createServerClient() {
-  const cookieStore = await cookies();
-  return createSSRServerClient(
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options),
-            );
-          } catch {
-            // Called from server component read — safe to ignore
-          }
-        },
-      },
-    },
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
   );
 }
 
