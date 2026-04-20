@@ -4,9 +4,9 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Fleet dashboard working end-to-end (auth + data + render); auto-scan cron live |
-| Next       | Editable Ship detail fields · fix `learnings` unique constraint so ingestion can enable |
-| Last touch | 2026-04-19                                                            |
+| Focus      | Nautical rebrand complete — helm logo, 8-token palette, BigShoulders/DM Mono/Instrument Sans; deployed via GitHub auto-deploy |
+| Next       | Editable Ship detail fields · fix `learnings` unique constraint |
+| Last touch | 2026-04-20                                                            |
 
 ## Production URL
 
@@ -42,9 +42,11 @@
 ## Deploy
 
 ```bash
-cd ~/Developer/chase/portfolio/shipyard
-vercel --prod --archive=tgz
+# Deploy via git push (rootDirectory conflict makes direct vercel --prod unreliable)
+git push origin main
 ```
+
+GitHub auto-deploy triggers on every push to `main` via the Vercel–GitHub connection.
 
 Stable alias updates automatically on each production deploy.
 

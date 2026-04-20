@@ -21,7 +21,7 @@
 - **Login swapped to email + password.** Magic-link / OTP flow was brittle on the shared Supabase project (`unqtnnxlltiadzbqpyhh`): redirect-URL whitelist conflicts across every portfolio app, and the email template was OTP-only. Replaced `src/app/login/page.tsx` with a plain `signInWithPassword` form. Owner user created manually in the Supabase Auth dashboard.
 - Deployed to production alias 3x via `vercel --prod --archive=tgz`.
 
-### Changed
+### Changed (superseded by 2026-04-20 rebrand)
 - Sidebar logo replaced: anchor emoji → `LogoIcon` component (SY monogram, nautical blue `#1e3a5f`, P6 style)
 - Added `src/components/LogoIcon.tsx` with sm/md/lg size variants
 - Added `src/app/icon.tsx` dynamic favicon (32×32 nautical blue SY badge)

@@ -4,8 +4,8 @@
 
 | Field      | Value                                                                                          |
 | ---------- | ---------------------------------------------------------------------------------------------- |
-| Focus      | Phase 2 complete + on-device bug fixes — sign-in, fleet load, and sign-out all verified       |
-| Next       | Phase 2.5 — magic-link auth (Supabase email template + deep-link handler)                     |
+| Focus      | Nautical rebrand complete — helm mark, 8-token palette, BigShoulders + DM Mono + Instrument Sans; installed on iPhone 12 Pro Max |
+| Next       | Phase 2.5 — magic-link auth · OR — delete app to see onboarding flow fresh |
 | Last touch | 2026-04-20                                                                                     |
 
 ## Phase 2 Bug Fixes — 2026-04-20

@@ -28,7 +28,8 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-20 | Nautical rebrand — helm SVG logo, 8-token palette, BigShoulders + DM Mono + Instrument Sans |
 | 2026-04-19 | Auto-scan cron live — launchd agent runs nightly at 3:00 AM |
-| 2026-04-20 | Fixed auth gate (`config` export), switched login to email+password, switched `CLAUDE.md` URL to stable alias |
+| 2026-04-20 | Fixed auth gate (`config` export), switched login to email+password, stable alias in docs |
 | 2026-04-18 | Sidebar logo + dynamic favicon |
 | 2026-04-16 | Phase 1 shipped |

@@ -1,5 +1,13 @@
 # Learnings — Shipyard
 
+## 2026-04-20 (nautical rebrand)
+
+**`Big_Shoulders_Display` no longer exists in `next/font/google` — it's `Big_Shoulders` now.**
+Google Fonts consolidated the family in late 2025. `next/font/google` updated its export list. Importing `Big_Shoulders_Display` throws a runtime "Unknown font" error with no helpful hint. Always verify against `node_modules/next/dist/compiled/@next/font/dist/google/font-data.json` when adding a new Google Font — the JSON is the ground truth.
+
+**`vercel --prod` from a project subdirectory doubles the `rootDirectory` path.**
+Running from inside `portfolio/shipyard/` with `rootDirectory = portfolio/shipyard` in Vercel project settings causes Vercel to resolve `portfolio/shipyard/portfolio/shipyard` — doesn't exist, deploy fails. Deploy via `git push origin main` instead; GitHub auto-deploy is the correct path for this monorepo project.
+
 ## 2026-04-20 (auth / login debugging session)
 
 **Immutable Vercel deploy URLs go stale — always use the stable project alias.**

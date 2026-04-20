@@ -9,6 +9,15 @@
 - [x] AppIcon + branding docs
 - [x] Smoke tests
 
+## Rebrand — Nautical brand system · ✅ DONE 2026-04-20
+
+- [x] 8-token Palette.swift (bg/surface/steel/gold/dim/dimmer/ghost/white)
+- [x] Font+Shipyard.swift — BigShoulders/DM Mono/Instrument Sans helpers
+- [x] HelmMark.swift reusable SwiftUI view
+- [x] LaunchScreenView + OnboardingView
+- [x] AppIcon regenerated from helm SVG
+- [x] All views restyled with new tokens/fonts
+
 ## Phase 2 — Read-only Supabase sync · ✅ DONE 2026-04-19
 
 - [x] Add `supabase-swift` Swift package

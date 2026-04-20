@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+### Changed (2026-04-20 — nautical rebrand)
+- **Palette.swift** rewritten with 8 canonical tokens: bg `#07101E`, surface `#0C1A34`, white `#F2EEE6`, steel `#4A90DE`, gold `#D7AA3A`, dim `#346090`, dimmer `#141A4C`, ghost `#0D1A34`.
+- **Font+Shipyard.swift** (new) — `.shipyardDisplay()`, `.shipyardMono()`, `.shipyardBody(bold:)` helpers. Backed by BigShouldersDisplay-Bold, DMMono-Regular, InstrumentSans-Regular/Bold TTFs.
+- **4 custom fonts** added to `Shipyard/Resources/Fonts/` and registered via `INFOPLIST_KEY_UIAppFonts` in pbxproj.
+- **HelmMark.swift** (new) — reusable SwiftUI view drawing 8-spoke ship's helm with cream handles + steel dots; scales via GeometryReader.
+- **LaunchScreenView.swift** (new) — full-bleed navy splash with HelmMark + BigShoulders "SHIPYARD" + 2px gold rule + DM Mono "FLEET COMMAND".
+- **OnboardingView.swift** (new) — 3-page paged TabView; tap-to-advance; final tap sets `@AppStorage("hasOnboarded") = true`.
+- **ShipyardApp.swift** — launch gate: onboarding → 0.9s splash → ContentView. Tint changed from `.gold` to `.steel`.
+- **SignInView, FleetListView, ShipRowView, ShipDetailView** — all restyled with new tokens and shipyard font extensions.
+- **AccentColor.colorset** updated to steel `#4A90DE` (sRGB decimal).
+- **AppIcon** regenerated from helm SVG (13 sizes + Contents.json via `design/generate-app-icons.sh`).
+- Onboarding + launch assets added to `Assets.xcassets` (Onboarding1/2/3.imageset, LaunchBackground.imageset).
+- Design assets staged in `design/ios/`, `design/theme/shipyard-theme.md`, `design/DESIGN-HANDOFF.md`.
+
 ### Fixed (2026-04-20 — on-device bugs)
 - **`.initialSession` false-positive** — listener called `handleSignedIn()` for nil sessions, setting `isSignedIn = true` before user signed in and loading mock data instead of the sign-in screen
 - **Sign-out not sticking** — `signOut()` now calls `handleSignedOut()` directly after `auth.signOut()` so state resets even if the network call fails or listener fires late

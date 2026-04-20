@@ -1,5 +1,19 @@
 # Learnings — Shipyard (iOS)
 
+## 2026-04-20 (nautical rebrand)
+
+**`fontsource` CDN is the reliable way to download OFL fonts as plain TTFs.**
+`github.com/google/fonts` raw paths are fragile (file renames, variable font consolidations). The fontsource CDN (`https://cdn.jsdelivr.net/fontsource/fonts/<name>@latest/latin-<weight>-normal.ttf`) provides stable, predictable paths. Worked on first try for all four Shipyard fonts where direct GitHub paths gave 404s.
+
+**Registering custom fonts in a hand-crafted pbxproj: use `INFOPLIST_KEY_UIAppFonts`, not Info.plist.**
+Adding a separate `Info.plist` file requires wiring `INFOPLIST_FILE` in build settings and creates another file to keep in sync. `INFOPLIST_KEY_UIAppFonts` in build settings achieves the same result without a plist file — the build system generates the key automatically. Cleaner for hand-maintained pbxproj projects.
+
+**Font file names in `INFOPLIST_KEY_UIAppFonts` must match the disk filename exactly, case-sensitive.**
+If the filename is `BigShouldersDisplay-Bold.ttf` but you register `BigShoulders-Bold.ttf`, the font silently falls back to system at runtime. No crash, no warning — just wrong rendering. Double-check filenames against what's on disk before testing.
+
+**Onboarding gated by `@AppStorage` persists across reinstalls only if the app was NOT fully deleted.**
+`AppStorage` backed by `UserDefaults` survives regular Xcode re-installs (`devicectl install`). To test the onboarding flow after install: long-press → delete the app from the home screen, then reinstall. This is intentional behavior — `UserDefaults` survives xctest `setUp`/`tearDown` too, so use `UserDefaults.standard.removeObject(forKey: "hasOnboarded")` in tests that check onboarding.
+
 ## 2026-04-19 (Phase 2 — Supabase integration)
 
 **Hand-editing `project.pbxproj` to add a Swift Package Manager dep is safe when you mirror a working example.**

@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-17 (Unnamed iOS v0.1 — built, tested, on-device) | Maintained by Chase
+> Last updated: 2026-04-20 (Shipyard nautical rebrand — web + iOS) | Maintained by Chase
 
 ---
 
@@ -25,7 +25,7 @@
 | Unnamed (iOS) | v0.1 | local Xcode | `unnamed_ios_v1` | 🟡 On-device · SwiftUI + @Observable · 10/10 tests · [`portfolio/unnamed-ios`](portfolio/unnamed-ios) |
 | Alias Ledger | v1.0 | https://alias-ledger.vercel.app | `hme_alias_tracker_v1` | ✅ Active · Hide My Email tracker · [`portfolio/alias-ledger`](portfolio/alias-ledger) |
 | Knowledge Base | v2.1.0 | https://knowledge-base-beta-five.vercel.app | `chase_knowledge_base_v1` | ✅ Active · Bookmark manager · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
-| Shipyard | v0.1 | https://shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app | n/a | ✅ Active · Fleet command center · [`portfolio/shipyard`](portfolio/shipyard) |
+| Shipyard | v0.1 | https://shipyard-iamchasewhittakers-projects.vercel.app | n/a | ✅ Active · Fleet command center · Phase 2 (RLS + auth) + Phase 3 (auto-scan cron) live · [`portfolio/shipyard`](portfolio/shipyard) |
 | Shipyard (iOS) | v0.1 | local Xcode | `chase_shipyard_ios_v1` | 🟡 Local · [`portfolio/shipyard-ios`](portfolio/shipyard-ios) |
 | Ash Reader | v1.0 | https://ash-reader.vercel.app | `ash_reader_` prefix | ✅ Active · Mobile chunker for Ash · [`portfolio/ash-reader`](portfolio/ash-reader) |
 | Ash Reader (iOS) | v0.3 | local Xcode | `ash_reader_ios_` prefix | 🟡 Local · [`portfolio/ash-reader-ios`](portfolio/ash-reader-ios) |
@@ -244,6 +244,8 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-20 | Shipyard + Shipyard (iOS) | v0.1 | **Nautical rebrand:** 8-token palette (bg `#07101E`, steel `#4A90DE`, gold `#D7AA3A`, etc.), ship's-helm SVG logo, BigShoulders Bold + DM Mono + Instrument Sans. Web: LogoIcon/favicon rewritten, chart grid, all pages use token utilities. iOS: Palette.swift + Font+Shipyard.swift + HelmMark + LaunchScreenView + OnboardingView + new AppIcon (13 sizes from helm SVG). Both builds pass. iOS installed on device. Web pushed to GitHub for auto-deploy. | `portfolio/shipyard/` + `portfolio/shipyard-ios/` · git `fad5e43` |
+| 2026-04-19 | Shipyard | v0.1 | **Phase 2 + Phase 3 shipped:** Supabase RLS auth gate (`proxy.ts` — fixed Next.js 16 `config` export bug), email+password login (switched off magic-link due to shared-Supabase redirect URL issues), nightly launchd auto-scan at 3:00 AM local (`scripts/scan-cron.sh` + `~/Library/LaunchAgents/com.chasewhittaker.shipyard-scan.plist`), `docs/AUTO_SCAN.md` walkthrough | `portfolio/shipyard/` · first cron-triggered scan: 36 projects upserted in 10.5s · learnings upsert schema bug flagged as follow-up |
 | 2026-04-19 | Knowledge Base | v2.1.0 | **Favicon + Export/Import:** bookmark rows and home cards now show favicons via Google CDN (`https://www.google.com/s2/favicons?domain=…`); Export JSON + Import JSON buttons added to sidebar footer for full data portability | `portfolio/knowledge-base/` |
 | 2026-04-18 | Alias Ledger | v1.0 | **New app:** Hide My Email alias tracker — log iCloud aliases by company/channel during job search, burn when spam arrives. Single-file HTML + localStorage, deployed to alias-ledger.vercel.app, connected to apps.git auto-deploy. | `portfolio/alias-ledger/` |
 | 2026-04-17 | Ash Reader (iOS) | v0.3 | **Fix: clean Reader display** — `stripMarkdown()` now applied to `Text()` render in `ChunkReaderView`; markdown symbols (`#`, `**`, etc.) no longer visible in Reader tab; emojis preserved | `ChunkReaderView.swift:147` — one-line fix |
