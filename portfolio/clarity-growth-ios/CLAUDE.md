@@ -18,6 +18,10 @@ Track progress across seven growth areas with streak-aware session logging and l
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A native iOS habit tracker covering seven growth areas (Faith, Family, Career, Fitness, Mind, Finance, Service) with streak-aware session logging and a history review view. Part of the Clarity iOS suite, sharing the ClarityUI design system and syncing to Supabase via `app_key = growth`.
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).

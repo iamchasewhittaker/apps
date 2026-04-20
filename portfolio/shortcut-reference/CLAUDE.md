@@ -6,6 +6,10 @@ Instructions for AI assistants and humans working in this repo.
 
 macOS app: a **floating or docked reference window** listing keyboard shortcuts for the **frontmost application**, discovered by traversing that app’s **menu bar** using `AXUIElement` (Accessibility), not by hardcoding per-app cheat sheets.
 
+## What This App Is
+
+A macOS floating or docked reference window that reads keyboard shortcuts for the frontmost app by traversing its menu bar via the Accessibility API — no hardcoded cheat sheets, no manual maintenance as apps update. Built in Swift/SwiftUI with AppKit for window behavior, targeting macOS 13+.
+
 ## Behavior rules (for implementers)
 
 1. **Prefer Accessibility-derived shortcuts** as the source of truth; add **manual overrides** only when an app exposes bad or empty metadata.

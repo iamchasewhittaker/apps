@@ -18,6 +18,10 @@ A web companion for 5 iOS apps — gives desktop access to the same data via Sup
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A unified web companion for the five Clarity iOS apps (Check-in, Triage, Time, Budget, Growth) — each tab mirrors one native app's data via Supabase sync, giving desktop access without a separate data layer per platform. YNAB and RollerTask were split into standalone apps; this hub now covers the core wellness and productivity suite only.
+
 YNAB and RollerTask were split into standalone apps (see `portfolio/ynab-clarity-web` and `portfolio/rollertask-tycoon-web`).
 
 | Tab | iOS App | Supabase `app_key` |

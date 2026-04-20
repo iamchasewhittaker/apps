@@ -11,6 +11,10 @@ Chase's Hide My Email alias tracker. One alias per company — when spam arrives
 
 ---
 
+## What This App Is
+
+A single-file HTML tool for tracking Hide My Email aliases — one alias per company — so when spam arrives you know exactly who leaked the data. Supports three statuses (active, burned, retired), filter chips, copy/burn/delete actions, JSON export, and a deep-link button to iOS Shortcuts for generating new aliases.
+
 ## What it does
 - Logs each Hide My Email alias: company, channel, date, status, notes
 - Three statuses: `active`, `burned` (spam started), `retired`

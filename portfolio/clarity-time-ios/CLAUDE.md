@@ -18,6 +18,10 @@ Time sessions (timer + manual logging) and a scripture completion streak — loc
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A native iOS focus timer and time logger paired with a scripture completion streak — records timed or manually entered work sessions and tracks consecutive days of scripture reading alongside productive hours. Part of the Clarity iOS suite, sharing ClarityUI and syncing to Supabase via `app_key = time`.
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).

@@ -4,6 +4,10 @@ Native SwiftUI companion to [ash-reader](../ash-reader) — the full 138k-word c
 
 **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, app icon spec (P6 electric yellow "AR"), generation pipeline.
 
+## What This App Is
+
+The native SwiftUI companion to Ash Reader — the full 138k-word capture system conversation is baked directly into the app bundle, so it opens straight to the reader without any paste step. Features four tabs (Reader, Themes, Actions, Settings), smart Q&A-aware chunking, mark-as-sent tracking, and fully offline operation via UserDefaults.
+
 ## Stack
 - SwiftUI + iOS 17+
 - UserDefaults for progress persistence (`ash_reader_ios_` prefix)

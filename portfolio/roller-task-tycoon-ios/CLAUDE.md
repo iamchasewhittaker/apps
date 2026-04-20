@@ -10,6 +10,10 @@ A **native iOS** park-themed checklist branded **RollerTask Tycoon**: **SwiftUI*
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A native iOS park-themed task manager where completing tasks earns cash for a virtual tycoon park — attractions move through Open → Testing → Broken Down → Closed states, and cash accumulates in a profit ledger. Built with SwiftUI + SwiftData for full offline-first operation with JSON backup and restore.
+
 ## Behavior rules
 
 1. **Local-first:** Tasks live in SwiftData; cash in `UserDefaults` via `@AppStorage`.

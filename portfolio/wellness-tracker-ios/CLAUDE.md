@@ -14,6 +14,10 @@ Instructions for AI assistants and humans working in this directory.
 
 **Branding:** Display name **Wellness Tracker**. App icon: unified **W + sunrise** on **Clarity family** `#0e1015` with blue horizon / amber sun (see YNAB Clarity `ClarityTheme.swift`); master `AppIcon.png` in `Assets.xcassets/AppIcon.appiconset/`. Specs: [../wellness-tracker/docs/BRANDING.md](../wellness-tracker/docs/BRANDING.md). Session notes: [HANDOFF.md](./HANDOFF.md).
 
+## What This App Is
+
+The native SwiftUI companion to Wellness Tracker — supports daily check-ins (morning and evening), medication tracking, tasks, time sessions, and a capture tab, with optional Supabase sync to the same shared project as the web app. Designed for on-device-first usage with UserDefaults as the source of truth and cloud sync as a convenience layer.
+
 **Storage (UserDefaults):**
 
 - `chase_wellness_ios_v1` — main blob

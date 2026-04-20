@@ -9,6 +9,10 @@ Provides colors, typography, spacing, and reusable SwiftUI components so all 5 C
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+The shared Swift package providing colors, typography, spacing, and reusable SwiftUI components across all five Clarity iOS apps — enforcing a consistent visual identity and accessibility standards in one place. Referenced as a local SPM dependency from each app's `.xcodeproj`; changes here propagate automatically to every consumer.
+
 ## Consumers
 
 Portfolio iOS apps under `portfolio/clarity-*-ios/` reference this package from their `.xcodeproj` as `../clarity-ui` (sibling folder under `portfolio/`).

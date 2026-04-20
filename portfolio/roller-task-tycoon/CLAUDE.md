@@ -6,6 +6,10 @@ Instructions for AI assistants and humans working in this repo.
 
 A **playful park-themed todo list** with Win95-era chrome, installable as a **PWA** on iPhone. **Supabase** stores one JSON blob per user (`tasks`, `cash`, `_syncAt`) in the shared portfolio `user_data` table, keyed by `app_key = roller_task_tycoon_v1`.
 
+## What This App Is
+
+A retired park-themed Vite PWA todo list with Win95-era chrome, tycoon point scoring, and Supabase sync — succeeded by the native RollerTask Tycoon iOS app for a fully on-device experience. Historical Supabase rows remain under `app_key = roller_task_tycoon_v1`; the archived source lives at `portfolio/archive/roller-task-tycoon/`.
+
 ## Behavior rules (for implementers)
 
 1. **Offline-first:** Always update `localStorage` immediately, then `push()` in the background. Never block the UI on network.

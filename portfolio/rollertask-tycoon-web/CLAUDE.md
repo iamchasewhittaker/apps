@@ -15,6 +15,10 @@
 
 Standalone points-based motivation tracker — web companion to `roller-task-tycoon-ios`. Split out from Clarity Hub for focused access and sharing.
 
+## What This App Is
+
+A standalone points-based task and motivation tracker split from Clarity Hub — complete tasks to earn points, track totals, and stay accountable. Web companion to RollerTask Tycoon iOS, sharing the same Supabase blob via `app_key = rollertask`.
+
 > *"For Reese. For Buzz. Forward — no excuses."*
 
 ## Tech Stack

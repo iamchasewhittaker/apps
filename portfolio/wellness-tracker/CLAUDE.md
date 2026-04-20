@@ -15,6 +15,10 @@
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A comprehensive daily wellness PWA covering morning/evening check-ins, task management, time tracking, budget monitoring, and growth habit logging — all stored in a single localStorage blob synced to Supabase. It is the canonical web surface for the unified `chase_wellness_v1` data stack, with streak tracking, 90-day history, and AI-powered summaries built in.
+
 ## Vercel & Supabase
 
 **Vercel project removed 2026-04-20.** App runs locally only (`npm start`). Historical Vercel project ID `prj_Pv1PsLFQ87oJwuQaQM3O6ttSoobg` on team `iamchasewhittakers-projects` is retired.

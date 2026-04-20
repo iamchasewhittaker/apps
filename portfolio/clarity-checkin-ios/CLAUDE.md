@@ -15,6 +15,10 @@ Morning and evening wellness check-in app with medication tracking, mood logging
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A native iOS morning and evening wellness check-in app covering mood logging, medication tracking, pulse snapshots, and daily motivational quotes — the iOS entry point to the Clarity wellness stack. Built with SwiftUI and the shared ClarityUI package, storing all data locally in UserDefaults with optional Supabase sync.
+
 ## Tech Stack
 SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. No SwiftData, no external dependencies beyond ClarityUI.
 

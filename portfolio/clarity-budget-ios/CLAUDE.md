@@ -18,6 +18,10 @@ Dual-scenario budget (baseline vs stretch) plus wants tracking — local-first, 
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A dual-scenario iOS budget (baseline vs stretch) with live YNAB integration via a Keychain-secured token — shows safe-to-spend figures for month, week, and day, and lets you assign money to categories directly from the app with a confirmation step. Part of the Clarity iOS suite, sharing the ClarityUI design system and the same Supabase project as the web companion.
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps). YNAB: URLSession + `https://api.ynab.com/v1` (ported `YNABClient` / `YNABModels`); token **never** in UserDefaults or logs (Keychain only, `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`).

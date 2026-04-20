@@ -9,6 +9,10 @@
 - **Tech stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Supabase + Vercel
 - **Package manager:** npm
 
+## What This App Is
+
+The fleet command center for Chase's entire app portfolio — a local CLI scanner reads every portfolio app's metadata and upserts it into Supabase, while the deployed Next.js dashboard surfaces project health, compliance scores, MVP step tracking, a WIP priority queue, weekly reviews, learning logs, and thematic analysis. It is Shipyard's own management surface; the app you are reading this from.
+
 ## Architecture
 
 Local CLI scanner (`scripts/scan.ts`) reads ~/Developer/chase/portfolio/**, extracts project metadata, and upserts into Supabase. The Next.js app (deployed to Vercel) reads from Supabase and renders the dashboard.

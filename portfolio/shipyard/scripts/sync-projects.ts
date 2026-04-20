@@ -200,6 +200,15 @@ function slugify(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
+// Manual slug overrides for names where slugify() can't derive the correct slug.
+// Key: lowercased CLAUDE.md app name. Value: actual Supabase slug.
+const SLUG_OVERRIDES: Record<string, string> = {
+  'clarityui (swift pkg)': 'clarity-ui',
+  'clarity check-in (ios)': 'clarity-checkin-ios',
+  'rollertask tycoon (ios)': 'roller-task-tycoon-ios',
+  'unnamed (web)': 'unnamed',
+};
+
 async function main() {
   console.log('→ Reading', ROOT_CLAUDE_MD);
   const markdown = readFileSync(ROOT_CLAUDE_MD, 'utf8');
@@ -228,7 +237,9 @@ async function main() {
 
   for (const row of metadata) {
     const nameLc = row.name.toLowerCase();
-    const existing = byName.get(nameLc);
+    // Try name first, then manual override, then derived slug
+    const derivedSlug = SLUG_OVERRIDES[nameLc] ?? slugify(row.name);
+    const existing = byName.get(nameLc) ?? bySlug.get(derivedSlug);
     if (!existing) {
       unmatched.push(row.name);
       skipped++;

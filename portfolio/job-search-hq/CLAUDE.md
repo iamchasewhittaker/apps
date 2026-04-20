@@ -13,6 +13,10 @@
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+An AI-assisted job search cockpit managing the full pipeline from application tracking to interview prep, with a contact CRM, STAR story bank, AI-powered drafting tools, and a Chrome MV3 extension for one-click LinkedIn capture. Everything needed to run a disciplined, high-output search lives in one app — pipeline stages, weekly review rhythm, prep templates, and job search queries.
+
 ## File Structure
 ```
 .claude/

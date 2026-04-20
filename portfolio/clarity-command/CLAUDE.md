@@ -11,6 +11,10 @@
 - **Branding:** Clarity family palette, gold accent (`#c8a84b`), dark background (`#0a0d14`). See [`docs/BRANDING.md`](docs/BRANDING.md).
 - **Entry:** `src/App.jsx`
 
+## What This App Is
+
+A daily accountability hub rooted in LDS faith and family urgency — each morning starts with a mission commit against five life areas, and each evening ends with a reflection and cross-app scoreboard review. Scripture bank, wife's reminders, and a layoff-day counter make the urgency concrete and daily rather than abstract.
+
 ## File Structure
 ```
 src/

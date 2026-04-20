@@ -17,6 +17,10 @@ Daily accountability hub — morning mission commit, evening reflection, scorebo
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+The native iOS port of Clarity Command — a daily accountability hub with a morning mission commit, evening reflection, and scoreboard streaks across five life areas. Syncs to the same Supabase blob as the web app via `app_key = command`, keeping the daily log consistent across platforms.
+
 ## Tech Stack
 SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. Gold accent (`#c8a84b`) via app-local `CommandPalette`. **Supabase Swift** (`supabase-swift` SPM) for optional cloud sync — same `user_data` row as web Clarity Command (`app_key = command`). No SwiftData.
 

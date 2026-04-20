@@ -7,6 +7,10 @@ Companion web dashboard lives at [`portfolio/spend-radar-web/`](../spend-radar-w
 
 Intentionally separate from Gmail Forge — same `label:Receipt` source, different Apps Script project, different Sheet.
 
+## What This App Is
+
+A Google Apps Script tool that scans Gmail `label:Receipt` emails (last 180 days), detects recurring subscriptions via rule-based sender matching, and writes structured data to a dedicated Google Sheet — no AI parsing, no paid tools. Runs on-demand from the Sheet menu; a companion read-only web dashboard (spend-radar-web) visualizes the output.
+
 - **Owner:** chase.t.whittaker@gmail.com
 - **Sheet:** dedicated — create via `createDedicatedSheet()` from the editor on first setup
 - **Apps Script:** `apps-script/*.gs` (6 files — deploy via clasp or paste into script.google.com)

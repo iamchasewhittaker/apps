@@ -3,6 +3,10 @@
 ## Project Overview
 macOS menu bar app that tracks Claude Max subscription usage and API costs. Built with Electron + React + TypeScript + Vite.
 
+## What This App Is
+
+A macOS menu bar Electron app that scrapes claude.ai and the Anthropic Admin API to display real-time Claude Max subscription usage and API billing costs. It refreshes automatically every 60 seconds, lives invisibly in the menu bar, and uses a persistent browser session to authenticate without re-login.
+
 ## Commands
 - `npm run electron:dev` — Run in development (Vite + TypeScript watcher + Electron)
 - `npm run electron:build` — Build distributable macOS app (outputs to `release/`)

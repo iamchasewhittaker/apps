@@ -15,6 +15,10 @@ App Forge is the portfolio management and audit tool. It tracks the state of all
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A portfolio management and audit workbench — paste any app's source code to run a structural health check, log lessons learned from bugs and deploys, track a prioritized idea backlog, and maintain per-app snapshot cards with version, URL, and storage key. The conceptual predecessor to Shipyard, still useful for ad-hoc auditing and idea capture.
+
 ## File Structure
 ```
 src/

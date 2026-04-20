@@ -12,6 +12,10 @@
 - **Entry:** `JobSearchHQ/JobSearchHQApp.swift`
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) · design IA [`docs/DESIGN_SPEC.md`](docs/DESIGN_SPEC.md) · v1 scope [`docs/SCOPE_V1.md`](docs/SCOPE_V1.md)
 
+## What This App Is
+
+The native iOS companion to Job Search HQ — manages the application pipeline, contact CRM, and AI-assisted prep sessions on-device in a dark SwiftUI interface using the JSHQ web palette tokens. Shares the same Supabase project as the web app and is tracked under the same Linear project.
+
 ## Tech Stack
 
 SwiftUI · iOS 17 · `@Observable` · `UserDefaults` + `Codable` · local SPM [`../clarity-ui`](../clarity-ui) (`ClarityUI`). No SwiftData. Dark UI with JSHQ web palette tokens in `JSHQTheme.swift`.

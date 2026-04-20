@@ -19,6 +19,10 @@
 
 Standalone YNAB budget dashboard — web companion to **`funded-ios`**. Split from Clarity Hub for focused access.
 
+## What This App Is
+
+A standalone YNAB budget dashboard answering the four questions YNAB's own UI answers poorly: Are bills covered this month? How much am I short? How much can I safely spend today/week/month? When will the mortgage be fully funded? Web companion to Funded iOS, sharing the same Supabase blob via `app_key = ynab`.
+
 ## Tech Stack
 
 React (CRA) · localStorage + Supabase blob sync · inline styles · no TypeScript · YNAB REST API from browser (CORS)

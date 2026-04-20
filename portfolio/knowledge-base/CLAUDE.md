@@ -13,6 +13,10 @@ A personal knowledge base and bookmark manager with ARC-style sidebar navigation
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A personal bookmark and knowledge manager with ARC-style sidebar navigation and Chrome-style nested folder hierarchy for organizing URLs, notes, and favorites. Supports full-text search, smart folders, JSON export/import for backup, and per-bookmark favicon display — all offline in localStorage with no backend.
+
 ## File Structure
 ```
 package.json              <- CRA scaffold (react-scripts 5.0.1)

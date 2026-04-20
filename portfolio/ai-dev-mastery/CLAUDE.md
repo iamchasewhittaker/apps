@@ -4,6 +4,10 @@
 Single-file React JSX course app (~155kb). Curriculum data at top,
 React component at bottom. 13 tracks, 68+ modules.
 
+## What This App Is
+
+A single-file React course app covering 13 tracks and 68+ modules on AI-assisted development — from Claude Code and Cursor to prompt engineering, Zapier automations, and career strategy. Built as a self-contained learning environment with quizzes, code examples, and dev tips, all living in one JSX file with no backend.
+
 ---
 
 ## Shape of a module (all fields required unless marked optional)

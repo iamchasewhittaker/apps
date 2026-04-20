@@ -4,6 +4,10 @@
 
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
 
+## What This App Is
+
+A native iOS YNAB companion app that answers four questions the YNAB UI answers poorly: Are my bills covered? How much am I short? How much can I safely spend? When will my mortgage be fully funded? It reads YNAB data via the API and can write assigned amounts back with user confirmation, all secured behind a Keychain token.
+
 ## What this app does
 
 A YNAB companion app for iOS. Answers 4 questions the YNAB UI answers poorly:

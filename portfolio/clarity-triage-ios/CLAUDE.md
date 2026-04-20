@@ -18,6 +18,10 @@ Capacity-based daily triage: pick today’s energy level, add tasks that consume
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## What This App Is
+
+A native iOS daily triage app built around energy-based capacity slots — pick today's energy level, assign tasks that consume weighted capacity, move ideas through a three-stage pipeline (Inbox → Someday → Archived), and log wins at day's end. Part of the Clarity iOS suite, sharing ClarityUI and syncing to Supabase via `app_key = triage`.
+
 ## Tech stack
 
 SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI only (no SwiftData, no third-party deps).

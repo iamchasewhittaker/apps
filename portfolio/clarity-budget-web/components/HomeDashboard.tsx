@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   defaultBlob,
   mergeBlob,
@@ -9,6 +9,7 @@ import {
 import {
   STORE_KEY,
   YNAB_TOKEN_KEY,
+  YNAB_TX_KEY,
   T,
 } from "@/lib/constants";
 import {
@@ -22,7 +23,13 @@ import {
 import { createSupabaseBrowserClient, pullBlob, pushBlob } from "@/lib/sync";
 import { suggestRole, type RoleRaw } from "@/lib/suggestRole";
 import { groupMappingsForDisplay, mergeCategoryMappingsFromGroups } from "@/lib/ynabCategoryMerge";
-import { fetchBudgets, fetchCategories, fetchMonth } from "@/lib/ynab";
+import {
+  fetchBudgets,
+  fetchCategories,
+  fetchMonth,
+  fetchTransactions,
+  type YNABTransaction,
+} from "@/lib/ynab";
 
 const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
   { value: "mortgage", label: "Mortgage / Housing" },
@@ -32,11 +39,25 @@ const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
   { value: "ignore", label: "Ignore" },
 ];
 
+const TX_CACHE_MS = 15 * 60 * 1000;
+
 function fmt(n: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   }).format(n);
+}
+
+/** Returns YYYY-MM-DD for 60 days ago */
+function txSinceDate(): string {
+  const d = new Date();
+  d.setDate(d.getDate() - 60);
+  return d.toISOString().slice(0, 10);
+}
+
+interface TxCache {
+  ts: number;
+  data: YNABTransaction[];
 }
 
 function loadLocalBlob(): BudgetBlob {
@@ -53,6 +74,20 @@ function saveLocalBlob(b: BudgetBlob) {
   const next = { ...b, _syncAt: Date.now() };
   localStorage.setItem(STORE_KEY, JSON.stringify(next));
   return next;
+}
+
+function loadTxCache(): TxCache | null {
+  try {
+    const raw = localStorage.getItem(YNAB_TX_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as TxCache;
+  } catch {
+    return null;
+  }
+}
+
+function saveTxCache(data: YNABTransaction[]) {
+  localStorage.setItem(YNAB_TX_KEY, JSON.stringify({ ts: Date.now(), data }));
 }
 
 export function HomeDashboard() {
@@ -72,9 +107,18 @@ export function HomeDashboard() {
   const [loading, setLoading] = useState(false);
   const [categorySyncErr, setCategorySyncErr] = useState<string | null>(null);
 
+  // Transactions — stored separately from blob (never synced to Supabase)
+  const [transactions, setTransactions] = useState<YNABTransaction[]>([]);
+  const [txLoading, setTxLoading] = useState(false);
+  const [txErr, setTxErr] = useState<string | null>(null);
+
   useEffect(() => {
-    setBlob(loadLocalBlob());
+    const b = loadLocalBlob();
+    setBlob(b);
     setYnabToken(localStorage.getItem(YNAB_TOKEN_KEY) || "");
+    // Hydrate from cache immediately so breakdown renders on load
+    const cache = loadTxCache();
+    if (cache?.data?.length) setTransactions(cache.data);
     const sb = createSupabaseBrowserClient();
     if (!sb) return;
     void sb.auth.getSession().then(({ data: { session } }) => {
@@ -115,56 +159,89 @@ export function HomeDashboard() {
     })();
   }, [syncFromCloud]);
 
-  const persistBlob = useCallback((next: BudgetBlob) => {
-    const saved = saveLocalBlob(next);
-    setBlob(saved);
-    void pushIfSignedIn(saved);
-  }, [pushIfSignedIn]);
+  const persistBlob = useCallback(
+    (next: BudgetBlob) => {
+      const saved = saveLocalBlob(next);
+      setBlob(saved);
+      void pushIfSignedIn(saved);
+    },
+    [pushIfSignedIn]
+  );
 
-  const refreshMetrics = useCallback(async () => {
-    setErr(null);
-    const t = ynabToken.trim();
-    const budgetId = (blob.ynabBudgetId ?? "").trim();
-    if (!t || !budgetId) {
-      setSafeM(null);
-      setSafeD(null);
-      setSafeW(null);
-      setShortfall(null);
-      return;
-    }
-    setLoading(true);
-    try {
-      const base = loadLocalBlob();
-      let mappings = base.ynabCategoryMappings;
+  const refreshTransactions = useCallback(
+    async (force = false) => {
+      const t = ynabToken.trim();
+      const budgetId = (blob.ynabBudgetId ?? "").trim();
+      if (!t || !budgetId) return;
+
+      const cache = loadTxCache();
+      if (!force && cache && Date.now() - cache.ts < TX_CACHE_MS) return;
+
+      setTxLoading(true);
+      setTxErr(null);
       try {
-        const groups = await fetchCategories(t, budgetId);
-        const merged = mergeCategoryMappingsFromGroups(base, groups);
-        mappings = merged;
-        persistBlob({ ...base, ynabCategoryMappings: merged });
-        setCategorySyncErr(null);
+        const txns = await fetchTransactions(t, budgetId, txSinceDate());
+        saveTxCache(txns);
+        setTransactions(txns);
       } catch (e) {
-        setCategorySyncErr(e instanceof Error ? e.message : "Could not load YNAB categories.");
+        setTxErr(e instanceof Error ? e.message : "Could not load transactions");
+      } finally {
+        setTxLoading(false);
       }
-      if (!mappings.length) {
-        setErr("Pick a budget and wait for categories to load, or map roles below.");
+    },
+    [blob.ynabBudgetId, ynabToken]
+  );
+
+  const refreshMetrics = useCallback(
+    async (force = false) => {
+      setErr(null);
+      const t = ynabToken.trim();
+      const budgetId = (blob.ynabBudgetId ?? "").trim();
+      if (!t || !budgetId) {
+        setSafeM(null);
+        setSafeD(null);
+        setSafeW(null);
+        setShortfall(null);
         return;
       }
-      const month = await fetchMonth(t, budgetId, new Date());
-      const tbb = (month.to_be_budgeted ?? 0) / 1000;
-      const balances = buildBalances(month.categories, mappings);
-      const sts = safeToSpend(balances, tbb);
-      const days = daysRemainingInMonth();
-      setSafeM(sts);
-      setSafeD(safePerDay(balances, days, tbb));
-      setSafeW(safePerWeek(balances, days, tbb));
-      setShortfall(currentShortfall(balances));
-      setUpdated(new Date());
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "YNAB request failed");
-    } finally {
-      setLoading(false);
-    }
-  }, [blob.ynabBudgetId, ynabToken, persistBlob]);
+      setLoading(true);
+      try {
+        const base = loadLocalBlob();
+        let mappings = base.ynabCategoryMappings;
+        try {
+          const groups = await fetchCategories(t, budgetId);
+          const merged = mergeCategoryMappingsFromGroups(base, groups);
+          mappings = merged;
+          persistBlob({ ...base, ynabCategoryMappings: merged });
+          setCategorySyncErr(null);
+        } catch (e) {
+          setCategorySyncErr(
+            e instanceof Error ? e.message : "Could not load YNAB categories."
+          );
+        }
+        if (!mappings.length) {
+          setErr("Pick a budget and wait for categories to load, or map roles below.");
+          return;
+        }
+        const month = await fetchMonth(t, budgetId, new Date());
+        const tbb = (month.to_be_budgeted ?? 0) / 1000;
+        const balances = buildBalances(month.categories, mappings);
+        const sts = safeToSpend(balances, tbb);
+        const days = daysRemainingInMonth();
+        setSafeM(sts);
+        setSafeD(safePerDay(balances, days, tbb));
+        setSafeW(safePerWeek(balances, days, tbb));
+        setShortfall(currentShortfall(balances));
+        setUpdated(new Date());
+        await refreshTransactions(force);
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "YNAB request failed");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [blob.ynabBudgetId, ynabToken, persistBlob, refreshTransactions]
+  );
 
   useEffect(() => {
     void refreshMetrics();
@@ -204,8 +281,72 @@ export function HomeDashboard() {
     void refreshMetrics();
   };
 
+  // ── Spending analytics (all computed from raw transactions) ──────────────
+
+  const spendByCategory = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const t of transactions) {
+      if (t.deleted) continue;
+      if (t.subtransactions?.length) {
+        for (const sub of t.subtransactions) {
+          if (sub.amount >= 0 || sub.deleted) continue;
+          const key = sub.category_name || t.category_name || "Uncategorized";
+          map[key] = (map[key] ?? 0) + Math.abs(sub.amount) / 1000;
+        }
+      } else {
+        if (t.amount >= 0) continue;
+        const key = t.category_name || "Uncategorized";
+        map[key] = (map[key] ?? 0) + Math.abs(t.amount) / 1000;
+      }
+    }
+    return Object.entries(map)
+      .map(([name, amount]) => ({ name, amount }))
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 8);
+  }, [transactions]);
+
+  const totalSpent = useMemo(() => {
+    return transactions.reduce((sum, t) => {
+      if (t.deleted) return sum;
+      if (t.subtransactions?.length) {
+        return (
+          sum +
+          t.subtransactions
+            .filter((s) => s.amount < 0 && !s.deleted)
+            .reduce((ss, s) => ss + Math.abs(s.amount) / 1000, 0)
+        );
+      }
+      return t.amount < 0 ? sum + Math.abs(t.amount) / 1000 : sum;
+    }, 0);
+  }, [transactions]);
+
+  const txDateRange = useMemo(() => {
+    if (!transactions.length) return "";
+    const sorted = [...transactions].sort((a, b) => a.date.localeCompare(b.date));
+    const from = new Date(sorted[0].date + "T12:00:00");
+    const to = new Date(sorted[sorted.length - 1].date + "T12:00:00");
+    const fmtD = (d: Date) =>
+      d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return `${fmtD(from)} – ${fmtD(to)}`;
+  }, [transactions]);
+
+  const outflowCount = useMemo(
+    () => transactions.filter((t) => t.amount < 0 && !t.deleted).length,
+    [transactions]
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────
+
   const categoryRoleGroups = groupMappingsForDisplay(blob.ynabCategoryMappings);
-  const ynabReady = ynabToken.trim().length > 0 && (blob.ynabBudgetId ?? "").trim().length > 0;
+  const ynabReady =
+    ynabToken.trim().length > 0 && (blob.ynabBudgetId ?? "").trim().length > 0;
+  const hasMetrics = safeM != null;
+  const showEmpty =
+    !loading &&
+    !hasMetrics &&
+    (!ynabToken.trim() || !blob.ynabBudgetId || !blob.ynabCategoryMappings.length);
+  const hasSpending = spendByCategory.length > 0;
+  const maxCategorySpend = spendByCategory[0]?.amount ?? 1;
 
   const signIn = async () => {
     setAuthMsg(null);
@@ -214,10 +355,7 @@ export function HomeDashboard() {
       setAuthMsg("Configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
       return;
     }
-    const { error } = await sb.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
+    const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
     if (error) {
       setAuthMsg(error.message);
       return;
@@ -233,23 +371,24 @@ export function HomeDashboard() {
     setUserLabel(null);
   };
 
-  const hasMetrics = safeM != null;
-  const showEmpty =
-    !loading && !hasMetrics && (!ynabToken.trim() || !blob.ynabBudgetId || !blob.ynabCategoryMappings.length);
-
   return (
     <div className="min-h-screen px-5 py-10" style={{ background: T.bg, color: T.text }}>
       <div className="mx-auto max-w-lg space-y-7">
         <header className="space-y-1.5">
-          <p className="text-xs font-medium uppercase tracking-wider" style={{ color: T.muted }}>
+          <p
+            className="text-xs font-medium uppercase tracking-wider"
+            style={{ color: T.muted }}
+          >
             Clarity Budget
           </p>
           <h1 className="text-2xl font-semibold tracking-tight">Safe to spend</h1>
           <p className="text-sm leading-relaxed" style={{ color: T.muted }}>
-            From your YNAB categories and Ready to Assign, after bills and essentials — same math as the iOS app.
+            From your YNAB categories and Ready to Assign, after bills and essentials — same
+            math as the iOS app.
           </p>
         </header>
 
+        {/* STS skeleton */}
         {loading && (
           <div
             className="rounded-2xl border p-6"
@@ -258,7 +397,10 @@ export function HomeDashboard() {
             aria-label="Loading YNAB"
           >
             <div className="h-4 w-40 animate-pulse rounded" style={{ background: T.border }} />
-            <div className="mt-4 h-12 w-3/4 max-w-[220px] animate-pulse rounded-lg" style={{ background: T.border }} />
+            <div
+              className="mt-4 h-12 w-3/4 max-w-[220px] animate-pulse rounded-lg"
+              style={{ background: T.border }}
+            />
             <div className="mt-6 grid grid-cols-2 gap-3">
               <div className="h-24 animate-pulse rounded-xl" style={{ background: T.border }} />
               <div className="h-24 animate-pulse rounded-xl" style={{ background: T.border }} />
@@ -266,6 +408,7 @@ export function HomeDashboard() {
           </div>
         )}
 
+        {/* STS cards */}
         {hasMetrics && !loading && (
           <div className="space-y-3">
             <section
@@ -275,7 +418,10 @@ export function HomeDashboard() {
                 background: `linear-gradient(145deg, ${T.surface} 0%, #121826 100%)`,
               }}
             >
-              <p className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: T.muted }}>
+              <p
+                className="text-[11px] font-semibold uppercase tracking-wide"
+                style={{ color: T.muted }}
+              >
                 This month
               </p>
               <p className="mt-0.5 text-sm" style={{ color: T.muted }}>
@@ -294,22 +440,32 @@ export function HomeDashboard() {
                 className="rounded-2xl border p-4"
                 style={{ borderColor: T.border, background: T.surface }}
               >
-                <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: T.muted }}>
+                <p
+                  className="text-[10px] font-semibold uppercase tracking-wide"
+                  style={{ color: T.muted }}
+                >
                   This week
                 </p>
-                <p className="mt-1 text-lg font-bold tabular-nums">{safeW != null ? fmt(safeW) : "—"}</p>
+                <p className="mt-1 text-lg font-bold tabular-nums">
+                  {safeW != null ? fmt(safeW) : "—"}
+                </p>
                 <p className="mt-1 text-[11px] leading-snug" style={{ color: T.muted }}>
-                  ~7 days at today’s pace
+                  ~7 days at today&apos;s pace
                 </p>
               </div>
               <div
                 className="rounded-2xl border p-4"
                 style={{ borderColor: T.border, background: T.surface }}
               >
-                <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: T.muted }}>
+                <p
+                  className="text-[10px] font-semibold uppercase tracking-wide"
+                  style={{ color: T.muted }}
+                >
                   Today
                 </p>
-                <p className="mt-1 text-lg font-bold tabular-nums">{safeD != null ? fmt(safeD) : "—"}</p>
+                <p className="mt-1 text-lg font-bold tabular-nums">
+                  {safeD != null ? fmt(safeD) : "—"}
+                </p>
                 <p className="mt-1 text-[11px] leading-snug" style={{ color: T.muted }}>
                   Per day left in month
                 </p>
@@ -337,8 +493,8 @@ export function HomeDashboard() {
                 <div>
                   <p className="text-sm font-semibold">Obligations gap</p>
                   <p className="mt-0.5 text-xs leading-relaxed" style={{ color: T.muted }}>
-                    About {fmt(shortfall)} still needed for mortgage, bills, and essentials this month. Fund those in
-                    YNAB first.
+                    About {fmt(shortfall)} still needed for mortgage, bills, and essentials this
+                    month. Fund those in YNAB first.
                   </p>
                 </div>
               </div>
@@ -352,23 +508,121 @@ export function HomeDashboard() {
           </div>
         )}
 
+        {/* ── Where your money went ── */}
+        {hasSpending && (
+          <section className="space-y-3">
+            <div className="flex items-center justify-between">
+              <p
+                className="text-xs font-semibold uppercase tracking-wider"
+                style={{ color: T.muted }}
+              >
+                Where your money went
+              </p>
+              <span className="text-xs" style={{ color: T.muted }}>
+                {txDateRange}
+              </span>
+            </div>
+
+            <div
+              className="rounded-[20px] border p-5"
+              style={{ borderColor: T.border, background: T.surface }}
+            >
+              <div className="flex items-baseline justify-between">
+                <div>
+                  <p
+                    className="text-[11px] font-semibold uppercase tracking-wide"
+                    style={{ color: T.muted }}
+                  >
+                    Total spent
+                  </p>
+                  <p
+                    className="mt-1 text-[2rem] font-bold leading-none tabular-nums"
+                    style={{ color: T.text }}
+                  >
+                    {fmt(totalSpent)}
+                  </p>
+                </div>
+                <span className="text-xs" style={{ color: T.muted }}>
+                  {outflowCount} transactions
+                </span>
+              </div>
+
+              <div className="mt-5 space-y-3.5">
+                {spendByCategory.map((cat, i) => (
+                  <div key={cat.name}>
+                    <div className="mb-1 flex items-center justify-between">
+                      <span
+                        className="truncate pr-3 text-xs"
+                        style={{ color: T.text, maxWidth: "72%" }}
+                        title={cat.name}
+                      >
+                        {cat.name}
+                      </span>
+                      <span
+                        className="shrink-0 tabular-nums text-xs"
+                        style={{ color: T.muted }}
+                      >
+                        {fmt(cat.amount)}
+                      </span>
+                    </div>
+                    <div
+                      className="h-1.5 overflow-hidden rounded-full"
+                      style={{ background: T.border }}
+                    >
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${(cat.amount / maxCategorySpend) * 100}%`,
+                          background: T.accent,
+                          opacity: Math.max(0.35, 1 - i * 0.09),
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {txLoading && (
+              <p className="animate-pulse text-xs" style={{ color: T.muted }}>
+                Refreshing transactions…
+              </p>
+            )}
+            {txErr && (
+              <p className="text-xs" style={{ color: T.danger }}>
+                {txErr}
+              </p>
+            )}
+          </section>
+        )}
+
         {showEmpty && !loading && (
-          <div className="rounded-[18px] border p-5" style={{ borderColor: T.border, background: T.surface }}>
+          <div
+            className="rounded-[18px] border p-5"
+            style={{ borderColor: T.border, background: T.surface }}
+          >
             <p className="font-medium">Connect YNAB to see live safe-to-spend.</p>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: T.muted }}>
-              Add a personal access token and pick a budget below. Map category roles in the YNAB section (or sync from
-              Supabase after signing in).
+              Add a personal access token and pick a budget below. Map category roles in the
+              YNAB section (or sync from Supabase after signing in).
             </p>
           </div>
         )}
 
         {err && (
-          <p className="rounded-lg border px-3 py-2 text-sm" style={{ borderColor: T.danger, color: T.danger }}>
+          <p
+            className="rounded-lg border px-3 py-2 text-sm"
+            style={{ borderColor: T.danger, color: T.danger }}
+          >
             {err}
           </p>
         )}
 
-        <section className="space-y-3 rounded-xl border p-4" style={{ borderColor: T.border, background: T.surface }}>
+        {/* YNAB config */}
+        <section
+          className="space-y-3 rounded-xl border p-4"
+          style={{ borderColor: T.border, background: T.surface }}
+        >
           <h2 className="text-sm font-semibold">YNAB</h2>
           <label className="block text-xs" style={{ color: T.muted }}>
             Personal access token
@@ -399,7 +653,6 @@ export function HomeDashboard() {
               {categorySyncErr}
             </p>
           )}
-
           {ynabReady && !categorySyncErr && blob.ynabCategoryMappings.length === 0 && (
             <p className="text-xs" style={{ color: T.muted }}>
               Loading categories…
@@ -408,15 +661,23 @@ export function HomeDashboard() {
 
           {ynabReady && blob.ynabCategoryMappings.length > 0 && (
             <div className="space-y-3 border-t pt-3" style={{ borderColor: T.border }}>
-              <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: T.muted }}>
+              <p
+                className="text-xs font-semibold uppercase tracking-wide"
+                style={{ color: T.muted }}
+              >
                 Category roles
               </p>
               <p className="text-[11px] leading-relaxed" style={{ color: T.muted }}>
-                Grouped like YNAB. <strong className="text-neutral-300">Auto from names</strong> re-applies suggestions
-                whenever categories refresh.
+                Grouped like YNAB.{" "}
+                <strong className="text-neutral-300">Auto from names</strong> re-applies
+                suggestions whenever categories refresh.
               </p>
               {categoryRoleGroups.map((g) => (
-                <details key={g.groupId || g.groupName} className="rounded-lg border" style={{ borderColor: T.border }}>
+                <details
+                  key={g.groupId || g.groupName}
+                  className="rounded-lg border"
+                  style={{ borderColor: T.border }}
+                >
                   <summary className="cursor-pointer list-none px-3 py-2 [&::-webkit-details-marker]:hidden">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">{g.groupName}</span>
@@ -424,7 +685,10 @@ export function HomeDashboard() {
                         ({g.rows.length})
                       </span>
                       {g.groupId ? (
-                        <label className="ml-auto flex items-center gap-1.5 text-[11px]" style={{ color: T.muted }}>
+                        <label
+                          className="ml-auto flex items-center gap-1.5 text-[11px]"
+                          style={{ color: T.muted }}
+                        >
                           <input
                             type="checkbox"
                             checked={(blob.ynabAutoSuggestGroupIds ?? []).includes(g.groupId)}
@@ -439,15 +703,25 @@ export function HomeDashboard() {
                       ) : null}
                     </div>
                   </summary>
-                  <ul className="space-y-2 border-t px-3 py-2" style={{ borderColor: T.border }}>
+                  <ul
+                    className="space-y-2 border-t px-3 py-2"
+                    style={{ borderColor: T.border }}
+                  >
                     {g.rows.map((m) => (
-                      <li key={m.ynabCategoryID} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
-                        <span className="min-w-0 flex-1 truncate text-sm">{m.ynabCategoryName}</span>
+                      <li
+                        key={m.ynabCategoryID}
+                        className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2"
+                      >
+                        <span className="min-w-0 flex-1 truncate text-sm">
+                          {m.ynabCategoryName}
+                        </span>
                         <select
                           className="rounded-md border px-2 py-1.5 text-sm text-neutral-100"
                           style={{ borderColor: T.border, background: T.bg }}
                           value={m.roleRaw as RoleRaw}
-                          onChange={(e) => updateMappingRole(m.ynabCategoryID, e.target.value as RoleRaw)}
+                          onChange={(e) =>
+                            updateMappingRole(m.ynabCategoryID, e.target.value as RoleRaw)
+                          }
                         >
                           {ROLE_OPTIONS.map((o) => (
                             <option key={o.value} value={o.value}>
@@ -467,22 +741,33 @@ export function HomeDashboard() {
             type="button"
             className="w-full rounded-lg py-2 text-sm font-medium"
             style={{ background: T.accent, color: "#fff" }}
-            onClick={() => void refreshMetrics()}
+            onClick={() => void refreshMetrics(true)}
           >
             Refresh numbers
           </button>
         </section>
 
-        <section className="space-y-2 rounded-xl border p-4" style={{ borderColor: T.border, background: T.surface }}>
+        {/* Supabase sync */}
+        <section
+          className="space-y-2 rounded-xl border p-4"
+          style={{ borderColor: T.border, background: T.surface }}
+        >
           <h2 className="text-sm font-semibold">Supabase sync</h2>
           <p className="text-xs" style={{ color: T.muted }}>
-            Sign in to merge your blob with <code className="text-neutral-300">user_data</code> (
-            <code className="text-neutral-300">clarity_budget</code>). YNAB token stays in this browser only.
+            Sign in to merge your blob with{" "}
+            <code className="text-neutral-300">user_data</code> (
+            <code className="text-neutral-300">clarity_budget</code>). YNAB token and
+            transactions stay in this browser only.
           </p>
           {userLabel ? (
             <div className="flex items-center justify-between gap-2 text-sm">
               <span>{userLabel}</span>
-              <button type="button" className="text-xs underline" style={{ color: T.muted }} onClick={() => void signOut()}>
+              <button
+                type="button"
+                className="text-xs underline"
+                style={{ color: T.muted }}
+                onClick={() => void signOut()}
+              >
                 Sign out
               </button>
             </div>

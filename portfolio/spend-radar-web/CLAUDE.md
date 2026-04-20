@@ -22,6 +22,10 @@ A lightweight read-only dashboard for Spend Radar's Google Sheet output:
 - **Cancel candidates** — Lapsed + Irregular cadences, red-tinted
 - **Recent receipts (30d)** — table from the Sheet's `Receipts` tab
 
+## What This App Is
+
+A lightweight read-only React dashboard that fetches Spend Radar's Google Sheet CSV exports and surfaces monthly/yearly spend totals, a subscription grid by category, and lapsed or irregular charges flagged as cancel candidates. No auth, no Supabase — the Sheet is the source of truth, cached locally for offline viewing.
+
 ## Data flow
 
 ```

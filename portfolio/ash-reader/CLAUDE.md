@@ -6,6 +6,10 @@ Personal tool for processing the capture system ChatGPT conversation with Ash.
 
 - **URL:** https://ash-reader.vercel.app
 
+## What This App Is
+
+A mobile-optimized web reader for the 138k-word capture system conversation with Ash, breaking it into digestible chunks with Q&A-aware splitting and localStorage progress tracking. Works entirely offline; supports marking chunks as sent, exporting progress, and pre-generated therapeutic summaries at multiple word counts.
+
 ## Stack
 - Next.js 16 + React 19 + TypeScript + Tailwind CSS 4
 - No backend — all localStorage, static pages

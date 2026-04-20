@@ -73,3 +73,45 @@ export async function fetchCategories(token: string, budgetID: string): Promise<
   );
   return json.data.category_groups;
 }
+
+export interface YNABSubTransaction {
+  id: string;
+  amount: number; // milliunits; negative = outflow
+  memo: string | null;
+  deleted: boolean;
+  category_id: string | null;
+  category_name: string | null;
+}
+
+export interface YNABTransaction {
+  id: string;
+  date: string; // YYYY-MM-DD
+  amount: number; // milliunits; negative = outflow
+  memo: string | null;
+  cleared: "cleared" | "uncleared" | "reconciled";
+  approved: boolean;
+  deleted: boolean;
+  payee_id: string | null;
+  payee_name: string | null;
+  category_id: string | null;
+  category_name: string | null;
+  account_id: string;
+  account_name: string;
+  subtransactions: YNABSubTransaction[];
+}
+
+/**
+ * Fetch all non-deleted transactions since `sinceDate` (YYYY-MM-DD).
+ * Split transactions have subtransactions with per-category amounts.
+ */
+export async function fetchTransactions(
+  token: string,
+  budgetId: string,
+  sinceDate: string
+): Promise<YNABTransaction[]> {
+  const json = await getJson<{ data: { transactions: YNABTransaction[] } }>(
+    `/budgets/${budgetId}/transactions?since_date=${sinceDate}`,
+    token
+  );
+  return json.data.transactions.filter((t) => !t.deleted);
+}

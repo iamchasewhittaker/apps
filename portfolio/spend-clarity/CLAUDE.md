@@ -2,6 +2,10 @@
 
 Python CLI at `portfolio/spend-clarity/` in the monorepo (`chase/`). Enriches YNAB transactions with memos (receipt items / Privacy descriptors) and optional category assignments.
 
+## What This App Is
+
+A Python CLI that enriches YNAB transactions with real merchant names and item-level memos sourced from Gmail receipts and Privacy.com virtual card data. Runs dry-mode by default and writes back to YNAB only when explicitly enabled, making it safe to iterate without touching live budget data.
+
 ## Before starting
 
 1. Read **`HANDOFF.md`** — live state, env, recent changes.
