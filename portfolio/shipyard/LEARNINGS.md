@@ -1,5 +1,22 @@
 # Learnings — Shipyard
 
+## 2026-04-20 (Phase 2 polish — typography + service role)
+
+**`.chart-grid` lined-paper background was polluting every page.**
+The repeating horizontal-rule background lived on `<main>` in `layout.tsx` and on `.chart-grid` in `globals.css`. It looked cute in isolation but behind actual data tables/cards it made everything feel noisy and hard to scan. Removing both the CSS class and the `<main className="chart-grid">` usage immediately cleaned up the UI. Decorative page backgrounds fight content density — default to a plain surface and add texture only where it serves the data.
+
+**10-11px type is unreadable on dark navy backgrounds.**
+Nav items at 11px, stats at `text-3xl`, body/badges at 10px — it all looked fine in light mode mockups but on the actual navy-cream palette it was squint-inducing. The right baseline for this app: nav `text-sm`, stats `text-4xl`, body/badges `text-xs`/`text-sm`. Rule: when the bg contrast is high and the palette is limited, size up one step from what feels "right" in isolation.
+
+**`ModeHeading` is the right pattern for all page headings.**
+Review, Log, and Drydock Gate each had their own heading treatment. Standardizing on a single `<ModeHeading labelKey="..." />` component (Big Shoulders display font, `text-4xl`, gold-rule underline) gives every page the same visual anchor and lets the mode provider swap nautical/plain labels in one place. Lesson: any heading that shows a label from the label system should go through the shared component — no exceptions.
+
+**Supabase RLS + anon key silently returns empty rows when no session exists.**
+The server was calling `supabase.from('projects').select('*')` with the anon key. No error, no warning — just `[]`. RLS policies require a session, and `middleware.ts` is a no-op stub so no session cookie is set. Fix: the server client in `src/lib/supabase.ts` now reads `SUPABASE_SERVICE_ROLE_KEY` instead. Service role bypasses RLS and is safe as long as the module is never bundled into client code (it isn't — browser code uses `supabase-browser.ts`). For a single-user personal dashboard this is simpler than wiring real auth.
+
+**`middleware.ts` with empty `matcher: []` is a no-op.**
+The auth logic lives in `proxy.ts`, but Next.js only registers `middleware.ts` as middleware. `proxy.ts` was never invoked, which is why requests were reaching pages unauthenticated. With `matcher: []` the no-op middleware matches nothing and the proxy is dormant. The right fix for "why isn't my middleware running?" is to verify the file name and the matcher — not to chase the logic inside.
+
 ## 2026-04-20 (nautical rebrand)
 
 **`Big_Shoulders_Display` no longer exists in `next/font/google` — it's `Big_Shoulders` now.**

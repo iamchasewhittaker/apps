@@ -3,10 +3,10 @@
 > Fleet command for your app portfolio.
 
 - **Version:** v0.1
-- **Status:** v0.1 — Phase 1 live
+- **Status:** v0.1 — Phase 2 complete (data live, 48 projects synced, typography polished, no auth gate)
 - **URL:** https://shipyard-sandy-seven.vercel.app
 - **Entry point:** src/app/page.tsx
-- **Tech stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Supabase + Vercel
+- **Tech stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS v4 + Supabase + Vercel
 - **Package manager:** npm
 
 ## What This App Is
@@ -24,11 +24,16 @@ Mac (local) → scripts/scan.ts → Supabase ← Next.js (Vercel)
 ## Environment Variables
 
 ```
-NEXT_PUBLIC_SUPABASE_URL    — Supabase project URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY — Supabase anon key
-LINEAR_API_KEY              — Linear API key (Phase 2)
-DEVELOPER_ROOT              — Scanner root path (default: ~/Developer/chase/portfolio)
+NEXT_PUBLIC_SUPABASE_URL      — Supabase project URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY — Supabase anon key (browser client)
+SUPABASE_SERVICE_ROLE_KEY     — Service role key (server-only; bypasses RLS for reads)
+LINEAR_API_KEY                — Linear API key (Phase 2)
+DEVELOPER_ROOT                — Scanner root path (default: ~/Developer/chase/portfolio)
 ```
+
+### Auth / RLS Note
+
+`middleware.ts` is a no-op stub (`matcher: []`) and `proxy.ts` is not wired up as Next.js middleware, so no auth session is established. `createServerClient()` in `src/lib/supabase.ts` uses `SUPABASE_SERVICE_ROLE_KEY` to bypass RLS for server-side reads. This is deliberate for a single-user personal dashboard — do not bundle `supabase.ts` into client code.
 
 ## File Structure
 
@@ -44,18 +49,33 @@ src/
     themes/page.tsx       — Charts & Constellations (themes)
     portfolio/page.tsx    — Fleet Showcase (public portfolio)
     linear/page.tsx       — Harbor Master (Linear sync)
+    settings/page.tsx     — Settings / mode toggle
+    login/page.tsx        — Login (unused — no auth gate active)
     api/
       wip/pick/route.ts   — POST pick active ship
       review/route.ts     — POST/GET reviews
-  components/             — Shared UI components
+  components/
+    ModeHeading.tsx       — Shared display-font page heading (used on Review, Log, Drydock Gate)
+    ModeProvider.tsx      — Nautical/plain label mode context
+    NavItem.tsx           — Sidebar nav link
+    ShipCard.tsx, StatsBar.tsx, FilterBar.tsx, WipBanner.tsx,
+    ComplianceChecklist.tsx, EditableField.tsx,
+    ReviewCountdownChips.tsx, LogoIcon.tsx, LogoLabel.tsx
   lib/
-    supabase.ts           — Client factory
+    supabase.ts           — Server client factory (service role key)
+    supabase-browser.ts   — Browser client factory (anon key)
     types.ts              — All TypeScript types
+    labels.ts             — Nautical/plain label mappings
     mvp-step.ts           — MVP step inference heuristics
     review-cadence.ts     — Review countdown math
+    theme-mode.ts         — Mode toggle storage helpers
 scripts/
   scan.ts                 — Local filesystem scanner
+  scan-cron.sh            — Nightly launchd wrapper
   seed-from-audit.ts      — One-time CSV import
+  sync-projects.ts        — Sync portfolio metadata table from root CLAUDE.md
+  build-branding.ts       — Prebuild step for brand assets
+  run-migration.ts        — Apply SQL migrations
 supabase/migrations/
   0001_init.sql           — Full schema
 ```
@@ -81,3 +101,13 @@ npx tsx scripts/seed-from-audit.ts  # Import audit CSV (one-time)
 - Linear = Harbor Master
 - Portfolio = Fleet Showcase
 - Review = Port Inspection
+
+## Typography & Headings
+
+- **All page headings** use the shared `ModeHeading` component — Big Shoulders display font at `text-4xl`/`5xl` with the `gold-rule` underline.
+- **Typography baseline** (post Phase 2 polish):
+  - Nav items: `text-sm` (was 11px — too small on dark navy)
+  - Stats: `text-4xl` (was `text-3xl`)
+  - Body / badges: `text-xs` / `text-sm` (was 10px)
+- **Never use 10-11px type on the dark navy bg** — unreadable. `text-xs` is the floor.
+- **`.chart-grid` lined-paper background was removed** from `globals.css` and `<main>` in `layout.tsx` — was distracting across every page.

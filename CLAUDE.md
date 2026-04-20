@@ -209,7 +209,7 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 ```
 
 > Each active `portfolio/*` app contains: `CLAUDE.md`, `HANDOFF.md`, `LEARNINGS.md`, `CHANGELOG.md`, `ROADMAP.md`.
-> `LEARNINGS.md` — per-project mistakes, fixes, and "aha" moments. AI tools read it at session start; append after anything surprising.
+> `LEARNINGS.md` — per-project mistakes, fixes, and "aha" moments. AI tools read it at session start; **append after every session where the app was modified** — not just when something goes wrong.
 >
 > **Branding (do not repeat in every chat):** For new or restyled apps, add `**docs/BRANDING.md`** by copying `[docs/templates/PORTFOLIO_APP_BRANDING.md](docs/templates/PORTFOLIO_APP_BRANDING.md)`, fill placeholders, and link it from that app’s `CLAUDE.md`. Index of design specs: `[docs/design/README.md](docs/design/README.md)`.
 
@@ -322,7 +322,7 @@ When you **ship or materially extend** an app in this portfolio, **use Linear** 
 
 **Canonical phrase:** when Chase says **"update docs"**, treat it as this default scope unless explicitly overridden:
 
-- **App-level:** `CHANGELOG.md` (`## [Unreleased]`), app `ROADMAP.md`, app `HANDOFF.md` (State/Next/Last touch), and `LEARNINGS.md` only when there was a surprise/failure/lesson.
+- **App-level:** `CHANGELOG.md` (`## [Unreleased]`), app `ROADMAP.md`, app `HANDOFF.md` (State/Next/Last touch), and `LEARNINGS.md` — **always**, even if just one line noting what changed and why.
 - **Root-level (monorepo):** root `ROADMAP.md` Change Log row for notable work and root `HANDOFF.md` current focus/next step.
 - **Shipped truth:** git commits + Linear are the shipped record; `HANDOFF.md` is resume context.
 
@@ -333,7 +333,7 @@ When you **ship or materially extend** an app in this portfolio, **use Linear** 
 > 3. Update that app's `ROADMAP.md` — mark completed items, add new ideas
 > 4. Update `/ROADMAP.md` (repo root) Change Log table with a new row
 > 5. Update `HANDOFF.md` State table — Focus, Next, Last touch
-> 6. Update that app's `LEARNINGS.md` — if anything went wrong, was surprising, or was learned
+> 6. Update that app's `LEARNINGS.md` — **always** append at least one line: what changed, why, and any surprises. This is mandatory, not conditional.
 > 7. **New app or first-time branding:** ensure `**docs/BRANDING.md`** exists (copy from `[docs/templates/PORTFOLIO_APP_BRANDING.md](docs/templates/PORTFOLIO_APP_BRANDING.md)`) and is linked from that app's `CLAUDE.md`
 >
 > **After a manual Xcode session (Chase editing alone):**
