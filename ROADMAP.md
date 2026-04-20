@@ -24,6 +24,13 @@
 | Unnamed (web) | v0.1 | pending Vercel | `unnamed_v1` | 🟡 Local · Daily OS for ADHD brains · [`portfolio/unnamed`](portfolio/unnamed) |
 | Unnamed (iOS) | v0.1 | local Xcode | `unnamed_ios_v1` | 🟡 On-device · SwiftUI + @Observable · 10/10 tests · [`portfolio/unnamed-ios`](portfolio/unnamed-ios) |
 | Alias Ledger | v1.0 | https://alias-ledger.vercel.app | `hme_alias_tracker_v1` | ✅ Active · Hide My Email tracker · [`portfolio/alias-ledger`](portfolio/alias-ledger) |
+| Knowledge Base | v2.1.0 | https://knowledge-base-beta-five.vercel.app | `chase_knowledge_base_v1` | ✅ Active · Bookmark manager · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
+| Shipyard | v0.1 | https://shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app | n/a | ✅ Active · Fleet command center · [`portfolio/shipyard`](portfolio/shipyard) |
+| Shipyard (iOS) | v0.1 | local Xcode | `chase_shipyard_ios_v1` | 🟡 Local · [`portfolio/shipyard-ios`](portfolio/shipyard-ios) |
+| Ash Reader | v1.0 | https://ash-reader.vercel.app | `ash_reader_` prefix | ✅ Active · Mobile chunker for Ash · [`portfolio/ash-reader`](portfolio/ash-reader) |
+| Ash Reader (iOS) | v0.3 | local Xcode | `ash_reader_ios_` prefix | 🟡 Local · [`portfolio/ash-reader-ios`](portfolio/ash-reader-ios) |
+| Clarity Budget (web) | v0.2 | local / optional deploy | `chase_budget_web_v1` | ✅ Active · Next.js STS dashboard · [`portfolio/clarity-budget-web`](portfolio/clarity-budget-web) |
+| Fairway (iOS) | v0.1 | local Xcode | `chase_fairway_ios_v1` | 🟡 Local · Lawn OS · [`portfolio/fairway-ios`](portfolio/fairway-ios) |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0.1 | local (port 3004) | not yet deployed | ✅ Active · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
 | Shortcut Reference | v0.1.0 | local Xcode | — | ✅ Active · macOS Swift · [`portfolio/shortcut-reference`](portfolio/shortcut-reference) |
@@ -237,6 +244,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-19 | Knowledge Base | v2.1.0 | **Favicon + Export/Import:** bookmark rows and home cards now show favicons via Google CDN (`https://www.google.com/s2/favicons?domain=…`); Export JSON + Import JSON buttons added to sidebar footer for full data portability | `portfolio/knowledge-base/` |
 | 2026-04-18 | Alias Ledger | v1.0 | **New app:** Hide My Email alias tracker — log iCloud aliases by company/channel during job search, burn when spam arrives. Single-file HTML + localStorage, deployed to alias-ledger.vercel.app, connected to apps.git auto-deploy. | `portfolio/alias-ledger/` |
 | 2026-04-17 | Ash Reader (iOS) | v0.3 | **Fix: clean Reader display** — `stripMarkdown()` now applied to `Text()` render in `ChunkReaderView`; markdown symbols (`#`, `**`, etc.) no longer visible in Reader tab; emojis preserved | `ChunkReaderView.swift:147` — one-line fix |
 | 2026-04-18 | Job Search HQ | v8.9 | **Wave 4 #2:** Draft Message context — ContactCard "✍️ Draft Message" button now navigates to Apply Tools → LinkedIn → Connection Request with the contact pre-selected. `draftContact` state in App.jsx; `onDraftMessage(contact)` prop wired through ContactsTab; `useEffect` in AITab pre-selects and clears. | `portfolio/job-search-hq/` |

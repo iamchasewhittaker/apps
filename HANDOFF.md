@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Job Search HQ v8.9 (2026-04-18).** Wave 4 #2 shipped: Draft Message context — ContactCard now pre-selects contact in Apply Tools → LinkedIn → Connection Request. |
-| **Next**       | 1. **Job Search HQ:** Wave 4 #3 — Outreach cadence timeline per contact (visual touchpoint history). 2. **Unnamed iOS:** Use for 7 days — no features until streak. 3. **Vercel/GitHub limit:** disconnect a stale project to unblock Unnamed auto-deploy. |
-| **Blockers**   | **Vercel/GitHub connection limit:** GitHub repo `iamchasewhittaker/apps` is already connected to 10 Vercel projects — Unnamed auto-deploy could not be wired up. To fix: go to Vercel dashboard → disconnect a stale/retired project from the repo → then run `vercel git connect https://github.com/iamchasewhittaker/apps.git --yes` from `portfolio/unnamed/`. Note: alias-ledger may have consumed one slot — check current count before trying. |
-| **Last touch** | 2026-04-18 — Alias Ledger v1.0: new project, deployed to alias-ledger.vercel.app. |
+| **Focus**      | **Knowledge Base v2.1.0 shipped (2026-04-19).** Favicons on all rows/home cards (Google CDN), Export/Import JSON buttons in sidebar footer. Deployed to knowledge-base-beta-five.vercel.app. Linear synced: new projects created (Unnamed, Fairway iOS, Ash Reader, Shipyard, Gmail Forge, Clarity Command iOS), KB v2.1 issue filed as Done (WHI-65). |
+| **Next**       | 1. **Job Search HQ:** Wave 4 #3 — outreach cadence timeline per contact. 2. **Unnamed iOS:** streak gate — 7-day clock started 2026-04-17, Phase 2 unlocks ~2026-04-24. 3. **Unnamed web:** deploy to Vercel (Vercel/GitHub limit — disconnect a stale project first). 4. **Wellness:** split TrackerTab.jsx (78K) — WHI-63. |
+| **Blockers**   | **Vercel/GitHub connection limit:** repo already at 10 connections — Unnamed web deploy blocked. Fix: disconnect a stale Vercel project then `vercel git connect` from `portfolio/unnamed/`. |
+| **Last touch** | 2026-04-19 — Knowledge Base v2.1.0: favicons + import/export. Root CLAUDE.md + ROADMAP.md updated. Linear fully synced. |
 
 
 ---
@@ -142,6 +142,34 @@ Priority:
 4. Test: npm start, verify both check-in flows work.
 
 Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
+```
+
+---
+
+## Fresh session prompt — 2026-04-19 ship + next priorities
+
+```
+Read CLAUDE.md and HANDOFF.md first.
+
+Session shipped (2026-04-19):
+- Knowledge Base v2.1.0: favicons on all rows/home cards (Google favicon CDN), Export/Import JSON buttons in sidebar footer
+- Deployed to knowledge-base-beta-five.vercel.app
+- Root CLAUDE.md + ROADMAP.md updated (KB version, missing projects added)
+- Linear fully synced: WHI-65 (KB v2.1 Done), WHI-66 (Unnamed deploy), WHI-67 (7-day streak), new projects created
+
+Priority queue:
+1. Job Search HQ: Wave 4 #3 — outreach cadence timeline per contact (visual touchpoint history)
+2. Unnamed iOS: 7-day streak gate — clock started 2026-04-17, Phase 2 planning starts ~2026-04-24
+3. Unnamed web: fix Vercel/GitHub limit (disconnect stale project), then deploy
+4. Wellness: split TrackerTab.jsx (78K) — WHI-63
+
+Key context:
+- Unnamed iOS streak: no new features until 7 consecutive days of use
+- Vercel connection limit: repo at 10/10 — need to disconnect a retired project before new deploys
+- Knowledge Base v2.2: drag-and-drop reorder, tags cross-folder filter, sort options (WHI-68, Backlog)
+
+Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
+For Reese. For Buzz. Forward.
 ```
 
 ---

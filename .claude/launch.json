@@ -48,6 +48,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "/Users/chase/Developer/chase/portfolio/shipyard", "run", "dev", "--", "-p", "3007"],
       "port": 3007
+    },
+    {
+      "name": "knowledge-base",
+      "runtimeExecutable": "env",
+      "runtimeArgs": ["PORT=3008", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/knowledge-base", "start"],
+      "port": 3008
     }
   ]
 }
