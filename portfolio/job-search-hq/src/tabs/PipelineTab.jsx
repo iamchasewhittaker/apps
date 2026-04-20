@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { s, STAGES, STAGE_COLORS, blankApp, getOutcomeAnalytics } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 import AppCard from "../components/AppCard";
+import OfferCompareView from "../components/OfferCompareView";
 
-export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setDebriefModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab }) {
+export default function PipelineTab({ activeApps, archivedApps, contacts, saveApp, setAppModal, setPrepModal, setDebriefModal, setOfferModal, setKitApp, setKitResumeResult, setKitCoverResult, setTab, setResumeTab }) {
   const [urlInput, setUrlInput] = useState("");
   const [jdPaste, setJdPaste] = useState("");
 
@@ -32,6 +33,12 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
   }
 
   const outcomes = getOutcomeAnalytics([...(activeApps || []), ...(archivedApps || [])]);
+  const offerApps = [...(activeApps || []), ...(archivedApps || [])].filter(a => a.stage === "Offer");
+
+  function openOfferFor(appId) {
+    const found = [...(activeApps || []), ...(archivedApps || [])].find(a => a.id === appId);
+    if (found && setOfferModal) setOfferModal({ app: found });
+  }
 
   return (
     <ErrorBoundary name="Pipeline">
@@ -72,6 +79,17 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
             );
           })}
         </div>
+        {offerApps.length > 0 && (
+          <details open={offerApps.length >= 2} style={{ ...s.outcomeSection, marginBottom: 16 }}>
+            <summary style={{ cursor: "pointer", listStyle: "none", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+              <div style={s.outcomeTitle}>💰 Offer comparison ({offerApps.length})</div>
+              <div style={s.outcomeMeta}>
+                {offerApps.length === 1 ? "1 offer on the table" : `${offerApps.length} offers side-by-side`}
+              </div>
+            </summary>
+            <OfferCompareView offerApps={offerApps} onEdit={openOfferFor} />
+          </details>
+        )}
         <div style={s.outcomeSection}>
           <div style={s.outcomeHeader}>
             <div style={s.outcomeTitle}>Win/Loss Analytics</div>
@@ -113,6 +131,7 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
                 onApplyKit={() => openKit(app)}
                 onPrep={() => setPrepModal({ app })}
                 onDebrief={() => setDebriefModal({ app })}
+                onOffer={() => setOfferModal && setOfferModal({ app })}
               />
             ))}
         </div>
@@ -128,6 +147,7 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
                   onApplyKit={() => openKit(app)}
                   onPrep={() => setPrepModal({ app })}
                   onDebrief={() => setDebriefModal({ app })}
+                  onOffer={() => setOfferModal && setOfferModal({ app })}
                   archived
                 />
               ))}

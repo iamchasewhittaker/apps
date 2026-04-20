@@ -1,5 +1,31 @@
 # Changelog
 
+## [Unreleased] — 2026-04-20 — Wave 4 #4: Offer comparison side-by-side (v8.11)
+
+### Added
+- **Structured offer details per application** — new `offerDetails` object on every app: `receivedDate`, `baseSalary`, `bonusTarget`, `bonusType` (target / guaranteed / discretionary), `signOnBonus`, `equity`, `equityNotes`, `ptoWeeks`, `benefitsNotes`, `startDate`, `decisionBy`, `location`, `remoteFlex`, `notes`. Backwards-compatible: `normalizeApplication` seeds a blank `offerDetails` on existing apps loaded from localStorage/Supabase.
+- **`OfferModal.jsx`** — per-app offer editor (Compensation + Offer terms + Notes sections; live "Total comp estimate" preview block). Mirrors `DebriefModal.jsx` structure and opens from the card's 💰 Offer button.
+- **`OfferCompareView.jsx`** — side-by-side compare table for Offer-stage apps. Empty state, single-offer card fallback, and 2+ offers responsive table with "best in column" green highlights (`#22c55e` / `#0f2b1a`) on Base, Bonus, Sign-on, Equity, PTO, and Total comp. "Edit" button per column reopens `OfferModal`.
+- **`computeOfferTotal(offer)`** — annualized total = `base + bonusTarget + equity + signOnBonus/4`; returns `null` when base is missing so the UI shows `—`.
+- **`getOfferCompareRows(offerApps)`** — normalized rows sorted by total desc with `null` totals last.
+- **`blankOfferDetails()`**, **`normalizeOfferDetails(o)`**, **`offerDetailsHasContent(o)`**, **`formatCurrency(n)`** helpers in `src/constants.js`.
+
+### Changed
+- `blankApp()` — now includes `offerDetails: blankOfferDetails()`.
+- `AppCard.jsx` — when `stage === "Offer"`, renders a 💰 Offer button after Debrief (`"💰 Offer ●"` when any details are filled).
+- `PipelineTab.jsx` — new collapsible "💰 Offer comparison (N)" section above Win/Loss Analytics; auto-expands when N ≥ 2. `onOffer` threaded to both active and archived `AppCard` invocations.
+- `App.jsx` — new `offerModal` state + `OfferModal` render next to `DebriefModal`; `setOfferModal` passed to `PipelineTab`.
+
+### Docs
+- `CLAUDE.md` — version bump v8.10 → v8.11; added `offerDetails` to the Data Shape block.
+- Root `CLAUDE.md` — Documentation Auto-Update Rule extended with step 8 (Linear heartbeat comment) and step 9 (Shipyard sync via `pnpm --filter shipyard sync-projects`) so every modified-app session syncs external trackers, not just when Chase says "update linear".
+
+### Notes
+- Ships with same Chrome extension + Supabase sync path; `offerDetails` rides inside the existing app blob (no schema change).
+- Out of scope: multi-currency / tax-adjusted comp math, editing from the compare table directly, iOS parity — follow-on tickets.
+
+---
+
 ## [Unreleased] — 2026-04-20 — Wave 4 #3: Outreach cadence timeline (v8.10)
 
 ### Added

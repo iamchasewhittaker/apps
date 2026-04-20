@@ -1,10 +1,12 @@
 import React from "react";
-import { s, STAGES, STAGE_COLORS, nextStepUrgency, prepSectionsHasContent } from "../constants";
+import { s, STAGES, STAGE_COLORS, nextStepUrgency, prepSectionsHasContent, offerDetailsHasContent } from "../constants";
 
-export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, onDebrief, archived }) {
+export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, onDebrief, onOffer, archived }) {
   const linked = contacts.filter(c => c.appIds?.includes(app.id));
   const showPrep = ["Phone Screen", "Interview", "Final Round"].includes(app.stage);
   const hasDebriefs = (app.interviewLog || []).length > 0;
+  const isOffer = app.stage === "Offer";
+  const hasOfferDetails = offerDetailsHasContent(app.offerDetails);
   return (
     <div style={{ ...s.card, opacity: archived ? 0.7 : 1 }} className="card-hover">
       <div style={s.cardTop}>
@@ -43,6 +45,11 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
         {(showPrep || hasDebriefs) && (
           <button style={{ ...s.actionBtnPrep, background: "#1a1608", borderColor: "#c8a84b44", color: "#c8a84b" }} onClick={onDebrief}>
             {hasDebriefs ? `📋 ${(app.interviewLog || []).length}` : "📋 Debrief"}
+          </button>
+        )}
+        {isOffer && onOffer && (
+          <button style={{ ...s.actionBtnPrep, background: "#0f2b1a", borderColor: "#22c55e44", color: "#22c55e" }} onClick={onOffer}>
+            {hasOfferDetails ? "💰 Offer ●" : "💰 Offer"}
           </button>
         )}
       </div>

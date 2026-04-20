@@ -5,7 +5,7 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
-- **Version:** v8.10 (Wave 4 #3: outreach cadence timeline per contact; Wave 4 #2: Draft Message context; Wave 4 #1: weekly review prompt; Wave 3 complete: debrief log, velocity dashboard, mock interview; Apply Tools = copy prompts + external assistants)
+- **Version:** v8.11 (Wave 4 #4: offer comparison side-by-side — `offerDetails` per app + OfferModal + OfferCompareView; Wave 4 #3: outreach cadence timeline per contact; Wave 4 #2: Draft Message context; Wave 4 #1: weekly review prompt; Wave 3 complete: debrief log, velocity dashboard, mock interview; Apply Tools = copy prompts + external assistants)
 - **Storage key:** `chase_job_search_v1` (data only)
 - **URL:** https://job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
@@ -78,7 +78,14 @@ Receives from shell: `data`, `profileComplete`, `kitApp`, `setKitApp`, `resumeTa
     jobDescription, notes,
     prepNotes,   // legacy string; hydrated from prepSections where needed
     prepSections, // structured interview prep
-    prepStageKey // optional: phone_screen | interview | final_round
+    prepStageKey, // optional: phone_screen | interview | final_round
+    interviewLog, // array of debrief entries (v8.7)
+    offerDetails: { // structured offer capture (v8.11)
+      receivedDate, baseSalary, bonusTarget, bonusType, // target|guaranteed|discretionary
+      signOnBonus, equity, equityNotes,
+      ptoWeeks, benefitsNotes, startDate, decisionBy,
+      location, remoteFlex, notes
+    }
   }],
   contacts: [{
     id, name, company, role, email, linkedin, lastContact, notes, appIds,

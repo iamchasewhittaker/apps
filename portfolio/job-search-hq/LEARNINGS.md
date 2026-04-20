@@ -18,6 +18,12 @@
 
 ## Entries
 
+### 2026-04-20 — `computeOfferTotal` annualizes sign-on to avoid first-year skew
+**What happened:** Designing offer comparison, the naive "total comp = base + bonus + equity + signOn" makes the first offer with a big sign-on look better than a higher base over any realistic tenure.
+**Root cause:** Sign-on is one-time; base/bonus/equity repeat each year. Adding raw sign-on inflates year 1 and creates bad comparisons once you're looking at "which offer is better long-term".
+**Fix / lesson:** `computeOfferTotal(offer)` amortizes sign-on over 4 years (`signOnBonus / 4`) — same horizon equity is already annualized against. Returns `null` when base is missing so the UI falls back to `—` instead of a misleading `$0`. Document the formula directly in `OfferModal`'s preview block so the user sees the math.
+**Tags:** data-model · finance · ux
+
 ### 2026-04-14 — iOS AppIcon should be full-bleed (no rx); web logo keeps rx
 **What happened:** The web `logo.svg` uses `rx="96"` rounded corners per the portfolio template — those are intentional for browser/PWA display. The iOS AppIcon PNG however must be a full-bleed square with no corner radius; Apple applies its own squircle mask at render time.
 **Root cause:** Two different rendering contexts: browser shows the SVG rect corners directly; iOS crops with its own mask regardless of what the PNG contains. Putting rx on the AppIcon source wastes the safe area and the mask alignment doesn't match.

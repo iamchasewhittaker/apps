@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.10 |
+| **Version** | v8.11 |
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 4 #3 shipped (v8.10): outreach cadence timeline — `outreachLog[]` on each contact, `OutreachTimeline` rendered on ContactCard, modal entry form + delete, quick-log on status-dropdown change, legacy `outreachDate`/`outreachStatus` seeded into one-entry log on load. |
-| **Next** | Wave 4 #4: Offer comparison side-by-side mode. |
+| **Focus** | Wave 4 #4 shipped (v8.11): offer comparison side-by-side — `offerDetails` on every app, `OfferModal` editor (comp + terms + notes w/ live total preview), `OfferCompareView` with best-in-column highlights, 💰 Offer button on AppCard, collapsible "Offer comparison (N)" on Pipeline. Root `CLAUDE.md` Doc Auto-Update Rule extended w/ steps 8–9 (Linear heartbeat + Shipyard sync). |
+| **Next** | Wave 4 #5: Email forward parsing (paste recruiter email → extract contact + job). |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-20 — v8.10: new `OutreachTimeline.jsx`; `OUTREACH_EVENT_TYPES`/`OUTREACH_METHODS`/`blankOutreachEntry`/`normalizeOutreachLog`/`normalizeContact` in constants.js; ContactsTab `updateStatus` appends log entry on meaningful status change; ContactModal "Outreach Log" section added. Verified modal-add and quick-log paths in browser; build clean. |
+| **Last touch** | 2026-04-20 — v8.11: `blankOfferDetails`/`normalizeOfferDetails`/`computeOfferTotal`/`getOfferCompareRows`/`offerDetailsHasContent`/`formatCurrency` + OFFER_FIELDS/OFFER_TERM_FIELDS in constants.js; new `OfferModal.jsx` + `OfferCompareView.jsx`; AppCard 💰 Offer button; PipelineTab compare section; App.jsx `offerModal` state + render. Build clean (+3.37 kB). |
 
 ---
 
@@ -28,7 +28,7 @@ All four Wave 3 items shipped in v8.7:
 - ✅ Application velocity dashboard
 - ✅ Mock interview mode
 
-**Next for web:** Wave 4 #4 — Offer comparison side-by-side mode. See ROADMAP.md.
+**Next for web:** Wave 4 #5 — Email forward parsing (paste recruiter email → extract contact + job). See ROADMAP.md.
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`

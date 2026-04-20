@@ -11,6 +11,7 @@ import ContactModal from "./components/ContactModal";
 import ProfileModal from "./components/ProfileModal";
 import PrepModal from "./components/PrepModal";
 import DebriefModal from "./components/DebriefModal";
+import OfferModal from "./components/OfferModal";
 import FocusTab from "./tabs/FocusTab";
 import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
@@ -214,6 +215,7 @@ export default function JobSearchTracker() {
   const [profileModal, setProfileModal] = useState(false);
   const [prepModal, setPrepModal] = useState(null);
   const [debriefModal, setDebriefModal] = useState(null);
+  const [offerModal, setOfferModal] = useState(null);
 
   // Shared state that multiple tabs read or set
   const [draftContact, setDraftContact] = useState(null);
@@ -455,6 +457,7 @@ export default function JobSearchTracker() {
           activeApps={activeApps} archivedApps={archivedApps}
           contacts={data.contacts} saveApp={saveApp}
           setAppModal={setAppModal} setPrepModal={setPrepModal} setDebriefModal={setDebriefModal}
+          setOfferModal={setOfferModal}
           setKitApp={setKitApp} setKitResumeResult={setKitResumeResult} setKitCoverResult={setKitCoverResult}
           setTab={setTab} setResumeTab={setResumeTab}
         />
@@ -518,6 +521,13 @@ export default function JobSearchTracker() {
           app={debriefModal.app}
           onSave={app => { saveApp(app); setDebriefModal({ app }); }}
           onClose={() => setDebriefModal(null)}
+        />
+      )}
+      {offerModal && (
+        <OfferModal
+          app={offerModal.app}
+          onSave={app => { saveApp(app); setOfferModal({ app }); }}
+          onClose={() => setOfferModal(null)}
         />
       )}
     </div>

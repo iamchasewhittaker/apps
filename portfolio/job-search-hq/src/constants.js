@@ -273,6 +273,7 @@ export function blankApp() {
     prepSections: blankPrepSections(),
     prepStageKey: "", // phone_screen | interview | final_round — last template applied (optional)
     interviewLog: [],
+    offerDetails: blankOfferDetails(),
   };
 }
 
@@ -587,7 +588,129 @@ export function normalizeApplication(app = {}) {
     ...app,
     prepSections: normalizePrepSections(app.prepSections, app.prepNotes),
     interviewLog: normalizeInterviewLog(app.interviewLog),
+    offerDetails: normalizeOfferDetails(app.offerDetails),
   };
+}
+
+// ── OFFER DETAILS (Wave 4 #4) ─────────────────────────────────────────────────
+export const OFFER_FIELDS = [
+  { key: "baseSalary",    label: "Base salary",   type: "currency" },
+  { key: "bonusTarget",   label: "Bonus target",  type: "currency" },
+  { key: "signOnBonus",   label: "Sign-on bonus", type: "currency" },
+  { key: "equity",        label: "Equity (yr)",   type: "currency" },
+];
+
+export const OFFER_TERM_FIELDS = [
+  { key: "startDate",     label: "Start date",    type: "date" },
+  { key: "decisionBy",    label: "Decide by",     type: "date" },
+  { key: "ptoWeeks",      label: "PTO (weeks)",   type: "number" },
+  { key: "location",      label: "Location",      type: "text" },
+  { key: "remoteFlex",    label: "Remote / flex", type: "text" },
+];
+
+export function blankOfferDetails() {
+  return {
+    receivedDate: "",
+    baseSalary: "",
+    bonusTarget: "",
+    bonusType: "target", // target | guaranteed | discretionary
+    signOnBonus: "",
+    equity: "",          // annualized vest value in USD
+    equityNotes: "",
+    ptoWeeks: "",
+    benefitsNotes: "",
+    startDate: "",
+    location: "",
+    remoteFlex: "",
+    decisionBy: "",
+    notes: "",
+  };
+}
+
+export function normalizeOfferDetails(o = {}) {
+  const base = blankOfferDetails();
+  if (!o || typeof o !== "object") return base;
+  return {
+    receivedDate:  o.receivedDate  || "",
+    baseSalary:    o.baseSalary    ?? "",
+    bonusTarget:   o.bonusTarget   ?? "",
+    bonusType:     o.bonusType     || "target",
+    signOnBonus:   o.signOnBonus   ?? "",
+    equity:        o.equity        ?? "",
+    equityNotes:   o.equityNotes   || "",
+    ptoWeeks:      o.ptoWeeks      ?? "",
+    benefitsNotes: o.benefitsNotes || "",
+    startDate:     o.startDate     || "",
+    location:      o.location      || "",
+    remoteFlex:    o.remoteFlex    || "",
+    decisionBy:    o.decisionBy    || "",
+    notes:         o.notes         || "",
+  };
+}
+
+function toNumber(v) {
+  if (v === "" || v == null) return null;
+  const n = typeof v === "number" ? v : parseFloat(String(v).replace(/[$,\s]/g, ""));
+  return Number.isFinite(n) ? n : null;
+}
+
+export function offerDetailsHasContent(o) {
+  const norm = normalizeOfferDetails(o);
+  return Object.entries(norm).some(([k, v]) => {
+    if (k === "bonusType") return false; // always defaulted
+    return v != null && String(v).trim() !== "";
+  });
+}
+
+// Annualized total comp estimate (base + bonus target + equity/yr + sign-on/4 as rough annualization).
+// Returns null when base salary is missing so the UI can render "—".
+export function computeOfferTotal(offer) {
+  const o = normalizeOfferDetails(offer);
+  const base = toNumber(o.baseSalary);
+  if (base == null) return null;
+  const bonus = toNumber(o.bonusTarget) || 0;
+  const equity = toNumber(o.equity) || 0;
+  const signOn = toNumber(o.signOnBonus) || 0;
+  return base + bonus + equity + signOn / 4; // amortize sign-on over 4 yrs
+}
+
+// Build rows for the side-by-side compare table — one row per app.
+export function getOfferCompareRows(offerApps = []) {
+  return offerApps
+    .map(app => {
+      const o = normalizeOfferDetails(app.offerDetails);
+      return {
+        appId: app.id,
+        company: app.company || "—",
+        title: app.title || "",
+        receivedDate: o.receivedDate,
+        base: toNumber(o.baseSalary),
+        bonus: toNumber(o.bonusTarget),
+        bonusType: o.bonusType,
+        signOn: toNumber(o.signOnBonus),
+        equity: toNumber(o.equity),
+        equityNotes: o.equityNotes,
+        pto: toNumber(o.ptoWeeks),
+        benefits: o.benefitsNotes,
+        start: o.startDate,
+        location: o.location,
+        remoteFlex: o.remoteFlex,
+        decisionBy: o.decisionBy,
+        notes: o.notes,
+        total: computeOfferTotal(app.offerDetails),
+      };
+    })
+    .sort((a, b) => {
+      if (a.total == null && b.total == null) return 0;
+      if (a.total == null) return 1;
+      if (b.total == null) return -1;
+      return b.total - a.total;
+    });
+}
+
+export function formatCurrency(n) {
+  if (n == null) return "—";
+  return "$" + Math.round(n).toLocaleString("en-US");
 }
 
 export const STAR_COMPETENCIES = [
