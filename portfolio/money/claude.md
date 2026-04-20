@@ -21,6 +21,10 @@ A single-page React app that takes a bank account CSV export and cross-reference
 - Full CSV includes Confidence column
 - All settings (rules + day window) persisted in localStorage
 
+## What This App Is
+
+A React app that cross-references bank CSV exports against Amazon, Apple, and Privacy.com transaction history to resolve generic payee names into real merchant names and add item-level memos. Superseded by Spend Clarity (Python CLI) for enrichment depth, but still useful for ad-hoc CSV enrichment without any setup.
+
 ## Aesthetic
 - Dark monospace theme
 - Font: DM Mono / Fira Mono

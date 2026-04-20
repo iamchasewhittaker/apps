@@ -9,6 +9,10 @@ Chase Whittaker's Gmail Forge system. Three-layer architecture: XML filters (ins
 **Apps Script:** `apps-script/auto-sort.gs` + `rules.gs` (deploy via [apps-script/DEPLOY-CLASP.md](apps-script/DEPLOY-CLASP.md) or paste in script.google.com)  
 **Extension:** `extension/` (load unpacked in Chrome)
 
+## What This App Is
+
+A three-layer Gmail organization system: XML filters for instant sorting, an Apps Script auto-sorter that sweeps every 5 minutes with optional AI classification, and a Chrome extension for manual UI control — all without paid tools. Keeps job search emails untouched in the inbox while routing everything else to appropriate labels automatically.
+
 ---
 
 ## Critical Rules
