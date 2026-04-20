@@ -478,7 +478,8 @@ export default function JobSearchTracker() {
           kitApp={kitApp} setKitApp={setKitApp}
           resumeTab={resumeTab} setResumeTab={setResumeTab}
           draftContact={draftContact} clearDraftContact={() => setDraftContact(null)}
-          saveStarStories={saveStarStories}
+          saveStarStories={saveStarStories} setTab={setTab}
+          setAppModal={setAppModal} setContactModal={setContactModal}
           showError={showError} setProfileModal={setProfileModal}
         />
       )}

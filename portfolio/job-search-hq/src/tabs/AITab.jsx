@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { s, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories } from "../constants";
+import { s, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories, parseRecruiterEmail, blankContact, blankApp } from "../constants";
 import { MOCK_INTERVIEW_SCENARIOS } from "../mockInterviewQuestions";
 import ErrorBoundary from "../ErrorBoundary";
 import AIResult from "../components/AIResult";
@@ -31,6 +31,7 @@ export default function AITab({
   kitApp, setKitApp, resumeTab, setResumeTab,
   draftContact, clearDraftContact,
   setTab, saveApp, saveStarStories,
+  setAppModal, setContactModal,
   showError, setProfileModal,
 }) {
   const [resumeType, setResumeType] = useState("PM");
@@ -57,6 +58,9 @@ export default function AITab({
   const [storyDraft, setStoryDraft] = useState(blankStarStory());
   const [editingStoryId, setEditingStoryId] = useState(null);
   const [storySource, setStorySource] = useState("");
+
+  const [emailRaw, setEmailRaw] = useState("");
+  const [emailParsed, setEmailParsed] = useState(null);
 
   useEffect(() => {
     setStories(normalizeStarStories(data.starStories));
@@ -191,7 +195,7 @@ export default function AITab({
         </div>
 
         <div style={s.subTabs}>
-          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"],["mock","🎤 Mock Interview"],["weekly","📊 Weekly Review"]].map(([key, label]) => (
+          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"],["mock","🎤 Mock Interview"],["weekly","📊 Weekly Review"],["email","📧 Email Parse"]].map(([key, label]) => (
             <button key={key} style={{ ...s.subTabBtn, ...(resumeTab === key ? s.subTabBtnActive : {}) }} onClick={() => setResumeTab(key)}>{label}</button>
           ))}
         </div>
@@ -608,8 +612,101 @@ Takeaway: ${story.takeaway}`}
         {resumeTab === "weekly" && (
           <WeeklyReviewPanel data={data} showError={showError} />
         )}
+
+        {resumeTab === "email" && (
+          <EmailParsePanel
+            emailRaw={emailRaw} setEmailRaw={setEmailRaw}
+            emailParsed={emailParsed} setEmailParsed={setEmailParsed}
+            setAppModal={setAppModal} setContactModal={setContactModal}
+            setTab={setTab} showError={showError}
+          />
+        )}
       </div>
     </ErrorBoundary>
+  );
+}
+
+function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, setAppModal, setContactModal, setTab, showError }) {
+  function handleParse() {
+    const result = parseRecruiterEmail(emailRaw);
+    setEmailParsed({ ...result });
+  }
+
+  function updateField(key, val) {
+    setEmailParsed(prev => ({ ...prev, [key]: val }));
+  }
+
+  function handleSaveContact() {
+    if (!setContactModal) return;
+    const c = { ...blankContact(), name: emailParsed.name, email: emailParsed.email, company: emailParsed.company, role: emailParsed.role, linkedin: emailParsed.linkedin };
+    setContactModal({ mode: "new", contact: c });
+    setTab("contacts");
+  }
+
+  function handleSaveApp() {
+    if (!setAppModal) return;
+    const a = { ...blankApp(), company: emailParsed.company, title: emailParsed.jobTitle, url: emailParsed.jobUrl };
+    setAppModal({ mode: "new", app: a });
+    setTab("pipeline");
+  }
+
+  const fields = [
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email" },
+    { key: "company", label: "Company" },
+    { key: "role", label: "Their role" },
+    { key: "jobTitle", label: "Job title" },
+    { key: "linkedin", label: "LinkedIn URL" },
+    { key: "jobUrl", label: "Job posting URL" },
+  ];
+
+  return (
+    <div style={s.aiLayout}>
+      <div style={s.card}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Paste recruiter email</div>
+        <div style={{ fontSize: 13, color: "#94a3b8", marginBottom: 10 }}>
+          Paste the full email (headers + body). The parser extracts contact info and job details instantly — no AI call needed.
+        </div>
+        <textarea
+          rows={10}
+          placeholder={"From: Jane Recruiter <jane@acme.com>\nSubject: Exciting PM opportunity at Acme\n\nHi Chase,\n\nI came across your profile and wanted to reach out about a Senior Product Manager role at Acme...\n\nBest,\nJane"}
+          style={{ ...s.textarea, fontFamily: "monospace", fontSize: 12, width: "100%", boxSizing: "border-box" }}
+          value={emailRaw}
+          onChange={e => { setEmailRaw(e.target.value); setEmailParsed(null); }}
+        />
+        <button style={{ ...s.btnPrimary, marginTop: 10 }} onClick={handleParse} disabled={!emailRaw.trim()}>
+          Parse email
+        </button>
+      </div>
+
+      {emailParsed && (
+        <div style={s.card}>
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Extracted fields — review &amp; edit</div>
+          {fields.map(({ key, label }) => (
+            <div key={key} style={{ marginBottom: 10 }}>
+              <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 3 }}>{label}</div>
+              <input
+                style={{ ...s.input, width: "100%", boxSizing: "border-box" }}
+                value={emailParsed[key] || ""}
+                onChange={e => updateField(key, e.target.value)}
+                placeholder={`No ${label.toLowerCase()} detected`}
+              />
+            </div>
+          ))}
+          <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
+            <button style={s.btnPrimary} onClick={handleSaveContact} disabled={!emailParsed.name && !emailParsed.email}>
+              💼 Save as Contact
+            </button>
+            <button style={s.btnSecondary} onClick={handleSaveApp} disabled={!emailParsed.company && !emailParsed.jobTitle}>
+              📋 Add Application
+            </button>
+          </div>
+          <div style={{ fontSize: 12, color: "#64748b", marginTop: 8 }}>
+            You can save both — each button opens the edit modal so you can review before saving.
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

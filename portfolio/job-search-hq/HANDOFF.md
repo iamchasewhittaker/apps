@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.11 |
+| **Version** | v8.12 |
 | **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 4 #4 shipped (v8.11): offer comparison side-by-side — `offerDetails` on every app, `OfferModal` editor (comp + terms + notes w/ live total preview), `OfferCompareView` with best-in-column highlights, 💰 Offer button on AppCard, collapsible "Offer comparison (N)" on Pipeline. Root `CLAUDE.md` Doc Auto-Update Rule extended w/ steps 8–9 (Linear heartbeat + Shipyard sync). |
-| **Next** | Wave 4 #5: Email forward parsing (paste recruiter email → extract contact + job). |
+| **Focus** | Wave 4 #5 shipped (v8.12): email forward parsing — `parseRecruiterEmail()` regex parser in constants.js; 📧 Email Parse sub-tab in Apply Tools; editable extracted fields (name, email, company, role, job title, LinkedIn, job URL) → pre-filled ContactModal or AppModal. |
+| **Next** | Wave 4 #6: PWA share target (mobile URL sharing). |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-20 — v8.11: `blankOfferDetails`/`normalizeOfferDetails`/`computeOfferTotal`/`getOfferCompareRows`/`offerDetailsHasContent`/`formatCurrency` + OFFER_FIELDS/OFFER_TERM_FIELDS in constants.js; new `OfferModal.jsx` + `OfferCompareView.jsx`; AppCard 💰 Offer button; PipelineTab compare section; App.jsx `offerModal` state + render. Build clean (+3.37 kB). |
+| **Last touch** | 2026-04-20 — v8.12: `parseRecruiterEmail()` in constants.js; `EmailParsePanel` component + "email" sub-tab in AITab.jsx; `setAppModal`/`setContactModal`/`setTab` threaded through App.jsx to AITab. Build clean (+1.64 kB). |
 
 ---
 
@@ -28,7 +28,7 @@ All four Wave 3 items shipped in v8.7:
 - ✅ Application velocity dashboard
 - ✅ Mock interview mode
 
-**Next for web:** Wave 4 #5 — Email forward parsing (paste recruiter email → extract contact + job). See ROADMAP.md.
+**Next for web:** Wave 4 #6 — PWA share target (mobile URL sharing). See ROADMAP.md.
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`

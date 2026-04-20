@@ -18,6 +18,12 @@
 
 ## Entries
 
+### 2026-04-20 — Regex email parsing: prefer non-personal-provider sender, signature name fallback
+**What happened:** Building `parseRecruiterEmail()` — the most important extraction targets (name, company, job title) each needed a prioritized fallback chain because recruiter emails vary wildly in structure.
+**Root cause:** No single pattern covers all email formats. "From:" headers have name, but forwarded emails may not. Company name can come from the email domain but personal providers (gmail, yahoo, outlook) aren't company names. Job title appears in subject lines (often abbreviated, e.g. "PM") or in body prose with varying phrasing.
+**Fix / lesson:** Layer patterns in priority order: `From:` header first for name, then signature; non-personal-provider domain for company, overridden by "at Company" body phrase; ATS URL patterns for job posting over generic "job/career" URLs. Accept that abbreviated job titles (PM, UX) won't match and make all fields user-editable before saving. 6/7 fields extracted from a realistic Stripe recruiter email in smoke test.
+**Tags:** regex · parsing · ux · ai-tools
+
 ### 2026-04-20 — `computeOfferTotal` annualizes sign-on to avoid first-year skew
 **What happened:** Designing offer comparison, the naive "total comp = base + bonus + equity + signOn" makes the first offer with a big sign-on look better than a higher base over any realistic tenure.
 **Root cause:** Sign-on is one-time; base/bonus/equity repeat each year. Adding raw sign-on inflates year 1 and creates bad comparisons once you're looking at "which offer is better long-term".

@@ -78,7 +78,7 @@ All Wave 3 items shipped 2026-04-18. Wave 4 is next.
 - [x] **Apply Tools "Draft Message" context** — `draftContact` state in App.jsx; ContactCard → ContactsTab passes contact; AITab useEffect pre-selects contact in LinkedIn → Connection Request sub-tab (v8.9)
 - [x] **Outreach cadence timeline per contact** — `outreachLog[]` on each contact; `OutreachTimeline` on ContactCard; modal entry form + delete; card status dropdown appends on change; legacy `outreachDate`/`outreachStatus` seeded into one-entry log on load (v8.10)
 - [x] **Offer comparison side-by-side mode** — `offerDetails` per app; `OfferModal` (comp + terms + notes, live total preview); `OfferCompareView` with best-in-column highlights; 💰 Offer button on AppCard; collapsible "Offer comparison (N)" section on Pipeline (v8.11)
-- [ ] Email forward parsing (paste recruiter email → extract contact + job)
+- [x] **Email forward parsing** — `parseRecruiterEmail()` in constants.js (regex heuristics); 📧 Email Parse sub-tab in Apply Tools; editable extracted fields → pre-filled ContactModal + AppModal (v8.12)
 - [ ] PWA share target (mobile URL sharing)
 
 ## Project tracking

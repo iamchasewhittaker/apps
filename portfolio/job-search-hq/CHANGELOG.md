@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased] — 2026-04-20 — Wave 4 #5: Email forward parsing (v8.12)
+
+### Added
+- **`parseRecruiterEmail(rawText)`** in `constants.js` — pure client-side regex parser; extracts name (From header + signature), sender email (prefers non-personal-provider domains), company (email domain → company name + "at Company" override), recruiter role ("I'm a X at"), job title (phrase patterns), LinkedIn URL, and ATS/job posting URL. No LLM call, runs instantly offline.
+- **📧 Email Parse sub-tab** in Apply Tools — paste raw recruiter email (headers + body), click Parse, review editable extracted fields (name, email, company, role, job title, LinkedIn URL, job posting URL), then one-click "💼 Save as Contact" (opens pre-filled ContactModal → Contacts tab) or "📋 Add Application" (opens pre-filled AppModal → Pipeline tab).
+
+### Changed
+- `AITab.jsx` — added "email" to sub-tab array; new `EmailParsePanel` component (local function at bottom of file); `emailRaw` + `emailParsed` state.
+- `App.jsx` — threads `setAppModal`, `setContactModal`, `setTab` to `<AITab />` so email-parse actions can open modals and navigate tabs.
+
+---
+
 ## [Unreleased] — 2026-04-20 — Wave 4 #4: Offer comparison side-by-side (v8.11)
 
 ### Added

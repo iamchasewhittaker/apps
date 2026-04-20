@@ -197,7 +197,7 @@ Session shipped (2026-04-20):
 Priority queue:
 1. Shipyard scan to repopulate projects table: cd portfolio/shipyard && npx tsx scripts/scan.ts
 2. Linear sync (via MCP after OAuth): un-archived projects Active, stale URLs stripped, keep-apps verified
-3. Job Search HQ: Wave 4 #5 — Email forward parsing (recruiter email → extract contact + job) (Wave 4 #4 offer comparison shipped 2026-04-20, v8.11)
+3. Job Search HQ: Wave 4 #6 — PWA share target (mobile URL sharing) (Wave 4 #5 email parsing shipped 2026-04-20, v8.12)
 4. Unnamed iOS: 7-day streak gate — clock started 2026-04-17, Phase 2 planning starts ~2026-04-24
 5. Wellness: split TrackerTab.jsx (78K) — WHI-63
 

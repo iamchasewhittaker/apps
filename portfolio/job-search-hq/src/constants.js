@@ -811,6 +811,67 @@ export function blankContact() {
   };
 }
 
+// ── EMAIL PARSING ─────────────────────────────────────────────────────────────
+export function parseRecruiterEmail(raw) {
+  const text = raw || "";
+
+  // All email addresses in the text
+  const allEmails = [...text.matchAll(/[\w.+'-]+@[\w-]+\.[a-z]{2,}/gi)].map(m => m[0]);
+  // Prefer a non-personal-provider address as the sender
+  const senderEmail = allEmails.find(e => !/gmail|yahoo|outlook|hotmail|icloud|me\.com|proton/i.test(e)) || allEmails[0] || "";
+
+  // Company: from email domain (strip TLD, capitalize)
+  let company = "";
+  if (senderEmail) {
+    const domain = senderEmail.split("@")[1] || "";
+    const base = domain.split(".")[0];
+    company = base.charAt(0).toUpperCase() + base.slice(1);
+  }
+  // Override with explicit "at <Company>" or "@ <Company>" patterns
+  const atMatch = text.match(/(?:recruiter|talent|hiring|sourcer).*?(?:at|@)\s+([A-Z][A-Za-z0-9& ]{1,40})/);
+  if (atMatch) company = atMatch[1].trim();
+
+  // Name: "From: Name <email>" header first
+  let name = "";
+  const fromHeader = text.match(/^From:\s*"?([^"<\n]+)"?\s*(?:<|$)/im);
+  if (fromHeader) name = fromHeader[1].trim();
+  // Signature fallback: "Best,\nJohn Smith"
+  if (!name) {
+    const sig = text.match(/(?:Best|Regards|Thanks|Cheers|Sincerely|Warm regards),?\s*\n+\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)/);
+    if (sig) name = sig[1].trim();
+  }
+
+  // LinkedIn profile URL
+  const liMatch = text.match(/https?:\/\/(?:www\.)?linkedin\.com\/in\/([\w%-]+)/i);
+  const linkedin = liMatch ? `https://linkedin.com/in/${liMatch[1]}` : "";
+
+  // Job title: various recruiter phrase patterns
+  let jobTitle = "";
+  const titlePatterns = [
+    /(?:for (?:a|an|the)\s+)([\w ]{3,50}?)(?:\s+(?:role|position|opportunity|opening|job))/i,
+    /(?:opening for (?:a|an|the)\s+)([\w ]{3,50})/i,
+    /(?:hiring (?:a|an|the)\s+)([\w ]{3,50})/i,
+    /Subject:[^\n]*?((?:[A-Z][a-z]+ ){1,3}(?:Manager|Engineer|Director|Lead|Analyst|Designer|Developer|Specialist|Coordinator|Consultant|VP|Head))/,
+  ];
+  for (const p of titlePatterns) {
+    const m = text.match(p);
+    if (m) { jobTitle = m[1].trim(); break; }
+  }
+
+  // Job posting URL: prefer ATS domains
+  const atsUrl = text.match(/https?:\/\/[^\s<>)"]+(?:lever\.co|greenhouse\.io|workday|ashby|rippling|myworkday|taleo|icims|jobvite|smartrecruiters)[^\s<>)"']*/i);
+  const genericJobUrl = text.match(/https?:\/\/[^\s<>)"']+(?:job|career|position|apply|opening)[^\s<>)"']*/i);
+  const jobUrl = (atsUrl || genericJobUrl || [])[0] || "";
+
+  // Recruiter's own role (e.g. "I'm a Senior Recruiter at...")
+  let role = "";
+  const roleMatch = text.match(/I(?:'m| am) (?:a |an )?([\w ]{3,40}?) at\b/i);
+  if (roleMatch) role = roleMatch[1].trim();
+  if (!role && (senderEmail || name)) role = "Recruiter";
+
+  return { name, email: senderEmail, company, role, jobTitle, linkedin, jobUrl };
+}
+
 // ── DAILY FOCUS BLOCKS ────────────────────────────────────────────────────────
 export const DAILY_BLOCKS = [
   {
