@@ -5,7 +5,7 @@
 ## App Identity
 - **Version:** v1.0
 - **Storage key:** `chase_command_v1`
-- **URL:** https://clarity-command.vercel.app (set `REACT_APP_SUPABASE_*` + auth redirect env vars on Vercel per [`docs/CLARITY_COMMAND_PHASE2_HANDOFF.md`](../../docs/CLARITY_COMMAND_PHASE2_HANDOFF.md))
+- **URL:** local only (Vercel project removed 2026-04-20)
 - **Purpose:** Daily accountability hub — morning mission briefing, evening reflection, cross-app scoreboard. Rooted in LDS faith and family urgency.
 - **Mission:** *"For Reese. For Buzz. Forward — no excuses."*
 - **Branding:** Clarity family palette, gold accent (`#c8a84b`), dark background (`#0a0d14`). See [`docs/BRANDING.md`](docs/BRANDING.md).

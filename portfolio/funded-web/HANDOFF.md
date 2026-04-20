@@ -4,10 +4,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Parity with Funded iOS for income hints + categorization triage; stable production deploy |
-| **Last updated** | 2026-04-16 |
-| **Production** | https://funded-web.vercel.app |
-| **Status** | Shipped — `npm run build` green; Vercel prod deploy verified |
+| **Focus** | Parity with Funded iOS for income hints + categorization triage; local-only app |
+| **Last updated** | 2026-04-20 |
+| **Production** | Local only — Vercel project removed 2026-04-20 |
+| **Status** | Shipped — `npm run build` green; runs locally via `npm start` |
 
 ## What’s in the tree (2026-04-15)
 
@@ -23,15 +23,13 @@
 
 - **Path:** `~/Developer/chase/portfolio/funded-web` (repo root is `~/Developer/chase`)
 - **Build:** `npm run build`
-- **Vercel:** `npx vercel --prod` from app dir (project linked) — aliases **funded-web.vercel.app**
-
-If Vercel **Root Directory** is set to `portfolio/funded-web` or `chase/portfolio/funded-web`, match that when using the CLI (running from the wrong cwd can double the path — see LEARNINGS).
+- **Vercel:** **Removed 2026-04-20.** To re-add: `vercel project add funded-web --scope iamchasewhittakers-projects` → `vercel link` → `vercel git connect` → `scripts/vercel-add-env portfolio/funded-web` → `vercel --prod`.
 
 ## Auth
 
 - App supports **email OTP** (`signInWithOtp` + `verifyOtp`) and **Sign in with Google** (OAuth).
 - **Email OTP:** Supabase Dashboard → Authentication → Email Templates → Magic link must include **`{{ .Token }}`** in the body. If no email arrives: spam folder; rate limits; check `auth.audit_log_entries` in SQL Editor.
-- **Google OAuth:** configured in Supabase → Authentication → Providers → Google (Client ID + Secret from Google Cloud Console). `redirectTo` uses `window.location.origin`. **Critical:** `https://funded-web.vercel.app` must be in Supabase → Authentication → URL Configuration → Redirect URLs — without this, Google auth redirects to the Site URL instead.
+- **Google OAuth:** configured in Supabase → Authentication → Providers → Google (Client ID + Secret from Google Cloud Console). `redirectTo` uses `window.location.origin`. The local dev URL (`http://localhost:3000`) must be in Supabase → Authentication → URL Configuration → Redirect URLs.
 - Shared Supabase project: **`unqtnnxlltiadzbqpyhh`** — same as other portfolio apps.
 
 ## Constraints (do not change)

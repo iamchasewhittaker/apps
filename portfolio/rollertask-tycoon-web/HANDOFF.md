@@ -7,7 +7,7 @@
 | **Focus** | Stable v1.0 — fully functional task/points tracker |
 | **Next** | Task categories filter · ledger pagination · task metadata (due date, ride type) |
 | **Last touch** | 2026-04-14 — portfolio-standard text logo (ROLLER amber / TASK white bold); `logo.svg` + `favicon.svg` + PNGs updated; redeployed |
-| **Status** | ✅ Deployed · https://rollertask-tycoon-web.vercel.app |
+| **Status** | ✅ Local only (Vercel project removed 2026-04-20) |
 
 ## What Shipped (Session 1 — 2026-04-13)
 
@@ -17,7 +17,7 @@
 - `src/App.jsx` — auth gate (email OTP), settings modal (sign out), gear icon nav
 - `src/tabs/RollerTaskTab.jsx` — full gamified task tracker (copied from clarity-hub)
 - CI job added to `.github/workflows/portfolio-web-build.yml`
-- Deployed to https://rollertask-tycoon-web.vercel.app
+- Deployed to Vercel (project removed 2026-04-20; runs locally via npm start)
 
 ## Key Constraints
 

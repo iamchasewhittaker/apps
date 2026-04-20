@@ -10,7 +10,7 @@
 |-------|-------|
 | **Version** | v8.1 |
 | **Branch** | `main` |
-| **URL** | app-forge-fawn.vercel.app |
+| **URL** | local only (un-archived + Vercel URL retired 2026-04-20) |
 | **Storage key** | `chase_forge_v1` |
 | **Focus** | Maintenance / next feature TBD — see ROADMAP.md |
 | **Next** | Wire Supabase sync (Phase 3 of rollout, same shared project as Wellness + Job Search) |

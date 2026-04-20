@@ -35,7 +35,7 @@
 ## Deploy Status
 
 - [x] `npm run build` passes cleanly
-- [x] Deployed — https://clarity-hub-lilac.vercel.app
+- [x] Deployed — Vercel project removed 2026-04-20; runs locally via npm start
 - [x] Supabase env vars set on Vercel (production + preview)
 - [x] CI job in `.github/workflows/portfolio-web-build.yml`
 - [x] Nav links to YNAB Clarity Web + RollerTask Tycoon Web

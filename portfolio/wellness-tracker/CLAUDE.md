@@ -7,7 +7,7 @@
 ## App Identity
 - **Version:** v15.10
 - **Storage key:** `chase_wellness_v1` (main) · `chase_wellness_draft_v1` (draft) · `chase_wellness_meds_v1` (meds)
-- **URL:** https://wellness-tracker.vercel.app (also resolves: `https://wellness-tracker-kappa.vercel.app`)
+- **URL:** local only (Vercel project removed 2026-04-20)
 - **Branding / icon:** Unified W + sunrise on **Clarity family** canvas `#0e1015` (tokens from YNAB Clarity `ClarityTheme` — Spend Clarity is CLI-only, no logo in-repo); PWA + iOS paths in [docs/BRANDING.md](docs/BRANDING.md). Per-app handoff: [HANDOFF.md](HANDOFF.md).
 - **Entry:** `src/App.jsx`
 - **Native iOS:** [`../wellness-tracker-ios`](../wellness-tracker-ios) — SwiftUI check-in + Tasks/Time/Capture; **UserDefaults** primary storage; **optional Supabase** (same project) for `wellness` + `wellness-daily` rows (Clarity Command). See that `CLAUDE.md`.
@@ -17,33 +17,16 @@
 
 ## Vercel & Supabase
 
-**Vercel project:** `wellness-tracker` (ID: `prj_Pv1PsLFQ87oJwuQaQM3O6ttSoobg`) on team `iamchasewhittakers-projects`. Root directory: **`portfolio/wellness-tracker`**.
-
-**Verified 2026-04-15 (HTTP):**
-
-| Host | Result |
-|------|--------|
-| `https://wellness-tracker.vercel.app/` | **200** — use this as the primary public URL in docs and Supabase. |
-| `https://wellness-tracker-kappa.vercel.app/` | **200** — CLI “Latest Production URL”; same app. |
-| `https://wellnes-tracker.vercel.app/` | **404** — typo project removed; old bookmarks hit a dead host unless you add a redirect elsewhere. |
-
-The separate Vercel project **`wellnes-tracker`** no longer exists (`vercel project inspect wellnes-tracker` → not found).
+**Vercel project removed 2026-04-20.** App runs locally only (`npm start`). Historical Vercel project ID `prj_Pv1PsLFQ87oJwuQaQM3O6ttSoobg` on team `iamchasewhittakers-projects` is retired.
 
 **Supabase (dashboard) — project `unqtnnxlltiadzbqpyhh`**
 
 1. **Authentication → URL configuration**
-   - **Site URL:** prefer **`https://wellness-tracker.vercel.app`** (matches primary hostname above).
+   - **Site URL:** `http://localhost:3000` (local-only).
    - **Redirect URLs** should include at least:
-     - `https://wellness-tracker.vercel.app/**`
-     - `https://wellness-tracker-kappa.vercel.app/**` (if you keep using it)
-     - `https://wellness-tracker-*.vercel.app/**` (preview deployments, pattern as your dashboard allows)
      - `http://localhost:3000/**` (local CRA)
-     - Your canonical host if used, e.g. `https://apps.chasewhittaker.com/**`
-   - Drop **`https://wellnes-tracker.vercel.app`** from allowlists (404; project gone).
 
 2. **Authentication → Email Templates → Magic link** — must include **`{{ .Token }}`** for in-app OTP (see section below).
-
-CLI: `npx vercel project ls`, `npx vercel project inspect wellness-tracker`.
 
 ## File Structure
 ```

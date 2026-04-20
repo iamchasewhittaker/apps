@@ -2,7 +2,7 @@
 
 Standalone YNAB budget dashboard (React CRA) — web companion to **Funded iOS**. Syncs config (mappings, income sources, overrides) via Supabase; live YNAB data is fetched in the browser.
 
-**Live:** https://funded-web.vercel.app
+**Live:** local only (Vercel project removed 2026-04-20 — run with `npm start`)
 
 ## Docs (read order)
 

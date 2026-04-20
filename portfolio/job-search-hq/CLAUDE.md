@@ -7,7 +7,7 @@
 ## App Identity
 - **Version:** v8.8 (Wave 4 #1: weekly review prompt; Wave 3 complete: debrief log, velocity dashboard, mock interview; Apply Tools = copy prompts + external assistants)
 - **Storage key:** `chase_job_search_v1` (data only)
-- **URL:** job-search-hq.vercel.app
+- **URL:** https://job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, typography, component patterns; do not restate in session prompts.
 

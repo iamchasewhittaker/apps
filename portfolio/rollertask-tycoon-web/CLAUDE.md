@@ -7,7 +7,7 @@
 - **Version:** v1.0
 - **Storage key:** `chase_hub_rollertask_v1` (localStorage — shared with clarity-hub for continuity)
 - **Supabase `app_key`:** `rollertask` (must not change — iOS sync depends on it)
-- **URL:** https://rollertask-tycoon-web.vercel.app
+- **URL:** local only (Vercel project removed 2026-04-20)
 - **Supabase:** project `unqtnnxlltiadzbqpyhh` — same as all portfolio apps
 - **Entry:** `src/App.jsx`
 

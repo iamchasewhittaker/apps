@@ -4,7 +4,7 @@
 
 - **Version:** v0.1
 - **Status:** v0.1 — Phase 1 live
-- **URL:** https://shipyard-iamchasewhittakers-projects.vercel.app
+- **URL:** https://shipyard-sandy-seven.vercel.app
 - **Entry point:** src/app/page.tsx
 - **Tech stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Supabase + Vercel
 - **Package manager:** npm

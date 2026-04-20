@@ -7,7 +7,7 @@
 ## App Identity
 - **Version:** v8.1
 - **Storage key:** `chase_forge_v1`
-- **URL:** app-forge-fawn.vercel.app
+- **URL:** local only (un-archived + Vercel URL retired 2026-04-20)
 - **Entry:** `src/App.jsx` (monolith — not yet refactored)
 
 ## Purpose

@@ -5,7 +5,7 @@
 ## App Identity
 - **Version:** v2.0
 - **Storage key:** `chase_knowledge_base_v1` (localStorage) — blob shape: `{ bookmarks: [...], folders: [...], favorites: [...], categoryOrder: null }`
-- **URL:** https://knowledge-base-beta-five.vercel.app
+- **URL:** local only (Vercel project removed 2026-04-20)
 - **Entry:** `src/App.jsx`
 
 ## Purpose

@@ -7,29 +7,30 @@
 
 | App | Version | URL | Storage Key | Status |
 |-----|---------|-----|-------------|--------|
-| Wellness Tracker | v15.10 | https://wellnes-tracker.vercel.app | chase_wellness_v1 | ✅ Active |
+| Wellness Tracker | v15.10 | local | chase_wellness_v1 | ✅ Active |
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
 | Job Search HQ | v8.9 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | Job Search HQ (iOS) | v0.1 | — | `chase_job_search_ios_v1` | 🟡 Local · [`portfolio/job-search-hq-ios`](portfolio/job-search-hq-ios) · [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| App Forge | v8.1 | https://app-forge-fawn.vercel.app | chase_forge_v1 | ✅ Active |
-| Clarity Hub | v0.2 | https://clarity-hub-lilac.vercel.app | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
-| Funded Web | v1.0 | https://funded-web.vercel.app | `chase_hub_ynab_v1` | ✅ Active · Standalone YNAB dashboard · [`portfolio/funded-web`](portfolio/funded-web) |
-| RollerTask Tycoon Web | v1.0 | https://rollertask-tycoon-web.vercel.app | `chase_hub_rollertask_v1` | ✅ Active · Standalone task tracker · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
+| App Forge | v8.1 | local | chase_forge_v1 | ✅ Active · [`portfolio/app-forge`](portfolio/app-forge) |
+| Clarity Hub | v0.2 | local | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
+| Funded Web | v1.0 | local | `chase_hub_ynab_v1` | ✅ Active · Standalone YNAB dashboard · [`portfolio/funded-web`](portfolio/funded-web) |
+| RollerTask Tycoon Web | v1.0 | local | `chase_hub_rollertask_v1` | ✅ Active · Standalone task tracker · [`portfolio/rollertask-tycoon-web`](portfolio/rollertask-tycoon-web) |
 | Funded (iOS) | v0.3 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/funded-ios`](portfolio/funded-ios) |
 | Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
 | Clarity Command (iOS) | v0.1 | local Xcode | `chase_command_ios_v1` | ✅ Local · 14/14 tests · all 6 apps on iPhone · [`portfolio/clarity-command-ios`](portfolio/clarity-command-ios) |
-| Growth Tracker | v6 | https://growth-tracker-rouge.vercel.app | chase_growth_v1 | 🗄️ Retired |
+| Growth Tracker | v6 | local | chase_growth_v1 | ✅ Active · [`portfolio/growth-tracker`](portfolio/growth-tracker) |
 | RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| RollerTask Tycoon (web PWA) | v1.0 | (optional) | `chase_roller_task_v1` (historical) | 🗄️ Retired — `portfolio/archive/roller-task-tycoon` |
-| Unnamed (web) | v0.1 | pending Vercel | `unnamed_v1` | 🟡 Local · Daily OS for ADHD brains · [`portfolio/unnamed`](portfolio/unnamed) |
+| RollerTask Tycoon (web PWA) | v1.0 | local | `chase_roller_task_v1` | ✅ Active · Vite PWA · [`portfolio/roller-task-tycoon`](portfolio/roller-task-tycoon) |
+| Money | v0.1 | local | `chase_money_v1` | ✅ Active · Transaction Enricher + Budget Dashboard · [`portfolio/money`](portfolio/money) |
+| Unnamed (web) | v0.1 | local | `unnamed_v1` | ✅ Active · Daily OS for ADHD brains · [`portfolio/unnamed`](portfolio/unnamed) |
 | Unnamed (iOS) | v0.1 | local Xcode | `unnamed_ios_v1` | 🟡 On-device · SwiftUI + @Observable · 10/10 tests · [`portfolio/unnamed-ios`](portfolio/unnamed-ios) |
 | Alias Ledger | v1.0 | https://alias-ledger.vercel.app | `hme_alias_tracker_v1` | ✅ Active · Hide My Email tracker · [`portfolio/alias-ledger`](portfolio/alias-ledger) |
-| Knowledge Base | v2.1.0 | https://knowledge-base-beta-five.vercel.app | `chase_knowledge_base_v1` | ✅ Active · Bookmark manager · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
-| Shipyard | v0.1 | https://shipyard-iamchasewhittakers-projects.vercel.app | n/a | ✅ Active · Fleet command center · Phase 2 (RLS + auth) + Phase 3 (auto-scan cron) live · [`portfolio/shipyard`](portfolio/shipyard) |
+| Knowledge Base | v2.1.0 | local | `chase_knowledge_base_v1` | ✅ Active · Bookmark manager · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
+| Shipyard | v0.1 | https://shipyard-sandy-seven.vercel.app | n/a | ✅ Active · Fleet command center · Phase 2 (RLS + auth) + Phase 3 (auto-scan cron) live · [`portfolio/shipyard`](portfolio/shipyard) |
 | Shipyard (iOS) | v0.1 | local Xcode | `chase_shipyard_ios_v1` | 🟡 Local · [`portfolio/shipyard-ios`](portfolio/shipyard-ios) |
 | Ash Reader | v1.0 | https://ash-reader.vercel.app | `ash_reader_` prefix | ✅ Active · Mobile chunker for Ash · [`portfolio/ash-reader`](portfolio/ash-reader) |
 | Ash Reader (iOS) | v0.3 | local Xcode | `ash_reader_ios_` prefix | 🟡 Local · [`portfolio/ash-reader-ios`](portfolio/ash-reader-ios) |
-| Clarity Budget (web) | v0.2 | local / optional deploy | `chase_budget_web_v1` | ✅ Active · Next.js STS dashboard · [`portfolio/clarity-budget-web`](portfolio/clarity-budget-web) |
+| Clarity Budget (web) | v0.2 | local | `chase_budget_web_v1` | ✅ Active · Next.js STS dashboard · [`portfolio/clarity-budget-web`](portfolio/clarity-budget-web) |
 | Fairway (iOS) | v0.1 | local Xcode | `chase_fairway_ios_v1` | 🟡 Local · Lawn OS · [`portfolio/fairway-ios`](portfolio/fairway-ios) |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0.1 | local (port 3004) | not yet deployed | ✅ Active · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
@@ -244,6 +245,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-20 | Portfolio-wide | — | **Vercel footprint consolidation:** removed 5 Vercel projects (`funded-web`, `knowledge-base`, `unnamed`, `wellness-tracker`, `chase`) — fleet now lives at 4 live URLs only: Shipyard, Job Search HQ, Ash Reader, Alias Ledger. Un-archived 6 apps (`ai-dev-mastery`, `app-forge`, `growth-tracker`, `money`, `roller-task-tycoon`, `shortcut-reference`) → `portfolio/*` as active-local. Stripped stale Vercel URLs from `/CLAUDE.md` + `/ROADMAP.md` + per-app docs. Fixed ash-reader git-connect. Linear MCP installed. | `scripts/vercel-check-git` shows 4 ✓; no projects in `portfolio/archive/` |
 | 2026-04-20 | Shipyard + Shipyard (iOS) | v0.1 | **Nautical rebrand:** 8-token palette (bg `#07101E`, steel `#4A90DE`, gold `#D7AA3A`, etc.), ship's-helm SVG logo, BigShoulders Bold + DM Mono + Instrument Sans. Web: LogoIcon/favicon rewritten, chart grid, all pages use token utilities. iOS: Palette.swift + Font+Shipyard.swift + HelmMark + LaunchScreenView + OnboardingView + new AppIcon (13 sizes from helm SVG). Both builds pass. iOS installed on device. Web pushed to GitHub for auto-deploy. | `portfolio/shipyard/` + `portfolio/shipyard-ios/` · git `fad5e43` |
 | 2026-04-19 | Shipyard | v0.1 | **Phase 2 + Phase 3 shipped:** Supabase RLS auth gate (`proxy.ts` — fixed Next.js 16 `config` export bug), email+password login (switched off magic-link due to shared-Supabase redirect URL issues), nightly launchd auto-scan at 3:00 AM local (`scripts/scan-cron.sh` + `~/Library/LaunchAgents/com.chasewhittaker.shipyard-scan.plist`), `docs/AUTO_SCAN.md` walkthrough | `portfolio/shipyard/` · first cron-triggered scan: 36 projects upserted in 10.5s · learnings upsert schema bug flagged as follow-up |
 | 2026-04-19 | Knowledge Base | v2.1.0 | **Favicon + Export/Import:** bookmark rows and home cards now show favicons via Google CDN (`https://www.google.com/s2/favicons?domain=…`); Export JSON + Import JSON buttons added to sidebar footer for full data portability | `portfolio/knowledge-base/` |

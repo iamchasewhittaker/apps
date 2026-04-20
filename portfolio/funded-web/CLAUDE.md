@@ -11,7 +11,7 @@
 - **Storage key:** `chase_hub_ynab_v1` (localStorage — shared naming lineage with clarity-hub)
 - **YNAB token key:** `chase_hub_ynab_token` (localStorage, never synced to Supabase)
 - **Supabase `app_key`:** `ynab` (must not change — iOS sync depends on it)
-- **URL:** https://funded-web.vercel.app
+- **URL:** local only (Vercel project removed 2026-04-20 — run with `npm start`)
 - **Supabase project:** `unqtnnxlltiadzbqpyhh` — shared with other portfolio apps
 - **Entry:** `src/App.jsx`
 
@@ -60,7 +60,7 @@ Live YNAB month + transactions are **not** stored in the blob — refetched on l
 
 - `App.jsx`: email OTP via `signInWithOtp` → user enters **code** → `verifyOtp({ type: "email" })`; Google OAuth via `signInWithOAuth({ provider: "google", options: { redirectTo: window.location.origin } })`.
 - **Critical — Supabase email template:** Dashboard → **Authentication → Email Templates → Magic link** must include **`{{ .Token }}`** in the HTML body. Without it, users get a link but no code. See [Passwordless email / OTP](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp).
-- **Critical — Google OAuth redirect:** Dashboard → **Authentication → URL Configuration → Redirect URLs** must include `https://funded-web.vercel.app`. Without it, Supabase ignores `redirectTo` and sends users to the Site URL instead. Also configure Google provider (Client ID + Secret) under Authentication → Providers → Google.
+- **Critical — Google OAuth redirect:** Dashboard → **Authentication → URL Configuration → Redirect URLs** must include the local URL (e.g. `http://localhost:3000`). Also configure Google provider (Client ID + Secret) under Authentication → Providers → Google.
 - **No email received:** spam; built-in email rate limits; wrong Supabase project in env; query `auth.audit_log_entries` after a send.
 - **`emailRedirectTo`:** set via shared auth + `REACT_APP_AUTH_*` envs. For OAuth, use `window.location.origin` — not `emailRedirectTo`.
 
@@ -73,7 +73,7 @@ cd portfolio/funded-web
 npm start          # dev server (default port 3000)
 npm run build      # required before deploy
 
-npx vercel --prod  # if project already linked (cwd must match Vercel Root Directory expectations)
+# No production deploy — app runs locally. To re-add to Vercel fleet, re-link + `vercel git connect`.
 ```
 
 **Path note:** On disk, `portfolio/funded-web` is relative to **`~/Developer/chase`**, not `~/Developer` alone.

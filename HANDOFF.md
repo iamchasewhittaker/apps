@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Shipyard Phase 2 + Phase 3 shipped (2026-04-19).** Web auth gate live (RLS + email+password login, fixed Next.js 16 `config` export bug). Nightly auto-scan cron running via launchd at 3:00 AM local — `docs/AUTO_SCAN.md` walkthrough + reload/change-schedule guide. First cron-triggered scan: 36 projects upserted in 10.5s. Git baseline clean (7 commits pushed incl. Fairway + KB v2.1). |
-| **Next**       | 1. **Shipyard iOS Phase 2** — web auth landed; iOS now unblocked. Add `supabase-swift`, wire `FleetStore` to pull live `projects`, add email+password login matching web. See `portfolio/shipyard-ios/docs/PHASE_2_KICKOFF.md`. 2. **Shipyard learnings fix** (spawnable task chip) — add unique constraint migration so learnings ingestion stops erroring on every cron run. 3. **Job Search HQ:** Wave 4 #3 — outreach cadence timeline per contact. 4. **Unnamed iOS:** streak gate — 7-day clock started 2026-04-17, Phase 2 unlocks ~2026-04-24. 5. **Wellness:** split TrackerTab.jsx (78K) — WHI-63. |
-| **Blockers**   | **Vercel/GitHub connection limit:** repo already at 10 connections — Unnamed web deploy blocked. Fix: disconnect a stale Vercel project then `vercel git connect` from `portfolio/unnamed/`. |
-| **Last touch** | 2026-04-19 — Shipyard Phase 2 auth + Phase 3 auto-scan cron shipped; docs/AUTO_SCAN.md walkthrough written; iOS Phase 2 kickoff prompt at `portfolio/shipyard-ios/docs/PHASE_2_KICKOFF.md`. |
+| **Focus**      | **Vercel footprint consolidation (2026-04-20).** Cut Vercel down to 4 projects — Shipyard, Job Search HQ, Ash Reader, Alias Ledger. Removed `funded-web`, `knowledge-base`, `unnamed`, `wellness-tracker`, `chase` (orphan 404). Un-archived all 6 dirs from `portfolio/archive/` back to `portfolio/*` as active-local (`ai-dev-mastery`, `app-forge`, `growth-tracker`, `money`, `roller-task-tycoon`, `shortcut-reference`). Fixed `ash-reader` git-connect. Linear MCP installed (awaiting user OAuth via `/mcp`). |
+| **Next**       | 1. **Phase 4 — Shipyard scan:** `cd portfolio/shipyard && npx tsx scripts/scan.ts` to repopulate `projects` table with new `vercel_project`, `live_url`, `has_live_url`, `status`. 2. **Phase 5 — Linear sync** (via MCP once authorized): strip stale Vercel URLs from descriptions, mark un-archived projects Active, create projects for any without Linear representation. 3. **Shipyard iOS Phase 2** — web auth landed; iOS now unblocked. See `portfolio/shipyard-ios/docs/PHASE_2_KICKOFF.md`. 4. **Job Search HQ:** Wave 4 #3 — outreach cadence timeline per contact. 5. **Unnamed iOS:** streak gate — 7-day clock started 2026-04-17, Phase 2 unlocks ~2026-04-24. |
+| **Blockers**   | **Linear MCP OAuth** — MCP server added (`claude mcp add --transport sse linear …`) but unauthenticated. Fix: user runs `/mcp` → select Linear → approve browser OAuth. Phase 5 falls back to GraphQL + `LINEAR_API_KEY` if OAuth is skipped. |
+| **Last touch** | 2026-04-20 — Phases 1–3 of Vercel consolidation shipped: 5 Vercel projects removed, 6 dirs un-archived via `git mv`, root `/CLAUDE.md` + `/ROADMAP.md` rewritten (9 URL→local transitions + `money` row added + Shipyard URL updated to `shipyard-sandy-seven.vercel.app`), per-app docs next. |
 
 
 ---
@@ -109,7 +109,7 @@ Phase 1 rule: NO new features until Chase has used the app for 7 days.
 Web app is at portfolio/unnamed/ — also Phase 1, not yet deployed to Vercel.
 
 Priority:
-1. Deploy to Vercel: vercel project add summit-push --scope iamchasewhittakers-projects → vercel link → vercel git connect → vercel --prod
+1. Local-only for now (Vercel deploy deferred — keep off the 4-project fleet unless we decide to promote it)
 2. Generate PWA icons (192px + 512px) — cairn/mountain theme, dark background
 3. Install on phone as PWA, verify all 5 flows work on mobile
 
@@ -151,21 +151,23 @@ Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
 ```
 Read CLAUDE.md and HANDOFF.md first.
 
-Session shipped (2026-04-19):
-- Knowledge Base v2.1.0: favicons on all rows/home cards (Google favicon CDN), Export/Import JSON buttons in sidebar footer
-- Deployed to knowledge-base-beta-five.vercel.app
-- Root CLAUDE.md + ROADMAP.md updated (KB version, missing projects added)
-- Linear fully synced: WHI-65 (KB v2.1 Done), WHI-66 (Unnamed deploy), WHI-67 (7-day streak), new projects created
+Session shipped (2026-04-20):
+- **Vercel consolidation:** 4 live apps only (Shipyard, Job Search HQ, Ash Reader, Alias Ledger). Removed funded-web, knowledge-base, unnamed, wellness-tracker, chase (orphan).
+- **Un-archived 6 dirs** from portfolio/archive/ → portfolio/*: ai-dev-mastery, app-forge, growth-tracker, money, roller-task-tycoon, shortcut-reference.
+- **Fixed ash-reader git-connect** so auto-deploy stays intact.
+- **Linear MCP installed** (awaiting OAuth via /mcp).
+- Root /CLAUDE.md + /ROADMAP.md + /HANDOFF.md updated.
 
 Priority queue:
-1. Job Search HQ: Wave 4 #3 — outreach cadence timeline per contact (visual touchpoint history)
-2. Unnamed iOS: 7-day streak gate — clock started 2026-04-17, Phase 2 planning starts ~2026-04-24
-3. Unnamed web: fix Vercel/GitHub limit (disconnect stale project), then deploy
-4. Wellness: split TrackerTab.jsx (78K) — WHI-63
+1. Shipyard scan to repopulate projects table: cd portfolio/shipyard && npx tsx scripts/scan.ts
+2. Linear sync (via MCP after OAuth): un-archived projects Active, stale URLs stripped, keep-apps verified
+3. Job Search HQ: Wave 4 #3 — outreach cadence timeline per contact (visual touchpoint history)
+4. Unnamed iOS: 7-day streak gate — clock started 2026-04-17, Phase 2 planning starts ~2026-04-24
+5. Wellness: split TrackerTab.jsx (78K) — WHI-63
 
 Key context:
 - Unnamed iOS streak: no new features until 7 consecutive days of use
-- Vercel connection limit: repo at 10/10 — need to disconnect a retired project before new deploys
+- Vercel footprint: deliberate 4-app fleet. Do NOT redeploy removed apps without approval.
 - Knowledge Base v2.2: drag-and-drop reorder, tags cross-folder filter, sort options (WHI-68, Backlog)
 
 Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
@@ -283,12 +285,12 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 - **clarity-budget-ios:** `portfolio/clarity-budget-ios/HANDOFF.md` — **v0.2** — Today (STS) + **clarity-budget-web** + YNAB (Keychain `com.chasewhittaker.ClarityBudget`, import Baseline, fund category); stub iOS Supabase; **`CB`**; **`docs/BRANDING.md` + AppIcon** (stacked coins); **`xcodebuild test`** ✅ + Simulator recovery notes in app **`LEARNINGS.md`**.
 - **clarity-growth-ios (Phase 5):** `portfolio/clarity-growth-ios/HANDOFF.md` — **v0.1**; **`CG`**; **`docs/BRANDING.md` + AppIcon** (sprout); explore wides in `docs/design/`.
 - **clarity-command-ios (Phase 6):** `portfolio/clarity-command-ios/HANDOFF.md` — **v0.1+**; **`CD`**; gold accent (`#c8a84b`); 3 tabs; **Supabase** `command` row + Settings sync UI; interim AppIcon (`tools/generate_app_icon.py`); `docs/DEVICE_QA.md`. Next: device QA checklist, final AppIcon glyph, widgets/push/Siri.
-- **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — v0.2; 5 tabs (Check-in, Triage, Time, Budget, Growth); YNAB + RollerTask split to standalone apps; nav links to both. Deployed at https://clarity-hub-lilac.vercel.app.
-- **YNAB Clarity Web (2026-04-13):** `portfolio/ynab-clarity-web/HANDOFF.md` — v1.0; standalone YNAB dashboard; storage key `chase_hub_ynab_v1`; Supabase `app_key = 'ynab'`. Deployed at https://ynab-clarity-web.vercel.app.
-- **RollerTask Tycoon Web (2026-04-13):** `portfolio/rollertask-tycoon-web/HANDOFF.md` — v1.0; standalone task/points tracker; storage key `chase_hub_rollertask_v1`; Supabase `app_key = 'rollertask'`. Deployed at https://rollertask-tycoon-web.vercel.app.
+- **Clarity Hub (2026-04-13):** `portfolio/clarity-hub/HANDOFF.md` — v0.2; 5 tabs (Check-in, Triage, Time, Budget, Growth); YNAB + RollerTask split to standalone apps; nav links to both. **Local only** (Vercel project removed 2026-04-20).
+- **YNAB Clarity Web (2026-04-13):** `portfolio/ynab-clarity-web/HANDOFF.md` — v1.0; standalone YNAB dashboard; storage key `chase_hub_ynab_v1`; Supabase `app_key = 'ynab'`. **Local only.**
+- **RollerTask Tycoon Web (2026-04-13):** `portfolio/rollertask-tycoon-web/HANDOFF.md` — v1.0; standalone task/points tracker; storage key `chase_hub_rollertask_v1`; Supabase `app_key = 'rollertask'`. **Local only** (Vercel project removed 2026-04-20).
 - **Shared auth (2026-04-14):** Canonical host strategy shipped across all 6 web apps (WHI-29). `src/shared/auth.js` added. Supabase Site URL + redirect allowlist updated. Vercel env vars `REACT_APP_AUTH_CANONICAL_ORIGIN` + `REACT_APP_AUTH_APP_PATH` set for all 6 apps. Redeploy still needed to pick up new env vars.
 - **iOS device test session (2026-04-14):** All 7 iOS apps built for physical device (iPhone 12 Pro Max, UDID `00008101-000630D01161001E`, Team `9XVT527KP3`). ClarityCheckin had existing profile; other 6 needed `-allowProvisioningUpdates`. `/handoff` slash command created at `.claude/commands/handoff.md`. PreCompact hook added to `.claude/settings.local.json` (gitignored). Mission motto added to all 19 CLAUDE.md files + `scripts/new-app`. 10 Linear issues converted to User Story format with Fibonacci story points (WHI-42 8pt, WHI-43 8pt, WHI-20 13pt, WHI-45 5pt, WHI-24 5pt, WHI-27 3pt, WHI-23 2pt, WHI-35 2pt, WHI-49 1pt, WHI-44 8pt). Sprint 1 needs manual setup in Linear UI (no `create_cycle` API).
-- **Vercel git connections (2026-04-14):** Connected 7 Vercel projects to GitHub (`iamchasewhittaker/apps`) via `scripts/vercel-check-git --fix`. All auto-deploy on push to `main`.
+- **Vercel git connections (2026-04-20):** Fleet consolidated to 4 projects — `shipyard`, `job-search-hq`, `ash-reader`, `alias-ledger` — all connected to `iamchasewhittaker/apps` via `scripts/vercel-check-git`. Verify with `scripts/vercel-check-git` → expect 4 ✓.
 - **Portfolio web CI (2026-04-13-14):** GitHub Actions [`.github/workflows/portfolio-web-build.yml`](.github/workflows/portfolio-web-build.yml) uses **Node 20** and `npm ci`. Regenerate **`package-lock.json`** with Node 20's npm — see [`docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`](docs/templates/SESSION_START_FIX_CI_LOCKFILES.md).
 - **Security fixes (2026-04-12):** SEC-001 PII in constants.js, SEC-002 Gmail OAuth token gitignore, SEC-003 hardcoded email → env var, SEC-004 .build/ gitignored, SEC-005 YNAB UUIDs (accepted), SEC-006 Supabase project ID replaced, SEC-007 iCloud aliases replaced, SEC-008 .env in app-forge gitignore.
 - **Wellness Tracker per-app handoff:** `portfolio/wellness-tracker/HANDOFF.md` (web) and `portfolio/wellness-tracker-ios/HANDOFF.md` (archived — superseded by Clarity apps).

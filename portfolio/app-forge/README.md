@@ -29,4 +29,4 @@ Path: **`portfolio/app-forge`**. Entry point is a large `src/App.jsx` (refactor 
 
 ## Deploy
 
-**https://app-forge-fawn.vercel.app** — Vercel **Root Directory:** `portfolio/app-forge`.
+**Local only** — un-archived 2026-04-20; Vercel deploy retired. Run locally with `npm start`.

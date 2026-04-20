@@ -6,7 +6,7 @@
 
 - **Version:** v0.2
 - **Storage keys:** `chase_hub_checkin_v1`, `chase_hub_triage_v1`, `chase_hub_time_v1`, `chase_hub_budget_v1`, `chase_hub_growth_v1`
-- **URL:** https://clarity-hub-lilac.vercel.app
+- **URL:** local only (Vercel project removed 2026-04-20)
 - **Vercel project:** `clarity-hub` (team: `iamchasewhittakers-projects`)
 - **Supabase:** project `unqtnnxlltiadzbqpyhh` — env vars already set on Vercel (production + preview)
 - **Entry:** `src/App.jsx`

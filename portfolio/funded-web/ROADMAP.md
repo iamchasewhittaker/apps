@@ -14,7 +14,7 @@ YNAB dashboard in the browser — config synced via Supabase; live numbers from 
 - [x] Shared portfolio auth (OTP) + env-driven canonical redirect
 - [x] **Income setup hints** — YNAB this month / last month / RTA fallbacks + errors
 - [x] **Categorization Review** — uncategorized outflows, suggestions, triage fields → YNAB memo PATCH; overrides + `transactionMetadata` in blob
-- [x] Deploy: https://funded-web.vercel.app
+- [x] Deploy: Vercel project removed 2026-04-20; runs locally via `npm start`
 
 ## Next (ideas)
 

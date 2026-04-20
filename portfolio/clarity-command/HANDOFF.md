@@ -7,8 +7,8 @@
 | Field | Value |
 |-------|-------|
 | **Focus** | Phase 1 complete — deployed live. Set Supabase env vars + layoff date to activate fully. |
-| **Next** | 1. Add Supabase env vars in Vercel dashboard (see HANDOFF Deploy Checklist below). 2. Set layoff date in Settings at clarity-command.vercel.app. 3. Phase 2: see `docs/CLARITY_COMMAND_PHASE2.md`. |
-| **Last touch** | 2026-04-13 — built + deployed to https://clarity-command.vercel.app |
+| **Next** | 1. App is local only (Vercel project removed 2026-04-20). 2. Set layoff date in Settings locally. 3. Phase 2: see `docs/CLARITY_COMMAND_PHASE2.md`. |
+| **Last touch** | 2026-04-20 — Vercel project removed; app runs locally via npm start |
 | **Status** | ✅ Live · localStorage-only mode (no Supabase env vars yet) |
 
 ## Phase Roadmap
@@ -24,11 +24,11 @@
 ## Deploy Checklist
 - [x] `npm install` — done
 - [x] `npm run build` passes
-- [x] Deployed → https://clarity-command.vercel.app
+- [x] Deployed → Vercel project removed 2026-04-20; runs locally via npm start
 - [x] Added to root CLAUDE.md portfolio table
 - [x] Added to CI workflow (`.github/workflows/portfolio-web-build.yml`)
 - [x] **Supabase env vars set** — `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` on Production. App redeployed with sync active.
-- [ ] **Set layoff date** in Settings at https://clarity-command.vercel.app
+- [ ] **Set layoff date** in Settings (local dev)
 
 ## Notes
 - Scripture and reminder rotation: day-of-year mod length. No seed needed — just changes daily automatically.

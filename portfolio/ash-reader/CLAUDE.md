@@ -4,6 +4,8 @@
 
 Personal tool for processing the capture system ChatGPT conversation with Ash.
 
+- **URL:** https://ash-reader.vercel.app
+
 ## Stack
 - Next.js 16 + React 19 + TypeScript + Tailwind CSS 4
 - No backend — all localStorage, static pages

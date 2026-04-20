@@ -10,7 +10,7 @@
 |-------|-------|
 | **Version** | v2.1.0 |
 | **Branch** | `main` |
-| **URL** | knowledge-base-beta-five.vercel.app |
+| **URL** | local only (Vercel project removed 2026-04-20) |
 | **Storage key** | `chase_knowledge_base_v1` — blob: `{ bookmarks, folders, favorites, categoryOrder }` |
 | **Focus** | v2.1 shipped — favicons, import/export JSON |
 | **Next** | v2.2 — drag-and-drop reorder, tags cross-folder filter, sort options |

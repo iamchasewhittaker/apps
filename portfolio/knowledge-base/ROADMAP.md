@@ -29,7 +29,7 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **CI** — added to `portfolio-web-build.yml` (Node 20, `npm ci` + build; keep `package-lock.json` in sync — see repo `docs/templates/SESSION_START_FIX_CI_LOCKFILES.md`)
 - [x] **Seed expanded** — 48 bookmarks across 12 categories (Apple Developer, Perplexity, full My Projects)
 - [x] **Seed migration** — version-based; existing users get new entries without losing custom bookmarks
-- [x] **Deploy to Vercel** — https://knowledge-base-beta-five.vercel.app
+- [x] **Deploy to Vercel** — Vercel project removed 2026-04-20 (runs locally via npm start)
 
 ## v1.1 — Shipped
 - [x] **Grouped collapsible sections** — bookmarks under category headers, alphabetical, My Projects last
