@@ -3,13 +3,28 @@ import SwiftUI
 @main
 struct FairwayApp: App {
     @State private var store = FairwayStore()
+    @State private var showLaunch = true
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(store)
-                .preferredColorScheme(.dark)
-                .onAppear { store.load() }
+            ZStack {
+                if showLaunch {
+                    LaunchView()
+                        .transition(.opacity)
+                } else {
+                    ContentView()
+                        .environment(store)
+                        .transition(.opacity)
+                }
+            }
+            .preferredColorScheme(.dark)
+            .onAppear { store.load() }
+            .task {
+                try? await Task.sleep(for: .seconds(1.8))
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    showLaunch = false
+                }
+            }
         }
     }
 }

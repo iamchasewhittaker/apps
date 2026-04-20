@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fairway — Onboarding & Themes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=General+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Augusta (Dark) — primary */
+  --aug-bg:       #0a1a0d;
+  --aug-surface:  #0f2214;
+  --aug-card:     #152d1a;
+  --aug-green:    #036635;
+  --aug-mid:      #024e28;
+  --aug-deep:     #013a1c;
+  --aug-gold:     #d4af37;
+  --aug-gold-dim: #a88c28;
+  --aug-sun:      #e8a030;
+  --aug-text:     #e8dfc8;
+  --aug-muted:    #5a7a5a;
+  --aug-azalea:   #d94880;
+
+  /* Magnolia (Light) */
+  --mag-bg:       #f4edd8;
+  --mag-surface:  #ede4cc;
+  --mag-card:     #e6dac0;
+  --mag-green:    #036635;
+  --mag-gold:     #9a6c14;
+  --mag-text:     #1a2e1c;
+  --mag-muted:    #7a6a4a;
+
+  /* Dawn */
+  --dawn-bg:      #1a1008;
+  --dawn-surface: #241608;
+  --dawn-card:    #2e1c0a;
+  --dawn-green:   #4a7a2a;
+  --dawn-gold:    #e8a030;
+  --dawn-text:    #f0e0c0;
+  --dawn-muted:   #8a6a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #080f09;
+  font-family: 'General Sans', sans-serif;
+  min-height: 100vh;
+  color: #e8dfc8;
+  padding: 40px 24px 60px;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 48px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #1a3020;
+}
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--aug-gold);
+  letter-spacing: 0.1em;
+}
+.page-sub {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #3a5a3a;
+}
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ── PHONE FRAME ── */
+.phone-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.phone {
+  width: 280px;
+  height: 560px;
+  background: #000;
+  border-radius: 40px;
+  border: 2px solid #2a3a2a;
+  box-shadow: 0 0 0 1px #1a2a1a, 0 40px 80px rgba(0,0,0,0.8), inset 0 0 0 1px #0a1a0a;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* notch */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 26px;
+  background: #000;
+  border-radius: 0 0 16px 16px;
+  z-index: 20;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.slide.exit {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* ── SLIDE 1: SPLASH ── */
+.s1 { background: var(--aug-bg); }
+.s1 .scene {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.s1 .scene svg { position: relative; z-index: 2; }
+
+/* ── SLIDE 2: ZONES ── */
+.s2 { background: var(--aug-bg); }
+.s2 .scene {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── SLIDE 3: SCHEDULE ── */
+.s3 { background: var(--aug-bg); }
+
+/* ── SLIDE 4: SOIL ── */
+.s4 { background: var(--aug-bg); }
+
+/* ── SLIDE 5: GET STARTED ── */
+.s5 { background: var(--aug-bg); }
+
+/* ── SLIDE BOTTOM AREA ── */
+.slide-body {
+  padding: 24px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.slide-label {
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aug-gold);
+  opacity: 0.7;
+}
+.slide-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--aug-text);
+  line-height: 1.2;
+}
+.slide-body p {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--aug-muted);
+  line-height: 1.6;
+}
+
+/* ── DOTS ── */
+.dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding-bottom: 12px;
+}
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #2a4a2a;
+  transition: all 0.3s ease;
+}
+.dot.on {
+  background: var(--aug-gold);
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* ── CTA BUTTON ── */
+.btn-gold {
+  background: var(--aug-gold);
+  color: var(--aug-bg);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-family: 'General Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  width: 100%;
+  margin-top: 4px;
+}
+.btn-gold:hover { opacity: 0.88; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--aug-muted);
+  border: 1px solid #2a3a2a;
+  border-radius: 12px;
+  padding: 13px 24px;
+  font-family: 'General Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.btn-ghost:hover { border-color: var(--aug-gold); color: var(--aug-gold); }
+
+/* ── NAV ARROWS ── */
+.nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.nav-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid #2a3a2a;
+  background: transparent;
+  color: var(--aug-gold);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn:hover { background: #1a2a1a; border-color: var(--aug-gold); }
+.nav-btn:disabled { opacity: 0.2; cursor: default; }
+
+/* ── SLIDE COUNTER ── */
+.counter {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #3a5a3a;
+  text-align: center;
+}
+
+/* ── RIGHT COLUMN ── */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── SECTION HEADER ── */
+.section-header {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #3a5a3a;
+  margin-bottom: 14px;
+}
+
+/* ── THEME CARDS ── */
+.theme-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.theme-card {
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.theme-card:hover { transform: translateY(-1px); }
+.theme-card.active-theme::after {
+  content: '✓';
+  position: absolute;
+  right: 16px;
+  font-size: 11px;
+}
+
+/* Augusta */
+.theme-augusta {
+  background: #0f2214;
+  border: 1px solid #1a4a28;
+}
+.theme-augusta.active-theme { border-color: #d4af37; }
+.theme-augusta.active-theme::after { color: #d4af37; }
+
+/* Magnolia */
+.theme-magnolia {
+  background: #ede4cc;
+  border: 1px solid #d4c8a0;
+}
+.theme-magnolia.active-theme { border-color: #036635; }
+.theme-magnolia.active-theme::after { color: #036635; }
+
+/* Dawn */
+.theme-dawn {
+  background: #241608;
+  border: 1px solid #3a2808;
+}
+.theme-dawn.active-theme { border-color: #e8a030; }
+.theme-dawn.active-theme::after { color: #e8a030; }
+
+.theme-swatch {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-info { flex: 1; }
+.theme-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+.theme-desc {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.theme-dots {
+  display: flex;
+  gap: 4px;
+}
+.td {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+/* ── TYPOGRAPHY BLOCK ── */
+.type-block {
+  background: #0f2214;
+  border: 1px solid #1a3a20;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.type-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1a3020;
+}
+.type-row:last-child { border-bottom: none; padding-bottom: 0; }
+.type-sample { }
+.type-meta {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: #3a5a3a;
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* ── COLOR PALETTE BLOCK ── */
+.palette {
+  background: #0f2214;
+  border: 1px solid #1a3a20;
+  border-radius: 14px;
+  padding: 20px;
+}
+.swatch-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-top: 14px;
+}
+.swatch {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  padding: 4px;
+}
+.swatch span {
+  font-size: 6px;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+/* ANIM */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.slide.active .slide-label  { animation: fadeUp 0.4s ease 0.1s both; }
+.slide.active .slide-title  { animation: fadeUp 0.4s ease 0.18s both; }
+.slide.active .slide-body p { animation: fadeUp 0.4s ease 0.26s both; }
+.slide.active .btn-gold     { animation: fadeUp 0.4s ease 0.32s both; }
+.slide.active .btn-ghost    { animation: fadeUp 0.4s ease 0.36s both; }
+
+/* sunrise glow pulse */
+@keyframes glow {
+  0%,100% { opacity: 0.4; }
+  50%      { opacity: 0.65; }
+}
+.sun-glow { animation: glow 3s ease-in-out infinite; }
+
+/* status bar */
+.status-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 20px 6px;
+  z-index: 10;
+  font-size: 9px;
+  font-weight: 600;
+  color: #e8dfc8;
+  letter-spacing: 0.05em;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Fairway</div>
+  <div class="page-sub">Onboarding &amp; Theme System</div>
+</div>
+
+<div class="layout">
+
+  <!-- ═══ LEFT: PHONE ═══ -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="screen" id="screen">
+
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>●●●</span>
+        </div>
+
+        <!-- ── SLIDE 1: SPLASH ── -->
+        <div class="slide s1 active" id="slide-0">
+          <div class="scene" style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; padding-top:44px;">
+            <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <clipPath id="sp1"><circle cx="80" cy="80" r="68"/></clipPath>
+                <radialGradient id="spGlow" cx="50%" cy="42%" r="55%">
+                  <stop offset="0%" stop-color="#e8b84a" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#036635" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle cx="80" cy="80" r="74" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.5"/>
+              <g clip-path="url(#sp1)">
+                <rect x="12" y="12" width="136" height="136" fill="#0c1e10"/>
+                <rect x="12" y="12" width="136" height="136" fill="url(#spGlow)"/>
+                <circle cx="80" cy="84" r="22" fill="#d4872a" opacity="0.3" class="sun-glow"/>
+                <circle cx="80" cy="84" r="13" fill="#e8a030" opacity="0.4" class="sun-glow"/>
+                <circle cx="80" cy="84" r="7"  fill="#f0c050" opacity="0.5"/>
+                <ellipse cx="80" cy="87" rx="52" ry="5" fill="#d4af37" opacity="0.07"/>
+                <path d="M12 90 Q46 80 80 86 Q114 92 148 82 L148 148 L12 148 Z" fill="#036635"/>
+                <path d="M12 100 Q46 88 80 96 Q114 104 148 90 L148 148 L12 148 Z" fill="#024e28"/>
+                <path d="M12 112 Q46 100 80 108 Q114 116 148 102 L148 148 L12 148 Z" fill="#013a1c"/>
+                <path d="M14 100 Q46 90 80 96 Q114 104 146 90" stroke="#036635" stroke-width="1" fill="none" opacity="0.5"/>
+                <path d="M14 112 Q46 100 80 108 Q114 116 146 102" stroke="#036635" stroke-width="1" fill="none" opacity="0.45"/>
+                <line x1="80" y1="66" x2="80" y2="87" stroke="#d4af37" stroke-width="1.2"/>
+                <polygon points="80,66 90,72 80,77" fill="#d4af37" opacity="0.9"/>
+              </g>
+            </svg>
+          </div>
+          <div class="slide-body" style="align-items:center; text-align:center; padding-bottom:40px;">
+            <div class="slide-label">Welcome to</div>
+            <div class="slide-title" style="font-size:32px;">Fairway</div>
+            <p style="max-width:200px; margin:0 auto;">Course-quality lawn care, engineered for your yard.</p>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 2: ZONES ── -->
+        <div class="slide s2" id="slide-1">
+          <div class="scene" style="padding-top:52px; flex:1; padding: 52px 20px 0;">
+            <svg width="240" height="200" viewBox="0 0 240 200" fill="none" style="width:100%;">
+              <!-- Lawn map top-down -->
+              <rect x="20" y="20" width="200" height="160" rx="12" fill="#0f2214" stroke="#1a4028" stroke-width="1"/>
+              <!-- zones colored -->
+              <rect x="32" y="32" width="80" height="60" rx="6" fill="#036635" opacity="0.6" stroke="#4aaa5a" stroke-width="1"/>
+              <rect x="128" y="32" width="80" height="60" rx="6" fill="#024e28" opacity="0.6" stroke="#2a7a3a" stroke-width="1"/>
+              <rect x="32" y="108" width="80" height="60" rx="6" fill="#024e28" opacity="0.6" stroke="#2a7a3a" stroke-width="1"/>
+              <rect x="128" y="108" width="80" height="60" rx="6" fill="#036635" opacity="0.5" stroke="#1a5a2a" stroke-width="1"/>
+              <!-- zone labels -->
+              <text x="72" y="66" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="11" font-style="italic" fill="#d4af37">Zone 1</text>
+              <text x="72" y="76" text-anchor="middle" font-family="'General Sans',sans-serif" font-size="7" fill="#4aaa5a">Front Lawn</text>
+              <text x="168" y="66" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="11" font-style="italic" fill="#d4af37">Zone 2</text>
+              <text x="168" y="76" text-anchor="middle" font-family="'General Sans',sans-serif" font-size="7" fill="#4aaa5a">Side Yard</text>
+              <text x="72" y="142" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="11" font-style="italic" fill="#d4af37">Zone 3</text>
+              <text x="72" y="152" text-anchor="middle" font-family="'General Sans',sans-serif" font-size="7" fill="#4aaa5a">West Back</text>
+              <text x="168" y="142" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="11" font-style="italic" fill="#d4af37">Zone 4</text>
+              <text x="168" y="152" text-anchor="middle" font-family="'General Sans',sans-serif" font-size="7" fill="#4aaa5a">East Back</text>
+              <!-- sprinkler dots -->
+              <circle cx="38" cy="38" r="4" fill="#d4af37" opacity="0.8"/>
+              <circle cx="38" cy="38" r="7" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.4"/>
+              <circle cx="104" cy="38" r="4" fill="#d4af37" opacity="0.8"/>
+              <circle cx="104" cy="38" r="7" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.4"/>
+              <circle cx="38" cy="162" r="4" fill="#d4af37" opacity="0.8"/>
+              <circle cx="38" cy="162" r="7" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.4"/>
+              <circle cx="200" cy="162" r="4" fill="#d4af37" opacity="0.8"/>
+              <circle cx="200" cy="162" r="7" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="slide-body">
+            <div class="slide-label">Step 1 of 3</div>
+            <div class="slide-title">Map your zones</div>
+            <p>Connect your Rachio controller and we'll map each irrigation zone to your lawn automatically.</p>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 3: SCHEDULE ── -->
+        <div class="slide s3" id="slide-2">
+          <div style="padding-top:52px; flex:1; padding: 52px 20px 0;">
+            <!-- Schedule card UI -->
+            <div style="background:#0f2214; border:1px solid #1a4028; border-radius:12px; padding:16px; margin-top:8px;">
+              <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:#d4af37; margin-bottom:12px;">This Week</div>
+              <!-- day rows -->
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:#152d1a; border-radius:8px; border-left:2px solid #d4af37;">
+                  <div style="font-size:9px; color:#5a7a5a; width:22px;">MON</div>
+                  <div style="flex:1; height:4px; background:#1a3a20; border-radius:2px; overflow:hidden;">
+                    <div style="width:70%; height:100%; background:linear-gradient(90deg,#036635,#4aaa5a); border-radius:2px;"></div>
+                  </div>
+                  <div style="font-size:9px; color:#d4af37;">18 min</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:#0f2214; border-radius:8px;">
+                  <div style="font-size:9px; color:#3a5a3a; width:22px;">TUE</div>
+                  <div style="flex:1; height:4px; background:#1a3a20; border-radius:2px;">
+                    <div style="width:0%; height:100%; background:#036635; border-radius:2px;"></div>
+                  </div>
+                  <div style="font-size:9px; color:#3a5a3a;">Skip</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:#0f2214; border-radius:8px;">
+                  <div style="font-size:9px; color:#5a7a5a; width:22px;">WED</div>
+                  <div style="flex:1; height:4px; background:#1a3a20; border-radius:2px; overflow:hidden;">
+                    <div style="width:45%; height:100%; background:linear-gradient(90deg,#036635,#4aaa5a); border-radius:2px;"></div>
+                  </div>
+                  <div style="font-size:9px; color:#d4af37;">12 min</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:#0f2214; border-radius:8px;">
+                  <div style="font-size:9px; color:#3a5a3a; width:22px;">THU</div>
+                  <div style="flex:1; height:4px; background:#1a3a20; border-radius:2px;"></div>
+                  <div style="font-size:9px; color:#3a5a3a;">Skip</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; background:#152d1a; border-radius:8px; border-left:2px solid #d4af37;">
+                  <div style="font-size:9px; color:#5a7a5a; width:22px;">FRI</div>
+                  <div style="flex:1; height:4px; background:#1a3a20; border-radius:2px; overflow:hidden;">
+                    <div style="width:55%; height:100%; background:linear-gradient(90deg,#036635,#4aaa5a); border-radius:2px;"></div>
+                  </div>
+                  <div style="font-size:9px; color:#d4af37;">15 min</div>
+                </div>
+              </div>
+              <!-- Rachio badge -->
+              <div style="margin-top:10px; display:flex; align-items:center; gap:6px; opacity:0.5;">
+                <div style="width:6px;height:6px;border-radius:50%;background:#4aaa5a;"></div>
+                <div style="font-size:8px; color:#4aaa5a; letter-spacing:0.1em;">Rachio connected</div>
+              </div>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-label">Step 2 of 3</div>
+            <div class="slide-title">Smart scheduling</div>
+            <p>Fairway builds your watering schedule around your soil, climate, and grass type. Utah clay handled automatically.</p>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 4: SOIL ── -->
+        <div class="slide s4" id="slide-3">
+          <div style="padding-top:52px; flex:1; padding:52px 20px 0;">
+            <div style="background:#0f2214; border:1px solid #1a4028; border-radius:12px; padding:18px;">
+              <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:#d4af37; margin-bottom:14px;">Soil Health</div>
+              <!-- radial chart placeholder — simple bars -->
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:8px;color:#5a7a5a;letter-spacing:0.1em;">NITROGEN</span>
+                    <span style="font-size:8px;color:#d4af37;">Low</span>
+                  </div>
+                  <div style="height:3px;background:#1a3a20;border-radius:2px;overflow:hidden;">
+                    <div style="width:22%;height:100%;background:#d4872a;border-radius:2px;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:8px;color:#5a7a5a;letter-spacing:0.1em;">PHOSPHORUS</span>
+                    <span style="font-size:8px;color:#4aaa5a;">Good</span>
+                  </div>
+                  <div style="height:3px;background:#1a3a20;border-radius:2px;overflow:hidden;">
+                    <div style="width:68%;height:100%;background:#036635;border-radius:2px;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:8px;color:#5a7a5a;letter-spacing:0.1em;">POTASSIUM</span>
+                    <span style="font-size:8px;color:#d4af37;">Low</span>
+                  </div>
+                  <div style="height:3px;background:#1a3a20;border-radius:2px;overflow:hidden;">
+                    <div style="width:18%;height:100%;background:#d4872a;border-radius:2px;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                    <span style="font-size:8px;color:#5a7a5a;letter-spacing:0.1em;">pH</span>
+                    <span style="font-size:8px;color:#4aaa5a;">6.75 Optimal</span>
+                  </div>
+                  <div style="height:3px;background:#1a3a20;border-radius:2px;overflow:hidden;">
+                    <div style="width:80%;height:100%;background:#036635;border-radius:2px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding:8px 10px;background:#152d1a;border-radius:8px;border-left:2px solid #d4af37;">
+                <div style="font-size:8px;color:#d4af37;letter-spacing:0.1em;margin-bottom:2px;">RECOMMENDATION</div>
+                <div style="font-size:9px;color:#8aaa8a;line-height:1.5;">Apply ProPeat + Yard Mastery Flagship in May</div>
+              </div>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-label">Step 3 of 3</div>
+            <div class="slide-title">Know your soil</div>
+            <p>Import your soil test results and Fairway builds a full-season fertilizer plan tailored to your yard.</p>
+          </div>
+        </div>
+
+        <!-- ── SLIDE 5: GET STARTED ── -->
+        <div class="slide s5" id="slide-4">
+          <div class="scene" style="flex:1; display:flex; align-items:center; justify-content:center; padding-top:44px;">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+              <defs>
+                <clipPath id="gs1"><circle cx="60" cy="60" r="50"/></clipPath>
+                <radialGradient id="gsGlow" cx="50%" cy="42%" r="55%">
+                  <stop offset="0%" stop-color="#e8b84a" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#036635" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle cx="60" cy="60" r="55" fill="none" stroke="#d4af37" stroke-width="1" opacity="0.5"/>
+              <g clip-path="url(#gs1)">
+                <rect x="10" y="10" width="100" height="100" fill="#0c1e10"/>
+                <rect x="10" y="10" width="100" height="100" fill="url(#gsGlow)"/>
+                <circle cx="60" cy="63" r="17" fill="#d4872a" opacity="0.3" class="sun-glow"/>
+                <circle cx="60" cy="63" r="10" fill="#e8a030" opacity="0.4" class="sun-glow"/>
+                <circle cx="60" cy="63" r="5"  fill="#f0c050" opacity="0.55"/>
+                <path d="M10 67 Q35 58 60 64 Q85 70 110 61 L110 110 L10 110 Z" fill="#036635"/>
+                <path d="M10 76 Q35 65 60 73 Q85 81 110 70 L110 110 L10 110 Z" fill="#024e28"/>
+                <path d="M10 86 Q35 75 60 83 Q85 91 110 80 L110 110 L10 110 Z" fill="#013a1c"/>
+                <line x1="60" y1="48" x2="60" y2="65" stroke="#d4af37" stroke-width="1.2"/>
+                <polygon points="60,48 68,53 60,57" fill="#d4af37" opacity="0.9"/>
+              </g>
+            </svg>
+          </div>
+          <div class="slide-body" style="gap:10px;">
+            <div class="slide-label">You're all set</div>
+            <div class="slide-title">Your fairway awaits.</div>
+            <p>Fairway will optimize your lawn through every season. Course quality starts now.</p>
+            <button class="btn-gold" style="margin-top:8px;">Get Started</button>
+            <button class="btn-ghost">Sign In</button>
+          </div>
+        </div>
+
+      </div><!-- /screen -->
+    </div><!-- /phone -->
+
+    <!-- dots + nav -->
+    <div class="dots" id="dots">
+      <div class="dot on"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="nav">
+      <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>←</button>
+      <div class="counter" id="counter" style="display:flex;align-items:center;width:48px;justify-content:center;">1 / 5</div>
+      <button class="nav-btn" id="nextBtn" onclick="go(1)">→</button>
+    </div>
+  </div>
+
+
+  <!-- ═══ RIGHT COLUMN ═══ -->
+  <div class="right-col">
+
+    <!-- THEMES -->
+    <div>
+      <div class="section-header">App Themes</div>
+      <div class="theme-grid">
+
+        <!-- Augusta -->
+        <div class="theme-card theme-augusta active-theme" onclick="setTheme('augusta',this)">
+          <div class="theme-swatch" style="background:#036635;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" fill="#0c1e10" stroke="#d4af37" stroke-width="0.7" opacity="0.7"/>
+              <circle cx="10" cy="11" r="4" fill="#e8a030" opacity="0.4"/>
+              <path d="M1 12 Q5 9 10 11 Q15 13 19 10 L19 19 L1 19 Z" fill="#036635"/>
+            </svg>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#d4af37;">Augusta</div>
+            <div class="theme-desc" style="color:#5a7a5a;">Dark · Primary</div>
+          </div>
+          <div class="theme-dots">
+            <div class="td" style="background:#0c1e10; border:1px solid #2a4a2a;"></div>
+            <div class="td" style="background:#036635;"></div>
+            <div class="td" style="background:#d4af37;"></div>
+          </div>
+        </div>
+
+        <!-- Magnolia -->
+        <div class="theme-card theme-magnolia" onclick="setTheme('magnolia',this)">
+          <div class="theme-swatch" style="background:#e6dac0;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" fill="#f0e8d0" stroke="#036635" stroke-width="0.7" opacity="0.6"/>
+              <circle cx="10" cy="11" r="4" fill="#c07020" opacity="0.3"/>
+              <path d="M1 12 Q5 9 10 11 Q15 13 19 10 L19 19 L1 19 Z" fill="#036635" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#036635;">Magnolia</div>
+            <div class="theme-desc" style="color:#9a8a6a;">Light · Print</div>
+          </div>
+          <div class="theme-dots">
+            <div class="td" style="background:#f4edd8; border:1px solid #d4c8a0;"></div>
+            <div class="td" style="background:#036635;"></div>
+            <div class="td" style="background:#9a6c14;"></div>
+          </div>
+        </div>
+
+        <!-- Dawn -->
+        <div class="theme-card theme-dawn" onclick="setTheme('dawn',this)">
+          <div class="theme-swatch" style="background:#2e1c0a;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" fill="#1a1008" stroke="#e8a030" stroke-width="0.7" opacity="0.6"/>
+              <circle cx="10" cy="11" r="4" fill="#e8a030" opacity="0.45"/>
+              <path d="M1 12 Q5 9 10 11 Q15 13 19 10 L19 19 L1 19 Z" fill="#4a7a2a"/>
+            </svg>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#e8a030;">Dawn</div>
+            <div class="theme-desc" style="color:#7a5a2a;">Warm · Amber</div>
+          </div>
+          <div class="theme-dots">
+            <div class="td" style="background:#1a1008; border:1px solid #3a2808;"></div>
+            <div class="td" style="background:#4a7a2a;"></div>
+            <div class="td" style="background:#e8a030;"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div>
+      <div class="section-header">Typography</div>
+      <div class="type-block">
+        <div class="type-row">
+          <div class="type-sample" style="font-family:'Cormorant Garamond',serif; font-size:28px; font-style:italic; font-weight:300; color:#d4af37; line-height:1;">Fairway</div>
+          <div class="type-meta">Cormorant Garamond<br>300 · Italic · Display</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:400; color:#e8dfc8;">Zone 1 — Front Lawn</div>
+          <div class="type-meta">Cormorant Garamond<br>400 · Subheading</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:'General Sans',sans-serif; font-size:11px; font-weight:400; color:#5a7a5a; line-height:1.5;">Watering optimized<br>for Utah clay soil</div>
+          <div class="type-meta">General Sans<br>400 · Body</div>
+        </div>
+        <div class="type-row">
+          <div class="type-sample" style="font-family:'General Sans',sans-serif; font-size:8px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#d4af37;">Zone Status</div>
+          <div class="type-meta">General Sans<br>600 · Label</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLOR PALETTE -->
+    <div>
+      <div class="section-header">Colour Palette</div>
+      <div class="palette">
+        <div class="swatch-row">
+          <div class="swatch" style="background:#0a1a0d;border:1px solid #1a3020;"><span>BG</span></div>
+          <div class="swatch" style="background:#036635;"><span>Green</span></div>
+          <div class="swatch" style="background:#024e28;"><span>Mid</span></div>
+          <div class="swatch" style="background:#013a1c;"><span>Deep</span></div>
+          <div class="swatch" style="background:#d4af37;"><span style="color:rgba(0,0,0,0.5);">Gold</span></div>
+          <div class="swatch" style="background:#e8a030;"><span style="color:rgba(0,0,0,0.4);">Sun</span></div>
+        </div>
+        <div style="margin-top:8px; display:flex; flex-direction:column; gap:3px;">
+          <div style="display:flex;justify-content:space-between;padding: 0 2px;">
+            <span style="font-size:7.5px;color:#3a5a3a;letter-spacing:0.1em;">BACKGROUND</span>
+            <span style="font-size:7.5px;color:#3a5a3a;font-family:monospace;">#0a1a0d</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding: 0 2px;">
+            <span style="font-size:7.5px;color:#3a5a3a;letter-spacing:0.1em;">AUGUSTA GREEN</span>
+            <span style="font-size:7.5px;color:#3a5a3a;font-family:monospace;">#036635</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding: 0 2px;">
+            <span style="font-size:7.5px;color:#3a5a3a;letter-spacing:0.1em;">GOLD</span>
+            <span style="font-size:7.5px;color:#3a5a3a;font-family:monospace;">#d4af37</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding: 0 2px;">
+            <span style="font-size:7.5px;color:#3a5a3a;letter-spacing:0.1em;">SUN AMBER</span>
+            <span style="font-size:7.5px;color:#3a5a3a;font-family:monospace;">#e8a030</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /right-col -->
+</div><!-- /layout -->
+
+<script>
+let current = 0;
+const total = 5;
+
+const themes = {
+  augusta: {
+    bg: '#0a1a0d', surface: '#0f2214', card: '#152d1a',
+    accent: '#d4af37', green: '#036635', text: '#e8dfc8', muted: '#5a7a5a',
+    slideBg: '#0a1a0d', sun1: '#d4872a', sun2: '#e8a030', sun3: '#f0c050',
+    band1: '#036635', band2: '#024e28', band3: '#013a1c',
+    ring: '#d4af37', wordmark: '#d4af37'
+  },
+  magnolia: {
+    bg: '#f4edd8', surface: '#ede4cc', card: '#e6dac0',
+    accent: '#9a6c14', green: '#036635', text: '#1a2e1c', muted: '#7a6a4a',
+    slideBg: '#f0e8d0', sun1: '#c07020', sun2: '#d08030', sun3: '#e09040',
+    band1: '#036635', band2: '#024e28', band3: '#013a1c',
+    ring: '#036635', wordmark: '#036635'
+  },
+  dawn: {
+    bg: '#1a1008', surface: '#241608', card: '#2e1c0a',
+    accent: '#e8a030', green: '#4a7a2a', text: '#f0e0c0', muted: '#8a6a3a',
+    slideBg: '#1a1008', sun1: '#c86020', sun2: '#e07828', sun3: '#f09040',
+    band1: '#4a7a2a', band2: '#3a6020', band3: '#2a4818',
+    ring: '#e8a030', wordmark: '#e8a030'
+  }
+};
+
+function setTheme(name, el) {
+  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active-theme'));
+  el.classList.add('active-theme');
+
+  const t = themes[name];
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach(s => s.style.background = t.slideBg);
+
+  document.querySelectorAll('.slide-label').forEach(e => e.style.color = t.accent);
+  document.querySelectorAll('.slide-title').forEach(e => e.style.color = t.text);
+  document.querySelectorAll('.slide-body p').forEach(e => e.style.color = t.muted);
+  document.querySelectorAll('.dot.on').forEach(e => e.style.background = t.accent);
+  document.querySelectorAll('.btn-gold').forEach(e => {
+    e.style.background = t.accent;
+    e.style.color = t.slideBg;
+  });
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('on', i === current);
+    d.style.width = i === current ? '18px' : '5px';
+    d.style.background = i === current ? 'var(--aug-gold)' : '#2a4a2a';
+  });
+  document.getElementById('counter').textContent = `${current+1} / ${total}`;
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === total - 1;
+}
+
+function go(dir) {
+  const slides = document.querySelectorAll('.slide');
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  setTimeout(() => slides[current].classList.remove('exit'), 400);
+
+  current = Math.max(0, Math.min(total-1, current + dir));
+  slides[current].classList.add('active');
+  updateDots();
+}
+
+// keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' && current < total-1) go(1);
+  if (e.key === 'ArrowLeft' && current > 0) go(-1);
+});
+</script>
+</body>
+</html>

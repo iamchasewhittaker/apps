@@ -33,12 +33,16 @@ extension Color {
 // MARK: - Fairway theme tokens
 
 enum FairwayTheme {
-    static let backgroundPrimary = Color(hex: "#0B150B")
-    static let backgroundSurface = Color(hex: "#162316")
-    static let backgroundElevated = Color(hex: "#1F2F1F")
+    static let backgroundPrimary = Color(hex: "#0a1a0d")
+    static let backgroundSurface = Color(hex: "#0f2214")
+    static let backgroundElevated = Color(hex: "#152d1a")
 
-    static let accentGreen = Color(hex: "#006747")
-    static let accentGold = Color(hex: "#C9A84C")
+    static let accentGreen = Color(hex: "#036635")
+    static let accentGold = Color(hex: "#d4af37")
+
+    static let fairwayMid = Color(hex: "#024e28")
+    static let fairwayDeep = Color(hex: "#013a1c")
+    static let sunAmber = Color(hex: "#e8a030")
 
     static let statusHealthy = Color(hex: "#22C55E")
     static let statusAttention = Color(hex: "#F59E0B")
@@ -47,8 +51,8 @@ enum FairwayTheme {
     static let badgePreSeason = Color(hex: "#F59E0B")
     static let badgeConfirmed = Color(hex: "#EF4444")
 
-    static let textPrimary = Color(hex: "#F0F7F0")
-    static let textSecondary = Color(hex: "#8FA98F")
+    static let textPrimary = Color(hex: "#e8dfc8")
+    static let textSecondary = Color(hex: "#5a7a5a")
 
     static let stockGood = Color(hex: "#22C55E")
     static let stockLow = Color(hex: "#F59E0B")

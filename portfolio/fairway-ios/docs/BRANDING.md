@@ -1,78 +1,125 @@
 # Fairway iOS — Branding
 
+> Masters-aesthetic retro-sunset identity. Full source: [`brand/fairway_minimal.html`](brand/fairway_minimal.html) · narrative: [`brand/BRAND_SPEC.md`](brand/BRAND_SPEC.md).
+
 ## App Identity
 
 | Field | Value |
 |-------|-------|
 | Display name | Fairway |
-| Tagline | Masters-level lawn management |
+| Tagline | Course-quality lawn care |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | Platform | iOS 17+, iPhone only |
 
 ## Visual System
 
-### Color Palette
+### Logo
+
+A minimalist circle-badge that reads as a retro sunset over a fairway. Three shades of green stack as curving bands; a warm amber sun sits on the horizon; a single gold flag pin anchors the composition. The italic "Fairway" wordmark in Cormorant Garamond sits beneath the badge in Masters gold.
+
+- **Primary** — 280pt circle badge with outer gold ring, full sun + horizon glow + 3 fairway bands + flag + wordmark.
+- **Compact** — 110pt variant, same structure without horizon glow, smaller wordmark.
+- **Cream** — light background variant (`#f0e8d0`) with muted sun + darker flag.
+- **App icon** — rounded square; bands and flag fill edge-to-edge, no wordmark, no circle mask (iOS supplies its own mask).
+
+**In code:** rendered natively via [`Fairway/Views/LogoView.swift`](../Fairway/Views/LogoView.swift) — SwiftUI Shapes + Paths, no raster assets. Scales crisply to any size via `LogoView(size:)`.
+
+**Usage rules:**
+
+- Minimum size: **44pt** (below this the flag + bands blur).
+- Never recolor the wordmark or flag — they are always Masters gold (`#d4af37`).
+- Never stretch; logo is always 1:1 aspect.
+- Clear space around the badge = at least 12% of its diameter.
+- Always show on `backgroundPrimary` (`#0a1a0d`) or a lighter cream variant; never on a mid-tone that fights the sunset.
+
+### Color Palette — Augusta theme
+
+The app ships **Augusta** only. Magnolia / Dawn theme variants are documented in [`brand/fairway_onboarding.html`](brand/fairway_onboarding.html) as future reference.
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `backgroundPrimary` | `#0B150B` | App background — deep forest |
-| `backgroundSurface` | `#162316` | Cards, sheets |
-| `backgroundElevated` | `#1F2F1F` | Nav bars, popovers |
-| `accentGreen` | `#006747` | Augusta green — primary brand |
-| `accentGold` | `#C9A84C` | Masters gold — highlights, icons, active tabs |
+| `backgroundPrimary` | `#0a1a0d` | App background — deep forest |
+| `backgroundSurface` | `#0f2214` | Cards, sheets |
+| `backgroundElevated` | `#152d1a` | Nav bars, popovers |
+| `accentGreen` | `#036635` | Augusta green — primary brand, brightest fairway band |
+| `accentGold` | `#d4af37` | Masters gold — wordmark, flag, highlights, active tabs |
+| `fairwayMid` | `#024e28` | Middle fairway band |
+| `fairwayDeep` | `#013a1c` | Deepest fairway band |
+| `sunAmber` | `#e8a030` | Mid sun ring + horizon glow |
 | `statusHealthy` | `#22C55E` | Zone healthy indicator |
 | `statusAttention` | `#F59E0B` | Zone needs attention |
 | `statusAction` | `#EF4444` | Zone action needed / confirmed problem |
-| `badgePreSeason` | `#F59E0B` | PRE-SEASON badge (amber) |
-| `badgeConfirmed` | `#EF4444` | CONFIRMED problem badge (red) |
-| `textPrimary` | `#F0F7F0` | Body text — slight green tint white |
-| `textSecondary` | `#8FA98F` | Labels, metadata — muted sage |
+| `badgePreSeason` | `#F59E0B` | PRE-SEASON pill (amber) |
+| `badgeConfirmed` | `#EF4444` | CONFIRMED pill (red) |
+| `textPrimary` | `#e8dfc8` | Body text — warm cream |
+| `textSecondary` | `#5a7a5a` | Labels, metadata — muted sage |
 | `stockGood` | `#22C55E` | Inventory: plenty in stock |
 | `stockLow` | `#F59E0B` | Inventory: less than 1 application |
 | `stockEmpty` | `#EF4444` | Inventory: empty / unknown |
 
 ### Typography
 
-- System font (San Francisco) throughout — no custom fonts
-- Headers: `.title2` semibold
-- Body: `.body` regular
-- Labels/metadata: `.caption` in `textSecondary`
-- Badges: `.caption2` bold in white on colored background
+| Face | Weight | Where |
+|------|--------|-------|
+| Cormorant Garamond | Light Italic (300) | Splash wordmark, logo wordmark, any ceremonial "Fairway" label |
+| Cormorant Garamond | Italic (400) | Reserved for future editorial headers |
+| SF (system) | regular → semibold | All UI body, titles, labels, metadata |
 
-### Name Candidates (for reference)
+Font access in code: [`Fairway/FairwayFont.swift`](../Fairway/FairwayFont.swift):
 
-| Name | Notes |
-|------|-------|
-| Greenkeeper | Masters grounds crew reference |
-| **Fairway** ✓ | Chosen — aspirational, clean |
-| Verdant | Latin for lush/green — more abstract |
-| Stripe | Lawn striping — minimal |
+```swift
+Text("Fairway")
+    .font(FairwayFont.wordmark(size: 44))  // CormorantGaramond-LightItalic
+    .kerning(4)
+    .foregroundStyle(FairwayTheme.accentGold)
+```
+
+The `.ttf` file ships under `Fairway/Fonts/` and is registered via `INFOPLIST_KEY_UIAppFonts` in `project.pbxproj`. Both PostScript names (`CormorantGaramond-LightItalic`, `CormorantGaramond-Italic`) resolve from the single variable-width file.
+
+### Launch Screen
+
+`LaunchView` (splash) shows for 1.8s on cold start before fading into `ContentView`:
+
+- Centered 180pt logo badge (no wordmark)
+- Cormorant Garamond Light Italic "Fairway" at 44pt, kerning 4, in `accentGold`
+- Tagline: **"COURSE-QUALITY LAWN CARE"** in `.caption`, tracking 2, uppercase, in `textSecondary`
+- Fade-in + 0.96 → 1.0 scale animation over 0.9s
+
+See [`Fairway/Views/LaunchView.swift`](../Fairway/Views/LaunchView.swift).
 
 ## App Icon Spec
 
-- **Size:** 1024×1024 opaque PNG
-- **Background:** Augusta green `#006747`
-- **Glyph:** White stylized sprinkler arc — top semicircle with 3 spray lines radiating outward
-- **No text** (name appears in OS)
-- Location: `Fairway/Assets.xcassets/AppIcon.appiconset/AppIcon.png`
+- **Size:** 1024×1024 opaque PNG at `Fairway/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png`
+- **Source:** SVG app-icon variant in [`brand/fairway_minimal.html`](brand/fairway_minimal.html) (viewBox `0 0 80 80`)
+- **Generated by:** `python tools/generate_icon.py` — uses PIL to draw the sun glow, three fairway bands, and gold flag at 1024×1024
+- **No text** — OS supplies the app name under the icon
+- **No circle mask** — bands and flag bleed to edges; iOS applies its own rounded-square mask
 
 ## Badge System
 
 ```
 PRE-SEASON    → amber (#F59E0B) pill badge, text "PRE-SEASON"
-CONFIRMED     → red (#EF4444) pill badge, text "CONFIRMED"
+CONFIRMED     → red   (#EF4444) pill badge, text "CONFIRMED"
 ```
 
-Used on: heads (isConfirmed=false), problem areas (isPreSeason=true / isConfirmed=true)
+Used on: heads (`isConfirmed=false`), problem areas (`isPreSeason=true` / `isConfirmed=true`).
 
 ## Asset Paths
 
-- App icon: `Fairway/Assets.xcassets/AppIcon.appiconset/` (placeholder until generated)
-- Accent color: `Fairway/Assets.xcassets/AccentColor.colorset/` (set to `#C9A84C`)
+| Asset | Path |
+|-------|------|
+| App icon | [`Fairway/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png`](../Fairway/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png) |
+| Accent color | [`Fairway/Assets.xcassets/AccentColor.colorset/Contents.json`](../Fairway/Assets.xcassets/AccentColor.colorset/Contents.json) — `#d4af37` |
+| Logo (SwiftUI) | [`Fairway/Views/LogoView.swift`](../Fairway/Views/LogoView.swift) |
+| Launch splash | [`Fairway/Views/LaunchView.swift`](../Fairway/Views/LaunchView.swift) |
+| Fonts | [`Fairway/Fonts/CormorantGaramond-Italic.ttf`](../Fairway/Fonts/CormorantGaramond-Italic.ttf) (variable-width) |
+| Palette | [`Fairway/FairwayTheme.swift`](../Fairway/FairwayTheme.swift) |
+| Icon generator | [`tools/generate_icon.py`](../tools/generate_icon.py) |
 
 ## Changelog
 
 | Date | Change |
 |------|--------|
-| 2026-04-18 | Initial branding spec created |
+| 2026-04-20 | Masters rebrand — retro-sunset circle badge, Cormorant Garamond wordmark, Augusta palette refresh (`#036635` / `#d4af37` / `#e8dfc8`), launch splash |
+| 2026-04-18 | Initial branding spec — placeholder sprinkler glyph, `#006747` / `#C9A84C` palette, system font only |

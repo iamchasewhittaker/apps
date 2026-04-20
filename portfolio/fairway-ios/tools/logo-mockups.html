@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fairway — Logo Mockups</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0B150B; font-family: -apple-system, sans-serif; padding: 48px 32px; }
+  h1 { color: #C9A84C; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 8px; }
+  p  { color: #8FA98F; font-size: 13px; margin-bottom: 48px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 960px; }
+  .card { display: flex; flex-direction: column; gap: 16px; }
+  .icon-wrap {
+    width: 100%; aspect-ratio: 1;
+    border-radius: 22.5%;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  }
+  .icon-wrap svg { display: block; width: 100%; height: 100%; }
+  .label { color: #F0F7F0; font-size: 14px; font-weight: 600; }
+  .desc  { color: #8FA98F; font-size: 12px; line-height: 1.5; margin-top: 2px; }
+</style>
+</head>
+<body>
+<h1>Fairway · Logo Concepts</h1>
+<p>Augusta green #006747 · Masters gold #C9A84C · All shown at iOS rounded-rect crop</p>
+
+<div class="grid">
+
+  <!-- A: Current / outline rays -->
+  <div class="card">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1024" height="1024" fill="#006747"/>
+        <!-- arc -->
+        <path d="M 220 672 A 340 340 0 0 1 804 672" fill="none" stroke="white" stroke-width="56" stroke-linecap="round"/>
+        <!-- 3 rays from pivot -->
+        <line x1="512" y1="672" x2="238" y2="393" stroke="white" stroke-width="42" stroke-linecap="round"/>
+        <line x1="512" y1="672" x2="512" y2="332" stroke="white" stroke-width="42" stroke-linecap="round"/>
+        <line x1="512" y1="672" x2="786" y2="393" stroke="white" stroke-width="42" stroke-linecap="round"/>
+        <!-- droplets -->
+        <circle cx="238" cy="393" r="28" fill="white"/>
+        <circle cx="512" cy="332" r="28" fill="white"/>
+        <circle cx="786" cy="393" r="28" fill="white"/>
+        <!-- pivot -->
+        <circle cx="512" cy="672" r="46" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="label">A — Outline rays <span style="color:#8FA98F;font-weight:400">(current)</span></div>
+      <div class="desc">Three spray lines radiating from the head, contained by an arc. Precise and technical.</div>
+    </div>
+  </div>
+
+  <!-- B: Filled fan -->
+  <div class="card">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1024" height="1024" fill="#006747"/>
+        <!-- filled sector via clip -->
+        <clipPath id="fan-clip">
+          <rect x="0" y="0" width="1024" height="672"/>
+        </clipPath>
+        <g clip-path="url(#fan-clip)">
+          <!-- outer filled arc -->
+          <path d="M 512 672 L 148 672 A 364 364 0 0 1 876 672 Z" fill="white"/>
+          <!-- cut inner -->
+          <path d="M 512 672 L 248 672 A 264 264 0 0 1 776 672 Z" fill="#006747"/>
+        </g>
+        <!-- three ray lines to show coverage sectors -->
+        <line x1="512" y1="672" x2="210" y2="376" stroke="#006747" stroke-width="8" stroke-linecap="round"/>
+        <line x1="512" y1="672" x2="512" y2="308" stroke="#006747" stroke-width="8" stroke-linecap="round"/>
+        <line x1="512" y1="672" x2="814" y2="376" stroke="#006747" stroke-width="8" stroke-linecap="round"/>
+        <!-- pivot -->
+        <circle cx="512" cy="672" r="50" fill="white"/>
+        <circle cx="512" cy="672" r="24" fill="#006747"/>
+      </svg>
+    </div>
+    <div>
+      <div class="label">B — Filled fan</div>
+      <div class="desc">Bold solid shape with a donut cutout. Reads instantly at any size. Confident and graphic.</div>
+    </div>
+  </div>
+
+  <!-- C: Arc + teardrop drips -->
+  <div class="card">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1024" height="1024" fill="#006747"/>
+        <!-- thick arc -->
+        <path d="M 190 700 A 370 370 0 0 1 834 700" fill="none" stroke="white" stroke-width="70" stroke-linecap="round"/>
+        <!-- teardrops at arc ends and top -->
+        <!-- left -->
+        <ellipse cx="190" cy="690" rx="32" ry="44" fill="white"/>
+        <!-- center top -->
+        <ellipse cx="512" cy="330" rx="32" ry="44" fill="white"/>
+        <!-- right -->
+        <ellipse cx="834" cy="690" rx="32" ry="44" fill="white"/>
+        <!-- stem + pivot -->
+        <rect x="492" y="490" width="40" height="186" rx="20" fill="white"/>
+        <circle cx="512" cy="680" r="48" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="label">C — Arc + teardrops</div>
+      <div class="desc">Heavy arc with teardrop water drops at each end and center. Feels like rain.</div>
+    </div>
+  </div>
+
+  <!-- D: Concentric arcs (WiFi / signal) -->
+  <div class="card">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1024" height="1024" fill="#006747"/>
+        <!-- 3 concentric arcs -->
+        <path d="M 312 672 A 200 200 0 0 1 712 672" fill="none" stroke="white" stroke-width="52" stroke-linecap="round"/>
+        <path d="M 192 672 A 320 320 0 0 1 832 672" fill="none" stroke="white" stroke-width="44" stroke-linecap="round"/>
+        <path d="M  92 672 A 420 420 0 0 1 932 672" fill="none" stroke="white" stroke-width="36" stroke-linecap="round" opacity=".55"/>
+        <!-- pivot + stem -->
+        <rect x="492" y="460" width="40" height="188" rx="20" fill="white"/>
+        <circle cx="512" cy="672" r="48" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="label">D — Concentric arcs</div>
+      <div class="desc">Three signal rings = coverage zones. Fading outer ring shows range. Instantly readable at 60px.</div>
+    </div>
+  </div>
+
+  <!-- E: Golf flag + spray -->
+  <div class="card">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1024" height="1024" fill="#0B150B"/>
+        <!-- pole -->
+        <rect x="490" y="180" width="28" height="560" rx="14" fill="white"/>
+        <!-- gold pennant flag -->
+        <polygon points="518,188 720,268 518,348" fill="#C9A84C"/>
+        <!-- spray arcs at base -->
+        <path d="M 372 740 A 140 140 0 0 1 652 740" fill="none" stroke="white" stroke-width="40" stroke-linecap="round"/>
+        <path d="M 302 740 A 210 210 0 0 1 722 740" fill="none" stroke="white" stroke-width="32" stroke-linecap="round" opacity=".7"/>
+        <path d="M 242 740 A 270 270 0 0 1 782 740" fill="none" stroke="white" stroke-width="24" stroke-linecap="round" opacity=".4"/>
+        <!-- base circle -->
+        <circle cx="504" cy="740" r="42" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="label">E — Flag + spray</div>
+      <div class="desc">Masters golf flag in gold, spray arcs at base. Dark background for max drama. Most personality.</div>
+    </div>
+  </div>
+
+  <!-- F: Monogram F -->
+  <div class="card">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1024" height="1024" fill="#006747"/>
+        <!-- Bold F -->
+        <rect x="280" y="220" width="90" height="584" rx="12" fill="white"/>
+        <rect x="280" y="220" width="360" height="90" rx="12" fill="white"/>
+        <rect x="280" y="480" width="290" height="82" rx="12" fill="white"/>
+        <!-- gold spray arc off top-right of F -->
+        <path d="M 596 248 A 130 130 0 0 1 740 248" fill="none" stroke="#C9A84C" stroke-width="30" stroke-linecap="round"/>
+        <!-- gold droplets -->
+        <circle cx="596" cy="248" r="18" fill="#C9A84C"/>
+        <circle cx="668" cy="162" r="18" fill="#C9A84C"/>
+        <circle cx="740" cy="248" r="18" fill="#C9A84C"/>
+      </svg>
+    </div>
+    <div>
+      <div class="label">F — F lettermark</div>
+      <div class="desc">The "F" owns the icon. Gold spray arc off the top — subtle but readable. Pairs well with the app name.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,8 +1,22 @@
 import XCTest
+import SwiftUI
 @testable import Fairway
 
 @MainActor
 final class FairwayBlobTests: XCTestCase {
+
+    func testAccentGoldHex() {
+        // Guards against accidental palette drift.
+        // #d4af37 = (212/255, 175/255, 55/255) = (0.831, 0.686, 0.216)
+        let cg = FairwayTheme.accentGold.cgColor
+        guard let comps = cg?.components, comps.count >= 3 else {
+            return XCTFail("accentGold has no RGB components")
+        }
+        XCTAssertEqual(Double(comps[0]), 212.0 / 255.0, accuracy: 0.002)
+        XCTAssertEqual(Double(comps[1]), 175.0 / 255.0, accuracy: 0.002)
+        XCTAssertEqual(Double(comps[2]), 55.0 / 255.0, accuracy: 0.002)
+    }
+
 
     private func freshStore() -> FairwayStore {
         // Use a unique UserDefaults key via a local store; since load() pulls from
