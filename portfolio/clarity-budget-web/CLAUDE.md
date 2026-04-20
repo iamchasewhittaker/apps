@@ -1,5 +1,9 @@
 # Clarity Budget Web — CLAUDE.md
 
+## What This App Is
+
+YNAB-backed Safe-to-Spend (STS) dashboard showing how much is safe to spend today, this week, and this month — plus a 60-day transaction spending breakdown by category. Phase 2 adds a Claude-powered money companion that questions you about spending patterns.
+
 **Stack:** Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Supabase (optional sync)
 
 ## What it does

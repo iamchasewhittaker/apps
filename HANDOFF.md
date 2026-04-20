@@ -86,11 +86,47 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Vercel footprint consolidation (2026-04-20).** Cut Vercel down to 4 projects — Shipyard, Job Search HQ, Ash Reader, Alias Ledger. Removed `funded-web`, `knowledge-base`, `unnamed`, `wellness-tracker`, `chase` (orphan 404). Un-archived all 6 dirs from `portfolio/archive/` back to `portfolio/*` as active-local (`ai-dev-mastery`, `app-forge`, `growth-tracker`, `money`, `roller-task-tycoon`, `shortcut-reference`). Fixed `ash-reader` git-connect. Linear MCP installed (awaiting user OAuth via `/mcp`). |
-| **Next**       | 1. **Phase 4 — Shipyard scan:** `cd portfolio/shipyard && npx tsx scripts/scan.ts` to repopulate `projects` table with new `vercel_project`, `live_url`, `has_live_url`, `status`. 2. **Phase 5 — Linear sync** (via MCP once authorized): strip stale Vercel URLs from descriptions, mark un-archived projects Active, create projects for any without Linear representation. 3. **Shipyard iOS Phase 2** — web auth landed; iOS now unblocked. See `portfolio/shipyard-ios/docs/PHASE_2_KICKOFF.md`. 4. **Job Search HQ:** Wave 4 #3 — outreach cadence timeline per contact. 5. **Unnamed iOS:** streak gate — 7-day clock started 2026-04-17, Phase 2 unlocks ~2026-04-24. |
-| **Blockers**   | **Linear MCP OAuth** — MCP server added (`claude mcp add --transport sse linear …`) but unauthenticated. Fix: user runs `/mcp` → select Linear → approve browser OAuth. Phase 5 falls back to GraphQL + `LINEAR_API_KEY` if OAuth is skipped. |
-| **Last touch** | 2026-04-20 — Phases 1–3 of Vercel consolidation shipped: 5 Vercel projects removed, 6 dirs un-archived via `git mv`, root `/CLAUDE.md` + `/ROADMAP.md` rewritten (9 URL→local transitions + `money` row added + Shipyard URL updated to `shipyard-sandy-seven.vercel.app`), per-app docs next. |
+| **Focus**      | **Clarity Budget Web — Session 1 shipped (2026-04-20).** Transaction fetch (60d, split-tx aware) + "Where your money went" spending breakdown (top-8 categories). `chase_budget_web_tx_v1` local-only cache. Session 2 queued: filters + SpendingBreakdown + TransactionList. Linear project created for Clarity Budget (web). |
+| **Next**       | 1. **clarity-budget-web Session 2** — `lib/aggregations.ts`, `TransactionFilters`, `SpendingBreakdown`, `TransactionList` (see `portfolio/clarity-budget-web/ROADMAP.md`). 2. **Shipyard scan:** `cd portfolio/shipyard && npx tsx scripts/scan.ts` then `npx tsx scripts/sync-projects.ts` to push CLAUDE.md metadata. 3. **Job Search HQ:** Wave 4 #3 — outreach cadence timeline per contact. 4. **Unnamed iOS:** streak gate ends ~2026-04-24; Phase 2 planning starts then. 5. **Wellness:** split TrackerTab.jsx (WHI-63). |
+| **Blockers**   | None. |
+| **Last touch** | 2026-04-20 — clarity-budget-web Session 1: `fetchTransactions`, spending breakdown, Phase 0 docs (CLAUDE.md / HANDOFF.md / ROADMAP.md / CHANGELOG.md / LEARNINGS.md). Root CLAUDE.md + Shipyard metadata + HANDOFF updated. Linear project created (Clarity Budget Web). |
 
+
+---
+
+## Fresh session prompt — Clarity Budget Web Session 2
+
+Use a **new** chat after `checkpoint`. Paste:
+
+```
+Read CLAUDE.md and HANDOFF.md first, then portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md.
+
+Goal: Clarity Budget Web — Session 2 (filters + full spending visibility).
+
+State (2026-04-20): Session 1 shipped — fetchTransactions (60-day window, split-tx aware),
+spending breakdown card (top-8 categories + total spent), 15-min tx cache in
+chase_budget_web_tx_v1 (local-only, never synced). Phase 0 docs created.
+
+Session 2 scope:
+1. lib/aggregations.ts — group-by helpers: by category, by payee, by week, by account
+2. lib/filterState.ts — filter shape (dateRange, categories[], accounts[], payeeSearch, amountMin/Max)
+3. components/TransactionFilters.tsx — filter bar: date presets (week/month/last month/90d) + payee search
+4. components/SpendingBreakdown.tsx — tabbed: Top Categories / Top Payees / Weekly trend
+5. components/TransactionList.tsx — filterable + sortable list (date/amount/payee), inline role tags
+6. Wire: filters feed both SpendingBreakdown and TransactionList
+
+Key files:
+- components/HomeDashboard.tsx — shell; spending useMemos live here for now, move to aggregations.ts
+- lib/ynab.ts — YNABTransaction type (subtransactions[] for splits)
+- lib/constants.ts — YNAB_TX_KEY, T (theme tokens)
+- lib/metrics.ts — STS math (don't touch)
+
+Conventions: no component libs, all inline styles via T tokens, no TypeScript strict new rules.
+Transaction amounts in milliunits ÷ 1000 = dollars. Negative = outflow.
+
+Run checkpoint before edits. Update CHANGELOG / ROADMAP / HANDOFF when done.
+For Reese. For Buzz. Forward — no excuses.
+```
 
 ---
 
