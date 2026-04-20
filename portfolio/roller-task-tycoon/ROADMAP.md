@@ -9,6 +9,7 @@
 - [x] Deploy to Vercel — **https://roller-task-tycoon.vercel.app**
 - [ ] Add `VITE_SUPABASE_*` on Vercel + redeploy; add URL to Supabase redirect allowlist
 - [x] Vercel **Root Directory** was `portfolio/roller-task-tycoon` before archival → now `portfolio/archive/roller-task-tycoon` if redeployed
+- [x] **Vercel build fix (2026-04-20):** `vite` moved to `dependencies`; `installCommand` added to `vercel.json`; force-deploy busted poisoned cache → all builds green
 
 ## Next
 

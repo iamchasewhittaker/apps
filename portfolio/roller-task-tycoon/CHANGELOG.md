@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Vercel build:** `vite: command not found` (exit 127) on every cloud build. Root cause: Vercel sets `NODE_ENV=production`, which causes npm to skip `devDependencies`; a poisoned build cache compounded the issue by bypassing the install step entirely. Fix: moved `vite` from `devDependencies` → `dependencies` in `package.json`; added `"installCommand": "npm install --include=dev"` to `vercel.json`; force-deployed to bust the stale cache. `roller-task-tycoon.vercel.app` is now green.
 - **Sync startup:** `pull` now uses a fresh `loadState()` snapshot (and `hasLoaded` is set only after `pull` finishes) so a fast local save is not compared against a stale `_syncAt` and overwritten by older remote data.
 - **Notifications:** toast HTML escapes user-controlled task text so notification `innerHTML` cannot inject markup.
 
