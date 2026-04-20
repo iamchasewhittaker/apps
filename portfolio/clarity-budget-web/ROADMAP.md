@@ -8,12 +8,12 @@
 - [x] "Where your money went" card — top-8 categories by spend + total spent
 - [x] Phase 0 docs (CLAUDE.md, HANDOFF.md, ROADMAP.md, CHANGELOG.md, LEARNINGS.md)
 
-### Session 2 — Filters + Full List
-- [ ] `lib/aggregations.ts` — by category, by payee, by week, by account helpers
-- [ ] `lib/filterState.ts` — filter shape (date range, category[], account[], payee, amount)
-- [ ] `components/TransactionFilters.tsx` — filter bar UI
-- [ ] `components/SpendingBreakdown.tsx` — tabbed breakdown (category / payee / weekly)
-- [ ] `components/TransactionList.tsx` — filtered + sortable transaction list
+### Session 2 ✅ Done (2026-04-20)
+- [x] `lib/aggregations.ts` — `flattenSpendLines`, `groupByCategory/Payee/Account/Week`, `totalSpent`, `outflowCount`, `roleColor`
+- [x] `lib/filterState.ts` — `FilterState`, `applyFilters`, `useUrlFilterState` hook (URL persistence)
+- [x] `components/TransactionFilters.tsx` — collapsible bar, count badge, Clear, debounced payee search
+- [x] `components/SpendingBreakdown.tsx` — tabbed breakdown (category / payee / weekly)
+- [x] `components/TransactionList.tsx` — sortable list with role chips + inflow highlighting + "Show more"
 
 ## Phase 2 — Money Companion
 

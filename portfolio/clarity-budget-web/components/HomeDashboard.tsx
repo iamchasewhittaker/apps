@@ -30,6 +30,11 @@ import {
   fetchTransactions,
   type YNABTransaction,
 } from "@/lib/ynab";
+import { flattenSpendLines } from "@/lib/aggregations";
+import { applyFilters, useUrlFilterState } from "@/lib/filterState";
+import { TransactionFilters } from "./TransactionFilters";
+import { SpendingBreakdown } from "./SpendingBreakdown";
+import { TransactionList } from "./TransactionList";
 
 const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
   { value: "mortgage", label: "Mortgage / Housing" },
@@ -281,58 +286,17 @@ export function HomeDashboard() {
     void refreshMetrics();
   };
 
-  // ── Spending analytics (all computed from raw transactions) ──────────────
+  // ── Spending analytics — flatten once, then filter ───────────────────────
 
-  const spendByCategory = useMemo(() => {
-    const map: Record<string, number> = {};
-    for (const t of transactions) {
-      if (t.deleted) continue;
-      if (t.subtransactions?.length) {
-        for (const sub of t.subtransactions) {
-          if (sub.amount >= 0 || sub.deleted) continue;
-          const key = sub.category_name || t.category_name || "Uncategorized";
-          map[key] = (map[key] ?? 0) + Math.abs(sub.amount) / 1000;
-        }
-      } else {
-        if (t.amount >= 0) continue;
-        const key = t.category_name || "Uncategorized";
-        map[key] = (map[key] ?? 0) + Math.abs(t.amount) / 1000;
-      }
-    }
-    return Object.entries(map)
-      .map(([name, amount]) => ({ name, amount }))
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 8);
-  }, [transactions]);
+  const spendLines = useMemo(
+    () => flattenSpendLines(transactions, blob.ynabCategoryMappings),
+    [transactions, blob.ynabCategoryMappings]
+  );
 
-  const totalSpent = useMemo(() => {
-    return transactions.reduce((sum, t) => {
-      if (t.deleted) return sum;
-      if (t.subtransactions?.length) {
-        return (
-          sum +
-          t.subtransactions
-            .filter((s) => s.amount < 0 && !s.deleted)
-            .reduce((ss, s) => ss + Math.abs(s.amount) / 1000, 0)
-        );
-      }
-      return t.amount < 0 ? sum + Math.abs(t.amount) / 1000 : sum;
-    }, 0);
-  }, [transactions]);
-
-  const txDateRange = useMemo(() => {
-    if (!transactions.length) return "";
-    const sorted = [...transactions].sort((a, b) => a.date.localeCompare(b.date));
-    const from = new Date(sorted[0].date + "T12:00:00");
-    const to = new Date(sorted[sorted.length - 1].date + "T12:00:00");
-    const fmtD = (d: Date) =>
-      d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-    return `${fmtD(from)} – ${fmtD(to)}`;
-  }, [transactions]);
-
-  const outflowCount = useMemo(
-    () => transactions.filter((t) => t.amount < 0 && !t.deleted).length,
-    [transactions]
+  const [filters, setFilters] = useUrlFilterState();
+  const filteredLines = useMemo(
+    () => applyFilters(spendLines, filters),
+    [spendLines, filters]
   );
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -345,8 +309,7 @@ export function HomeDashboard() {
     !loading &&
     !hasMetrics &&
     (!ynabToken.trim() || !blob.ynabBudgetId || !blob.ynabCategoryMappings.length);
-  const hasSpending = spendByCategory.length > 0;
-  const maxCategorySpend = spendByCategory[0]?.amount ?? 1;
+  const hasSpending = spendLines.length > 0;
 
   const signIn = async () => {
     setAuthMsg(null);
@@ -508,81 +471,14 @@ export function HomeDashboard() {
           </div>
         )}
 
-        {/* ── Where your money went ── */}
+        {/* ── Filters + spending breakdown + list ── */}
         {hasSpending && (
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <p
-                className="text-xs font-semibold uppercase tracking-wider"
-                style={{ color: T.muted }}
-              >
-                Where your money went
-              </p>
-              <span className="text-xs" style={{ color: T.muted }}>
-                {txDateRange}
-              </span>
-            </div>
-
-            <div
-              className="rounded-[20px] border p-5"
-              style={{ borderColor: T.border, background: T.surface }}
-            >
-              <div className="flex items-baseline justify-between">
-                <div>
-                  <p
-                    className="text-[11px] font-semibold uppercase tracking-wide"
-                    style={{ color: T.muted }}
-                  >
-                    Total spent
-                  </p>
-                  <p
-                    className="mt-1 text-[2rem] font-bold leading-none tabular-nums"
-                    style={{ color: T.text }}
-                  >
-                    {fmt(totalSpent)}
-                  </p>
-                </div>
-                <span className="text-xs" style={{ color: T.muted }}>
-                  {outflowCount} transactions
-                </span>
-              </div>
-
-              <div className="mt-5 space-y-3.5">
-                {spendByCategory.map((cat, i) => (
-                  <div key={cat.name}>
-                    <div className="mb-1 flex items-center justify-between">
-                      <span
-                        className="truncate pr-3 text-xs"
-                        style={{ color: T.text, maxWidth: "72%" }}
-                        title={cat.name}
-                      >
-                        {cat.name}
-                      </span>
-                      <span
-                        className="shrink-0 tabular-nums text-xs"
-                        style={{ color: T.muted }}
-                      >
-                        {fmt(cat.amount)}
-                      </span>
-                    </div>
-                    <div
-                      className="h-1.5 overflow-hidden rounded-full"
-                      style={{ background: T.border }}
-                    >
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${(cat.amount / maxCategorySpend) * 100}%`,
-                          background: T.accent,
-                          opacity: Math.max(0.35, 1 - i * 0.09),
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+          <div className="space-y-4">
+            <TransactionFilters
+              filters={filters}
+              onChange={setFilters}
+              lines={spendLines}
+            />
             {txLoading && (
               <p className="animate-pulse text-xs" style={{ color: T.muted }}>
                 Refreshing transactions…
@@ -593,7 +489,9 @@ export function HomeDashboard() {
                 {txErr}
               </p>
             )}
-          </section>
+            <SpendingBreakdown lines={filteredLines} />
+            <TransactionList lines={filteredLines} />
+          </div>
         )}
 
         {showEmpty && !loading && (
