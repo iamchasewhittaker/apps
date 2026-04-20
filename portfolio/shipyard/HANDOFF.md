@@ -2,11 +2,17 @@
 
 ## State
 
-| Field      | Value                                                              |
-| ---------- | ------------------------------------------------------------------ |
-| Focus      | Phase 1 live                                                       |
-| Next       | Set up Supabase RLS + Phase 2 (editable fields + learnings ingestion) |
-| Last touch | 2026-04-18                                                         |
+| Field      | Value                                                                 |
+| ---------- | --------------------------------------------------------------------- |
+| Focus      | Fleet dashboard working end-to-end (auth + data + render)             |
+| Next       | Run scanner regularly; set up auto-scan cron (nightly launchd job)   |
+| Last touch | 2026-04-20                                                            |
+
+## Production URL
+
+**Stable alias (always use this):** https://shipyard-iamchasewhittakers-projects.vercel.app
+
+> Never link hash-specific `*-abc123.vercel.app` URLs in docs — they are immutable snapshots and will go stale the next deploy.
 
 ## Phase 1 — Complete
 
@@ -17,11 +23,27 @@
 - Seed script (`scripts/seed-from-audit.ts`) imported the Apr 15 audit CSV (29 projects)
 - 28 additional projects live-scanned and upserted
 
-## Phase 2 — What's Next
+## Phase 2 — In Progress
 
-1. **Supabase RLS** — lock down all tables; add auth gate (email OTP or Supabase Magic Link)
-2. **Editable fields** — inline editing on Ship detail page (status, phase, notes, blockers)
-3. **Learnings ingestion** — parse `LEARNINGS.md` from each scanned project and upsert into `learnings` table
-4. **WIP enforcement** — wire up `wip_decisions` table to actively block picking a second active project
-5. **Review prompts** — surface the 6 shared review prompts dynamically from the review flow
-6. **Linear sync** — Harbor Master page: pull open issues from Linear API and map to ships
+- [x] **Supabase RLS + auth gate** — `proxy.ts` with owner-email check; fixed 2026-04-20 (the `config` export name bug)
+- [x] **Login page** — email + password via `signInWithPassword`; owner user seeded in Supabase Auth dashboard
+- [ ] Editable fields on Ship detail
+- [ ] Learnings ingestion from each project's `LEARNINGS.md`
+- [ ] WIP enforcement via `wip_decisions`
+- [ ] Dynamic review prompts
+- [ ] Linear Harbor Master sync
+
+## Phase 3 — Next Up
+
+1. **Auto-scan cron** — nightly run so fleet data never goes stale (`launchd` plist or GitHub Actions)
+2. Editable Ship detail fields
+3. Learnings ingestion
+
+## Deploy
+
+```bash
+cd ~/Developer/chase/portfolio/shipyard
+vercel --prod --archive=tgz
+```
+
+Stable alias updates automatically on each production deploy.

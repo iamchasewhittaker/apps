@@ -5,7 +5,7 @@ import { createSupabaseBrowserClient as createBrowserClient } from '@/lib/supaba
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -14,15 +14,12 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     const supabase = createBrowserClient();
-    const { error: err } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${location.origin}/auth/confirm` },
-    });
+    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (err) {
       setError(err.message);
     } else {
-      setSent(true);
+      window.location.href = '/';
     }
   }
 
@@ -34,41 +31,50 @@ export default function LoginPage() {
           <p className="text-sm text-muted">Fleet command — captains only</p>
         </div>
 
-        {sent ? (
-          <div className="rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm text-success text-center">
-            Magic link sent to <strong>{email}</strong>. Check your inbox.
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label htmlFor="email" className="text-xs font-medium text-muted uppercase tracking-wider">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+            />
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-medium text-muted uppercase tracking-wider">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
-              />
-            </div>
 
-            {error && (
-              <p className="text-xs text-danger">{error}</p>
-            )}
+          <div className="space-y-1.5">
+            <label htmlFor="password" className="text-xs font-medium text-muted uppercase tracking-wider">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+            />
+          </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-            >
-              {loading ? 'Sending…' : 'Send magic link'}
-            </button>
-          </form>
-        )}
+          {error && (
+            <p className="text-xs text-danger">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+          >
+            {loading ? 'Signing in…' : 'Sign in'}
+          </button>
+        </form>
       </div>
     </div>
   );

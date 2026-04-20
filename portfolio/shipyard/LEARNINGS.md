@@ -1,5 +1,19 @@
 # Learnings — Shipyard
 
+## 2026-04-20 (auth / login debugging session)
+
+**Immutable Vercel deploy URLs go stale — always use the stable project alias.**
+The `CLAUDE.md` entry pointed at a hash-specific URL (`shipyard-abc123-iamchasewhittakers-projects.vercel.app`) from a pre-Phase-2 deploy. That URL is frozen to that commit forever. Three days and several deploys later the "production" link in docs was pointing at old code with no auth gate and an earlier schema. Fix: **always link `shipyard-iamchasewhittakers-projects.vercel.app`** (the project alias). The alias rolls forward on every `--prod` deploy; hash URLs never do. Rule for the portfolio: no hash URLs in docs, ever.
+
+**Next.js 16 `proxy.ts` requires `export const config` — not `proxyConfig`.**
+The matcher only registers if the exported name is exactly `config`. I had named it `proxyConfig` (matching the function name `proxy`), which Next.js silently ignores — no error, no warning, middleware just never runs. Symptom: auth gate looked correct in code but every request reached the page unauthenticated. Fix: rename to `export const config = { matcher: [...] }`. The `proxy` function name is correct (v16 renamed `middleware` → `proxy`); only the config export name is fixed.
+
+**Shared Supabase project + magic links = redirect URL whitelist hell.**
+All portfolio apps share `unqtnnxlltiadzbqpyhh`. Supabase's redirect URL whitelist is project-wide, so every new app's magic-link callback has to be added there, and the default email template only sends the OTP code (not a link). For a single-user internal tool like Shipyard, **email + password is simpler and more reliable**: one user row, no redirect URL plumbing, no email template customization. Save magic links for multi-user consumer apps.
+
+**The dashboard was never a data problem.**
+Debugging walked through: "projects query wrong?", "RLS too tight?", "client not receiving data?" — none of it. The `projects` table had 43 rows the whole time. The empty screen was 100% auth (docs pointing at old deploy URL with no gate on a stale schema). **Lesson: when a dashboard is empty, verify the URL you're testing is the current deploy before chasing data bugs.**
+
 ## 2026-04-16 (Phase 1 build session)
 
 **GitHub repo has a 10-project limit for git connections.**
