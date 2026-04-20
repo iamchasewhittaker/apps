@@ -69,7 +69,7 @@
 | Clarity Triage (iOS) | Productivity | Daily capacity, ideas, and wins | — | — |
 | Clarity Time (iOS) | Productivity | Time sessions + scripture streak | — | — |
 | Clarity Budget (iOS) | Finance | YNAB-backed STS month/week/day budget | — | — |
-| Clarity Budget (web) | Finance | YNAB-backed STS dashboard + transaction spending breakdown + money companion (Phase 2) | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Clarity Budget (web) | Finance | YNAB-backed STS dashboard + transaction spending breakdown + money companion (Phase 2) | [apps](https://github.com/iamchasewhittaker/apps) | [Linear](https://linear.app/whittaker/project/clarity-budget-web-b40f3edb4be0) |
 | Clarity Growth (iOS) | Lifestyle | 7 growth areas with streaks | — | — |
 | Clarity Command (iOS) | Productivity | Mission + Scoreboard + Settings — daily accountability | — | — |
 | Clarity Command | Dashboard | Daily accountability hub on the web | [apps](https://github.com/iamchasewhittaker/apps) | — |
