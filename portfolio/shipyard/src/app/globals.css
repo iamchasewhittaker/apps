@@ -6,8 +6,8 @@
   --white: #F2EEE6;
   --steel: #4A90DE;
   --gold: #D7AA3A;
-  --dim: #346090;
-  --dimmer: #141A4C;
+  --dim: #7AA6D6;
+  --dimmer: #2A3A7A;
   --ghost: #0D1A34;
 
   --background: var(--bg);
@@ -70,8 +70,8 @@ body {
     to bottom,
     transparent 0,
     transparent 39px,
-    rgba(20, 26, 76, 0.35) 39px,
-    rgba(20, 26, 76, 0.35) 40px
+    rgba(122, 166, 214, 0.18) 39px,
+    rgba(122, 166, 214, 0.18) 40px
   );
   background-size: 100% 40px;
 }

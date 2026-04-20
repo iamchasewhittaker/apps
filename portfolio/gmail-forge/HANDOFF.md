@@ -4,12 +4,14 @@
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 LIVE · Sort button fully wired (classifies + applies labels via Apps Script doPost) · Guide button + in-extension overlay + standalone guide.html minisite · extension context invalidation bug fixed |
-| **Last touch** | Apr 18, 2026 — wired Sort to apply labels; added ? Guide button to toolbar with full overlay; built guide.html minisite; fixed "Extension context invalidated" crash on extension reload |
-| **Next** | Off-filesystem renames → Subscriptions backfill → enter Web App URL + Token in popup settings → Gemini when ready |
+| **Focus** | Phase 3 LIVE + observability · Dashboard view added to Apps Script web app (`?view=dashboard&token=…`) — live label counts, Review Queue size, recent auto-sort activity, trigger health |
+| **Last touch** | Apr 20, 2026 — added `dashboard.gs` + `dashboard.html`; branched `doGet` on `?view=dashboard` (default path preserves Spend Radar's Refresh All Apps trigger) |
+| **Next** | `clasp push` → redeploy web app → bookmark dashboard URL → off-filesystem renames → Subscriptions backfill → Gemini when ready |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |
+| **Web App URL** | `https://script.google.com/macros/s/AKfycbyaWjWoL_5tHfsVpCqhRJamduer13-q_p57D6YT3XPUB7zmW0Rgef2EY4Ji243AUDqLRQ/exec` |
+| **Dashboard** | `https://script.google.com/macros/s/AKfycbyaWjWoL_5tHfsVpCqhRJamduer13-q_p57D6YT3XPUB7zmW0Rgef2EY4Ji243AUDqLRQ/exec?view=dashboard&token=<TRIGGER_TOKEN>` |
 | **Filter count** | 69 (XML) + 69 (JS rules mirroring XML) |
 | **File location** | `/Users/chase/Developer/chase/portfolio/gmail-forge/` |
 | **Classifier mode** | `RULES_ONLY` (Gemini free-tier quota exhausted; switch to `GEMINI` once billing enabled) |
@@ -30,10 +32,17 @@
 - [x] Extension context invalidation bug — fixed; graceful teardown + "refresh tab" toast when extension reloads with Gmail open
 - [x] Review Queue sheet tab — auto-created on first unknown sender
 - [x] Subscriptions tab — menu-driven refresh available; **not yet run**
+- [x] Dashboard view (`?view=dashboard`) — added Apr 20; **pending redeploy** (`cd apps-script && npx clasp push --force`, then New deployment → copy URL)
 
 ---
 
 ## Remaining / Next Steps
+
+### 0. ~~Deploy Dashboard View~~ ✅ DONE (Apr 20)
+
+- Pushed 5 files via clasp; created first-ever web app deployment (Version 1)
+- Web App URL recorded above
+- **One step left:** open dashboard URL, replace `<TRIGGER_TOKEN>` with value from Script Properties → bookmark it
 
 ### 1. ~~Wire Sort Button to Apply Labels~~ ✅ DONE (Apr 18)
 

@@ -42,6 +42,10 @@ export interface Project {
   jtbd_primary: string | null;
   recommendation: string | null;
   next_action: string | null;
+  category: string | null;
+  tagline: string | null;
+  summary: string | null;
+  priority_rank: number | null;
   localstorage_keys: string[];
   supabase_tables: string[];
   external_apis: string[];

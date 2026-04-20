@@ -1,5 +1,14 @@
 # Gmail Forge — Changelog
 
+## [Unreleased]
+
+### Dashboard view (new)
+- Added `apps-script/dashboard.gs` — data-gathering functions: `getLabelCounts_()` (today / 7d / 30d per label via `GmailApp.search` with 500-thread cap), `getAutoSortTodayCount_()`, `getRecentActivity_(10)`, `getReviewQueueInfo_()`, `getHealthInfo_()`
+- Added `apps-script/dashboard.html` — single-page HTML with inline CSS (matches guide.html dark theme); renders stats, label counts table, recent activity table
+- Modified `doGet(e)` in `apps-script/auto-sort.gs` — branches on `?view=dashboard`; default path still runs `autoSort()` for Spend Radar's "Refresh All Apps" integration (no breaking change)
+- Auth: same `TRIGGER_TOKEN` as `doPost` — required query param
+- Pending: `clasp push --force` + New deployment version → bookmark `<webAppUrl>?view=dashboard&token=<TRIGGER_TOKEN>`
+
 ## [Apr 18, 2026] — Sort wired + Guide + Context fix
 
 ### Sort button — label apply (complete)

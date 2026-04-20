@@ -510,20 +510,45 @@ function healthCheck() {
 }
 
 // ---------------------------------------------------------------------------
-// Tokenized web app — lets Spend Radar's "Refresh All Apps" button trigger
-// autoSort() over HTTP. Deploy: script.google.com → Deploy → New deployment →
-// Web app (Execute as Me, Anyone has access) → copy URL. Script Property
-// TRIGGER_TOKEN must be set to a UUID that matches Spend Radar's
-// GMAIL_FORGE_TRIGGER_TOKEN Script Property.
+// Tokenized web app — two modes:
+//   (default)        Spend Radar's "Refresh All Apps" → runs autoSort() over HTTP
+//   ?view=dashboard  Renders the dashboard HTML (see dashboard.gs / dashboard.html)
+//
+// Deploy: script.google.com → Deploy → New deployment → Web app
+// (Execute as Me, Anyone has access) → copy URL. Script Property TRIGGER_TOKEN
+// must be set to a UUID that matches Spend Radar's GMAIL_FORGE_TRIGGER_TOKEN.
 // ---------------------------------------------------------------------------
 
 function doGet(e) {
   var expected = PropertiesService.getScriptProperties().getProperty('TRIGGER_TOKEN');
-  if (!expected || !e || !e.parameter || e.parameter.token !== expected) {
+  var view = e && e.parameter ? e.parameter.view : null;
+  var tokenOk = !!expected && !!e && !!e.parameter && e.parameter.token === expected;
+
+  if (!tokenOk) {
+    if (view === 'dashboard') {
+      return HtmlService
+        .createHtmlOutput('<h1 style="font-family:sans-serif;color:#f06464">401 Unauthorized</h1>' +
+                          '<p style="font-family:sans-serif;color:#8892a4">Append ?token=&lt;TRIGGER_TOKEN&gt;&amp;view=dashboard to the web app URL.</p>')
+        .setTitle('Gmail Forge — Unauthorized');
+    }
     return ContentService
       .createTextOutput(JSON.stringify({ ok: false, error: 'unauthorized' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+
+  if (view === 'dashboard') {
+    try {
+      return renderDashboard_();
+    } catch (err) {
+      return HtmlService
+        .createHtmlOutput('<h1 style="font-family:sans-serif;color:#f06464">Dashboard error</h1>' +
+                          '<pre style="font-family:ui-monospace,monospace;color:#e2e8f0;background:#1a1d27;padding:12px;border-radius:8px">' +
+                          String(err).replace(/</g, '&lt;') + '</pre>')
+        .setTitle('Gmail Forge — Error');
+    }
+  }
+
+  // Default: Spend Radar's Refresh All Apps trigger
   try {
     autoSort();
     return ContentService

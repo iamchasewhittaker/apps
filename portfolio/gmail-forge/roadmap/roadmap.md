@@ -94,6 +94,7 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 
 | Date | Change |
 |---|---|
+| Apr 20, 2026 | **Dashboard view:** added `apps-script/dashboard.gs` + `dashboard.html`; branched `doGet` on `?view=dashboard` (preserves Spend Radar trigger); shows live label counts (today/7d/30d), auto-sort today count, Review Queue size, recent activity, trigger health — single URL to verify filtering health |
 | Apr 13, 2026 | **Phase 3 kickoff:** Built Apps Script auto-sorter (`apps-script/auto-sort.gs` + `rules.gs`) with Gemini classification + Rules-only fallback + Google Sheets logging; built Chrome extension (`extension/`) with label tab bar, Sort button, settings popup, dark mode |
 | Apr 13, 2026 | Started Phase 2 mislabeled sender audit loop; created `roadmap/mislabel-audit.md`; baseline review found no new confirmed Newsletter vs Cold Email reclassifications |
 | Apr 12, 2026 | Church filter upgraded to domain-level (churchofjesuschrist.org); added Google Calendar notifications filter — total now 69 |

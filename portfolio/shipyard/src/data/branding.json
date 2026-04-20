@@ -1,0 +1,1162 @@
+{
+  "ai-dev-mastery": {
+    "slug": "ai-dev-mastery",
+    "appName": "App  AI Dev Mastery",
+    "colors": [
+      {
+        "hex": "#e8a87c",
+        "name": "Claude Code"
+      },
+      {
+        "hex": "#a8d8ea",
+        "name": "Claude Console"
+      },
+      {
+        "hex": "#7ec8c8",
+        "name": "Cursor"
+      },
+      {
+        "hex": "#b8a9e8",
+        "name": "Project Management"
+      },
+      {
+        "hex": "#82c9a0",
+        "name": "AI Fundamentals"
+      },
+      {
+        "hex": "#c792ea",
+        "name": "Prompt Engineering"
+      },
+      {
+        "hex": "#ff8c69",
+        "name": "Zapier & Automations"
+      },
+      {
+        "hex": "#f9c74f",
+        "name": "Sunsama & Linear"
+      },
+      {
+        "hex": "#d4a5f5",
+        "name": "Claude Cowork"
+      },
+      {
+        "hex": "#ff7262",
+        "name": "Figma"
+      },
+      {
+        "hex": "#a8c8f8",
+        "name": "NotebookLM"
+      },
+      {
+        "hex": "#f4a9c0",
+        "name": "Career & Job Search"
+      },
+      {
+        "hex": "#ffd166",
+        "name": "Apple Shortcuts"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/ai-dev-mastery/icon.png",
+    "notes": "**Purpose:** One place for **identity + visual rules**. Link here from `CLAUDE.md` instead of repeating specs in chats.",
+    "sourceFile": "portfolio/ai-dev-mastery/docs/BRANDING.md"
+  },
+  "alias-ledger": {
+    "slug": "alias-ledger",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "app-forge": {
+    "slug": "app-forge",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "app-hub": {
+    "slug": "app-hub",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "ash-reader": {
+    "slug": "ash-reader",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "ash-reader-ios": {
+    "slug": "ash-reader-ios",
+    "appName": "App  Ash Reader (iOS)",
+    "colors": [
+      {
+        "hex": "#f5e300",
+        "name": "Accent / Electric Yellow",
+        "usage": "Tab tint, Copy button, progress bar, capsule active state, numbered labels"
+      },
+      {
+        "hex": "#0f0f0f",
+        "name": "Accent Ink",
+        "usage": "Text on yellow, icon foreground"
+      },
+      {
+        "hex": "#1a1a1a",
+        "name": "Surface",
+        "usage": "Cards, accordion rows"
+      },
+      {
+        "hex": "#1e1e22",
+        "name": "Surface Hover",
+        "usage": "Accordion expanded state"
+      },
+      {
+        "hex": "#2a2a2a",
+        "name": "Border",
+        "usage": "Card strokes, dividers"
+      },
+      {
+        "hex": "#e8e8e8",
+        "name": "Body text",
+        "usage": "Primary readable text"
+      },
+      {
+        "hex": "#b0b0b0",
+        "name": "Secondary text",
+        "usage": "Subtitles, counts"
+      },
+      {
+        "hex": "#777777",
+        "name": "Muted text",
+        "usage": "Theme indices, section headers"
+      },
+      {
+        "hex": "#6dbf6d",
+        "name": "Done / green",
+        "usage": "Checkmark fill, success messages"
+      },
+      {
+        "hex": "#151515"
+      },
+      {
+        "hex": "#2e2e2e"
+      },
+      {
+        "hex": "#888888"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "SF Pro"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/ash-reader-ios/icon.png",
+    "notes": "Single source for identity + visual rules. Link here from `CLAUDE.md` — do not restate hex codes or icon geometry in session prompts.",
+    "sourceFile": "portfolio/ash-reader-ios/docs/BRANDING.md"
+  },
+  "clarity-budget-ios": {
+    "slug": "clarity-budget-ios",
+    "appName": "App  Clarity Budget",
+    "colors": [],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-budget-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo template. Session prompts: *“Follow `docs/BRANDING.md`”* — do not paste full icon rules into every chat.",
+    "sourceFile": "portfolio/clarity-budget-ios/docs/BRANDING.md"
+  },
+  "clarity-budget-web": {
+    "slug": "clarity-budget-web",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "clarity-checkin-ios": {
+    "slug": "clarity-checkin-ios",
+    "appName": "App  Clarity Check-in",
+    "colors": [],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-checkin-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo template. Session prompts: *“Follow `docs/BRANDING.md`”* — do not paste full icon rules into every chat.",
+    "sourceFile": "portfolio/clarity-checkin-ios/docs/BRANDING.md"
+  },
+  "clarity-command": {
+    "slug": "clarity-command",
+    "appName": "Clarity Command",
+    "colors": [
+      {
+        "hex": "#0a0d14",
+        "name": "bg",
+        "usage": "App canvas — darker than other Clarity apps, heavier weight"
+      },
+      {
+        "hex": "#111520",
+        "name": "surface",
+        "usage": "Cards, modals"
+      },
+      {
+        "hex": "#181e2e",
+        "name": "surfaceHigh",
+        "usage": "Inputs, elevated surfaces"
+      },
+      {
+        "hex": "#1e2638",
+        "name": "border",
+        "usage": "Dividers, card borders"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "text",
+        "usage": "Primary text"
+      },
+      {
+        "hex": "#6b7280",
+        "name": "muted",
+        "usage": "Secondary text, labels"
+      },
+      {
+        "hex": "#c8a84b",
+        "name": "accent",
+        "usage": "Gold — covenant, purpose, identity. Primary CTAs."
+      },
+      {
+        "hex": "#221d0e",
+        "name": "accentLight",
+        "usage": "Gold tint background"
+      },
+      {
+        "hex": "#3d9970",
+        "name": "green",
+        "usage": "Met targets, streaks, success"
+      },
+      {
+        "hex": "#0d2b1e",
+        "name": "greenLight",
+        "usage": "Green tint background"
+      },
+      {
+        "hex": "#e05050",
+        "name": "red",
+        "usage": "Missed targets, urgency counter, conviction"
+      },
+      {
+        "hex": "#2b0f0f",
+        "name": "redLight",
+        "usage": "Red tint background"
+      },
+      {
+        "hex": "#e0b030",
+        "name": "yellow",
+        "usage": "Partial completion"
+      },
+      {
+        "hex": "#4a7fc0",
+        "name": "blue",
+        "usage": "Stats, informational"
+      }
+    ],
+    "fonts": [],
+    "iconPath": "/branding/clarity-command/icon.png",
+    "notes": "**Name:** Clarity Command  \n**Tagline:** Daily accountability. Rooted in faith. Built for your family.  \n**Feel:** Military briefing meets morning devotional. Clean, direct, no fluff. This app means business.",
+    "sourceFile": "portfolio/clarity-command/docs/BRANDING.md"
+  },
+  "clarity-command-ios": {
+    "slug": "clarity-command-ios",
+    "appName": "App  Clarity Command",
+    "colors": [
+      {
+        "hex": "#c8a84b",
+        "name": "Gold accent",
+        "usage": "Primary action buttons, tab highlights, progress indicators"
+      },
+      {
+        "hex": "#d4b85c",
+        "name": "Gold light",
+        "usage": "Hover/pressed states, subtle highlights"
+      },
+      {
+        "hex": "#a08838",
+        "name": "Gold dark",
+        "usage": "Shadows, borders on gold elements"
+      },
+      {
+        "hex": "#0f1117",
+        "name": "ClarityPalette.bg",
+        "usage": "App background (shared via ClarityUI)"
+      },
+      {
+        "hex": "#161b27",
+        "name": "ClarityPalette.surface",
+        "usage": "Card/section backgrounds"
+      },
+      {
+        "hex": "#1f2937",
+        "name": "ClarityPalette.border",
+        "usage": "Dividers, card edges"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "ClarityPalette.text",
+        "usage": "Primary text"
+      },
+      {
+        "hex": "#6b7280",
+        "name": "ClarityPalette.muted",
+        "usage": "Secondary/caption text"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-command-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo template. Session prompts: *\"Follow `docs/BRANDING.md`\"* — do not paste full icon rules into every chat.",
+    "sourceFile": "portfolio/clarity-command-ios/docs/BRANDING.md"
+  },
+  "clarity-growth-ios": {
+    "slug": "clarity-growth-ios",
+    "appName": "App  Clarity Growth",
+    "colors": [
+      {
+        "hex": "#e6e7eb",
+        "name": "Wide mockup in docs/design/"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-growth-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo template. Session prompts: *“Follow `docs/BRANDING.md`”* — do not paste full icon rules into every chat.",
+    "sourceFile": "portfolio/clarity-growth-ios/docs/BRANDING.md"
+  },
+  "clarity-hub": {
+    "slug": "clarity-hub",
+    "appName": "App  Clarity Hub",
+    "colors": [
+      {
+        "hex": "#0f1117",
+        "name": "T.bg",
+        "usage": "Page background"
+      },
+      {
+        "hex": "#1a1d27",
+        "name": "T.surface",
+        "usage": "Card / tab surface"
+      },
+      {
+        "hex": "#2a2d3a",
+        "name": "T.border",
+        "usage": "Dividers, borders"
+      },
+      {
+        "hex": "#e8eaf0",
+        "name": "T.text",
+        "usage": "Primary text"
+      },
+      {
+        "hex": "#8b90a0",
+        "name": "T.muted",
+        "usage": "Secondary / label text"
+      },
+      {
+        "hex": "#4f8ef7",
+        "name": "T.blue",
+        "usage": "Primary accent, active state"
+      },
+      {
+        "hex": "#4caf7d",
+        "name": "T.green",
+        "usage": "Success, covered"
+      },
+      {
+        "hex": "#f5a623",
+        "name": "T.yellow",
+        "usage": "Warning, partial"
+      },
+      {
+        "hex": "#e05a5a",
+        "name": "T.red",
+        "usage": "Error, needs attention"
+      },
+      {
+        "hex": "#9b59b6",
+        "name": "T.purple",
+        "usage": "YNAB / finance accent"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-hub/icon.png",
+    "notes": "Single source for identity + visual rules. Linked from `CLAUDE.md` — do not restate these rules in session prompts.",
+    "sourceFile": "portfolio/clarity-hub/docs/BRANDING.md"
+  },
+  "clarity-logo-mockups-assets": {
+    "slug": "clarity-logo-mockups-assets",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "clarity-time-ios": {
+    "slug": "clarity-time-ios",
+    "appName": "App  Clarity Time",
+    "colors": [
+      {
+        "hex": "#e6e7eb",
+        "name": "Wide mockup in docs/design/"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-time-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo template. Session prompts: *“Follow `docs/BRANDING.md`”* — do not paste full icon rules into every chat.",
+    "sourceFile": "portfolio/clarity-time-ios/docs/BRANDING.md"
+  },
+  "clarity-triage-ios": {
+    "slug": "clarity-triage-ios",
+    "appName": "App  Clarity Triage",
+    "colors": [],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/clarity-triage-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo template. Session prompts: *“Follow `docs/BRANDING.md`”* — do not paste full icon rules into every chat.",
+    "sourceFile": "portfolio/clarity-triage-ios/docs/BRANDING.md"
+  },
+  "clarity-ui": {
+    "slug": "clarity-ui",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "claude-usage-tool": {
+    "slug": "claude-usage-tool",
+    "appName": "App  Claude Usage Tool",
+    "colors": [],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "notes": "**Purpose:** One place for **identity + visual rules**. Link here from `CLAUDE.md` instead of repeating specs in chats.",
+    "sourceFile": "portfolio/claude-usage-tool/docs/BRANDING.md"
+  },
+  "drivemind": {
+    "slug": "drivemind",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "fairway-ios": {
+    "slug": "fairway-ios",
+    "appName": "Fairway iOS",
+    "colors": [
+      {
+        "hex": "#0a1a0d",
+        "name": "backgroundPrimary",
+        "usage": "App background — deep forest"
+      },
+      {
+        "hex": "#0f2214",
+        "name": "backgroundSurface",
+        "usage": "Cards, sheets"
+      },
+      {
+        "hex": "#152d1a",
+        "name": "backgroundElevated",
+        "usage": "Nav bars, popovers"
+      },
+      {
+        "hex": "#036635",
+        "name": "accentGreen",
+        "usage": "Augusta green — primary brand, brightest fairway band"
+      },
+      {
+        "hex": "#d4af37",
+        "name": "accentGold",
+        "usage": "Masters gold — wordmark, flag, highlights, active tabs"
+      },
+      {
+        "hex": "#024e28",
+        "name": "fairwayMid",
+        "usage": "Middle fairway band"
+      },
+      {
+        "hex": "#013a1c",
+        "name": "fairwayDeep",
+        "usage": "Deepest fairway band"
+      },
+      {
+        "hex": "#e8a030",
+        "name": "sunAmber",
+        "usage": "Mid sun ring + horizon glow"
+      },
+      {
+        "hex": "#22c55e",
+        "name": "statusHealthy",
+        "usage": "Zone healthy indicator"
+      },
+      {
+        "hex": "#f59e0b",
+        "name": "statusAttention",
+        "usage": "Zone needs attention"
+      },
+      {
+        "hex": "#ef4444",
+        "name": "statusAction",
+        "usage": "Zone action needed / confirmed problem"
+      },
+      {
+        "hex": "#e8dfc8",
+        "name": "textPrimary",
+        "usage": "Body text — warm cream"
+      },
+      {
+        "hex": "#5a7a5a",
+        "name": "textSecondary",
+        "usage": "Labels, metadata — muted sage"
+      },
+      {
+        "hex": "#006747",
+        "name": "2026-04-18"
+      },
+      {
+        "hex": "#f0e8d0"
+      },
+      {
+        "hex": "#c9a84c"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "Cormorant Garamond"
+      },
+      {
+        "family": "Cormorant"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/fairway-ios/icon.png",
+    "notes": "Masters-aesthetic retro-sunset identity. Full source: [`brand/fairway_minimal.html`](brand/fairway_minimal.html) · narrative: [`brand/BRAND_SPEC.md`](brand/BRAND_SPEC.md).",
+    "sourceFile": "portfolio/fairway-ios/docs/BRANDING.md"
+  },
+  "funded-ios": {
+    "slug": "funded-ios",
+    "appName": "App  Funded iOS",
+    "colors": [
+      {
+        "hex": "#0f1117",
+        "name": "bg",
+        "usage": "Background"
+      },
+      {
+        "hex": "#161b27",
+        "name": "surface",
+        "usage": "Cards"
+      },
+      {
+        "hex": "#1f2937",
+        "name": "border",
+        "usage": "Dividers"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "text",
+        "usage": "Primary text"
+      },
+      {
+        "hex": "#6b7280",
+        "name": "muted",
+        "usage": "Secondary text"
+      },
+      {
+        "hex": "#f43f5e",
+        "name": "accent (Rose)",
+        "usage": "Branding, accent elements"
+      },
+      {
+        "hex": "#3db87a",
+        "name": "safe",
+        "usage": "Positive states"
+      },
+      {
+        "hex": "#e8bb32",
+        "name": "caution",
+        "usage": "Warning states"
+      },
+      {
+        "hex": "#e05050",
+        "name": "danger",
+        "usage": "Error states"
+      },
+      {
+        "hex": "#c66cf0",
+        "name": "mortgage",
+        "usage": "Mortgage-specific"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "DM Sans"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/funded-ios/icon.png",
+    "notes": "- **Label:** `YNAB` (52px, weight 600, Rose `#f43f5e`, letter-spacing 14)\n- **Main:** `FUNDED` (110px, weight 800, `#f3f4f6`, letter-spacing -4)\n- **Canvas:** 512x512, `#0f1117` bg, `rx=96`\n- **Accent color:** Rose `#f43f5e`\n- **Font:** DM Sans",
+    "sourceFile": "portfolio/funded-ios/docs/BRANDING.md"
+  },
+  "funded-web": {
+    "slug": "funded-web",
+    "appName": "App  Funded Web",
+    "colors": [
+      {
+        "hex": "#0f1117",
+        "name": "bg",
+        "usage": "Background"
+      },
+      {
+        "hex": "#161b27",
+        "name": "surface",
+        "usage": "Cards"
+      },
+      {
+        "hex": "#1f2937",
+        "name": "border",
+        "usage": "Dividers"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "text",
+        "usage": "Primary text"
+      },
+      {
+        "hex": "#6b7280",
+        "name": "muted",
+        "usage": "Secondary text"
+      },
+      {
+        "hex": "#f43f5e",
+        "name": "accent (Rose)",
+        "usage": "Branding, accent elements"
+      },
+      {
+        "hex": "#3db87a",
+        "name": "safe",
+        "usage": "Positive states"
+      },
+      {
+        "hex": "#e8bb32",
+        "name": "caution",
+        "usage": "Warning states"
+      },
+      {
+        "hex": "#e05050",
+        "name": "danger",
+        "usage": "Error states"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "DM Sans"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/funded-web/icon.png",
+    "notes": "- **Label:** `YNAB` (52px, weight 600, Rose `#f43f5e`, letter-spacing 14)\n- **Main:** `FUNDED` (110px, weight 800, `#f3f4f6`, letter-spacing -4)\n- **Canvas:** 512x512, `#0f1117` bg, `rx=96`\n- **Accent color:** Rose `#f43f5e`\n- **Font:** DM Sans",
+    "sourceFile": "portfolio/funded-web/docs/BRANDING.md"
+  },
+  "gmail-forge": {
+    "slug": "gmail-forge",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "growth-tracker": {
+    "slug": "growth-tracker",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "job-search-hq": {
+    "slug": "job-search-hq",
+    "appName": "App  Job Search HQ",
+    "colors": [
+      {
+        "hex": "#0f1117",
+        "name": "Background",
+        "usage": "Page background"
+      },
+      {
+        "hex": "#1a1d27",
+        "name": "Surface",
+        "usage": "Cards, modals, panels"
+      },
+      {
+        "hex": "#2a2d3a",
+        "name": "Border",
+        "usage": "Card borders, dividers"
+      },
+      {
+        "hex": "#e5e7eb",
+        "name": "Text primary",
+        "usage": "Body text, headings"
+      },
+      {
+        "hex": "#9ca3af",
+        "name": "Text muted",
+        "usage": "Labels, metadata, placeholders"
+      },
+      {
+        "hex": "#3b82f6",
+        "name": "Accent — blue",
+        "usage": "Primary actions, active states, pipeline"
+      },
+      {
+        "hex": "#8b5cf6",
+        "name": "Accent — purple",
+        "usage": "AI features, drafting, suggestions"
+      },
+      {
+        "hex": "#10b981",
+        "name": "Accent — green",
+        "usage": "Success, offers, positive status"
+      },
+      {
+        "hex": "#f59e0b",
+        "name": "Accent — amber",
+        "usage": "Warnings, follow-up reminders"
+      },
+      {
+        "hex": "#ef4444",
+        "name": "Accent — red",
+        "usage": "Rejections, errors, destructive actions"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "DM Sans"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/job-search-hq/icon.png",
+    "notes": "Single source for identity + visual rules. Link from `CLAUDE.md` — don't restate in session prompts.",
+    "sourceFile": "portfolio/job-search-hq/docs/BRANDING.md"
+  },
+  "job-search-hq-ios": {
+    "slug": "job-search-hq-ios",
+    "appName": "Job Search HQ — iOS branding",
+    "colors": [
+      {
+        "hex": "#0f1117",
+        "name": "Background",
+        "usage": "Screens"
+      },
+      {
+        "hex": "#1a1d27",
+        "name": "Surface",
+        "usage": "Cards, lists"
+      },
+      {
+        "hex": "#2a2d3a",
+        "name": "Border",
+        "usage": "Outlines"
+      },
+      {
+        "hex": "#e5e7eb",
+        "name": "Text primary",
+        "usage": "Titles, body"
+      },
+      {
+        "hex": "#9ca3af",
+        "name": "Text muted",
+        "usage": "Secondary"
+      },
+      {
+        "hex": "#3b82f6",
+        "name": "Accent blue",
+        "usage": "Primary actions, pipeline"
+      },
+      {
+        "hex": "#8b5cf6",
+        "name": "Accent purple",
+        "usage": "Networking"
+      },
+      {
+        "hex": "#10b981",
+        "name": "Accent green",
+        "usage": "Positive"
+      },
+      {
+        "hex": "#f59e0b",
+        "name": "Accent amber",
+        "usage": "Warnings, tips"
+      },
+      {
+        "hex": "#ef4444",
+        "name": "Accent red",
+        "usage": "Destructive"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/job-search-hq-ios/icon.png",
+    "notes": "Web reference: [`../job-search-hq/docs/BRANDING.md`](../job-search-hq/docs/BRANDING.md)",
+    "sourceFile": "portfolio/job-search-hq-ios/docs/BRANDING.md"
+  },
+  "knowledge-base": {
+    "slug": "knowledge-base",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "money": {
+    "slug": "money",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "roller-task-tycoon": {
+    "slug": "roller-task-tycoon",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "roller-task-tycoon-ios": {
+    "slug": "roller-task-tycoon-ios",
+    "appName": "App - RollerTask Tycoon",
+    "colors": [
+      {
+        "hex": "#3e2723",
+        "name": "woodDark",
+        "usage": "Navigation bars, headers"
+      },
+      {
+        "hex": "#c8a84b",
+        "name": "gold",
+        "usage": "Accent, rewards, profit"
+      },
+      {
+        "hex": "#f5e6c8",
+        "name": "plaque",
+        "usage": "Card backgrounds"
+      },
+      {
+        "hex": "#c62828",
+        "name": "alertRed",
+        "usage": "Broken down status"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/roller-task-tycoon-ios/icon.png",
+    "notes": "**Filled copy** of the monorepo branding template.",
+    "sourceFile": "portfolio/roller-task-tycoon-ios/docs/BRANDING.md"
+  },
+  "rollertask-tycoon-web": {
+    "slug": "rollertask-tycoon-web",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "shipyard-ios": {
+    "slug": "shipyard-ios",
+    "appName": "App  Shipyard (iOS)",
+    "colors": [
+      {
+        "hex": "#1e3a5f",
+        "name": "Background"
+      },
+      {
+        "hex": "#e2e8f0",
+        "name": "Initials"
+      },
+      {
+        "hex": "#0a1e3f"
+      },
+      {
+        "hex": "#132b5a"
+      },
+      {
+        "hex": "#d4a84b"
+      },
+      {
+        "hex": "#f4ead5"
+      },
+      {
+        "hex": "#9bb0c8"
+      },
+      {
+        "hex": "#e56b4e"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "Arial"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/shipyard-ios/icon.png",
+    "notes": "**Purpose:** Single source for identity + visual rules. Link here from `CLAUDE.md` instead of restating hex codes or icon geometry in every chat.",
+    "sourceFile": "portfolio/shipyard-ios/docs/BRANDING.md"
+  },
+  "shortcut-reference": {
+    "slug": "shortcut-reference",
+    "appName": "App  Shortcut Reference",
+    "colors": [],
+    "fonts": [
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "notes": "**Purpose:** One place for **identity + visual rules**. Link here from `CLAUDE.md` instead of repeating specs in chats.",
+    "sourceFile": "portfolio/shortcut-reference/docs/BRANDING.md"
+  },
+  "spend-clarity": {
+    "slug": "spend-clarity",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "spend-radar": {
+    "slug": "spend-radar",
+    "appName": "App  Spend Radar",
+    "colors": [
+      {
+        "hex": "#14b8a6",
+        "name": "Accent (primary)"
+      },
+      {
+        "hex": "#06b6d4",
+        "name": "Accent (hover/active)"
+      },
+      {
+        "hex": "#0b1220",
+        "name": "Background"
+      },
+      {
+        "hex": "#111827",
+        "name": "Surface"
+      },
+      {
+        "hex": "#1f2937",
+        "name": "Border"
+      },
+      {
+        "hex": "#e5e7eb",
+        "name": "Text primary"
+      },
+      {
+        "hex": "#9ca3af",
+        "name": "Text muted"
+      },
+      {
+        "hex": "#34d399",
+        "name": "Status — Active"
+      },
+      {
+        "hex": "#fbbf24",
+        "name": "Status — Lapsed"
+      },
+      {
+        "hex": "#f87171",
+        "name": "Status — Cancel candidate"
+      },
+      {
+        "hex": "#fff8db",
+        "name": "Audit flag row shading"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "Roboto"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "notes": "**Purpose:** Single source for Spend Radar identity + visual rules. Linked from `CLAUDE.md`; do not restate hex codes or geometry in session prompts.",
+    "sourceFile": "portfolio/spend-radar/docs/BRANDING.md"
+  },
+  "spend-radar-web": {
+    "slug": "spend-radar-web",
+    "appName": "Spend Radar (web)",
+    "colors": [
+      {
+        "hex": "#0b1220",
+        "name": "Background"
+      },
+      {
+        "hex": "#111827",
+        "name": "Surface"
+      },
+      {
+        "hex": "#14b8a6",
+        "name": "Accent"
+      },
+      {
+        "hex": "#06b6d4",
+        "name": "Accent 2"
+      },
+      {
+        "hex": "#34d399",
+        "name": "Status — Active"
+      },
+      {
+        "hex": "#fbbf24",
+        "name": "Status — Lapsed"
+      },
+      {
+        "hex": "#f87171",
+        "name": "Status — Cancel candidate"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "DM Sans"
+      },
+      {
+        "family": "Roboto"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "notes": "**This app shares the Spend Radar identity.** Single source of truth lives at [`../../spend-radar/docs/BRANDING.md`](../../spend-radar/docs/BRANDING.md) — do not fork palette or glyph decisions here.",
+    "sourceFile": "portfolio/spend-radar-web/docs/BRANDING.md"
+  },
+  "unnamed": {
+    "slug": "unnamed",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "unnamed-ios": {
+    "slug": "unnamed-ios",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
+  "wellness-tracker": {
+    "slug": "wellness-tracker",
+    "appName": "Wellness Tracker",
+    "colors": [
+      {
+        "hex": "#0e1015",
+        "name": "bg",
+        "usage": "Logo canvas / PWA theme_color + background_color"
+      },
+      {
+        "hex": "#eaedf0",
+        "name": "text",
+        "usage": "Letter W (negative space / cutout)"
+      },
+      {
+        "hex": "#4f92f2",
+        "name": "accent",
+        "usage": "Horizon arc (interactive blue)"
+      },
+      {
+        "hex": "#e8bb32",
+        "name": "caution",
+        "usage": "Sun gradient (amber → gold)"
+      },
+      {
+        "hex": "#3cb77c",
+        "name": "safe",
+        "usage": "Optional small accent only"
+      },
+      {
+        "hex": "#f3f4f6"
+      },
+      {
+        "hex": "#0f1117"
+      }
+    ],
+    "fonts": [],
+    "iconPath": "/branding/wellness-tracker/icon.png",
+    "notes": "**Spend Clarity** (`portfolio/spend-clarity/`) is a **Python CLI** — there is **no logo raster** checked into that repo.",
+    "sourceFile": "portfolio/wellness-tracker/docs/BRANDING.md"
+  },
+  "wellness-tracker-ios": {
+    "slug": "wellness-tracker-ios",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  }
+}

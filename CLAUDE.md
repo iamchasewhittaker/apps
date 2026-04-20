@@ -55,6 +55,52 @@
 
 
 
+### Portfolio metadata (Shipyard sync)
+
+> Companion table for [Shipyard](portfolio/shipyard). Read by `portfolio/shipyard/scripts/sync-projects.ts`. Fill in `—` cells as you get to them; sync tolerates missing fields. App names MUST match the main Portfolio Overview table above.
+
+| App | Category | Tagline | GitHub | Linear |
+| --- | --- | --- | --- | --- |
+| Wellness Tracker | Dashboard | Daily wellness check-in with streaks | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Wellness Tracker (iOS) | Health & Fitness | Native SwiftUI check-in shell | — | — |
+| ClarityUI (Swift pkg) | Developer Tools | Shared SwiftUI components for the Clarity iOS apps | — | — |
+| Clarity Check-in (iOS) | Health & Fitness | Morning check-in + meds tracker | — | — |
+| Clarity Triage (iOS) | Productivity | Daily capacity, ideas, and wins | — | — |
+| Clarity Time (iOS) | Productivity | Time sessions + scripture streak | — | — |
+| Clarity Budget (iOS) | Finance | YNAB-backed STS month/week/day budget | — | — |
+| Clarity Budget (web) | Dashboard | Next.js STS dashboard with optional Supabase | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Clarity Growth (iOS) | Lifestyle | 7 growth areas with streaks | — | — |
+| Clarity Command (iOS) | Productivity | Mission + Scoreboard + Settings — daily accountability | — | — |
+| Clarity Command | Dashboard | Daily accountability hub on the web | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Job Search HQ | Tool | AI-assisted job search cockpit (pipeline + contacts + prep) | [apps](https://github.com/iamchasewhittaker/apps) | [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
+| Job Search HQ (iOS) | Productivity | Native iOS companion to Job Search HQ | — | [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
+| App Forge | Tool | Web workbench for building new portfolio apps | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Clarity Hub | Dashboard | Unified 5-tab hub (Check-in / Triage / Time / Budget / Growth) | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Funded (iOS) | Finance | YNAB read + assign flow, Keychain-secured | — | — |
+| RollerTask Tycoon (iOS) | Lifestyle | Native iOS tasks + points tracker | — | [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| RollerTask Tycoon (web PWA) | Tracker | Retired Vite PWA tasks/points tracker | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Growth Tracker | Tracker | Retired growth tracker — merged into Wellness | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Money | Tool | Superseded: Transaction Enricher + Budget Dashboard | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| AI Dev Mastery | Content | 13-track React course on AI-assisted dev | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Shortcut Reference | Reference | macOS menu-bar keyboard shortcut viewer | — | — |
+| Claude Usage Tool | Developer Tools | Menu-bar monitor for Claude Code usage | — | [Linear](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688) |
+| Spend Clarity | Developer Tools | Python CLI enriching YNAB from Gmail + Privacy.com | — | — |
+| Knowledge Base | Content | Personal bookmark + notes hub | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Funded Web | Dashboard | Standalone YNAB dashboard | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| RollerTask Tycoon Web | Tracker | Standalone tasks/points tracker (split from Hub) | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Spend Radar | Tool | Gmail receipt → Sheet subscription tracker (Apps Script) | — | — |
+| Spend Radar (web) | Dashboard | Read-only CRA reading Sheet CSV | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Shipyard | Dashboard | Fleet command center for the portfolio | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Shipyard (iOS) | Productivity | Mobile companion to Shipyard | — | — |
+| Ash Reader | Tool | Mobile chunker for capture conversation → Ash | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Ash Reader (iOS) | Utilities | Native SwiftUI Ash Reader with themes + actions | — | — |
+| Unnamed (web) | Tool | Daily OS for ADHD brains — 7-day rule | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Unnamed (iOS) | Productivity | On-device daily OS companion | — | — |
+| Fairway (iOS) | Lifestyle | Lawn OS: zones, irrigation, fertilizer plan, soil test | — | — |
+| Alias Ledger | Utilities | Hide My Email alias tracker (single-file HTML) | [apps](https://github.com/iamchasewhittaker/apps) | — |
+
+
+
 **Product framework:** **[PRODUCT_BUILD_FRAMEWORK.md](PRODUCT_BUILD_FRAMEWORK.md)** — universal 6-phase framework (Product Definition → PRD → UX Flow → Architecture → Milestones → Ship). **No coding starts until Phases 1–3 are documented for that app.**
 
 **Migration tracking:** [MONOREPO_MIGRATION.md](MONOREPO_MIGRATION.md) · [Linear — Portfolio monorepo migration](https://linear.app/whittaker/project/portfolio-monorepo-migration-ed57de848d37) · **Terms:** [docs/GLOSSARY.md](docs/GLOSSARY.md) · **Local legacy (not in git):** [docs/LEGACY_LOCAL_MIRRORS.md](docs/LEGACY_LOCAL_MIRRORS.md)

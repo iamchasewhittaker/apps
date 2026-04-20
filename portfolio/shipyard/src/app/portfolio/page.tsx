@@ -1,47 +1,43 @@
 export const dynamic = 'force-dynamic';
 
+import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
 import PortfolioActions from './PortfolioActions';
+import { ModeHeading } from '@/components/ModeHeading';
 import type { Project } from '@/lib/types';
 
 export default async function PortfolioPage() {
   const supabase = await createServerClient();
 
-  const { data: launchedShips } = await supabase
+  const { data: ships } = await supabase
     .from('projects')
     .select('*')
-    .gte('mvp_step_actual', 5)
-    .eq('has_live_url', true)
+    .neq('status', 'archived')
+    .neq('family', 'archived')
     .order('last_commit_date', { ascending: false });
 
-  const ships: Project[] = launchedShips ?? [];
+  const fleet: Project[] = ships ?? [];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8">
+    <div className="mx-auto max-w-5xl space-y-8">
       <div className="flex items-start justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-accent">
-            The Fleet Showcase
-          </h1>
-          <p className="text-sm text-muted">
-            Launched ships ready for the world. Step 5+ with a live URL.
-          </p>
-        </div>
+        <ModeHeading
+          labelKey="showcase"
+          subtitle="Every active ship in the fleet. Click a card to inspect its design system."
+        />
         <PortfolioActions />
       </div>
 
-      {ships.length === 0 ? (
+      {fleet.length === 0 ? (
         <div className="rounded-lg border border-border bg-card p-12 text-center">
-          <p className="text-lg font-medium text-muted">
-            No ships launched yet. Keep building!
-          </p>
+          <p className="text-lg font-medium text-muted">No active ships yet.</p>
           <p className="mt-1 text-sm text-muted/70">
-            Ships appear here once they reach MVP step 5 and have a live URL.
+            Run <code className="text-accent">npm run sync:projects</code> to pull the fleet from CLAUDE.md.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {ships.map((ship) => (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {fleet.map((ship) => (
             <ShowcaseCard key={ship.slug} ship={ship} />
           ))}
         </div>
@@ -50,43 +46,126 @@ export default async function PortfolioPage() {
   );
 }
 
+function typeBadge(type: string): { label: string; className: string } {
+  const base = 'rounded-full px-2 py-0.5 text-[10px] font-medium';
+  switch (type) {
+    case 'web':
+      return { label: 'web', className: `${base} border border-accent/40 bg-accent/10 text-accent` };
+    case 'ios':
+      return { label: 'iOS', className: `${base} border border-gold/40 bg-gold/10 text-gold` };
+    case 'library':
+      return { label: 'lib', className: `${base} border border-steel/40 bg-steel/10 text-steel` };
+    case 'cli':
+      return { label: 'cli', className: `${base} border border-dim/40 bg-dim/10 text-dim` };
+    case 'desktop':
+      return { label: 'desktop', className: `${base} border border-success/40 bg-success/10 text-success` };
+    default:
+      return { label: type, className: `${base} border border-border bg-card text-muted` };
+  }
+}
+
 function ShowcaseCard({ ship }: { ship: Project }) {
+  const t = typeBadge(ship.type);
+  const hasLive = Boolean(ship.live_url);
+  const isIos = ship.type === 'ios';
+
   return (
-    <div className="flex flex-col rounded-lg border border-border bg-card p-5 space-y-4">
-      <div className="space-y-1">
-        <h3 className="text-sm font-semibold text-foreground">{ship.name}</h3>
-        {ship.jtbd_primary && (
-          <p className="text-xs text-muted leading-relaxed">
-            {ship.jtbd_primary}
-          </p>
+    <Link
+      href={`/portfolio/${ship.slug}`}
+      className="group flex flex-col gap-4 rounded-lg border border-border bg-card p-5 transition-colors hover:border-accent/40"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 space-y-1">
+          <h3 className="truncate text-sm font-semibold text-foreground group-hover:text-accent">
+            {ship.name}
+          </h3>
+          {ship.tagline && (
+            <p className="text-xs text-muted leading-relaxed line-clamp-2">
+              {ship.tagline}
+            </p>
+          )}
+        </div>
+        <div className="flex shrink-0 flex-col items-end gap-1">
+          <span className={t.className}>{t.label}</span>
+          {ship.category && (
+            <span className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] text-muted">
+              {ship.category}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {ship.jtbd_primary && (
+        <p className="text-xs text-muted/80 leading-relaxed line-clamp-2">
+          {ship.jtbd_primary}
+        </p>
+      )}
+
+      {ship.tech_stack && (
+        <div className="flex flex-wrap gap-1.5">
+          {ship.tech_stack
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean)
+            .slice(0, 4)
+            .map((tech) => (
+              <span
+                key={tech}
+                className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-medium text-muted"
+              >
+                {tech}
+              </span>
+            ))}
+        </div>
+      )}
+
+      <div className="mt-auto flex flex-wrap gap-2 pt-2">
+        {hasLive ? (
+          <LinkChip
+            href={ship.live_url!.startsWith('http') ? ship.live_url! : `https://${ship.live_url}`}
+            label="Live"
+            tone="success"
+          />
+        ) : isIos ? (
+          <span className="inline-flex items-center rounded-md border border-gold/40 bg-gold/10 px-2.5 py-1 text-[11px] font-medium text-gold">
+            Local Xcode
+          </span>
+        ) : null}
+        {ship.github_url && (
+          <LinkChip href={ship.github_url} label="GitHub" tone="neutral" />
+        )}
+        {ship.linear_project_url && (
+          <LinkChip href={ship.linear_project_url} label="Linear" tone="accent" />
         )}
       </div>
+    </Link>
+  );
+}
 
-      <div className="flex flex-wrap gap-1.5">
-        {ship.tech_stack
-          .split(',')
-          .map((t) => t.trim())
-          .filter(Boolean)
-          .map((tech) => (
-            <span
-              key={tech}
-              className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-medium text-muted"
-            >
-              {tech}
-            </span>
-          ))}
-      </div>
-
-      {ship.live_url && (
-        <a
-          href={ship.live_url.startsWith('http') ? ship.live_url : `https://${ship.live_url}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-auto inline-flex items-center justify-center rounded-md border border-success bg-success/10 px-4 py-2 text-sm font-medium text-success transition-colors hover:bg-success/20"
-        >
-          View Live
-        </a>
-      )}
-    </div>
+function LinkChip({
+  href,
+  label,
+  tone,
+}: {
+  href: string;
+  label: string;
+  tone: 'success' | 'accent' | 'neutral';
+}) {
+  const toneClass =
+    tone === 'success'
+      ? 'border-success/40 bg-success/10 text-success hover:bg-success/20'
+      : tone === 'accent'
+        ? 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20'
+        : 'border-border bg-card text-muted hover:border-accent/40 hover:text-foreground';
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors ${toneClass}`}
+    >
+      {label} <span aria-hidden>↗</span>
+    </a>
   );
 }
