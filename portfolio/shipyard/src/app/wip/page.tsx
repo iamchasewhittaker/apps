@@ -43,13 +43,13 @@ export default async function WipPage() {
 
       {decisions.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
             Past Decisions
           </h2>
           <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border bg-card text-xs uppercase tracking-wider text-muted">
+                <tr className="border-b border-border bg-card text-sm uppercase tracking-wider text-muted">
                   <th className="px-4 py-2.5 font-medium">Date</th>
                   <th className="px-4 py-2.5 font-medium">Active Ship</th>
                   <th className="px-4 py-2.5 font-medium">Moved to Drydock</th>

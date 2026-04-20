@@ -34,10 +34,10 @@ function StatCard({
 }) {
   return (
     <div className="rounded-lg border border-dimmer bg-surface px-4 py-3">
-      <p className={`font-display text-3xl ${className ?? 'text-white'}`}>
+      <p className={`font-display text-4xl ${className ?? 'text-white'}`}>
         {value}
       </p>
-      <p className="font-mono-label text-[10px] text-dim mt-1">{label}</p>
+      <p className="font-mono-label text-xs text-dim mt-1">{label}</p>
     </div>
   );
 }

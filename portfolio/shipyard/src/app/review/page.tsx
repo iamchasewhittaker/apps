@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
 import { computeChipState } from '@/lib/review-cadence';
+import { ModeHeading } from '@/components/ModeHeading';
 import ReviewForm from './ReviewForm';
 import type { ReviewKind, ReviewCadence, Review, Learning } from '@/lib/types';
 
@@ -55,9 +56,7 @@ export default async function ReviewPage({ searchParams }: Props) {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold tracking-tight text-accent">
-        Reviews
-      </h1>
+      <ModeHeading labelKey="review" />
 
       {/* Tab selector */}
       <div className="flex gap-1 rounded-lg border border-border bg-card p-1">
@@ -81,7 +80,7 @@ export default async function ReviewPage({ searchParams }: Props) {
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted">
           Auto-collected Stats
         </h2>
-        <p className="text-sm text-muted">
+        <p className="text-base text-muted">
           Stats for <span className="text-accent capitalize">{activeKind}</span>{' '}
           reviews will be computed from scan data.
         </p>
@@ -101,7 +100,7 @@ export default async function ReviewPage({ searchParams }: Props) {
           Past Reviews
         </h2>
         {reviews.length === 0 ? (
-          <p className="text-sm text-muted">
+          <p className="text-base text-muted">
             No {activeKind} reviews yet.
           </p>
         ) : (
@@ -171,7 +170,7 @@ export default async function ReviewPage({ searchParams }: Props) {
         {activeCadence ? (
           <CadenceEditor kind={activeKind} cadenceDays={activeCadence.cadence_days} />
         ) : (
-          <p className="text-sm text-muted">
+          <p className="text-base text-muted">
             No cadence configuration found for {activeKind}.
           </p>
         )}

@@ -1,13 +1,18 @@
 # Gmail Forge — Changelog
 
-## [Unreleased]
+## [Apr 20, 2026] — Dashboard + go-live polish
 
 ### Dashboard view (new)
-- Added `apps-script/dashboard.gs` — data-gathering functions: `getLabelCounts_()` (today / 7d / 30d per label via `GmailApp.search` with 500-thread cap), `getAutoSortTodayCount_()`, `getRecentActivity_(10)`, `getReviewQueueInfo_()`, `getHealthInfo_()`
+- Added `apps-script/dashboardData.gs` — data-gathering functions: `getLabelCounts_()` (today / 7d / 30d per label via `GmailApp.search` with 500-thread cap), `getAutoSortTodayCount_()`, `getRecentActivity_(10)`, `getReviewQueueInfo_()`, `getHealthInfo_()`
 - Added `apps-script/dashboard.html` — single-page HTML with inline CSS (matches guide.html dark theme); renders stats, label counts table, recent activity table
 - Modified `doGet(e)` in `apps-script/auto-sort.gs` — branches on `?view=dashboard`; default path still runs `autoSort()` for Spend Radar's "Refresh All Apps" integration (no breaking change)
-- Auth: same `TRIGGER_TOKEN` as `doPost` — required query param
-- Pending: `clasp push --force` + New deployment version → bookmark `<webAppUrl>?view=dashboard&token=<TRIGGER_TOKEN>`
+- First web app deployment created (Version 1); dashboard confirmed live
+
+### Go-live polish
+- Set `TRIGGER_TOKEN` Script Property (UUID) — enables doGet/doPost auth for dashboard + extension Sort button
+- Fixed `NEWSLETTER_TO_ALIASES` (was placeholder text; now set to real iCloud aliases for Substack + Puzzmo/crossword)
+- Renamed Apps Script project "Inbox Zero Auto-Sort" → "Gmail Forge"
+- Added Gmail Forge to root CLAUDE.md portfolio table + Shipyard
 
 ## [Apr 18, 2026] — Sort wired + Guide + Context fix
 

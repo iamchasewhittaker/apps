@@ -60,20 +60,8 @@ body {
 
 .font-mono-label {
   font-family: var(--font-dm-mono), ui-monospace, monospace;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-/* Nautical chart grid — faint horizontal rules every 40px */
-.chart-grid {
-  background-image: linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 39px,
-    rgba(122, 166, 214, 0.18) 39px,
-    rgba(122, 166, 214, 0.18) 40px
-  );
-  background-size: 100% 40px;
 }
 
 /* Gold rule — single underline accent */

@@ -70,9 +70,9 @@ export default async function FleetDashboard({ searchParams }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <p className="font-mono-label text-[11px] text-dim">PORT INSPECTION</p>
-        <h1 className="font-display text-4xl text-white gold-rule inline-block">
+      <div className="space-y-3">
+        <p className="font-mono-label text-xs text-dim">PORT INSPECTION</p>
+        <h1 className="font-display text-5xl text-white gold-rule inline-block">
           FLEET DASHBOARD
         </h1>
       </div>
@@ -255,11 +255,11 @@ function ShipCard({ project }: { project: Project }) {
       className="group flex flex-col rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent/50"
     >
       <div className="mb-3 flex items-start justify-between gap-2">
-        <h3 className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
+        <h3 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
           {project.name}
         </h3>
         <span
-          className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${STATUS_COLORS[project.status] ?? ''}`}
+          className={`shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[project.status] ?? ''}`}
         >
           {project.status}
         </span>
@@ -267,19 +267,19 @@ function ShipCard({ project }: { project: Project }) {
 
       <div className="mb-3 flex flex-wrap gap-1.5">
         <span
-          className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${TYPE_COLORS[project.type] ?? ''}`}
+          className={`rounded-full border px-2 py-0.5 text-xs font-medium ${TYPE_COLORS[project.type] ?? ''}`}
         >
           {project.type}
         </span>
-        <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-muted">
+        <span className="rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted">
           {project.family}
         </span>
-        <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent">
+        <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
           {stepLabel} &middot; {nautical}
         </span>
       </div>
 
-      <div className="mt-auto flex items-center justify-between text-xs text-muted">
+      <div className="mt-auto flex items-center justify-between text-sm text-muted">
         <span>
           Compliance:{' '}
           <span

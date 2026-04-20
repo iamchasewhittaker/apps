@@ -12,11 +12,11 @@ interface Props {
 export function ModeHeading({ labelKey, subtitle, className }: Props) {
   const label = useLabel(labelKey);
   return (
-    <div className="space-y-1">
-      <h1 className={className ?? 'text-2xl font-bold tracking-tight text-accent'}>
+    <div className="space-y-3">
+      <h1 className={className ?? 'font-display text-4xl text-white gold-rule inline-block'}>
         {label}
       </h1>
-      {subtitle && <p className="text-sm text-muted">{subtitle}</p>}
+      {subtitle && <p className="text-base text-muted">{subtitle}</p>}
     </div>
   );
 }

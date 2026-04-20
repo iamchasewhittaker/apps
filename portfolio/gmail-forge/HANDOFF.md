@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 LIVE + observability · Dashboard view added to Apps Script web app (`?view=dashboard&token=…`) — live label counts, Review Queue size, recent auto-sort activity, trigger health |
-| **Last touch** | Apr 20, 2026 — added `dashboard.gs` + `dashboard.html`; branched `doGet` on `?view=dashboard` (default path preserves Spend Radar's Refresh All Apps trigger) |
-| **Next** | `clasp push` → redeploy web app → bookmark dashboard URL → off-filesystem renames → Subscriptions backfill → Gemini when ready |
+| **Focus** | Phase 3 fully live · Dashboard confirmed working (88 newsletters today, 83 in Review Queue) · **Next session: triage Review Queue → add rules for top senders** |
+| **Last touch** | Apr 20, 2026 — dashboard deployed + confirmed live; TRIGGER_TOKEN set; NEWSLETTER_TO_ALIASES fixed (ashen-35.packet + crowds.olives2z); Apps Script renamed "Gmail Forge"; added to CLAUDE.md + Shipyard |
+| **Next** | Triage 83 Review Queue items → add to `rules.gs` + `gmail-filters.xml` → clasp push → re-import XML · Subscriptions backfill (1-click) · Spend Radar prop rename · Gemini when budget allows |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |
@@ -32,7 +32,10 @@
 - [x] Extension context invalidation bug — fixed; graceful teardown + "refresh tab" toast when extension reloads with Gmail open
 - [x] Review Queue sheet tab — auto-created on first unknown sender
 - [x] Subscriptions tab — menu-driven refresh available; **not yet run**
-- [x] Dashboard view (`?view=dashboard`) — added Apr 20; **pending redeploy** (`cd apps-script && npx clasp push --force`, then New deployment → copy URL)
+- [x] Dashboard view — live at web app URL · confirmed: 88 newsletters today, 83 Review Queue, trigger OK
+- [x] TRIGGER_TOKEN set in Script Properties
+- [x] NEWSLETTER_TO_ALIASES fixed (was placeholder; now `ashen-35.packet@icloud.com,crowds.olives2z@icloud.com`)
+- [x] Extension popup — Web App URL + Token entered (enables Sort button label-apply)
 
 ---
 
@@ -51,7 +54,7 @@
 **One remaining setup step:** open extension popup → enter Web App URL + Trigger Token (see Script Properties for `TRIGGER_TOKEN`; get deployment URL from script.google.com → Deploy → Manage deployments).
 
 ### 2. Off-Filesystem Renames (MANUAL, ~5 min)
-- [ ] **Google Apps Script console** — rename "Inbox Zero" → "Gmail Forge" at script.google.com
+- [x] **Google Apps Script console** — renamed "Inbox Zero Auto-Sort" → "Gmail Forge" (Apr 20)
 - [ ] **Spend Radar Script Properties** — rename `INBOX_ZERO_*` keys → `GMAIL_FORGE_*` (same values); verify Refresh All Apps; delete old keys
 - [ ] **Asana** — rename "Inbox Zero Build" → "Gmail Forge Build" (GID `1213891408033292`)
 

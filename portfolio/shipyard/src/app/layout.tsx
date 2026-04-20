@@ -71,13 +71,13 @@ export default function RootLayout({
             </ul>
 
             <div className="mt-auto px-2 pt-6 border-t border-dimmer/60">
-              <span className="font-mono-label text-[9px] text-dim">
+              <span className="font-mono-label text-[11px] text-dim">
                 44°22&apos;N / 68°12&apos;W
               </span>
             </div>
           </nav>
 
-          <main className="ml-[220px] flex-1 p-8 overflow-y-auto min-h-screen chart-grid">
+          <main className="ml-[220px] flex-1 p-8 overflow-y-auto min-h-screen">
             {children}
           </main>
         </ModeProvider>

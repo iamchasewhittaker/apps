@@ -50,9 +50,8 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 
 ---
 
-## 🚀 Phase 3 — Automation (In Progress)
+## ✅ Phase 3 — Automation (Complete · Apr 20, 2026)
 
-**Target:** April 2026  
 **Goal:** Reduce or eliminate manual XML updates.
 
 | Task | Status | Notes |
@@ -61,10 +60,11 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 | Sender rules in JS (mirrors XML) | ✅ Done | `apps-script/rules.gs` — 69 filters as JS objects |
 | New-sender Google Sheets logging | ✅ Done | Built into auto-sort.gs — logs AI classifications to "New Senders" sheet |
 | Chrome extension (label tab bar) | ✅ Done | `extension/` — MV3, tab bar + Sort button + settings popup |
-| Deploy Apps Script to script.google.com | ⬜ Pending | **clasp:** `apps-script/` → `npm install` + [DEPLOY-CLASP.md](../apps-script/DEPLOY-CLASP.md); then Script Properties, `setupTrigger()`, `healthCheck`, `testRun()` |
-| Deploy Chrome extension (load unpacked) | ⬜ Pending | `extension/` → `npm run validate` then Chrome load unpacked (see extension README) |
-| Spend Clarity integration | ✅ Doc | [integrations/receipt-to-spend-clarity.md](../integrations/receipt-to-spend-clarity.md); Spend Clarity already queries `label:Receipt` |
-| Gmail AI labels (Google's native feature) | ⬜ Pending | Monitor if Google expands this natively |
+| Deploy Apps Script | ✅ Done | clasp push + web app deployment (Version 1, Apr 20) |
+| Deploy Chrome extension | ✅ Done | Loaded in Chrome (Apr 18); Sort button wired to doPost |
+| Observability dashboard | ✅ Done | `doGet?view=dashboard` — live label counts, Review Queue size, trigger health |
+| Spend Clarity integration | ✅ Doc | [integrations/receipt-to-spend-clarity.md](../integrations/receipt-to-spend-clarity.md) |
+| Gmail AI labels (Google's native feature) | ⬜ Monitor | Monitor if Google expands this natively |
 
 ---
 

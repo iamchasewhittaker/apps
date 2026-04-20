@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
+import { ModeHeading } from '@/components/ModeHeading';
 import type { Learning } from '@/lib/types';
 
 interface Props {
@@ -39,14 +40,10 @@ export default async function LearningsPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-accent">
-          Captain&apos;s Log
-        </h1>
-        <p className="text-sm text-muted">
-          Learnings, insights, and notes captured across the fleet.
-        </p>
-      </div>
+      <ModeHeading
+        labelKey="log"
+        subtitle="Learnings, insights, and notes captured across the fleet."
+      />
 
       {/* Tab links */}
       <div className="flex items-center gap-2">
@@ -72,7 +69,7 @@ export default async function LearningsPage({ searchParams }: Props) {
       {/* Learning cards */}
       {filtered.length === 0 ? (
         <div className="rounded-lg border border-border bg-card p-8 text-center">
-          <p className="text-sm text-muted">
+          <p className="text-base text-muted">
             {tab === 'review'
               ? 'All learnings have been reviewed.'
               : 'No learnings captured yet.'}
@@ -99,14 +96,14 @@ export default async function LearningsPage({ searchParams }: Props) {
 function LearningCard({ learning }: { learning: Learning }) {
   return (
     <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-      <p className="text-sm text-foreground leading-relaxed">
+      <p className="text-base text-foreground leading-relaxed">
         {learning.text}
       </p>
 
       <div className="flex flex-wrap items-center gap-2">
         {/* Source badge */}
         <span
-          className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+          className={`rounded-full border px-2 py-0.5 text-xs font-medium ${
             SOURCE_COLORS[learning.source] ?? 'bg-card text-muted border-border'
           }`}
         >
@@ -115,7 +112,7 @@ function LearningCard({ learning }: { learning: Learning }) {
 
         {/* Reviewed status */}
         {!learning.reviewed && (
-          <span className="rounded-full border border-warning/30 bg-warning/20 px-2 py-0.5 text-[10px] font-medium text-warning">
+          <span className="rounded-full border border-warning/30 bg-warning/20 px-2 py-0.5 text-xs font-medium text-warning">
             Unreviewed
           </span>
         )}
@@ -124,7 +121,7 @@ function LearningCard({ learning }: { learning: Learning }) {
         {learning.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-medium text-muted"
+            className="rounded-full border border-border bg-card px-2 py-0.5 text-xs font-medium text-muted"
           >
             {tag}
           </span>
@@ -132,7 +129,7 @@ function LearningCard({ learning }: { learning: Learning }) {
 
         {/* Scripture ref */}
         {learning.scripture_ref && (
-          <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent">
+          <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
             {learning.scripture_ref}
           </span>
         )}
@@ -141,14 +138,14 @@ function LearningCard({ learning }: { learning: Learning }) {
         {learning.project_slug && (
           <Link
             href={`/ship/${learning.project_slug}`}
-            className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-400 hover:bg-blue-500/20 transition-colors"
+            className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400 hover:bg-blue-500/20 transition-colors"
           >
             {learning.project_slug}
           </Link>
         )}
       </div>
 
-      <p className="text-[10px] text-muted">
+      <p className="text-xs text-muted">
         {new Date(learning.created_at).toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
