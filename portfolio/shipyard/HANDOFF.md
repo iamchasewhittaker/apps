@@ -4,8 +4,8 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Nautical rebrand complete — helm logo, 8-token palette, BigShoulders/DM Mono/Instrument Sans; deployed via GitHub auto-deploy |
-| Next       | Editable Ship detail fields · fix `learnings` unique constraint |
+| Focus      | Polish pass complete — theme toggle, Fleet Showcase rebuild, per-app detail page, Drydock Gate full queue + drag-rank, category/tagline/summary synced for all 38 apps |
+| Next       | Editable Ship detail fields · fix `learnings` unique constraint · seed `priority_rank` via drag UI |
 | Last touch | 2026-04-20                                                            |
 
 ## Production URL

@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-20 (Shipyard nautical rebrand — web + iOS) | Maintained by Chase
+> Last updated: 2026-04-20 (Shipyard polish pass — theme toggle, Fleet Showcase, detail pages, Drydock Gate full queue, 38-app sync) | Maintained by Chase
 
 ---
 
@@ -245,6 +245,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-20 | Shipyard + Portfolio-wide | v0.1 | **Polish pass (7 pieces):** contrast fix (dim token lifted), gold nav separators, nautical/regular theme toggle + Settings page, Fleet Showcase rebuilt (all 38 apps, category/tagline/links), per-app detail page at `/portfolio/[slug]` (palette swatches + font chips from BRANDING.md), Drydock Gate full queue + @dnd-kit drag-to-reorder (`priority_rank`), category + tagline + summary synced to Supabase for all 38 apps, `## What This App Is` added to all 33 CLAUDE.md files | `portfolio/shipyard/` · git `31ec10e` · sync: 38/38 matched |
 | 2026-04-20 | Portfolio-wide | — | **Vercel footprint consolidation:** removed 5 Vercel projects (`funded-web`, `knowledge-base`, `unnamed`, `wellness-tracker`, `chase`) — fleet now lives at 4 live URLs only: Shipyard, Job Search HQ, Ash Reader, Alias Ledger. Un-archived 6 apps (`ai-dev-mastery`, `app-forge`, `growth-tracker`, `money`, `roller-task-tycoon`, `shortcut-reference`) → `portfolio/*` as active-local. Stripped stale Vercel URLs from `/CLAUDE.md` + `/ROADMAP.md` + per-app docs. Fixed ash-reader git-connect. Linear MCP installed. | `scripts/vercel-check-git` shows 4 ✓; no projects in `portfolio/archive/` |
 | 2026-04-20 | Shipyard + Shipyard (iOS) | v0.1 | **Nautical rebrand:** 8-token palette (bg `#07101E`, steel `#4A90DE`, gold `#D7AA3A`, etc.), ship's-helm SVG logo, BigShoulders Bold + DM Mono + Instrument Sans. Web: LogoIcon/favicon rewritten, chart grid, all pages use token utilities. iOS: Palette.swift + Font+Shipyard.swift + HelmMark + LaunchScreenView + OnboardingView + new AppIcon (13 sizes from helm SVG). Both builds pass. iOS installed on device. Web pushed to GitHub for auto-deploy. | `portfolio/shipyard/` + `portfolio/shipyard-ios/` · git `fad5e43` |
 | 2026-04-19 | Shipyard | v0.1 | **Phase 2 + Phase 3 shipped:** Supabase RLS auth gate (`proxy.ts` — fixed Next.js 16 `config` export bug), email+password login (switched off magic-link due to shared-Supabase redirect URL issues), nightly launchd auto-scan at 3:00 AM local (`scripts/scan-cron.sh` + `~/Library/LaunchAgents/com.chasewhittaker.shipyard-scan.plist`), `docs/AUTO_SCAN.md` walkthrough | `portfolio/shipyard/` · first cron-triggered scan: 36 projects upserted in 10.5s · learnings upsert schema bug flagged as follow-up |
