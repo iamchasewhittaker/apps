@@ -69,12 +69,12 @@ function FilterSelect({
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="flex items-center gap-1.5 text-xs text-slate-400">
+    <label className="flex items-center gap-1.5 font-mono-label text-[10px] text-dim">
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded border border-slate-700/60 bg-[#131b2e] px-2 py-1 text-xs text-slate-200 outline-none focus:border-amber-500/50"
+        className="rounded border border-dimmer bg-surface px-2 py-1 text-xs text-white outline-none focus:border-steel/60"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>

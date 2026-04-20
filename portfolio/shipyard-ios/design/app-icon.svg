@@ -1,45 +1,41 @@
 <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shipyard app icon: ship's helm on navy, per DESIGN-HANDOFF.md -->
   <!-- Navy background (iOS applies the rounded-corner mask) -->
-  <rect width="1024" height="1024" fill="#0A1E3F"/>
+  <rect width="1024" height="1024" fill="#07101E"/>
 
-  <!-- Outer compass ring -->
-  <circle cx="512" cy="512" r="360"
-          fill="none" stroke="#D4A84B" stroke-width="10" opacity="0.55"/>
+  <!-- Ambient compass ring (ghost) -->
+  <circle cx="512" cy="512" r="440" fill="none" stroke="#0D1A34" stroke-width="2"/>
+  <circle cx="512" cy="512" r="380" fill="none" stroke="#141A4C" stroke-width="2"/>
 
-  <!-- Inner compass ring -->
-  <circle cx="512" cy="512" r="108"
-          fill="none" stroke="#D4A84B" stroke-width="10"/>
+  <!-- Helm wheel -->
+  <g stroke="#F2EEE6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer rim -->
+    <circle cx="512" cy="512" r="288" stroke-width="34"/>
 
-  <!-- Compass rose: 4 cardinal points as dual-tone diamonds -->
-  <!-- North (up) -->
-  <polygon points="512,80 552,512 512,472 472,512"
-           fill="#D4A84B"/>
-  <polygon points="512,80 512,472 472,512"
-           fill="#F4EAD5" opacity="0.85"/>
+    <!-- 8 spokes -->
+    <g stroke-width="30">
+      <line x1="512" y1="220" x2="512" y2="804"/>
+      <line x1="220" y1="512" x2="804" y2="512"/>
+      <line x1="305" y1="305" x2="719" y2="719"/>
+      <line x1="305" y1="719" x2="719" y2="305"/>
+    </g>
 
-  <!-- South (down) -->
-  <polygon points="512,944 472,512 512,552 552,512"
-           fill="#D4A84B"/>
-  <polygon points="512,944 512,552 552,512"
-           fill="#F4EAD5" opacity="0.55"/>
+    <!-- 4 handles (protruding beyond rim) -->
+    <g stroke-width="30">
+      <line x1="512" y1="170" x2="512" y2="252"/>
+      <line x1="512" y1="772" x2="512" y2="854"/>
+      <line x1="170" y1="512" x2="252" y2="512"/>
+      <line x1="772" y1="512" x2="854" y2="512"/>
+    </g>
+  </g>
 
-  <!-- East (right) -->
-  <polygon points="944,512 512,472 552,512 512,552"
-           fill="#D4A84B"/>
-  <polygon points="944,512 552,512 512,552"
-           fill="#F4EAD5" opacity="0.55"/>
+  <!-- Hub -->
+  <circle cx="512" cy="512" r="58" fill="none" stroke="#F2EEE6" stroke-width="22"/>
+  <circle cx="512" cy="512" r="10" fill="#F2EEE6"/>
 
-  <!-- West (left) -->
-  <polygon points="80,512 512,552 472,512 512,472"
-           fill="#D4A84B"/>
-  <polygon points="80,512 472,512 512,472"
-           fill="#F4EAD5" opacity="0.85"/>
-
-  <!-- Center dot (pivot) -->
-  <circle cx="512" cy="512" r="34" fill="#D4A84B"/>
-
-  <!-- Tiny cardinal-letter tick marks on the outer ring -->
-  <text x="512" y="170" font-family="'Futura', 'Helvetica Neue', sans-serif"
-        font-weight="700" font-size="56" fill="#F4EAD5"
-        text-anchor="middle" opacity="0.75">N</text>
+  <!-- 4 cardinal bearing dots (steel) -->
+  <circle cx="512" cy="296" r="22" fill="#4A90DE"/>
+  <circle cx="512" cy="728" r="22" fill="#4A90DE"/>
+  <circle cx="296" cy="512" r="22" fill="#4A90DE"/>
+  <circle cx="728" cy="512" r="22" fill="#4A90DE"/>
 </svg>

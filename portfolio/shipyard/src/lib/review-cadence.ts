@@ -25,9 +25,9 @@ export function computeChipState(cadence: ReviewCadence): ReviewChip {
 
 export function chipColor(state: ChipState): string {
   switch (state) {
-    case 'red': return 'bg-red-500/20 text-red-400 border-red-500/30';
-    case 'amber': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-    case 'neutral': return 'bg-slate-700/50 text-slate-300 border-slate-600/30';
+    case 'red': return 'bg-danger/20 text-danger border-danger/30';
+    case 'amber': return 'bg-gold/20 text-gold border-gold/30';
+    case 'neutral': return 'bg-dimmer/60 text-white border-dim/30';
   }
 }
 

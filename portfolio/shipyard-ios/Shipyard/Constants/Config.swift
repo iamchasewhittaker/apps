@@ -1,16 +1,12 @@
 import Foundation
 
-/// Supabase credentials — shared project with the web app.
-/// Add SUPABASE_ANON_KEY to a gitignored Secrets.xcconfig before enabling live fetch.
+/// Supabase credentials — shared portfolio project (same as wellness-tracker-ios, web apps).
+/// Anon key is the public `NEXT_PUBLIC_SUPABASE_ANON_KEY` — safe with RLS enabled.
 enum Config {
-    // URL is public (NEXT_PUBLIC_*); safe to hardcode.
     static let supabaseURL = URL(string: "https://unqtnnxlltiadzbqpyhh.supabase.co")!
 
-    // TODO: move to Secrets.xcconfig + Info.plist once supabase-swift is added.
-    // Never commit the real key here — this repo is public.
-    static let supabaseAnonKey: String = {
-        Bundle.main.infoDictionary?["SUPABASE_ANON_KEY"] as? String ?? ""
-    }()
+    static let supabaseAnonKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVucXRubnhsbHRpYWR6YnFweWhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzQwODksImV4cCI6MjA4OTk1MDA4OX0.SiLspiMZoQuE8jr-WcYLHPSAYsw7-JJ1T69zWO85rkY"
 
     static let ownerEmail = "chase.t.whittaker@gmail.com"
     static let userDefaultsKey = "chase_shipyard_ios_v1"

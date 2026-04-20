@@ -1,35 +1,91 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0c1222;
-  --foreground: #e2e8f0;
-  --card: #131b2e;
-  --border: #1e293b;
-  --accent: #d4a853;
-  --accent-hover: #e5be6a;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --muted: #94a3b8;
+  --bg: #07101E;
+  --surface: #0C1A34;
+  --white: #F2EEE6;
+  --steel: #4A90DE;
+  --gold: #D7AA3A;
+  --dim: #346090;
+  --dimmer: #141A4C;
+  --ghost: #0D1A34;
+
+  --background: var(--bg);
+  --foreground: var(--white);
+  --card: var(--surface);
+  --border: var(--dimmer);
+  --accent: var(--steel);
+  --accent-hover: #6AA8E6;
+  --highlight: var(--gold);
+  --muted: var(--dim);
+  --success: #57C785;
+  --warning: var(--gold);
+  --danger: #E06B6B;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-surface: var(--surface);
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-highlight: var(--highlight);
+  --color-muted: var(--muted);
+  --color-steel: var(--steel);
+  --color-gold: var(--gold);
+  --color-dim: var(--dim);
+  --color-dimmer: var(--dimmer);
+  --color-ghost: var(--ghost);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
-  --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-instrument-sans);
+  --font-mono: var(--font-dm-mono);
+  --font-display: var(--font-big-shoulders);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-instrument-sans), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-big-shoulders), system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.font-mono-label {
+  font-family: var(--font-dm-mono), ui-monospace, monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Nautical chart grid — faint horizontal rules every 40px */
+.chart-grid {
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 39px,
+    rgba(20, 26, 76, 0.35) 39px,
+    rgba(20, 26, 76, 0.35) 40px
+  );
+  background-size: 100% 40px;
+}
+
+/* Gold rule — single underline accent */
+.gold-rule {
+  position: relative;
+}
+.gold-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--gold);
 }

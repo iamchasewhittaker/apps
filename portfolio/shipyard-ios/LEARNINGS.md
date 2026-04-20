@@ -1,5 +1,28 @@
 # Learnings — Shipyard (iOS)
 
+## 2026-04-19 (Phase 2 — Supabase integration)
+
+**Hand-editing `project.pbxproj` to add a Swift Package Manager dep is safe when you mirror a working example.**
+Adding `supabase-swift` without opening Xcode required six synchronized edits: `PBXBuildFile` (framework link), `PBXFileReference` (new Swift source), `PBXFrameworksBuildPhase` (add to files), `PBXNativeTarget.packageProductDependencies`, `PBXProject.packageReferences`, `PBXSourcesBuildPhase`, plus two new sections (`XCRemoteSwiftPackageReference`, `XCSwiftPackageProductDependency`). Copied the exact UUID slots and structure from `wellness-tracker-ios/WellnessTracker.xcodeproj/project.pbxproj`. First build succeeded on the first try — the pattern is deterministic if you stay consistent with UUIDs.
+
+**Hardcoding the Supabase anon key in Swift is the portfolio convention, not a security flaw.**
+Initial plan called for `Secrets.xcconfig` + Info.plist binding. Discovered `wellness-tracker-ios/Services/WellnessSupabaseConfig.swift` already hardcodes the same anon key in a public repo with a comment: "Public anon key (documented in repo handoffs; safe with RLS)." The anon key maps to `NEXT_PUBLIC_SUPABASE_ANON_KEY` — it's designed to be public. RLS is the real security boundary. Follow the existing pattern rather than over-engineering a new one.
+
+**`authStateChanges` fires `.initialSession` on every listener start — including when there is NO session.**
+Destructure with `for await (event, session) in ...` and **always** check `session != nil` before acting on `.initialSession`. If you handle `.initialSession` the same as `.signedIn` (ignoring the session value), the listener sets `isSignedIn = true` on launch with no auth token. The fleet loads mock data, the sign-in screen never appears, and `signOut()` has nothing to invalidate so it silently no-ops. The correct pattern:
+```swift
+case .initialSession:
+    if session != nil { await handleSignedIn() }
+case .signedIn, .tokenRefreshed:
+    await handleSignedIn()
+case .signedOut:
+    handleSignedOut()
+```
+Also: `signOut()` should call `handleSignedOut()` directly (belt-and-suspenders) after `auth.signOut()` — don't rely solely on the listener firing `.signedOut`, because it may be slow or fail if the network is down.
+
+**Test helper methods live on the production class, not a test-only file.**
+Tests referenced `FleetStore.loadMockFleet()` from Phase 1, but the method didn't exist — `loadFleet()` was async-only. Rather than rewrite tests to use `await`, add a small synchronous `loadMockFleet()` helper directly on `FleetStore`. Cheaper than a test-only subclass and makes SwiftUI previews simpler too (`#Preview` uses the same helper).
+
 ## 2026-04-17 (Phase 1 scaffold session)
 
 **Never run concurrent `xcodebuild` commands against the same project.**

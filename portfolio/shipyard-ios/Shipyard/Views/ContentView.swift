@@ -9,7 +9,7 @@ struct ContentView: View {
                 NavigationStack {
                     FleetListView()
                         .navigationTitle("Fleet")
-                        .toolbarBackground(Palette.navy, for: .navigationBar)
+                        .toolbarBackground(Palette.bg, for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarColorScheme(.dark, for: .navigationBar)
                 }

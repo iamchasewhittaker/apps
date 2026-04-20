@@ -20,6 +20,16 @@
 		SY01000000000000000000B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY02000000000000000000D /* Config.swift */; };
 		SY01000000000000000000C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY02000000000000000000E /* SignInView.swift */; };
 		SY01000000000000000000D /* ShipDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY02000000000000000000F /* ShipDetailView.swift */; };
+		SY01000000000000000000E /* SupabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000010 /* SupabaseService.swift */; };
+		SY01000000000000000000F /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = SY0F0000000000000000002 /* Supabase */; };
+		SY010000000000000000010 /* Font+Shipyard.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000011 /* Font+Shipyard.swift */; };
+		SY010000000000000000011 /* BigShouldersDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000012 /* BigShouldersDisplay-Bold.ttf */; };
+		SY010000000000000000012 /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000013 /* DMMono-Regular.ttf */; };
+		SY010000000000000000013 /* InstrumentSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000014 /* InstrumentSans-Regular.ttf */; };
+		SY010000000000000000014 /* InstrumentSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000015 /* InstrumentSans-Bold.ttf */; };
+		SY010000000000000000015 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000016 /* LaunchScreenView.swift */; };
+		SY010000000000000000016 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000017 /* OnboardingView.swift */; };
+		SY010000000000000000017 /* HelmMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = SY020000000000000000018 /* HelmMark.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +58,15 @@
 		SY02000000000000000000D /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		SY02000000000000000000E /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		SY02000000000000000000F /* ShipDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipDetailView.swift; sourceTree = "<group>"; };
+		SY020000000000000000010 /* SupabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseService.swift; sourceTree = "<group>"; };
+		SY020000000000000000011 /* Font+Shipyard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Shipyard.swift"; sourceTree = "<group>"; };
+		SY020000000000000000012 /* BigShouldersDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BigShouldersDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		SY020000000000000000013 /* DMMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Regular.ttf"; sourceTree = "<group>"; };
+		SY020000000000000000014 /* InstrumentSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InstrumentSans-Regular.ttf"; sourceTree = "<group>"; };
+		SY020000000000000000015 /* InstrumentSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InstrumentSans-Bold.ttf"; sourceTree = "<group>"; };
+		SY020000000000000000016 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
+		SY020000000000000000017 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		SY020000000000000000018 /* HelmMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelmMark.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				SY01000000000000000000F /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,10 +104,39 @@
 				SY040000000000000000004 /* Models */,
 				SY040000000000000000005 /* Services */,
 				SY040000000000000000006 /* Constants */,
+				SY04000000000000000000B /* Extensions */,
 				SY040000000000000000007 /* Views */,
+				SY04000000000000000000C /* Resources */,
 				SY020000000000000000009 /* Assets.xcassets */,
 			);
 			path = Shipyard;
+			sourceTree = "<group>";
+		};
+		SY04000000000000000000B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				SY020000000000000000011 /* Font+Shipyard.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		SY04000000000000000000C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				SY04000000000000000000D /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		SY04000000000000000000D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				SY020000000000000000012 /* BigShouldersDisplay-Bold.ttf */,
+				SY020000000000000000013 /* DMMono-Regular.ttf */,
+				SY020000000000000000014 /* InstrumentSans-Regular.ttf */,
+				SY020000000000000000015 /* InstrumentSans-Bold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		SY040000000000000000003 /* Products */ = {
@@ -111,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				SY020000000000000000003 /* FleetStore.swift */,
+				SY020000000000000000010 /* SupabaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -129,6 +179,9 @@
 			isa = PBXGroup;
 			children = (
 				SY020000000000000000006 /* ContentView.swift */,
+				SY020000000000000000016 /* LaunchScreenView.swift */,
+				SY020000000000000000017 /* OnboardingView.swift */,
+				SY020000000000000000018 /* HelmMark.swift */,
 				SY040000000000000000008 /* Fleet */,
 				SY04000000000000000000A /* Auth */,
 			);
@@ -177,6 +230,9 @@
 			dependencies = (
 			);
 			name = Shipyard;
+			packageProductDependencies = (
+				SY0F0000000000000000002 /* Supabase */,
+			);
 			productName = Shipyard;
 			productReference = SY02000000000000000000B /* Shipyard.app */;
 			productType = "com.apple.product-type.application";
@@ -227,6 +283,9 @@
 				Base,
 			);
 			mainGroup = SY040000000000000000001;
+			packageReferences = (
+				SY0F0000000000000000001 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			productRefGroup = SY040000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -243,6 +302,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				SY010000000000000000009 /* Assets.xcassets in Resources */,
+				SY010000000000000000011 /* BigShouldersDisplay-Bold.ttf in Resources */,
+				SY010000000000000000012 /* DMMono-Regular.ttf in Resources */,
+				SY010000000000000000013 /* InstrumentSans-Regular.ttf in Resources */,
+				SY010000000000000000014 /* InstrumentSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +334,11 @@
 				SY01000000000000000000B /* Config.swift in Sources */,
 				SY01000000000000000000C /* SignInView.swift in Sources */,
 				SY01000000000000000000D /* ShipDetailView.swift in Sources */,
+				SY01000000000000000000E /* SupabaseService.swift in Sources */,
+				SY010000000000000000010 /* Font+Shipyard.swift in Sources */,
+				SY010000000000000000015 /* LaunchScreenView.swift in Sources */,
+				SY010000000000000000016 /* OnboardingView.swift in Sources */,
+				SY010000000000000000017 /* HelmMark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +491,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Shipyard;
+				INFOPLIST_KEY_UIAppFonts = (
+					"BigShouldersDisplay-Bold.ttf",
+					"DMMono-Regular.ttf",
+					"InstrumentSans-Regular.ttf",
+					"InstrumentSans-Bold.ttf",
+				);
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -454,6 +528,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Shipyard;
+				INFOPLIST_KEY_UIAppFonts = (
+					"BigShouldersDisplay-Bold.ttf",
+					"DMMono-Regular.ttf",
+					"InstrumentSans-Regular.ttf",
+					"InstrumentSans-Bold.ttf",
+				);
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -543,6 +623,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		SY0F0000000000000000001 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		SY0F0000000000000000002 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = SY0F0000000000000000001 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 	};
 	rootObject = SY060000000000000000001 /* Project object */;

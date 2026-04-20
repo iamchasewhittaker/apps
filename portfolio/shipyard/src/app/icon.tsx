@@ -11,19 +11,33 @@ export default function Icon() {
           width: 32,
           height: 32,
           borderRadius: 7,
-          background: "#1e3a5f",
+          background: "#07101E",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <span style={{ color: "#e2e8f0", fontWeight: 900, fontSize: 13, lineHeight: 1, letterSpacing: "-0.5px" }}>
-          SY
-        </span>
-        <span style={{ color: "#e2e8f0", fontWeight: 700, fontSize: 5, lineHeight: 1, letterSpacing: "1.5px", opacity: 0.75, marginTop: 2 }}>
-          SHIPYARD
-        </span>
+        <svg viewBox="0 0 1024 1024" width={28} height={28}>
+          <g
+            fill="none"
+            stroke="#F2EEE6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="512" cy="512" r="288" strokeWidth="70" />
+            <g strokeWidth="62">
+              <line x1="512" y1="220" x2="512" y2="804" />
+              <line x1="220" y1="512" x2="804" y2="512" />
+              <line x1="305" y1="305" x2="719" y2="719" />
+              <line x1="305" y1="719" x2="719" y2="305" />
+            </g>
+          </g>
+          <circle cx="512" cy="512" r="60" fill="#F2EEE6" />
+          <circle cx="512" cy="296" r="40" fill="#4A90DE" />
+          <circle cx="512" cy="728" r="40" fill="#4A90DE" />
+          <circle cx="296" cy="512" r="40" fill="#4A90DE" />
+          <circle cx="728" cy="512" r="40" fill="#4A90DE" />
+        </svg>
       </div>
     ),
     { ...size }

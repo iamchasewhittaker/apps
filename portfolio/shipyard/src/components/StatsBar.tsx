@@ -11,10 +11,10 @@ export default function StatsBar({ stats }: Props) {
       <StatCard
         label="Under Construction"
         value={stats.building}
-        className={stats.building > 1 ? 'text-red-400' : undefined}
+        className={stats.building > 1 ? 'text-danger' : undefined}
       />
-      <StatCard label="Launched" value={stats.shipped} className="text-emerald-400" />
-      <StatCard label="In Drydock" value={stats.drydock} className="text-amber-400" />
+      <StatCard label="Launched" value={stats.shipped} className="text-gold" />
+      <StatCard label="In Drydock" value={stats.drydock} className="text-steel" />
       <StatCard
         label="Compliance Avg"
         value={`${Math.round(stats.compliance_avg)}%`}
@@ -33,11 +33,11 @@ function StatCard({
   className?: string;
 }) {
   return (
-    <div className="rounded-lg border border-slate-700/60 bg-[#131b2e] px-4 py-3">
-      <p className={`text-2xl font-bold ${className ?? 'text-slate-100'}`}>
+    <div className="rounded-lg border border-dimmer bg-surface px-4 py-3">
+      <p className={`font-display text-3xl ${className ?? 'text-white'}`}>
         {value}
       </p>
-      <p className="text-xs text-slate-400">{label}</p>
+      <p className="font-mono-label text-[10px] text-dim mt-1">{label}</p>
     </div>
   );
 }

@@ -15,9 +15,9 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 function scoreColor(score: number): string {
-  if (score >= 80) return 'bg-emerald-500';
-  if (score >= 50) return 'bg-amber-500';
-  return 'bg-red-500';
+  if (score >= 80) return 'bg-success';
+  if (score >= 50) return 'bg-gold';
+  return 'bg-danger';
 }
 
 export default function ShipCard({ project }: Props) {
@@ -29,15 +29,15 @@ export default function ShipCard({ project }: Props) {
   return (
     <Link
       href={`/ship/${project.slug}`}
-      className="group block rounded-lg border border-slate-700/60 bg-[#131b2e] p-4 transition-colors hover:border-amber-500/40"
+      className="group block rounded-lg border border-dimmer bg-surface p-4 transition-colors hover:border-steel/60"
     >
       {/* Header */}
       <div className="mb-2 flex items-center gap-2">
-        <h3 className="truncate text-sm font-bold text-slate-100 group-hover:text-amber-300">
+        <h3 className="truncate font-display text-base text-white group-hover:text-steel">
           {project.name}
         </h3>
         <span
-          className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${TYPE_COLORS[project.type] ?? 'bg-slate-600/30 text-slate-400'}`}
+          className={`shrink-0 rounded-full px-2 py-0.5 font-mono-label text-[9px] ${TYPE_COLORS[project.type] ?? 'bg-dimmer/60 text-dim'}`}
         >
           {project.type}
         </span>
@@ -45,13 +45,13 @@ export default function ShipCard({ project }: Props) {
 
       {/* MVP step chip */}
       <div className="mb-3 flex items-center gap-2">
-        <span className="rounded border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+        <span className="rounded border border-steel/30 bg-steel/10 px-2 py-0.5 font-mono-label text-[9px] text-steel">
           {project.mvp_step != null ? `${project.mvp_step}` : '?'} &middot; {stepLabel}
         </span>
       </div>
 
       {/* Meta row */}
-      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-400">
+      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono-label text-[10px] text-dim">
         {/* Days since commit */}
         <span>
           {project.days_since_commit != null
@@ -63,13 +63,13 @@ export default function ShipCard({ project }: Props) {
         <span className="flex items-center gap-1">
           {project.has_live_url ? (
             <>
-              <span className="text-emerald-400">&#10003;</span>
-              <span className="text-emerald-400">live</span>
+              <span className="text-success">&#10003;</span>
+              <span className="text-success">live</span>
             </>
           ) : (
             <>
-              <span className="text-slate-500">&#10005;</span>
-              <span className="text-slate-500">no url</span>
+              <span className="text-dim/60">&#10005;</span>
+              <span className="text-dim/60">no url</span>
             </>
           )}
         </span>
@@ -77,7 +77,7 @@ export default function ShipCard({ project }: Props) {
         {/* Linear link */}
         {project.linear_project_url && (
           <span
-            className="text-slate-500 hover:text-slate-300"
+            className="text-dim/60 hover:text-white"
             title="Linear project"
           >
             &#128279;
@@ -86,13 +86,13 @@ export default function ShipCard({ project }: Props) {
       </div>
 
       {/* Compliance bar */}
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-700/50">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-dimmer/60">
         <div
           className={`h-full rounded-full transition-all ${scoreColor(project.compliance_score)}`}
           style={{ width: `${Math.min(project.compliance_score, 100)}%` }}
         />
       </div>
-      <p className="mt-1 text-right text-[10px] text-slate-500">
+      <p className="mt-1 text-right font-mono-label text-[9px] text-dim/70">
         {Math.round(project.compliance_score)}%
       </p>
     </Link>

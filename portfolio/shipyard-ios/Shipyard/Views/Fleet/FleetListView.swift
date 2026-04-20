@@ -11,24 +11,25 @@ struct FleetListView: View {
                         NavigationLink(value: ship) {
                             ShipRowView(ship: ship)
                         }
-                        .listRowBackground(Palette.deepSea)
+                        .listRowBackground(Palette.surface)
                     }
                 } header: {
                     HStack {
                         Text(group.bucket.rawValue.uppercased())
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(Palette.mist)
+                            .font(.shipyardMono(11))
+                            .tracking(2)
+                            .foregroundStyle(Palette.dim)
                         Spacer()
                         Text("\(group.ships.count)")
-                            .font(.caption.monospacedDigit())
-                            .foregroundStyle(Palette.mist.opacity(0.7))
+                            .font(.shipyardMono(11))
+                            .foregroundStyle(Palette.dim.opacity(0.7))
                     }
                 }
             }
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
-        .background(Palette.navy)
+        .background(Palette.bg)
         .navigationDestination(for: Ship.self) { ship in
             ShipDetailView(ship: ship)
         }
@@ -38,7 +39,35 @@ struct FleetListView: View {
         .overlay {
             if store.isLoading && store.ships.isEmpty {
                 ProgressView("Loading fleet…")
-                    .tint(Palette.gold)
+                    .tint(Palette.steel)
+                    .foregroundStyle(Palette.dim)
+                    .font(.shipyardMono(12))
+            }
+        }
+        .safeAreaInset(edge: .top) {
+            if let msg = store.errorMessage {
+                Text(msg)
+                    .font(.shipyardMono(11))
+                    .foregroundStyle(Palette.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.red.opacity(0.85))
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button("Reload", systemImage: "arrow.clockwise") {
+                        Task { await store.loadFleet() }
+                    }
+                    Button("Sign out", systemImage: "rectangle.portrait.and.arrow.right", role: .destructive) {
+                        Task { await store.signOut() }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .foregroundStyle(Palette.steel)
+                }
             }
         }
     }
@@ -51,7 +80,7 @@ struct FleetListView: View {
     }
     .environment({
         let s = FleetStore()
-        s.signIn()
+        s.loadMockFleet()
         return s
     }())
 }

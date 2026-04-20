@@ -1,23 +1,82 @@
-type Size = 'sm' | 'md' | 'lg';
-
-const sizes: Record<Size, { outer: string; initials: string; sub: string; gap: string }> = {
-  sm: { outer: 'w-9 h-9 rounded-lg', initials: 'text-sm', sub: 'text-[6px] mt-0.5', gap: '' },
-  md: { outer: 'w-14 h-14 rounded-xl', initials: 'text-xl', sub: 'text-[8px] mt-1', gap: '' },
-  lg: { outer: 'w-24 h-24 rounded-2xl', initials: 'text-4xl', sub: 'text-[9px] mt-1.5', gap: '' },
+type LogoIconProps = {
+  size?: number;
+  className?: string;
 };
 
-export function LogoIcon({ size = 'sm' }: { size?: Size }) {
-  const s = sizes[size];
+export function LogoIcon({ size = 36, className = "" }: LogoIconProps) {
   return (
-    <div
-      className={`${s.outer} bg-[#1e3a5f] border border-[#2d5a8f] flex flex-col items-center justify-center flex-shrink-0`}
+    <svg
+      viewBox="0 0 1024 1024"
+      width={size}
+      height={size}
+      className={`flex-shrink-0 ${className}`}
+      role="img"
+      aria-label="Shipyard"
     >
-      <span className={`text-[#e2e8f0] font-black tracking-tight leading-none ${s.initials}`}>
-        SY
-      </span>
-      <span className={`text-[#e2e8f0] font-bold tracking-[0.15em] leading-none opacity-75 ${s.sub}`}>
-        SHIPYARD
-      </span>
+      <rect width="1024" height="1024" rx="220" fill="var(--bg)" />
+      <g fill="none" stroke="var(--white)" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="512" cy="512" r="288" strokeWidth="34" />
+        <g strokeWidth="30">
+          <line x1="512" y1="220" x2="512" y2="804" />
+          <line x1="220" y1="512" x2="804" y2="512" />
+          <line x1="305" y1="305" x2="719" y2="719" />
+          <line x1="305" y1="719" x2="719" y2="305" />
+        </g>
+        <g strokeWidth="30">
+          <line x1="512" y1="170" x2="512" y2="252" />
+          <line x1="512" y1="772" x2="512" y2="854" />
+          <line x1="170" y1="512" x2="252" y2="512" />
+          <line x1="772" y1="512" x2="854" y2="512" />
+        </g>
+      </g>
+      <circle cx="512" cy="512" r="58" fill="none" stroke="var(--white)" strokeWidth="22" />
+      <circle cx="512" cy="512" r="10" fill="var(--white)" />
+      <circle cx="512" cy="296" r="22" fill="var(--steel)" />
+      <circle cx="512" cy="728" r="22" fill="var(--steel)" />
+      <circle cx="296" cy="512" r="22" fill="var(--steel)" />
+      <circle cx="728" cy="512" r="22" fill="var(--steel)" />
+    </svg>
+  );
+}
+
+type LogoLockupProps = {
+  variant?: "stacked" | "horizontal";
+  markSize?: number;
+  className?: string;
+};
+
+export function LogoLockup({
+  variant = "stacked",
+  markSize = 96,
+  className = "",
+}: LogoLockupProps) {
+  if (variant === "horizontal") {
+    return (
+      <div className={`flex items-center gap-4 ${className}`}>
+        <LogoIcon size={markSize} />
+        <div className="flex flex-col leading-none">
+          <span className="font-display text-3xl text-white gold-rule">
+            SHIPYARD
+          </span>
+          <span className="font-mono-label text-xs text-dim mt-3">
+            FLEET COMMAND
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`flex flex-col items-center gap-4 ${className}`}>
+      <LogoIcon size={markSize} />
+      <div className="flex flex-col items-center leading-none">
+        <span className="font-display text-3xl text-white gold-rule">
+          SHIPYARD
+        </span>
+        <span className="font-mono-label text-xs text-dim mt-3">
+          FLEET COMMAND
+        </span>
+      </div>
     </div>
   );
 }

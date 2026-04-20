@@ -70,9 +70,12 @@ export default async function FleetDashboard({ searchParams }: Props) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight text-accent">
-        Fleet Dashboard
-      </h1>
+      <div className="space-y-2">
+        <p className="font-mono-label text-[11px] text-dim">PORT INSPECTION</p>
+        <h1 className="font-display text-4xl text-white gold-rule inline-block">
+          FLEET DASHBOARD
+        </h1>
+      </div>
 
       <StatsBar stats={stats} />
       <WipBanner wipCount={stats.building} />
@@ -227,10 +230,10 @@ function FilterBar({
 /* ── Ship Card ──────────────────────────────────────────────── */
 
 const STATUS_COLORS: Record<string, string> = {
-  active: 'bg-success/20 text-success border-success/30',
-  stalled: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  frozen: 'bg-sky-500/20 text-sky-400 border-sky-500/30',
-  archived: 'bg-slate-600/20 text-slate-400 border-slate-600/30',
+  active: 'bg-steel/20 text-steel border-steel/30',
+  stalled: 'bg-gold/20 text-gold border-gold/30',
+  frozen: 'bg-dim/20 text-dim border-dim/30',
+  archived: 'bg-ghost/60 text-dim border-dimmer/60',
 };
 
 const TYPE_COLORS: Record<string, string> = {

@@ -5,22 +5,24 @@ struct ShipRowView: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(ship.name)
-                    .font(.headline)
-                    .foregroundStyle(Palette.sailCream)
+                    .font(.shipyardDisplay(20))
+                    .foregroundStyle(Palette.white)
+                    .tracking(0.5)
 
                 HStack(spacing: 8) {
                     Text(NauticalLabels.label(for: ship.mvp_step_actual))
-                        .font(.caption)
-                        .foregroundStyle(Palette.mist)
+                        .font(.shipyardMono(11))
+                        .foregroundStyle(Palette.dim)
+                        .tracking(1)
 
                     if let days = ship.days_since_commit {
                         Text("·")
-                            .foregroundStyle(Palette.mist.opacity(0.5))
+                            .foregroundStyle(Palette.dim.opacity(0.5))
                         Text(daysAgoLabel(days))
-                            .font(.caption.monospacedDigit())
-                            .foregroundStyle(days > 30 ? Palette.storm : Palette.mist)
+                            .font(.shipyardMono(11).monospacedDigit())
+                            .foregroundStyle(days > 30 ? Palette.gold : Palette.dim)
                     }
                 }
             }
@@ -29,12 +31,13 @@ struct ShipRowView: View {
 
             statusChip
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
     }
 
     private var statusChip: some View {
-        Text(ship.status.chipLabel)
-            .font(.caption2.weight(.semibold))
+        Text(ship.status.chipLabel.uppercased())
+            .font(.shipyardMono(10))
+            .tracking(1)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(ship.status.chipColor.opacity(0.18))
@@ -44,9 +47,9 @@ struct ShipRowView: View {
 
     private func daysAgoLabel(_ days: Int) -> String {
         switch days {
-        case 0: return "today"
-        case 1: return "yesterday"
-        default: return "\(days)d ago"
+        case 0: return "TODAY"
+        case 1: return "YESTERDAY"
+        default: return "\(days)D AGO"
         }
     }
 }
@@ -56,7 +59,7 @@ struct ShipRowView: View {
         ShipRowView(ship: FleetStore.mockFleet[0])
         ShipRowView(ship: FleetStore.mockFleet[3])
     }
-    .listRowBackground(Palette.deepSea)
+    .listRowBackground(Palette.surface)
     .scrollContentBackground(.hidden)
-    .background(Palette.navy)
+    .background(Palette.bg)
 }

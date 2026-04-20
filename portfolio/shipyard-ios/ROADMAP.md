@@ -9,14 +9,21 @@
 - [x] AppIcon + branding docs
 - [x] Smoke tests
 
-## Phase 2 — Read-only Supabase sync
+## Phase 2 — Read-only Supabase sync · ✅ DONE 2026-04-19
 
-- [ ] Add `supabase-swift` Swift package
-- [ ] Pull `projects` rows into `FleetStore` (depends on web RLS landing first)
-- [ ] Magic-link / email-OTP auth gate
-- [ ] Pull-to-refresh
-- [ ] Ship detail screen (read-only)
-- [ ] Add `chase_shipyard_ios_v1` UserDefaults cache for offline fleet
+- [x] Add `supabase-swift` Swift package
+- [x] Pull `projects` rows into `FleetStore`
+- [x] Email + password auth gate (matches current web flow)
+- [x] Pull-to-refresh (already in Phase 1; now fetches real data)
+- [x] Ship detail screen (read-only) (shipped in Phase 1)
+- [x] `chase_shipyard_ios_v1` UserDefaults cache for offline fleet
+
+## Phase 2.5 — Magic link auth
+
+- [ ] Configure Supabase email template for magic link
+- [ ] Register deep-link scheme `shipyard://auth/confirm`
+- [ ] `.onOpenURL` handler in `ShipyardApp` → `exchangeCodeForSession`
+- [ ] Swap `SignInView` back to magic-link UI
 
 ## Phase 3 — Interactions
 

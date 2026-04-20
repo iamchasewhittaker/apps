@@ -6,8 +6,9 @@
 
 - **Version:** v0.1
 - **Bundle ID:** `com.chasewhittaker.Shipyard`
-- **Storage key (when added):** `chase_shipyard_ios_v1`
-- **Stack:** SwiftUI + iOS 17 + `@Observable` — no external deps, no backend (Phase 1)
+- **Storage key:** `chase_shipyard_ios_v1` (UserDefaults cache of last fleet fetch)
+- **Stack:** SwiftUI + iOS 17 + `@Observable` + `supabase-swift` v2 (Phase 2)
+- **Supabase project:** shared portfolio project `unqtnnxlltiadzbqpyhh` (same as wellness-tracker-ios, web apps)
 - **Xcode project prefix:** `SY` (UUIDs, build refs)
 - **Xcode project:** `Shipyard.xcodeproj` (hand-crafted `project.pbxproj` — no xcodegen)
 - **Per-app handoff:** [HANDOFF.md](HANDOFF.md)
@@ -15,9 +16,9 @@
 
 ## What This App Is
 
-Native iOS companion to [Shipyard web](../shipyard) — a fleet command center for Chase's portfolio. Phase 1 renders a read-only fleet list from hardcoded mock data so the scaffold works offline. Phase 2 will pull live from Supabase (after the web app's RLS + auth gate lands).
+Native iOS companion to [Shipyard web](../shipyard) — a fleet command center for Chase's portfolio. Phase 2 pulls the real fleet from the shared Supabase `projects` table (kept fresh by the web app's nightly `scan-cron.sh`). Offline fallback: UserDefaults cache → mock fleet.
 
-The web app at `portfolio/shipyard/` is the source of truth — do not add features the web app doesn't have.
+The web app at `portfolio/shipyard/` is the source of truth — iOS is read-only and never writes to Supabase.
 
 ## File Structure
 
@@ -31,7 +32,8 @@ Shipyard/
   Models/
     Ship.swift         ← Codable struct mirroring web `Project` type
   Services/
-    FleetStore.swift   ← @Observable @MainActor; loads mock fleet in Phase 1
+    FleetStore.swift       ← @Observable @MainActor; real Supabase fetch + auth listener + cache fallback
+    SupabaseService.swift  ← shared SupabaseClient singleton
   Constants/
     NauticalLabels.swift ← STEP_NAUTICAL labels ported from web mvp-step.ts
     Palette.swift      ← nautical color tokens (navy, gold, sail-cream)
@@ -54,15 +56,16 @@ ShipyardTests/
 - `nonisolated init()` — allows `@State private var store = FleetStore()` in `@main`
 - `@Environment(FleetStore.self)` in all views
 - All data is `Codable` structs — never `[String: Any]`
-- Phase 1: mock fleet baked in. Phase 2: Supabase SDK + session-aware pull.
+- `SupabaseService.client` — shared singleton using `Config.supabaseURL` + `Config.supabaseAnonKey`
+- Auth: email + password via `auth.signIn(email:password:)`; session restored on launch via `bootstrapSession()`; `authStateChanges` listener keeps `isSignedIn` live
+- Fleet load chain: Supabase → UserDefaults cache (`chase_shipyard_ios_v1`) → hardcoded mock
 
-## Phase 2+ (not in this session)
+## Phase 2.5+ (future)
 
-- Supabase read: pull `projects` rows from shared project `unqtnnxlltiadzbqpyhh`
-- Auth: magic-link/OTP gate matching the web app
-- Ship detail screen (read-only)
-- WIP-of-1 gate (read-only mirror)
-- Pull-to-refresh, widget, Live Activity
+- Magic-link auth (deep-link scheme `shipyard://auth/confirm`, `.onOpenURL`, `exchangeCodeForSession`, Supabase email template)
+- WIP-of-1 gate (read-only mirror of web)
+- Widgets (small: active ship; medium: fleet stats)
+- Live Activity for "Under Construction" ship
 
 ## Build Commands
 

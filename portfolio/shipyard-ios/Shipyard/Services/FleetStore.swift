@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import Supabase
 
 @Observable @MainActor
 final class FleetStore {
@@ -8,86 +9,115 @@ final class FleetStore {
     private(set) var isSignedIn = false
     var errorMessage: String?
 
+    private var authListenerTask: Task<Void, Never>?
+
     nonisolated init() {}
 
-    // MARK: - Auth (Phase 2 stub)
+    // MARK: - Auth
 
-    /// Sign in with magic link — real Supabase call goes here once supabase-swift is added.
-    func signIn() {
-        // TODO: replace with Supabase session check once supabase-swift package is added:
-        //   isSignedIn = supabase.auth.currentSession != nil
-        isSignedIn = true
-        Task { await loadFleet() }
+    /// Check current session on launch; start a listener so sign-in/out updates the UI.
+    func bootstrapSession() async {
+        isSignedIn = (try? await SupabaseService.client.auth.session) != nil
+        if isSignedIn {
+            await loadFleet()
+        }
+        startAuthListener()
     }
 
-    func signOut() {
+    private func startAuthListener() {
+        guard authListenerTask == nil else { return }
+        authListenerTask = Task { [weak self] in
+            for await (event, session) in SupabaseService.client.auth.authStateChanges {
+                guard let self else { return }
+                switch event {
+                case .initialSession:
+                    // Only treat initialSession as signed-in if a real session exists.
+                    // Without this check, a nil initialSession fires handleSignedIn and
+                    // sets isSignedIn = true with no auth token, bypassing the sign-in screen.
+                    if session != nil {
+                        await self.handleSignedIn()
+                    }
+                case .signedIn, .tokenRefreshed:
+                    await self.handleSignedIn()
+                case .signedOut:
+                    self.handleSignedOut()
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    private func handleSignedIn() async {
+        isSignedIn = true
+        await loadFleet()
+    }
+
+    private func handleSignedOut() {
         isSignedIn = false
         ships = []
         clearCache()
     }
 
+    /// Sign in with email + password — matches the web app's current auth flow.
+    func signIn(email: String, password: String) async throws {
+        try await SupabaseService.client.auth.signIn(email: email, password: password)
+    }
+
+    func signOut() async {
+        try? await SupabaseService.client.auth.signOut()
+        // Belt-and-suspenders: reset state immediately so sign-in screen
+        // appears even if the network call fails or the auth listener is slow.
+        handleSignedOut()
+    }
+
     // MARK: - Load
 
-    /// Phase 2: tries Supabase, falls back to cache, falls back to mock.
+    /// Tries Supabase, falls back to cache, falls back to mock.
     func loadFleet() async {
         isLoading = true
         defer { isLoading = false }
 
-        // 1. Try live Supabase fetch (stubbed until supabase-swift package is added).
-        // TODO: uncomment once supabase-swift is added in Xcode and Config values are set:
-        //   let fetched = try? await fetchFromSupabase()
-        //   if let fetched { ships = fetched; saveToCache(fetched); return }
-        let fetched: [Ship]? = nil  // remove this line when uncommenting above
-
-        if let fetched {
+        do {
+            let fetched = try await fetchFromSupabase()
             ships = fetched
             saveToCache(fetched)
             return
+        } catch {
+            errorMessage = error.localizedDescription
         }
 
-        // 2. Fall back to UserDefaults cache
         if let cached = loadFromCache(), !cached.isEmpty {
             ships = cached
             return
         }
 
-        // 3. Fall back to mock fleet
         ships = FleetStore.mockFleet
     }
 
-    // MARK: - Supabase fetch (Phase 2 — activate after adding supabase-swift in Xcode)
-    //
-    // Steps to activate:
-    //   1. In Xcode: File → Add Package Dependencies → https://github.com/supabase/supabase-swift
-    //   2. Add SUPABASE_ANON_KEY to a gitignored Secrets.xcconfig
-    //   3. Wire Secrets.xcconfig into the Shipyard target build settings
-    //   4. Reference in Info.plist: SUPABASE_ANON_KEY = $(SUPABASE_ANON_KEY)
-    //   5. Uncomment the import and function below, remove the nil stub above.
-    //
-    // import Supabase
-    //
-    // private func fetchFromSupabase() async throws -> [Ship] {
-    //     let client = SupabaseClient(supabaseURL: Config.supabaseURL, supabaseKey: Config.supabaseAnonKey)
-    //     let rows: [Ship] = try await client
-    //         .from("projects")
-    //         .select()
-    //         .order("last_commit_date", ascending: false)
-    //         .execute()
-    //         .value
-    //     return rows
-    // }
+    private func fetchFromSupabase() async throws -> [Ship] {
+        try await SupabaseService.client
+            .from("projects")
+            .select()
+            .order("last_commit_date", ascending: false)
+            .execute()
+            .value
+    }
 
     // MARK: - Cache
 
     private func saveToCache(_ fleet: [Ship]) {
-        guard let data = try? JSONEncoder().encode(fleet) else { return }
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        guard let data = try? encoder.encode(fleet) else { return }
         UserDefaults.standard.set(data, forKey: Config.userDefaultsKey)
     }
 
     private func loadFromCache() -> [Ship]? {
-        guard let data = UserDefaults.standard.data(forKey: Config.userDefaultsKey),
-              let fleet = try? JSONDecoder().decode([Ship].self, from: data) else { return nil }
-        return fleet
+        guard let data = UserDefaults.standard.data(forKey: Config.userDefaultsKey) else { return nil }
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try? decoder.decode([Ship].self, from: data)
     }
 
     private func clearCache() {
@@ -102,6 +132,13 @@ final class FleetStore {
             guard !filtered.isEmpty else { return nil }
             return (bucket, filtered.sorted { ($0.days_since_commit ?? .max) < ($1.days_since_commit ?? .max) })
         }
+    }
+
+    // MARK: - Test helper
+
+    /// Loads the mock fleet synchronously — test use only.
+    func loadMockFleet() {
+        ships = FleetStore.mockFleet
     }
 
     // MARK: - Mock data

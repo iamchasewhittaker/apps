@@ -8,16 +8,16 @@ export default function WipBanner({ wipCount }: Props) {
   if (wipCount <= 1) return null;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
-      <p className="text-sm font-medium text-red-300">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-danger/30 bg-danger/10 px-4 py-3">
+      <p className="font-mono-label text-[11px] text-danger">
         <span className="mr-1">&#9888;&#65039;</span>
-        {wipCount} ships under construction. WIP limit is 1.
+        {wipCount} SHIPS UNDER CONSTRUCTION · WIP LIMIT IS 1
       </p>
       <Link
         href="/wip"
-        className="rounded-md bg-amber-600/80 px-3 py-1 text-xs font-semibold text-white transition-colors hover:bg-amber-600"
+        className="rounded-md bg-steel px-3 py-1 font-mono-label text-[10px] text-white transition-colors hover:bg-accent-hover"
       >
-        Pick your active focus &rarr;
+        Pick active focus &rarr;
       </Link>
     </div>
   );

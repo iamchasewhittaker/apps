@@ -7,7 +7,6 @@ struct ShipDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
 
-                // Status + type badges
                 HStack(spacing: 8) {
                     StatusBadge(status: ship.status)
                     TypeBadge(type: ship.type)
@@ -16,35 +15,31 @@ struct ShipDetailView: View {
                     }
                 }
 
-                // Commit freshness
                 if let days = ship.days_since_commit {
-                    DetailRow(label: "Last commit") {
+                    DetailRow(label: "LAST COMMIT") {
                         Text(days == 0 ? "Today" : "\(days)d ago")
                             .foregroundStyle(freshColor(days: days))
                     }
                 }
 
-                // Tech stack
                 if let stack = ship.tech_stack {
-                    DetailRow(label: "Stack") {
+                    DetailRow(label: "STACK") {
                         Text(stack)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Palette.white)
                     }
                 }
 
-                // Compliance score
-                DetailRow(label: "Compliance") {
+                DetailRow(label: "COMPLIANCE") {
                     let score = ship.compliance_score
                     Text("\(score) / 7")
-                        .foregroundStyle(score >= 6 ? Color.green : score >= 4 ? Color.yellow : Color.red)
+                        .foregroundStyle(score >= 6 ? Palette.steel : score >= 4 ? Palette.gold : Color.red)
                 }
 
-                // Live URL
                 if ship.has_live_url, let urlStr = ship.live_url, let url = URL(string: urlStr) {
-                    DetailRow(label: "Live URL") {
+                    DetailRow(label: "LIVE URL") {
                         Link(urlStr, destination: url)
-                            .font(.caption)
-                            .foregroundStyle(Palette.gold)
+                            .font(.shipyardMono(12))
+                            .foregroundStyle(Palette.steel)
                             .lineLimit(1)
                     }
                 }
@@ -53,83 +48,81 @@ struct ShipDetailView: View {
             }
             .padding()
         }
-        .background(Palette.navy.ignoresSafeArea())
+        .background(Palette.bg.ignoresSafeArea())
         .navigationTitle(ship.name)
         .navigationBarTitleDisplayMode(.large)
-        .toolbarBackground(Palette.navy, for: .navigationBar)
+        .toolbarBackground(Palette.bg, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
     }
 
     private func freshColor(days: Int) -> Color {
-        days <= 7 ? .green : days <= 30 ? .yellow : .red
+        days <= 7 ? Palette.steel : days <= 30 ? Palette.gold : Color.red
     }
 }
-
-// MARK: - Sub-components
 
 private struct DetailRow<Content: View>: View {
     let label: String
     @ViewBuilder let content: () -> Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(label.uppercased())
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(Palette.mist)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(.shipyardMono(11))
+                .tracking(2)
+                .foregroundStyle(Palette.dim)
             content()
-                .font(.subheadline)
+                .font(.shipyardBody(15))
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Palette.deepSea)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .background(Palette.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Palette.dimmer, lineWidth: 1)
+        )
     }
 }
 
 private struct StatusBadge: View {
     let status: ShipStatus
     var body: some View {
-        Text(status.rawValue)
-            .font(.caption.weight(.semibold))
+        Text(status.chipLabel.uppercased())
+            .font(.shipyardMono(10))
+            .tracking(1.5)
             .padding(.horizontal, 10)
-            .padding(.vertical, 4)
-            .background(statusColor.opacity(0.2))
-            .foregroundStyle(statusColor)
+            .padding(.vertical, 5)
+            .background(status.chipColor.opacity(0.2))
+            .foregroundStyle(status.chipColor)
             .clipShape(Capsule())
-            .overlay(Capsule().stroke(statusColor.opacity(0.4), lineWidth: 1))
-    }
-    private var statusColor: Color {
-        switch status {
-        case .active:   return .green
-        case .stalled:  return .yellow
-        case .frozen:   return .cyan
-        case .archived: return .gray
-        }
+            .overlay(Capsule().stroke(status.chipColor.opacity(0.4), lineWidth: 1))
     }
 }
 
 private struct TypeBadge: View {
     let type: ShipType
     var body: some View {
-        Text(type.rawValue)
-            .font(.caption.weight(.semibold))
+        Text(type.rawValue.uppercased())
+            .font(.shipyardMono(10))
+            .tracking(1.5)
             .padding(.horizontal, 10)
-            .padding(.vertical, 4)
-            .background(Color.blue.opacity(0.15))
-            .foregroundStyle(Color.blue)
+            .padding(.vertical, 5)
+            .background(Palette.steel.opacity(0.15))
+            .foregroundStyle(Palette.steel)
             .clipShape(Capsule())
-            .overlay(Capsule().stroke(Color.blue.opacity(0.3), lineWidth: 1))
+            .overlay(Capsule().stroke(Palette.steel.opacity(0.3), lineWidth: 1))
     }
 }
 
 private struct StepBadge: View {
     let step: Int
     var body: some View {
-        Text("Step \(step)")
-            .font(.caption.weight(.semibold))
+        Text("STEP \(step)")
+            .font(.shipyardMono(10))
+            .tracking(1.5)
             .padding(.horizontal, 10)
-            .padding(.vertical, 4)
+            .padding(.vertical, 5)
             .background(Palette.gold.opacity(0.15))
             .foregroundStyle(Palette.gold)
             .clipShape(Capsule())

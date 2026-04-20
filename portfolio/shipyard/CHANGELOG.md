@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Changed — 2026-04-20 (nautical rebrand)
+- **Full brand system.** Replaced transitional palette + SY monogram with canonical 8-token set: bg `#07101E`, surface `#0C1A34`, white `#F2EEE6`, steel `#4A90DE`, gold `#D7AA3A`, dim `#346090`, dimmer `#141A4C`, ghost `#0D1A34`.
+- **Typography.** Swapped Geist/Geist Mono for BigShoulders Bold (display), DM Mono Regular (labels), Instrument Sans Regular/Bold (body) via `next/font/google`.
+- **Helm logo.** `src/components/LogoIcon.tsx` rewritten as inline SVG ship's helm (8 spokes, 4 cardinal handles, 4 steel dots). Exports `LogoIcon` + `LogoLockup`.
+- **Favicon.** `src/app/icon.tsx` renders helm mark at 28×28 on `#07101E`.
+- **Chart grid.** `.chart-grid` background utility — 40px horizontal rules in `--dimmer` across main content area.
+- Removed all hardcoded hex values across pages; replaced with Tailwind token utilities (`bg-bg`, `text-white`, `border-dimmer`, `text-steel`, `text-gold`).
+
 ### Added — 2026-04-19 (auto-scan cron)
 - **Nightly scanner via launchd.** New `scripts/scan-cron.sh` wrapper invoked by `~/Library/LaunchAgents/com.chasewhittaker.shipyard-scan.plist` at 3:00 AM local daily. Logs to `~/Library/Logs/shipyard-scan/scan.{log,err}`. Fleet data stays fresh without manual `npx tsx scripts/scan.ts` runs.
 - First cron-triggered scan: 36 projects upserted in 10.5s, 0 errors.

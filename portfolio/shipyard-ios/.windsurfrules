@@ -4,7 +4,7 @@ Read `CLAUDE.md` + `HANDOFF.md` first. This file is a short-form summary for too
 
 ## Tech Stack
 - SwiftUI + iOS 17 + `@Observable` + `@MainActor`
-- No external deps in Phase 1 (no ClarityUI, no Supabase yet)
+- `supabase-swift` v2 SPM dep (Phase 2) — shared portfolio Supabase project
 - Hand-crafted `Shipyard.xcodeproj/project.pbxproj` — UUID prefix `SY`
 - Bundle ID: `com.chasewhittaker.Shipyard`
 
@@ -23,9 +23,10 @@ Read `CLAUDE.md` + `HANDOFF.md` first. This file is a short-form summary for too
 - Drydock (not paused)
 - Captain's Log (not learnings)
 
-## Phase 1 Scope
-- Read-only fleet list from hardcoded mock data in `FleetStore.loadMockFleet()`
-- No Supabase, no auth, no write ops
+## Current Scope (Phase 2 complete)
+- Read-only fleet from Supabase `projects` table (shared project `unqtnnxlltiadzbqpyhh`)
+- Email + password auth via `SupabaseService.client.auth.signIn(email:password:)`
+- Fallback chain: Supabase → UserDefaults cache (`chase_shipyard_ios_v1`) → `FleetStore.loadMockFleet()`
 - Source of truth is `portfolio/shipyard/` (web) — mirror types + labels, don't invent
 
 ## Build

@@ -20,11 +20,11 @@ export default function ComplianceChecklist({ compliance }: Props) {
       {ITEMS.map(({ key, label }) => (
         <li key={key} className="flex items-center gap-2 text-sm">
           {compliance[key] ? (
-            <span className="text-emerald-400">&#10003;</span>
+            <span className="text-success">&#10003;</span>
           ) : (
-            <span className="text-red-400">&#10005;</span>
+            <span className="text-danger">&#10005;</span>
           )}
-          <span className={compliance[key] ? 'text-slate-300' : 'text-slate-500'}>
+          <span className={compliance[key] ? 'text-white' : 'text-dim'}>
             {label}
           </span>
         </li>
