@@ -20,7 +20,7 @@
 
 ## Phase 3 — Automation
 
-- [ ] **Auto-scan cron** — nightly scanner run (launchd or GitHub Actions) so the fleet stays fresh without manual `npx tsx scripts/scan.ts`
+- [x] **Auto-scan cron** — `com.chasewhittaker.shipyard-scan` launchd agent runs `scripts/scan-cron.sh` nightly at 3:00 AM local. *(Shipped 2026-04-19.)*
 - [ ] **Drift alerts** — flag projects whose `last_commit_at` exceeds review cadence threshold
 - [ ] **Public Fleet Showcase** — carve off `/portfolio` behind a separate public route (no auth gate) for the Fleet Showcase page
 
@@ -28,6 +28,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-19 | Auto-scan cron live — launchd agent runs nightly at 3:00 AM |
 | 2026-04-20 | Fixed auth gate (`config` export), switched login to email+password, switched `CLAUDE.md` URL to stable alias |
 | 2026-04-18 | Sidebar logo + dynamic favicon |
 | 2026-04-16 | Phase 1 shipped |

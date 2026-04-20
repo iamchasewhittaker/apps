@@ -4,9 +4,9 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Fleet dashboard working end-to-end (auth + data + render)             |
-| Next       | Run scanner regularly; set up auto-scan cron (nightly launchd job)   |
-| Last touch | 2026-04-20                                                            |
+| Focus      | Fleet dashboard working end-to-end (auth + data + render); auto-scan cron live |
+| Next       | Editable Ship detail fields · fix `learnings` unique constraint so ingestion can enable |
+| Last touch | 2026-04-19                                                            |
 
 ## Production URL
 
@@ -35,9 +35,9 @@
 
 ## Phase 3 — Next Up
 
-1. **Auto-scan cron** — nightly run so fleet data never goes stale (`launchd` plist or GitHub Actions)
+1. [x] **Auto-scan cron** — `com.chasewhittaker.shipyard-scan` launchd agent runs `scripts/scan-cron.sh` nightly at 3:00 AM local. Logs at `~/Library/Logs/shipyard-scan/`.
 2. Editable Ship detail fields
-3. Learnings ingestion
+3. Learnings ingestion (blocked on `learnings` unique constraint fix)
 
 ## Deploy
 
@@ -47,3 +47,21 @@ vercel --prod --archive=tgz
 ```
 
 Stable alias updates automatically on each production deploy.
+
+## Auto-Scan Cron
+
+```bash
+# Check status
+launchctl list | grep shipyard-scan
+
+# Trigger a scan on demand
+launchctl start com.chasewhittaker.shipyard-scan
+
+# Tail logs
+tail -f ~/Library/Logs/shipyard-scan/scan.log
+
+# Unload (disable)
+launchctl unload -w ~/Library/LaunchAgents/com.chasewhittaker.shipyard-scan.plist
+```
+
+Schedule: **3:00 AM local, daily.** If the Mac is asleep at 3am, launchd fires on next wake. The agent sources a zsh login shell so `npx`/`node` resolve correctly.
