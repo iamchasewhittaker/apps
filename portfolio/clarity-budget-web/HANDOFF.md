@@ -7,7 +7,7 @@
 | Focus | Phase 1 — spending visibility |
 | Status | Session 2 done; Session 3 next (Money Companion) |
 | Last touch | 2026-04-20 |
-| URL | local (`pnpm dev`) |
+| URL | clarity-budget-web.vercel.app |
 | Branch | main |
 
 ## What was built — Session 2 (2026-04-20)
