@@ -124,6 +124,24 @@ function parseMvpStepClaimed(dir: string): string | null {
   }
 }
 
+function detectLocalPort(dir: string, pkg: Record<string, unknown> | null, type: string): number | null {
+  if (type !== 'web') return null;
+  if (!pkg) return null;
+
+  const scripts = (pkg.scripts as Record<string, string>) ?? {};
+  const devScript = scripts['dev'] ?? scripts['start'] ?? '';
+
+  const portMatch = devScript.match(/(?:-p|--port)\s+(\d+)/);
+  if (portMatch) return parseInt(portMatch[1], 10);
+
+  const deps = { ...(pkg.dependencies as Record<string, string> || {}), ...(pkg.devDependencies as Record<string, string> || {}) };
+  if (deps['next']) return 3000;
+  if (deps['vite']) return 5173;
+  if (deps['react-scripts']) return 3000;
+
+  return 3000;
+}
+
 function parseClaudeMd(dir: string): {
   live_url: string | null;
   vercel_project: string | null;
@@ -299,6 +317,7 @@ async function main() {
         compliance_score: complianceScore(compliance),
         live_url: claudeData.live_url,
         has_live_url: !!claudeData.live_url,
+        local_port: detectLocalPort(dir, pkg, type),
         vercel_project: claudeData.vercel_project,
         github_url: githubUrl,
         localstorage_keys: claudeData.localstorage_keys,

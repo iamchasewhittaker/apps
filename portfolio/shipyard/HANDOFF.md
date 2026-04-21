@@ -4,7 +4,7 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | `/portfolio` RSC boundary fix deployed + `npm run smoke` guardrail added — all 11 prod routes green |
+| Focus      | Local dev + Vercel access links on Ship detail — amber `localhost:PORT` + green production URL in header + Links section |
 | Next       | Editable Ship detail fields · fix `learnings` unique constraint · seed `priority_rank` via drag UI |
 | Last touch | 2026-04-20                                                            |
 

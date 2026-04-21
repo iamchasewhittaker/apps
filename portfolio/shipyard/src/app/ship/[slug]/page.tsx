@@ -55,16 +55,31 @@ export default async function ShipDetailPage({ params }: Props) {
           </Badge>
         </div>
 
-        {p.live_url && (
-          <a
-            href={p.live_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm text-success hover:underline"
-          >
-            <span className="inline-block h-2 w-2 rounded-full bg-success" />
-            {p.live_url}
-          </a>
+        {(p.local_port || p.live_url) && (
+          <div className="flex flex-wrap items-center gap-4">
+            {p.local_port && p.type === 'web' && (
+              <a
+                href={`http://localhost:${p.local_port}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 font-mono text-sm text-gold hover:underline"
+              >
+                <span className="inline-block h-2 w-2 rounded-full bg-gold" />
+                localhost:{p.local_port}
+              </a>
+            )}
+            {p.live_url && (
+              <a
+                href={p.live_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-success hover:underline"
+              >
+                <span className="inline-block h-2 w-2 rounded-full bg-success" />
+                {p.live_url}
+              </a>
+            )}
+          </div>
         )}
       </header>
 
@@ -148,6 +163,9 @@ export default async function ShipDetailPage({ params }: Props) {
               label="Vercel"
             />
           )}
+          {p.local_port && p.type === 'web' && (
+            <LinkButton href={`http://localhost:${p.local_port}`} label={`Local :${p.local_port}`} />
+          )}
           {p.linear_project_url && (
             <LinkButton href={p.linear_project_url} label="Linear" />
           )}
@@ -156,6 +174,7 @@ export default async function ShipDetailPage({ params }: Props) {
           )}
           {!p.github_url &&
             !p.vercel_project &&
+            !p.local_port &&
             !p.linear_project_url &&
             !p.live_url && (
               <p className="text-sm italic text-muted">No links available.</p>

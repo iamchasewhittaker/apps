@@ -1,5 +1,16 @@
 # Learnings — Shipyard
 
+## 2026-04-20 (local dev + Vercel access links)
+
+**`supabase db query --linked` is the right escape hatch when psql isn't available.**
+The Supabase client SDK has no `exec_sql` RPC by default — calling it returns PGRST202. `supabase db query` targets local Docker by default; `--linked` routes through the Supabase Management API instead. Useful for schema migrations in a sandboxed environment where the service role key is present but the DB host isn't directly reachable. The output comes back in a JSON envelope with a `boundary` warning field — safe to ignore.
+
+**Port detection from `package.json` dev script is reliable enough for a personal dashboard.**
+Most projects use the framework default port (Next.js 3000, Vite 5173, CRA 3000). The few that override it use the standard `-p PORT` flag. Regex `/(?:-p|--port)\s+(\d+)/` on the `dev` or `start` script catches explicit overrides; fall back to framework-sniffed defaults. No need to read `.env` or `.env.local` for ports — the `dev` script is the canonical place.
+
+**Tailwind `text-gold` + `bg-gold` work for the amber local-URL dot without any extra config.**
+The Shipyard brand token `gold` (`#D7AA3A`) reads well as a contrast color against the navy surface and visually separates "local dev" from the green "production live" indicator. No new color needed — the existing brand palette handled the distinction naturally.
+
 ## 2026-04-20 (RSC boundary fix + smoke test)
 
 **Event handlers in Server Component files cause silent 500s that survive `next build` and `vercel --prod`.**

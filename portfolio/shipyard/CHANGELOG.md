@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-20 (local dev + Vercel access links)
+- **`local_port` on every ship.** New `integer` column in Supabase `projects` table. Scanner auto-detects the dev server port from each project's `package.json` dev script: explicit `-p PORT` / `--port PORT` flag wins; framework defaults fall back (Next.js → 3000, Vite → 5173, CRA → 3000); non-web types (`ios`, `desktop`, `cli`, `library`) get `null`.
+- **Quick-access row on Ship detail.** Header now shows amber `localhost:PORT` dot-link alongside the green production URL so both access points are one click away. iOS/desktop ships show only what applies.
+- **"Local :PORT" button in Links section.** Added next to GitHub / Vercel / Linear / Live so the local dev URL is also in the standard link strip.
+
 ### Fixed — 2026-04-20 (RSC boundary + smoke test)
 - **`/portfolio` 500 fix.** `ShowcaseCard` and `LinkChip` were inline in the async Server Component `portfolio/page.tsx`. `LinkChip` had `onClick`, which RSC can't serialize — every request to `/portfolio` returned 500 in prod. Extracted both into `src/app/portfolio/ShowcaseCard.tsx` with `'use client'`.
 - **Route smoke test.** Added `scripts/smoke.ts` (`npm run smoke`). Auto-discovers all routes under `src/app/**`, resolves `[slug]` from Supabase, curls each, exits 1 on any non-2xx. Use before `git push`; `BASE_URL=https://...` targets prod.

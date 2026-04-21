@@ -34,6 +34,7 @@ export interface Project {
   disk_size_mb: number | null;
   live_url: string | null;
   has_live_url: boolean;
+  local_port: number | null;
   vercel_project: string | null;
   github_url: string | null;
   linear_project_url: string | null;
