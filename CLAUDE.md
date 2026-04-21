@@ -55,6 +55,7 @@
 | Unnamed (iOS)               | v0.1          | `unnamed_ios_v1`                                                                                                              | local Xcode                         | 🟡 On-device · SwiftUI + @Observable · 5 flows · 10/10 tests · amber-triangle AppIcon · xcodeproj (`UN*`) · `[portfolio/unnamed-ios](portfolio/unnamed-ios)` |
 | Fairway (iOS)               | v0.1          | `chase_fairway_ios_v1`                                                                                                        | local Xcode                         | 🟡 Local · SwiftUI + @Observable · Lawn OS: 4 zones, irrigation, fertilizer plan, soil test, spreader calc, shrub beds · Augusta green palette · xcodeproj (`FW*`) · `[portfolio/fairway-ios](portfolio/fairway-ios)` |
 | Alias Ledger                | v1.0          | `hme_alias_tracker_v1`                                                                                                        | alias-ledger.vercel.app             | ✅ Active · Hide My Email alias tracker · single-file HTML · `[portfolio/alias-ledger](portfolio/alias-ledger)` |
+| Idea Kitchen                | v0.1          | n/a (docs-only)                                                                                                               | local                               | ✅ Active · Claude Project prompt + build guide + per-app minisite pattern · turns raw ideas → shipped apps · `[portfolio/idea-kitchen](portfolio/idea-kitchen)` |
 
 
 
@@ -102,6 +103,7 @@
 | Fairway (iOS) | Lifestyle | Lawn OS: zones, irrigation, fertilizer plan, soil test | — | — |
 | Alias Ledger | Utilities | Hide My Email alias tracker (single-file HTML) | [apps](https://github.com/iamchasewhittaker/apps) | — |
 | Gmail Forge | Tool | Three-layer Gmail automation: XML filters + Apps Script auto-sorter + Chrome extension | — | — |
+| Idea Kitchen | Developer Tools | Reusable pattern for idea → foundation → Claude Code handoff | [apps](https://github.com/iamchasewhittaker/apps) | — |
 
 
 
