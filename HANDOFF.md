@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Knowledge Base v2.1.1 (2026-04-20):** Seed maintenance — fixed 4 My Projects URLs, added Vercel + Supabase folders (16 links), 4 Git links, 2 new My Projects apps; SEED_VERSION 11. |
+| **Focus**      | **Knowledge Base (2026-04-20):** Redeployed to Vercel (knowledge-base-hazel-iota.vercel.app) + connected to apps.git auto-deploy. |
 | **Next**       | 1. **clarity-budget-web Session 3** — Claude money companion (see `portfolio/clarity-budget-web/ROADMAP.md`). 2. **Unnamed iOS:** streak gate ends ~2026-04-24; Phase 2 planning starts then. 3. **Wellness:** split TrackerTab.jsx (WHI-63). 4. **Knowledge Base v2.2** — drag-and-drop reorder, tags, sort options. |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-20 — knowledge-base v2.1.1: seed URL fixes + Git/Vercel/Supabase/My Projects additions. CHANGELOG, ROADMAP, HANDOFF, LEARNINGS, root docs all updated. |
+| **Last touch** | 2026-04-20 — knowledge-base: redeployed to Vercel + git-connected; all seed/docs/root docs updated. |
 
 
 ---

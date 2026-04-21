@@ -3,9 +3,9 @@
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
 ## App Identity
-- **Version:** v2.0
+- **Version:** v2.1.1
 - **Storage key:** `chase_knowledge_base_v1` (localStorage) — blob shape: `{ bookmarks: [...], folders: [...], favorites: [...], categoryOrder: null }`
-- **URL:** local only (Vercel project removed 2026-04-20)
+- **URL:** https://knowledge-base-hazel-iota.vercel.app
 - **Entry:** `src/App.jsx`
 
 ## Purpose

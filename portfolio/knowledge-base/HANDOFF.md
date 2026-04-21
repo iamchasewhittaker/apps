@@ -10,7 +10,7 @@
 |-------|-------|
 | **Version** | v2.1.1 |
 | **Branch** | `main` |
-| **URL** | local only (Vercel project removed 2026-04-20) |
+| **URL** | https://knowledge-base-hazel-iota.vercel.app |
 | **Storage key** | `chase_knowledge_base_v1` — blob: `{ bookmarks, folders, favorites, categoryOrder }` |
 | **Focus** | v2.1.1 shipped — seed maintenance: My Projects URL fixes, Git/Vercel/Supabase folders added |
 | **Next** | v2.2 — drag-and-drop reorder, tags cross-folder filter, sort options |
