@@ -68,7 +68,7 @@ Chase — solo builder running the `~/Developer/chase/` portfolio.
 ## Links
 
 - **GitHub:** [apps](https://github.com/iamchasewhittaker/apps) (monorepo path: `portfolio/idea-kitchen/`)
-- **Linear:** — (create when Phase 2 starts)
+- **Linear:** [Idea Kitchen](https://linear.app/whittaker/project/idea-kitchen-1115a17b711a)
 - **Live:** n/a (docs-only)
 - **Shipyard:** [/ship/idea-kitchen](https://shipyard-sandy-seven.vercel.app/ship/idea-kitchen)
 

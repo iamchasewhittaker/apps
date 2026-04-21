@@ -103,7 +103,7 @@
 | Fairway (iOS) | Lifestyle | Lawn OS: zones, irrigation, fertilizer plan, soil test | — | — |
 | Alias Ledger | Utilities | Hide My Email alias tracker (single-file HTML) | [apps](https://github.com/iamchasewhittaker/apps) | — |
 | Gmail Forge | Tool | Three-layer Gmail automation: XML filters + Apps Script auto-sorter + Chrome extension | — | — |
-| Idea Kitchen | Developer Tools | Reusable pattern for idea → foundation → Claude Code handoff | [apps](https://github.com/iamchasewhittaker/apps) | — |
+| Idea Kitchen | Developer Tools | Reusable pattern for idea → foundation → Claude Code handoff | [apps](https://github.com/iamchasewhittaker/apps) | [Linear](https://linear.app/whittaker/project/idea-kitchen-1115a17b711a) |
 
 
 

@@ -14,6 +14,7 @@
 | **Storage key** | n/a |
 | **Focus** | Phase 1 shipped — scaffold, prompt, build guide, templates, dogfood docs in place |
 | **Next** | Test end-to-end: open Claude Project, paste prompt, run a real idea through STEPs 0–9, fix friction |
+| **Linear** | https://linear.app/whittaker/project/idea-kitchen-1115a17b711a |
 | **Blockers** | None |
 | **Last touch** | 2026-04-21 — scaffolded Idea Kitchen app (16 files) + root CLAUDE.md rows + root ROADMAP Change Log row |
 
