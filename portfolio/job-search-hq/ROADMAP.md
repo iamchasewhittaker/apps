@@ -79,7 +79,34 @@ All Wave 3 items shipped 2026-04-18. Wave 4 is next.
 - [x] **Outreach cadence timeline per contact** — `outreachLog[]` on each contact; `OutreachTimeline` on ContactCard; modal entry form + delete; card status dropdown appends on change; legacy `outreachDate`/`outreachStatus` seeded into one-entry log on load (v8.10)
 - [x] **Offer comparison side-by-side mode** — `offerDetails` per app; `OfferModal` (comp + terms + notes, live total preview); `OfferCompareView` with best-in-column highlights; 💰 Offer button on AppCard; collapsible "Offer comparison (N)" section on Pipeline (v8.11)
 - [x] **Email forward parsing** — `parseRecruiterEmail()` in constants.js (regex heuristics); 📧 Email Parse sub-tab in Apply Tools; editable extracted fields → pre-filled ContactModal + AppModal (v8.12)
-- [ ] PWA share target (mobile URL sharing)
+- [x] **PWA share target (mobile URL sharing)** — `share_target` in manifest.json (GET, title/text/url params); minimal `public/sw.js` + registration in index.js; `shareTarget=1` URL-param handler in App.jsx pre-fills AppModal with shared URL + title (v8.13)
+
+## Confidence Bedrock wave — Shipped (v8.13, 2026-04-21)
+
+- [x] **Direction committed** — Implementation Consultant / Sales Engineer at payments-adjacent companies. AE at payments SaaS = backup. Source of truth: `/Users/chase/Developer/chase/identity/direction.md`.
+- [x] **Direction + Strengths + Friend Feedback in ProfileModal** — three collapsible read-only panels reading `DIRECTION`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `FRIEND_FEEDBACK_CONSENSUS`.
+- [x] **Kassie urgency layer on FocusTab** — UrgencyHeader (Day-N since Visa), DailyMinimums (5 apps + 3 outreach + rest floor, Sunday-aware), KassieCard (rotating excerpts, per-day dismiss), DirectionSplit (IC/SE/AE/Other counts + response rates), WinsLog (auto + manual).
+- [x] **Wins Log** — `wins: []`, `blankWin()`, `normalizeWins()`, `WIN_TYPES`; auto-logged on stage progression, debrief entry, outreachStatus → replied. `autoLogged` flag distinguishes auto from manual.
+- [x] **Direction Tracker** — `track` field on every app (IC/SE/AE/Other), `getDirectionSplit()` helper. Market-feedback mechanism, not deliberation.
+- [x] **RESUME_TEMPLATE_IC** as default — merchant-live implementation hero; portfolio work owns the 14-month gap.
+- [x] **Voice + direction footer in every AI prompt** — `VOICE_DIRECTION_FOOTER` in `applyPrompts.js` appended to tailor-resume, cover-letter, apply-kit, connect, follow-up, STAR, interview-prep prompts.
+- [x] **IC/SE mock interview scenarios + Strength Answer Hooks** — "Implementation Consultant — Payments" and "Sales Engineer — Dev Tools" (6 qs each); 1-sentence opener per strength.
+- [x] **Networking & Informational Interviews resource section** — script, target-company list, First Round Review reference, follow-up rhythm.
+
+## Deferred — next wave (captured 2026-04-21)
+
+Chase can greenlight any of these in a follow-up session.
+
+- [ ] Huntr-style extension expansion — generic content scripts for Indeed, Glassdoor, Greenhouse, Lever, Workday, Ashby, Wellfound.
+- [ ] AI API re-add (secondary, not primary) — improve copy-paste first (one-click copy-all, section anchors, prompt history), then optional API toggle in Settings with fallback prompt view always accessible.
+- [ ] Email / LinkedIn notification feed — Gmail OAuth or forward-to-alias; unified inbox of recruiter pings, application updates, interview invites inside HQ. Extends v8.12 email-parse.
+- [ ] MBA Recruiting Workbook — parse Chase's Google Sheet, fold useful sections into Resources tab or a new Reference tab.
+- [ ] Shipyard public "About Chase" page — surface direction + strengths + friend feedback on the portfolio hub.
+- [ ] Per-app CLAUDE.md voice-brief references — 1-line pointer in each portfolio app's CLAUDE.md so Claude sessions pick up Chase's voice automatically.
+- [ ] LinkedIn profile rewrite — reconcile `~/Downloads/dreamy-orbiting-rabin.md` draft (written for Hybrid SE/AE) with the IC/SE frame.
+- [ ] Bookmarklet polish — expand beyond LinkedIn profiles to job postings across boards.
+- [ ] Wins → Shipyard bridge — "Chase shipped N wins this week across apps" on the portfolio hub.
+- [ ] Kassie's actual quotes — paste into `chase/identity/kassie-notes.md` when Chase is ready; also his "tool quotes" about Job Search HQ itself.
 
 ## Project tracking
 

@@ -1,6 +1,288 @@
-import React, { useState } from "react";
-import { s, DAILY_BLOCKS, JOB_ACTION_TYPES, today, nextStepUrgency, buildOutreachPriorityList, prepSectionsHasContent, getWeeklyVelocityData } from "../constants";
+import React, { useMemo, useState } from "react";
+import {
+  s,
+  DAILY_BLOCKS,
+  JOB_ACTION_TYPES,
+  today,
+  nextStepUrgency,
+  buildOutreachPriorityList,
+  prepSectionsHasContent,
+  getWeeklyVelocityData,
+  daysSinceLayoff,
+  DAILY_MINIMUMS,
+  KASSIE_EXCERPTS,
+  DIRECTION_TRACKS,
+  getDirectionSplit,
+  WIN_TYPES,
+} from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
+
+const KASSIE_DISMISS_KEY = "chase_js_kassie_dismiss_v1";
+
+// ── URGENCY HEADER — "Day N since Visa" ──────────────────────────────────────
+// Non-negotiable per Kassie's letter. No judgment, just the number.
+function UrgencyHeader() {
+  const day = daysSinceLayoff();
+  return (
+    <div style={{
+      background: "#0a0d14", border: "1px solid #1f2937", borderRadius: 10,
+      padding: "8px 14px", marginBottom: 12, display: "flex",
+      justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "#6b7280",
+    }}>
+      <span>
+        <strong style={{ color: "#f3f4f6" }}>Day {day}</strong> since Visa (2025-02-15)
+      </span>
+      <span style={{ fontSize: 11 }}>For Reese. For Buzz. Forward.</span>
+    </div>
+  );
+}
+
+// ── DAILY MINIMUMS — Applications, Outreach, Rest ───────────────────────────
+// Red until all three hit target. Kassie's floor, visible every time HQ opens.
+function DailyMinimums({ dailyActions }) {
+  const todayStr = today();
+  const todays = (dailyActions || []).filter(a => a.date === todayStr);
+  const apps = todays.filter(a => a.type === "application").length;
+  const outreach = todays.filter(a => a.type === "outreach").length;
+  const dayOfWeek = new Date().getDay(); // 0 = Sunday
+  const isSunday = dayOfWeek === 0;
+
+  const rows = [
+    { key: "applications", label: "Applications", have: apps, need: DAILY_MINIMUMS.applications, restOk: false },
+    { key: "outreach",     label: "Outreach",     have: outreach, need: DAILY_MINIMUMS.outreach, restOk: false },
+    { key: "rest",         label: "Rest day",     have: isSunday ? 1 : 0, need: 1, restOk: true, sundayOnly: true },
+  ];
+
+  const floorMet = rows.every(r => (r.sundayOnly ? isSunday : r.have >= r.need));
+  const headerColor = floorMet ? "#c8a84b" : "#ef4444";
+  const headerBg = floorMet ? "#1a1608" : "#1a0a0a";
+  const headerBorder = floorMet ? "#c8a84b55" : "#7f1d1d";
+
+  return (
+    <div style={{
+      background: headerBg, border: `1.5px solid ${headerBorder}`, borderRadius: 12,
+      padding: "14px 18px", marginBottom: 16,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontSize: 18 }}>{floorMet ? "✅" : "🚨"}</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: headerColor }}>
+              Daily floor {floorMet ? "— met" : "— not yet"}
+            </div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+              {isSunday
+                ? "Sunday: rest day. Read scripture, be with Reese and Buzz."
+                : `${DAILY_MINIMUMS.applications} applications + ${DAILY_MINIMUMS.outreach} outreach. Non-negotiable.`}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {rows.map(row => {
+        if (row.sundayOnly && !isSunday) return null;
+        const pct = row.sundayOnly ? (isSunday ? 100 : 0) : Math.min(row.have / row.need, 1) * 100;
+        const hit = row.sundayOnly ? isSunday : row.have >= row.need;
+        return (
+          <div key={row.key} style={{ marginBottom: 8 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
+              <span style={{ color: hit ? "#10b981" : "#d1d5db" }}>
+                {hit ? "✓" : "○"} {row.label}
+              </span>
+              <span style={{ color: hit ? "#10b981" : "#9ca3af", fontVariantNumeric: "tabular-nums" }}>
+                {row.have}/{row.need}
+              </span>
+            </div>
+            <div style={{ height: 6, borderRadius: 3, background: "#0f1117" }}>
+              <div style={{
+                height: "100%", borderRadius: 3, width: `${pct}%`,
+                background: hit ? "#10b981" : "#ef4444", transition: "width 0.3s",
+              }} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── KASSIE CARD — "Who you're doing this for" ────────────────────────────────
+// Rotating excerpt from kassie-notes.md, dismissible per-day (resets daily).
+function KassieCard() {
+  const todayStr = today();
+  const [dismissed, setDismissed] = useState(() => {
+    try { return localStorage.getItem(KASSIE_DISMISS_KEY) === todayStr; }
+    catch { return false; }
+  });
+  const [open, setOpen] = useState(false);
+
+  // Deterministic rotation: day-of-year modulo excerpt count.
+  const excerpt = useMemo(() => {
+    const start = new Date(new Date().getFullYear(), 0, 0);
+    const diff = new Date() - start;
+    const doy = Math.floor(diff / 86400000);
+    return KASSIE_EXCERPTS[doy % KASSIE_EXCERPTS.length];
+  }, []);
+
+  function dismiss() {
+    try { localStorage.setItem(KASSIE_DISMISS_KEY, todayStr); } catch {}
+    setDismissed(true);
+  }
+
+  if (dismissed) return null;
+
+  return (
+    <div style={{
+      background: "#160a14", border: "1px solid #4a1d3a", borderRadius: 12,
+      padding: "14px 16px", marginBottom: 16,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: "#f0abfc", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+            From Kassie — who you're doing this for
+          </div>
+          <div style={{ fontSize: 13, color: "#e9d5ff", fontStyle: "italic", lineHeight: 1.5 }}>
+            "{excerpt}"
+          </div>
+          {open && (
+            <div style={{ fontSize: 11, color: "#c4b5fd", marginTop: 8, lineHeight: 1.55 }}>
+              Full letter lives at <code style={{ background: "#2a1032", padding: "1px 5px", borderRadius: 3 }}>chase/identity/kassie-notes.md</code>.
+              Read it when the urgency slips. Not guilt — signal.
+            </div>
+          )}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <button
+            onClick={() => setOpen(o => !o)}
+            style={{ background: "none", border: "none", color: "#c4b5fd", cursor: "pointer", fontSize: 11 }}
+          >{open ? "hide" : "more"}</button>
+          <button
+            onClick={dismiss}
+            style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: 11 }}
+          >dismiss</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── DIRECTION SPLIT — IC/SE/AE/Other counts + response rates ────────────────
+function DirectionSplit({ applications }) {
+  const split = getDirectionSplit(applications || []);
+  const totalApps = DIRECTION_TRACKS.reduce((sum, t) => sum + split[t.value].count, 0);
+
+  return (
+    <div style={{ background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 16 }}>🧭</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>Direction split</span>
+        </div>
+        <span style={{ fontSize: 11, color: "#6b7280" }}>
+          {totalApps} {totalApps === 1 ? "application" : "applications"} total
+        </span>
+      </div>
+      {totalApps === 0 ? (
+        <div style={{ fontSize: 12, color: "#6b7280" }}>
+          Log your first IC / SE / AE application to see the split.
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {DIRECTION_TRACKS.map(t => {
+            const row = split[t.value];
+            if (!row.count) return null;
+            const pct = totalApps ? Math.round((row.count / totalApps) * 100) : 0;
+            return (
+              <div key={t.value} style={{ display: "flex", gap: 10, alignItems: "center", fontSize: 12 }}>
+                <span style={{ minWidth: 48, color: t.color, fontWeight: 600 }}>{t.value}</span>
+                <div style={{ flex: 1, height: 8, borderRadius: 4, background: "#1f2937", overflow: "hidden" }}>
+                  <div style={{ height: "100%", background: t.color, width: `${pct}%` }} />
+                </div>
+                <span style={{ color: "#9ca3af", minWidth: 80, textAlign: "right" }}>
+                  {row.count} · {row.responseRate}% response
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── WINS LOG — Last 5 wins + manual "Log a win" ─────────────────────────────
+function WinsLog({ wins, addWin, removeWin }) {
+  const [adding, setAdding] = useState(false);
+  const [titleInput, setTitleInput] = useState("");
+  const sorted = [...(wins || [])].sort((a, b) => (b.date || "").localeCompare(a.date || "")).slice(0, 5);
+
+  function submit() {
+    const title = titleInput.trim();
+    if (!title) return;
+    addWin({ type: "manual", title, autoLogged: false });
+    setTitleInput("");
+    setAdding(false);
+  }
+
+  return (
+    <div style={{ background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 16 }}>🏆</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>Wins log</span>
+        </div>
+        <button
+          onClick={() => setAdding(a => !a)}
+          style={{ fontSize: 12, background: "#1e3a5f", border: "none", color: "#60a5fa", padding: "4px 10px", borderRadius: 6, cursor: "pointer" }}
+        >
+          {adding ? "✕ cancel" : "+ Log a win"}
+        </button>
+      </div>
+
+      {adding && (
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <input
+            autoFocus
+            value={titleInput}
+            onChange={e => setTitleInput(e.target.value)}
+            onKeyDown={e => { if (e.key === "Enter") submit(); if (e.key === "Escape") { setAdding(false); setTitleInput(""); } }}
+            placeholder="One line — what happened?"
+            style={{ flex: 1, padding: "7px 10px", borderRadius: 6, fontSize: 13, fontFamily: "inherit", background: "#0a0d14", border: "1.5px solid #1f2937", color: "#f3f4f6", outline: "none" }}
+          />
+          <button onClick={submit} style={{ padding: "7px 14px", borderRadius: 6, fontSize: 13, background: "#3b82f6", border: "none", color: "#fff", fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Add</button>
+        </div>
+      )}
+
+      {sorted.length === 0 ? (
+        <div style={{ fontSize: 12, color: "#6b7280" }}>
+          No wins logged yet. Stage moves and replies log automatically. Add manual wins for anything else.
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {sorted.map(w => {
+            const type = WIN_TYPES.find(t => t.value === w.type) || WIN_TYPES[3];
+            return (
+              <div key={w.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", background: "#0a0d14", borderRadius: 6, fontSize: 12 }}>
+                <span style={{ fontSize: 10, color: type.color, background: type.color + "22", padding: "2px 6px", borderRadius: 4, fontWeight: 600, minWidth: 68, textAlign: "center" }}>
+                  {type.label}
+                </span>
+                <span style={{ color: "#6b7280", flex: "0 0 auto", fontSize: 11 }}>{w.date}</span>
+                <span style={{ color: "#d1d5db", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {w.title}
+                  {w.autoLogged && <span style={{ color: "#4b5563", marginLeft: 6, fontSize: 10 }}>auto</span>}
+                </span>
+                <button
+                  onClick={() => removeWin(w.id)}
+                  style={{ background: "none", border: "none", color: "#4b5563", cursor: "pointer", fontSize: 11, padding: "0 2px" }}
+                >✕</button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ── DAILY ACTION COUNTER ──────────────────────────────────────────────────────
 function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction }) {
@@ -280,6 +562,7 @@ export default function FocusTab({
   applications, contacts, dailyActions, addDailyAction, removeDailyAction,
   setAppModal, setPrepModal, setContactModal, setTab, showError,
   profile, saveProfile,
+  wins, addWin, removeWin,
 }) {
   const queue = buildQueue(applications || [], contacts || []);
   const outreachList = buildOutreachPriorityList(contacts || [], applications || []);
@@ -305,11 +588,21 @@ export default function FocusTab({
   return (
     <ErrorBoundary name="Daily Focus">
       <div style={s.content}>
+        <UrgencyHeader />
+
+        <DailyMinimums dailyActions={dailyActions} />
+
+        <KassieCard />
+
         <DailyActionCounter
           dailyActions={dailyActions}
           addDailyAction={addDailyAction}
           removeDailyAction={removeDailyAction}
         />
+
+        <DirectionSplit applications={applications} />
+
+        <WinsLog wins={wins} addWin={addWin} removeWin={removeWin} />
 
         <VelocityDashboard
           applications={applications}

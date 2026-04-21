@@ -1,5 +1,42 @@
 # Changelog
 
+## [Unreleased] — 2026-04-21 — Confidence Bedrock wave (v8.13)
+
+Committed direction: **Implementation Consultant / Sales Engineer at payments-adjacent companies** (Stripe, Adyen, Checkout.com, Finix, etc.). AE at payments SaaS is the documented backup, not the lead. Source of truth for direction, strengths, and voice lives in `/Users/chase/Developer/chase/identity/`.
+
+### Added
+- **`RESUME_TEMPLATE_IC`** — new primary resume template. Leads with merchant-live implementation wins (Authorize.Net onboarding, 98% integration resolution, SOPs adopted by team) + "Independent Portfolio Work — Next.js + Supabase apps Feb 2025 – present" to own the 14-month gap. `defaultData.baseResume` now points here. `RESUME_TEMPLATE_AE` kept as backup, `RESUME_TEMPLATE_PM` as legacy.
+- **Direction / Strengths / Friend Feedback in `ProfileModal`** — three collapsible read-only panels mirroring `chase/identity/`. Reads `DIRECTION`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `FRIEND_FEEDBACK_CONSENSUS` from constants.
+- **Kassie urgency layer on `FocusTab`** — (1) `UrgencyHeader` "Day N since Visa" reading `LAYOFF_DATE`; (2) `DailyMinimums` card with 3 progress bars (5 applications / 3 outreach / rest floor) that stays red until all three hit target, Sunday-aware; (3) `KassieCard` rotating through `KASSIE_EXCERPTS` deterministically by day-of-year, per-day dismissal via `chase_js_kassie_dismiss_v1` localStorage key; (4) `DirectionSplit` card showing IC/SE/AE/Other counts + response rates from `getDirectionSplit(applications)`; (5) `WinsLog` card showing last 5 wins with manual "Log a win" button.
+- **Wins Log data model** — `wins: []` in `defaultData`, `blankWin()`, `normalizeWins()`, `WIN_TYPES = ['response', 'progression', 'daily_target', 'manual']` in constants. Auto-logged in `App.jsx`: `saveApp` on stage progression (Phone Screen+) and new interview-log entries; `saveContact` on `outreachStatus → replied`. `autoLogged: true` distinguishes auto from manual.
+- **Direction Tracker** — `track: "IC" | "SE" | "AE" | "Other"` on every application (default IC). `getDirectionSplit(applications)` helper returns per-track counts + response rates. Powers market-feedback card on Focus tab.
+- **`VOICE_DIRECTION_FOOTER` in `applyPrompts.js`** — voice + direction rules (no em-dashes, no rule-of-threes, no hype, no consultant phrasing; lean into 5 strengths without naming them; gap narrative for the 14-month Next.js/Supabase stretch). Appended to every drafting prompt: tailor resume, cover letter, apply kit, connect, follow-up, STAR draft, interview prep.
+- **5 strength-anchored `STAR_COMPETENCIES`** — "Conflict reduction (Harmony)", "Coaching & enablement (Developer)", "Consistency & fairness (Consistency)", "Pattern recognition (Context)", "Tailored communication (Individualization)".
+- **Mock interview scenarios** — "Implementation Consultant — Payments" (6 qs: enterprise merchant onboarding, integration crisis, post-launch handoff, webhook diagnosis) and "Sales Engineer — Dev Tools" (6 qs: developer-led discovery, POC scoping, whiteboarding, technical objections, AE/CS partnership).
+- **`STRENGTH_ANSWER_HOOKS`** in `mockInterviewQuestions.js` — 1-sentence opener per strength for when the interviewer asks "what are you best at?" without forcing the CliftonStrengths label.
+- **Networking & Informational Interviews resource section** — top of `RESOURCES` in constants. Script, payments-adjacent target list, First Round Review reference, follow-up rhythm, placeholder slots for blogs/channels Chase will curate.
+
+### Changed
+- **Apply Tools resume type toggle** — IC/AE/PM (was PM/AE). IC is the default. Tailor prompt `rulesByType` maps IC → merchant-live implementation framing, AE → consultative inbound SaaS, PM → legacy project lifecycle.
+- **Profile resume template buttons** — "🧭 Load IC / SE Template (primary)", "💼 Load AE Template (backup)", "📋 Load PM Template (legacy)".
+- **Profile placeholders** — `targetRoles` → "Implementation Consultant, Sales Engineer, Solutions Consultant"; `targetIndustries` → "Payments, Fintech, Dev Tools, B2B SaaS"; `notes` → "Implementation and payments background. Strongest at merchant onboarding, integration troubleshooting, SOPs. Remote only. Targeting Implementation Consultant / Sales Engineer at payments-adjacent companies; AE at payments SaaS is the backup."
+- **`JOB_SEARCH_QUERIES`** (if present) — Implementation-Consultant-led: "Implementation Consultant payments remote", "Solutions Engineer payment gateway remote", "Sales Engineer fintech implementation remote", "Technical Account Manager payments remote", "Implementation Specialist Stripe OR Adyen OR Checkout.com", "Solutions Consultant merchant onboarding remote". 2 AE queries kept as backup.
+
+### Why
+Chase re-interviewed under performance-coach framing this session. Energy signals (Implementation / Maker / Coach) point to IC/SE, not AE. Kassie's letter (2026-04-21) adds the urgency floor — direction committed in this session, not next; daily minimums non-negotiable; wins tracked so forward motion is visible to him and to her. Plan file: `~/.claude/plans/users-chase-downloads-performance-coach-toasty-steele.md`.
+
+---
+
+## [Unreleased] — 2026-04-20 — Wave 4 #6: PWA share target (v8.13)
+
+### Added
+- **`public/sw.js`** — minimal service worker (install + activate lifecycle); registers the app with the browser so the Web Share Target API is honored.
+- **Service worker registration** in `src/index.js` — registers `/sw.js` on page load.
+- **`share_target` in `public/manifest.json`** — GET action at `/` with `title`, `text`, `url` params; enables "Share to Job Search HQ" in mobile share sheets when the PWA is installed.
+- **`shareTarget=1` URL-param handler in `App.jsx`** — mirrors the existing `importJob=1` pattern; opens AppModal pre-filled with the shared URL (jobUrl) and title; clears params from the URL after consuming.
+
+---
+
 ## [Unreleased] — 2026-04-20 — Wave 4 #5: Email forward parsing (v8.12)
 
 ### Added

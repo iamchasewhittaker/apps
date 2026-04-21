@@ -60,4 +60,36 @@ export const MOCK_INTERVIEW_SCENARIOS = [
       "Tell me about yourself — the 2-minute version relevant to this role.",
     ],
   },
+  {
+    key: "ic_payments",
+    label: "Implementation Consultant — Payments",
+    questions: [
+      "Walk me through how you'd onboard a new enterprise merchant on Authorize.Net — from kickoff to first live transaction.",
+      "A merchant's integration is failing in production two days before go-live. Their dev team is hard to reach. What's your play?",
+      "Tell me about a time you resolved an integration issue without escalating. What made you able to handle it alone?",
+      "How do you handle a merchant asking for a custom flow that isn't supported by the standard API?",
+      "What does a healthy post-launch handoff to Support or CS look like, and who owns what?",
+      "A merchant says webhooks are 'unreliable.' Walk me through how you'd diagnose and prove the root cause.",
+    ],
+  },
+  {
+    key: "se_devtools",
+    label: "Sales Engineer — Dev Tools",
+    questions: [
+      "Walk me through a discovery call with a developer-led team. What are you listening for?",
+      "A prospect asks for a POC. How do you scope it so it's winnable in a week and answers their real question?",
+      "Whiteboard how you'd integrate our API into a merchant's existing checkout flow (you pick the stack).",
+      "How do you handle a technical objection mid-demo that you don't immediately know the answer to?",
+      "What's the difference between demoing features and demoing outcomes? Give an example.",
+      "How do you partner with AEs vs. CS — where do you add leverage and where do you get out of the way?",
+    ],
+  },
 ];
+
+export const STRENGTH_ANSWER_HOOKS = {
+  Harmony: "I'm the person on a team who finds the thread everyone can agree on — especially when the call is going sideways.",
+  Developer: "I get real satisfaction out of watching a teammate get better at something I coached them through. It's a quieter kind of win, but it's the one I chase.",
+  Consistency: "I run on fairness and repeatability. If a process works for one merchant, it should work for the next one — and if it doesn't, that's the signal something's broken.",
+  Context: "I look backward before I move forward. Most merchant issues I've solved faster than the team expected were because I'd seen the pattern before — or went looking for who had.",
+  Individualization: "I read people fast and adjust. The way I'd talk to a CTO debugging a webhook is not the way I'd talk to the ops lead who just wants to know when funds settle. Same truth, different frame.",
+};

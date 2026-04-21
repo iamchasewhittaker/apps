@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   STORAGE_KEY,
   defaultData, blankApp, blankContact, normalizeApplication, normalizeStarStories, normalizeContact,
+  normalizeWins, blankWin,
   s, css, today, generateId,
 } from "./constants";
 import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
@@ -261,6 +262,7 @@ export default function JobSearchTracker() {
     next.applications = (next.applications || []).map(normalizeApplication);
     next.contacts = (next.contacts || []).map(normalizeContact);
     next.starStories = normalizeStarStories(next.starStories);
+    next.wins = normalizeWins(next.wins);
     setData(next);
   }
 
@@ -397,17 +399,73 @@ export default function JobSearchTracker() {
     errorToastTimer.current = setTimeout(() => setErrorToast(""), 6000);
   }
 
+  const STAGE_RANK = { "Interested": 0, "Applied": 1, "Phone Screen": 2, "Interview": 3, "Final Round": 4, "Offer": 5 };
+
+  function addWin(partial) {
+    setData(d => ({ ...d, wins: [...(d.wins || []), { ...blankWin(), ...partial }] }));
+  }
+  function removeWin(id) {
+    setData(d => ({ ...d, wins: (d.wins || []).filter(w => w.id !== id) }));
+  }
+
   function saveApp(app) {
     setData(d => {
-      const exists = d.applications.find(a => a.id === app.id);
-      return { ...d, applications: exists ? d.applications.map(a => a.id === app.id ? app : a) : [...d.applications, app] };
+      const prev = d.applications.find(a => a.id === app.id);
+      const exists = !!prev;
+      const newWins = [];
+      const prevRank = prev ? (STAGE_RANK[prev.stage] ?? -1) : -1;
+      const nextRank = STAGE_RANK[app.stage] ?? -1;
+      if (exists && nextRank > prevRank && nextRank >= 2) {
+        newWins.push({
+          ...blankWin(),
+          type: "progression",
+          source: `app:${app.id}`,
+          title: `${app.company} → ${app.stage}`,
+          note: prev.stage ? `Advanced from ${prev.stage}` : "",
+          autoLogged: true,
+        });
+      }
+      const prevLogLen = (prev?.interviewLog || []).length;
+      const nextLogLen = (app.interviewLog || []).length;
+      if (exists && nextLogLen > prevLogLen) {
+        const latest = app.interviewLog[nextLogLen - 1];
+        newWins.push({
+          ...blankWin(),
+          type: "response",
+          source: `app:${app.id}`,
+          title: `${app.company} — ${latest.roundType || "interview"} debrief logged`,
+          note: latest.impression || "",
+          autoLogged: true,
+        });
+      }
+      return {
+        ...d,
+        applications: exists ? d.applications.map(a => a.id === app.id ? app : a) : [...d.applications, app],
+        wins: newWins.length ? [...(d.wins || []), ...newWins] : (d.wins || []),
+      };
     });
   }
   function deleteApp(id) { setData(d => ({ ...d, applications: d.applications.filter(a => a.id !== id) })); }
   function saveContact(c) {
     setData(d => {
-      const exists = d.contacts.find(x => x.id === c.id);
-      return { ...d, contacts: exists ? d.contacts.map(x => x.id === c.id ? c : x) : [...d.contacts, c] };
+      const prev = d.contacts.find(x => x.id === c.id);
+      const exists = !!prev;
+      const newWins = [];
+      if (exists && prev.outreachStatus !== "replied" && c.outreachStatus === "replied") {
+        newWins.push({
+          ...blankWin(),
+          type: "response",
+          source: `contact:${c.id}`,
+          title: `${c.name} replied`,
+          note: c.company ? `${c.role || "Contact"} at ${c.company}` : "",
+          autoLogged: true,
+        });
+      }
+      return {
+        ...d,
+        contacts: exists ? d.contacts.map(x => x.id === c.id ? c : x) : [...d.contacts, c],
+        wins: newWins.length ? [...(d.wins || []), ...newWins] : (d.wins || []),
+      };
     });
   }
   function deleteContact(id) { setData(d => ({ ...d, contacts: d.contacts.filter(c => c.id !== id) })); }
@@ -490,6 +548,7 @@ export default function JobSearchTracker() {
           setAppModal={setAppModal} setPrepModal={setPrepModal}
           setContactModal={setContactModal} setTab={setTab} showError={showError}
           profile={data.profile} saveProfile={saveProfile}
+          wins={data.wins || []} addWin={addWin} removeWin={removeWin}
         />
       )}
       {tab === "pipeline" && (

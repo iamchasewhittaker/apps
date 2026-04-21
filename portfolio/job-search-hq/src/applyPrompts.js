@@ -21,18 +21,40 @@ const ANTI_AI_RESUME_RULES = `CRITICAL WRITING RULES:
 - Use plain verbs: handled, built, resolved, managed, worked, helped, ran, cut, grew.
 - ATS: single-column plain text, section headers in ALL CAPS, bullets with •`;
 
+// Applied to every drafting prompt so downstream assistants write in Chase's
+// voice and default to the Implementation-Consultant / Sales-Engineer frame.
+const VOICE_DIRECTION_FOOTER = `
+---
+VOICE + DIRECTION (use when drafting):
+- Frame the candidate for Implementation Consultant / Sales Engineer / Solutions Consultant at payments-adjacent companies (Stripe, Adyen, Checkout.com, Finix, etc.). AE at a payments SaaS is the backup, not the lead.
+- Lead with merchant-live implementation wins (Authorize.Net onboarding, 98% integration resolution, SOPs adopted by the team) — not cold-outbound pipeline metrics.
+- Write in Chase's voice: warm, direct, no hype. Short sentences.
+- NO em-dashes. NO rule-of-threes. NO consultant phrasing ("compounds future optionality", "unlocks growth", "synergy", "leverages"). NO hype words ("amazing", "incredible", "thrilled", "passionate").
+- Lean naturally into his 5 strengths — Harmony, Developer, Consistency, Context, Individualization — but don't name-drop "CliftonStrengths." Let the traits show through.
+- Gap note (only if the 14-month gap comes up): "After Visa in Feb 2025 I spent 14 months building a portfolio of Next.js + Supabase apps — shipping real product with AI-assisted workflows. I wanted to be credible in technical conversations with merchants and engineers, not just sales conversations." Don't apologize for it.`;
+
 export function buildTailorResumePrompt(resumeType, data, jd) {
   const profile = buildProfileContextBlock(data);
-  const pmRules = `Key framing:
-- Lead with Authorize.Net merchant onboarding as PM/implementation proof
-- Frame work as project lifecycle management; 98% resolution, onboarding materials
-- Include Google PM Certificate (in progress), Asana/Jira/Linear
-- Do NOT frame as cold-outbound SDR`;
+  const icRules = `Key framing:
+- Implementation Consultant / Sales Engineer at a payments-adjacent company (Stripe, Adyen, Checkout.com, Finix, NMI, Rainforest Pay, etc.)
+- Lead with Authorize.Net merchant-live experience: 98% integration resolution, SOPs adopted by the team, ~200 merchants/month
+- Highlight technical troubleshooting, API/webhook comfort, and the 14-month Next.js + Supabase portfolio as proof of staying credible with engineers
+- Do NOT frame as cold-outbound SDR or pure AE`;
   const aeRules = `Key framing:
-- Consultative, inbound-heavy AE roles (Stripe, Plaid, etc.)
+- Consultative, inbound-heavy AE at a payments SaaS (Stripe, Adyen, Checkout.com, Finix)
 - Payments expertise, 10–15% above KPI, Authorize.Net / CyberSource
 - Do NOT frame as quota-chasing SDR`;
-  const mode = resumeType === "PM" ? `Implementation / PM targeting.\n${pmRules}` : `Account Executive targeting.\n${aeRules}`;
+  const pmRules = `Key framing:
+- Implementation / PM (legacy framing — prefer IC unless the role is explicitly PM)
+- Project lifecycle management, 98% resolution, onboarding materials
+- Include Google PM Certificate (in progress), Asana/Jira/Linear`;
+  const rulesByType = { IC: icRules, AE: aeRules, PM: pmRules };
+  const labelByType = {
+    IC: "Implementation Consultant / Sales Engineer targeting.",
+    AE: "Account Executive targeting.",
+    PM: "Implementation / PM targeting.",
+  };
+  const mode = `${labelByType[resumeType] || labelByType.IC}\n${rulesByType[resumeType] || icRules}`;
   return `# Tailor resume (${resumeType})
 
 ${profile}
@@ -47,7 +69,8 @@ ${data.baseResume}
 JOB DESCRIPTION:
 ${jd}
 
-Output ONLY the tailored resume text (no preamble).`;
+Output ONLY the tailored resume text (no preamble).
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export function buildCoverLetterPrompt(data, jd) {
@@ -64,7 +87,8 @@ ${data.baseResume}
 JOB DESCRIPTION:
 ${jd}
 
-Output ONLY the cover letter text.`;
+Output ONLY the cover letter text.
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export function buildApplyKitPrompt(resumeType, data, app) {
@@ -78,8 +102,10 @@ ${ANTI_AI_RESUME_RULES}
 
 ## Part 1 — Tailored resume (${resumeType})
 ${resumeType === "PM"
-  ? "Lead with implementation/PM framing (see tailor prompt rules for PM)."
-  : "Lead with consultative AE framing (see tailor prompt rules for AE)."}
+  ? "Lead with implementation/PM framing (legacy — see tailor prompt rules for PM)."
+  : resumeType === "AE"
+    ? "Lead with consultative AE framing (backup path — see tailor prompt rules for AE)."
+    : "Lead with Implementation Consultant / Sales Engineer framing for payments-adjacent companies — merchant-live implementation wins first."}
 
 BASE RESUME:
 ${data.baseResume}
@@ -92,7 +118,8 @@ ${jd}
 ## Part 2 — Cover letter
 Same constraints as a standalone cover letter prompt. 3 paragraphs. Human voice.
 
-After both parts, label clearly: === RESUME === and === COVER LETTER ===.`;
+After both parts, label clearly: === RESUME === and === COVER LETTER ===.
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export function buildLinkedInHeadlinePrompt(data, currentHeadline) {
@@ -144,9 +171,10 @@ ${profile}
 PERSON: ${contact.name} | ${contact.role} at ${contact.company}
 
 CONTEXT:
-${context || "Cold outreach — exploring implementation/CS roles in their space"}
+${context || "Cold outreach — exploring Implementation / Sales Engineer roles at payments-adjacent companies"}
 
-Output ONLY the note text.`;
+Output ONLY the note text.
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export function buildFollowupMessagePrompt(data, contact, context) {
@@ -160,7 +188,8 @@ PERSON: ${contact.name} | ${contact.role} at ${contact.company}
 CONTEXT:
 ${context || "Had a brief conversation about my job search"}
 
-Output ONLY the message.`;
+Output ONLY the message.
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export function buildStarDraftPrompt(data, source) {
@@ -175,7 +204,8 @@ ${source}
 Return ONLY valid JSON:
 {"title":"","competency":"","situation":"","task":"","action":"","result":"","takeaway":""}
 
-Build one interview-ready STAR from the source. Action = longest field. Result = measurable impact.`;
+Build one interview-ready STAR from the source. Action = longest field. Result = measurable impact.
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export function buildInterviewPrepExternalPrompt(data, app) {
@@ -196,7 +226,8 @@ Return ONLY valid JSON with keys: companyResearch, roleAnalysis, starStories, qu
 - starStories: at least 3 STAR-ready bullets.
 - questionsToAsk: at least 5 thoughtful questions for the interviewer.
 - Ground in Chase's background (Authorize.Net, integrations, KPIs, payments).
-No markdown fences.`;
+No markdown fences.
+${VOICE_DIRECTION_FOOTER}`;
 }
 
 export const JOB_SEARCH_EXTERNAL_LINKS = [

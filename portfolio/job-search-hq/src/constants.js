@@ -129,12 +129,165 @@ export const FOLLOWUP_SCENARIOS = [
 ];
 
 // ── JOB SEARCH ────────────────────────────────────────────────────────────────
+// Ordered by direction priority — IC/SE first, AE backup last. See identity/direction.md.
 export const JOB_SEARCH_QUERIES = [
-  "Implementation Specialist fintech payments remote",
+  "Implementation Consultant payments remote",
+  "Solutions Engineer payment gateway remote",
+  "Sales Engineer fintech implementation remote",
+  "Technical Account Manager payments remote",
+  "Implementation Specialist Stripe OR Adyen OR Checkout.com",
+  "Solutions Consultant merchant onboarding remote",
   "Customer Success Manager payments platform remote",
+  // Backup AE queries:
   "Account Executive inbound fintech payments",
   "Merchant Success Manager payment gateway remote",
-  "Implementation Consultant SaaS fintech remote",
+];
+
+// ── LAYOFF + DAILY FLOOR (Kassie's urgency layer) ────────────────────────────
+// Day 0 was the last day at Visa (Feb 15, 2025). Used for "Day N since Visa" counter.
+export const LAYOFF_DATE = "2025-02-15";
+
+// Non-negotiable daily minimums. Weekdays only — Sunday is rest.
+export const DAILY_MINIMUMS = {
+  applications: 5,
+  outreach: 3,
+  restDay: 0, // Sunday
+};
+
+export const daysSinceLayoff = (now = new Date()) => {
+  const start = new Date(LAYOFF_DATE + "T00:00:00");
+  const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  return Math.max(0, diff);
+};
+
+// ── DIRECTION (source of truth for UI — mirrors identity/direction.md) ──────
+export const DIRECTION = {
+  primaryRole: "Implementation Consultant / Sales Engineer",
+  primaryCompanies: [
+    "Stripe", "Adyen", "Checkout.com", "Finix", "Rainforest Pay",
+    "Spreedly", "Fiserv", "FIS", "Braintree", "NMI", "Worldpay", "Global Payments",
+    "Nuvei", "Paddle", "Stax", "Tilled", "Payrix", "Chargebee", "Recurly", "Zuora",
+  ],
+  secondaryCompanies: [
+    "Vercel", "Supabase", "Clerk", "Neon", "Retool", "Anthropic",
+    "Linear", "PostHog", "Sentry", "Railway", "Render",
+  ],
+  backupRole: "Account Executive at payments SaaS or inbound-heavy fintech",
+  committedDate: "2026-04-21",
+  reassessWeek4: "2026-05-19",
+  reassessWeek10: "2026-06-30",
+};
+
+// Direction track codes — filed per-application so the market tells us what's working.
+export const DIRECTION_TRACKS = [
+  { value: "IC", label: "Implementation / SE (payments-adjacent)", color: "#10b981" },
+  { value: "SE", label: "SE (dev-tools)",                         color: "#3b82f6" },
+  { value: "AE", label: "AE (backup)",                            color: "#8b5cf6" },
+  { value: "Other", label: "Other",                               color: "#6b7280" },
+];
+
+// ── STRENGTHS (CliftonStrengths Top 5) ───────────────────────────────────────
+export const STRENGTHS_SUMMARY = [
+  {
+    name: "HARMONY",
+    descriptors: ["Collaborative", "Peaceful", "Conflict-reducing"],
+    workExample: "Reads the room and de-escalates when a merchant call is going sideways; finds the thread everyone can agree on.",
+    jobSearchLeverage: "Calm under pressure is a hiring signal for Implementation Consultant roles where escalations are daily.",
+  },
+  {
+    name: "DEVELOPER",
+    descriptors: ["Patient", "Encouraging", "Others-oriented"],
+    workExample: "Coaches merchants through integrations instead of doing it for them; builds onboarding docs the team still uses.",
+    jobSearchLeverage: "This is the exact energy IC/SE bring to merchant go-lives. Lead with it.",
+  },
+  {
+    name: "CONSISTENCY",
+    descriptors: ["Fair", "Consistent", "Practical"],
+    workExample: "Runs the same playbook per merchant; keeps CRM data clean; builds SOPs so the team operates the same way whether he's there or not.",
+    jobSearchLeverage: "Resume bullet: 'Built onboarding SOPs adopted by the full SMB team — reduced repeat questions and helped new hires ramp faster.'",
+  },
+  {
+    name: "CONTEXT",
+    descriptors: ["Historical", "Insightful", "Reflective"],
+    workExample: "Pattern-recognizes: 'I've seen this before — last quarter three merchants had the same webhook issue. Here's what worked.'",
+    jobSearchLeverage: "In IC technical rounds, pattern library from 200+ merchants/month is a killer asset.",
+  },
+  {
+    name: "INDIVIDUALIZATION",
+    descriptors: ["Perceptive", "People-oriented", "Tailored"],
+    workExample: "Doesn't send the same outreach twice; reads each merchant's real need, not just the stated ask.",
+    jobSearchLeverage: "Every outreach message is personalized — natural mode. Don't use templates.",
+  },
+];
+
+// ── FRIEND FEEDBACK (Chase's own survey of what his people say about him) ───
+export const FRIEND_FEEDBACK = [
+  {
+    name: "Brandon", relation: "Former colleague",
+    quotes: [
+      "You are best at people. Your ability to connect and relate with people... establish rapport and make people feel at ease.",
+      "Your strengths are communication (you ask good questions, confirm others' understanding), thoughtfulness (you genuinely care about others), and establishing trust/credibility.",
+    ],
+  },
+  {
+    name: "Holly", relation: "Former colleague",
+    quotes: [
+      "Your strengths are your kindness, your willingness to help, and the positive way you interact with people. You have a calm, steady temperament that makes you easy to be around.",
+      "You're great at talking to people and making them feel at ease.",
+    ],
+  },
+  {
+    name: "Ben", relation: "Friend",
+    quotes: [
+      "You are a positive person who does a good job connecting with people.",
+    ],
+  },
+  {
+    name: "Travis", relation: "Former colleague",
+    quotes: [
+      "You are friendly, easy to talk to, and easy to connect with. So you're great at working with people.",
+      "You are also dedicated and hard working. I can trust that you'll get things done.",
+      "You do a great job of delegating and following up with others, so you would do well managing and mentoring others.",
+    ],
+  },
+  {
+    name: "Josh", relation: "Friend",
+    quotes: [
+      "Personable & communicative — very good at relating to others. Dependable / reliable. Funny. Humble / willing to learn. Kind. Team player.",
+    ],
+  },
+  {
+    name: "Andrew", relation: "Friend",
+    quotes: [
+      "You are loyal, committed, consistent, and dependable. Those are at least a few words that I think really describe you.",
+    ],
+  },
+  {
+    name: "Kassie", relation: "Wife",
+    quotes: [
+      "— to be added (see chase/identity/kassie-notes.md) —",
+    ],
+  },
+];
+
+export const FRIEND_FEEDBACK_CONSENSUS = [
+  "Great at connecting with people",
+  "Calm, steady temperament",
+  "Dependable / reliable",
+  "Humble",
+  "Asks good questions",
+  "Establishes trust and rapport",
+];
+
+// Rotating Kassie excerpts for the FocusTab accountability card (one per session).
+export const KASSIE_EXCERPTS = [
+  "I need you to be a bad A job hunting machine.",
+  "You are wasting time.",
+  "You can do better.",
+  "I can't carry the weight of everything anymore.",
+  "You have a little family counting on you. Please do more.",
+  "You are so indecisive and can never make a choice.",
+  "Stop making excuses and feeling sorry for yourself.",
 ];
 
 // ── AI CONTEXT ────────────────────────────────────────────────────────────────
@@ -151,7 +304,33 @@ STRONGEST EXPERIENCE — always lead with this:
 
 KEY SKILLS: Payment gateways (Authorize.Net, CyberSource/Visa), fraud prevention, chargeback management, merchant onboarding, CRM hygiene (Salesforce, Microsoft Dynamics), systematic documentation, cross-team collaboration, inbound sales.
 
-AVOID: Do not frame Chase as a cold-outbound SDR or pure quota-driven salesperson. He excels at implementation, merchant support, and inbound/consultative roles.`;
+AVOID: Do not frame Chase as a cold-outbound SDR or pure quota-driven salesperson. He excels at implementation, merchant support, and inbound/consultative roles.
+
+DIRECTION (primary frame for all drafts — committed 2026-04-21):
+Target role: Implementation Consultant / Sales Engineer / Solutions Consultant
+Target companies (payments-adjacent, PRIMARY): Stripe, Adyen, Checkout.com, Finix, Rainforest Pay, Spreedly, Fiserv, FIS, Braintree, NMI, Worldpay, Global Payments, Nuvei, Paddle, Stax, Tilled, Payrix, Chargebee, Recurly, Zuora.
+Secondary target (dev-tools): Vercel, Supabase, Clerk, Neon, Retool, Anthropic, Linear, PostHog, Sentry, Railway, Render.
+Backup path: AE at a payments SaaS or inbound-heavy fintech.
+Why this fits: 6 yrs Authorize.Net + CyberSource implementation experience is the exact credential payments-adjacent IC/SE hiring managers want on day one. Chase's energy is ~70% implementation, ~20% building/demoing, ~10% coaching peers.
+
+STRENGTHS (CliftonStrengths Top 5):
+- HARMONY — frames interactions around reducing friction and finding common ground
+- DEVELOPER — naturally coaches/encourages peers; loves watching others level up
+- CONSISTENCY — fair, process-driven, dependable; protects against chaos
+- CONTEXT — reflective, pattern-recognizer; uses history to make better decisions
+- INDIVIDUALIZATION — reads people well; tailors approach per person, not per script
+
+FRIEND-FEEDBACK CONSENSUS: great at connecting with people, calm/steady temperament, dependable, humble, asks good questions, establishes trust and rapport.
+
+VOICE RULES (how to write as Chase):
+- Warm, direct, no hype. Short sentences.
+- No em-dashes. No rule-of-threes. No consultant phrasing ("compounds future optionality", "unlocks growth", "synergy", "leverages").
+- No hype words ("amazing", "incredible", "thrilled", "passionate").
+- Real questions when unsure. Thank people by name. Lead with what's useful for the reader.
+- Use his words: "get them up and running", "walk through", "figure out", "happy to".
+
+GAP NARRATIVE (use when the 14-month gap comes up — adjust per company, never apologize):
+"After Visa in Feb 2025 I spent 14 months building a portfolio of Next.js + Supabase apps — shipping real product with AI-assisted workflows. I wanted to be credible in technical conversations with merchants and engineers, not just sales conversations. That's the exact gap Implementation Consultants and Sales Engineers at payments-adjacent companies fill every day."`;
 
 // ── RESUME TEMPLATES ──────────────────────────────────────────────────────────
 export const RESUME_TEMPLATE_PM = `CHASE WHITTAKER
@@ -195,6 +374,53 @@ Underwriting Specialist | Select Bankcard    Jun 2016 – Dec 2017
 EDUCATION & CERTIFICATIONS
 Bachelor of Business Administration & Technology Management — Utah Valley University
 Sandler Sales Training — Certified  |  Visa Bronze Certified  |  Google Project Management Certificate (in progress)  |  Asana Academy (in progress)`;
+
+// Primary template — leads with implementation/merchant-live wins for IC/SE roles
+// at payments-adjacent companies (Stripe, Adyen, Finix, Checkout.com, etc.).
+export const RESUME_TEMPLATE_IC = `CHASE WHITTAKER
+chase.t.whittaker@gmail.com  |  [PHONE]  |  Vineyard, UT (Remote)  |  linkedin.com/in/chase-whittaker
+
+[TARGET ROLE]  |  [TARGET COMPANY]
+
+SUMMARY
+Payments implementation specialist with 6+ years guiding merchants from application through live transaction processing on Authorize.Net and CyberSource. Resolved 98% of integration issues without escalation. Comfortable walking both business owners and engineers through payment flows, webhooks, tokenization, and fraud controls. Looking for an Implementation Consultant or Sales Engineer seat at a payments-adjacent company where a day-one credential beats a ramp.
+
+SKILLS
+Payments: Authorize.Net, CyberSource / Visa Acceptance, tokenization, 3DS, recurring billing, webhooks, fraud controls
+Implementation: Merchant onboarding, go-live support, integration troubleshooting, SOP authoring, cross-team escalation management
+Technical: Reading API docs, reproducing merchant issues in a sandbox, basic JS/HTML/CSS (portfolio of Next.js + Supabase apps shipped 2025–26)
+Tools: Salesforce, Microsoft Dynamics, Postman, Stripe/Adyen dashboards (familiar), Git, Linear, Jira, Microsoft Teams
+
+EXPERIENCE
+
+Inside Sales Representative – SMB (Implementation-focused) | Visa Inc. — Authorize.Net    Feb 2019 – Aug 2023
+- Got ~200 merchants up and running each month — owned the full path from application through first live transaction
+- Resolved 98% of integration issues directly: webhook wiring, tokenization, fraud rules, API key handoffs
+- Built onboarding SOPs the full SMB team still runs — cut repeat questions and shortened new-hire ramp
+- Kept 15–20 active onboardings moving in parallel across different stages; exceeded KPI 10–15% for four-plus years
+- Partnered with AEs on deals up to $100K — owned the technical half of the conversation so the AE stayed on commercials
+
+Enterprise Implementation Liaison / SDR | Visa Inc. — CyberSource    Aug 2023 – Feb 2025
+- Managed ~50 enterprise accounts — kept engagements on track and handoffs clean between prospect, AE, and solutions team
+- Authored prospect engagement workflows the team adopted — reduced dropped follow-ups and improved CRM hygiene
+- Served as the technical go-between for prospects and AEs, translating merchant asks into implementation scope
+
+Independent Portfolio Work — Next.js + Supabase apps    Feb 2025 – present
+- Shipped a portfolio of production-grade web apps (Next.js, React, Supabase, Vercel) with AI-assisted workflows
+- Built for credibility in technical conversations with merchants and engineers, not just commercial ones
+- Representative: a job-search cockpit (pipeline, contacts CRM, interview prep, Chrome MV3 extension) used daily
+
+Dispute & Support Specialist | Select Bankcard    Jan 2018 – Oct 2018
+- Worked 50–100 chargeback cases per week across Visa, Mastercard, Discover, and Amex
+- Spotted recurring dispute patterns and flagged them to merchants so they could tighten processes
+
+Underwriting Specialist | Select Bankcard    Jun 2016 – Dec 2017
+- Reviewed merchant applications and financials for risk
+- Trained new team members and handled escalated merchant calls
+
+EDUCATION & CERTIFICATIONS
+Bachelor of Business Administration & Technology Management — Utah Valley University
+Sandler Sales Training — Certified  |  Visa Bronze Certified  |  Google Project Management Certificate (in progress)`;
 
 export const RESUME_TEMPLATE_AE = `CHASE WHITTAKER
 chase.t.whittaker@gmail.com  |  [PHONE]  |  Vineyard, UT (Remote)  |  linkedin.com/in/chase-whittaker
@@ -243,19 +469,20 @@ export const defaultData = {
   contacts: [],
   starStories: [],
   dailyActions: [], // { id, date, type, note, time }
-  baseResume: RESUME_TEMPLATE_PM,
+  wins: [],         // { id, date, type, source, title, note, autoLogged }
+  baseResume: RESUME_TEMPLATE_IC,
   profile: {
     name: "Chase Whittaker",
     email: "chase.t.whittaker@gmail.com",
     phone: "",
     linkedin: "linkedin.com/in/chase-whittaker",
     location: "Vineyard, UT (Remote Only)",
-    targetRoles: "Implementation Specialist, Customer Success Manager, Account Executive (inbound)",
-    targetIndustries: "Fintech, Payments, SaaS, B2B",
+    targetRoles: "Implementation Consultant, Sales Engineer, Solutions Consultant (payments-adjacent); AE at a payments SaaS as backup",
+    targetIndustries: "Payments, Fintech, Dev Tools, B2B SaaS",
     yearsExp: "6",
-    topAchievements: "• Onboarded ~200 merchants/month at Authorize.Net — guided each from application through first live transaction\n• 98% integration issue resolution rate — resolved the vast majority without escalation\n• Exceeded KPI targets 10–15% consistently across four-plus years\n• Built onboarding docs and process guides adopted by the full team\n• Managed both SMB accounts solo and larger deals up to $100K alongside AEs",
+    topAchievements: "• Onboarded ~200 merchants/month at Authorize.Net — guided each from application through first live transaction\n• 98% integration issue resolution rate — resolved the vast majority without escalation\n• Exceeded KPI targets 10–15% consistently across four-plus years\n• Built onboarding SOPs adopted by the full SMB team — cut repeat questions and shortened new-hire ramp\n• Managed both SMB accounts solo and larger deals up to $100K alongside AEs",
     salaryTarget: "",
-    notes: "6+ years digital payments. Strongest experience: Authorize.Net merchant onboarding and implementation (inbound, 98% resolution rate). Remote only. Looking for implementation, CS, or inbound AE roles — NOT cold outbound SDR.",
+    notes: "6+ years digital payments. Strongest experience: Authorize.Net merchant onboarding + integration troubleshooting (inbound, 98% resolution). Remote only. Target: Implementation Consultant / Sales Engineer at payments-adjacent companies (Stripe, Adyen, Checkout.com, Finix, etc.). AE at payments SaaS is the backup path, not the lead. Not a cold-outbound SDR.",
     weeklyTarget: 5,
   },
 };
@@ -274,7 +501,59 @@ export function blankApp() {
     prepStageKey: "", // phone_screen | interview | final_round — last template applied (optional)
     interviewLog: [],
     offerDetails: blankOfferDetails(),
+    track: "IC", // IC | SE | AE | Other — direction tracker (2026-04-21)
   };
+}
+
+// ── WINS LOG (Kassie's urgency layer — visible evidence of forward motion) ──
+export const WIN_TYPES = [
+  { value: "response",     label: "Response",        color: "#3b82f6" },
+  { value: "progression",  label: "Stage progression", color: "#10b981" },
+  { value: "daily_target", label: "Daily target hit", color: "#f59e0b" },
+  { value: "manual",       label: "Manual",          color: "#8b5cf6" },
+];
+
+export function blankWin() {
+  return {
+    id: generateId(),
+    date: today(),
+    type: "manual",
+    source: null,      // 'app:<id>' | 'contact:<id>' | null
+    title: "",
+    note: "",
+    autoLogged: false,
+  };
+}
+
+export function normalizeWins(wins = []) {
+  if (!Array.isArray(wins)) return [];
+  return wins.map(w => ({
+    id: w.id || generateId(),
+    date: w.date || today(),
+    type: w.type || "manual",
+    source: w.source ?? null,
+    title: w.title || "",
+    note: w.note || "",
+    autoLogged: !!w.autoLogged,
+  }));
+}
+
+// Direction split — counts + response-rate per track across active applications.
+// "Response" = any non-Interested stage (Applied, Phone Screen, Interview, Final
+// Round, Offer all imply the application got a signal back).
+export function getDirectionSplit(applications = []) {
+  const tracks = ["IC", "SE", "AE", "Other"];
+  const out = Object.fromEntries(tracks.map(t => [t, { count: 0, responded: 0, responseRate: 0 }]));
+  applications.forEach(app => {
+    const track = tracks.includes(app.track) ? app.track : "Other";
+    out[track].count += 1;
+    if (app.stage && app.stage !== "Interested") out[track].responded += 1;
+  });
+  tracks.forEach(t => {
+    const row = out[t];
+    row.responseRate = row.count ? Math.round((row.responded / row.count) * 100) : 0;
+  });
+  return out;
 }
 
 export const DEBRIEF_ROUND_TYPES = [
@@ -722,6 +1001,12 @@ export const STAR_COMPETENCIES = [
   "Leadership",
   "Adaptability",
   "Ownership",
+  // Strength-anchored — map to Chase's CliftonStrengths Top 5.
+  "Conflict reduction (Harmony)",
+  "Coaching & enablement (Developer)",
+  "Consistency & fairness (Consistency)",
+  "Pattern recognition (Context)",
+  "Tailored communication (Individualization)",
 ];
 
 export function blankStarStory() {
@@ -953,6 +1238,13 @@ export const DAILY_BLOCKS = [
 
 // ── RESOURCES ─────────────────────────────────────────────────────────────────
 export const RESOURCES = [
+  { category: "Networking & Informational Interviews", color: "#22d3ee", items: [
+    { title: "Informational interview script", desc: "Lead: \"I'd love 15 minutes to learn how you got to [role] — no pitch, no ask, just learning.\" End with: \"If anyone on your team is worth me meeting, I'd appreciate an intro.\" Short, no hype, zero pressure.", url: "" },
+    { title: "Payments-adjacent target list", desc: "Primary IC/SE targets: Stripe, Adyen, Checkout.com, Finix, Rainforest Pay, Spreedly, Fiserv, FIS, Braintree, NMI, Worldpay, Global Payments. Secondary (dev-tools): Vercel, Supabase, Clerk, Neon, Retool, Anthropic.", url: "" },
+    { title: "How to ask for an informational interview (First Round Review)", desc: "Reputable free read on framing the ask. Steal the structure, not the language — keep your voice warm and short.", url: "https://review.firstround.com/how-to-ace-an-informational-interview/" },
+    { title: "Tactical follow-up rhythm", desc: "Day 0: thank-you note with one specific thing you learned. Day 7: share a link related to what they mentioned. Day 30: short update on your search. No desperation, just signal.", url: "" },
+    { title: "Blogs / channels to curate", desc: "Placeholder — 5 slots for Chase to fill: (1) __, (2) __, (3) __, (4) __, (5) __. Lean toward payments infra, dev-tools GTM, or Implementation/SE craft.", url: "" },
+  ]},
   { category: "Do this week — free", color: "#f59e0b", items: [
     { title: "Asana Academy Certification", desc: "Free, 2–3 hrs. Gives you a LinkedIn badge immediately. Shows PM tool knowledge.", url: "https://academy.asana.com" },
     { title: "HubSpot Sales Software Cert", desc: "Free, ~4 hrs. Widely recognized for AE roles. Adds badge to LinkedIn.", url: "https://academy.hubspot.com/courses/sales-software" },

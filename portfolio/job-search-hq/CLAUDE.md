@@ -5,7 +5,7 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
-- **Version:** v8.11 (Wave 4 #4: offer comparison side-by-side — `offerDetails` per app + OfferModal + OfferCompareView; Wave 4 #3: outreach cadence timeline per contact; Wave 4 #2: Draft Message context; Wave 4 #1: weekly review prompt; Wave 3 complete: debrief log, velocity dashboard, mock interview; Apply Tools = copy prompts + external assistants)
+- **Version:** v8.13 (Confidence Bedrock wave: direction frame = **Implementation Consultant / SE at payments-adjacent companies** (AE backup); Strengths + Friend Feedback + Direction panels in Profile; Kassie urgency layer on Focus tab — Day-N counter, daily minimums, Kassie card; Wins Log (auto + manual); Direction Tracker split per app; `RESUME_TEMPLATE_IC` default; voice + direction footer in every AI prompt; IC/SE mock interview scenarios + Strength Answer Hooks; Networking & Informational Interviews resource section.) · v8.11 Wave 4 #4: offer comparison side-by-side — `offerDetails` per app + OfferModal + OfferCompareView; Wave 4 #3: outreach cadence timeline per contact; Wave 4 #2: Draft Message context; Wave 4 #1: weekly review prompt; Wave 3 complete: debrief log, velocity dashboard, mock interview; Apply Tools = copy prompts + external assistants.
 - **Storage key:** `chase_job_search_v1` (data only)
 - **URL:** https://job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
@@ -50,13 +50,24 @@ src/
 - `STORAGE_KEY`, `BACKUP_FOLDER_KEY`
 - `STAGES`, `STAGE_COLORS`
 - `CHASE_CONTEXT`, `JOB_SEARCH_QUERIES`
-- `RESUME_TEMPLATE_PM`, `RESUME_TEMPLATE_AE`
+- `RESUME_TEMPLATE_IC` (primary), `RESUME_TEMPLATE_AE` (backup), `RESUME_TEMPLATE_PM` (legacy)
 - `defaultData`, `generateId`
-- `blankApp()`, `blankContact()`, `blankStarStory()`, `normalizeStarStories()`, `blankPrepSections()`, `normalizePrepSections()`
-- `buildOutreachPriorityList()`, `getOutreachCadenceNudge()`, `getOutcomeAnalytics()`
+- `blankApp()` (now includes `track: "IC"`), `blankContact()`, `blankStarStory()`, `normalizeStarStories()`, `blankPrepSections()`, `normalizePrepSections()`
+- `blankWin()`, `normalizeWins()`, `WIN_TYPES`
+- `buildOutreachPriorityList()`, `getOutreachCadenceNudge()`, `getOutcomeAnalytics()`, `getDirectionSplit()`
+- `DIRECTION`, `DIRECTION_TRACKS`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `FRIEND_FEEDBACK_CONSENSUS`, `KASSIE_EXCERPTS`
+- `LAYOFF_DATE`, `daysSinceLayoff()`, `DAILY_MINIMUMS`
 - `DAILY_BLOCKS`, `RESOURCES`
 - `s` (all styles), `css` (global CSS string)
 - `backupData()`, `restoreData()`
+
+### Direction, Strengths & Voice — Confidence Bedrock layer
+- **Single source of truth (identity):** `/Users/chase/Developer/chase/identity/direction.md` + `strengths/` + `friend-feedback.md` + `voice-brief.md` + `kassie-notes.md`. Don't duplicate content in this app — mirror it via `constants.js` exports.
+- **Direction = Implementation Consultant / Sales Engineer at payments-adjacent companies** (Stripe, Adyen, Checkout.com, Finix, Rainforest Pay, Spreedly, Fiserv, FIS, NMI, Worldpay, Braintree, Global Payments). AE at payments SaaS is backup.
+- **Voice rules (`applyPrompts.js` → `VOICE_DIRECTION_FOOTER`):** no em-dashes, no rule-of-threes, no hype, no consultant phrasing ("leverages", "unlocks", "compounds", "synergy"). Warm, direct, short sentences. Strengths show through (Harmony / Developer / Consistency / Context / Individualization) — never name-dropped. Footer is appended to every drafting prompt in `applyPrompts.js`.
+- **Kassie urgency layer (FocusTab):** `UrgencyHeader` = "Day N since Visa" (reads `LAYOFF_DATE`), `DailyMinimums` (5 apps + 3 outreach + rest floor), `KassieCard` (rotates an excerpt from `KASSIE_EXCERPTS`, per-day dismissal via `chase_js_kassie_dismiss_v1`). These are non-negotiable operating doctrine, not decorations.
+- **Wins Log:** `addWin`/`removeWin` in `App.jsx`; auto-log on stage progression and debrief entry in `saveApp`, on `outreachStatus → replied` in `saveContact`. `autoLogged: true` distinguishes them from manual entries.
+- **Direction Tracker:** every app has `track: "IC" | "SE" | "AE" | "Other"` (default IC). `getDirectionSplit(applications)` powers the Focus tab card — market-feedback, not deliberation.
 
 ### `App.jsx` — shell only
 Owns: `data`, `tab`, `appModal`, `contactModal`, `profileModal`, `prepModal`, `kitApp`, `resumeTab`, `expandedBlock`, `completedBlocks`, `errorToast`
@@ -85,8 +96,10 @@ Receives from shell: `data`, `profileComplete`, `kitApp`, `setKitApp`, `resumeTa
       signOnBonus, equity, equityNotes,
       ptoWeeks, benefitsNotes, startDate, decisionBy,
       location, remoteFlex, notes
-    }
+    },
+    track, // 'IC' | 'SE' | 'AE' | 'Other' — Direction Tracker (v8.13)
   }],
+  wins: [{ id, date, type, source, title, note, autoLogged }], // Wins Log (v8.13) — auto on progression/reply/debrief, manual via Focus tab
   contacts: [{
     id, name, company, role, email, linkedin, lastContact, notes, appIds,
     type, outreachStatus, outreachDate, source, companySize, industry, isHiring // networking (v8.4+)

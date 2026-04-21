@@ -18,6 +18,24 @@
 
 ## Entries
 
+### 2026-04-21 — Identity folder beats duplicating doctrine in constants
+**What happened:** Confidence Bedrock wave needed direction + strengths + friend feedback + Kassie's letter + voice rules surfaced inside Job Search HQ. Temptation was to inline everything into `constants.js`. Instead: source of truth lives at `/Users/chase/Developer/chase/identity/` (direction.md, strengths/, voice-brief.md, friend-feedback.md, kassie-notes.md). `constants.js` mirrors just what the app renders (`DIRECTION`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `KASSIE_EXCERPTS`). Memory (`user_strengths.md`, `project_job_search_direction.md`) points at the identity folder so future Claude sessions pull from one place.
+**Root cause:** Cross-app problem — Shipyard, LinkedIn rewrite, other portfolio apps need the same identity data. Duplicating in every app's constants would rot fast.
+**Fix / lesson:** Identity data lives once in `chase/identity/`; each app mirrors the minimal slice it renders. Root `CLAUDE.md` points at the folder so any agent session picks it up.
+**Tags:** architecture | docs | memory
+
+### 2026-04-21 — Wins Log: auto-logged + manual is the right split
+**What happened:** Plan called for auto-logging wins on stage progression, debrief entries, outreach replies, and daily-target hits. Also needed manual "Log a win" for small proofs Chase wants to capture himself. Built both paths with `autoLogged: true` flag so the two are visually distinguishable in `WinsLog` UI.
+**Root cause:** Pure-auto wins miss the small stuff Kassie's letter is about ("you can do better" — small proofs that add up). Pure-manual wins require discipline Chase doesn't have in crisis mode. Both paths, clearly separated, is the answer.
+**Fix / lesson:** Two data shapes sharing one schema via a boolean flag is lower overhead than separate models. `saveApp`/`saveContact` compare prev vs next and emit wins inside the same `setData` to avoid double-render.
+**Tags:** react | state | product
+
+### 2026-04-21 — Per-day dismissal key ≠ boolean
+**What happened:** KassieCard needs to be dismissible but resurface the next day. Using a plain boolean in localStorage would make "dismissed" permanent. Solution: `chase_js_kassie_dismiss_v1` stores today's date string — card shows if the stored date ≠ today.
+**Root cause:** State that resets daily isn't state, it's a date comparison. Treating it as a boolean would have needed a cleanup effect.
+**Fix / lesson:** When UI state is "hide for today," store the date, not a flag. Same pattern already used in `completedBlocks` reset on reload (intentional daily tracker in CLAUDE.md).
+**Tags:** react | localStorage | ux
+
 ### 2026-04-20 — Regex email parsing: prefer non-personal-provider sender, signature name fallback
 **What happened:** Building `parseRecruiterEmail()` — the most important extraction targets (name, company, job title) each needed a prioritized fallback chain because recruiter emails vary wildly in structure.
 **Root cause:** No single pattern covers all email formats. "From:" headers have name, but forwarded emails may not. Company name can come from the email domain but personal providers (gmail, yahoo, outlook) aren't company names. Job title appears in subject lines (often abbreviated, e.g. "PM") or in body prose with varying phrasing.
