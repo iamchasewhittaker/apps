@@ -34,81 +34,55 @@ function logAuth(message, payload) {
   console.log(`[auth:job-search] ${message}`, payload);
 }
 
-// ── LOGIN SCREEN (shown when no Supabase session) ──────────────────────────
-// Email OTP + verifyOtp: iOS home-screen PWA has separate localStorage from Safari;
-// entering the code here stores the session in the same context as the app (magic link in Mail often opens Safari).
+// ── AUTH SCREENS ──────────────────────────────────────────────────────────
+
+const authInputStyle = {
+  width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid #374151",
+  background: "#0f1117", color: "#f3f4f6", fontSize: 16, fontFamily: "inherit", marginBottom: 16,
+  outline: "none", boxSizing: "border-box",
+};
+
+const authBtnStyle = {
+  width: "100%", padding: "12px", borderRadius: 8, border: "none",
+  background: "#3b82f6", color: "#fff", fontSize: 14, fontWeight: 700,
+  fontFamily: "inherit", cursor: "pointer",
+};
+
 function LoginScreen() {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState("");
-  const [resendSec, setResendSec] = useState(0);
+  const [resetSent, setResetSent] = useState(false);
 
-  useEffect(() => {
-    if (resendSec <= 0) return;
-    const t = setInterval(() => setResendSec((s) => Math.max(0, s - 1)), 1000);
-    return () => clearInterval(t);
-  }, [resendSec]);
-
-  const sendOtp = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || !password.trim()) return;
     setLoading(true);
     setError("");
     try {
-      const { error: authErr } = await auth.signInWithOtp({
-        email: email.trim(),
-        options: {
-          shouldCreateUser: true,
-          emailRedirectTo,
-        },
-      });
+      const { error: authErr } = await auth.signInWithPassword({ email: email.trim(), password });
       if (authErr) throw authErr;
-      setSent(true);
-      setResendSec(45);
     } catch (err) {
-      setError(err.message || "Something went wrong.");
+      setError(err.message || "Invalid email or password.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    await sendOtp();
-  };
-
-  const handleVerify = async (e) => {
-    e.preventDefault();
-    const code = otp.replace(/\D/g, "").slice(0, 8);
-    if (!code.trim()) return;
-    setVerifying(true);
+  const handleReset = async () => {
+    if (!email.trim()) { setError("Enter your email above first."); return; }
+    setLoading(true);
     setError("");
     try {
-      const { error: authErr } = await auth.verifyOtp({
-        email: email.trim(),
-        token: code,
-        type: "email",
-      });
+      const { error: authErr } = await auth.resetPasswordForEmail(email.trim(), { redirectTo: emailRedirectTo });
       if (authErr) throw authErr;
+      setResetSent(true);
     } catch (err) {
-      setError(err.message || "Invalid code. Try again.");
+      setError(err.message || "Something went wrong.");
     } finally {
-      setVerifying(false);
+      setLoading(false);
     }
-  };
-
-  const handleResend = async () => {
-    if (resendSec > 0 || loading) return;
-    setOtp("");
-    await sendOtp();
-  };
-
-  const inputStyle = {
-    width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid #374151",
-    background: "#0f1117", color: "#f3f4f6", fontSize: 16, fontFamily: "inherit", marginBottom: 16,
-    outline: "none", boxSizing: "border-box",
   };
 
   return (
@@ -117,47 +91,13 @@ function LoginScreen() {
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🎯</div>
         <div style={{ fontSize: 20, fontWeight: 700, color: "#f3f4f6", textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
         <div style={{ fontSize: 13, color: "#6b7280", textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
-        {sent ? (
-          <form onSubmit={handleVerify}>
-            <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 16, lineHeight: 1.5 }}>
-              We sent a sign-in email to <strong style={{ color: "#f3f4f6" }}>{email}</strong>.
-              Enter the code from that email (best for the iPhone home-screen app). You can also tap the link in the email if you use Safari.
-            </div>
-            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 14, lineHeight: 1.45 }}>
-              If the email has <strong style={{ color: "#f3f4f6" }}>only a link</strong> and no code, edit Supabase → <strong>Authentication</strong> → <strong>Email Templates</strong> → <strong>Magic link</strong> and add <code style={{ fontSize: 10, color: "#f3f4f6" }}>{'{{ .Token }}'}</code> to the template (see <code style={{ fontSize: 10 }}>CLAUDE.md</code>).
-            </div>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Code from email</label>
-            <input
-              type="text"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              value={otp}
-              onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 8))}
-              placeholder="000000"
-              style={inputStyle}
-            />
-            {error && <div style={{ fontSize: 12, color: "#fbbf24", marginBottom: 12 }}>{error}</div>}
-            <button type="submit" disabled={verifying || otp.replace(/\D/g, "").length < 6} style={{
-              width: "100%", padding: "12px", borderRadius: 8, border: "none",
-              background: "#3b82f6", color: "#fff", fontSize: 14, fontWeight: 700,
-              fontFamily: "inherit", cursor: verifying ? "wait" : "pointer",
-              opacity: verifying || otp.replace(/\D/g, "").length < 6 ? 0.6 : 1,
-            }}>
-              {verifying ? "Verifying…" : "Verify and sign in"}
-            </button>
-            <div style={{ marginTop: 16, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "#6b7280" }}>
-              <button type="button" onClick={() => { setSent(false); setOtp(""); setError(""); }} style={{
-                background: "none", border: "none", color: "#3b82f6", cursor: "pointer", padding: 0, fontFamily: "inherit", fontSize: 12,
-              }}>Change email</button>
-              <button type="button" onClick={handleResend} disabled={resendSec > 0 || loading} style={{
-                background: "none", border: "none", color: resendSec > 0 ? "#6b7280" : "#3b82f6", cursor: resendSec > 0 ? "default" : "pointer", padding: 0, fontFamily: "inherit", fontSize: 12,
-              }}>
-                {resendSec > 0 ? `Resend in ${resendSec}s` : "Resend email"}
-              </button>
-            </div>
-          </form>
+        {resetSent ? (
+          <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, textAlign: "center" }}>
+            Password reset email sent to <strong style={{ color: "#f3f4f6" }}>{email}</strong>.
+            Check your inbox and click the link to set a new password.
+          </div>
         ) : (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLogin}>
             <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email</label>
             <input
               type="email"
@@ -165,19 +105,96 @@ function LoginScreen() {
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              style={inputStyle}
+              style={authInputStyle}
+            />
+            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              style={authInputStyle}
             />
             {error && <div style={{ fontSize: 12, color: "#fbbf24", marginBottom: 12 }}>{error}</div>}
-            <button type="submit" disabled={loading || !email.trim()} style={{
-              width: "100%", padding: "12px", borderRadius: 8, border: "none",
-              background: "#3b82f6", color: "#fff", fontSize: 14, fontWeight: 700,
-              fontFamily: "inherit", cursor: loading ? "wait" : "pointer",
-              opacity: loading || !email.trim() ? 0.6 : 1,
+            <button type="submit" disabled={loading || !email.trim() || !password.trim()} style={{
+              ...authBtnStyle, opacity: loading || !email.trim() || !password.trim() ? 0.6 : 1,
+              cursor: loading ? "wait" : "pointer",
             }}>
-              {loading ? "Sending…" : "Send sign-in email"}
+              {loading ? "Signing in…" : "Sign in"}
             </button>
+            <div style={{ marginTop: 14, textAlign: "center" }}>
+              <button type="button" onClick={handleReset} disabled={loading} style={{
+                background: "none", border: "none", color: "#3b82f6", cursor: "pointer",
+                fontFamily: "inherit", fontSize: 12, padding: 0,
+              }}>
+                Forgot password?
+              </button>
+            </div>
           </form>
         )}
+      </div>
+    </div>
+  );
+}
+
+// Shown after user clicks a password-reset link (PASSWORD_RECOVERY event)
+function SetPasswordScreen({ onDone }) {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSet = async (e) => {
+    e.preventDefault();
+    if (password.length < 6) { setError("Minimum 6 characters."); return; }
+    if (password !== confirm) { setError("Passwords don't match."); return; }
+    setLoading(true);
+    setError("");
+    try {
+      const { error: authErr } = await auth.updateUser({ password });
+      if (authErr) throw authErr;
+      onDone();
+    } catch (err) {
+      setError(err.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#0f1117", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div style={{ maxWidth: 360, width: "100%", background: "#161b27", borderRadius: 16, padding: 32, border: "1px solid #1f2937" }}>
+        <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🔐</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#f3f4f6", textAlign: "center", marginBottom: 4 }}>Set new password</div>
+        <div style={{ fontSize: 13, color: "#6b7280", textAlign: "center", marginBottom: 28 }}>Choose a password for your account</div>
+        <form onSubmit={handleSet}>
+          <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>New password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+            style={authInputStyle}
+          />
+          <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Confirm password</label>
+          <input
+            type="password"
+            value={confirm}
+            onChange={e => setConfirm(e.target.value)}
+            placeholder="••••••••"
+            required
+            style={authInputStyle}
+          />
+          {error && <div style={{ fontSize: 12, color: "#fbbf24", marginBottom: 12 }}>{error}</div>}
+          <button type="submit" disabled={loading || !password || !confirm} style={{
+            ...authBtnStyle, opacity: loading || !password || !confirm ? 0.6 : 1,
+            cursor: loading ? "wait" : "pointer",
+          }}>
+            {loading ? "Saving…" : "Set password"}
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -190,6 +207,7 @@ export default function JobSearchTracker() {
   // ── Auth session ─────────────────────────────────────────────────────────
   // null = not yet checked, false = no session, object = logged in
   const [session, setSession] = useState(null);
+  const [recoveryMode, setRecoveryMode] = useState(false);
   useEffect(() => {
     if (!auth) {
       logAuth("local_mode_no_auth");
@@ -199,7 +217,13 @@ export default function JobSearchTracker() {
     const hasCode = window.location.search.includes('code=') || window.location.hash.includes('access_token=');
     const { data: { subscription } } = auth.onAuthStateChange((event, s) => {
       logAuth("state_change", { event, hasSession: !!s });
-      setSession(s || false);
+      if (event === "PASSWORD_RECOVERY") {
+        setRecoveryMode(true);
+        setSession(false);
+      } else {
+        setRecoveryMode(false);
+        setSession(s || false);
+      }
     });
     auth.getSession().then(({ data: d }) => {
       logAuth("initial_session", { hasSession: !!d.session, hasCode });
@@ -330,6 +354,19 @@ export default function JobSearchTracker() {
       return;
     }
 
+    if (params.get("shareTarget") === "1") {
+      importUrlConsumed.current = true;
+      const sharedUrl = params.get("url") || "";
+      const sharedTitle = params.get("title") || "";
+      if (sharedUrl) {
+        setAppModal({ mode: "new", app: { ...blankApp(), title: sharedTitle, url: sharedUrl, stage: "Interested" } });
+        setTab("pipeline");
+      }
+      ["shareTarget", "url", "title", "text"].forEach(k => params.delete(k));
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+
     const hash = window.location.hash || "";
     if (hash.startsWith("#importJob=")) {
       try {
@@ -393,6 +430,9 @@ export default function JobSearchTracker() {
   // Auth gate — session=null means still checking, session=false means not logged in
   if (session === null) {
     return <div style={{ minHeight: "100vh", background: "#0f1117", display: "flex", alignItems: "center", justifyContent: "center", color: "#6b7280", fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
+  }
+  if (recoveryMode) {
+    return <SetPasswordScreen onDone={() => { setRecoveryMode(false); auth.getSession().then(({ data: d }) => setSession(d.session || false)); }} />;
   }
   if (session === false) {
     return <LoginScreen />;
