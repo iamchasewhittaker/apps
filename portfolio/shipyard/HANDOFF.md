@@ -4,7 +4,7 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Polish pass complete — theme toggle, Fleet Showcase rebuild, per-app detail page, Drydock Gate full queue + drag-rank, category/tagline/summary synced for all 38 apps |
+| Focus      | `/portfolio` RSC boundary fix deployed + `npm run smoke` guardrail added — all 11 prod routes green |
 | Next       | Editable Ship detail fields · fix `learnings` unique constraint · seed `priority_rank` via drag UI |
 | Last touch | 2026-04-20                                                            |
 

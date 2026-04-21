@@ -1,5 +1,16 @@
 # Learnings — Shipyard
 
+## 2026-04-20 (RSC boundary fix + smoke test)
+
+**Event handlers in Server Component files cause silent 500s that survive `next build` and `vercel --prod`.**
+`LinkChip` had `onClick={(e) => e.stopPropagation()}` but was defined inline in an `async` Server Component (`page.tsx`). RSC can't serialize event handlers across the server/client boundary. `next build` passes cleanly, Vercel deploys successfully, then every request to `/portfolio` returns 500. The only clue is the dev log at `.next/dev/logs/next-development.log` (or Vercel function logs in prod). Fix: any component with `onClick`, `useState`, or `useEffect` must live in its own file with `'use client'` at the top — never inline in a server `page.tsx`.
+
+**`postbuild` can't run a smoke test in the Vercel build environment.**
+Running `next start` inside a Vercel build container doesn't work — there's no persistent server to curl against. The right place for route smoke tests is local (pre-push) or as a Vercel deploy hook / GitHub Actions step that targets the preview URL. Wired as `npm run smoke` only; left `postbuild` alone.
+
+**`npm run smoke` is the fastest way to catch RSC violations and missing routes before push.**
+`scripts/smoke.ts` auto-discovers every route under `src/app/**`, resolves `[slug]` to a real Supabase slug, and curls each one. `BASE_URL=https://... npm run smoke` works against prod too. Add it as a pre-push habit: `npm run dev` in one shell, `npm run smoke` in another before `git push`.
+
 ## 2026-04-20 (Phase 2 polish — typography + service role)
 
 **`.chart-grid` lined-paper background was polluting every page.**

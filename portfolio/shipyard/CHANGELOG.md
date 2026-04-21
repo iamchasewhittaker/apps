@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-04-20 (RSC boundary + smoke test)
+- **`/portfolio` 500 fix.** `ShowcaseCard` and `LinkChip` were inline in the async Server Component `portfolio/page.tsx`. `LinkChip` had `onClick`, which RSC can't serialize — every request to `/portfolio` returned 500 in prod. Extracted both into `src/app/portfolio/ShowcaseCard.tsx` with `'use client'`.
+- **Route smoke test.** Added `scripts/smoke.ts` (`npm run smoke`). Auto-discovers all routes under `src/app/**`, resolves `[slug]` from Supabase, curls each, exits 1 on any non-2xx. Use before `git push`; `BASE_URL=https://...` targets prod.
+
 ### Added — 2026-04-20 (Polish pass — all 7 pieces)
 - **Contrast fix.** Lifted `--dim` (#346090 → #7AA6D6) and `--dimmer` (#141A4C → #2A3A7A) so nav text is legible against dark surface; grid stroke updated to rgba(122,166,214,0.18).
 - **Gold nav separators.** `/` dividers between nav items changed from `text-steel` → `text-gold`.
