@@ -31,3 +31,19 @@ Mistakes, fixes, and "aha" moments. Read at session start; append after anything
 **Fix:** Ran `vercel --prod` to push the new build to production. Dev server (`npm start`) was already running separately on port 3000.
 
 **Rule:** After any code change, explicitly confirm which environment the user is checking (local dev vs. live Vercel). Always deploy after shipping a feature.
+
+---
+
+## 2026-04-20 — Seed split architecture and where new bookmarks go
+
+**What happened:** Tried to add new bookmarks directly to `constants.js` SEED array, but that array only covers IDs 1–274. IDs 275+ live in `expandedSeeds.js` (EXPANDED_SEED) and `taxonomySeeds.js` (TAXONOMY_SEED). All three are merged by `constants.js` at the bottom: `const SEED = [...inline, ...EXPANDED_SEED, ...TAXONOMY_SEED]`.
+
+**Rule:** New bookmarks always append to `expandedSeeds.js` (or `taxonomySeeds.js` for taxonomy). New folders always go in `SEED_FOLDERS` in `constants.js`. Bump `SEED_VERSION` in `constants.js` to trigger auto-merge for existing localStorage users.
+
+---
+
+## 2026-04-20 — Vercel canonical URLs vs. preview/hash URLs
+
+**What happened:** The Shipyard bookmark had a hash preview URL (`shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app`) stored in the seed — not the canonical alias. These hash URLs expire with each new deployment.
+
+**Rule:** Always use `vercel alias ls` to find the canonical production alias (e.g. `shipyard-sandy-seven.vercel.app`). Never seed a hash preview URL — it will break after the next deploy.

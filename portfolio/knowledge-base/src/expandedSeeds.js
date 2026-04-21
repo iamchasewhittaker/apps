@@ -130,4 +130,34 @@ export const EXPANDED_SEED = [
   { id: 393, title: "GMAC — Test center rules", url: "https://www.mba.com/exams/gmat-exam/gmat-focus-edition/at-the-test-center", category: "GMAT", folderId: "f_gmat", description: "ID, breaks, and what you can bring", tags: ["gmat", "official"] },
   { id: 394, title: "MBA.com — Online proctored GMAT", url: "https://www.mba.com/exams/gmat-exam/gmat-focus-edition/at-the-test-center/online", category: "GMAT", folderId: "f_gmat", description: "Rules for taking the exam online", tags: ["gmat", "official"] },
   { id: 395, title: "GMAT Club — Retake debriefs", url: "https://gmatclub.com/forum/tags/debrief", category: "GMAT", folderId: "f_gmat", description: "Score improvement stories and error analysis", tags: ["gmat", "forum"] },
+
+  // --- Git (282–285) ---
+  { id: 282, title: "Git Docs", url: "https://git-scm.com/doc", category: "GitHub", folderId: "f_github", description: "Official Git reference documentation, man pages, and book" },
+  { id: 283, title: "Pro Git Book", url: "https://git-scm.com/book/en/v2", category: "GitHub", folderId: "f_github", description: "Free, comprehensive Git book — from basics to internals" },
+  { id: 284, title: "Conventional Commits", url: "https://www.conventionalcommits.org", category: "GitHub", folderId: "f_github", description: "Specification for human and machine-readable commit messages" },
+  { id: 285, title: "Git Cheat Sheet", url: "https://education.github.com/git-cheat-sheet-education.pdf", category: "GitHub", folderId: "f_github", description: "GitHub's official Git command reference card" },
+
+  // --- Vercel (286–293) ---
+  { id: 286, title: "Vercel Dashboard", url: "https://vercel.com/iamchasewhittakers-projects", category: "Vercel", folderId: "f_vercel", description: "Chase's Vercel team dashboard — all deployed projects" },
+  { id: 287, title: "Vercel Docs", url: "https://vercel.com/docs", category: "Vercel", folderId: "f_vercel", description: "Official Vercel platform documentation" },
+  { id: 288, title: "Vercel Functions", url: "https://vercel.com/docs/functions", category: "Vercel", folderId: "f_vercel", description: "Serverless and edge function reference" },
+  { id: 289, title: "Vercel CLI", url: "https://vercel.com/docs/cli", category: "Vercel", folderId: "f_vercel", description: "CLI commands for deploy, env, link, and project management" },
+  { id: 290, title: "Vercel Changelog", url: "https://vercel.com/changelog", category: "Vercel", folderId: "f_vercel", description: "Platform updates, new features, and release notes" },
+  { id: 291, title: "Vercel Templates", url: "https://vercel.com/templates", category: "Vercel", folderId: "f_vercel", description: "Starter templates for Next.js, Astro, SvelteKit, and more" },
+  { id: 292, title: "Vercel Status", url: "https://www.vercel-status.com", category: "Vercel", folderId: "f_vercel", description: "Real-time platform health and incident history" },
+  { id: 293, title: "Vercel Community", url: "https://community.vercel.com", category: "Vercel", folderId: "f_vercel", description: "Community forum for deployment help, integrations, and feedback" },
+
+  // --- Supabase (294–301) ---
+  { id: 294, title: "Supabase Dashboard", url: "https://supabase.com/dashboard", category: "Supabase", folderId: "f_supabase", description: "Project dashboard — tables, auth, storage, and settings" },
+  { id: 295, title: "Supabase Docs", url: "https://supabase.com/docs", category: "Supabase", folderId: "f_supabase", description: "Official Supabase documentation hub" },
+  { id: 296, title: "Supabase Auth", url: "https://supabase.com/docs/guides/auth", category: "Supabase", folderId: "f_supabase", description: "Auth guides: email OTP, OAuth, RLS, and session management" },
+  { id: 297, title: "Supabase Database", url: "https://supabase.com/docs/guides/database", category: "Supabase", folderId: "f_supabase", description: "Postgres database: tables, RLS policies, functions, and migrations" },
+  { id: 298, title: "Supabase Storage", url: "https://supabase.com/docs/guides/storage", category: "Supabase", folderId: "f_supabase", description: "File storage: buckets, policies, and CDN delivery" },
+  { id: 299, title: "Supabase Edge Functions", url: "https://supabase.com/docs/guides/functions", category: "Supabase", folderId: "f_supabase", description: "Deno-based serverless functions for custom backend logic" },
+  { id: 300, title: "Supabase Status", url: "https://status.supabase.com", category: "Supabase", folderId: "f_supabase", description: "Real-time platform health and incident history" },
+  { id: 301, title: "Supabase GitHub", url: "https://github.com/supabase/supabase", category: "Supabase", folderId: "f_supabase", description: "Open-source repo — issues, releases, and community PRs" },
+
+  // --- New My Projects Web apps (302–303) ---
+  { id: 302, title: "Alias Ledger", url: "https://alias-ledger.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Hide My Email alias tracker — single-file HTML on Vercel" },
+  { id: 303, title: "Clarity Budget Web", url: "https://clarity-budget-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "YNAB-backed STS dashboard with URL-filtered spending breakdown and transaction list" },
 ];

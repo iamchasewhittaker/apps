@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v2.1.0 |
+| **Version** | v2.1.1 |
 | **Branch** | `main` |
 | **URL** | local only (Vercel project removed 2026-04-20) |
 | **Storage key** | `chase_knowledge_base_v1` — blob: `{ bookmarks, folders, favorites, categoryOrder }` |
-| **Focus** | v2.1 shipped — favicons, import/export JSON |
+| **Focus** | v2.1.1 shipped — seed maintenance: My Projects URL fixes, Git/Vercel/Supabase folders added |
 | **Next** | v2.2 — drag-and-drop reorder, tags cross-folder filter, sort options |
 | **Blockers** | None |
-| **Last touch** | 2026-04-19 — v2.1: site favicons on all rows/home cards (Google CDN), Export/Import JSON buttons in sidebar footer |
+| **Last touch** | 2026-04-20 — v2.1.1: fixed 4 My Projects URLs (Shipyard/RollerTask/Knowledge Base/Unnamed), added Vercel + Supabase folders (8 links each), 4 Git links, Alias Ledger + Clarity Budget Web; SEED_VERSION 11 |
 
 ---
 
@@ -59,7 +59,8 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 
 | File | Purpose |
 |------|---------|
-| `src/constants.js` | SEED (273 bookmarks), SEED_FOLDERS, `s` styles, `css` string, storage helpers |
+| `src/constants.js` | SEED (274 bookmarks inline), SEED_FOLDERS, `s` styles, `css` string, storage helpers |
+| `src/expandedSeeds.js` | EXPANDED_SEED (131 + 22 new bookmarks, IDs 275–303) |
 | `src/App.jsx` | Layout shell: state, CRUD, folder actions, modals |
 | `src/Sidebar.jsx` | Sidebar: search, smart folders, favorites, folder tree, new buttons |
 | `src/FolderTree.jsx` | Recursive folder tree renderer |
@@ -69,7 +70,7 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 
 ## Critical gotchas
 
-- `SEED_VERSION` is **6** — bump + add entries to `SEED`/`SEED_FOLDERS` when adding seed data
+- `SEED_VERSION` is **11** — bump + add entries to `SEED`/`SEED_FOLDERS` when adding seed data
 - `folderId` is canonical; `category` is display fallback only — always set both when moving bookmarks
 - Seed folder IDs (`f_claude`, `f_chatgpt`, etc.) are stored in user localStorage — never rename
 - Smart folder IDs are `"__important__"` and `"__recent__"` (double underscores, not real folders)

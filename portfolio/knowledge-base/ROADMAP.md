@@ -68,6 +68,13 @@ One page for everything Chase needs to reach fast: AI tool docs, his own project
 - [x] **Import / export JSON** — Export button downloads dated backup; Import button merges without duplicating
 - [x] **Favicons** — site favicons on all bookmark rows and home cards via Google favicon CDN; graceful fallback
 
+## v2.1.1 — Shipped (2026-04-20)
+- [x] **My Projects URL fixes** — Knowledge Base → GitHub link (Vercel removed); RollerTask Tycoon Web → canonical `roller-task-tycoon.vercel.app`; Shipyard → `shipyard-sandy-seven.vercel.app`; Summit Push renamed to "Unnamed"
+- [x] **New Web & Dev folders** — Vercel (8 links) + Supabase (8 links) under Web & Dev sidebar tree
+- [x] **Git links** — 4 links added to GitHub folder: Git Docs, Pro Git Book, Conventional Commits, Git Cheat Sheet
+- [x] **New My Projects apps** — Alias Ledger + Clarity Budget Web
+- [x] **SEED_VERSION 11** migration
+
 ## v2.2 — Quality of life
 - [ ] Drag-and-drop reordering within a folder and between folders
 - [ ] Tags (multiple per bookmark, cross-folder filtering)

@@ -4,7 +4,7 @@ import { TAXONOMY_SEED } from "./taxonomySeeds.js";
 // Storage
 export const STORE = "chase_knowledge_base_v1";
 export const STORE_SEED_VERSION = "chase_knowledge_base_seed_version";
-export const SEED_VERSION = 10;
+export const SEED_VERSION = 11;
 
 /** Bump when `SEED_FOLDERS` structure changes; triggers folder merge in App. */
 export const FOLDER_LAYOUT_VERSION = 1;
@@ -167,10 +167,12 @@ export const SEED_FOLDERS = [
   { id: "f_web_dev", name: "Web Dev", parentId: "f_web_and_dev", order: 0 },
   { id: "f_dev_tools", name: "Dev Tools", parentId: "f_web_and_dev", order: 1 },
   { id: "f_github", name: "GitHub", parentId: "f_web_and_dev", order: 2 },
-  { id: "f_coding", name: "Coding", parentId: "f_web_and_dev", order: 3 },
-  { id: "f_scripting", name: "Scripting", parentId: "f_web_and_dev", order: 4 },
-  { id: "f_python", name: "Python", parentId: "f_web_and_dev", order: 5 },
-  { id: "f_architecture", name: "Architecture", parentId: "f_web_and_dev", order: 6 },
+  { id: "f_vercel", name: "Vercel", parentId: "f_web_and_dev", order: 3 },
+  { id: "f_supabase", name: "Supabase", parentId: "f_web_and_dev", order: 4 },
+  { id: "f_coding", name: "Coding", parentId: "f_web_and_dev", order: 5 },
+  { id: "f_scripting", name: "Scripting", parentId: "f_web_and_dev", order: 6 },
+  { id: "f_python", name: "Python", parentId: "f_web_and_dev", order: 7 },
+  { id: "f_architecture", name: "Architecture", parentId: "f_web_and_dev", order: 8 },
 
   // Learning child
   { id: "f_learning", name: "Learning", parentId: "f_learning_parent", order: 0 },
@@ -409,7 +411,7 @@ export const SEED = [
   { id: 156, title: "Wellness Tracker", url: "https://wellness-tracker-kappa.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Personal wellness check-in and habit tracker web app" },
   { id: 157, title: "Job Search HQ", url: "https://job-search-hq.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Job search pipeline and application tracker web app" },
   { id: 158, title: "App Forge", url: "https://app-forge-fawn.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "App idea generator and product planning tool web app" },
-  { id: 159, title: "Knowledge Base", url: "https://knowledge-base-beta-five.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "This bookmark manager and personal knowledge base" },
+  { id: 159, title: "Knowledge Base", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/knowledge-base", category: "Web apps", folderId: "f_my_projects_web", description: "This bookmark manager and personal knowledge base" },
   { id: 160, title: "RollerTask Tycoon (iOS)", url: "https://github.com/iamchasewhittaker/roller-task-tycoon", category: "iOS apps", folderId: "f_my_projects_ios", description: "Task management iOS app with gamification elements" },
   { id: 161, title: "YNAB Clarity (iOS)", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/ynab-clarity-ios", category: "iOS apps", folderId: "f_my_projects_ios", description: "iOS app for YNAB budget review and category funding" },
   { id: 162, title: "Spend Clarity", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/spend-clarity", category: "Web apps", folderId: "f_my_projects_web", description: "Python CLI tool for enriching YNAB transactions from Gmail receipts" },
@@ -536,7 +538,7 @@ export const SEED = [
   { id: 261, title: "Clarity Command", url: "https://clarity-command.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Daily accountability hub focused on faith, family, and high-priority execution" },
   { id: 262, title: "Clarity Hub", url: "https://clarity-hub-lilac.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Unified hub for Check-in, Triage, Time, Budget, and Growth workflows" },
   { id: 263, title: "YNAB Clarity Web", url: "https://ynab-clarity-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone YNAB dashboard split out from Clarity Hub for budgeting focus" },
-  { id: 264, title: "RollerTask Tycoon Web", url: "https://rollertask-tycoon-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone tasks-and-points web tracker split out from Clarity Hub" },
+  { id: 264, title: "RollerTask Tycoon Web", url: "https://roller-task-tycoon.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone tasks-and-points web tracker split out from Clarity Hub" },
 
   // --- Daily Prompts (265–267) ---
   {
@@ -579,9 +581,9 @@ export const SEED = [
   { id: 273, title: "Product Build Framework", url: "https://github.com/iamchasewhittaker/apps/blob/main/PRODUCT_BUILD_FRAMEWORK.md", category: "Development Details", folderId: "f_my_projects_dev", description: "Standard product build phases used to define and ship apps consistently" },
   // --- My Projects additions (275–281) ---
   { id: 275, title: "Ash Reader", url: "https://ash-reader.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Mobile tool for chunking and copying the capture system ChatGPT conversation into Ash for therapeutic processing" },
-  { id: 276, title: "Shipyard", url: "https://shipyard-l6ywr3psg-iamchasewhittakers-projects.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Fleet command center — tracks all portfolio projects, compliance, and status in one dashboard" },
+  { id: 276, title: "Shipyard", url: "https://shipyard-sandy-seven.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Fleet command center — tracks all portfolio projects, compliance, and status in one dashboard" },
   { id: 277, title: "Funded Web", url: "https://funded-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Standalone YNAB dashboard for budget review and category funding" },
-  { id: 278, title: "Summit Push", url: "https://summit-push.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Daily OS for ADHD brains: 4 fixed lanes, lane lock, one-at-a-time focus — mountain-themed accountability" },
+  { id: 278, title: "Unnamed", url: "https://summit-push.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Daily OS for ADHD brains: 4 fixed lanes, lane lock, one-at-a-time focus" },
   { id: 279, title: "Spend Radar Web", url: "https://spend-radar-web.vercel.app", category: "Web apps", folderId: "f_my_projects_web", description: "Read-only dashboard for Gmail receipt scanning and subscription tracking" },
   { id: 280, title: "Gmail Forge", url: "https://github.com/iamchasewhittaker/apps/tree/main/portfolio/gmail-forge", category: "Web apps", folderId: "f_my_projects_web", description: "DIY Gmail automation: XML filters + Apps Script + Chrome extension for inbox management" },
   { id: 281, title: "Talk to Ash", url: "https://www.talktoash.com", category: "Tools", folderId: "f_tools", description: "Ash — AI mental health companion; the app used to process capture system conversation chunks" },

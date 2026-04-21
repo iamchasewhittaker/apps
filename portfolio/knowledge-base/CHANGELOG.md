@@ -1,5 +1,17 @@
 # Changelog — Knowledge Base
 
+## [v2.1.1] — 2026-04-20
+### Changed
+- **My Projects URL fixes:** Knowledge Base → GitHub link (Vercel removed); RollerTask Tycoon Web → `roller-task-tycoon.vercel.app` (canonical); Shipyard → `shipyard-sandy-seven.vercel.app` (was hash preview URL)
+- **Summit Push renamed** to "Unnamed" (project renamed)
+
+### Added
+- **Git links (4):** Git Docs, Pro Git Book, Conventional Commits, Git Cheat Sheet — added to existing GitHub folder (IDs 282–285)
+- **Vercel folder** — 8 bookmarks: Dashboard, Docs, Functions, CLI, Changelog, Templates, Status, Community (IDs 286–293)
+- **Supabase folder** — 8 bookmarks: Dashboard, Docs, Auth, Database, Storage, Edge Functions, Status, GitHub (IDs 294–301)
+- **New My Projects apps:** Alias Ledger (`alias-ledger.vercel.app`) + Clarity Budget Web (`clarity-budget-web.vercel.app`) (IDs 302–303)
+- **SEED_VERSION 11** — triggers auto-merge for existing installs
+
 ## [v2.1.0] — 2026-04-19
 ### Added
 - **Favicons** — site favicons on all bookmark rows and home cards via Google favicon CDN (`s2/favicons`); graceful `onError` fallback (hides broken img)
