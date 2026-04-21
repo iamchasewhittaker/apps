@@ -6,6 +6,7 @@ import {
   today,
   nextStepUrgency,
   buildOutreachPriorityList,
+  buildCompanyBoard,
   prepSectionsHasContent,
   getWeeklyVelocityData,
   daysSinceLayoff,
@@ -16,6 +17,7 @@ import {
   getDirectionSplit,
   WIN_TYPES,
   blankApp,
+  blankContact,
 } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 
@@ -570,6 +572,110 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
   );
 }
 
+// ── TARGET COMPANY BOARD ──────────────────────────────────────────────────────
+// Single-glance status for all DIRECTION.primaryCompanies.
+// Sort order from buildCompanyBoard: untouched → applied-no-contact → contacted-no-app → covered.
+function TargetCompanyBoard({ applications, contacts, setAppModal, setContactModal }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const board = buildCompanyBoard(applications, contacts);
+  const covered = board.filter(r => r.app || r.contact).length;
+
+  function linkedInSearchUrl(company) {
+    const q = encodeURIComponent(`"Implementation Consultant" OR "Solutions Engineer" OR "Customer Success" ${company}`);
+    return `https://www.linkedin.com/search/results/people/?keywords=${q}`;
+  }
+
+  function statusBadge({ app, contact }) {
+    if (app && contact)  return { label: "Covered",                    color: "#4ade80", bg: "#052e16" };
+    if (app && !contact) return { label: app.stage,                    color: "#fbbf24", bg: "#1c0a00" };
+    if (!app && contact) return { label: contact.name || "Contacted",  color: "#60a5fa", bg: "#0c1a3a" };
+    return                      { label: "Untouched",                  color: "#ef4444", bg: "#1a0606" };
+  }
+
+  return (
+    <div style={{
+      background: "#0f1117", border: "1.5px solid #1f2937",
+      borderRadius: 12, padding: "14px 16px", marginBottom: 16,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: collapsed ? 0 : 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 16 }}>🎯</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#f3f4f6" }}>Target Companies</div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+              {covered}/{board.length} covered — applied or contacted
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={() => setCollapsed(c => !c)}
+          style={{ fontSize: 12, background: "none", border: "none", color: "#4b5563", cursor: "pointer", padding: "2px 6px" }}
+        >
+          {collapsed ? "▼" : "▲"}
+        </button>
+      </div>
+
+      {!collapsed && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {board.map(row => {
+            const badge = statusBadge(row);
+            return (
+              <div key={row.company} style={{
+                display: "flex", alignItems: "center", gap: 8,
+                background: "#0a0d14", borderRadius: 8, padding: "7px 10px",
+                border: "1px solid #1f2937",
+              }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {row.company}
+                  </div>
+                  {row.contact && (
+                    <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {row.contact.name || "Contact"}{row.contact.role ? ` · ${row.contact.role}` : ""}
+                    </div>
+                  )}
+                </div>
+                <span style={{
+                  fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 600,
+                  color: badge.color, background: badge.bg, whiteSpace: "nowrap", flexShrink: 0,
+                }}>
+                  {badge.label}
+                </span>
+                <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+                  {!row.app && (
+                    <button
+                      onClick={() => setAppModal({ mode: "new", app: { ...blankApp(), company: row.company, stage: "Interested" } })}
+                      style={{ fontSize: 11, padding: "3px 7px", borderRadius: 5, border: "none", background: "#1e3a5f", color: "#60a5fa", cursor: "pointer", fontWeight: 600 }}
+                    >
+                      + Apply
+                    </button>
+                  )}
+                  {!row.contact && (
+                    <button
+                      onClick={() => setContactModal({ mode: "new", contact: { ...blankContact(), company: row.company } })}
+                      style={{ fontSize: 11, padding: "3px 7px", borderRadius: 5, border: "none", background: "#1e3a5f", color: "#60a5fa", cursor: "pointer", fontWeight: 600 }}
+                    >
+                      + Contact
+                    </button>
+                  )}
+                  <a
+                    href={linkedInSearchUrl(row.company)}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ fontSize: 11, padding: "3px 7px", borderRadius: 5, background: "#161b27", color: "#9ca3af", textDecoration: "none", fontWeight: 600, lineHeight: "18px", display: "inline-block" }}
+                  >
+                    LI ↗
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── OUTREACH DISCOVERY (Option D) ─────────────────────────────────────────────
 // Surfaces target companies that have no contacts yet so you always have outreach targets,
 // even with an empty CRM.
@@ -830,6 +936,13 @@ export default function FocusTab({
           setTab={setTab}
           saveApp={saveApp}
           setAppModal={setAppModal}
+        />
+
+        <TargetCompanyBoard
+          applications={applications}
+          contacts={contacts}
+          setAppModal={setAppModal}
+          setContactModal={setContactModal}
         />
 
         <DailyActionCounter

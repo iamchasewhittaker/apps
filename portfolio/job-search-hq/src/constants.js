@@ -784,6 +784,19 @@ export function buildOutreachPriorityList(contacts = [], applications = []) {
     .slice(0, 6);
 }
 
+export function buildCompanyBoard(applications = [], contacts = []) {
+  const activeApps = applications.filter(a => !["Rejected", "Withdrawn"].includes(a.stage));
+  return DIRECTION.primaryCompanies.map(company => {
+    const lc = company.toLowerCase();
+    const app = activeApps.find(a => (a.company || "").toLowerCase() === lc);
+    const contact = contacts.find(c => (c.company || "").toLowerCase() === lc);
+    return { company, app, contact };
+  }).sort((a, b) => {
+    const score = r => (r.app ? 2 : 0) + (r.contact ? 1 : 0);
+    return score(a) - score(b);
+  });
+}
+
 export function getOutreachCadenceNudge(contact, linkedApp = null) {
   if (!contact || contact.outreachStatus !== "sent" || !contact.outreachDate) return null;
 
