@@ -12,8 +12,10 @@ import {
   DAILY_MINIMUMS,
   KASSIE_EXCERPTS,
   DIRECTION_TRACKS,
+  DIRECTION,
   getDirectionSplit,
   WIN_TYPES,
+  blankApp,
 } from "../constants";
 import ErrorBoundary from "../ErrorBoundary";
 
@@ -434,6 +436,231 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
   );
 }
 
+// ── TODAY'S 5 QUEUE (Option A) ───────────────────────────────────────────────
+// Surfaces up to 5 Interested apps as a daily apply queue.
+// Priority: has JD saved > has next-step date > appliedDate (oldest first as proxy for age in queue).
+function buildTodaysQueue(applications) {
+  return (applications || [])
+    .filter(a => a.stage === "Interested")
+    .sort((a, b) => {
+      // has JD: higher priority
+      const aJd = a.jobDescription ? 1 : 0;
+      const bJd = b.jobDescription ? 1 : 0;
+      if (bJd !== aJd) return bJd - aJd;
+      // has next-step date: higher priority
+      const aNs = a.nextStepDate ? 1 : 0;
+      const bNs = b.nextStepDate ? 1 : 0;
+      if (bNs !== aNs) return bNs - aNs;
+      // oldest added first
+      return (a.id || "").localeCompare(b.id || "");
+    })
+    .slice(0, 5);
+}
+
+function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setTab, saveApp, setAppModal }) {
+  const todayStr = today();
+  const todayApps = (dailyActions || []).filter(a => a.date === todayStr && a.type === "application").length;
+  const queue = buildTodaysQueue(applications);
+  const interestedCount = (applications || []).filter(a => a.stage === "Interested").length;
+  const target = DAILY_MINIMUMS.applications;
+  const remaining = Math.max(0, target - todayApps);
+
+  function handleStartApply(app) {
+    // Jump to Apply Kit with this app pre-selected
+    setKitApp(app);
+    setResumeTab("kit");
+    setTab("ai");
+  }
+
+  function handleMarkApplied(app) {
+    saveApp({ ...app, stage: "Applied", appliedDate: todayStr });
+  }
+
+  const headerDone = todayApps >= target;
+
+  return (
+    <div style={{
+      background: headerDone ? "#0d1a0d" : "#0f1117",
+      border: `1.5px solid ${headerDone ? "#166534" : "#1f2937"}`,
+      borderRadius: 12, padding: "14px 16px", marginBottom: 16,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 16 }}>📋</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: headerDone ? "#4ade80" : "#f3f4f6" }}>
+              Today's applications — {todayApps}/{target}
+              {headerDone && <span style={{ marginLeft: 8, fontSize: 12, color: "#4ade80" }}>✓ Done</span>}
+            </div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+              {headerDone
+                ? "Daily target met — nice work."
+                : remaining === target
+                  ? `${interestedCount} job${interestedCount !== 1 ? "s" : ""} queued in Interested`
+                  : `${remaining} more to hit today's target`}
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={() => setAppModal({ mode: "new", app: { ...blankApp(), stage: "Interested" } })}
+          style={{ fontSize: 12, background: "#1e3a5f", border: "none", color: "#60a5fa", padding: "4px 10px", borderRadius: 6, cursor: "pointer" }}
+        >
+          + Add job
+        </button>
+      </div>
+
+      {queue.length === 0 ? (
+        <div style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>
+          No jobs queued in <strong style={{ color: "#9ca3af" }}>Interested</strong> stage yet.
+          {" "}<button onClick={() => setTab("ai")} style={{ background: "none", border: "none", color: "#60a5fa", cursor: "pointer", fontSize: 12, padding: 0 }}>Find Jobs →</button>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {queue.map((app, idx) => (
+            <div key={app.id} style={{
+              display: "flex", alignItems: "center", gap: 8,
+              background: "#0a0d14", borderRadius: 8, padding: "8px 10px",
+              border: "1px solid #1f2937",
+            }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#4b5563", minWidth: 16 }}>{idx + 1}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {app.company || "Unnamed"}
+                </div>
+                <div style={{ fontSize: 11, color: "#6b7280", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {app.title || "—"}
+                  {app.jobDescription && <span style={{ color: "#10b981", marginLeft: 6 }}>JD ✓</span>}
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+                <button
+                  onClick={() => handleStartApply(app)}
+                  style={{
+                    fontSize: 11, padding: "4px 8px", borderRadius: 5, border: "none",
+                    background: app.jobDescription ? "#1e3a5f" : "#161b27",
+                    color: app.jobDescription ? "#60a5fa" : "#4b5563",
+                    cursor: "pointer", fontWeight: 600
+                  }}
+                  title={app.jobDescription ? "Open in Apply Kit" : "No JD — add one first"}
+                >
+                  Apply Kit ↗
+                </button>
+                <button
+                  onClick={() => handleMarkApplied(app)}
+                  style={{
+                    fontSize: 11, padding: "4px 8px", borderRadius: 5, border: "none",
+                    background: "#14532d", color: "#4ade80",
+                    cursor: "pointer", fontWeight: 600
+                  }}
+                  title="Mark as Applied and advance stage"
+                >
+                  ✓ Applied
+                </button>
+              </div>
+            </div>
+          ))}
+          {interestedCount > 5 && (
+            <div style={{ fontSize: 11, color: "#4b5563", textAlign: "center", paddingTop: 2 }}>
+              +{interestedCount - 5} more in queue — finish these first.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── OUTREACH DISCOVERY (Option D) ─────────────────────────────────────────────
+// Surfaces target companies that have no contacts yet so you always have outreach targets,
+// even with an empty CRM.
+function buildDiscoveryTargets(applications, contacts) {
+  // Companies you've already applied to or have contacts at
+  const appliedCompanies = new Set(
+    (applications || [])
+      .filter(a => !["Rejected", "Withdrawn"].includes(a.stage))
+      .map(a => (a.company || "").trim().toLowerCase())
+      .filter(Boolean)
+  );
+  const contactedCompanies = new Set(
+    (contacts || []).map(c => (c.company || "").trim().toLowerCase()).filter(Boolean)
+  );
+
+  // Primary companies from DIRECTION that have zero contacts and no active application
+  return DIRECTION.primaryCompanies
+    .filter(company => {
+      const key = company.trim().toLowerCase();
+      return !contactedCompanies.has(key) && !appliedCompanies.has(key);
+    })
+    .slice(0, 4); // show up to 4 discovery targets so the card doesn't overwhelm
+}
+
+function OutreachDiscovery({ applications, contacts, setContactModal }) {
+  const targets = buildDiscoveryTargets(applications, contacts);
+  if (targets.length === 0) return null;
+
+  function linkedInSearchUrl(company) {
+    // Pre-built LinkedIn People search for Implementation/CS roles at the company
+    const q = `Implementation OR "Solutions Engineer" OR "Customer Success" ${company}`;
+    return `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(q)}`;
+  }
+
+  function handleQuickAdd(company) {
+    setContactModal({
+      mode: "new",
+      contact: {
+        id: undefined, name: "", company, role: "", email: "", linkedin: "",
+        lastContact: "", notes: "", appIds: [], type: "other",
+        outreachStatus: "none", outreachDate: "", source: "",
+        companySize: "", industry: "", isHiring: false, outreachLog: [],
+      },
+    });
+  }
+
+  return (
+    <div style={{ marginTop: 12 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+        🧭 Find someone at a target company
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+        {targets.map(company => (
+          <div key={company} style={{
+            display: "flex", alignItems: "center", gap: 8,
+            background: "#0a0d14", borderRadius: 7, padding: "7px 10px",
+            border: "1px solid #1a2030",
+          }}>
+            <div style={{ flex: 1 }}>
+              <span style={{ fontSize: 13, color: "#d1d5db", fontWeight: 600 }}>{company}</span>
+              <span style={{ fontSize: 11, color: "#4b5563", marginLeft: 8 }}>no contacts yet</span>
+            </div>
+            <a
+              href={linkedInSearchUrl(company)}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                fontSize: 11, padding: "3px 8px", borderRadius: 5,
+                background: "#0a192f", color: "#60a5fa",
+                textDecoration: "none", fontWeight: 600, flexShrink: 0,
+              }}
+            >
+              Search LinkedIn ↗
+            </a>
+            <button
+              onClick={() => handleQuickAdd(company)}
+              style={{
+                fontSize: 11, padding: "3px 8px", borderRadius: 5, border: "none",
+                background: "#161b27", color: "#9ca3af",
+                cursor: "pointer", fontWeight: 600, flexShrink: 0,
+              }}
+            >
+              + Add contact
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function buildQueue(applications, contacts) {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const items = [];
@@ -563,6 +790,7 @@ export default function FocusTab({
   setAppModal, setPrepModal, setContactModal, setTab, showError,
   profile, saveProfile,
   wins, addWin, removeWin,
+  setKitApp, setResumeTab, saveApp,
 }) {
   const queue = buildQueue(applications || [], contacts || []);
   const outreachList = buildOutreachPriorityList(contacts || [], applications || []);
@@ -593,6 +821,16 @@ export default function FocusTab({
         <DailyMinimums dailyActions={dailyActions} />
 
         <KassieCard />
+
+        <TodaysQueue
+          applications={applications}
+          dailyActions={dailyActions}
+          setKitApp={setKitApp}
+          setResumeTab={setResumeTab}
+          setTab={setTab}
+          saveApp={saveApp}
+          setAppModal={setAppModal}
+        />
 
         <DailyActionCounter
           dailyActions={dailyActions}
@@ -645,14 +883,16 @@ export default function FocusTab({
           )}
         </div>
 
-        {/* Who to message today */}
+        {/* Who to message today — existing contacts + discovery targets */}
         <div style={s.outreachSection}>
           <div style={s.outreachHeader}>
             <span style={s.outreachTitle}>Who should I message today?</span>
             {outreachList.length > 0 && <span style={s.outreachCountBadge}>{outreachList.length}</span>}
           </div>
+
+          {/* Existing contacts queue */}
           {outreachList.length === 0 ? (
-            <div style={s.outreachEmpty}>No priority outreach right now. Log new contacts or update outreach status to build your queue.</div>
+            <div style={s.outreachEmpty}>No priority outreach from your contacts yet. Add contacts or use the discovery targets below.</div>
           ) : (
             <div style={s.outreachList}>
               {outreachList.map(item => (
@@ -685,6 +925,13 @@ export default function FocusTab({
               ))}
             </div>
           )}
+
+          {/* Option D — Outreach Autopilot: discovery targets for companies with no contacts */}
+          <OutreachDiscovery
+            applications={applications}
+            contacts={contacts}
+            setContactModal={setContactModal}
+          />
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>

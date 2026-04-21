@@ -108,6 +108,14 @@ Chase can greenlight any of these in a follow-up session.
 - [ ] Wins → Shipyard bridge — "Chase shipped N wins this week across apps" on the portfolio hub.
 - [ ] Kassie's actual quotes — paste into `chase/identity/kassie-notes.md` when Chase is ready; also his "tool quotes" about Job Search HQ itself.
 
+## Daily Flow Automation — Deferred options (captured 2026-04-21)
+
+Option A (Today's 5 queue + Outreach Autopilot) shipped in v8.14. The remaining automation options are deferred below.
+
+- [ ] **Option B — Discovery Sprint panel** — time-boxed 15-min panel on Focus tab; rotates through `JOB_SEARCH_QUERIES` daily; "Open all searches" button opens LinkedIn + Indeed + Google in tabs with that query; quick-capture strip (paste URL + company/title → one-click Interested entry); DIRECTION.primaryCompanies checklist showing applied vs. untouched. Pairs with Option A to keep the queue full.
+- [ ] **Option C — Application Assembly Line** — single-screen guided wizard: Step 1 select Interested app → Step 2 confirm/paste JD → Step 3 copy tailor prompt → step 4 copy cover prompt → Step 5 open apply URL + mark Applied → Step 6 auto-log action + set follow-up date → Step 7 "Next →" resets for next app. Progress bar: "2/5 done today."
+- [ ] **Option E — Morning Launchpad (full package)** — replaces daily blocks section with a linear step-by-step launchpad; wires together Discovery Sprint → Today's 5 Queue → Outreach Autopilot into one guided ~80-min daily flow; each step auto-logs daily actions as you complete items; resets daily. Build incrementally: ship A+D first (done), then B+C, then wire into launchpad.
+
 ## Project tracking
 
 [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)

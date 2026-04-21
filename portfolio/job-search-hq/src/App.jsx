@@ -549,6 +549,7 @@ export default function JobSearchTracker() {
           setContactModal={setContactModal} setTab={setTab} showError={showError}
           profile={data.profile} saveProfile={saveProfile}
           wins={data.wins || []} addWin={addWin} removeWin={removeWin}
+          setKitApp={setKitApp} setResumeTab={setResumeTab} saveApp={saveApp}
         />
       )}
       {tab === "pipeline" && (
