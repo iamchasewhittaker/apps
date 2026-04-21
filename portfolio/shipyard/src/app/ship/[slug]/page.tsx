@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase';
 import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
 import { EditableText, EditableStatus, BlockerManager } from '@/components/EditableField';
+import { RetireButton } from './RetireButton';
+import { CopyDevCommand } from './CopyDevCommand';
 import type { Project, Blocker, Compliance } from '@/lib/types';
 
 interface Props {
@@ -55,19 +57,9 @@ export default async function ShipDetailPage({ params }: Props) {
           </Badge>
         </div>
 
-        {(p.local_port || p.live_url) && (
+        {(p.type === 'web' || p.live_url) && (
           <div className="flex flex-wrap items-center gap-4">
-            {p.local_port && p.type === 'web' && (
-              <a
-                href={`http://localhost:${p.local_port}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-mono text-sm text-gold hover:underline"
-              >
-                <span className="inline-block h-2 w-2 rounded-full bg-gold" />
-                localhost:{p.local_port}
-              </a>
-            )}
+            {p.type === 'web' && <CopyDevCommand slug={p.slug} />}
             {p.live_url && (
               <a
                 href={p.live_url}
@@ -163,9 +155,7 @@ export default async function ShipDetailPage({ params }: Props) {
               label="Vercel"
             />
           )}
-          {p.local_port && p.type === 'web' && (
-            <LinkButton href={`http://localhost:${p.local_port}`} label={`Local :${p.local_port}`} />
-          )}
+          {p.type === 'web' && <CopyDevCommand slug={p.slug} variant="button" />}
           {p.linear_project_url && (
             <LinkButton href={p.linear_project_url} label="Linear" />
           )}
@@ -174,13 +164,31 @@ export default async function ShipDetailPage({ params }: Props) {
           )}
           {!p.github_url &&
             !p.vercel_project &&
-            !p.local_port &&
+            p.type !== 'web' &&
             !p.linear_project_url &&
             !p.live_url && (
               <p className="text-sm italic text-muted">No links available.</p>
             )}
         </div>
       </Section>
+
+      {/* Danger zone — only shown for non-archived projects */}
+      {p.status !== 'archived' && (
+        <section className="space-y-3">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-danger/70">
+            Danger Zone
+          </h2>
+          <div className="rounded-lg border border-danger/20 bg-danger/5 p-4 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-foreground">Decommission this ship</p>
+              <p className="text-xs text-muted mt-0.5">
+                Archives in Supabase, cancels Linear project, shows manual steps for git + docs.
+              </p>
+            </div>
+            <RetireButton slug={p.slug} name={p.name} hasLinear={!!p.linear_project_url} />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

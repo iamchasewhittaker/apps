@@ -1,5 +1,19 @@
 # Learnings — Shipyard
 
+## 2026-04-21 (Decommission Ship + editable fields + clipboard dev link)
+
+**`localhost:PORT` links only work when every project runs on a unique port — otherwise they're worse than nothing.**
+Shipyard's amber `localhost:3000` anchor (shipped 2026-04-20) was technically correct but practically useless: every CRA and Next.js app in the portfolio defaults to port 3000, so clicking "Go to shipyard" on ship X opened whichever dev server happened to be running — never ship X. Fix: replace with a **clipboard-copy button** that puts `cd ~/Developer/chase/portfolio/<slug> && npm run dev` in the clipboard. Honest, one-paste, zero port-collision. Lesson: before shipping a UI affordance, trace a real user interaction through the environment — the link rendered correctly in isolation but broke the moment you thought about "which dev server is running."
+
+**Management API refuses the Supabase service role key for DDL.**
+The auto-apply path in `scripts/run-retirement-migration.ts` tries RPC `query` first, then falls through to `POST https://api.supabase.com/v1/projects/<ref>/database/query` with the service role key as a bearer token. That endpoint returns `401 JWT failed verification` — the Management API requires a Supabase **Personal Access Token**, not a project-scoped service role key. Workaround: keep the script's printed-SQL fallback and apply migrations manually in the SQL Editor. Alternative for future: store a PAT in `.env.local` as `SUPABASE_ACCESS_TOKEN` and route through that instead. Bottom line: DDL from code needs a PAT; DML works fine with service role.
+
+**Next.js 16 / React 19: `preview_click` doesn't propagate to React's event delegation in the way you'd expect.**
+When smoke-testing the `CopyDevCommand` button, a real `preview_click` fired the DOM `click` event but React's onClick handler did not run. Workaround: read the `__reactProps$*` key off the DOM node and invoke `onClick` directly. Good enough for smoke testing; production users click through the normal React event system so this only affects the headless preview harness.
+
+**Editable fields don't need a framework — PATCH-per-field from client components is fine.**
+`EditableStatus` (select) and `EditableText` (textarea) each own a tiny `useState` + `fetch('/api/ship/<slug>', { method: 'PATCH' })`. No React Hook Form, no mutation library, no optimistic reconciliation. The server component refreshes on the next navigation, and `router.refresh()` after save would be an option if we ever wanted liveness without a full reload. Simple wins at this scale.
+
 ## 2026-04-20 (local dev + Vercel access links)
 
 **`supabase db query --linked` is the right escape hatch when psql isn't available.**

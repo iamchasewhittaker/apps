@@ -4,9 +4,9 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Local dev + Vercel access links on Ship detail — amber `localhost:PORT` + green production URL in header + Links section |
-| Next       | Editable Ship detail fields · fix `learnings` unique constraint · seed `priority_rank` via drag UI |
-| Last touch | 2026-04-20                                                            |
+| Focus      | Decommission Ship workflow + editable detail fields + clipboard dev-link shipped |
+| Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in Supabase SQL Editor (auto-apply blocked by Management API auth) · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Linear Harbor Master sync |
+| Last touch | 2026-04-21                                                            |
 
 ## Production URL
 
@@ -27,7 +27,8 @@
 
 - [x] **Supabase RLS + auth gate** — `proxy.ts` with owner-email check; fixed 2026-04-20 (the `config` export name bug)
 - [x] **Login page** — email + password via `signInWithPassword`; owner user seeded in Supabase Auth dashboard
-- [ ] Editable fields on Ship detail
+- [x] **Editable fields on Ship detail** — status select, next_action textarea, blocker add/resolve (shipped 2026-04-21)
+- [x] **Decommission Ship workflow** — UI button + CLI + API route + Linear helper (shipped 2026-04-21; migration 0003 pending manual SQL run)
 - [ ] Learnings ingestion from each project's `LEARNINGS.md`
 - [ ] WIP enforcement via `wip_decisions`
 - [ ] Dynamic review prompts

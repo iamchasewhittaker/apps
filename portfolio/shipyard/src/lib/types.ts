@@ -53,6 +53,8 @@ export interface Project {
   secrets_p0_count: number;
   breaking_change_risk: string | null;
   features_list: string | null;
+  retired_at: string | null;
+  retire_reason: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -12,7 +12,8 @@
 
 - [x] **Supabase RLS + auth gate** — `proxy.ts` redirects unauthenticated requests to `/login`; only owner email `chase.t.whittaker@gmail.com` can pass the gate. *(Fixed 2026-04-20: renamed export from `proxyConfig` → `config` so the matcher actually registers.)*
 - [x] **Login page** — `src/app/login/page.tsx` using `signInWithPassword`. Magic link / OTP abandoned due to shared-Supabase redirect URL headaches.
-- [ ] **Editable fields** — inline editing on Ship detail page (status, phase, notes, blockers)
+- [x] **Editable fields** — inline editing on Ship detail (status, next_action, blockers). *(Shipped 2026-04-21.)*
+- [x] **Decommission Ship workflow** — UI + CLI + API + `src/lib/linear.ts`. Supabase migration 0003 adds `retired_at` + `retire_reason`; apply manually in SQL Editor (endpoint has fallback). *(Shipped 2026-04-21.)*
 - [ ] **Learnings ingestion** — parse `LEARNINGS.md` from each scanned project and upsert into `learnings` table
 - [ ] **WIP enforcement** — wire up `wip_decisions` table to actively block picking a second active project
 - [ ] **Review prompts** — surface the 6 shared review prompts dynamically from the review flow
@@ -28,7 +29,8 @@
 
 | Date | Change |
 |------|--------|
-| 2026-04-20 | Local dev + Vercel access links — `local_port` column, scanner auto-detect, Ship detail header + Links section |
+| 2026-04-21 | Decommission Ship workflow + editable detail fields + clipboard dev link (replaces dead localhost link from 04-20) |
+| 2026-04-20 | Local dev + Vercel access links — `local_port` column, scanner auto-detect, Ship detail header + Links section *(localhost link superseded 2026-04-21 — every CRA/Next app defaults to port 3000 so the link never reached the intended project; replaced by clipboard-copy button)* |
 | 2026-04-20 | Nautical rebrand — helm SVG logo, 8-token palette, BigShoulders + DM Mono + Instrument Sans |
 | 2026-04-19 | Auto-scan cron live — launchd agent runs nightly at 3:00 AM |
 | 2026-04-20 | Fixed auth gate (`config` export), switched login to email+password, stable alias in docs |

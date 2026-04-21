@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-21 (Decommission Ship + editable detail fields + clipboard dev link)
+- **Decommission Ship workflow.** New Danger Zone on Ship detail page with a confirmation modal that archives the project in Supabase, cancels its Linear project (if `LINEAR_API_KEY` is set), and surfaces remaining manual steps (`git mv`, root-CLAUDE.md updates). Also available as CLI (`npx tsx scripts/retire-project.ts <slug> [reason]`).
+- **Supabase migration 0003.** Adds `retired_at timestamptz` + `retire_reason text` to `projects`. Apply once via Supabase SQL Editor (auto-apply via service role fails JWT verification against the Management API). The retire endpoint has a graceful fallback that archives status-only until the migration lands.
+- **`src/lib/linear.ts`.** Reusable `cancelLinearProject(url)` helper; resolves by URL match and calls `archiveProject`. Used by both the API route and the CLI.
+- **Editable Ship detail fields.** `EditableStatus` (select), `EditableText` (next_action textarea with `⌘+Enter` save), and `BlockerManager` (add / resolve) all PATCH via `/api/ship/[slug]` and `/api/ship/[slug]/blockers`. No page refresh needed.
+- **Clipboard dev-link replacement.** The amber `localhost:PORT` anchor shipped 2026-04-20 was a dead link (every CRA/Next.js app defaults to port 3000, so clicking never reached the intended project). Replaced with `CopyDevCommand` — a gold-dot button that copies `cd ~/Developer/chase/portfolio/<slug> && npm run dev` to clipboard and flashes "Copied — paste in terminal" for 2s. Rendered in both the header and the Links section for any `type === 'web'` project.
+
 ### Added — 2026-04-20 (local dev + Vercel access links)
 - **`local_port` on every ship.** New `integer` column in Supabase `projects` table. Scanner auto-detects the dev server port from each project's `package.json` dev script: explicit `-p PORT` / `--port PORT` flag wins; framework defaults fall back (Next.js → 3000, Vite → 5173, CRA → 3000); non-web types (`ios`, `desktop`, `cli`, `library`) get `null`.
 - **Quick-access row on Ship detail.** Header now shows amber `localhost:PORT` dot-link alongside the green production URL so both access points are one click away. iOS/desktop ships show only what applies.
