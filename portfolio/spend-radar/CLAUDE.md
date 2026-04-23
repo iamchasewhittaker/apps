@@ -56,11 +56,9 @@ Runs only when triggered manually via the Sheet menu: **Spend Radar → …**.
 | Property | Required | Value / Notes |
 |---|---|---|
 | `SHEET_ID` | ✅ | Dedicated Spend Radar Sheet. Create via `createDedicatedSheet()`, paste logged ID here. |
-| `GMAIL_FORGE_WEB_APP_URL` | optional | Deployed `doGet` URL from `portfolio/gmail-forge/apps-script/`. Required for `Refresh All Apps`. |
-| `GMAIL_FORGE_TRIGGER_TOKEN` | optional | Shared secret (UUID) — must match `TRIGGER_TOKEN` in Gmail Forge's Script Properties. |
 | `DASHBOARD_URL` | optional | `spend-radar-web.vercel.app` — wired into the `Open Dashboard` menu item. |
 
-> **Security:** `GMAIL_FORGE_TRIGGER_TOKEN` is a shared secret between Gmail Forge and Spend Radar. Never commit. Rotate (regenerate UUID, update both Script Properties) if leaked.
+> **Note:** `GMAIL_FORGE_WEB_APP_URL` and `GMAIL_FORGE_TRIGGER_TOKEN` were removed 2026-04-23. Gmail Forge is archived. The `refreshAllApps` function is gone; `refreshAll` shows a toast on completion.
 
 ---
 
