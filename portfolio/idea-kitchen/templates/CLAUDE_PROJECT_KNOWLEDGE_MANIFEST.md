@@ -20,6 +20,64 @@ Paths are relative to `~/Developer/chase/` unless noted.
 10. `docs/templates/SESSION_START_MONOREPO.md` — kickoff prompt shape the Project follows in STEP 6 Block 6.
 11. `portfolio/idea-kitchen/templates/APP_SHOWCASE_TEMPLATE.md` — SHOWCASE structure used in STEP 6 Block 5.
 12. `.claude/projects/-Users-chase-Developer-chase/memory/MEMORY.md` — Chase's cross-session memory index.
+13. `portfolio/idea-kitchen/templates/SESSION_START_EXISTING_APP.md` — retroactive doc template for already-shipped apps (skip pressure-test, focus on SHOWCASE).
+14. `portfolio/idea-kitchen/templates/FEATURE_BRIEF_TEMPLATE.md` — feature-mode brief skeleton (STEP 2F).
+15. `portfolio/idea-kitchen/templates/FEATURE_PRD_TEMPLATE.md` — feature-mode PRD skeleton with verdict-block placeholders (STEP 3F).
+16. `portfolio/idea-kitchen/templates/FEATURE_DESIGN_TEMPLATE.md` — feature-mode design skeleton: screens, components, states, a11y, data delta (STEP 4F).
+17. `portfolio/idea-kitchen/templates/FEATURE_IMPL_PLAN_TEMPLATE.md` — feature-mode Claude Code SESSION_START kickoff skeleton (STEP 5F output).
+
+## Pre-filled app templates (upload when running retroactive docs for that app)
+
+These are ready-to-paste session starts for specific apps. Upload the one you need before starting a retroactive session, then remove it when done (reduces noise).
+
+**Web apps:**
+- `portfolio/idea-kitchen/templates/SESSION_START_JOB_SEARCH_HQ.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_GMAT_MASTERY_WEB.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_SHIPYARD.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_WELLNESS_TRACKER.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_UNNAMED.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_ROLLERTASK_TYCOON_WEB.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_SPEND_RADAR.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_BUDGET_WEB.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_COMMAND.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_HUB.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_APP_FORGE.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_KNOWLEDGE_BASE.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_FUNDED_WEB.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_AI_DEV_MASTERY.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_ALIAS_LEDGER.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_ASH_READER.md`
+
+**CLI / desktop / other:**
+- `portfolio/idea-kitchen/templates/SESSION_START_SPEND_CLARITY.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_SPEND_RADAR_WEB.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_GMAIL_FORGE.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLAUDE_USAGE_TOOL.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_SHORTCUT_REFERENCE.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_UI.md`
+
+**iOS apps:**
+- `portfolio/idea-kitchen/templates/SESSION_START_FAIRWAY_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_CHECKIN_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_TRIAGE_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_TIME_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_BUDGET_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_GROWTH_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_COMMAND_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_WELLNESS_TRACKER_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_JOB_SEARCH_HQ_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_ROLLER_TASK_TYCOON_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_FUNDED_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_SHIPYARD_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_ASH_READER_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_UNNAMED_IOS.md`
+
+**Archived apps (use when documenting history):**
+- `portfolio/idea-kitchen/templates/SESSION_START_ROLLER_TASK_TYCOON_VITE.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_GROWTH_TRACKER_ARCHIVED.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_MONEY_ARCHIVED.md`
+
+> **Keep these current:** When an app's `CLAUDE.md` or `HANDOFF.md` changes materially, regenerate its `SESSION_START_<SLUG>.md` so the pre-filled content stays accurate. See `portfolio/idea-kitchen/CLAUDE.md` → Constraints & Gotchas.
 
 ## Nice to upload (helpful, not required)
 
@@ -43,8 +101,10 @@ Paths are relative to `~/Developer/chase/` unless noted.
 | `CLAUDE.md` | Monthly, or when portfolio tables change materially |
 | `PRODUCT_BUILD_FRAMEWORK.md` | When the framework itself is revised |
 | `identity/*` | When voice, direction, or strengths framing evolves |
-| Templates | When the template shape changes |
+| Templates (project + feature) | When the template shape changes |
+| `FEATURE_*_TEMPLATE.md` (4 files) | When feature-mode structure evolves (v0.2+) |
 | `MEMORY.md` | Monthly |
+| `SESSION_START_<SLUG>.md` (pre-filled) | When the app's `CLAUDE.md` or `HANDOFF.md` changes materially |
 
 ## How to upload
 

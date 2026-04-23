@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# install-docs — move Idea Kitchen artifacts from ~/Downloads to the repo
+#
+# Usage:
+#   portfolio/idea-kitchen/scripts/install-docs <app-slug>
+#   portfolio/idea-kitchen/scripts/install-docs fairway-ios
+#
+# After generating docs in the Idea Kitchen Claude Project (claude.ai):
+#   1. Click "Download all" — claude.ai downloads a zip file to ~/Downloads
+#   2. Run this script — it unzips and moves the files to the right paths
+#
+# Handles three download shapes from claude.ai:
+#   ~/Downloads/<name>.zip      — "Download all" zip
+#   ~/Downloads/files/          — individual downloads subfolder
+#   ~/Downloads/                — individual downloads at root
+
+set -euo pipefail
+
+SLUG="${1:-}"
+if [[ -z "$SLUG" ]]; then
+  echo "Usage: install-docs <app-slug>"
+  echo "Example: install-docs fairway-ios"
+  exit 1
+fi
+
+REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+DOCS_DIR="$REPO_ROOT/portfolio/$SLUG/docs"
+SLUG_UPPER="$(echo "$SLUG" | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
+moved=0
+TMPDIR_CREATED=""
+
+if [[ ! -d "$REPO_ROOT/portfolio/$SLUG" ]]; then
+  echo "Error: portfolio/$SLUG does not exist."
+  echo "Run 'scripts/new-app $SLUG' first, or check the slug."
+  exit 1
+fi
+
+mkdir -p "$DOCS_DIR"
+
+# --- Resolve source directory ---
+# Priority: zip in ~/Downloads → ~/Downloads/files/ → ~/Downloads/
+DOWNLOADS=""
+
+latest_zip="$(ls -t "$HOME/Downloads/"*.zip 2>/dev/null | head -1 || true)"
+if [[ -n "$latest_zip" ]]; then
+  TMPDIR_CREATED="$(mktemp -d)"
+  echo "Unzipping $(basename "$latest_zip")..."
+  unzip -q "$latest_zip" -d "$TMPDIR_CREATED"
+  # Find the directory containing the .md files (may be a subfolder inside the zip)
+  md_dir="$(find "$TMPDIR_CREATED" -name "SHOWCASE.md" -o -name "PRD.md" 2>/dev/null | head -1 | xargs dirname 2>/dev/null || true)"
+  DOWNLOADS="${md_dir:-$TMPDIR_CREATED}"
+elif [[ -d "$HOME/Downloads/files" ]] && ls "$HOME/Downloads/files/"*.md &>/dev/null 2>&1; then
+  DOWNLOADS="$HOME/Downloads/files"
+else
+  DOWNLOADS="$HOME/Downloads"
+fi
+
+echo "Installing docs for '$SLUG' from: $DOWNLOADS"
+echo ""
+
+# --- Move the 5 standard docs ---
+for doc in PRODUCT_BRIEF PRD BRANDING APP_FLOW SHOWCASE; do
+  src="$DOWNLOADS/$doc.md"
+  if [[ -f "$src" ]]; then
+    mv "$src" "$DOCS_DIR/$doc.md"
+    echo "  ✓  $doc.md  →  portfolio/$SLUG/docs/"
+    ((moved++))
+  fi
+done
+
+# --- Move SESSION_START (accept slug as-is or UPPER_SNAKE) ---
+session_installed=false
+for ss_name in "SESSION_START_${SLUG}.md" "SESSION_START_${SLUG_UPPER}.md"; do
+  src="$DOWNLOADS/$ss_name"
+  if [[ -f "$src" ]]; then
+    dest="$REPO_ROOT/portfolio/idea-kitchen/templates/SESSION_START_${SLUG_UPPER}.md"
+    mv "$src" "$dest"
+    echo "  ✓  $ss_name  →  idea-kitchen/templates/SESSION_START_${SLUG_UPPER}.md"
+    ((moved++))
+    session_installed=true
+    break
+  fi
+done
+
+# --- Clean up temp dir and zip ---
+if [[ -n "$TMPDIR_CREATED" ]]; then
+  rm -rf "$TMPDIR_CREATED"
+  rm -f "$latest_zip"
+  echo ""
+  echo "  🗑  Removed $(basename "$latest_zip")"
+fi
+
+echo ""
+
+if [[ $moved -eq 0 ]]; then
+  echo "No files found. Download artifacts from the Idea Kitchen Claude Project first."
+  echo "  • 'Download all' button → zip → re-run this script"
+  echo "  • Or download individually to ~/Downloads/"
+  exit 1
+fi
+
+echo "$moved file(s) installed for '$SLUG'."
+echo ""
+
+# --- Claude Project re-upload reminder ---
+echo "────────────────────────────────────────────────────────"
+echo "Re-upload to the Idea Kitchen Claude Project on claude.ai:"
+echo ""
+if [[ "$session_installed" = true ]]; then
+  echo "  portfolio/idea-kitchen/templates/SESSION_START_${SLUG_UPPER}.md"
+fi
+echo ""
+echo "Full re-upload checklist → docs/BUILD_GUIDE.md Section 14"
+echo "────────────────────────────────────────────────────────"

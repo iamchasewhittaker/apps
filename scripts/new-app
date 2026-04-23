@@ -276,6 +276,11 @@ LRNEOF
 # --- Cursor symlink ---
 ln -s ../../../../.cursor/rules/session-handoff.mdc "$APP_DIR/.cursor/rules/session-handoff.mdc"
 
+# --- Windsurf rules (copy so opening the subfolder as workspace root works) ---
+if [ -f "$REPO_ROOT/.windsurfrules" ]; then
+  cp "$REPO_ROOT/.windsurfrules" "$APP_DIR/.windsurfrules"
+fi
+
 # ╔══════════════════════════════════════════════════════════════════╗
 # ║  Tech-specific scaffold                                         ║
 # ╚══════════════════════════════════════════════════════════════════╝

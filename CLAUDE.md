@@ -55,7 +55,7 @@
 | Unnamed (iOS)               | v0.1          | `unnamed_ios_v1`                                                                                                              | local Xcode                         | 🟡 On-device · SwiftUI + @Observable · 5 flows · 10/10 tests · amber-triangle AppIcon · xcodeproj (`UN*`) · `[portfolio/unnamed-ios](portfolio/unnamed-ios)` |
 | Fairway (iOS)               | v0.1          | `chase_fairway_ios_v1`                                                                                                        | local Xcode                         | 🟡 Local · SwiftUI + @Observable · Lawn OS: 4 zones, irrigation, fertilizer plan, soil test, spreader calc, shrub beds · Augusta green palette · xcodeproj (`FW*`) · `[portfolio/fairway-ios](portfolio/fairway-ios)` |
 | Alias Ledger                | v1.0          | `hme_alias_tracker_v1`                                                                                                        | alias-ledger.vercel.app             | ✅ Active · Hide My Email alias tracker · single-file HTML · `[portfolio/alias-ledger](portfolio/alias-ledger)` |
-| Idea Kitchen                | v0.1          | n/a (docs-only)                                                                                                               | local                               | ✅ Active · Claude Project prompt + build guide + per-app minisite pattern · turns raw ideas → shipped apps · `[portfolio/idea-kitchen](portfolio/idea-kitchen)` |
+| Idea Kitchen                | v0.2          | n/a (docs-only)                                                                                                               | local                               | ✅ Active · **v0.2 feature mode added** · two modes: project (new app, 6 artifacts) + feature (extend existing app, 4 artifacts) · cross-portfolio scan + 4-layer competitor research · `scripts/install-feature-docs` wires ROADMAP/CHANGELOG/LEARNINGS/HANDOFF/Obsidian · `[portfolio/idea-kitchen](portfolio/idea-kitchen)` |
 
 
 
@@ -103,7 +103,7 @@
 | Fairway (iOS) | Lifestyle | Lawn OS: zones, irrigation, fertilizer plan, soil test | — | — |
 | Alias Ledger | Utilities | Hide My Email alias tracker (single-file HTML) | [apps](https://github.com/iamchasewhittaker/apps) | — |
 | Gmail Forge | Tool | Three-layer Gmail automation: XML filters + Apps Script auto-sorter + Chrome extension | — | — |
-| Idea Kitchen | Developer Tools | Reusable pattern for idea → foundation → Claude Code handoff | [apps](https://github.com/iamchasewhittaker/apps) | [Linear](https://linear.app/whittaker/project/idea-kitchen-1115a17b711a) |
+| Idea Kitchen | Developer Tools | Two-mode ideation system: new apps (project mode) + features on existing apps (feature mode) · cross-portfolio scan + 4-layer competitor research · hands off to Claude Code | [apps](https://github.com/iamchasewhittaker/apps) | [Linear](https://linear.app/whittaker/project/idea-kitchen-1115a17b711a) |
 
 
 
@@ -129,15 +129,20 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 | **Claude Code** (CLI)                       | Reads `CLAUDE.md` automatically at startup                                             | Paste `SESSION_START_MONOREPO.md` template; say *read `CLAUDE.md` and `HANDOFF.md` first*        |
 | **Cursor**                                  | Reads `.cursor/rules/session-handoff.mdc` (`alwaysApply`) — auto-loaded for every chat | Open any `portfolio/*` subfolder — symlink loads the same rule; still paste template for context |
 | **Antigravity (VS Code)**                   | Reads `CLAUDE.md` automatically when project folder is open                            | Open project folder; paste template for goal context                                             |
-| **Codex (OpenAI)**                          | No auto-load — paste manually                                                          | Paste `CLAUDE.md` intro + `HANDOFF.md` State table into prompt, then paste template              |
-| **Windsurf**                                | Reads `.windsurfrules` or `CLAUDE.md` if pointed at it in settings                     | Paste `HANDOFF.md` content + `CLAUDE.md` intro manually at session start                         |
-| **VS Code + Copilot / GitHub Copilot Chat** | No auto-load — paste manually                                                          | Paste `CLAUDE.md` relevant section + `HANDOFF.md` state into chat                                |
+| **Codex (OpenAI)**                          | Reads `AGENTS.md` (root) — auto-loaded when present                                   | Paste `AGENTS.md` + `HANDOFF.md` State table into prompt, then paste template                    |
+| **Windsurf**                                | Reads `.windsurfrules` (root + per-app copy) — auto-loaded ✅                          | Open project folder; `.windsurfrules` loads automatically                                         |
+| **VS Code + Copilot / GitHub Copilot Chat** | Reads `.github/copilot-instructions.md` (root) — auto-loaded ✅                        | Open repo root; instructions load automatically                                                   |
+| **Gemini (Code Assist / CLI)**              | Reads `GEMINI.md` (root) — auto-loaded when present                                   | Open repo root or paste `GEMINI.md` + `HANDOFF.md` state into context                            |
 | **Any other LLM tool**                      | Paste manually                                                                         | Same — `CLAUDE.md` + `HANDOFF.md` is always enough to resume                                     |
 
 
-**Cursor setup detail:** Repo root has `**.cursor/rules/session-handoff.mdc`** (`alwaysApply`). Every `**portfolio/***` app has a **symlink** to that file so opening a subfolder as the workspace still loads the same rule automatically. New apps get the symlink on creation.
+**Cursor setup detail:** Repo root has `**.cursor/rules/session-handoff.mdc`** (`alwaysApply`). Every `**portfolio/***` app has a **symlink** to that file so opening a subfolder as the workspace still loads the same rule automatically. New apps get the symlink on creation. Full conventions (tech stack, storage keys, sensitive data, post-session obligations) are now included in the rule file.
 
-**Windsurf setup detail:** If you want Windsurf to auto-load rules, add a `.windsurfrules` file in the app folder that references the handoff conventions (or symlink to a shared `.windsurfrules` at the repo root). Not yet set up — do this when you first use Windsurf on this repo.
+**Windsurf setup detail:** Root `.windsurfrules` is live ✅. Each new app created by `scripts/new-app` gets a copy automatically. For existing apps, the root file applies when the monorepo root is the workspace; per-app copies can be added manually if needed.
+
+**Copilot setup detail:** Root `.github/copilot-instructions.md` is live ✅ — auto-loaded by GitHub Copilot Chat when the repo root is open.
+
+**Codex/Gemini setup detail:** Root `AGENTS.md` and `GEMINI.md` are live ✅. Paste them plus `HANDOFF.md` state at session start for full context.
 
 ## Tech Stack (all apps)
 

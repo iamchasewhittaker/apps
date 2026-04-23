@@ -1,0 +1,275 @@
+#!/usr/bin/env bash
+# install-feature-docs — install Idea Kitchen feature-mode artifacts into the target app
+#
+# Usage:
+#   portfolio/idea-kitchen/scripts/install-feature-docs <target-app-slug> <feature-slug>
+#   portfolio/idea-kitchen/scripts/install-feature-docs fairway-ios sprinkler-map
+#
+# After generating feature artifacts in the Idea Kitchen Claude Project (feature mode):
+#   1. Click "Download all" — claude.ai downloads a zip file to ~/Downloads
+#   2. Run this script — it unzips the artifacts and wires the feature into every portfolio tracking surface
+#
+# What this script does (idempotent — safe to run twice):
+#   1. Move 4 artifacts (FEATURE_BRIEF, FEATURE_PRD, FEATURE_DESIGN, FEATURE_IMPL_PLAN) to
+#      portfolio/<target-app>/docs/features/<feature-slug>/
+#   2. Append feature-queue entry to portfolio/<target-app>/ROADMAP.md
+#   3. Append bullet to portfolio/<target-app>/CHANGELOG.md under ## [Unreleased]
+#   4. Append dated line to portfolio/<target-app>/LEARNINGS.md
+#   5. Update portfolio/<target-app>/HANDOFF.md Last touch row
+#   6. Create Obsidian feature hub at
+#      ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/brain/02-Projects/<target-app>/features/<feature-slug>.md
+#   7. Edit Obsidian parent hub README.md — add [[<feature-slug>]] link under ## Features
+#   8. NEVER git-add the Obsidian vault (it's in iCloud, not the monorepo)
+
+set -euo pipefail
+
+TARGET="${1:-}"
+FEATURE="${2:-}"
+
+if [[ -z "$TARGET" || -z "$FEATURE" ]]; then
+  echo "Usage: install-feature-docs <target-app-slug> <feature-slug>"
+  echo "Example: install-feature-docs fairway-ios sprinkler-map"
+  exit 1
+fi
+
+REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+TARGET_DIR="$REPO_ROOT/portfolio/$TARGET"
+FEATURE_DIR="$TARGET_DIR/docs/features/$FEATURE"
+VAULT_ROOT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/brain"
+VAULT_APP_DIR="$VAULT_ROOT/02-Projects/$TARGET"
+VAULT_FEATURES_DIR="$VAULT_APP_DIR/features"
+VAULT_FEATURE_NOTE="$VAULT_FEATURES_DIR/$FEATURE.md"
+VAULT_APP_README="$VAULT_APP_DIR/README.md"
+TODAY="$(date +%Y-%m-%d)"
+
+if [[ ! -d "$TARGET_DIR" ]]; then
+  echo "Error: portfolio/$TARGET does not exist."
+  echo "Check the slug against ~/Developer/chase/CLAUDE.md portfolio table."
+  exit 1
+fi
+
+# --- 1. Resolve source directory (zip or individual files in ~/Downloads) ---
+DOWNLOADS=""
+TMPDIR_CREATED=""
+
+latest_zip="$(ls -t "$HOME/Downloads/"*.zip 2>/dev/null | head -1 || true)"
+if [[ -n "$latest_zip" ]]; then
+  TMPDIR_CREATED="$(mktemp -d)"
+  echo "Unzipping $(basename "$latest_zip")..."
+  unzip -q "$latest_zip" -d "$TMPDIR_CREATED"
+  md_dir="$(find "$TMPDIR_CREATED" -name "FEATURE_PRD.md" -o -name "FEATURE_IMPL_PLAN.md" 2>/dev/null | head -1 | xargs dirname 2>/dev/null || true)"
+  DOWNLOADS="${md_dir:-$TMPDIR_CREATED}"
+elif [[ -d "$HOME/Downloads/files" ]] && ls "$HOME/Downloads/files/"*.md &>/dev/null 2>&1; then
+  DOWNLOADS="$HOME/Downloads/files"
+else
+  DOWNLOADS="$HOME/Downloads"
+fi
+
+# --- 2. Move the 4 feature artifacts ---
+mkdir -p "$FEATURE_DIR"
+moved=0
+for doc in FEATURE_BRIEF FEATURE_PRD FEATURE_DESIGN FEATURE_IMPL_PLAN; do
+  src="$DOWNLOADS/$doc.md"
+  if [[ -f "$src" ]]; then
+    mv "$src" "$FEATURE_DIR/$doc.md"
+    echo "  ✓  $doc.md  →  portfolio/$TARGET/docs/features/$FEATURE/"
+    ((moved++))
+  fi
+done
+
+# Clean up temp dir (always) and the zip (only if we actually pulled artifacts from it)
+if [[ -n "$TMPDIR_CREATED" ]]; then
+  rm -rf "$TMPDIR_CREATED"
+  if [[ $moved -gt 0 && -n "$latest_zip" ]]; then
+    rm -f "$latest_zip"
+    echo "  🗑  Removed $(basename "$latest_zip")"
+  elif [[ -n "$latest_zip" ]]; then
+    echo "  ℹ  Left $(basename "$latest_zip") alone (no feature artifacts inside)"
+  fi
+fi
+
+if [[ $moved -eq 0 ]]; then
+  echo ""
+  echo "No artifacts found. Download from the Idea Kitchen Claude Project first."
+  echo "  Expected: FEATURE_BRIEF.md, FEATURE_PRD.md, FEATURE_DESIGN.md, FEATURE_IMPL_PLAN.md"
+  exit 1
+fi
+
+echo ""
+echo "Wiring feature into portfolio tracking systems..."
+echo ""
+
+# --- 3. Append to target app's ROADMAP.md ---
+ROADMAP="$TARGET_DIR/ROADMAP.md"
+QUEUE_ENTRY="- [ ] \`$FEATURE\` — see \`docs/features/$FEATURE/\`"
+if [[ -f "$ROADMAP" ]]; then
+  if grep -qF -- "$QUEUE_ENTRY" "$ROADMAP"; then
+    echo "  ⊘  ROADMAP.md already has $FEATURE entry (skip)"
+  elif grep -q "^## Feature queue" "$ROADMAP"; then
+    # Section exists — append under it
+    awk -v entry="$QUEUE_ENTRY" '
+      /^## Feature queue/ { print; in_section=1; next }
+      in_section && /^## / { print entry; print ""; in_section=0 }
+      { print }
+      END { if (in_section) print entry }
+    ' "$ROADMAP" > "$ROADMAP.tmp" && mv "$ROADMAP.tmp" "$ROADMAP"
+    echo "  ✓  ROADMAP.md — appended to existing ## Feature queue"
+  else
+    # Section doesn't exist — append at end
+    printf '\n## Feature queue\n\n%s\n' "$QUEUE_ENTRY" >> "$ROADMAP"
+    echo "  ✓  ROADMAP.md — created ## Feature queue + entry"
+  fi
+else
+  printf '# Roadmap — %s\n\n## Feature queue\n\n%s\n' "$TARGET" "$QUEUE_ENTRY" > "$ROADMAP"
+  echo "  ✓  ROADMAP.md — created file + ## Feature queue"
+fi
+
+# --- 4. Append to target app's CHANGELOG.md under ## [Unreleased] ---
+CHANGELOG="$TARGET_DIR/CHANGELOG.md"
+CL_ENTRY="- docs($FEATURE): feature spec added via Idea Kitchen feature mode"
+if [[ -f "$CHANGELOG" ]]; then
+  if grep -qF -- "$CL_ENTRY" "$CHANGELOG"; then
+    echo "  ⊘  CHANGELOG.md already has $FEATURE entry (skip)"
+  elif grep -q "^## \[Unreleased\]" "$CHANGELOG"; then
+    awk -v entry="$CL_ENTRY" '
+      /^## \[Unreleased\]/ { print; print ""; print entry; inserted=1; next }
+      { print }
+    ' "$CHANGELOG" > "$CHANGELOG.tmp" && mv "$CHANGELOG.tmp" "$CHANGELOG"
+    echo "  ✓  CHANGELOG.md — appended under ## [Unreleased]"
+  else
+    # No [Unreleased] section — add one at the top after the # header
+    awk -v entry="$CL_ENTRY" '
+      NR==1 { print; print ""; print "## [Unreleased]"; print ""; print entry; next }
+      { print }
+    ' "$CHANGELOG" > "$CHANGELOG.tmp" && mv "$CHANGELOG.tmp" "$CHANGELOG"
+    echo "  ✓  CHANGELOG.md — created ## [Unreleased] + entry"
+  fi
+else
+  printf '# Changelog — %s\n\n## [Unreleased]\n\n%s\n' "$TARGET" "$CL_ENTRY" > "$CHANGELOG"
+  echo "  ✓  CHANGELOG.md — created file"
+fi
+
+# --- 5. Append to target app's LEARNINGS.md ---
+LEARNINGS="$TARGET_DIR/LEARNINGS.md"
+LEARN_LINE="$TODAY — \`$FEATURE\` spec drafted via Idea Kitchen feature mode. Artifacts at \`docs/features/$FEATURE/\`."
+if [[ -f "$LEARNINGS" ]]; then
+  if grep -qF -- "$LEARN_LINE" "$LEARNINGS"; then
+    echo "  ⊘  LEARNINGS.md already has today's $FEATURE entry (skip)"
+  else
+    printf '\n%s\n' "$LEARN_LINE" >> "$LEARNINGS"
+    echo "  ✓  LEARNINGS.md — appended one-line note"
+  fi
+else
+  printf '# Learnings — %s\n\n%s\n' "$TARGET" "$LEARN_LINE" > "$LEARNINGS"
+  echo "  ✓  LEARNINGS.md — created file"
+fi
+
+# --- 6. Update target app's HANDOFF.md Last touch row ---
+HANDOFF="$TARGET_DIR/HANDOFF.md"
+HO_TOUCH="| **Last touch** | $TODAY — \`$FEATURE\` feature spec installed (Milestone 0 next) |"
+if [[ -f "$HANDOFF" ]]; then
+  if grep -q "^| \*\*Last touch\*\* |" "$HANDOFF"; then
+    # Replace existing Last touch row
+    awk -v newrow="$HO_TOUCH" '
+      /^\| \*\*Last touch\*\* \|/ { print newrow; next }
+      { print }
+    ' "$HANDOFF" > "$HANDOFF.tmp" && mv "$HANDOFF.tmp" "$HANDOFF"
+    echo "  ✓  HANDOFF.md — updated Last touch row"
+  else
+    echo "  ⚠  HANDOFF.md — no Last touch row found; skipped (update manually)"
+  fi
+else
+  echo "  ⚠  HANDOFF.md not found; skipped (target app may need initial scaffolding)"
+fi
+
+# --- 7. Create Obsidian feature hub note ---
+if [[ -d "$VAULT_ROOT" ]]; then
+  mkdir -p "$VAULT_FEATURES_DIR"
+
+  if [[ -f "$VAULT_FEATURE_NOTE" ]]; then
+    echo "  ⊘  Obsidian feature hub already exists (skip): $VAULT_FEATURE_NOTE"
+  else
+    # Absolute repo paths for file:// links
+    REPO_ABS="$REPO_ROOT"
+    cat > "$VAULT_FEATURE_NOTE" <<EOF
+---
+type: feature
+parent-app: $TARGET
+status: active
+linear-id:
+started: $TODAY
+shipped:
+tags: [feature, $TARGET]
+---
+
+# $FEATURE
+
+Parent app: [[../README|$TARGET]]
+
+## Artifacts
+
+- [FEATURE_BRIEF](file://$REPO_ABS/portfolio/$TARGET/docs/features/$FEATURE/FEATURE_BRIEF.md)
+- [FEATURE_PRD](file://$REPO_ABS/portfolio/$TARGET/docs/features/$FEATURE/FEATURE_PRD.md)
+- [FEATURE_DESIGN](file://$REPO_ABS/portfolio/$TARGET/docs/features/$FEATURE/FEATURE_DESIGN.md)
+- [FEATURE_IMPL_PLAN](file://$REPO_ABS/portfolio/$TARGET/docs/features/$FEATURE/FEATURE_IMPL_PLAN.md)
+
+## Log
+
+- $TODAY — Feature spec drafted via Idea Kitchen feature mode.
+EOF
+    echo "  ✓  Obsidian feature hub → brain/02-Projects/$TARGET/features/$FEATURE.md"
+  fi
+
+  # --- 8. Edit Obsidian parent hub README.md: add [[<feature-slug>]] under ## Features ---
+  WIKILINK="- [[features/$FEATURE|$FEATURE]]"
+  if [[ ! -f "$VAULT_APP_README" ]]; then
+    # Parent hub missing — create a minimal stub
+    cat > "$VAULT_APP_README" <<EOF
+---
+status: active
+repo-path: $REPO_ABS/portfolio/$TARGET
+started: $TODAY
+tags: [project, portfolio]
+---
+
+# $TARGET
+
+Hub note — index only. Repo is source of truth.
+
+## Features
+
+$WIKILINK
+EOF
+    echo "  ✓  Obsidian parent hub created (was missing) → brain/02-Projects/$TARGET/README.md"
+  elif grep -qF -- "$WIKILINK" "$VAULT_APP_README"; then
+    echo "  ⊘  Obsidian parent hub already links $FEATURE (skip)"
+  elif grep -q "^## Features" "$VAULT_APP_README"; then
+    awk -v entry="$WIKILINK" '
+      /^## Features/ { print; print ""; print entry; inserted=1; next }
+      { print }
+    ' "$VAULT_APP_README" > "$VAULT_APP_README.tmp" && mv "$VAULT_APP_README.tmp" "$VAULT_APP_README"
+    echo "  ✓  Obsidian parent hub → added link under existing ## Features"
+  else
+    printf '\n## Features\n\n%s\n' "$WIKILINK" >> "$VAULT_APP_README"
+    echo "  ✓  Obsidian parent hub → created ## Features section + link"
+  fi
+else
+  echo "  ⚠  Obsidian vault not found at $VAULT_ROOT — skipped Obsidian steps"
+fi
+
+# --- 9. Summary + manual next steps ---
+echo ""
+echo "────────────────────────────────────────────────────────"
+echo "Feature '$FEATURE' installed into $TARGET."
+echo ""
+echo "Manual next steps:"
+echo "  1. Create Linear issue under $TARGET's Linear project"
+echo "     (URL in ~/Developer/chase/CLAUDE.md portfolio metadata table)"
+echo "  2. git add portfolio/$TARGET/"
+echo "     git commit -m \"docs($TARGET): add feature spec for $FEATURE\""
+echo "     git push"
+echo "  3. Open Claude Code in ~/Developer/chase"
+echo "     Paste: portfolio/$TARGET/docs/features/$FEATURE/FEATURE_IMPL_PLAN.md"
+echo ""
+echo "Reminder: do NOT git-add the Obsidian vault — it's iCloud, not the monorepo."
+echo "────────────────────────────────────────────────────────"

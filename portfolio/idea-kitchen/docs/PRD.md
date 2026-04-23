@@ -28,6 +28,26 @@
 - Pre-commit hook enforcing CHANGELOG / LEARNINGS / SHOWCASE freshness — Phase 3 idea.
 - Versioned prompt releases (v0.2, v0.3 branches) — not yet needed.
 
+## Prior art & positioning
+
+```
+Verdict: DIFFERENTIATE
+Alternatives found:
+  - Shape Up (37signals) — appetite / betting-table methodology — a book + doctrine, not a tool; no prompt → artifacts → Claude Code handoff.
+  - Linear / Notion PRD templates — generic PRD skeletons — no AI integration, no portfolio-convention binding, no dogfooded identity voice.
+  - ChatPRD — AI-assisted PRD generator — not tied to Chase's CLAUDE.md, identity, Clarity palette, or Shipyard sync.
+  - v0 / Bolt.new / Lovable — idea → code generators — skip planning and produce code directly; no PRD / Flow / Branding artifacts for the portfolio.
+  - Claude Projects used ad-hoc — what Chase was doing before Idea Kitchen — no convention, no artifact contract, re-explains the stack every session.
+Justification: Generic PRD tools and code generators don't bind to the specific portfolio conventions (CLAUDE.md, PRODUCT_BUILD_FRAMEWORK, Shipyard, identity voice, Clarity palette, low-vision a11y, checkpoint / restore). Idea Kitchen is the glue.
+Differentiation levers:
+  - Dogfooded artifacts — the system follows its own rules; every convention it teaches is visible in its own CLAUDE.md / HANDOFF / LEARNINGS / SHOWCASE. Generic tools (ChatPRD, Notion templates) can't self-reference.
+  - Portfolio-convention binding — reads root `CLAUDE.md` + Shipyard metadata + Clarity palette + `identity/` directly; knows storage-key naming, version bumps, Linear URLs, Vercel project names. No generic tool has this schema.
+  - Claude Code handoff pipeline — produces 6 ready-to-paste artifacts plus a SESSION_START kickoff prompt, not a standalone PRD. v0 / Bolt / Lovable skip planning; ChatPRD skips handoff.
+  - Identity voice baked into every output — generated apps inherit Chase's voice rules, CliftonStrengths framing, and "For Reese. For Buzz." family-urgency motto by default, via Project Knowledge uploads.
+  - Low-vision a11y from Phase 3 — every APP_FLOW.md requires a11y notes per screen (Dynamic Type, 44pt targets, VoiceOver, 4.5:1 contrast) before Milestone 0 can scaffold. Retrofitting is forbidden, not optional.
+Positioning: The portfolio-aware ideation loop — turns raw ideas into six on-convention handoff docs without re-explaining the stack.
+```
+
 ## Constraints
 
 - **Platform:** markdown only. No build, no bundler, no runtime.
