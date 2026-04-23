@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Changed — v0.3 artifact reliability + paste fallback
+
+- **Prompt hardening: artifacts vs code blocks.** Added a top-of-prompt rule under "How to behave" explicitly forbidding fenced code-block output for STEP 6 / STEP 6F deliverables. Rewrote both STEP 6 and STEP 6F in `prompts/CLAUDE_PROJECT_IDEA_KITCHEN.md` to use imperative artifact-creation language ("Artifact titled `<FILENAME>`") instead of raw `<antArtifact>` XML examples — the raw XML was being echoed as literal text by claude.ai in some sessions, masking the artifact tool entirely. Each STEP now ends with an explicit Fallback subsection describing the `--- FILE: <name> ---` delimiter protocol.
+- **`scripts/install-docs --paste <file>` + `--paste-clipboard`** — fallback when the artifact tool fails and Claude pastes the 6 docs inline. Splits a single concatenated `.md` on `--- FILE: <name> ---` delimiter lines, discards preamble, files each section to `portfolio/<slug>/docs/` exactly as the zip path would. Works with `pbpaste` on macOS via `--paste-clipboard`. BSD awk compatible (no gawk dependency). Unit-tested + error-path (empty paste) verified.
+- **`scripts/install-feature-docs --paste <file>` + `--paste-clipboard`** — same fallback for feature mode's 4 artifacts.
+- **Portfolio-wide SESSION_START template sweep** — 40 pre-filled templates + `SESSION_START_EXISTING_APP.md` + `SESSION_START_NEW_APP_EXAMPLE.md` all normalized from "All six STEP 6 **blocks**" to "All six STEP 6 **artifacts** (downloadable panels, not code blocks in chat)." The word "blocks" was latent reinforcement of the wrong fallback behavior — consistency across past and future runs matters.
+- **`docs/BUILD_GUIDE.md` §4, §4b, §11** — documents the fallback path. §11 troubleshooting table gains a row for the "STEP 6 produced code blocks instead of artifacts" failure mode with the exact `install-docs <slug> --paste <file>` remedy.
+
 ### Added — v0.2 Feature Mode
 
 - **Feature mode — second entry branch for adding features to existing portfolio apps.** Triggered by "add X to `<target-app>`" phrasing. Runs cross-portfolio duplication scan + 4-layer competitor teardown + full 4-artifact generation scoped to the target app. New-project mode preserved exactly as-is.

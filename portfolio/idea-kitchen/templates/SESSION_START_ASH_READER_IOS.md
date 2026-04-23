@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. v0.3 is stable with full web parity; dec
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/ash-reader-ios`
 2. **BRANDING.md** — P6 yellow accent, reading/text metaphor, 4-tab structure
 3. **PRODUCT_BRIEF.md** — distill from context below

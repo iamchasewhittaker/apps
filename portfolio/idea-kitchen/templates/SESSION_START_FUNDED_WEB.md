@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The app is at v1.0; decisions are made.
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/funded-web`
 2. **BRANDING.md** — YNAB green + clean finance aesthetic, "funded" confidence framing
 3. **PRODUCT_BRIEF.md** — distill from context below

@@ -4,6 +4,22 @@ Mistakes, fixes, and "aha" moments. Read at session start; append after anything
 
 ---
 
+## 2026-04-22 — `<antArtifact>` XML in the prompt can get echoed as literal fenced code
+
+**What happened:** Chase ran retroactive-docs mode on Shipyard. Content came back correct — but as six fenced markdown code blocks in chat, not as downloadable artifact panels. `scripts/install-docs` reads from `~/Downloads`, so the handoff broke and he had to hand-save each block.
+
+**Root cause:** The system prompt (STEP 6 + STEP 6F) showed `<antArtifact>` XML inside fenced code blocks as instructional examples. claude.ai sometimes resolves "show this tag" as "emit it as text" instead of "invoke the artifact tool." The instructional language was descriptive (*"Use … tags so each renders as a downloadable panel"*) rather than imperative. Compounding it: 40 pre-filled SESSION_START templates said *"All six STEP 6 **blocks**"* — the word "blocks" was latent reinforcement of the exact wrong fallback.
+
+**Fix:** (1) Removed all `<antArtifact>` XML examples from the prompt — replaced with imperative filename language ("Artifact titled `PRODUCT_BRIEF.md`"). (2) Added a top-of-prompt "How to behave" rule explicitly forbidding fenced code blocks for STEP 6 / 6F. (3) Portfolio-wide sweep: 40 SESSION_START templates normalized "blocks" → "artifacts (downloadable panels, not code blocks in chat)." (4) Both installers gained `--paste <file>` / `--paste-clipboard` fallback that splits `--- FILE: <name> ---` delimited single-file markdown. Opt-in flag, not auto-fallback — silent auto-parse of random clipboard content would confuse failure modes.
+
+**Rule:** Never put raw tool-invocation markup inside fenced code blocks in a system prompt. Describe the behavior imperatively ("Create an artifact titled X") — don't show the markup. If you must show markup (e.g., in docs for developers), put it in `docs/`, not in the prompt the LLM reads.
+
+**Secondary rule:** When hardening a prompt against a failure mode, sweep the ENTIRE corpus of supporting files too. The fix has to be consistent with every past artifact, not just the one that broke. A latent reinforcement in 40 templates beats a single prompt edit.
+
+**Implementation gotcha:** macOS default awk is BSD awk, which doesn't support the 3-arg `match(string, regex, array)` form. Used `sub()` with capture via `/regex/` + `sub(prefix, "")` + `sub(suffix, "")` instead. Also: `ls *.md 2>/dev/null` trips `set -e` on no-match even with stderr redirected — use `find ... -name '*.md'` instead, which returns 0 on empty.
+
+---
+
 ## 2026-04-21 — Created Idea Kitchen
 
 **What happened:** Built Idea Kitchen as a portfolio app rather than a loose `docs/` folder in the repo root. The decision came after 4 rounds of plan iteration.

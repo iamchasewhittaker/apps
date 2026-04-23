@@ -6,6 +6,8 @@ import { computeChipState, chipColor, chipLabel } from '@/lib/review-cadence';
 import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
 import StatsBar from '@/components/StatsBar';
 import WipBanner from '@/components/WipBanner';
+import { filterByVisible } from '@/lib/visible-projects';
+import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import type { Project, FleetStats, ReviewCadence, ReviewChip } from '@/lib/types';
 
 interface Props {
@@ -21,15 +23,17 @@ export default async function FleetDashboard({ searchParams }: Props) {
   const sp = await searchParams;
   const supabase = await createServerClient();
 
-  const [{ data: allProjects }, { data: cadenceRows }] = await Promise.all([
-    supabase
-      .from('projects')
-      .select('*')
-      .order('last_commit_date', { ascending: false }),
-    supabase.from('review_cadence').select('*'),
-  ]);
+  const [{ data: allProjects }, { data: cadenceRows }, visibleSet] =
+    await Promise.all([
+      supabase
+        .from('projects')
+        .select('*')
+        .order('last_commit_date', { ascending: false }),
+      supabase.from('review_cadence').select('*'),
+      readVisibleSetFromCookie(),
+    ]);
 
-  const projects: Project[] = allProjects ?? [];
+  const projects: Project[] = filterByVisible(allProjects ?? [], visibleSet);
   const cadences: ReviewCadence[] = cadenceRows ?? [];
 
   // Compute fleet stats

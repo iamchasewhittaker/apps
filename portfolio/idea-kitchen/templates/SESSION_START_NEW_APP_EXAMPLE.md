@@ -1,6 +1,6 @@
 # SESSION_START — Example (filled in)
 
-> This is what STEP 6 Block 6 of the Claude Project produces. Use it as a reference for shape. The Project generates a fresh one per app; never paste this example into Claude Code verbatim.
+> This is what STEP 6 Artifact 6 of the Claude Project produces. Use it as a reference for shape. The Project generates a fresh one per app; never paste this example into Claude Code verbatim.
 
 ---
 

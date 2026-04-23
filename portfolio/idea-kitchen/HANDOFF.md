@@ -8,17 +8,26 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v0.2 |
+| **Version** | v0.3 |
 | **Branch** | `main` |
 | **URL** | n/a (docs-only) |
 | **Storage key** | n/a |
-| **Focus** | **Feature mode shipped** — second entry branch for adding features to existing portfolio apps. STEPs 0F → 7F, 4 artifact templates, `install-feature-docs` installer, BUILD_GUIDE section 4b with sprinkler-map worked walkthrough. |
-| **Next** | (1) Re-paste updated System Prompt into the live Idea Kitchen Claude Project; (2) upload 4 new feature templates to Project Knowledge; (3) dogfood feature mode end-to-end with the Fairway sprinkler-map scenario; (4) verify `install-feature-docs` idempotency with a second run. |
+| **Focus** | **Artifact reliability + paste fallback shipped.** Prompt hardened to prevent claude.ai emitting `<antArtifact>` XML as literal fenced code. `--paste <file>` + `--paste-clipboard` added to both installers. Portfolio-wide SESSION_START sweep (40 files) normalized "blocks" → "artifacts." |
+| **Next** | (1) Re-upload updated System Prompt + 40 swept SESSION_START templates to the live Claude Project; (2) re-run Shipyard retroactive-docs session on claude.ai to confirm artifact panels appear (not fenced blocks); (3) if they still paste, verify `install-docs shipyard --paste <file>` handles the fallback; (4) dogfood feature mode with Fairway sprinkler-map (pending from v0.2). |
 | **Linear** | https://linear.app/whittaker/project/idea-kitchen-1115a17b711a |
 | **Blockers** | None |
-| **Last touch** | 2026-04-22 — v0.2 feature mode shipped: prompt (STEPs 0F–7F), 4 templates (FEATURE_BRIEF / FEATURE_PRD / FEATURE_DESIGN / FEATURE_IMPL_PLAN), `scripts/install-feature-docs` (idempotent, wires ROADMAP/CHANGELOG/LEARNINGS/HANDOFF + Obsidian feature hub + parent-hub link), BUILD_GUIDE section 4b with Fairway sprinkler-map walkthrough, knowledge manifest updated, CHANGELOG bumped. |
+| **Last touch** | 2026-04-22 — v0.3 artifact reliability: prompt top-rule + STEP 6 / STEP 6F rewritten (no more `<antArtifact>` XML examples that claude.ai echoes as text); `install-docs` + `install-feature-docs` gained `--paste <file>` / `--paste-clipboard` with `--- FILE: <name> ---` delimiter splitter (BSD awk compatible); 40 SESSION_START templates swept "blocks" → "artifacts"; BUILD_GUIDE §4/§4b/§11 documented the fallback path. Splitter + error-path unit-tested. |
 
 ---
+
+## What's in v0.3
+
+**New (v0.3):**
+- **Prompt hardening.** Top-of-prompt "artifacts are artifacts, not code blocks" rule under "How to behave." STEP 6 + STEP 6F rewritten to use imperative filename language; raw `<antArtifact>` XML examples removed (they were getting echoed verbatim by claude.ai in some sessions). Explicit fallback subsections added to both steps.
+- **`scripts/install-docs --paste <file>` / `--paste-clipboard`** — fallback when Claude pastes docs as fenced code blocks. Splits `--- FILE: <name> ---` delimited single-file markdown. Preamble discarded. BSD awk compatible. Splitter + error-path unit-tested.
+- **`scripts/install-feature-docs --paste <file>` / `--paste-clipboard`** — same fallback for the 4 feature artifacts.
+- **Portfolio-wide SESSION_START sweep (40 files).** Normalized "All six STEP 6 **blocks**" → "All six STEP 6 **artifacts** (downloadable panels, not code blocks in chat)." Latent reinforcement of wrong behavior removed. Includes pre-filled templates + `SESSION_START_EXISTING_APP.md` + `SESSION_START_NEW_APP_EXAMPLE.md`.
+- **`docs/BUILD_GUIDE.md` §4, §4b, §11** — documents the paste fallback path and gains a troubleshooting row for the failure mode.
 
 ## What's in v0.2
 
@@ -50,12 +59,13 @@ Read CLAUDE.md and HANDOFF.md first, then portfolio/idea-kitchen/CLAUDE.md and p
 
 Goal: Continue Idea Kitchen at portfolio/idea-kitchen/.
 
-Current state: v0.2 shipped — two modes (project + feature). Feature mode STEPs 0F→7F complete, 4 templates + install-feature-docs installer + BUILD_GUIDE section 4b.
+Current state: v0.3 shipped — artifact reliability + paste fallback. Prompt hardened, both installers take `--paste <file>` / `--paste-clipboard`, 40 SESSION_START templates swept.
 
 Pick next work from portfolio/idea-kitchen/ROADMAP.md. Most likely next:
-- Dogfood feature mode with Fairway sprinkler-map (live Claude Project run + install-feature-docs + Claude Code Milestone 0).
+- Re-upload updated prompt + 40 swept SESSION_START templates to live Claude Project.
+- Re-run Shipyard retroactive-docs on claude.ai to confirm artifact panels render (not fenced blocks).
+- Dogfood feature mode with Fairway sprinkler-map (pending from v0.2).
 - Phase 2 (Shipyard SHOWCASE rendering).
-- Project Knowledge re-upload on claude.ai (new prompt + 4 feature templates).
 
 Dogfood rule: any convention this app teaches must be visible in this app's own files. Keep it consistent.
 

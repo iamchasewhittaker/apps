@@ -1,6 +1,8 @@
 export const dynamic = 'force-dynamic';
 
 import { createServerClient } from '@/lib/supabase';
+import { filterByVisible } from '@/lib/visible-projects';
+import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import PortfolioActions from './PortfolioActions';
 import { ModeHeading } from '@/components/ModeHeading';
 import { ShowcaseCard } from './ShowcaseCard';
@@ -9,14 +11,17 @@ import type { Project } from '@/lib/types';
 export default async function PortfolioPage() {
   const supabase = await createServerClient();
 
-  const { data: ships } = await supabase
-    .from('projects')
-    .select('*')
-    .neq('status', 'archived')
-    .neq('family', 'archived')
-    .order('last_commit_date', { ascending: false });
+  const [{ data: ships }, visibleSet] = await Promise.all([
+    supabase
+      .from('projects')
+      .select('*')
+      .neq('status', 'archived')
+      .neq('family', 'archived')
+      .order('last_commit_date', { ascending: false }),
+    readVisibleSetFromCookie(),
+  ]);
 
-  const fleet: Project[] = ships ?? [];
+  const fleet: Project[] = filterByVisible(ships ?? [], visibleSet);
 
   return (
     <div className="mx-auto max-w-5xl space-y-8">

@@ -3,25 +3,64 @@
 #
 # Usage:
 #   portfolio/idea-kitchen/scripts/install-docs <app-slug>
-#   portfolio/idea-kitchen/scripts/install-docs fairway-ios
+#   portfolio/idea-kitchen/scripts/install-docs <app-slug> --paste <file>
+#   portfolio/idea-kitchen/scripts/install-docs <app-slug> --paste-clipboard
 #
 # After generating docs in the Idea Kitchen Claude Project (claude.ai):
 #   1. Click "Download all" — claude.ai downloads a zip file to ~/Downloads
 #   2. Run this script — it unzips and moves the files to the right paths
 #
-# Handles three download shapes from claude.ai:
-#   ~/Downloads/<name>.zip      — "Download all" zip
+# Handles four source shapes:
+#   ~/Downloads/<name>.zip      — "Download all" zip (default)
 #   ~/Downloads/files/          — individual downloads subfolder
 #   ~/Downloads/                — individual downloads at root
+#   --paste <file>              — fallback: single .md file with "--- FILE: <name> ---"
+#                                 delimiters separating the 6 docs (used when Claude
+#                                 pasted code blocks in chat instead of creating artifacts)
+#   --paste-clipboard           — same as --paste but reads from macOS clipboard
 
 set -euo pipefail
 
 SLUG="${1:-}"
 if [[ -z "$SLUG" ]]; then
-  echo "Usage: install-docs <app-slug>"
+  echo "Usage: install-docs <app-slug> [--paste <file> | --paste-clipboard]"
   echo "Example: install-docs fairway-ios"
+  echo "         install-docs fairway-ios --paste ~/Downloads/chat.md"
   exit 1
 fi
+shift
+
+# --- Parse optional --paste / --paste-clipboard flags ---
+PASTE_FILE=""
+PASTE_TEMP=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --paste)
+      PASTE_FILE="${2:-}"
+      if [[ -z "$PASTE_FILE" ]]; then
+        echo "Error: --paste requires a file path."
+        exit 1
+      fi
+      shift 2
+      ;;
+    --paste-clipboard)
+      if ! command -v pbpaste >/dev/null 2>&1; then
+        echo "Error: pbpaste not found. --paste-clipboard requires macOS."
+        echo "Use --paste <file> instead."
+        exit 1
+      fi
+      PASTE_TEMP="$(mktemp)"
+      pbpaste > "$PASTE_TEMP"
+      PASTE_FILE="$PASTE_TEMP"
+      shift
+      ;;
+    *)
+      echo "Error: unknown flag '$1'"
+      echo "Usage: install-docs <app-slug> [--paste <file> | --paste-clipboard]"
+      exit 1
+      ;;
+  esac
+done
 
 REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 DOCS_DIR="$REPO_ROOT/portfolio/$SLUG/docs"
@@ -38,21 +77,61 @@ fi
 mkdir -p "$DOCS_DIR"
 
 # --- Resolve source directory ---
-# Priority: zip in ~/Downloads → ~/Downloads/files/ → ~/Downloads/
+# Priority: --paste flag → zip in ~/Downloads → ~/Downloads/files/ → ~/Downloads/
 DOWNLOADS=""
 
-latest_zip="$(ls -t "$HOME/Downloads/"*.zip 2>/dev/null | head -1 || true)"
-if [[ -n "$latest_zip" ]]; then
+if [[ -n "$PASTE_FILE" ]]; then
+  if [[ ! -f "$PASTE_FILE" ]]; then
+    echo "Error: paste file not found: $PASTE_FILE"
+    exit 1
+  fi
   TMPDIR_CREATED="$(mktemp -d)"
-  echo "Unzipping $(basename "$latest_zip")..."
-  unzip -q "$latest_zip" -d "$TMPDIR_CREATED"
-  # Find the directory containing the .md files (may be a subfolder inside the zip)
-  md_dir="$(find "$TMPDIR_CREATED" -name "SHOWCASE.md" -o -name "PRD.md" 2>/dev/null | head -1 | xargs dirname 2>/dev/null || true)"
-  DOWNLOADS="${md_dir:-$TMPDIR_CREATED}"
-elif [[ -d "$HOME/Downloads/files" ]] && ls "$HOME/Downloads/files/"*.md &>/dev/null 2>&1; then
-  DOWNLOADS="$HOME/Downloads/files"
+  DOWNLOADS="$TMPDIR_CREATED"
+  echo "Splitting paste file on '--- FILE: ... ---' delimiters..."
+  # Split the paste file on delimiter lines. Discard preamble before the first delimiter.
+  # Uses 2-arg match() + substr() for BSD awk (macOS default) compatibility.
+  awk -v outdir="$TMPDIR_CREATED" '
+    /^--- FILE: .+ ---[[:space:]]*$/ {
+      name = $0
+      sub(/^--- FILE: /, "", name)
+      sub(/ ---[[:space:]]*$/, "", name)
+      current = outdir "/" name
+      started = 1
+      # Truncate the file in case of a previous write
+      printf "" > current
+      next
+    }
+    started { print >> current }
+  ' "$PASTE_FILE"
+  # Clean up clipboard temp file if we created one
+  if [[ -n "$PASTE_TEMP" ]]; then
+    rm -f "$PASTE_TEMP"
+  fi
+  # Verify at least one .md landed in the tmpdir
+  # find (not ls) — handles zero-match without tripping set -e
+  found="$(find "$TMPDIR_CREATED" -maxdepth 1 -name '*.md' 2>/dev/null | wc -l | tr -d ' ')"
+  if [[ "$found" = "0" ]]; then
+    echo "Error: no '--- FILE: <name> ---' delimiters found in paste."
+    echo "Expected at least one line like: --- FILE: PRD.md ---"
+    rm -rf "$TMPDIR_CREATED"
+    exit 1
+  fi
+  echo "  Extracted $found file(s) from paste."
+  echo ""
 else
-  DOWNLOADS="$HOME/Downloads"
+  latest_zip="$(ls -t "$HOME/Downloads/"*.zip 2>/dev/null | head -1 || true)"
+  if [[ -n "$latest_zip" ]]; then
+    TMPDIR_CREATED="$(mktemp -d)"
+    echo "Unzipping $(basename "$latest_zip")..."
+    unzip -q "$latest_zip" -d "$TMPDIR_CREATED"
+    # Find the directory containing the .md files (may be a subfolder inside the zip)
+    md_dir="$(find "$TMPDIR_CREATED" -name "SHOWCASE.md" -o -name "PRD.md" 2>/dev/null | head -1 | xargs dirname 2>/dev/null || true)"
+    DOWNLOADS="${md_dir:-$TMPDIR_CREATED}"
+  elif [[ -d "$HOME/Downloads/files" ]] && ls "$HOME/Downloads/files/"*.md &>/dev/null 2>&1; then
+    DOWNLOADS="$HOME/Downloads/files"
+  else
+    DOWNLOADS="$HOME/Downloads"
+  fi
 fi
 
 echo "Installing docs for '$SLUG' from: $DOWNLOADS"
@@ -85,9 +164,11 @@ done
 # --- Clean up temp dir and zip ---
 if [[ -n "$TMPDIR_CREATED" ]]; then
   rm -rf "$TMPDIR_CREATED"
-  rm -f "$latest_zip"
-  echo ""
-  echo "  🗑  Removed $(basename "$latest_zip")"
+  if [[ -z "$PASTE_FILE" && -n "${latest_zip:-}" ]]; then
+    rm -f "$latest_zip"
+    echo ""
+    echo "  🗑  Removed $(basename "$latest_zip")"
+  fi
 fi
 
 echo ""

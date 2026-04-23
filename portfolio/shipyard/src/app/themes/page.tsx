@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
+import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import type { Theme, ThemeKind } from '@/lib/types';
 
 const SECTION_META: Record<
@@ -40,13 +41,22 @@ const KIND_ORDER: ThemeKind[] = [
 export default async function ThemesPage() {
   const supabase = await createServerClient();
 
-  const { data: allThemes } = await supabase
-    .from('themes')
-    .select('*')
-    .order('kind')
-    .order('title');
+  const [{ data: allThemes }, visibleSet] = await Promise.all([
+    supabase
+      .from('themes')
+      .select('*')
+      .order('kind')
+      .order('title'),
+    readVisibleSetFromCookie(),
+  ]);
 
-  const themes: Theme[] = allThemes ?? [];
+  const rawThemes: Theme[] = allThemes ?? [];
+  const themes: Theme[] = visibleSet
+    ? rawThemes.map((t) => ({
+        ...t,
+        project_slugs: t.project_slugs.filter((s) => visibleSet.has(s)),
+      }))
+    : rawThemes;
 
   const grouped = KIND_ORDER.reduce(
     (acc, kind) => {

@@ -75,6 +75,8 @@ You're ready. Every idea from now on starts by opening this Project and typing t
    - `portfolio/idea-kitchen/templates/SESSION_START_<SLUG>.md`
 
    The script also prints which file to re-upload to the Claude Project when done.
+
+   **If Claude pasted the docs as fenced code blocks instead of creating artifacts** (rare — the prompt instructs it to use artifacts, but claude.ai occasionally falls back): copy the entire chat message to a single `.md` file in `~/Downloads` (e.g. `~/Downloads/shipyard.md`) and run `install-docs <slug> --paste ~/Downloads/shipyard.md`. Or `install-docs <slug> --paste-clipboard` if it's still on your clipboard. The splitter reads `--- FILE: <name> ---` delimiters that the Project emits in that fallback format. See §11.
 6. Follow STEP 7's numbered checklist. Scaffold the app. STEP 7 now includes creating an Obsidian hub note at `brain/02-Projects/<slug>/README.md` — frontmatter + links to the in-repo docs. Obsidian is the index; the repo stays source of truth.
 7. Open a fresh Claude Code session. Paste `SESSION_START_<SLUG>.md`. Claude Code reads context and executes Milestone 0.
 8. Claude Code stops after Milestone 0, commits, and waits.
@@ -126,12 +128,14 @@ No `SHOWCASE.md` update — the feature lives under its parent app, and that app
 4. Walk through feature mode one message at a time: **STEP 1F → 1.5F → 2F → 3F → 4F → 5F → 6F → 7F**. Sign off at each gate.
    - **STEP 1F** is the cross-portfolio duplication scan (4 checks: target overlap, sibling overlap, shared-package candidacy, architecture fit) with a verdict: `EXTEND_TARGET | EXTRACT_SHARED | NEW_APP | KILL`. Don't skip it — this is the whole point of feature mode. `NEW_APP` verdict re-routes you back to project mode.
    - **STEP 1.5F** is the 4-layer competitor teardown: feature matrix, UX teardown, review mining, technical approach. Produces 3–5 differentiation levers tied to specific research, not vibes.
-5. At **STEP 6F**, 4 `<antArtifact>` blocks appear. Click **Download all** — a zip lands in `~/Downloads`. Then:
+5. At **STEP 6F**, 4 downloadable artifacts appear. Click **Download all** — a zip lands in `~/Downloads`. Then:
    ```
    cd ~/Developer/chase
    portfolio/idea-kitchen/scripts/install-feature-docs <target-slug> <feature-slug>
    ```
    That one script unzips the artifacts, files them into `portfolio/<target-slug>/docs/features/<feature-slug>/`, wires the feature into every portfolio tracking surface (ROADMAP, CHANGELOG, LEARNINGS, HANDOFF), creates the Obsidian feature hub, and links it from the parent hub. It's idempotent — safe to run twice.
+
+   **If Claude pasted the 4 docs as code blocks instead of creating artifacts**: save the chat message to a single `.md` file and run `install-feature-docs <target-slug> <feature-slug> --paste <file>` (or `--paste-clipboard`). Same delimiter protocol as project mode. See §11.
 6. Follow STEP 7F's numbered checklist:
    - Create Linear issue under target app's Linear project (URL in root `CLAUDE.md` portfolio metadata table — create one under team Whittaker if missing).
    - `git add portfolio/<target-slug>/` → commit → push.
@@ -339,6 +343,7 @@ Concrete incident examples:
 | Shipyard doesn't show the new app | You added to CLAUDE.md but didn't sync | `cd portfolio/shipyard && npm run sync:projects`. |
 | PRD drifted from code | Nobody updated `NOT in V1` when scope grew | Open PRD. Add the new items to V1 features. Move old "V1" items to "NOT in V1" if deferred. Commit. |
 | Claude Code asks for context already in `CLAUDE.md` | Project Knowledge stale or Claude Code didn't read `CLAUDE.md` | Re-upload. In Claude Code, `/init` to refresh CLAUDE.md context. |
+| STEP 6 / 6F produced fenced code blocks in chat instead of downloadable artifacts | claude.ai fell back from the artifact tool to inline text (rare; prompt forbids this but it still happens) | Copy the full chat message to one `.md` file (e.g. `~/Downloads/shipyard.md`) and run `install-docs <slug> --paste <file>` — or `install-feature-docs <target> <feature> --paste <file>` for feature mode. Also accepts `--paste-clipboard` (macOS `pbpaste`). Splitter reads `--- FILE: <name> ---` delimiters; preamble text is discarded. |
 
 ---
 

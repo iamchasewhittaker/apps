@@ -20,7 +20,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. v0.1 is on-device; decisions are made.
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/unnamed-ios`
 2. **BRANDING.md** — amber triangle icon, 4-lane color system, anti-optimization voice
 3. **PRODUCT_BRIEF.md** — distill from context below; note name is still a placeholder

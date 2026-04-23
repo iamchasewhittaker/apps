@@ -1,75 +1,86 @@
-# SESSION_START — Wellness Tracker iOS Retroactive Foundation Docs
+# SESSION_START — Wellness Tracker iOS
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
+> Paste into Claude Code from `~/Developer/chase`. This is a stub for single-app change sessions.
 
 ---
 
-**Mode:** Retroactive documentation — Wellness Tracker iOS is a Phase 2 shell SwiftUI app.
 **App:** Wellness Tracker iOS
 **Slug:** wellness-tracker-ios
-**One-liner:** Native SwiftUI companion to the Wellness Tracker web app — Phase 2 shell with Tasks, Time, Capture, and Sync tabs; W+sunrise AppIcon; optional Supabase sync.
-
----
-
-## What to skip
-
-Do not run STEP 0, STEP 1.5, or STEP 2. The Phase 2 shell exists; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 blocks. Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/wellness-tracker-ios`
-2. **BRANDING.md** — W+sunrise AppIcon, Clarity palette, wellness/morning aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect Phase 2 shell scope; Phase 3 = full feature parity with web v15.10
-5. **APP_FLOW.md** — document the 4-tab Phase 2 shell structure
-6. **SESSION_START_wellness-tracker-ios.md** — stub only
-
-Output paths: `portfolio/wellness-tracker-ios/docs/`
-
----
-
-## App context — CLAUDE.md
-
+**Path:** `portfolio/wellness-tracker-ios/`
 **Version:** Phase 2 shell
 **Stack:** SwiftUI + @Observable + UserDefaults + optional Supabase
-**Storage key:** `chase_wellness_ios_v1`
 **Bundle ID:** `com.chasewhittaker.WellnessTracker`
-**URL:** local Xcode
-
-**What this app is:**
-The native iOS companion to Wellness Tracker web (v15.10). Currently a Phase 2 shell with four tabs: Tasks (today's task list), Time (basic timer), Capture (quick note/capture), and Sync (Supabase connection status). The shell demonstrates the tab structure and Supabase wiring; full feature parity with the web app comes in Phase 3.
-
-**Web companion:**
-- `portfolio/wellness-tracker/` — v15.10, 6 tabs (Tracker / Tasks / Time / Budget / History / Growth)
-- Shares the same Supabase project (`unqtnnxlltiadzbqpyhh`)
-- `app_key = 'wellness'` — same blob, cross-platform
-
-**Architecture:**
-- `@Observable` state management
-- UserDefaults for local state (`chase_wellness_ios_v1`)
-- Optional Supabase sync (wiring exists in Phase 2 shell — enabled in Phase 3)
-- W+sunrise AppIcon
-
-**Brand system:**
-- W+sunrise AppIcon — the "W" with a sunrise gradient behind it
-- Clarity palette: sky blue primary
-- Morning / wellness aesthetic — light, energizing
-- Voice: gentle encouragement — "how are you starting today?"
 
 ---
 
-## App context — HANDOFF.md
+## Before you do anything
 
-**Version:** Phase 2 shell
-**Focus:** Shell is on-device. Tab structure + Supabase wiring in place. No active development.
-**Last touch:** 2026-04-21
+1. Read `CLAUDE.md` (repo root)
+2. Read `portfolio/wellness-tracker-ios/HANDOFF.md`
+3. Read `portfolio/wellness-tracker-ios/LEARNINGS.md`
+4. Read `docs/design/CLARITY_IOS_APP_ICON_SPEC.md` if touching the AppIcon
 
-**Next (Phase 3 — full parity):**
-- Tracker tab: morning/evening check-in wizard (match web TrackerTab)
-- Tasks tab: full task CRUD with categories (match web TasksTab)
-- Time tab: focus session timer with history (match web TimeTrackerTab)
-- Growth tab: 7 growth areas + streaks (match web GrowthTab)
-- Sync: enable Supabase read/write with `app_key = 'wellness'`
+---
+
+## Goal
+
+> [Replace this line with the session goal — e.g., "Implement Tracker tab: morning/evening check-in wizard (Phase 3 M2)"]
+
+---
+
+## Scope (Phase 2 shell — shipped)
+
+- Tasks tab: today's task list, UserDefaults local
+- Time tab: basic focus timer, persists across launches
+- Capture tab: quick note entry
+- Sync tab: Supabase connection status (display only)
+- W+sunrise AppIcon
+
+## Not in scope (Phase 2)
+
+- Supabase read/write (Phase 3)
+- Tracker tab check-in wizard (Phase 3)
+- Full task CRUD with categories (Phase 3)
+- Growth tab (Phase 3)
+- Budget tab (Phase 3+)
+- iPad layout
+
+---
+
+## Web companion context
+
+- Web app: `portfolio/wellness-tracker/` — v15.10, 6 tabs
+- Same Supabase project: `unqtnnxlltiadzbqpyhh`
+- Same app key: `'wellness'`
+- iOS reads/writes should match the web blob shape when sync is enabled in Phase 3
+
+---
+
+## End-of-session checklist
+
+```
+ 1. checkpoint
+ 2. Update CHANGELOG.md under ## [Unreleased]
+ 3. Update portfolio/wellness-tracker-ios/ROADMAP.md
+ 4. Update root ROADMAP.md Change Log row
+ 5. Update portfolio/wellness-tracker-ios/HANDOFF.md — State, Focus, Next, Last touch
+ 6. Update portfolio/wellness-tracker-ios/LEARNINGS.md
+ 6.5. If user-visible state changed: update docs/SHOWCASE.md
+ 7. Linear — heartbeat comment + move completed issues to Done (if Linear project exists)
+ 8. If root CLAUDE.md portfolio table changed: cd portfolio/shipyard && npm run sync:projects
+ 8.5. Update brain/02-Projects/wellness-tracker-ios/README.md
+ 9. git add <paths>
+10. git commit -m "<type>(wellness-tracker-ios): <summary>"
+11. git push
+12. Report: what shipped / what's next / any blockers.
+```
+
+## Security checklist
+
+```
+- Public repo. Never commit secrets, real financial data, or real names tied to private data.
+- .env / xcconfig gitignored. Template only committed.
+- Supabase anon key OK in client; service-role server-only.
+- No hardcoded credentials anywhere in Swift source.
+- If a secret is committed: rotate immediately, then purge history.
+```

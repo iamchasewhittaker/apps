@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The package is in use across the iOS sui
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-ui`
 2. **BRANDING.md** — developer-library aesthetic, component system framing
 3. **PRODUCT_BRIEF.md** — distill from context below; note it's a package not a user-facing app

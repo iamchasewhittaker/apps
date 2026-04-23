@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The app is stable; all major decisions a
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-hub`
 2. **BRANDING.md** — Clarity palette, multi-tab hub aesthetic, sky blue primary accent
 3. **PRODUCT_BRIEF.md** — distill from context below; note the hub-to-dedicated-apps migration story

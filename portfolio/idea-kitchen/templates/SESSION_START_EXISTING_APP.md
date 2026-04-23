@@ -20,13 +20,13 @@ The decisions are already made. Do not run:
 - STEP 1.5 prior-art check
 - STEP 2 DIFFERENTIATE pressure-test
 
-Go straight to gathering information, then produce STEP 6 blocks.
+Go straight to gathering information, then produce STEP 6 artifacts (downloadable panels, not code blocks in chat).
 
 ---
 
 ## What to produce
 
-Generate all six fenced artifact blocks from STEP 6. Priority order:
+Generate all six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority order:
 
 1. **`SHOWCASE.md`** — highest priority. Shipyard renders this at `/ship/[slug]`. Fill every section of `APP_SHOWCASE_TEMPLATE.md` accurately from the app context below.
 2. **`BRANDING.md`** — derive palette, typography, and voice from the existing app. If unsure, ask one targeted question before guessing.

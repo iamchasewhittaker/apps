@@ -489,98 +489,65 @@
   },
   "fairway-ios": {
     "slug": "fairway-ios",
-    "appName": "Fairway iOS",
+    "appName": "Fairway",
     "colors": [
       {
-        "hex": "#0a1a0d",
-        "name": "backgroundPrimary",
-        "usage": "App background — deep forest"
+        "hex": "#0a1a0f",
+        "name": "Background",
+        "usage": "App background, sheet backgrounds"
       },
       {
-        "hex": "#0f2214",
-        "name": "backgroundSurface",
-        "usage": "Cards, sheets"
+        "hex": "#112417",
+        "name": "Surface",
+        "usage": "Cards, list rows, zone cards"
       },
       {
-        "hex": "#152d1a",
-        "name": "backgroundElevated",
-        "usage": "Nav bars, popovers"
+        "hex": "#1b5e2f",
+        "name": "Primary",
+        "usage": "Navigation bars, primary buttons"
       },
       {
-        "hex": "#036635",
-        "name": "accentGreen",
-        "usage": "Augusta green — primary brand, brightest fairway band"
+        "hex": "#15803d",
+        "name": "Accent",
+        "usage": "Active status dots, selected tab indicator, chart bars"
       },
       {
-        "hex": "#d4af37",
-        "name": "accentGold",
-        "usage": "Masters gold — wordmark, flag, highlights, active tabs"
+        "hex": "#4ade80",
+        "name": "Highlight",
+        "usage": "Positive readings, healthy indicators"
       },
       {
-        "hex": "#024e28",
-        "name": "fairwayMid",
-        "usage": "Middle fairway band"
+        "hex": "#d97706",
+        "name": "PRE-SEASON badge",
+        "usage": "Amber — isPreSeason: true heads and problems"
       },
       {
-        "hex": "#013a1c",
-        "name": "fairwayDeep",
-        "usage": "Deepest fairway band"
+        "hex": "#dc2626",
+        "name": "CONFIRMED badge",
+        "usage": "Red — confirmed problem areas"
       },
       {
-        "hex": "#e8a030",
-        "name": "sunAmber",
-        "usage": "Mid sun ring + horizon glow"
+        "hex": "#f3f4f6",
+        "name": "Text primary",
+        "usage": "All body and label text"
       },
       {
-        "hex": "#22c55e",
-        "name": "statusHealthy",
-        "usage": "Zone healthy indicator"
+        "hex": "#9ca3af",
+        "name": "Text secondary",
+        "usage": "Captions, secondary labels"
       },
       {
-        "hex": "#f59e0b",
-        "name": "statusAttention",
-        "usage": "Zone needs attention"
-      },
-      {
-        "hex": "#ef4444",
-        "name": "statusAction",
-        "usage": "Zone action needed / confirmed problem"
-      },
-      {
-        "hex": "#e8dfc8",
-        "name": "textPrimary",
-        "usage": "Body text — warm cream"
-      },
-      {
-        "hex": "#5a7a5a",
-        "name": "textSecondary",
-        "usage": "Labels, metadata — muted sage"
-      },
-      {
-        "hex": "#006747",
-        "name": "2026-04-18"
-      },
-      {
-        "hex": "#f0e8d0"
-      },
-      {
-        "hex": "#c9a84c"
+        "hex": "#0f1117"
       }
     ],
     "fonts": [
-      {
-        "family": "Cormorant Garamond"
-      },
-      {
-        "family": "Cormorant"
-      },
       {
         "family": "System (SF)",
         "role": "UI"
       }
     ],
     "iconPath": "/branding/fairway-ios/icon.png",
-    "notes": "Masters-aesthetic retro-sunset identity. Full source: [`brand/fairway_minimal.html`](brand/fairway_minimal.html) · narrative: [`brand/BRAND_SPEC.md`](brand/BRAND_SPEC.md).",
+    "notes": "Augusta green — deep, precise, turf-management aesthetic. Not playful; professional.",
     "sourceFile": "portfolio/fairway-ios/docs/BRANDING.md"
   },
   "funded-ios": {
@@ -721,12 +688,52 @@
     "sourceFile": "missing",
     "missing": true
   },
-  "growth-tracker": {
-    "slug": "growth-tracker",
+  "gmat-mastery-web": {
+    "slug": "gmat-mastery-web",
     "colors": [],
     "fonts": [],
     "sourceFile": "missing",
     "missing": true
+  },
+  "idea-kitchen": {
+    "slug": "idea-kitchen",
+    "appName": "Idea Kitchen",
+    "colors": [
+      {
+        "hex": "#0f1117",
+        "name": "Background",
+        "usage": "Portfolio dark base (matches Knowledge Base, Wellness)."
+      },
+      {
+        "hex": "#1a1d26",
+        "name": "Surface",
+        "usage": "One step up from base. Cards, panels."
+      },
+      {
+        "hex": "#f5a524",
+        "name": "Primary",
+        "usage": "Warm amber — \"kitchen\" cue, pairs with dark base."
+      },
+      {
+        "hex": "#e5e7eb",
+        "name": "Accent",
+        "usage": "Near-white for high-contrast text on dark."
+      },
+      {
+        "hex": "#9ca3af"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "DM Sans"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "notes": "See `docs/templates/PORTFOLIO_APP_BRANDING.md` for the full template this is based on. This doc is scoped to what a docs-only app actually needs.",
+    "sourceFile": "portfolio/idea-kitchen/docs/BRANDING.md"
   },
   "job-search-hq": {
     "slug": "job-search-hq",
@@ -863,13 +870,6 @@
   },
   "knowledge-base": {
     "slug": "knowledge-base",
-    "colors": [],
-    "fonts": [],
-    "sourceFile": "missing",
-    "missing": true
-  },
-  "money": {
-    "slug": "money",
     "colors": [],
     "fonts": [],
     "sourceFile": "missing",

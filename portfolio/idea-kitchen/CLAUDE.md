@@ -3,7 +3,7 @@
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
 ## App Identity
-- **Version:** v0.2
+- **Version:** v0.3
 - **Storage key:** n/a (docs-only app, no runtime)
 - **URL:** n/a (not deployed; docs are read in-repo)
 - **Entry:** [`docs/BUILD_GUIDE.md`](docs/BUILD_GUIDE.md)
@@ -96,7 +96,7 @@ templates/
 ## Data Shape
 n/a — docs-only.
 
-## Current Features (v0.2)
+## Current Features (v0.3)
 - Claude Project system prompt (`prompts/CLAUDE_PROJECT_IDEA_KITCHEN.md`) with **two modes**:
   - **Project mode** — 10-step flow (intake → pressure-test → Phases 1, 2, 2.5, 3 → milestones → artifacts → handoff → WIP → pattern capture). Produces 6 artifacts under `portfolio/<slug>/docs/`.
   - **Feature mode (v0.2)** — STEPs 0F → 7F (intake → cross-portfolio duplication scan with `EXTEND_TARGET | EXTRACT_SHARED | NEW_APP | KILL` verdict → 4-layer competitor research → brief → PRD → design → impl plan → handoff). Produces 4 artifacts under `portfolio/<target-app>/docs/features/<feature-slug>/`.

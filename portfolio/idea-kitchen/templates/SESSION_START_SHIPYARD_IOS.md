@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. Phase 2 is complete; decisions are made.
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/shipyard-ios`
 2. **BRANDING.md** — nautical palette (#07101E bg, #D7AA3A gold), Big Shoulders Display spirit, SY monogram
 3. **PRODUCT_BRIEF.md** — distill from context below

@@ -2,12 +2,18 @@
 # install-feature-docs — install Idea Kitchen feature-mode artifacts into the target app
 #
 # Usage:
-#   portfolio/idea-kitchen/scripts/install-feature-docs <target-app-slug> <feature-slug>
+#   portfolio/idea-kitchen/scripts/install-feature-docs <target> <feature>
+#   portfolio/idea-kitchen/scripts/install-feature-docs <target> <feature> --paste <file>
+#   portfolio/idea-kitchen/scripts/install-feature-docs <target> <feature> --paste-clipboard
 #   portfolio/idea-kitchen/scripts/install-feature-docs fairway-ios sprinkler-map
 #
 # After generating feature artifacts in the Idea Kitchen Claude Project (feature mode):
 #   1. Click "Download all" — claude.ai downloads a zip file to ~/Downloads
 #   2. Run this script — it unzips the artifacts and wires the feature into every portfolio tracking surface
+#
+# Paste fallback (used when Claude pasted code blocks in chat instead of artifacts):
+#   --paste <file>        Single .md file with "--- FILE: FEATURE_BRIEF.md ---" etc. delimiters
+#   --paste-clipboard     Same but read from macOS clipboard
 #
 # What this script does (idempotent — safe to run twice):
 #   1. Move 4 artifacts (FEATURE_BRIEF, FEATURE_PRD, FEATURE_DESIGN, FEATURE_IMPL_PLAN) to
@@ -27,10 +33,43 @@ TARGET="${1:-}"
 FEATURE="${2:-}"
 
 if [[ -z "$TARGET" || -z "$FEATURE" ]]; then
-  echo "Usage: install-feature-docs <target-app-slug> <feature-slug>"
+  echo "Usage: install-feature-docs <target-app-slug> <feature-slug> [--paste <file> | --paste-clipboard]"
   echo "Example: install-feature-docs fairway-ios sprinkler-map"
   exit 1
 fi
+shift 2
+
+# --- Parse optional --paste / --paste-clipboard flags ---
+PASTE_FILE=""
+PASTE_TEMP=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --paste)
+      PASTE_FILE="${2:-}"
+      if [[ -z "$PASTE_FILE" ]]; then
+        echo "Error: --paste requires a file path."
+        exit 1
+      fi
+      shift 2
+      ;;
+    --paste-clipboard)
+      if ! command -v pbpaste >/dev/null 2>&1; then
+        echo "Error: pbpaste not found. --paste-clipboard requires macOS."
+        echo "Use --paste <file> instead."
+        exit 1
+      fi
+      PASTE_TEMP="$(mktemp)"
+      pbpaste > "$PASTE_TEMP"
+      PASTE_FILE="$PASTE_TEMP"
+      shift
+      ;;
+    *)
+      echo "Error: unknown flag '$1'"
+      echo "Usage: install-feature-docs <target> <feature> [--paste <file> | --paste-clipboard]"
+      exit 1
+      ;;
+  esac
+done
 
 REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 TARGET_DIR="$REPO_ROOT/portfolio/$TARGET"
@@ -48,21 +87,58 @@ if [[ ! -d "$TARGET_DIR" ]]; then
   exit 1
 fi
 
-# --- 1. Resolve source directory (zip or individual files in ~/Downloads) ---
+# --- 1. Resolve source directory ---
+# Priority: --paste flag → zip in ~/Downloads → ~/Downloads/files/ → ~/Downloads/
 DOWNLOADS=""
 TMPDIR_CREATED=""
+latest_zip=""
 
-latest_zip="$(ls -t "$HOME/Downloads/"*.zip 2>/dev/null | head -1 || true)"
-if [[ -n "$latest_zip" ]]; then
+if [[ -n "$PASTE_FILE" ]]; then
+  if [[ ! -f "$PASTE_FILE" ]]; then
+    echo "Error: paste file not found: $PASTE_FILE"
+    exit 1
+  fi
   TMPDIR_CREATED="$(mktemp -d)"
-  echo "Unzipping $(basename "$latest_zip")..."
-  unzip -q "$latest_zip" -d "$TMPDIR_CREATED"
-  md_dir="$(find "$TMPDIR_CREATED" -name "FEATURE_PRD.md" -o -name "FEATURE_IMPL_PLAN.md" 2>/dev/null | head -1 | xargs dirname 2>/dev/null || true)"
-  DOWNLOADS="${md_dir:-$TMPDIR_CREATED}"
-elif [[ -d "$HOME/Downloads/files" ]] && ls "$HOME/Downloads/files/"*.md &>/dev/null 2>&1; then
-  DOWNLOADS="$HOME/Downloads/files"
+  DOWNLOADS="$TMPDIR_CREATED"
+  echo "Splitting paste file on '--- FILE: ... ---' delimiters..."
+  # 2-arg match() + substr() for BSD awk (macOS default) compatibility.
+  awk -v outdir="$TMPDIR_CREATED" '
+    /^--- FILE: .+ ---[[:space:]]*$/ {
+      name = $0
+      sub(/^--- FILE: /, "", name)
+      sub(/ ---[[:space:]]*$/, "", name)
+      current = outdir "/" name
+      started = 1
+      printf "" > current
+      next
+    }
+    started { print >> current }
+  ' "$PASTE_FILE"
+  if [[ -n "$PASTE_TEMP" ]]; then
+    rm -f "$PASTE_TEMP"
+  fi
+  # find (not ls) — handles zero-match without tripping set -e
+  found="$(find "$TMPDIR_CREATED" -maxdepth 1 -name '*.md' 2>/dev/null | wc -l | tr -d ' ')"
+  if [[ "$found" = "0" ]]; then
+    echo "Error: no '--- FILE: <name> ---' delimiters found in paste."
+    echo "Expected at least one line like: --- FILE: FEATURE_PRD.md ---"
+    rm -rf "$TMPDIR_CREATED"
+    exit 1
+  fi
+  echo "  Extracted $found file(s) from paste."
 else
-  DOWNLOADS="$HOME/Downloads"
+  latest_zip="$(ls -t "$HOME/Downloads/"*.zip 2>/dev/null | head -1 || true)"
+  if [[ -n "$latest_zip" ]]; then
+    TMPDIR_CREATED="$(mktemp -d)"
+    echo "Unzipping $(basename "$latest_zip")..."
+    unzip -q "$latest_zip" -d "$TMPDIR_CREATED"
+    md_dir="$(find "$TMPDIR_CREATED" -name "FEATURE_PRD.md" -o -name "FEATURE_IMPL_PLAN.md" 2>/dev/null | head -1 | xargs dirname 2>/dev/null || true)"
+    DOWNLOADS="${md_dir:-$TMPDIR_CREATED}"
+  elif [[ -d "$HOME/Downloads/files" ]] && ls "$HOME/Downloads/files/"*.md &>/dev/null 2>&1; then
+    DOWNLOADS="$HOME/Downloads/files"
+  else
+    DOWNLOADS="$HOME/Downloads"
+  fi
 fi
 
 # --- 2. Move the 4 feature artifacts ---

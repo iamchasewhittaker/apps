@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
+import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import { ModeHeading } from '@/components/ModeHeading';
 import type { Learning } from '@/lib/types';
 
@@ -22,12 +23,20 @@ export default async function LearningsPage({ searchParams }: Props) {
   const tab = sp.tab ?? 'all';
   const supabase = await createServerClient();
 
-  const { data: allLearnings } = await supabase
-    .from('learnings')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const [{ data: allLearnings }, visibleSet] = await Promise.all([
+    supabase
+      .from('learnings')
+      .select('*')
+      .order('created_at', { ascending: false }),
+    readVisibleSetFromCookie(),
+  ]);
 
-  const learnings: Learning[] = allLearnings ?? [];
+  const rawLearnings: Learning[] = allLearnings ?? [];
+  const learnings: Learning[] = visibleSet
+    ? rawLearnings.filter(
+        (l) => !l.project_slug || visibleSet.has(l.project_slug),
+      )
+    : rawLearnings;
 
   const unreviewed = learnings.filter((l) => !l.reviewed);
 

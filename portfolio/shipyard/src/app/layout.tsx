@@ -9,7 +9,10 @@ import { LogoIcon } from "@/components/LogoIcon";
 import { LogoLabel } from "@/components/LogoLabel";
 import { ModeProvider } from "@/components/ModeProvider";
 import { NavItem } from "@/components/NavItem";
+import { ProjectPickerAutoOpen } from "@/components/ProjectPickerAutoOpen";
+import type { PickerProject } from "@/components/ProjectPickerModal";
 import type { LabelKey } from "@/lib/labels";
+import { createServerClient } from "@/lib/supabase";
 import "./globals.css";
 
 const bigShoulders = Big_Shoulders({
@@ -46,11 +49,13 @@ const navItems: { href: string; labelKey: LabelKey }[] = [
   { href: "/settings", labelKey: "settings" },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const allProjects = await loadAllProjectsForPicker();
+
   return (
     <html
       lang="en"
@@ -80,8 +85,23 @@ export default function RootLayout({
           <main className="ml-[220px] flex-1 p-8 overflow-y-auto min-h-screen">
             {children}
           </main>
+
+          <ProjectPickerAutoOpen projects={allProjects} />
         </ModeProvider>
       </body>
     </html>
   );
+}
+
+async function loadAllProjectsForPicker(): Promise<PickerProject[]> {
+  try {
+    const supabase = await createServerClient();
+    const { data } = await supabase
+      .from('projects')
+      .select('slug,name,type,family,status')
+      .order('name');
+    return (data ?? []) as PickerProject[];
+  } catch {
+    return [];
+  }
 }

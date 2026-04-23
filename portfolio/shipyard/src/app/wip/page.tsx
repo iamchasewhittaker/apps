@@ -1,6 +1,8 @@
 export const dynamic = 'force-dynamic';
 
 import { createServerClient } from '@/lib/supabase';
+import { filterByVisible } from '@/lib/visible-projects';
+import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import { QueueList } from './QueueList';
 import { ModeHeading } from '@/components/ModeHeading';
 import type { Project, WipDecision } from '@/lib/types';
@@ -8,20 +10,22 @@ import type { Project, WipDecision } from '@/lib/types';
 export default async function WipPage() {
   const supabase = await createServerClient();
 
-  const [{ data: projects }, { data: recentDecisions }] = await Promise.all([
-    supabase
-      .from('projects')
-      .select('*')
-      .in('status', ['active', 'stalled'])
-      .order('last_commit_date', { ascending: false }),
-    supabase
-      .from('wip_decisions')
-      .select('*')
-      .order('decided_at', { ascending: false })
-      .limit(5),
-  ]);
+  const [{ data: projects }, { data: recentDecisions }, visibleSet] =
+    await Promise.all([
+      supabase
+        .from('projects')
+        .select('*')
+        .in('status', ['active', 'stalled'])
+        .order('last_commit_date', { ascending: false }),
+      supabase
+        .from('wip_decisions')
+        .select('*')
+        .order('decided_at', { ascending: false })
+        .limit(5),
+      readVisibleSetFromCookie(),
+    ]);
 
-  const ships: Project[] = projects ?? [];
+  const ships: Project[] = filterByVisible(projects ?? [], visibleSet);
   const decisions: WipDecision[] = recentDecisions ?? [];
 
   return (

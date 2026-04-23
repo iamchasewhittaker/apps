@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. v0.1 is functional; decisions are made.
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/job-search-hq-ios`
 2. **BRANDING.md** — deep blue accent, Job Search HQ brand language, professional/corporate aesthetic
 3. **PRODUCT_BRIEF.md** — distill from context below

@@ -1,23 +1,17 @@
-'use client';
+export const dynamic = 'force-dynamic';
 
-import { useMode } from '@/components/ModeProvider';
-import type { ThemeMode } from '@/lib/labels';
+import { createServerClient } from '@/lib/supabase';
+import { ProjectPickerControls } from '@/components/ProjectPickerControls';
+import type { PickerProject } from '@/components/ProjectPickerModal';
+import { ThemeModeToggle } from './ThemeModeToggle';
 
-const MODES: { value: ThemeMode; label: string; hint: string }[] = [
-  {
-    value: 'nautical',
-    label: 'Nautical',
-    hint: 'Fleet · Drydock Gate · Harbor · Blueprint / Charting / Launched',
-  },
-  {
-    value: 'regular',
-    label: 'Regular',
-    hint: 'Dashboard · In Progress · Linear · Step 1 / Step 2 / Shipped',
-  },
-];
-
-export default function SettingsPage() {
-  const { mode, setMode } = useMode();
+export default async function SettingsPage() {
+  const supabase = await createServerClient();
+  const { data } = await supabase
+    .from('projects')
+    .select('slug,name,type,family,status')
+    .order('name');
+  const projects = (data ?? []) as PickerProject[];
 
   return (
     <div className="mx-auto max-w-3xl space-y-10">
@@ -30,41 +24,23 @@ export default function SettingsPage() {
 
       <section className="space-y-4">
         <div className="space-y-1">
+          <h2 className="font-mono-label text-[11px] text-muted">Visible projects</h2>
+          <p className="text-sm text-foreground">
+            Pick which projects appear on Fleet, WIP, Captain&rsquo;s Log, Charts, and Showcase.
+            Direct links to <code className="text-accent">/ship/&lt;slug&gt;</code> still work for everything.
+          </p>
+        </div>
+        <ProjectPickerControls projects={projects} />
+      </section>
+
+      <section className="space-y-4">
+        <div className="space-y-1">
           <h2 className="font-mono-label text-[11px] text-muted">Theme mode</h2>
           <p className="text-sm text-foreground">
             Switch between nautical vocabulary and plain project names. Colors and layout stay the same.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {MODES.map((opt) => {
-            const active = opt.value === mode;
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setMode(opt.value)}
-                className={`flex flex-col items-start gap-2 rounded-lg border p-4 text-left transition-colors ${
-                  active
-                    ? 'border-accent bg-accent/10 text-foreground'
-                    : 'border-border bg-card text-muted hover:border-accent/60 hover:text-foreground'
-                }`}
-              >
-                <div className="flex w-full items-center justify-between">
-                  <span className="font-display text-lg uppercase tracking-wider text-white">
-                    {opt.label}
-                  </span>
-                  {active && (
-                    <span className="rounded-full border border-accent/40 bg-accent/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent">
-                      Active
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs leading-relaxed">{opt.hint}</span>
-              </button>
-            );
-          })}
-        </div>
+        <ThemeModeToggle />
       </section>
     </div>
   );

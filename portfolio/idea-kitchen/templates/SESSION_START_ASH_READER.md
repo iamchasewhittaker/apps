@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The app is at v1.1 and live; decisions a
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/ash-reader`
 2. **BRANDING.md** — P6 yellow accent, reading/text metaphor, minimal mobile aesthetic
 3. **PRODUCT_BRIEF.md** — distill from context below

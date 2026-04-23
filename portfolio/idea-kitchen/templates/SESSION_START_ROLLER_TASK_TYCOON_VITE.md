@@ -20,7 +20,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The app is archived; all decisions are h
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/roller-task-tycoon-vite` (marked retired)
 2. **BRANDING.md** — Win95 chrome aesthetic, retro gamification; note superseded branding
 3. **PRODUCT_BRIEF.md** — distill from context below; frame as a retired iteration

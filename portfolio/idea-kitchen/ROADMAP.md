@@ -39,10 +39,22 @@ One reusable loop that takes any raw idea and walks it to a shipped portfolio ap
 - [x] **Knowledge manifest updated** — 4 new feature templates in Must-upload list; refresh cadence documented.
 - [x] **CLAUDE.md bumped to v0.2** — Purpose, File Structure, Current Features, Constraints & Gotchas updated.
 
+## Phase 2.5 — Shipped (v0.3, 2026-04-22) · Artifact reliability + paste fallback
+
+- [x] **Prompt hardening** — top-of-prompt "artifacts are artifacts, not code blocks" rule under "How to behave." STEP 6 + STEP 6F rewritten to use imperative filename language ("Artifact titled `PRODUCT_BRIEF.md`") instead of raw `<antArtifact>` XML examples. Explicit Fallback subsections added to both steps.
+- [x] **`scripts/install-docs --paste <file>` + `--paste-clipboard`** — fallback when claude.ai pastes docs inline instead of creating artifact panels. Splits `--- FILE: <name> ---` delimited single-file markdown. Preamble discarded. BSD awk compatible (no gawk dependency). `find`-based zero-match check avoids `set -e` trip.
+- [x] **`scripts/install-feature-docs --paste <file>` + `--paste-clipboard`** — same fallback for feature-mode's 4 artifacts.
+- [x] **Portfolio-wide SESSION_START template sweep** — 40 pre-filled templates + `SESSION_START_EXISTING_APP.md` + `SESSION_START_NEW_APP_EXAMPLE.md` normalized: "All six STEP 6 **blocks**" → "All six STEP 6 **artifacts** (downloadable panels, not code blocks in chat)." Latent reinforcement of wrong fallback removed.
+- [x] **`docs/BUILD_GUIDE.md` §4, §4b, §11** — fallback path documented; §11 gains a troubleshooting row for the "STEP 6 pasted blocks instead of artifacts" failure mode.
+- [x] **Splitter + error-path unit-tested** — `/tmp/fake.md` with preamble + two delimited docs installed cleanly; empty paste exits with "no `--- FILE:` delimiters found" message.
+- [x] **CLAUDE.md bumped to v0.3.**
+
 ## Phase 3 — Next
 
+- [ ] **Re-upload Project Knowledge** — updated system prompt + 40 swept SESSION_START templates + 4 feature templates to the live Idea Kitchen Claude Project on claude.ai.
+- [ ] **Live artifact check** — re-run the Shipyard retroactive-docs session on claude.ai after re-upload. Expect 6 artifact panels with Download buttons. Run `install-docs shipyard` to confirm.
+- [ ] **Live paste-fallback check** — if any session still pastes blocks, save the chat message to `~/Downloads/<app>.md` and run `install-docs <slug> --paste <file>`. Confirm all 6 files land correctly.
 - [ ] **Dogfood feature mode end-to-end** — run the Fairway sprinkler-map scenario through the live Claude Project, install via `install-feature-docs`, scaffold Milestone 0 in Claude Code. Log friction in `LEARNINGS.md`.
-- [ ] **Re-upload Project Knowledge** — new system prompt + 4 feature templates to the live Idea Kitchen Claude Project on claude.ai.
 - [ ] **Script idempotency smoke test** — run `install-feature-docs fairway-ios sprinkler-map` twice; verify no duplicated ROADMAP / CHANGELOG / LEARNINGS / Obsidian-link entries.
 - [ ] End-to-end test of project mode (still pending from v0.1): create a Claude Project, upload Knowledge per manifest, run one real idea through STEPs 0–9, log friction.
 - [ ] Enhance `portfolio/shipyard/src/app/ship/[slug]/page.tsx` to render each app's `docs/SHOWCASE.md`. Section headers (from `APP_SHOWCASE_TEMPLATE.md`) are the parsing contract.
@@ -72,3 +84,6 @@ One reusable loop that takes any raw idea and walks it to a shipped portfolio ap
 - **2026-04-22** — STEP 1F scan uses 4 checks (target / siblings / shared-package / architecture-fit), not just target overlap. The sibling pass is the one that catches "this should be in `ClarityUI` instead."
 - **2026-04-22** — STEP 1.5F runs 4 research layers (matrix / UX / reviews / tech), not a summary. Feature-level decisions are fine-grained enough to need all four.
 - **2026-04-22** — Handoff must be a single idempotent script, not a checklist. `install-feature-docs` wires all 7 touchpoints in one run.
+- **2026-04-22 (v0.3)** — Never put raw tool-invocation markup inside fenced code blocks in a system prompt. Imperative behavior description ("Create an artifact titled X") beats showing the markup. Showing `<antArtifact>` XML as an example caused claude.ai to emit it as literal text.
+- **2026-04-22 (v0.3)** — When hardening a prompt against a failure mode, sweep the entire corpus of supporting files too. The "blocks" word in 40 SESSION_START templates was latent reinforcement of the wrong behavior — the fix had to be portfolio-wide, not just prompt-local.
+- **2026-04-22 (v0.3)** — `--paste` fallback is opt-in, not auto-detected. Silent auto-parse of random clipboard content on empty `~/Downloads` would produce confusing failure modes; explicit flag makes the intent unambiguous.

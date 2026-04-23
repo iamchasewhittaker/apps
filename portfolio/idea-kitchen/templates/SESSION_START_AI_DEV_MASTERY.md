@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The course is content-complete; decision
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/ai-dev-mastery`
 2. **BRANDING.md** — course / mastery aesthetic, structured learning palette
 3. **PRODUCT_BRIEF.md** — distill from context below; note "built for Chase, used by Chase" framing

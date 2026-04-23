@@ -19,7 +19,7 @@ Do not run STEP 0, STEP 1.5, or STEP 2. The CLI is functional; decisions are mad
 
 ## What to produce
 
-All six STEP 6 blocks. Priority:
+All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
 1. **SHOWCASE.md** — Shipyard needs this at `/ship/spend-clarity`
 2. **BRANDING.md** — developer-tool aesthetic, CLI/terminal framing, precision voice
 3. **PRODUCT_BRIEF.md** — distill from context below

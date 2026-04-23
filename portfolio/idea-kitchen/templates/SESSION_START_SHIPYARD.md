@@ -1,105 +1,116 @@
-# SESSION_START — Shipyard Retroactive Foundation Docs
+# SESSION_START — Shipyard
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
+> Paste into Claude Code at the start of any Shipyard session.
 
 ---
 
-**Mode:** Retroactive documentation — Shipyard exists and is deployed.
 **App:** Shipyard
 **Slug:** shipyard
-**One-liner:** Fleet command center for Chase's app portfolio — a local CLI scanner upserts metadata into Supabase, and a deployed Next.js dashboard surfaces project health, WIP queue, reviews, learnings, and thematic analysis.
+**Workspace:** `~/Developer/chase/portfolio/shipyard/`
+**GitHub:** `https://github.com/iamchasewhittaker/apps` (path: `portfolio/shipyard/`)
+**Live URL:** `https://shipyard-iamchasewhittakers-projects.vercel.app`
+**Linear:** — (add URL when project created)
+**Deploy:** `git push` only — never `vercel --prod`
 
 ---
 
-## What to skip
+## Read first
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is live and Phase 2 is in progress.
-
----
-
-## What to produce
-
-All six STEP 6 blocks. Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/shipyard` (yes, it renders its own card)
-2. **BRANDING.md** — Nautical rebrand, deep navy palette, Big Shoulders Display (see Brand System below)
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect Phase 1 (complete) + Phase 2 (in progress); Phase 3 in V2
-5. **APP_FLOW.md** — document the Fleet dashboard → Ship detail → WIP queue flow
-6. **SESSION_START_shipyard.md** — stub only
-
-Output paths: `portfolio/shipyard/docs/`
+1. `~/Developer/chase/CLAUDE.md` — repo conventions, stack defaults, portfolio table
+2. `portfolio/shipyard/HANDOFF.md` — current state, last touch, next action
+3. `portfolio/shipyard/LEARNINGS.md` — past mistakes; read before touching scanner or schema
 
 ---
 
-## App context — CLAUDE.md
+## Current state (as of 2026-04-22)
 
-**Version:** v0.1
-**Status:** Phase 2 in progress — auth gate + data live; 48 projects synced
-**URL:** https://shipyard-iamchasewhittakers-projects.vercel.app
-**Entry:** `src/app/page.tsx`
-**Stack:** Next.js 16.2 (App Router) + React 19 + TypeScript + Tailwind CSS v4 + Supabase + Vercel
-**Deploy:** GitHub auto-deploy on push to `main` (use `git push`, not `vercel --prod`)
+Phase 2 in progress. Auth gate live. 48 projects synced. Ship detail editable. Decommission flow complete. Nightly scan cron running.
 
-**What this app is:**
-Fleet command center for Chase's app portfolio. A local CLI scanner (`scripts/scan.ts`) reads `~/Developer/chase/portfolio/**`, extracts project metadata, and upserts into Supabase. The Next.js dashboard (deployed to Vercel) reads from Supabase and renders project health, compliance scores, MVP steps, a WIP priority queue, weekly reviews, a learnings log, and thematic analysis.
-
-```
-Mac (local) → scripts/scan.ts → Supabase ← Next.js (Vercel)
-```
-
-**Auto-scan cron:** `com.chasewhittaker.shipyard-scan` launchd agent runs `scripts/scan-cron.sh` nightly at 3:00 AM.
-
-**8 pages:**
-- Fleet dashboard (main) — project cards with status, compliance, WIP banner
-- Ship detail (`/ship/[slug]`) — editable status, next action, blockers, decommission
-- Drydock Gate (`/wip`) — full WIP queue + drag-to-reorder
-- Port Inspection (`/review`) — weekly review form
-- Captain's Log (`/learnings`) — learnings aggregated from all apps
-- Charts & Constellations (`/themes`) — thematic analysis
-- Fleet Showcase (`/portfolio`) — public portfolio view
-- Harbor Master (`/linear`) — Linear sync (Phase 2)
-
-**Brand system (Nautical rebrand · 2026-04-19):**
-- Background `#07101E`, surface `#0C1A34`, gold accent `#D7AA3A`, steel `#4A90DE`, sail cream text `#F2EEE6`
-- Display: Big Shoulders Display Bold; Labels/mono: DM Mono Regular; Body: Instrument Sans
-- Logo: ship's helm (8 spokes, 4 cardinal handles, 4 steel dots) — `LogoIcon.tsx`
-- Nautical ↔ plain label toggle: Projects/Ships, Dashboard/Fleet, Learnings/Captain's Log, etc.
-
-**Nautical theme labels (important for SHOWCASE copy):**
-- Projects → Ships · Build → Under Construction · Launch → Launched · Paused → In Drydock
-- Dashboard → Fleet · Learnings → Captain's Log · Themes → Charts & Constellations
-- Linear → Harbor Master · Portfolio → Fleet Showcase · Review → Port Inspection
-
-**Key commands:**
-```
-npm run dev                  # Local dev (port 3000)
-npm run sync:projects        # Sync portfolio metadata from root CLAUDE.md
-npx tsx scripts/scan.ts      # Manual scan → Supabase
-npm run smoke                # Route smoke test
-```
+Pending Phase 2 items:
+- Apply `0003_add_retirement.sql` in Supabase SQL Editor (manual step — do not auto-run)
+- Fix learnings unique constraint
+- Learnings ingestion from LEARNINGS.md files
+- WIP enforcement via wip_decisions
+- Linear Harbor Master sync
 
 ---
 
-## App context — HANDOFF.md
+## Goal for this session
 
-**Version:** v0.1
-**Status:** Phase 2 in progress — auth gate + data live; 48 projects synced
-**Last touch:** 2026-04-21
+State your goal here before proceeding. Example: "Implement learnings ingestion — parse LEARNINGS.md files and upsert to learnings table."
 
-**Phase 1 complete:**
-- Next.js app scaffolded + deployed via GitHub auto-deploy
-- Full schema migrated (`0001_init.sql`): projects, blockers, scans, wip_decisions, reviews, learnings, themes
-- 8 pages built and live
-- Local scanner CLI + seed script (29 + 28 additional projects live-scanned)
+If no goal is stated, stop and ask.
 
-**Phase 2 in progress:**
-- ✅ Supabase RLS + auth gate
-- ✅ Login page (email + password)
-- ✅ Editable fields on Ship detail (status, next_action, blockers)
-- ✅ Decommission Ship workflow (UI + CLI + API + Linear helper)
-- ✅ Auto-scan cron (nightly launchd)
-- ⬜ Learnings ingestion from LEARNINGS.md files
-- ⬜ WIP enforcement via wip_decisions
-- ⬜ Linear Harbor Master sync
+---
 
-**Next:** Apply `0003_add_retirement.sql` manually in Supabase SQL Editor · fix learnings unique constraint · Linear sync.
+## V1 scope (what's in)
+
+- Fleet dashboard with status, compliance, WIP flag
+- Ship detail with inline-editable fields
+- Drydock Gate (WIP queue, drag-to-reorder)
+- Port Inspection (weekly review form)
+- Captain's Log (learnings aggregated from LEARNINGS.md files)
+- Auth gate (email + password)
+- Local scanner CLI + nightly launchd cron
+
+## NOT in scope
+
+- Linear Harbor Master sync (Phase 2, separate session)
+- Charts & Constellations thematic analysis (Phase 3)
+- Fleet Showcase public portfolio view (Phase 3)
+- Multi-user auth
+- Mobile-native version
+- Automated compliance scoring rules
+
+---
+
+## End-of-session checklist
+
+```
+ 1. checkpoint
+ 2. Update CHANGELOG.md under ## [Unreleased]            # MANDATORY
+ 3. Update portfolio/shipyard/ROADMAP.md
+ 4. Update root ROADMAP.md Change Log row
+ 5. Update portfolio/shipyard/HANDOFF.md — State, Focus, Next, Last touch
+ 6. Update portfolio/shipyard/LEARNINGS.md               # MANDATORY — always at least one line
+ 6.5. If user-visible state changed: update docs/SHOWCASE.md
+ 7. Linear — heartbeat comment + move completed issues to Done
+ 8. If root CLAUDE.md portfolio table changed:
+       cd portfolio/shipyard && npm run sync:projects
+ 8.5. Update brain/02-Projects/shipyard/README.md — bump frontmatter (status / shipped date if v1 cut), add a one-line dated log entry if user-visible state changed. Index only; don't mirror repo docs.
+ 9. git add <paths>
+10. git commit -m "<type>(shipyard): <summary>"
+11. git push
+12. Report: what shipped / what's next / any blockers.
+```
+
+## Security checklist
+
+```
+- Public repo. Never commit secrets, real financial figures, or real names tied to private data.
+- .env gitignored. .env.example template only.
+- Supabase RLS on every table. anon key OK in client; service-role server-only.
+- Parameterized queries only.
+- No dangerouslySetInnerHTML. HTTPS only. No user-controlled redirects.
+- npm audit --production before each release.
+- If a secret is committed: rotate immediately, then purge history.
+- AI keys server-side only. Prompt-injection resistance on any tool-use path.
+- Run /secure before first push.
+```
+
+## Best-practices checklist
+
+```
+1. Vertical slice: one full flow per session.
+2. Verify in browser before claiming done.
+3. npm run build locally before push (Node 20 CI is strict).
+4. Small diffs. Conventional commits.
+5. Empty + error states on every screen.
+6. Accessibility from day one. Chase has low vision.
+7. Portfolio table + Shipyard metadata stay in sync.
+8. HANDOFF.md = resume context. Linear + git = shipped truth.
+9. Honor kill criteria.
+10. /audit before push on non-trivial changes.
+11. No speculative abstractions.
+12. 15-minute stuck rule: if stuck 15 min, change approach or ask.
+```
