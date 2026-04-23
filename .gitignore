@@ -20,6 +20,8 @@
 !/projects/**
 !/scripts/
 !/scripts/**
+!/plans/
+!/plans/**
 !/.github/
 !/.github/workflows/
 !/.github/workflows/**
