@@ -25,6 +25,9 @@ Paths are relative to `~/Developer/chase/` unless noted.
 15. `portfolio/idea-kitchen/templates/FEATURE_PRD_TEMPLATE.md` — feature-mode PRD skeleton with verdict-block placeholders (STEP 3F).
 16. `portfolio/idea-kitchen/templates/FEATURE_DESIGN_TEMPLATE.md` — feature-mode design skeleton: screens, components, states, a11y, data delta (STEP 4F).
 17. `portfolio/idea-kitchen/templates/FEATURE_IMPL_PLAN_TEMPLATE.md` — feature-mode Claude Code SESSION_START kickoff skeleton (STEP 5F output).
+18. `portfolio/idea-kitchen/templates/MONETIZATION_BRIEF.md` — revenue-model template (v0.4 STEP 3.25 output).
+19. `portfolio/idea-kitchen/templates/LAUNCH_PLAYBOOK.md` — go-live checklist template (v0.4 STEP 6 artifact 6).
+20. `portfolio/STRATEGY.md` — current portfolio status, monetization roadmap, brand-from-zero playbook. Used by Project to ground recommendations in Chase's actual position.
 
 ## Pre-filled app templates (upload when running retroactive docs for that app)
 

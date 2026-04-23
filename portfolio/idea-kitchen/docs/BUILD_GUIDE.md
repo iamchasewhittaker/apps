@@ -13,7 +13,11 @@ Before Idea Kitchen, every new app meant:
 - No visual surface for "what am I making."
 - Burning tokens on context Chase has already typed ten times.
 
-Idea Kitchen is one loop that takes a raw idea, walks it through Phases 1–3 of `PRODUCT_BUILD_FRAMEWORK.md`, produces six handoff docs, and hands off to Claude Code with a kickoff prompt that's ready to paste.
+Idea Kitchen is one loop that takes a raw idea, walks it through Phases 1, 2, 2.25, 2.5, and 3 of `PRODUCT_BUILD_FRAMEWORK.md`, produces eight handoff docs, and hands off to Claude Code with a kickoff prompt that's ready to paste.
+
+**Phase 2.25 is new in v0.4** — every project now produces a `MONETIZATION_BRIEF.md` (revenue model, pricing, WTP evidence) before the brand step. A new `LAUNCH_PLAYBOOK.md` covers go-live (domain, legal, Stripe, marketing channel). Chase has 38 projects and zero MRR. The system enforces revenue-thinking up-front so v1 ships with a Stripe URL, not without one.
+
+A new **Brainstorm mode (STEP 0B)** runs Ideaflow + Naval ideation when Chase doesn't have an idea yet — generates 20+ seeds from his strengths, interests, and frustrations, then narrows to 3 via Naval scoring (specific knowledge, permissionless leverage, productize yourself, long-term game) and a confidence-bypass filter (prefer Tier 1 sells-itself artifacts over Tier 4 personal-brand offers).
 
 It also dogfoods itself. This app follows every rule it teaches.
 
@@ -35,7 +39,7 @@ The Project picks the mode from your first message — "I want to build X" route
 
 The bridge between the two halves is the artifacts:
 
-- **Project mode:** `PRODUCT_BRIEF.md`, `PRD.md`, `BRANDING.md`, `APP_FLOW.md`, `SHOWCASE.md`, `SESSION_START_<SLUG>.md`.
+- **Project mode (v0.4):** `PRODUCT_BRIEF.md`, `PRD.md`, `MONETIZATION_BRIEF.md`, `BRANDING.md`, `APP_FLOW.md`, `LAUNCH_PLAYBOOK.md`, `SHOWCASE.md`, `SESSION_START_<SLUG>.md`. Eight artifacts.
 - **Feature mode:** `FEATURE_BRIEF.md`, `FEATURE_PRD.md`, `FEATURE_DESIGN.md`, `FEATURE_IMPL_PLAN.md` (the impl plan is itself a SESSION_START-shaped kickoff).
 
 `SHOWCASE.md` (project mode only) is the visual surface. Shipyard renders it at `/ship/<slug>` (Phase 2 of this app's roadmap). Until then it's a well-organized markdown page.
@@ -60,17 +64,19 @@ You're ready. Every idea from now on starts by opening this Project and typing t
 1. Open the Claude Project.
 2. Paste your raw idea. No format required. One sentence is fine.
 3. Answer STEP 0 (scope / identity / appetite) in one message.
-4. Go through STEPS 1 → 1.5 → 2 → 3 → 3.5 → 4 → 5 one message at a time. Sign off at each gate. STEP 1.5 is the prior-art / existing-solution check — don't skip it, that's where "this already exists on the open web" gets caught before you burn the appetite.
-5. At STEP 6, each doc appears as a downloadable artifact in claude.ai. Click **Download** on each one — six `.md` files land in `~/Downloads`. Then in your terminal:
+4. Go through STEPS 1 → 1.5 → 2 → 3 → 3.25 → 3.5 → 4 → 5 one message at a time. Sign off at each gate. STEP 1.5 is the prior-art / existing-solution check — don't skip it, that's where "this already exists on the open web" gets caught before you burn the appetite. STEP 3.25 is the new revenue-model gate — pricing, WTP evidence, and target metrics get locked before brand.
+5. At STEP 6, each doc appears as a downloadable artifact in claude.ai. Click **Download** on each one — eight `.md` files land in `~/Downloads`. Then in your terminal:
    ```
    cd ~/Developer/chase
    portfolio/idea-kitchen/scripts/install-docs <slug>
    ```
-   This moves all six docs to the correct paths:
+   This moves all eight docs to the correct paths:
    - `portfolio/<slug>/docs/PRODUCT_BRIEF.md`
    - `portfolio/<slug>/docs/PRD.md`
+   - `portfolio/<slug>/docs/MONETIZATION_BRIEF.md`
    - `portfolio/<slug>/docs/BRANDING.md`
    - `portfolio/<slug>/docs/APP_FLOW.md`
+   - `portfolio/<slug>/docs/LAUNCH_PLAYBOOK.md`
    - `portfolio/<slug>/docs/SHOWCASE.md`
    - `portfolio/idea-kitchen/templates/SESSION_START_<SLUG>.md`
 

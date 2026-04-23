@@ -137,8 +137,8 @@ fi
 echo "Installing docs for '$SLUG' from: $DOWNLOADS"
 echo ""
 
-# --- Move the 5 standard docs ---
-for doc in PRODUCT_BRIEF PRD BRANDING APP_FLOW SHOWCASE; do
+# --- Move the 7 standard docs (PRODUCT_BRIEF, PRD, MONETIZATION_BRIEF, BRANDING, APP_FLOW, LAUNCH_PLAYBOOK, SHOWCASE) ---
+for doc in PRODUCT_BRIEF PRD MONETIZATION_BRIEF BRANDING APP_FLOW LAUNCH_PLAYBOOK SHOWCASE; do
   src="$DOWNLOADS/$doc.md"
   if [[ -f "$src" ]]; then
     mv "$src" "$DOCS_DIR/$doc.md"
