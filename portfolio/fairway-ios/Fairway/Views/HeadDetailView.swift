@@ -7,6 +7,7 @@ struct HeadDetailView: View {
     let headID: UUID
     @State private var editing = false
     @State private var draft: HeadData?
+    @State private var showMapEditor = false
 
     @MainActor private var currentHead: HeadData? {
         store.zone(withID: zoneID)?.heads.first(where: { $0.id == headID })
@@ -30,6 +31,9 @@ struct HeadDetailView: View {
                 .background(FairwayTheme.backgroundPrimary)
                 .navigationTitle(head.label)
                 .navigationBarTitleDisplayMode(.inline)
+                .fullScreenCover(isPresented: $showMapEditor) {
+                    HeadPinEditor(zoneID: zoneID, head: currentHead ?? head)
+                }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         if editing {
@@ -42,9 +46,17 @@ struct HeadDetailView: View {
                             }
                             .bold()
                         } else {
-                            Button("Edit") {
-                                draft = currentHead
-                                editing = true
+                            HStack(spacing: 16) {
+                                Button {
+                                    showMapEditor = true
+                                } label: {
+                                    Image(systemName: "mappin.and.ellipse")
+                                }
+                                .accessibilityLabel("Place on map")
+                                Button("Edit") {
+                                    draft = currentHead
+                                    editing = true
+                                }
                             }
                         }
                     }

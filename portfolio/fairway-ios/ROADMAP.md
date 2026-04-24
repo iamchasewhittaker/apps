@@ -22,14 +22,26 @@
 ## Phase 3 — Field Tools
 - [ ] Camera integration for head photos
 - [ ] QR/barcode scanner for product lookup
-- [ ] Map/satellite zone layout view
+- [x] Map/satellite zone layout view — `HeadPinEditor.swift` WIP on `main` (MapKit + drag handles for bearing/arc)
 
 ## Phase 4 — Cloud
 - [ ] iCloud or Supabase sync stub
 - [ ] Export to PDF (season report)
 
+## Active Remediation (post 2026-04-23 over-application)
+
+- [ ] Data entry per `/Users/chase/.claude/plans/what-went-wrong-here-playful-lemur.md` — IFA inventory, fert app log, 6 Z2 heads, mixed-precip ProblemArea, 9 maintenance tasks
+- [ ] Measure park strip width (4-6 ft → MP800SR; 6-8 ft → MP1000) — due 2026-04-26
+- [ ] Verify Z2-S5 MP Rotator cap color (blue=MP1000, purple=MP800SR) — due 2026-04-26
+- [ ] Order 5× MP Rotator nozzles (~$50) — due 2026-04-27
+- [ ] Dig out + raise Z2-S6 with swing pipe — due 2026-04-25
+- [ ] Install 5× MP Rotator nozzles + tune Z2 run-time (~3× longer than sprays) — due 2026-05-04
+
 ## Ideas Backlog
 - Weather integration (manual rainfall entry)
 - Rachio API integration (if access becomes available)
 - Push spreader support (when HHS100 is replaced)
-- Zone coverage map (draw spray arcs on satellite image)
+- Zone coverage map (draw spray arcs on satellite image) — partially addressed by `HeadPinEditor`
+- **Schema bump:** add `precipRateInPerHour: Double?` to `HeadData` — would be the right home for the precip-mismatch story
+- **Schema bump:** add `photos: [URL]` to `HeadData` so head photos don't have to live in Photos/Google Earth
+- **Calibration log:** structured calibration entries on `InventoryItem` (date, dial, target lb, actual lb, pass/fail) so the calibration discipline is enforced by the data model

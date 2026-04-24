@@ -58,6 +58,7 @@
 		FW010000000000000000033 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000033 /* SettingsView.swift */; };
 		FW010000000000000000034 /* MapTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000034 /* MapTabView.swift */; };
 		FW010000000000000000035 /* MapListToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000035 /* MapListToggleView.swift */; };
+		FW010000000000000000036 /* HeadPinEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000036 /* HeadPinEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		FW020000000000000000033 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		FW020000000000000000034 /* MapTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTabView.swift; sourceTree = "<group>"; };
 		FW020000000000000000035 /* MapListToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListToggleView.swift; sourceTree = "<group>"; };
+		FW020000000000000000036 /* HeadPinEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadPinEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 				FW020000000000000000033 /* SettingsView.swift */,
 				FW020000000000000000034 /* MapTabView.swift */,
 				FW020000000000000000035 /* MapListToggleView.swift */,
+				FW020000000000000000036 /* HeadPinEditor.swift */,
 				FW020000000000000000010 /* ZoneListView.swift */,
 				FW020000000000000000011 /* ZoneDetailView.swift */,
 				FW020000000000000000012 /* HeadInventoryView.swift */,
@@ -405,6 +408,7 @@
 				FW010000000000000000033 /* SettingsView.swift in Sources */,
 				FW010000000000000000034 /* MapTabView.swift in Sources */,
 				FW010000000000000000035 /* MapListToggleView.swift in Sources */,
+				FW010000000000000000036 /* HeadPinEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
