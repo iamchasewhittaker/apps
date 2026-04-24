@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+### Added — Session 3 / Step 2 (2026-04-24) — auth refactor
+- `lib/supabase-browser.ts` — singleton `getSupabaseBrowserClient()` via `@supabase/ssr` `createBrowserClient`
+- `middleware.ts` — Supabase SSR cookie refresher; runs on every non-asset route so `getUser()` sees a fresh session
+- `app/login/page.tsx` — magic-link sign-in (`signInWithOtp` with `emailRedirectTo`); idle → sending → "Check your email" states; reset-email button
+- `app/auth/callback/route.ts` — `exchangeCodeForSession(code)` → redirect to `/` (or `/login?error=callback`)
+- `app/(app-shell)/layout.tsx` — Server Component auth gate; `createRouteClient()` + `getUser()` + `redirect('/login')`; wraps children with `<NavBar />`
+- `components/shell/NavBar.tsx` — Dashboard / Settings links with active state via `usePathname()`
+- `components/shell/UserMenu.tsx` — email + sign-out (routes to `/login`, calls `router.refresh()`)
+- `app/(app-shell)/settings/page.tsx` — minimal settings page with `<MigrationBanner />` + Step-8 placeholder
+- `components/settings/MigrationBanner.tsx` — one-shot YNAB token migration from localStorage → `POST /api/credentials` → clears localStorage only on 2xx
+
+### Changed — Session 3 / Step 2
+- `app/page.tsx` → `app/(app-shell)/page.tsx` (content identical; now behind the auth gate)
+
+### Infra — Session 3 / Step 2
+- Applied `0001_init.sql` + `0002_rls.sql` to Supabase project `unqtnnxlltiadzbqpyhh`. All 7 `clarity_budget_*` tables live with RLS.
+- Required `supabase migration repair --status reverted 0001 0002` first; the tracker had the migrations registered but the DDL had never executed.
+
 ### Added — Session 2 (2026-04-20)
 - `lib/aggregations.ts` — shared spending analytics: `flattenSpendLines` (split-tx aware), `groupByCategory/Payee/Account/Week`, `totalSpent`, `outflowCount`, `dateRangeLabel`, `roleColor`
 - `lib/filterState.ts` — `FilterState` + `applyFilters` + `useUrlFilterState` hook (URL-persisted via `useSearchParams`/`router.replace`)

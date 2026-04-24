@@ -4,10 +4,10 @@
 
 | Field | Value |
 |---|---|
-| Focus | v1 Redesign — backend foundation (step 1 of 10 done) |
-| Status | Step 1 complete; Step 2 (auth refactor) is next |
-| Last touch | 2026-04-23 |
-| URL | clarity-budget-web.vercel.app |
+| Focus | v1 Redesign — auth refactor (steps 1–2 of 10 done) |
+| Status | Step 2 complete; Step 3 (Privacy integration) is next |
+| Last touch | 2026-04-24 |
+| URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 unpushed) |
 | Branch | main |
 
 ---
@@ -54,18 +54,58 @@ Handoff doc that started this: `plans/clarity-budget-web-redesign-HANDOFF.md`.
 | `curl POST /api/credentials` (unauthenticated) | ✅ 401 |
 | `curl DELETE /api/credentials` (unauthenticated) | ✅ 401 |
 
-### Migrations NOT yet applied
-Run in Supabase SQL editor for project `unqtnnxlltiadzbqpyhh`:
-1. `supabase/migrations/0001_init.sql`
-2. `supabase/migrations/0002_rls.sql`
+### Migrations applied 2026-04-24
+Both migrations now live on remote project `unqtnnxlltiadzbqpyhh` via `supabase db push`. All 7 `clarity_budget_*` tables confirmed present (HTTP 200 on `/rest/v1/<table>?select=*&limit=0`).
+
+> Note: `supabase migration repair --status reverted 0001 0002` was required first — the tracker thought both were applied even though the DDL had never run. Re-push then succeeded.
 
 ---
 
-## Remaining steps (2–10 from the plan)
+## What was built — Session 3 / Redesign step 2 (2026-04-24)
+
+### New packages
+None — reused `@supabase/ssr` added in step 1.
+
+### New files
+- `lib/supabase-browser.ts` — singleton `getSupabaseBrowserClient()` via `@supabase/ssr`'s `createBrowserClient`. Cached in module scope so every `'use client'` call reuses the same client.
+- `middleware.ts` (repo root) — Supabase SSR cookie refresher. Runs on every non-asset route and calls `supabase.auth.getUser()` so the auth cookie stays fresh across server renders.
+- `app/login/page.tsx` — client component; email input → `signInWithOtp` with `emailRedirectTo: <origin>/auth/callback`. Swaps to "Check your email" confirmation after POST. "Use a different email" button resets to idle.
+- `app/auth/callback/route.ts` — reads `?code=`, calls `exchangeCodeForSession`, redirects to `/` on success or `/login?error=callback` on failure.
+- `app/(app-shell)/layout.tsx` — Server Component. `createRouteClient()` → `getUser()` → `redirect('/login')` if no user; otherwise renders `<NavBar email={user.email}/>` wrapping `{children}`.
+- `components/shell/NavBar.tsx` — client; Dashboard / Settings links with active state via `usePathname()`.
+- `components/shell/UserMenu.tsx` — client; email + Sign out button (signs out, routes to `/login`, calls `router.refresh()` so the server layout re-runs its auth check).
+- `app/(app-shell)/settings/page.tsx` — server page; renders `<MigrationBanner />` + Step-8 placeholder.
+- `components/settings/MigrationBanner.tsx` — client; reads `localStorage[YNAB_TOKEN_KEY]` in a `useEffect`, shows yellow banner if present, `fetch('/api/credentials', POST)`, clears localStorage **only** on 2xx. Inline error on failure (localStorage untouched).
+
+### Moves
+- `app/page.tsx` → `app/(app-shell)/page.tsx` (unchanged contents).
+
+### Verification results
+| Check | Result |
+|---|---|
+| `supabase db push` (after repair) | ✅ both migrations applied |
+| All 7 `clarity_budget_*` tables exist (REST probe) | ✅ HTTP 200 each |
+| `pnpm exec tsc --noEmit` | ✅ clean |
+| `pnpm lint` | ✅ clean |
+| `pnpm build` | ✅ `/` `ƒ`, `/login` `○`, `/settings` `ƒ`, middleware compiled (89.7 kB) |
+| `GET /` unauthed | ✅ 307 → `/login` |
+| `GET /settings` unauthed | ✅ 307 → `/login` |
+| `GET /login` | ✅ 200 |
+| `POST /api/credentials` unauthed | ✅ 401 |
+| `GET /auth/callback` no code | ✅ 307 → `/login?error=callback` |
+| Login form submit (real Supabase) | ✅ POST to `/auth/v1/otp` → 200; UI switched to "Check your email" |
+
+### Still needs manual verification (requires receiving the magic-link email)
+- Click magic link → `/auth/callback?code=…` → land on `/` with `<NavBar>` visible
+- Sign out → back to `/login`
+- With a pre-seeded YNAB token in localStorage, visit `/settings` → banner appears → Migrate → localStorage key gone, row in `clarity_budget_credentials`, audit log row with `action = 'credentials_upsert'`
+
+---
+
+## Remaining steps (3–10 from the plan)
 
 | # | Step | Key files |
 |---|---|---|
-| **2** | **Auth refactor** | `app/login/page.tsx`, `app/(app-shell)/layout.tsx` auth gate, YNAB token migration banner in `/settings` |
 | 3 | Privacy integration | `lib/privacy/client.ts`, `lib/privacy/sync.ts`, `lib/privacy/types.ts` |
 | 4 | Reconcile logic + first unit tests | `lib/reconcile/match.ts`, `propose-rename.ts`, `detect-weirdness.ts`, `fingerprint.ts`, `__tests__/` |
 | 5 | Cron endpoints + `vercel.json` | `app/api/cron/sync/route.ts`, `app/api/cron/backfill/route.ts`, `vercel.json` |
@@ -77,55 +117,38 @@ Run in Supabase SQL editor for project `unqtnnxlltiadzbqpyhh`:
 
 ---
 
-## Step 2 — what to build next
+## Step 3 — what to build next
 
-**Auth refactor.** Three pieces:
+**Privacy.com integration.** Pulls the user's Privacy virtual cards + transactions so `lib/reconcile` (step 4) has something to match against YNAB transactions.
 
-1. **`app/login/page.tsx`** — magic-link sign-in. Use `supabase.auth.signInWithOtp({ email })`. Show a confirmation screen after submit. Keep it in the existing dark theme using `T` tokens from `lib/constants.ts`.
+Key files:
+- `lib/privacy/types.ts` — shape of Privacy card + transaction API responses
+- `lib/privacy/client.ts` — fetch wrapper, takes a decrypted `privacy_token`, returns typed responses
+- `lib/privacy/sync.ts` — pull cards into `clarity_budget_privacy_cards`, pull transactions into `clarity_budget_privacy_transactions`; uses `createServiceClient()` (requires `SUPABASE_SERVICE_ROLE_KEY` to be set first)
 
-2. **`app/(app-shell)/layout.tsx`** — Server Component that calls `createRouteClient()` + `supabase.auth.getUser()`. If no user, redirect to `/login`. If user, render the top nav (`components/shell/NavBar.tsx` + `UserMenu.tsx`) wrapping `{children}`. Move `app/page.tsx` (dashboard) into `app/(app-shell)/` so it's gated.
-
-3. **YNAB token migration banner** (lives in `/settings` but scaffolded in step 2 so the gate can be tested). On first load after login, if `localStorage["chase_budget_web_ynab_token"]` exists, show a yellow banner: "Move your YNAB token to encrypted Supabase storage." One-click button: reads the key, POSTs to `/api/credentials`, clears localStorage **only after** the POST succeeds. Banner unmounts after clear.
-
-**Nav components** needed in step 2:
-- `components/shell/NavBar.tsx` — links: Dashboard / Review / Flags / Settings; active state via `usePathname()`.
-- `components/shell/UserMenu.tsx` — shows email + sign-out button (calls `supabase.auth.signOut()`, redirects to `/login`).
-
-**What doesn't change in step 2:**
-- `lib/crypto.ts`, `lib/supabase-server.ts`, migrations — untouched.
-- Dashboard data fetching — still reads YNAB token from localStorage (migration banner is one-shot, not a full migration).
-- `components/HomeDashboard.tsx` — untouched until step 9.
+**Open items before step 5 (cron):**
+- `SUPABASE_SERVICE_ROLE_KEY` is blank in `.env.local` — paste from Supabase dashboard → project settings → API
+- Vercel env vars still say `REACT_APP_SUPABASE_*`; before deploying Step 2, add `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` to Vercel (Production + Preview)
 
 ---
 
-## Fresh session prompt — Step 2 (auth refactor)
+## Fresh session prompt — Step 3 (Privacy integration)
 
 ```
-Read plans/clarity-budget-web-redesign-HANDOFF.md, then portfolio/clarity-budget-web/HANDOFF.md,
-then plans/clarity-budget-web-redesign.md. Run checkpoint before touching anything.
+Read portfolio/clarity-budget-web/HANDOFF.md then plans/clarity-budget-web-redesign.md.
+Run checkpoint before touching anything.
 
-Implement step 2 of the redesign: auth refactor.
+Implement step 3 of the redesign: Privacy.com integration.
 
 Files to create:
-- app/login/page.tsx — magic-link sign-in (OTP, email input, confirm screen). Use T tokens from
-  lib/constants.ts for styling. No new component libraries.
-- app/(app-shell)/layout.tsx — Server Component auth gate. createRouteClient() from
-  lib/supabase-server.ts, getUser(), redirect to /login if missing. Renders NavBar + UserMenu
-  from components/shell/ wrapping {children}.
-- components/shell/NavBar.tsx — top nav: Dashboard / Review / Flags / Settings links.
-  Active state via usePathname(). T tokens for colors. 'use client'.
-- components/shell/UserMenu.tsx — email display + sign-out. 'use client'.
+- lib/privacy/types.ts — API response shapes (Card, Transaction)
+- lib/privacy/client.ts — fetch wrapper; takes a decrypted privacy_token string; paginates
+- lib/privacy/sync.ts — pullCards(userId) + pullTransactions(userId, since); uses
+  createServiceClient() + clarity_budget_credentials row to decrypt the token
 
-Move app/page.tsx into app/(app-shell)/page.tsx so it falls under the auth gate.
-(The current app/page.tsx is a thin Suspense wrapper — move it as-is.)
+Do NOT wire this into a cron or UI yet — that's steps 5 and 6.
 
-Add the YNAB token migration banner (inline in app/(app-shell)/settings/page.tsx or as a
-MigrationBanner component). Reads localStorage["chase_budget_web_ynab_token"], POSTs to
-/api/credentials, clears localStorage ONLY after confirmed success.
-
-Verify: hit / unauthenticated → redirect to /login. Sign in with magic link → land on dashboard.
-Dashboard still loads STS + spending breakdown from YNAB. Migration banner appears once if
-the old localStorage key is present.
+Stop after step 3 and show the diff.
 
 Stop after step 2 and show the diff before moving on.
 ```

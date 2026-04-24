@@ -1,5 +1,21 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-24 — Step 2 auth refactor
+
+**Supabase migration tracker can lie.** First `supabase db push` returned "Remote database is up to date" and `migration list` showed both `0001` and `0002` as applied — but the REST API returned HTTP 404 for `clarity_budget_credentials`. The tracker had rows in `supabase_migrations.schema_migrations` but the DDL had never actually run. `supabase migration repair --status reverted 0001 0002` + `db push` fixed it. **Lesson:** after every `db push`, probe a concrete table via the REST API before trusting the tracker.
+
+**`createBrowserClient` singleton.** `@supabase/ssr`'s browser factory must be called exactly once per tab — instantiating new clients per component fragments auth state and breaks session listeners. `lib/supabase-browser.ts` caches it in module scope, keyed by the first call. Server-side has its own per-request factory (`createRouteClient()` in `lib/supabase-server.ts`).
+
+**`middleware.ts` is mandatory for SSR auth.** Without the middleware calling `supabase.auth.getUser()` on every request, the auth cookie goes stale and the server layout's `getUser()` call returns `null` even when the browser has a valid session. The matcher excludes `_next/static`, `_next/image`, and common image extensions so middleware doesn't run on every asset fetch.
+
+**Route groups (`(app-shell)`) don't affect URLs.** Moving `app/page.tsx` → `app/(app-shell)/page.tsx` keeps the URL as `/` but puts it under the `(app-shell)/layout.tsx` auth gate. `/login` stays outside the group so it's reachable when signed out.
+
+**`router.refresh()` after sign-out.** `router.push('/login')` alone won't re-run the server `(app-shell)/layout.tsx` and drop the NavBar — the client router will just swap the page. Calling `router.refresh()` after `push` forces the server layout to re-evaluate `getUser()`.
+
+**Test API routes via curl when the client can't carry a session.** For the auth gate + 401 checks, `curl -w '%{http_code}' http://localhost:$PORT/route` is faster and more reliable than programmatic browser eval (Chrome's inspector drops the eval promise mid-await when the page navigates).
+
+**Stale `.next` cache after route moves.** Moving `app/page.tsx` into a route group broke `pnpm exec tsc --noEmit` (it referenced `../../app/page.js` from `.next/types/validator.ts`). `rm -rf .next` + re-typecheck is the fix.
+
 ## 2026-04-20 — Transaction architecture
 
 **Decision:** Transactions stored in a separate `chase_budget_web_tx_v1` localStorage key rather than inside `BudgetBlob`. This keeps the Supabase sync clean — `pushBlob` never needs to strip transactions before syncing, and there's no risk of merchant-level PII leaking to the cloud.
