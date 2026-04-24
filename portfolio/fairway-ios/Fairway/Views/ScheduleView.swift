@@ -22,6 +22,8 @@ struct ScheduleView: View {
                 emptyState
             }
 
+            rachioMirrorCard
+
             HStack {
                 Spacer()
                 if editing {
@@ -214,5 +216,70 @@ struct ScheduleView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
+    }
+
+    @ViewBuilder
+    private var rachioMirrorCard: some View {
+        if let state = store.blob.rachio,
+           let zone,
+           let rachioZoneId = state.rachioZoneId(forFairwayZone: zone.number) {
+            let rules = state.scheduleRules(forRachioZoneId: rachioZoneId)
+            FairwayCard {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Label("Rachio says", systemImage: "dot.radiowaves.left.and.right")
+                            .font(.caption.bold())
+                            .foregroundStyle(FairwayTheme.accentGold)
+                            .textCase(.uppercase)
+                        Spacer()
+                        Text(state.deviceName)
+                            .font(.caption2)
+                            .foregroundStyle(FairwayTheme.textSecondary)
+                    }
+
+                    if rules.isEmpty {
+                        Text("No schedule rules include this zone.")
+                            .font(.footnote)
+                            .foregroundStyle(FairwayTheme.textSecondary)
+                    } else {
+                        ForEach(rules) { rule in
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(rule.name)
+                                        .font(.subheadline.bold())
+                                        .foregroundStyle(FairwayTheme.textPrimary)
+                                    Spacer()
+                                    Text(rule.statusLabel)
+                                        .font(.caption2.bold())
+                                        .padding(.horizontal, 8).padding(.vertical, 2)
+                                        .background(statusBackground(rule).opacity(0.25))
+                                        .foregroundStyle(statusBackground(rule))
+                                        .clipShape(Capsule())
+                                }
+                                HStack {
+                                    Text("Start: \(rule.startTimeLabel)")
+                                    Spacer()
+                                    Text("Runs \(rule.totalDurationMinutes) min")
+                                }
+                                .font(.caption)
+                                .foregroundStyle(FairwayTheme.textSecondary)
+                                Text(rule.scheduleType)
+                                    .font(.caption2)
+                                    .foregroundStyle(FairwayTheme.textSecondary)
+                            }
+                            if rule.id != rules.last?.id {
+                                Divider().background(FairwayTheme.backgroundElevated)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private func statusBackground(_ rule: RachioScheduleSnapshot) -> Color {
+        if !rule.enabled { return FairwayTheme.statusAttention }
+        if rule.rainDelay { return FairwayTheme.sunAmber }
+        return FairwayTheme.statusHealthy
     }
 }

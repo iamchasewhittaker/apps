@@ -80,6 +80,29 @@ struct MoreView: View {
                 }
             }
 
+            Section("Integrations") {
+                NavigationLink {
+                    RachioSettingsView()
+                } label: {
+                    HStack {
+                        Text("Rachio Sync")
+                        Spacer()
+                        if store.rachioIsConnected {
+                            Text(store.blob.rachio?.deviceName ?? "Connected")
+                                .font(.caption)
+                                .foregroundStyle(FairwayTheme.accentGold)
+                        } else {
+                            Text("Not connected")
+                                .font(.caption)
+                                .foregroundStyle(FairwayTheme.textSecondary)
+                        }
+                    }
+                }
+                NavigationLink("Watering History") {
+                    RachioHistoryView()
+                }
+            }
+
             Section("Settings") {
                 NavigationLink("Settings") {
                     SettingsView()

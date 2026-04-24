@@ -1,11 +1,22 @@
 import Foundation
 import Observation
 
+struct RachioConnectPreview {
+    let personId: String
+    let devices: [RachioDTO.PersonResponse.Device]
+}
+
 @Observable
 @MainActor
 final class FairwayStore {
     var blob: FairwayBlob = FairwayBlob()
     let photos = PhotoStore()
+
+    // MARK: - Rachio observable state
+    var rachioSyncing: Bool = false
+    var rachioLastError: String? = nil
+
+    private let rachioAPI = RachioAPI()
 
     nonisolated init() {}
 
@@ -257,5 +268,170 @@ final class FairwayStore {
 
     func zone(withID id: UUID) -> ZoneData? {
         blob.zones.first { $0.id == id }
+    }
+
+    // MARK: - Rachio
+
+    var hasRachioToken: Bool { RachioKeychain.hasToken() }
+    var rachioIsConnected: Bool { blob.rachio != nil && hasRachioToken }
+
+    /// Validate the token and fetch available devices — does NOT persist anything.
+    func verifyRachioToken(_ token: String) async throws -> RachioConnectPreview {
+        rachioLastError = nil
+        let info = try await rachioAPI.fetchPersonInfo(token: token)
+        let person = try await rachioAPI.fetchPerson(id: info.id, token: token)
+        guard !person.devices.isEmpty else { throw RachioError.noDevices }
+        return RachioConnectPreview(personId: info.id, devices: person.devices)
+    }
+
+    /// Finalize connection: persist token in Keychain, seed `blob.rachio` from the
+    /// chosen device, then run an initial sync (events + snapshot).
+    func completeRachioConnection(token: String, personId: String, device: RachioDTO.PersonResponse.Device) async {
+        rachioSyncing = true
+        defer { rachioSyncing = false }
+        rachioLastError = nil
+        _ = RachioKeychain.saveToken(token)
+
+        let zoneSnapshots = (device.zones ?? [])
+            .sorted { $0.zoneNumber < $1.zoneNumber }
+            .map { $0.toSnapshot() }
+        let scheduleSnapshots = (device.scheduleRules ?? []).map { $0.toSnapshot() }
+        let flexSnapshots = (device.flexScheduleRules ?? []).map { $0.toSnapshot() }
+
+        // Auto-link Fairway zones to Rachio zones by zone number (1/2/3/4).
+        var links: [String: String] = [:]
+        for fairwayZone in blob.zones {
+            if let match = zoneSnapshots.first(where: { $0.zoneNumber == fairwayZone.number }) {
+                links["\(fairwayZone.number)"] = match.id
+            }
+        }
+
+        blob.rachio = RachioState(
+            personId: personId,
+            deviceId: device.id,
+            deviceName: device.name ?? "Rachio",
+            lastSyncAt: Date(),
+            zones: zoneSnapshots,
+            scheduleRules: scheduleSnapshots,
+            flexScheduleRules: flexSnapshots,
+            recentEvents: [],
+            zoneLinks: links
+        )
+        save()
+
+        // Initial event backfill.
+        await pullRachioEvents(windowDays: FairwayConfig.rachioInitialHistoryDays, token: token)
+    }
+
+    /// Refresh the device snapshot + pull any new events since lastSyncAt.
+    func syncRachio() async {
+        guard var state = blob.rachio else {
+            rachioLastError = "Not connected to Rachio."
+            return
+        }
+        guard let token = RachioKeychain.readToken() else {
+            rachioLastError = RachioError.missingToken.localizedDescription
+            return
+        }
+        rachioSyncing = true
+        defer { rachioSyncing = false }
+        rachioLastError = nil
+
+        do {
+            let person = try await rachioAPI.fetchPerson(id: state.personId, token: token)
+            guard let device = person.devices.first(where: { $0.id == state.deviceId }) else {
+                rachioLastError = "Previously-linked device is no longer on the account."
+                return
+            }
+            state.zones = (device.zones ?? [])
+                .sorted { $0.zoneNumber < $1.zoneNumber }
+                .map { $0.toSnapshot() }
+            state.scheduleRules = (device.scheduleRules ?? []).map { $0.toSnapshot() }
+            state.flexScheduleRules = (device.flexScheduleRules ?? []).map { $0.toSnapshot() }
+            state.lastSyncAt = Date()
+            blob.rachio = state
+            save()
+        } catch let err as RachioError {
+            handleRachioError(err)
+            return
+        } catch {
+            rachioLastError = error.localizedDescription
+            return
+        }
+
+        // Pull events since lastSyncAt (with 1-day overlap to catch any drift).
+        let from = blob.rachio?.lastSyncAt.addingTimeInterval(-86_400) ?? Date().addingTimeInterval(-86_400)
+        await pullRachioEvents(windowStart: from, token: token)
+    }
+
+    func disconnectRachio() {
+        RachioKeychain.deleteToken()
+        blob.rachio = nil
+        rachioLastError = nil
+        save()
+    }
+
+    /// Override the auto-detected link for a Fairway zone.
+    func setRachioZoneLink(fairwayZoneNumber: Int, rachioZoneId: String?) {
+        guard var state = blob.rachio else { return }
+        if let id = rachioZoneId {
+            state.zoneLinks["\(fairwayZoneNumber)"] = id
+        } else {
+            state.zoneLinks.removeValue(forKey: "\(fairwayZoneNumber)")
+        }
+        blob.rachio = state
+        save()
+    }
+
+    // MARK: - Rachio helpers
+
+    private func pullRachioEvents(windowDays: Int, token: String) async {
+        let from = Date().addingTimeInterval(-Double(windowDays) * 86_400)
+        await pullRachioEvents(windowStart: from, token: token)
+    }
+
+    private func pullRachioEvents(windowStart: Date, token: String) async {
+        guard let deviceId = blob.rachio?.deviceId else { return }
+        do {
+            let events = try await rachioAPI.fetchEvents(
+                deviceId: deviceId,
+                from: windowStart,
+                to: Date(),
+                token: token
+            )
+            mergeRachioEvents(events)
+        } catch let err as RachioError {
+            handleRachioError(err)
+        } catch {
+            rachioLastError = error.localizedDescription
+        }
+    }
+
+    private func mergeRachioEvents(_ incoming: [RachioDTO.EventResponse]) {
+        guard var state = blob.rachio else { return }
+        var bucket = state.recentEvents
+        var seen = Set(bucket.map { $0.id })
+        for (idx, raw) in incoming.enumerated() {
+            let fallback = "\(raw.eventDate ?? 0)-\(idx)"
+            guard let snap = raw.toSnapshot(fallbackId: fallback), !seen.contains(snap.id) else { continue }
+            bucket.append(snap)
+            seen.insert(snap.id)
+        }
+        bucket.sort { $0.date > $1.date }
+        if bucket.count > FairwayConfig.rachioMaxStoredEvents {
+            bucket = Array(bucket.prefix(FairwayConfig.rachioMaxStoredEvents))
+        }
+        state.recentEvents = bucket
+        blob.rachio = state
+        save()
+    }
+
+    private func handleRachioError(_ err: RachioError) {
+        rachioLastError = err.errorDescription
+        if case .unauthorized = err {
+            RachioKeychain.deleteToken()
+            // Keep the last-known snapshot so the UI can still render stale data
+            // while telling the user to reconnect.
+        }
     }
 }

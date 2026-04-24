@@ -5,4 +5,7 @@ enum FairwayConfig {
     static let bundleID = "com.chasewhittaker.Fairway"
     static let version = "0.2"
     static let totalGrassSqFt: Int = 2737  // zones 2+3+4
+    static let rachioAPIBase = "https://api.rach.io/1/public"
+    static let rachioInitialHistoryDays: Int = 90
+    static let rachioMaxStoredEvents: Int = 500
 }

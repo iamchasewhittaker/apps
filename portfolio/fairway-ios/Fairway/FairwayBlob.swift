@@ -11,6 +11,7 @@ struct FairwayBlob: Codable {
     var waterRuns: [WaterRun] = []
     var fertApplications: [FertApplication] = []
     var property: PropertySettings? = nil
+    var rachio: RachioState? = nil
     var _syncAt: Double? = nil
     var seeded: Bool = false
 }

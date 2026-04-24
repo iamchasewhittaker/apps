@@ -59,6 +59,13 @@
 		FW010000000000000000034 /* MapTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000034 /* MapTabView.swift */; };
 		FW010000000000000000035 /* MapListToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000035 /* MapListToggleView.swift */; };
 		FW010000000000000000036 /* HeadPinEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000036 /* HeadPinEditor.swift */; };
+		FW010000000000000000037 /* RachioKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000037 /* RachioKeychain.swift */; };
+		FW010000000000000000038 /* RachioAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000038 /* RachioAPI.swift */; };
+		FW010000000000000000039 /* RachioDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000039 /* RachioDTOs.swift */; };
+		FW01000000000000000003A /* RachioState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003A /* RachioState.swift */; };
+		FW01000000000000000003B /* RachioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003B /* RachioSettingsView.swift */; };
+		FW01000000000000000003C /* RachioHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003C /* RachioHistoryView.swift */; };
+		FW01000000000000000003D /* RachioDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003D /* RachioDecodeTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +133,13 @@
 		FW020000000000000000034 /* MapTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTabView.swift; sourceTree = "<group>"; };
 		FW020000000000000000035 /* MapListToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListToggleView.swift; sourceTree = "<group>"; };
 		FW020000000000000000036 /* HeadPinEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadPinEditor.swift; sourceTree = "<group>"; };
+		FW020000000000000000037 /* RachioKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioKeychain.swift; sourceTree = "<group>"; };
+		FW020000000000000000038 /* RachioAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioAPI.swift; sourceTree = "<group>"; };
+		FW020000000000000000039 /* RachioDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioDTOs.swift; sourceTree = "<group>"; };
+		FW02000000000000000003A /* RachioState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioState.swift; sourceTree = "<group>"; };
+		FW02000000000000000003B /* RachioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioSettingsView.swift; sourceTree = "<group>"; };
+		FW02000000000000000003C /* RachioHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioHistoryView.swift; sourceTree = "<group>"; };
+		FW02000000000000000003D /* RachioDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioDecodeTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +212,7 @@
 				FW020000000000000000026 /* WaterRunData.swift */,
 				FW020000000000000000027 /* FertApplicationData.swift */,
 				FW020000000000000000028 /* PropertySettings.swift */,
+				FW02000000000000000003A /* RachioState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -218,6 +233,8 @@
 				FW020000000000000000034 /* MapTabView.swift */,
 				FW020000000000000000035 /* MapListToggleView.swift */,
 				FW020000000000000000036 /* HeadPinEditor.swift */,
+				FW02000000000000000003B /* RachioSettingsView.swift */,
+				FW02000000000000000003C /* RachioHistoryView.swift */,
 				FW020000000000000000010 /* ZoneListView.swift */,
 				FW020000000000000000011 /* ZoneDetailView.swift */,
 				FW020000000000000000012 /* HeadInventoryView.swift */,
@@ -241,6 +258,7 @@
 				FW02000000000000000001E /* FairwayBlobTests.swift */,
 				FW020000000000000000029 /* MowDirectionTests.swift */,
 				FW02000000000000000002E /* PhotoStoreTests.swift */,
+				FW02000000000000000003D /* RachioDecodeTests.swift */,
 			);
 			path = FairwayTests;
 			sourceTree = "<group>";
@@ -258,6 +276,9 @@
 			children = (
 				FW02000000000000000002C /* PhotoStore.swift */,
 				FW020000000000000000031 /* Geocoder.swift */,
+				FW020000000000000000037 /* RachioKeychain.swift */,
+				FW020000000000000000038 /* RachioAPI.swift */,
+				FW020000000000000000039 /* RachioDTOs.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -409,6 +430,12 @@
 				FW010000000000000000034 /* MapTabView.swift in Sources */,
 				FW010000000000000000035 /* MapListToggleView.swift in Sources */,
 				FW010000000000000000036 /* HeadPinEditor.swift in Sources */,
+				FW010000000000000000037 /* RachioKeychain.swift in Sources */,
+				FW010000000000000000038 /* RachioAPI.swift in Sources */,
+				FW010000000000000000039 /* RachioDTOs.swift in Sources */,
+				FW01000000000000000003A /* RachioState.swift in Sources */,
+				FW01000000000000000003B /* RachioSettingsView.swift in Sources */,
+				FW01000000000000000003C /* RachioHistoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +446,7 @@
 				FW01000000000000000001E /* FairwayBlobTests.swift in Sources */,
 				FW010000000000000000029 /* MowDirectionTests.swift in Sources */,
 				FW01000000000000000002E /* PhotoStoreTests.swift in Sources */,
+				FW01000000000000000003D /* RachioDecodeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
