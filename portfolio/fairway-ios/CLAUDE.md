@@ -47,14 +47,19 @@ Fairway/
     FertilizerData.swift
     MaintenanceData.swift
     InventoryData.swift
+    RachioState.swift          ← persisted Rachio snapshot: personId, deviceId, zones, scheduleRules, recentEvents, zoneLinks
+  Services/
+    RachioKeychain.swift     ← Security framework Keychain wrapper (service=com.chasewhittaker.Fairway, account=rachio_personal_access_token)
+    RachioAPI.swift          ← async URLSession client for Rachio v1 API (fetchPersonInfo, fetchPerson, fetchEvents)
+    RachioDTOs.swift         ← internal Codable wire types (RachioDTO namespace) — separate from persisted models
   Views/
-    ContentView.swift        ← TabView: Zones / Lawn / Soil / Maintenance / More
+    ContentView.swift        ← TabView: Zones / Lawn / Soil / Maintenance / More; "Integrations" section in MoreView
     ZoneListView.swift       ← 4 zone cards with status dots
     ZoneDetailView.swift     ← Heads/Problems/Schedule (+ Beds for Zone 1)
     HeadInventoryView.swift  ← head list + add/edit
-    HeadDetailView.swift     ← full head record: issues, radius, GPM, season test toggle
+    HeadDetailView.swift     ← full head record: issues, radius, GPM, season test toggle; toolbar pin button (HeadPinEditor)
     ProblemAreaView.swift    ← problem list + add/edit with PRE-SEASON badges
-    ScheduleView.swift       ← Rachio params display + edit
+    ScheduleView.swift       ← Rachio params display + "Rachio says" mirror card (linked zones only)
     ShrubBedView.swift       ← Bed A/B/C with plants + upkeep tasks
     FertilizerView.swift     ← season plan timeline + product links + Shed inventory
     InventoryView.swift      ← products + equipment, stock log, service history
@@ -62,9 +67,13 @@ Fairway/
     SoilTestView.swift       ← nutrient bar chart + findings
     MaintenanceView.swift    ← task list + reminders + season test checklist
     MowLogView.swift         ← quick-add mow entries
+    RachioSettingsView.swift ← SecureField token entry → Verify & Connect → zone-link pickers → Disconnect
+    RachioHistoryView.swift  ← events grouped by day with zone pills + toolbar sync button
+    HeadPinEditor.swift      ← WIP (MapKit) — drag-handle pin editor for bearing + arc sweep (committed, unverified)
 
 FairwayTests/
   FairwayBlobTests.swift
+  RachioDecodeTests.swift    ← 7 tests: PersonInfo, Person+device tree, schedule status, event mapping, legacy migration, zone-link lookup
 ```
 
 ## Architecture
@@ -106,6 +115,9 @@ xcodebuild test \
 4. Grass zones (2/3/4) have 3 tabs: Heads / Problems / Schedule
 5. Cycle & Soak is critical for Utah clay soil — all schedules default to it
 6. Fertilizer date windows are calibrated for Vineyard, UT (zone 6b)
+7. **Rachio token lives in Keychain only** — never in UserDefaults, FairwayBlob, logs, or committed files. Entered via SecureField, validated, then written with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`. On 401: Keychain cleared, last-known snapshot preserved.
+8. **Z2 (Front yard + park strip) is a single valve** — any Z2 irrigation or fert application covers the park strip automatically. Always call this out explicitly.
+9. **Spreader calculator is necessary but not sufficient** — always run 100 sq ft TARE calibration before applying any product. Log calibration result on `InventoryItem` before logging `FertApplication`.
 
 ## References
 
