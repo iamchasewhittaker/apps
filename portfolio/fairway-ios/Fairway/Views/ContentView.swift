@@ -21,8 +21,8 @@ struct ContentView: View {
                 NavigationStack { FertilizerView() }
                     .tabItem { Label("Lawn", systemImage: "sun.max.fill") }
 
-                NavigationStack { SoilTestView() }
-                    .tabItem { Label("Soil", systemImage: "chart.bar.fill") }
+                NavigationStack { MapTabView() }
+                    .tabItem { Label("Map", systemImage: "map.fill") }
 
                 NavigationStack { MaintenanceView() }
                     .tabItem { Label("Maintenance", systemImage: "checkmark.circle.fill") }
@@ -74,6 +74,15 @@ struct MoreView: View {
                 }
                 NavigationLink("Inventory (The Shed)") {
                     InventoryView()
+                }
+                NavigationLink("Soil Test") {
+                    SoilTestView()
+                }
+            }
+
+            Section("Settings") {
+                NavigationLink("Settings") {
+                    SettingsView()
                 }
             }
 

@@ -48,6 +48,16 @@
 		FW010000000000000000029 /* MowDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000029 /* MowDirectionTests.swift */; };
 		FW01000000000000000002A /* QuickLogFAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002A /* QuickLogFAB.swift */; };
 		FW01000000000000000002B /* QuickLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002B /* QuickLogSheet.swift */; };
+		FW01000000000000000002C /* PhotoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002C /* PhotoStore.swift */; };
+		FW01000000000000000002D /* AddObservationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002D /* AddObservationSheet.swift */; };
+		FW01000000000000000002E /* PhotoStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002E /* PhotoStoreTests.swift */; };
+		FW01000000000000000002F /* AddWaterRunSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002F /* AddWaterRunSheet.swift */; };
+		FW010000000000000000030 /* AddFertAppSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000030 /* AddFertAppSheet.swift */; };
+		FW010000000000000000031 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000031 /* Geocoder.swift */; };
+		FW010000000000000000032 /* PropertySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000032 /* PropertySettingsView.swift */; };
+		FW010000000000000000033 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000033 /* SettingsView.swift */; };
+		FW010000000000000000034 /* MapTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000034 /* MapTabView.swift */; };
+		FW010000000000000000035 /* MapListToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000035 /* MapListToggleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +114,16 @@
 		FW020000000000000000029 /* MowDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MowDirectionTests.swift; sourceTree = "<group>"; };
 		FW02000000000000000002A /* QuickLogFAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogFAB.swift; sourceTree = "<group>"; };
 		FW02000000000000000002B /* QuickLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogSheet.swift; sourceTree = "<group>"; };
+		FW02000000000000000002C /* PhotoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStore.swift; sourceTree = "<group>"; };
+		FW02000000000000000002D /* AddObservationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddObservationSheet.swift; sourceTree = "<group>"; };
+		FW02000000000000000002E /* PhotoStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStoreTests.swift; sourceTree = "<group>"; };
+		FW02000000000000000002F /* AddWaterRunSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWaterRunSheet.swift; sourceTree = "<group>"; };
+		FW020000000000000000030 /* AddFertAppSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFertAppSheet.swift; sourceTree = "<group>"; };
+		FW020000000000000000031 /* Geocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geocoder.swift; sourceTree = "<group>"; };
+		FW020000000000000000032 /* PropertySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySettingsView.swift; sourceTree = "<group>"; };
+		FW020000000000000000033 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FW020000000000000000034 /* MapTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTabView.swift; sourceTree = "<group>"; };
+		FW020000000000000000035 /* MapListToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListToggleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +209,12 @@
 				FW02000000000000000002A /* QuickLogFAB.swift */,
 				FW02000000000000000002B /* QuickLogSheet.swift */,
 				FW02000000000000000002D /* AddObservationSheet.swift */,
+				FW02000000000000000002F /* AddWaterRunSheet.swift */,
+				FW020000000000000000030 /* AddFertAppSheet.swift */,
+				FW020000000000000000032 /* PropertySettingsView.swift */,
+				FW020000000000000000033 /* SettingsView.swift */,
+				FW020000000000000000034 /* MapTabView.swift */,
+				FW020000000000000000035 /* MapListToggleView.swift */,
 				FW020000000000000000010 /* ZoneListView.swift */,
 				FW020000000000000000011 /* ZoneDetailView.swift */,
 				FW020000000000000000012 /* HeadInventoryView.swift */,
@@ -228,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				FW02000000000000000002C /* PhotoStore.swift */,
+				FW020000000000000000031 /* Geocoder.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -371,6 +398,13 @@
 				FW01000000000000000002B /* QuickLogSheet.swift in Sources */,
 				FW01000000000000000002C /* PhotoStore.swift in Sources */,
 				FW01000000000000000002D /* AddObservationSheet.swift in Sources */,
+				FW01000000000000000002F /* AddWaterRunSheet.swift in Sources */,
+				FW010000000000000000030 /* AddFertAppSheet.swift in Sources */,
+				FW010000000000000000031 /* Geocoder.swift in Sources */,
+				FW010000000000000000032 /* PropertySettingsView.swift in Sources */,
+				FW010000000000000000033 /* SettingsView.swift in Sources */,
+				FW010000000000000000034 /* MapTabView.swift in Sources */,
+				FW010000000000000000035 /* MapListToggleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

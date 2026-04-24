@@ -67,7 +67,11 @@ struct QuickLogSheet: View {
             switch action {
             case .observation:
                 AddObservationSheet()
-            default:
+            case .waterRun:
+                AddWaterRunSheet()
+            case .fertApp:
+                AddFertAppSheet()
+            case .mow:
                 QuickLogStubSheet(actionLabel: action.label)
             }
         }

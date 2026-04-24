@@ -198,6 +198,51 @@ final class FairwayStore {
         save()
     }
 
+    // MARK: - Water run mutations
+
+    func addWaterRun(_ run: WaterRun) {
+        blob.waterRuns.append(run)
+        save()
+    }
+
+    func deleteWaterRun(id: UUID) {
+        blob.waterRuns.removeAll { $0.id == id }
+        save()
+    }
+
+    // MARK: - Fertilizer application mutations
+
+    func addFertApplication(_ app: FertApplication) {
+        blob.fertApplications.append(app)
+        save()
+    }
+
+    func deleteFertApplication(id: UUID) {
+        blob.fertApplications.removeAll { $0.id == id }
+        save()
+    }
+
+    // MARK: - Property mutations
+
+    func setProperty(_ settings: PropertySettings) {
+        blob.property = settings
+        save()
+    }
+
+    func clearProperty() {
+        blob.property = nil
+        save()
+    }
+
+    func decrementInventory(id: UUID, by lbs: Double) {
+        guard let idx = blob.inventory.firstIndex(where: { $0.id == id }) else { return }
+        if let current = blob.inventory[idx].currentStockLbs {
+            blob.inventory[idx].currentStockLbs = max(0, current - lbs)
+            blob.inventory[idx].lastStockUpdateDate = Date()
+        }
+        save()
+    }
+
     // MARK: - Seed
     func seedIfNeeded() {
         blob = PreviewData.seededBlob()

@@ -20,8 +20,18 @@ enum PreviewData {
         blob.maintenanceTasks = seedMaintenanceTasks()
         blob.mowLog = []
         blob.inventory = seedInventory()
+        blob.property = PropertySettings(address: "345 E 170 N, Vineyard, UT 84059",
+                                         latitude: 40.3330, longitude: -111.7550)
+        blob.observations = seedObservations()
         blob.seeded = true
         return blob
+    }
+
+    private static func seedObservations() -> [LawnObservation] {
+        [
+            LawnObservation(zoneNumber: 2, text: "Dry patch near H2-3, likely overspray is missing this section"),
+            LawnObservation(zoneNumber: 4, text: "Possible grub activity near Zone 4 NW corner — need to investigate")
+        ]
     }
 
     static var previewBlob: FairwayBlob { seededBlob() }
@@ -109,7 +119,11 @@ enum PreviewData {
         )
 
         zone.heads = [
-            HeadData(label: "H2-1", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 90, radiusFeet: 10, gpm: 0.5, location: "NE corner", isConfirmed: true),
+            {
+                var h = HeadData(label: "H2-1", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 90, radiusFeet: 10, gpm: 0.5, location: "NE corner", isConfirmed: true)
+                h.latitude = 40.3332; h.longitude = -111.7548; h.startBearingDegrees = 0
+                return h
+            }(),
             HeadData(label: "H2-2", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 90, radiusFeet: 10, gpm: 0.5, location: "NW corner", isConfirmed: true),
             HeadData(label: "H2-3", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 8-30", arcDegrees: 180, radiusFeet: 8, gpm: 0.4, location: "Park strip south", isConfirmed: true, issues: [.overspray]),
             HeadData(label: "H2-4", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 180, radiusFeet: 10, gpm: 0.5, location: "Center lawn", isConfirmed: true),
