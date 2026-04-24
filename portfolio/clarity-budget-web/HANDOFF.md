@@ -148,9 +148,7 @@ Files to create:
 
 Do NOT wire this into a cron or UI yet — that's steps 5 and 6.
 
-Stop after step 3 and show the diff.
-
-Stop after step 2 and show the diff before moving on.
+Stop after step 3 and show the diff before moving on.
 ```
 
 ---

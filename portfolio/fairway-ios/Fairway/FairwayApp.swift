@@ -1,6 +1,7 @@
 import SwiftUI
 
 @main
+@MainActor
 struct FairwayApp: App {
     @State private var store = FairwayStore()
     @State private var showLaunch = true

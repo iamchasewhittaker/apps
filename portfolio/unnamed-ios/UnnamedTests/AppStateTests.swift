@@ -10,7 +10,7 @@ final class AppStateTests: XCTestCase {
         var item = Item(text: "Test item")
         item.lane = .regulation
         state.items = [item]
-        state.locks = [DailyLock(date: "2025-01-01", lane1: .regulation, lane2: .future)]
+        state.locks = [DailyLock(date: "2025-01-01", lanes: [.regulation, .future])]
         state.checks = [DailyCheck(date: "2025-01-01", produced: true, stayedInLanes: false)]
 
         let data = try JSONEncoder().encode(state)
@@ -19,8 +19,8 @@ final class AppStateTests: XCTestCase {
         XCTAssertEqual(decoded.items.count, 1)
         XCTAssertEqual(decoded.items[0].text, "Test item")
         XCTAssertEqual(decoded.items[0].lane, .regulation)
-        XCTAssertEqual(decoded.locks[0].lane1, .regulation)
-        XCTAssertEqual(decoded.locks[0].lane2, .future)
+        XCTAssertEqual(decoded.locks[0].lanes[0], .regulation)
+        XCTAssertEqual(decoded.locks[0].lanes[1], .future)
         XCTAssertTrue(decoded.checks[0].produced)
         XCTAssertFalse(decoded.checks[0].stayedInLanes)
     }
@@ -51,32 +51,32 @@ final class AppStateTests: XCTestCase {
 
     func testIsLockedTodayFalseForPastLock() {
         var state = AppState()
-        state.locks = [DailyLock(date: "2000-01-01", lane1: .regulation, lane2: .future)]
+        state.locks = [DailyLock(date: "2000-01-01", lanes: [.regulation, .future])]
         let isLocked = state.locks.contains { DateHelpers.isToday($0.date) }
         XCTAssertFalse(isLocked)
     }
 
     func testIsLockedTodayTrueWhenTodayLockExists() {
         var state = AppState()
-        state.locks = [DailyLock(date: DateHelpers.todayString, lane1: .regulation, lane2: .future)]
+        state.locks = [DailyLock(date: DateHelpers.todayString, lanes: [.regulation, .future])]
         let isLocked = state.locks.contains { DateHelpers.isToday($0.date) }
         XCTAssertTrue(isLocked)
     }
 
     func testLockIsIrreversible() {
         var state = AppState()
-        let first = DailyLock(date: DateHelpers.todayString, lane1: .regulation, lane2: .future)
+        let first = DailyLock(date: DateHelpers.todayString, lanes: [.regulation, .future])
         state.locks = [first]
 
         // Simulate the guard in AppStore.lockLanes
         let alreadyLocked = state.locks.contains { DateHelpers.isToday($0.date) }
         if !alreadyLocked {
-            state.locks.append(DailyLock(date: DateHelpers.todayString, lane1: .maintenance, lane2: .support))
+            state.locks.append(DailyLock(date: DateHelpers.todayString, lanes: [.maintenance, .support]))
         }
 
         XCTAssertEqual(state.locks.count, 1)
-        XCTAssertEqual(state.locks[0].lane1, .regulation)
-        XCTAssertEqual(state.locks[0].lane2, .future)
+        XCTAssertEqual(state.locks[0].lanes[0], .regulation)
+        XCTAssertEqual(state.locks[0].lanes[1], .future)
     }
 
     // MARK: - Daily check

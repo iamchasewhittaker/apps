@@ -64,7 +64,7 @@ enum PreviewData {
         )
 
         // Bed A — backyard house
-        var bedA = ShrubBed(
+        let bedA = ShrubBed(
             label: "Bed A",
             description: "Backyard near house",
             plants: [
@@ -77,7 +77,7 @@ enum PreviewData {
             ]
         )
 
-        var bedB = ShrubBed(
+        let bedB = ShrubBed(
             label: "Bed B",
             description: "Near AC unit",
             plants: [
@@ -89,7 +89,7 @@ enum PreviewData {
             ]
         )
 
-        var bedC = ShrubBed(
+        let bedC = ShrubBed(
             label: "Bed C",
             description: "Driveway island",
             plants: [
@@ -104,7 +104,6 @@ enum PreviewData {
         )
 
         zone.shrubBeds = [bedA, bedB, bedC]
-        _ = (bedA, bedB, bedC)
         return zone
     }
 

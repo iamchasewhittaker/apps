@@ -8,14 +8,14 @@ struct LanePickerView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            Text("Pick your 2 lanes. The rest disappear.")
+            Text("Pick 2–4 lanes. The rest disappear.")
                 .foregroundStyle(Color(.systemGray))
                 .padding(.horizontal)
 
             VStack(spacing: 12) {
                 ForEach(lanes, id: \.self) { lane in
                     let isSelected = selected.contains(lane)
-                    let isDisabled = selected.count >= 2 && !isSelected
+                    let isDisabled = selected.count >= 4 && !isSelected
 
                     Button {
                         toggleLane(lane)
@@ -66,7 +66,7 @@ struct LanePickerView: View {
                 Button {
                     lockIn()
                 } label: {
-                    Text("Lock in for today")
+                    Text("Lock \(selected.count) in for today")
                         .fontWeight(.semibold)
                         .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)
@@ -74,8 +74,8 @@ struct LanePickerView: View {
                         .background(Color(hex: "#f59e0b"))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
-                .disabled(selected.count != 2)
-                .opacity(selected.count == 2 ? 1 : 0.4)
+                .disabled(selected.count < 2)
+                .opacity(selected.count >= 2 ? 1 : 0.4)
             }
             .padding()
         }
@@ -87,15 +87,15 @@ struct LanePickerView: View {
     @MainActor private func toggleLane(_ lane: Lane) {
         if selected.contains(lane) {
             selected.remove(lane)
-        } else if selected.count < 2 {
+        } else if selected.count < 4 {
             selected.insert(lane)
         }
     }
 
     @MainActor private func lockIn() {
-        guard selected.count == 2 else { return }
+        guard selected.count >= 2, selected.count <= 4 else { return }
         let sorted = selected.sorted { $0.rawValue < $1.rawValue }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        store.lockLanes(sorted[0], sorted[1])
+        store.lockLanes(sorted)
     }
 }

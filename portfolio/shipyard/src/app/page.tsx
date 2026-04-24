@@ -6,6 +6,7 @@ import { computeChipState, chipColor, chipLabel } from '@/lib/review-cadence';
 import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
 import StatsBar from '@/components/StatsBar';
 import WipBanner from '@/components/WipBanner';
+import DailyScoreboard from '@/components/DailyScoreboard';
 import { filterByVisible } from '@/lib/visible-projects';
 import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import type { Project, FleetStats, ReviewCadence, ReviewChip } from '@/lib/types';
@@ -80,6 +81,8 @@ export default async function FleetDashboard({ searchParams }: Props) {
           FLEET DASHBOARD
         </h1>
       </div>
+
+      <DailyScoreboard />
 
       <StatsBar stats={stats} />
       <WipBanner wipCount={stats.building} />

@@ -55,16 +55,16 @@ final class AppStore {
         todayLock != nil
     }
 
-    func lockLanes(_ lane1: Lane, _ lane2: Lane) {
-        guard !isLockedToday else { return }
-        state.locks.append(DailyLock(date: DateHelpers.todayString, lane1: lane1, lane2: lane2))
+    func lockLanes(_ lanes: [Lane]) {
+        guard !isLockedToday, lanes.count >= 2, lanes.count <= 4 else { return }
+        state.locks.append(DailyLock(date: DateHelpers.todayString, lanes: lanes))
         save()
     }
 
     var activeItems: [Item] {
         guard let lock = todayLock else { return [] }
         return state.items.filter {
-            ($0.lane == lock.lane1 || $0.lane == lock.lane2) && $0.status == .active
+            lock.lanes.contains($0.lane) && $0.status == .active
         }
     }
 

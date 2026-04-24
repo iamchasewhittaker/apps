@@ -6,19 +6,24 @@ struct RachioConnectPreview {
     let devices: [RachioDTO.PersonResponse.Device]
 }
 
-@Observable
 @MainActor
+@Observable
 final class FairwayStore {
-    var blob: FairwayBlob = FairwayBlob()
-    let photos = PhotoStore()
+    var blob: FairwayBlob
+    let photos: PhotoStore
 
     // MARK: - Rachio observable state
-    var rachioSyncing: Bool = false
-    var rachioLastError: String? = nil
+    var rachioSyncing: Bool
+    var rachioLastError: String?
 
     private let rachioAPI = RachioAPI()
 
-    nonisolated init() {}
+    init() {
+        blob = FairwayBlob()
+        photos = PhotoStore()
+        rachioSyncing = false
+        rachioLastError = nil
+    }
 
     func load() {
         guard let data = UserDefaults.standard.data(forKey: FairwayConfig.storeKey),

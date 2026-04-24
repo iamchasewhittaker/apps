@@ -28,8 +28,28 @@ struct Item: Codable, Identifiable {
 
 struct DailyLock: Codable {
     var date: String
-    var lane1: Lane
-    var lane2: Lane
+    var lanes: [Lane]
+
+    init(date: String, lanes: [Lane]) {
+        self.date = date
+        self.lanes = lanes
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        date = try container.decode(String.self, forKey: .date)
+        if let lanes = try? container.decode([Lane].self, forKey: .lanes) {
+            self.lanes = lanes
+        } else {
+            let lane1 = try container.decode(Lane.self, forKey: .lane1)
+            let lane2 = try container.decode(Lane.self, forKey: .lane2)
+            self.lanes = [lane1, lane2]
+        }
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case date, lanes, lane1, lane2
+    }
 }
 
 struct DailyCheck: Codable {
