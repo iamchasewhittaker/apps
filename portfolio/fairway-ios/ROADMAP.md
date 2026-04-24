@@ -28,6 +28,14 @@
 - [ ] iCloud or Supabase sync stub
 - [ ] Export to PDF (season report)
 
+## Rachio Integration
+
+- [x] v1 read-only (shipped 2026-04-24): Keychain-secured token, fetch person/device/zones/schedule rules/events, auto-link zones by number, zone-link picker, ScheduleView "Rachio says" mirror card, Watering History view
+- [ ] v1 runtime verification — install iOS 17.2 simulator runtime; run `xcodebuild test`; first-run Connect flow; sync; zone-link; bad-token; persistence; migration
+- [ ] v2 — manual zone start/stop + pause controls (write operations, requires separate scope)
+- [ ] v2 — background sync (BGAppRefreshTask) so watering history fills without open-app taps
+- [ ] v2 — derive real precip rate per zone from Rachio "nozzle precip" field and stamp onto HeadData
+
 ## Active Remediation (post 2026-04-23 over-application)
 
 - [ ] Data entry per `/Users/chase/.claude/plans/what-went-wrong-here-playful-lemur.md` — IFA inventory, fert app log, 6 Z2 heads, mixed-precip ProblemArea, 9 maintenance tasks
@@ -39,7 +47,6 @@
 
 ## Ideas Backlog
 - Weather integration (manual rainfall entry)
-- Rachio API integration (if access becomes available)
 - Push spreader support (when HHS100 is replaced)
 - Zone coverage map (draw spray arcs on satellite image) — partially addressed by `HeadPinEditor`
 - **Schema bump:** add `precipRateInPerHour: Double?` to `HeadData` — would be the right home for the precip-mismatch story

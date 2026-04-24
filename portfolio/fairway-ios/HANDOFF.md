@@ -5,13 +5,26 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 Plan approved, data entry pending — execute in new chat |
-| Last session | 2026-04-23 |
-| Focus | Logging today's IFA fertilizer over-application + cataloging 6 Z2 park-strip heads |
+| Status | 🟡 Rachio API integration landed (typecheck clean); runtime verification blocked on iOS 17.2 sim |
+| Last session | 2026-04-24 |
+| Focus | Rachio v1 read-only integration — token in Keychain, sync device/zones/schedules/events, zone-link pickers, ScheduleView mirror card |
+| Next | Install iOS 17.2 simulator runtime → run `xcodebuild test` (verification step 1) → first-run Connect flow (step 2) → sync + zone-link (steps 3–4) → bad-token + migration checks (steps 5–7) |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
 | Xcode project | `Fairway.xcodeproj` |
+
+## Rachio v1 — shipped 2026-04-24 (read-only)
+
+- Files: `Fairway/Services/RachioKeychain.swift`, `RachioAPI.swift`, `RachioDTOs.swift`; `Models/RachioState.swift`; `Views/RachioSettingsView.swift`, `RachioHistoryView.swift`; edits in `FairwayConfig`, `FairwayBlob`, `FairwayStore`, `ContentView`, `ScheduleView`; tests `FairwayTests/RachioDecodeTests.swift`; pbxproj entries FW037–FW03D.
+- Token: entered via SecureField in More → Rachio Sync → Keychain (`service = com.chasewhittaker.Fairway`, `account = rachio_personal_access_token`, `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`). Never hardcoded; never written to blob/logs.
+- Flow: paste token → `Verify & Connect` calls `/person/info` + `/person/{id}` → single device auto-selects → zones + schedule rules snapshot written → auto-link Fairway Z1–Z4 to Rachio zones by number → events pulled for last 90 days → events capped at 500, dedup by id.
+- UI: MoreView "Integrations" section; RachioHistoryView groups events by day with zone pills; ScheduleView shows "Rachio says" card on linked zones with status badges.
+- 401 handling: Keychain cleared, `rachioLastError` surfaced, last-known snapshot preserved for re-connect.
+
+### Resume prompt (Rachio verification)
+
+> Install the iOS 17.2 simulator runtime (Xcode → Settings → Platforms). Then run `xcodebuild test -project Fairway.xcodeproj -scheme Fairway -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO`. All `FairwayTests/RachioDecodeTests.swift` cases must pass. After that, run the app: paste token in More → Rachio Sync → verify device name + zone count render, check `rachio` persists across relaunch, confirm "Rachio says" mirror card appears on Z2's ScheduleView after linking.
 
 ## Active plan — execute in next chat
 

@@ -2,6 +2,29 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-24 — Rachio API Integration (v1, read-only)
+- `Services/RachioKeychain.swift` — Security framework wrapper, service `com.chasewhittaker.Fairway`, account `rachio_personal_access_token`, `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`
+- `Services/RachioAPI.swift` — async URLSession client for Rachio v1 (`https://api.rach.io/1/public`): `fetchPersonInfo`, `fetchPerson(id:)`, `fetchEvents(deviceId:from:to:)`; typed `RachioError` (unauthorized/noDevices/http/network/decoding/missingToken)
+- `Services/RachioDTOs.swift` — internal Codable response types (`RachioDTO` namespace) kept separate from app models so upstream shape changes don't corrupt persisted blobs
+- `Models/RachioState.swift` — persisted snapshot: `personId`, `deviceId`, `deviceName`, `lastSyncAt`, `zones`, `scheduleRules`, `flexScheduleRules`, `recentEvents`, `zoneLinks` (Fairway zone number → Rachio zone id); computed `allScheduleRules`, `rachioZoneId(forFairwayZone:)`, `scheduleRules(forRachioZoneId:)`
+- `Views/RachioSettingsView.swift` — SecureField token entry → `Verify & Connect` → device picker (single device auto-selects) → connected view with device info, sync button, zone-link pickers (Fairway Z1–Z4 ↔ Rachio zones), Disconnect
+- `Views/RachioHistoryView.swift` — events grouped by day, zone-number pills, duration formatting, relative last-sync label, toolbar sync button
+- `FairwayConfig.swift` — `rachioAPIBase`, `rachioInitialHistoryDays = 90`, `rachioMaxStoredEvents = 500`
+- `FairwayBlob.swift` — `var rachio: RachioState? = nil` (optional → legacy blobs decode unchanged)
+- `FairwayStore.swift` — observable `rachioSyncing`, `rachioLastError`; `hasRachioToken`, `rachioIsConnected`, `verifyRachioToken`, `completeRachioConnection`, `syncRachio`, `disconnectRachio`, `setRachioZoneLink`; auto-links matching zone numbers on connect; 1-day overlap window on incremental sync; event dedup by id, sorted DESC, capped at 500
+- `Views/ContentView.swift` — "Integrations" section in MoreView with NavigationLinks to Rachio Sync + Watering History
+- `Views/ScheduleView.swift` — read-only "Rachio says" mirror card showing live schedule rules (name, status badge, start time, run minutes, schedule type) when the Fairway zone is linked
+- `FairwayTests/RachioDecodeTests.swift` — 7 tests: PersonInfo decode, Person device tree decode, schedule status labels, event mapping + fallback id, legacy blob migration (no `rachio` field), zone-link lookup
+- `Fairway.xcodeproj/project.pbxproj` — 7 new files registered under FW037–FW03D
+
+### Security
+- Token is entered only via `SecureField`, validated via `/person/info`, then written to Keychain. Never persisted in `UserDefaults`, `FairwayBlob`, logs, or committed files.
+- On 401: Keychain cleared, `rachioLastError` surfaced for reconnect, last-known snapshot preserved.
+
+### Verification
+- Swift typecheck clean across all sources (`xcrun swiftc -typecheck`) — MainActor isolation resolved by annotating `RachioSettingsView` + `RachioHistoryView` structs `@MainActor`
+- `xcodebuild build` not runnable on this machine (iOS 17.2 simulator runtime not installed); runtime verification steps 2–7 (first-run flow, sync, zone linking, bad token, persistence, migration) deferred to a machine with simulator installed
+
 ### Planned (approved 2026-04-23 — execute in next chat)
 - Log IFA Crabgrass Preventer + Lawn Food (23-3-8) inventory item with calibration-failure note
 - Log 2026-04-23 `FertApplication` (17.8 lb on Z2/Z3/Z4) flagging the 62% over-application

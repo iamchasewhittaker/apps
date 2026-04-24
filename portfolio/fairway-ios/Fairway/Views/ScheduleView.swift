@@ -218,7 +218,7 @@ struct ScheduleView: View {
         }
     }
 
-    @ViewBuilder
+    @MainActor @ViewBuilder
     private var rachioMirrorCard: some View {
         if let state = store.blob.rachio,
            let zone,

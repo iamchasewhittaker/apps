@@ -1,4 +1,4 @@
-import { AppState, Item, DailyLock, DailyCheck, Lane } from "./types";
+import { AppState, Item, DailyLock, DailyCheck, Lane, MAX_LANES, MIN_LANES } from "./types";
 
 const STORE_KEY = "unnamed_v1";
 
@@ -8,12 +8,33 @@ const defaultState: AppState = {
   checks: [],
 };
 
+type LegacyDailyLock = {
+  date: string;
+  lane1?: Exclude<Lane, "inbox">;
+  lane2?: Exclude<Lane, "inbox">;
+  lanes?: Exclude<Lane, "inbox">[];
+};
+
+function migrateLock(lock: LegacyDailyLock): DailyLock {
+  if (Array.isArray(lock.lanes) && lock.lanes.length > 0) {
+    return { date: lock.date, lanes: lock.lanes };
+  }
+  const lanes = [lock.lane1, lock.lane2].filter(
+    (l): l is Exclude<Lane, "inbox"> => Boolean(l)
+  );
+  return { date: lock.date, lanes };
+}
+
 export function load(): AppState {
   if (typeof window === "undefined") return defaultState;
   try {
     const raw = localStorage.getItem(STORE_KEY);
     if (!raw) return defaultState;
-    return JSON.parse(raw) as AppState;
+    const parsed = JSON.parse(raw) as AppState & { locks: LegacyDailyLock[] };
+    return {
+      ...parsed,
+      locks: (parsed.locks ?? []).map(migrateLock),
+    };
   } catch {
     return defaultState;
   }
@@ -81,10 +102,10 @@ export function skipItem(state: AppState, itemId: string): AppState {
 
 export function lockLanes(
   state: AppState,
-  lane1: Exclude<Lane, "inbox">,
-  lane2: Exclude<Lane, "inbox">
+  lanes: Exclude<Lane, "inbox">[]
 ): AppState {
-  const lock: DailyLock = { date: today(), lane1, lane2 };
+  if (lanes.length < MIN_LANES || lanes.length > MAX_LANES) return state;
+  const lock: DailyLock = { date: today(), lanes };
   return {
     ...state,
     locks: [...state.locks.filter((l) => l.date !== today()), lock],

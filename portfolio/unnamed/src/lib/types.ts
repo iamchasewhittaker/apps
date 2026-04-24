@@ -12,9 +12,11 @@ export interface Item {
 
 export interface DailyLock {
   date: string;
-  lane1: Exclude<Lane, "inbox">;
-  lane2: Exclude<Lane, "inbox">;
+  lanes: Exclude<Lane, "inbox">[];
 }
+
+export const MIN_LANES = 2;
+export const MAX_LANES = 4;
 
 export interface DailyCheck {
   date: string;

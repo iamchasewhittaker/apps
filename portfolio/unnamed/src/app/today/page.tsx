@@ -9,7 +9,7 @@ import {
   completeItem,
   skipItem,
 } from "@/lib/store";
-import { Lane, LANE_LABELS, LANE_DESCRIPTIONS } from "@/lib/types";
+import { Lane, LANE_LABELS, LANE_DESCRIPTIONS, MIN_LANES, MAX_LANES } from "@/lib/types";
 
 const LANES: Exclude<Lane, "inbox">[] = [
   "regulation",
@@ -46,21 +46,23 @@ function LanePicker() {
   function toggle(lane: Exclude<Lane, "inbox">) {
     setSelected((prev) => {
       if (prev.includes(lane)) return prev.filter((l) => l !== lane);
-      if (prev.length >= 2) return [prev[1], lane];
+      if (prev.length >= MAX_LANES) return prev;
       return [...prev, lane];
     });
   }
 
+  const canLock = selected.length >= MIN_LANES && selected.length <= MAX_LANES;
+
   function handleLock() {
-    if (selected.length !== 2) return;
-    update((s) => lockLanes(s, selected[0], selected[1]));
+    if (!canLock) return;
+    update((s) => lockLanes(s, selected));
   }
 
   return (
     <div className="flex flex-col h-full max-w-md mx-auto px-4 pt-12">
       <h1 className="text-2xl font-bold text-zinc-100 mb-1">Today</h1>
       <p className="text-sm text-zinc-500 mb-8">
-        Pick your 2 lanes. The rest disappear.
+        Pick {MIN_LANES}&ndash;{MAX_LANES} lanes. The rest disappear.
       </p>
 
       <div className="space-y-3 mb-8">
@@ -87,10 +89,10 @@ function LanePicker() {
 
       <button
         onClick={handleLock}
-        disabled={selected.length !== 2}
+        disabled={!canLock}
         className="w-full bg-amber-500 text-zinc-950 font-bold rounded-2xl py-4 text-lg disabled:opacity-20 active:scale-[0.98] transition-all"
       >
-        Lock in for today
+        Lock {selected.length > 0 ? `${selected.length} ` : ""}in for today
       </button>
 
       <p className="text-center text-zinc-600 text-xs mt-3">
@@ -103,7 +105,7 @@ function LanePicker() {
 function FocusView() {
   const { state, update } = useApp();
   const lock = getTodayLock(state)!;
-  const lanes = [lock.lane1, lock.lane2] as Exclude<Lane, "inbox">[];
+  const lanes = lock.lanes;
 
   const allItems = lanes.flatMap((lane) =>
     getActiveItemsForLane(state, lane).map((item) => ({ ...item, lane }))

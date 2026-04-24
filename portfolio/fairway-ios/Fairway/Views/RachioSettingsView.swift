@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct RachioSettingsView: View {
     @Environment(FairwayStore.self) private var store
 

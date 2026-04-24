@@ -51,6 +51,40 @@ Skipped the 100 sq ft physical calibration test against the actual bag. Result: 
 
 ---
 
+## SwiftUI helper view-properties aren't automatically @MainActor
+
+**Date:** 2026-04-24
+
+While building `RachioSettingsView`, I hit 9 MainActor isolation errors when helper computed properties (`connectedSections`, `devicePickerSection(preview:)`, `connectSection`, `zoneLinkRow(for:state:)`) and helper methods (`verify()`, `complete(...)`) accessed `store.blob`, `store.rachioSyncing`, `store.rachioLastError`, or called `store.disconnectRachio()` / `store.setRachioZoneLink(...)`.
+
+`var body` on a `View` runs in a MainActor context implicitly, but **helper computed view properties on the same struct do NOT inherit that isolation**. They're plain Swift — no actor annotation unless you add one. So any helper that reads/mutates an `@Observable @MainActor` store either needs its own `@MainActor` annotation, or the whole struct has to be `@MainActor`.
+
+**Fix used:** `@MainActor struct RachioSettingsView: View` (and same for `RachioHistoryView`). One annotation propagates to every method + computed property on the struct; no surgery on individual helpers.
+
+**Evidence this is the right fix:**
+- `ScheduleView.rachioMirrorCard` needed `@MainActor @ViewBuilder` because it's a single property — adding it per-property works fine too
+- `PropertySettingsView.saveAddress()` uses `@MainActor private func ... async` for the same reason
+- `var body` works without annotation because SwiftUI's `View.body` is declared `@MainActor` in the protocol
+
+**Rule of thumb:** if a SwiftUI view touches an `@MainActor` store anywhere outside `body` (helper methods, factory funcs, Button closures that call store methods synchronously), annotate the whole struct `@MainActor`. It's cheaper than chasing isolation errors one at a time.
+
+---
+
+## Keep Rachio DTOs separate from persisted models
+
+**Date:** 2026-04-24
+
+The Rachio API returns a fairly deep JSON tree (`PersonResponse → Device → [Zone, ScheduleRule, FlexScheduleRule]` plus events). First instinct was to just `Codable`-conform those directly and store them in `FairwayBlob`. Instead: `RachioDTO.*` lives in `Services/RachioDTOs.swift` and maps to snapshot types (`RachioZoneSnapshot`, `RachioScheduleSnapshot`, `RachioEventSnapshot`) in `Models/RachioState.swift`.
+
+**Why this is worth the extra layer:**
+- If Rachio renames `zoneNumber` → `number`, only the DTO + mapping changes — persisted blobs stay intact.
+- The snapshot types carry computed UI helpers (`totalDurationMinutes`, `startTimeLabel`, `statusLabel`, `dayKey`) that have no business being in a wire DTO.
+- Tests can decode canned JSON into DTOs and exercise the mapping step (`toSnapshot()`) in isolation — this is exactly what `RachioDecodeTests` does.
+
+**Cost:** ~50 extra lines of near-identical field copying. Worth it.
+
+---
+
 ## Park strip = highest-risk grass on the property
 
 **Date:** 2026-04-23
