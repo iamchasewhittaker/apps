@@ -109,6 +109,99 @@ final class FairwayBlobTests: XCTestCase {
         XCTAssertTrue(updatedZone?.heads.contains(where: { $0.label == "H2-NEW" }) ?? false)
     }
 
+    // MARK: - v2 migration
+
+    func testV1BlobDecodesIntoV2WithDefaults() throws {
+        // v1 blob: only the original 7 fields. New optional/array fields must default to empty/nil.
+        let v1Json = """
+        {
+            "zones": [],
+            "fertilizerPlan": [],
+            "maintenanceTasks": [],
+            "mowLog": [],
+            "inventory": [],
+            "seeded": true
+        }
+        """.data(using: .utf8)!
+        let decoded = try JSONDecoder().decode(FairwayBlob.self, from: v1Json)
+
+        XCTAssertTrue(decoded.seeded)
+        XCTAssertTrue(decoded.observations.isEmpty)
+        XCTAssertTrue(decoded.waterRuns.isEmpty)
+        XCTAssertTrue(decoded.fertApplications.isEmpty)
+        XCTAssertNil(decoded.property)
+    }
+
+    func testV2BlobRoundTripsWithNewFields() throws {
+        var blob = FairwayBlob()
+        blob.observations = [LawnObservation(text: "Dry patch near H2-3")]
+        blob.waterRuns = [WaterRun(zoneNumber: 2, durationMinutes: 20)]
+        blob.fertApplications = [FertApplication(productName: "Milorganite", zoneNumbers: [2, 3], amountLbs: 25)]
+        blob.property = PropertySettings(
+            address: "345 E 170 N, Vineyard, UT 84059",
+            latitude: 40.333,
+            longitude: -111.755
+        )
+
+        let data = try JSONEncoder().encode(blob)
+        let decoded = try JSONDecoder().decode(FairwayBlob.self, from: data)
+
+        XCTAssertEqual(decoded.observations.count, 1)
+        XCTAssertEqual(decoded.observations.first?.text, "Dry patch near H2-3")
+        XCTAssertEqual(decoded.waterRuns.first?.zoneNumber, 2)
+        XCTAssertEqual(decoded.fertApplications.first?.productName, "Milorganite")
+        XCTAssertEqual(decoded.property?.address, "345 E 170 N, Vineyard, UT 84059")
+        XCTAssertEqual(decoded.property?.latitude ?? 0, 40.333, accuracy: 0.0001)
+    }
+
+    func testHeadDataGeoFieldsRoundTrip() throws {
+        var head = HeadData(
+            label: "H1-1",
+            headType: "Hunter MP",
+            nozzle: "MP 3000",
+            arcDegrees: 180,
+            location: "NW corner"
+        )
+        head.latitude = 40.333
+        head.longitude = -111.755
+        head.startBearingDegrees = 45
+        head.radiusFeet = 18
+
+        let data = try JSONEncoder().encode(head)
+        let decoded = try JSONDecoder().decode(HeadData.self, from: data)
+
+        XCTAssertEqual(decoded.latitude ?? 0, 40.333, accuracy: 0.0001)
+        XCTAssertEqual(decoded.longitude ?? 0, -111.755, accuracy: 0.0001)
+        XCTAssertEqual(decoded.startBearingDegrees, 45)
+        XCTAssertTrue(decoded.hasCoordinates)
+    }
+
+    func testHeadDataMissingGeoFieldsDecodes() throws {
+        // Pre-v2 encoded HeadData (no geo fields) must decode with nil coords.
+        let oldHeadJson = """
+        {
+            "id": "\(UUID().uuidString)",
+            "label": "Legacy head",
+            "headType": "Hunter",
+            "nozzle": "MP",
+            "arcDegrees": 90,
+            "radiusFeet": 15,
+            "gpm": 0.8,
+            "location": "NW",
+            "notes": "",
+            "isConfirmed": true,
+            "confirmedBySeasonTest": false,
+            "photoAttached": false,
+            "issues": []
+        }
+        """.data(using: .utf8)!
+        let decoded = try JSONDecoder().decode(HeadData.self, from: oldHeadJson)
+        XCTAssertNil(decoded.latitude)
+        XCTAssertNil(decoded.longitude)
+        XCTAssertNil(decoded.startBearingDegrees)
+        XCTAssertFalse(decoded.hasCoordinates)
+    }
+
     func testStockStatusCalculation() {
         // currentStockLbs=5, rate=4 → oneLot = (2737/1000) * 4 = 10.948 lbs
         // 5 < 10.948 → .low

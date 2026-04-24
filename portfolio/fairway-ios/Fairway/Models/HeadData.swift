@@ -28,4 +28,11 @@ struct HeadData: Codable, Identifiable {
     var installDate: Date? = nil
     var lastServiced: Date? = nil
     var issues: [HeadIssue] = []
+    var latitude: Double? = nil
+    var longitude: Double? = nil
+    var startBearingDegrees: Int? = nil
+
+    var hasCoordinates: Bool {
+        latitude != nil && longitude != nil
+    }
 }

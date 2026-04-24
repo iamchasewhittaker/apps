@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(FairwayStore.self) private var store
+    @State private var isShowingQuickLog = false
 
     init() {
         let appearance = UITabBarAppearance()
@@ -12,23 +13,35 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TabView {
-            NavigationStack { ZoneListView() }
-                .tabItem { Label("Zones", systemImage: "leaf.fill") }
+        ZStack(alignment: .bottomTrailing) {
+            TabView {
+                NavigationStack { ZoneListView() }
+                    .tabItem { Label("Zones", systemImage: "leaf.fill") }
 
-            NavigationStack { FertilizerView() }
-                .tabItem { Label("Lawn", systemImage: "sun.max.fill") }
+                NavigationStack { FertilizerView() }
+                    .tabItem { Label("Lawn", systemImage: "sun.max.fill") }
 
-            NavigationStack { SoilTestView() }
-                .tabItem { Label("Soil", systemImage: "chart.bar.fill") }
+                NavigationStack { SoilTestView() }
+                    .tabItem { Label("Soil", systemImage: "chart.bar.fill") }
 
-            NavigationStack { MaintenanceView() }
-                .tabItem { Label("Maintenance", systemImage: "checkmark.circle.fill") }
+                NavigationStack { MaintenanceView() }
+                    .tabItem { Label("Maintenance", systemImage: "checkmark.circle.fill") }
 
-            NavigationStack { MoreView() }
-                .tabItem { Label("More", systemImage: "ellipsis.circle.fill") }
+                NavigationStack { MoreView() }
+                    .tabItem { Label("More", systemImage: "ellipsis.circle.fill") }
+            }
+            .tint(FairwayTheme.accentGold)
+
+            if !isShowingQuickLog {
+                QuickLogFAB(isShowing: $isShowingQuickLog)
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 80)
+            }
         }
-        .tint(FairwayTheme.accentGold)
+        .sheet(isPresented: $isShowingQuickLog) {
+            QuickLogSheet()
+                .presentationDetents([.medium, .large])
+        }
     }
 }
 

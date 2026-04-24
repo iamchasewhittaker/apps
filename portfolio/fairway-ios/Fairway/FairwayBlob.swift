@@ -7,6 +7,10 @@ struct FairwayBlob: Codable {
     var maintenanceTasks: [MaintenanceTask] = []
     var mowLog: [MowEntry] = []
     var inventory: [InventoryItem] = []
+    var observations: [LawnObservation] = []
+    var waterRuns: [WaterRun] = []
+    var fertApplications: [FertApplication] = []
+    var property: PropertySettings? = nil
     var _syncAt: Double? = nil
     var seeded: Bool = false
 }

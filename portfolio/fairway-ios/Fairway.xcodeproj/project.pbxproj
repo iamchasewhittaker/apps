@@ -41,6 +41,13 @@
 		FW010000000000000000022 /* FairwayFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000022 /* FairwayFont.swift */; };
 		FW010000000000000000023 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000023 /* LogoView.swift */; };
 		FW010000000000000000024 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000024 /* LaunchView.swift */; };
+		FW010000000000000000025 /* ObservationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000025 /* ObservationData.swift */; };
+		FW010000000000000000026 /* WaterRunData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000026 /* WaterRunData.swift */; };
+		FW010000000000000000027 /* FertApplicationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000027 /* FertApplicationData.swift */; };
+		FW010000000000000000028 /* PropertySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000028 /* PropertySettings.swift */; };
+		FW010000000000000000029 /* MowDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000029 /* MowDirectionTests.swift */; };
+		FW01000000000000000002A /* QuickLogFAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002A /* QuickLogFAB.swift */; };
+		FW01000000000000000002B /* QuickLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000002B /* QuickLogSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +97,13 @@
 		FW020000000000000000022 /* FairwayFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairwayFont.swift; sourceTree = "<group>"; };
 		FW020000000000000000023 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		FW020000000000000000024 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		FW020000000000000000025 /* ObservationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationData.swift; sourceTree = "<group>"; };
+		FW020000000000000000026 /* WaterRunData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterRunData.swift; sourceTree = "<group>"; };
+		FW020000000000000000027 /* FertApplicationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FertApplicationData.swift; sourceTree = "<group>"; };
+		FW020000000000000000028 /* PropertySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySettings.swift; sourceTree = "<group>"; };
+		FW020000000000000000029 /* MowDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MowDirectionTests.swift; sourceTree = "<group>"; };
+		FW02000000000000000002A /* QuickLogFAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogFAB.swift; sourceTree = "<group>"; };
+		FW02000000000000000002B /* QuickLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,8 +143,9 @@
 				FW020000000000000000005 /* FairwayTheme.swift */,
 				FW020000000000000000022 /* FairwayFont.swift */,
 				FW020000000000000000006 /* PreviewData.swift */,
-				FW040000000000000000004 /* Models */,
+					FW040000000000000000004 /* Models */,
 				FW040000000000000000005 /* Views */,
+				FW04000000000000000000D /* Services */,
 				FW040000000000000000006 /* Fonts */,
 				FW02000000000000000001D /* Assets.xcassets */,
 			);
@@ -157,6 +172,10 @@
 				FW02000000000000000000C /* FertilizerData.swift */,
 				FW02000000000000000000D /* MaintenanceData.swift */,
 				FW02000000000000000000E /* InventoryData.swift */,
+				FW020000000000000000025 /* ObservationData.swift */,
+				FW020000000000000000026 /* WaterRunData.swift */,
+				FW020000000000000000027 /* FertApplicationData.swift */,
+				FW020000000000000000028 /* PropertySettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -164,9 +183,12 @@
 		FW040000000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FW02000000000000000000F /* ContentView.swift */,
+					FW02000000000000000000F /* ContentView.swift */,
 				FW020000000000000000023 /* LogoView.swift */,
 				FW020000000000000000024 /* LaunchView.swift */,
+				FW02000000000000000002A /* QuickLogFAB.swift */,
+				FW02000000000000000002B /* QuickLogSheet.swift */,
+				FW02000000000000000002D /* AddObservationSheet.swift */,
 				FW020000000000000000010 /* ZoneListView.swift */,
 				FW020000000000000000011 /* ZoneDetailView.swift */,
 				FW020000000000000000012 /* HeadInventoryView.swift */,
@@ -188,6 +210,8 @@
 			isa = PBXGroup;
 			children = (
 				FW02000000000000000001E /* FairwayBlobTests.swift */,
+				FW020000000000000000029 /* MowDirectionTests.swift */,
+				FW02000000000000000002E /* PhotoStoreTests.swift */,
 			);
 			path = FairwayTests;
 			sourceTree = "<group>";
@@ -198,6 +222,14 @@
 				FW020000000000000000021 /* CormorantGaramond-Italic.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		FW04000000000000000000D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FW02000000000000000002C /* PhotoStore.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,6 +363,14 @@
 				FW010000000000000000022 /* FairwayFont.swift in Sources */,
 				FW010000000000000000023 /* LogoView.swift in Sources */,
 				FW010000000000000000024 /* LaunchView.swift in Sources */,
+				FW010000000000000000025 /* ObservationData.swift in Sources */,
+				FW010000000000000000026 /* WaterRunData.swift in Sources */,
+				FW010000000000000000027 /* FertApplicationData.swift in Sources */,
+				FW010000000000000000028 /* PropertySettings.swift in Sources */,
+				FW01000000000000000002A /* QuickLogFAB.swift in Sources */,
+				FW01000000000000000002B /* QuickLogSheet.swift in Sources */,
+				FW01000000000000000002C /* PhotoStore.swift in Sources */,
+				FW01000000000000000002D /* AddObservationSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +379,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FW01000000000000000001E /* FairwayBlobTests.swift in Sources */,
+				FW010000000000000000029 /* MowDirectionTests.swift in Sources */,
+				FW01000000000000000002E /* PhotoStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

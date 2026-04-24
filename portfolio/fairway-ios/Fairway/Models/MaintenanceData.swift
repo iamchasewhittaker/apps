@@ -46,3 +46,56 @@ struct MowEntry: Codable, Identifiable {
     var durationMinutes: Int = 0
     var notes: String = ""
 }
+
+enum MowDirection: Equatable, Hashable {
+    case northSouth
+    case eastWest
+    case diagonalNESW
+    case diagonalNWSE
+    case checkerboard
+    case other(String)
+
+    static let presets: [MowDirection] = [
+        .northSouth, .eastWest, .diagonalNESW, .diagonalNWSE, .checkerboard
+    ]
+
+    var displayLabel: String {
+        switch self {
+        case .northSouth: return "N–S"
+        case .eastWest: return "E–W"
+        case .diagonalNESW: return "Diagonal NE-SW"
+        case .diagonalNWSE: return "Diagonal NW-SE"
+        case .checkerboard: return "Checkerboard"
+        case .other(let s): return s.isEmpty ? "Other" : s
+        }
+    }
+
+    var rawString: String {
+        switch self {
+        case .northSouth: return "N–S"
+        case .eastWest: return "E–W"
+        case .diagonalNESW: return "Diagonal NE-SW"
+        case .diagonalNWSE: return "Diagonal NW-SE"
+        case .checkerboard: return "Checkerboard"
+        case .other(let s): return s
+        }
+    }
+
+    init(rawString: String) {
+        let trimmed = rawString.trimmingCharacters(in: .whitespaces)
+        switch trimmed {
+        case MowDirection.northSouth.rawString, "N-S", "NS":
+            self = .northSouth
+        case MowDirection.eastWest.rawString, "E-W", "EW":
+            self = .eastWest
+        case MowDirection.diagonalNESW.rawString, "NE-SW", "Diagonal NE–SW":
+            self = .diagonalNESW
+        case MowDirection.diagonalNWSE.rawString, "NW-SE", "Diagonal NW–SE":
+            self = .diagonalNWSE
+        case MowDirection.checkerboard.rawString:
+            self = .checkerboard
+        default:
+            self = .other(trimmed)
+        }
+    }
+}

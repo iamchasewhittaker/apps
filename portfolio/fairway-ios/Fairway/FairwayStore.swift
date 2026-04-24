@@ -5,6 +5,7 @@ import Observation
 @MainActor
 final class FairwayStore {
     var blob: FairwayBlob = FairwayBlob()
+    let photos = PhotoStore()
 
     nonisolated init() {}
 
@@ -178,6 +179,22 @@ final class FairwayStore {
     func addSpreaderSetting(_ setting: SpreaderSetting, to itemID: UUID) {
         guard let idx = blob.inventory.firstIndex(where: { $0.id == itemID }) else { return }
         blob.inventory[idx].spreaderSettings.append(setting)
+        save()
+    }
+
+    // MARK: - Observation mutations
+
+    func addObservation(_ obs: LawnObservation) {
+        blob.observations.append(obs)
+        save()
+    }
+
+    func deleteObservation(id: UUID) {
+        if let obs = blob.observations.first(where: { $0.id == id }),
+           let photoID = obs.photoID {
+            photos.delete(id: photoID)
+        }
+        blob.observations.removeAll { $0.id == id }
         save()
     }
 

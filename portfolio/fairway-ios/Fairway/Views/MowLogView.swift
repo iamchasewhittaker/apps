@@ -121,11 +121,19 @@ struct AddMowSheet: View {
 
     @State private var date = Date()
     @State private var bladeHeight: Double = 3.0
-    @State private var direction = ""
+    @State private var directionPick: MowDirectionPick = .preset(.northSouth)
+    @State private var customDirection = ""
     @State private var duration: Int = 30
     @State private var notes = ""
 
     private let heights = stride(from: 2.5, through: 4.5, by: 0.25).map { $0 }
+
+    private var stripeDirectionValue: String {
+        switch directionPick {
+        case .preset(let d): return d.rawString
+        case .custom: return customDirection
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -139,7 +147,15 @@ struct AddMowSheet: View {
                     }
                 }
                 Section("Details") {
-                    TextField("Stripe direction", text: $direction)
+                    Picker("Stripe direction", selection: $directionPick) {
+                        ForEach(MowDirection.presets, id: \.self) { preset in
+                            Text(preset.displayLabel).tag(MowDirectionPick.preset(preset))
+                        }
+                        Text("Custom…").tag(MowDirectionPick.custom)
+                    }
+                    if case .custom = directionPick {
+                        TextField("Describe direction", text: $customDirection)
+                    }
                     Stepper("Duration: \(duration) min", value: $duration, in: 5...180, step: 5)
                     TextField("Notes", text: $notes, axis: .vertical).lineLimit(2...4)
                 }
@@ -154,7 +170,7 @@ struct AddMowSheet: View {
                         store.addMowEntry(MowEntry(
                             date: date,
                             bladeHeightInches: bladeHeight,
-                            stripeDirection: direction,
+                            stripeDirection: stripeDirectionValue,
                             durationMinutes: duration,
                             notes: notes
                         ))
@@ -165,4 +181,9 @@ struct AddMowSheet: View {
             }
         }
     }
+}
+
+private enum MowDirectionPick: Hashable {
+    case preset(MowDirection)
+    case custom
 }
