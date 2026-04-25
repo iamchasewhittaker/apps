@@ -9,10 +9,10 @@
 | Field | Value |
 |-------|-------|
 | **Path** | `portfolio/unnamed/` (web) · `portfolio/unnamed-ios/` (iOS) |
-| **Focus** | **Web/iOS parity complete locally (2026-04-24).** Sort now has a Skip button; `skipItem` cycles to end of items array (matches iOS); FocusView reads from `state.items` directly to preserve cycle order. `pnpm build` passes clean. **Vercel deploy pending in next session.** |
+| **Focus** | **Deployed to Vercel 2026-04-25.** Production: https://unnamed-gold.vercel.app. Phase 1 7-day clock running — install on phone as PWA and use it. **No new features until 7 consecutive days of use.** |
 | **Stack** | Web: Next.js 16 + TypeScript + Tailwind 4 + localStorage. iOS: SwiftUI + @Observable + UserDefaults |
-| **Last touch** | 2026-04-24 — Parity audit + 3 fixes (Sort Skip button, skipItem cycle-to-end, FocusView ordering). All 5 flows verified end-to-end. |
-| **Next** | 1. Deploy web to Vercel: `vercel project add unnamed --scope iamchasewhittakers-projects` → `vercel link` → `vercel git connect` → `vercel --prod`. 2. Update repo-root `CLAUDE.md` portfolio table URL after deploy. 3. Run `cd portfolio/shipyard && npm run sync:projects`. 4. Use both iOS + web for 7 days — no new features. 5. Generate PWA icons (192px + 512px) before public share. |
+| **Last touch** | 2026-04-25 — Vercel deploy. Project settings: `framework: nextjs`, `rootDirectory: portfolio/unnamed`, SSO disabled. All 5 routes serving 200; manifest + PWA icons confirmed. Git auto-deploy connected (`vercel-check-git` OK). |
+| **Next** | 1. Add to home screen on iPhone (PWA install). 2. Use both iOS + web for 7 consecutive days — log notes in private memory, do not modify the app. 3. After day 7, review what (if anything) actually felt missing in real use; update `ROADMAP.md` Phase 2 candidates accordingly. |
 
 ---
 

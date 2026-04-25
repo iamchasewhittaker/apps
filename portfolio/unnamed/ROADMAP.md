@@ -10,6 +10,7 @@
 |------|---------|---------|
 | 2026-04-17 | v0.1 | MVP built: 5 flows, 4 lanes, dark UI, localStorage, PWA manifest |
 | 2026-04-24 | v0.1 | Web/iOS parity: Sort Skip button, `skipItem` cycle-to-end, FocusView reads `state.items` directly. Build clean; deploy to Vercel pending. |
+| 2026-04-25 | v0.1 | Deployed to Vercel — https://unnamed-gold.vercel.app. Phase 1 7-day clock starts. |
 
 ---
 
@@ -18,8 +19,8 @@
 **Rule: No new features until Chase has used the app for 7 consecutive days.**
 
 - [x] Core 5 flows built (capture, sort, lock, focus, check)
-- [ ] Deploy to Vercel
-- [ ] Generate PWA icons (192px + 512px cairn/mountain logo)
+- [x] Deploy to Vercel — https://unnamed-gold.vercel.app (2026-04-25)
+- [x] Generate PWA icons (192px + 512px) — shipped with v0.1 (placeholder triangle; revisit if a permanent name lands)
 - [ ] Install on phone as PWA
 - [ ] Use for 7 days
 - [ ] Gather real usage notes

@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Deployed — 2026-04-25
+- **Production URL:** https://unnamed-gold.vercel.app
+- Linked to `iamchasewhittakers-projects/unnamed`, connected to `iamchasewhittaker/apps` for git auto-deploy from `main`.
+- Vercel project settings: `framework: nextjs`, `rootDirectory: portfolio/unnamed`, deployment protection (SSO) disabled.
+- Phase 1 7-day clock starts.
+
 ### Changed — Web/iOS parity (2026-04-24)
 - **Sort flow:** added Skip button (matches iOS, matches CLAUDE.md spec "pick a lane or skip")
 - **Skip semantics:** `skipItem` now cycles the item to the end of `state.items` instead of marking `status="skipped"`. Item stays active and reappears later — matches iOS's `skipItem` / `skipActiveItem` behavior. Previously Skip was a discard.
