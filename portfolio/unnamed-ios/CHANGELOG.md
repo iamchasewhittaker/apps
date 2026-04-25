@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-04-25
+
+### Fixed
+- Build unblocked: mounted iOS 17.2 simulator runtime DMG (`sudo hdiutil attach ... iOS_21C62`) so actool can resolve `runtimeBundlePath` — `BUILD SUCCEEDED`
+- Installed and launched v0.1 on iPhone 12 Pro Max (iOS 26.4.1) via `xcrun devicectl`
+
 ## [0.1.0] — 2026-04-17
 
 ### Added

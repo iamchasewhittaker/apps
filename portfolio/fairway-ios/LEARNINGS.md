@@ -1,5 +1,18 @@
 # Fairway iOS — Learnings
 
+## KML reimport workflow — separate "ingest" from "wire up app"
+
+**Date:** 2026-04-25
+
+When swapping in a bigger KML (23 → 41 pins, 2 new zones), the cleanest split is:
+1. **Tooling + on-disk state first** (Python script, photo folders, manifest). No Swift edits in the same session.
+2. **Hand off the kickoff prompt** that re-states what's already on disk so the next chat doesn't re-run `import-kml.py` (which is already idempotent, but a long photo download anyway).
+3. **App-side seed/migration in the next session** — much shorter context, and you can paste the final label table from sprinklers.json at the top.
+
+Why split: the first half is shell + Python and produces ~50 photo downloads. By the time the dust settles you've burnt through enough context that the Swift edits get sloppy. Each half also has different verification needs — half 1 verifies via `ls docs/heads/`, half 2 verifies via `xcodebuild test`.
+
+**Idempotency invariant for the import script:** the legacy folder migration step (`H3-{1..5}/` → `Z3-S{7..11}/`) uses `Path.rename()` only when the target doesn't exist. Re-running the script after the rename is a complete no-op (it skips the rename, then skips the photo downloads). This is the safe-to-re-run-anytime guarantee that lets you defer the Swift work without anxiety.
+
 ## SwiftData vs @Observable + Codable
 
 **Decision date:** 2026-04-18
@@ -159,6 +172,42 @@ Two ways to react: (a) treat the seed as canonical and rationalize the photo awa
 Same correction pattern hit Z2-S1: seed said "Brass adjustable", photo-1 showed Rain Bird VAN yellow with a ~4 ft radius print on the cap. Updated seed to reflect what the camera saw.
 
 **Rule:** When a photo and a seed value disagree, update the seed and add a note explaining what changed and why. Don't silently override; future-me needs the breadcrumb.
+
+---
+
+## Migration function naming — watch for collision with existing async counterparts
+
+**Date:** 2026-04-25
+
+`applyPhase1PropertyMigrationIfNeeded()` (async, geocoding) already lived at `FairwayStore.swift:110` when it was time to add the Phase 1 zone migration. Both follow the same numbered-phase naming pattern, making a silent name collision very easy to introduce.
+
+**Fix:** Used the parallel suffix `applyPhase1ZoneMigrationIfNeeded()` — unambiguous when both are visible together. The convention is now: Phase + context suffix (Zone, Property, etc.) + `MigrationIfNeeded`.
+
+**Rule for future migrations:** before naming a new `applyPhaseN*` function, `grep -n "applyPhase" FairwayStore.swift` first. If any same-phase function exists, distinguish with a context suffix.
+
+---
+
+## Photo counts per head vary — always read the manifest
+
+**Date:** 2026-04-25
+
+Assumed 3 photos per head based on the Z2 carousel convention, but `sprinklers.json` showed variance: `Z3-S1 = 2`, `Z3-S2 = 4`, `Z3-S11 = 4`, all others = 3. Hardcoding `photo-1.jpg / photo-2.jpg / photo-3.jpg` for every head would have produced broken path references for those three.
+
+**Fix:** Read `docs/heads/sprinklers.json` `photo_paths` arrays per label and used the exact count. For the migration test, verified the exact counts again before writing assertions.
+
+**Rule:** Never assume uniform photo counts. Source all `photoPaths` arrays from the manifest, not from "what the normal case looks like."
+
+---
+
+## Preserve UUID when reseeding a zone from PreviewData
+
+**Date:** 2026-04-25
+
+`ZoneData.id` is a `var UUID`. `PreviewData.zone4()` creates a fresh `UUID()` every call. If the migration just writes `blob.zones[z4Idx] = PreviewData.zone4()`, any cross-references that store the old UUID (Rachio zone links, future sub-zone refs) break silently.
+
+**Fix:** Capture `let preservedID = zone.id` before calling `PreviewData.zone4()`, then immediately write `fresh.id = preservedID` before assigning the new zone into the blob array.
+
+**Rule:** Any migration that replaces a whole struct with a fresh seed must explicitly re-stamp the original `id` onto the replacement.
 
 ---
 

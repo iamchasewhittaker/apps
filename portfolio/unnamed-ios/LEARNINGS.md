@@ -39,3 +39,27 @@ Even when building for device (`--platform iphoneos`), actool does a simulator r
 
 **2017 MBP (MacBookPro14,3) + Xcode 15.2 can still install on iOS 26.4.1 — but it's precarious.**
 The DeviceSupport for iOS 26.4 and 26.4.1 are already in `~/Library/Developer/Xcode/iOS DeviceSupport/` — Xcode downloaded them when the phone was first connected. `xcrun devicectl` talks to the phone fine. The only broken layer is (1) destination resolver in xcodebuild and (2) actool's runtime version check. Both are solvable without a new Mac.
+
+---
+
+## 2026-04-25 — actool deep-dive
+
+**The iOS simulator runtime is a DMG that must be mounted for actool to see it.**
+`xcrun simctl runtime list` shows "Ready" runtimes even when the DMG is unmounted. "Ready" means the image is downloaded and valid, not that it's currently mounted. actool looks for the runtime by resolving `runtimeBundlePath` (inside the mounted volume). If the DMG isn't mounted, the path doesn't exist and actool fails. All simulator devices report "unavailable, runtime profile not found using 'System' match policy" as a symptom of this.
+
+**Mounting requires sudo.** `hdiutil attach` on `/Library/Developer/CoreSimulator/Images/*.dmg` returns "Permission denied" for unprivileged users. You need `sudo hdiutil attach ... -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 -readonly -noverify`.
+
+**The SDK plist and the runtime DMG can report different build versions.** Xcode 15.2's `iPhoneSimulator17.2.sdk/System/Library/CoreServices/SystemVersion.plist` reported `ProductBuildVersion = 21C52` (an older 17.2 build), while the downloaded runtime is `21C62`. Patching the SDK plist to 21C62 via `sudo PlistBuddy` makes actool ask for the right version — but the DMG still needs to be mounted. Backup of original plist: `~/iPhoneSimulator17.2-SystemVersion.plist.bak`.
+
+**actool partially succeeds before failing.** It compiles icon PNGs (AppIcon60x60@2x.png, AppIcon76x76@2x~ipad.png) and writes them to the .app bundle, then emits the runtime-lookup error, and xcodebuild marks BUILD FAILED. The binary and Assets.car are never linked. Don't be fooled by seeing output files in the .app — it's incomplete.
+
+---
+
+## 2026-04-25 — DMG mount fix + successful device install
+
+**Mounting the iOS 17.2 runtime DMG is all that was needed after patching the SDK plist.**
+Once `sudo hdiutil attach ... -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 -readonly -noverify` completed, actool found `iOS 17.2.simruntime` at the expected `runtimeBundlePath` and the build succeeded immediately. No symlink (Step B) was needed.
+
+**The DMG unmounts on reboot; the SDK plist patch is persistent.** After a Mac restart, re-run the `hdiutil attach` command before building. No need to re-run the PlistBuddy patch — that edit survives reboots. Keep the command in the HANDOFF Fresh Session Prompt so future sessions don't have to rediscover it.
+
+**`xcrun devicectl` install status `unavailable` just means the phone isn't plugged in.** Plugging in the USB cable and unlocking the phone changed the status from `unavailable` to `connected` immediately. Install and launch then worked first try.

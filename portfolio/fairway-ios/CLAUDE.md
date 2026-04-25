@@ -76,20 +76,28 @@ FairwayTests/
   RachioDecodeTests.swift    ← 7 tests: PersonInfo, Person+device tree, schedule status, event mapping, legacy migration, zone-link lookup
 
 docs/
-  Sprinklers.kml             ← Google Earth export: 23 sprinkler pins with lat/lon + photo URLs
+  Sprinklers Google Earth (1).kml  ← CURRENT 41-pin Google Earth export (2026-04-25)
+  Sprinklers.kml                   ← legacy 23-pin export (2026-04-24, archived)
   heads/
-    property-overhead.jpg    ← Google Earth top-down screenshot with all 23 pins labeled
-    sprinklers.json          ← generated manifest (run tools/import-kml.py)
+    property-overhead.jpg          ← Google Earth top-down screenshot with original 23 pins labeled
+    sprinklers.json                ← generated manifest (run tools/import-kml.py)
+    Z2-S7..Z2-S18/                 ← 12 front-yard color-named pins
+    Z2-MATCH-1st..6th/             ← 6 numbered park-strip pins (visual match pending)
+    Z3-S1..Z3-S11/                 ← 11 side-yard red pins, N→S
+    Z4-S1..Z4-S12/                 ← 12 back-yard no-color pins, N→S
     <label>/
-      photo-1.jpg            ← top-down nozzle close-up
-      photo-2.jpg            ← placement-wide shot
-      photo-3.jpg            ← sprinkler running (arc + direction)
-    PHOTO_AUDIT.md           ← nozzle ID, defects, arc/bearing per head (pending)
-    COVERAGE_ANALYSIS.md     ← haversine spacing analysis (pending)
-    PROPERTY_PLACEMENT.md    ← cross-reference coords + photos + overhead (pending)
+      photo-1.jpg                  ← top-down nozzle close-up
+      photo-2.jpg                  ← placement-wide shot
+      photo-3.jpg                  ← sprinkler running (arc + direction)
+    PHOTO_AUDIT.md                 ← nozzle ID, defects, arc/bearing per head (pending)
+    COVERAGE_ANALYSIS.md           ← haversine spacing analysis (pending)
+    PROPERTY_PLACEMENT.md          ← cross-reference coords + photos + overhead (pending)
+    RENAME_MAP.md                  ← KML rename mapping for Google Earth re-import (pending — see SESSION_START_KML_REIMPORT.md)
+  SESSION_START_KML_REIMPORT.md    ← copy-paste kickoff prompt for fresh chat to finish 2026-04-25 work
 
 tools/
-  import-kml.py              ← one-time Python script: parse KML → download photos → write manifest (pending creation)
+  import-kml.py                    ← parses current KML → migrates legacy folders → downloads photos → writes manifest
+  rewrite-kml-labels.py            ← rewrites <name> tags in current KML for Google Earth re-import (pending)
 ```
 
 ## Architecture
@@ -135,38 +143,48 @@ xcodebuild test \
 8. **Z2 (Front yard + park strip) is a single valve** — any Z2 irrigation or fert application covers the park strip automatically. Always call this out explicitly.
 9. **Spreader calculator is necessary but not sufficient** — always run 100 sq ft TARE calibration before applying any product. Log calibration result on `InventoryItem` before logging `FertApplication`.
 
-## Sprinkler Head Data — KML Source (2026-04-24)
+## Sprinkler Head Data — KML Source
 
-Chase exported all 23 sprinkler head locations + photos from Google Earth.
+Chase exported every sprinkler head location + photos from Google Earth into a single KML file. The newest export (2026-04-25) is the source of truth.
 
 **Source files:**
-- `docs/Sprinklers.kml` — 23 placemarks with lat/lon/alt + 2–4 photo URLs each
-- `docs/heads/property-overhead.jpg` — Google Earth top-down screenshot with all 23 pins labeled
-- `docs/heads/sprinklers.json` — generated manifest (run `tools/import-kml.py` to create)
-- `docs/heads/<label>/photo-N.jpg` — downloaded head photos (run `tools/import-kml.py`)
+- **`docs/Sprinklers Google Earth (1).kml`** — **CURRENT source, 41 placemarks** (Zone 2: 18, Zone 3: 11, Zone 4: 12). Source for `import-kml.py`.
+- `docs/Sprinklers.kml` — legacy 23-placemark export (2026-04-24); kept for archival reference only, no longer parsed.
+- `docs/heads/property-overhead.jpg` — Google Earth top-down screenshot with the original 23 pins labeled.
+- `docs/heads/sprinklers.json` — generated manifest (run `tools/import-kml.py` to regenerate).
+- `docs/heads/<label>/photo-N.jpg` — downloaded head photos (run `tools/import-kml.py`).
 
-**Zone assignment rule:** RED pins (`#d32f2f`) = Zone 3, all other colors = Zone 2.
+**Zone assignment rule:**
+- RED pins (`#d32f2f`) → Zone 3 (side yard)
+- No-color / unknown-color pins → Zone 4 (back yard)
+- Every other color (black, blue, grey, yellow, green) → Zone 2 (front yard + park strip, single valve)
 
-**Label assignment (locked 2026-04-24):**
-- Zone 2: Z2-S1..S6 = existing 6 seeded heads (matched by photo-2 visual context, NOT lat order)
-- Zone 2: Z2-S7..S18 = 12 color-named KML pins, sorted N→S by latitude; KML name stored in `notes` as `"KML pin: <name>"`
-- Zone 3: b blue→H3-1, b red(21)→H3-2, b red(22)→H3-3, b red(20)→H3-4, B bred→H3-5
+**Label scheme — standardized to `Z*-S*` (2026-04-25):**
+- Zone 2 numbered park-strip pins (`1st Sprinkler`..`6th Sprinkler`) → `Z2-MATCH-1st..6th` *(visual matching to seeded `Z2-S1..Z2-S6` heads still pending — see anchors below)*
+- Zone 2 color-named front-yard pins → `Z2-S7..Z2-S18`, sorted N→S by latitude. KML name stored in `notes` as `"KML pin: <name>"`.
+- Zone 3 red side-yard pins → `Z3-S1..Z3-S11`, sorted N→S. Legacy migration: `H3-N` ↔ `Z3-S{N+6}`, i.e. `H3-1`→`Z3-S7`, `H3-2`→`Z3-S8`, `H3-3`→`Z3-S9`, `H3-4`→`Z3-S10`, `H3-5`→`Z3-S11`.
+- Zone 4 no-color back-yard pins → `Z4-S1..Z4-S12`, sorted N→S. Replaces the original 3-head `H4-1..H4-3` "East Side" placeholder (which never matched a real valve).
 
-**Visual anchors for numbered-pin matching:**
-- Z2-S5 = MP Rotator blue cap (distinctive; only head with blue nozzle color on it)
-- Z2-S6 = erosion pit / buried head (bowl-shaped depression, head sits ~4-5" low)
+**Visual anchors for Z2-MATCH numbered-pin matching:**
+- `Z2-S5` = MP Rotator blue cap (distinctive; only head with blue nozzle color on it)
+- `Z2-S6` = erosion pit / buried head (bowl-shaped depression, head sits ~4-5" low)
 
-**Photo carousel convention (Z2, confirmed):** 3 photos per head:
+**Photo carousel convention (3 photos per head, Z2 confirmed):**
 1. Top-down close-up of nozzle (for hardware ID)
 2. Wider shot showing placement against house / sidewalk / driveway / park strip
 3. Sprinkler running with visible water spray (for arc + direction)
 
-**Photo download:** `earth.usercontent.google.com` URLs are publicly accessible — no auth needed. Use s1024 size for nozzle-marking legibility. Run `python3 tools/import-kml.py` from `portfolio/fairway-ios/`.
+**Photo download:** `earth.usercontent.google.com` URLs are publicly accessible — no auth needed. Use s1024 size for nozzle-marking legibility. Run `python3 tools/import-kml.py` from `portfolio/fairway-ios/`. The script:
+- Migrates legacy `H3-{1..5}` photo folders to `Z3-S{7..11}` (idempotent — safe to re-run)
+- Skips already-downloaded photos
+- Regenerates `docs/heads/sprinklers.json` every run
 
-**HeadData.photoPaths:** `[String]` field added 2026-04-24. Bundle-relative paths, e.g. `"heads/Z2-S1/photo-1.jpg"`. Default empty array — Codable migration automatic.
+**HeadData.photoPaths:** `[String]` field. Bundle-relative paths, e.g. `"heads/Z3-S7/photo-1.jpg"`. Default empty array — Codable migration automatic.
 
-**Known corrections needed:**
+**Known corrections / TODOs:**
 - Z2-S1 seed nozzle = "Brass adjustable" → photo 1 shows Rain Bird VAN yellow (4 ft radius). Fix in PreviewData.swift during photo audit.
+- All 6 new Z3 heads (`Z3-S1..Z3-S6`) and all 12 Z4 heads (`Z4-S1..Z4-S12`) need per-head nozzle/arc/GPM data filled via in-app head detail editor.
+- Visual matching of `Z2-MATCH-1st..6th` → `Z2-S1..Z2-S6` still pending.
 
 ## References
 
@@ -174,8 +192,10 @@ Chase exported all 23 sprinkler head locations + photos from Google Earth.
 - Jimmy Lewis email: `docs/jimmy-lewis-email-apr-2026.eml`
 - Original irrigation spec: `docs/original-claude-spec.md`
 - Original zone analysis: `docs/original-handoff.md`
-- KML data: `docs/Sprinklers.kml`
-- KML ingestion plan: `/Users/chase/.claude/plans/are-you-able-to-squishy-marble.md`
-- KML import tool: `tools/import-kml.py` (pending creation)
+- KML data (current): `docs/Sprinklers Google Earth (1).kml`
+- KML data (legacy, archived): `docs/Sprinklers.kml`
+- 2026-04-25 KML reimport plan: `/Users/chase/.claude/plans/i-have-a-new-cheeky-nova.md`
+- 2026-04-25 reimport handoff + kickoff prompt: `docs/SESSION_START_KML_REIMPORT.md`
+- KML import tool: `tools/import-kml.py`
 - Store pattern: `portfolio/unnamed-ios/Unnamed/Services/AppStore.swift`
 - Portfolio conventions: `/CLAUDE.md`

@@ -72,12 +72,18 @@ final class FairwayBlobTests: XCTestCase {
     }
 
     func testPreSeasonFlagsCorrect() {
+        // After the 2026-04-25 KML reimport, Zone 4 was renamed from "East Side"
+        // to "Back Yard" and re-seeded with 12 KML-sourced heads. All Z4 problems
+        // are now pre-season stubs until field-confirmed during the season test.
         let blob = PreviewData.seededBlob()
         let zone4 = blob.zones.first(where: { $0.number == 4 })
         XCTAssertNotNil(zone4)
-        let overspray = zone4?.problemAreas.first(where: { $0.title.contains("H4-1 overspray") })
-        XCTAssertNotNil(overspray)
-        XCTAssertEqual(overspray?.isPreSeason, false, "H4-1 overspray should be confirmed, not pre-season")
+        XCTAssertEqual(zone4?.name, "Back Yard")
+        XCTAssertFalse(zone4?.problemAreas.isEmpty ?? true)
+        XCTAssertTrue(
+            zone4?.problemAreas.allSatisfy { $0.isPreSeason } ?? false,
+            "All Z4 problems should be pre-season stubs after the 2026-04-25 reseed"
+        )
     }
 
     func testHeadDataRoundTrip() throws {
@@ -207,6 +213,135 @@ final class FairwayBlobTests: XCTestCase {
         XCTAssertEqual(labels.last, "Z2-S18")
         XCTAssertTrue(heads.allSatisfy { $0.hasCoordinates }, "All Z2 heads should have lat/lon after KML ingestion")
         XCTAssertTrue(heads.allSatisfy { !$0.photoPaths.isEmpty }, "All Z2 heads should have at least one photo path")
+    }
+
+    // MARK: - 2026-04-25 KML reimport: Z3 expansion + Z4 Back Yard
+
+    func test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard() throws {
+        // 1. Build a blob with the OLD shape — 5 H3-* heads with custom data,
+        //    Zone 4 = "East Side" with 3 H4-* placeholders. Mark seeded so
+        //    load() doesn't re-seed over it.
+        var blob = PreviewData.seededBlob()
+        blob.seeded = true
+
+        guard let z3Idx = blob.zones.firstIndex(where: { $0.number == 3 }),
+              let z4Idx = blob.zones.firstIndex(where: { $0.number == 4 }) else {
+            return XCTFail("seeded blob missing zone 3 or 4")
+        }
+
+        blob.zones[z3Idx].heads = [
+            HeadData(label: "H3-1", headType: "Hunter", nozzle: "USER NOZZLE 1",
+                     arcDegrees: 90, location: "USER LOC 1", notes: "USER NOTE H3-1",
+                     isConfirmed: true,
+                     latitude: 40.30045489168911, longitude: -111.7457086814581,
+                     photoPaths: ["heads/H3-1/photo-1.jpg", "heads/H3-1/photo-2.jpg"]),
+            HeadData(label: "H3-2", headType: "Hunter", nozzle: "USER NOZZLE 2",
+                     arcDegrees: 180, location: "USER LOC 2", notes: "USER NOTE H3-2",
+                     isConfirmed: true,
+                     latitude: 40.30044324011, longitude: -111.7456786858868,
+                     photoPaths: ["heads/H3-2/photo-1.jpg"]),
+            HeadData(label: "H3-3", headType: "Hunter", nozzle: "USER NOZZLE 3",
+                     arcDegrees: 180, location: "USER LOC 3", notes: "USER NOTE H3-3",
+                     isConfirmed: true,
+                     latitude: 40.30039406539294, longitude: -111.7456939001862,
+                     photoPaths: []),
+            HeadData(label: "H3-4", headType: "Hunter", nozzle: "USER NOZZLE 4",
+                     arcDegrees: 180, location: "USER LOC 4", notes: "USER NOTE H3-4",
+                     isConfirmed: true,
+                     latitude: 40.3003882496641, longitude: -111.745666648806,
+                     photoPaths: ["heads/H3-4/photo-1.jpg", "heads/H3-4/photo-2.jpg"]),
+            HeadData(label: "H3-5", headType: "Hunter", nozzle: "USER NOZZLE 5",
+                     arcDegrees: 90, location: "USER LOC 5", notes: "USER NOTE H3-5",
+                     isConfirmed: false,
+                     latitude: 40.30036387431078, longitude: -111.7456811868022,
+                     photoPaths: ["heads/H3-5/photo-1.jpg", "heads/H3-5/photo-2.jpg", "heads/H3-5/photo-3.jpg"])
+        ]
+
+        blob.zones[z4Idx].name = "East Side"
+        blob.zones[z4Idx].heads = [
+            HeadData(label: "H4-1", headType: "Hunter Pro-Spray", nozzle: "Fixed spray 15A",
+                     arcDegrees: 90, radiusFeet: 15, gpm: 1.85, location: "Patio edge",
+                     isConfirmed: true, issues: [.overspray]),
+            HeadData(label: "H4-2", headType: "Hunter Pro-Spray", nozzle: "Fixed spray 15F",
+                     arcDegrees: 360, radiusFeet: 15, gpm: 3.70, location: "Center strip",
+                     isConfirmed: true),
+            HeadData(label: "H4-3", headType: "Hunter Pro-Spray", nozzle: "Fixed spray 15H",
+                     arcDegrees: 180, radiusFeet: 15, gpm: 1.85, location: "East fence",
+                     isConfirmed: true)
+        ]
+
+        // 2. Inject into UserDefaults, run load() (Phase 0 then Phase 1).
+        let key = FairwayConfig.storeKey
+        UserDefaults.standard.set(try JSONEncoder().encode(blob), forKey: key)
+        defer { UserDefaults.standard.removeObject(forKey: key) }
+
+        let store = FairwayStore()
+        store.load()
+
+        // 3. Zone 3: 11 heads, labels Z3-S1..Z3-S11; user data preserved on Z3-S7..Z3-S11.
+        guard let z3 = store.blob.zones.first(where: { $0.number == 3 }) else {
+            return XCTFail("zone 3 missing after migration")
+        }
+        XCTAssertEqual(z3.heads.count, 11, "zone 3 should have 11 heads after Phase 1")
+        XCTAssertEqual(Set(z3.heads.map(\.label)), Set((1...11).map { "Z3-S\($0)" }))
+        XCTAssertFalse(z3.heads.contains(where: { $0.label.hasPrefix("H3-") }), "no H3-* labels should remain")
+
+        // Original H3-1 lives at Z3-S7 with notes/isConfirmed/nozzle preserved
+        // and photoPaths rewritten in place (count preserved).
+        guard let z3s7 = z3.heads.first(where: { $0.label == "Z3-S7" }) else {
+            return XCTFail("Z3-S7 missing")
+        }
+        XCTAssertEqual(z3s7.notes, "USER NOTE H3-1")
+        XCTAssertEqual(z3s7.nozzle, "USER NOZZLE 1")
+        XCTAssertEqual(z3s7.location, "USER LOC 1")
+        XCTAssertTrue(z3s7.isConfirmed)
+        XCTAssertEqual(z3s7.photoPaths, ["heads/Z3-S7/photo-1.jpg", "heads/Z3-S7/photo-2.jpg"])
+
+        // H3-3 had 0 photoPaths — Z3-S9 should still have 0.
+        guard let z3s9 = z3.heads.first(where: { $0.label == "Z3-S9" }) else {
+            return XCTFail("Z3-S9 missing")
+        }
+        XCTAssertEqual(z3s9.notes, "USER NOTE H3-3")
+        XCTAssertTrue(z3s9.photoPaths.isEmpty)
+
+        // Original H3-5 lives at Z3-S11 with isConfirmed=false preserved.
+        guard let z3s11 = z3.heads.first(where: { $0.label == "Z3-S11" }) else {
+            return XCTFail("Z3-S11 missing")
+        }
+        XCTAssertEqual(z3s11.notes, "USER NOTE H3-5")
+        XCTAssertFalse(z3s11.isConfirmed)
+        XCTAssertEqual(z3s11.photoPaths, [
+            "heads/Z3-S11/photo-1.jpg",
+            "heads/Z3-S11/photo-2.jpg",
+            "heads/Z3-S11/photo-3.jpg"
+        ])
+
+        // New Z3-S1..Z3-S6 came from PreviewData (not customized, isConfirmed=false).
+        guard let z3s1 = z3.heads.first(where: { $0.label == "Z3-S1" }) else {
+            return XCTFail("Z3-S1 missing")
+        }
+        XCTAssertFalse(z3s1.isConfirmed)
+        XCTAssertEqual(z3s1.notes, "KML pin: b yellow.")
+
+        // 4. Zone 4: name → "Back Yard", 12 heads Z4-S1..Z4-S12.
+        guard let z4 = store.blob.zones.first(where: { $0.number == 4 }) else {
+            return XCTFail("zone 4 missing after migration")
+        }
+        XCTAssertEqual(z4.name, "Back Yard")
+        XCTAssertEqual(z4.heads.count, 12, "zone 4 should have 12 heads after Phase 1")
+        XCTAssertEqual(Set(z4.heads.map(\.label)), Set((1...12).map { "Z4-S\($0)" }))
+        XCTAssertFalse(z4.heads.contains(where: { $0.label.hasPrefix("H4-") }), "no H4-* labels should remain")
+        XCTAssertTrue(
+            z4.problemAreas.allSatisfy { $0.isPreSeason },
+            "Z4 problem areas should all be pre-season after reseed"
+        )
+
+        // 5. Idempotency: a second load() must be a no-op.
+        let snapshotZ3Count = z3.heads.count
+        let snapshotZ4Count = z4.heads.count
+        store.load()
+        XCTAssertEqual(store.blob.zones.first(where: { $0.number == 3 })?.heads.count, snapshotZ3Count)
+        XCTAssertEqual(store.blob.zones.first(where: { $0.number == 4 })?.heads.count, snapshotZ4Count)
     }
 
     func testHeadDataMissingGeoFieldsDecodes() throws {

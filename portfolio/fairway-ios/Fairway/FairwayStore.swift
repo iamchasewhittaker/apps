@@ -38,6 +38,7 @@ final class FairwayStore {
         blob = decoded
         if !blob.seeded { seedIfNeeded() }
         applyPhase0MigrationIfNeeded()
+        applyPhase1ZoneMigrationIfNeeded()
     }
 
     /// Idempotently applies the 2026-04-23 IFA over-application data (companion
@@ -94,6 +95,60 @@ final class FairwayStore {
         for task in PreviewData.phase0RecoveryTasks() where !existingTitles.contains(task.title) {
             blob.maintenanceTasks.append(task)
             changed = true
+        }
+
+        if changed { save() }
+    }
+
+    /// Idempotent migration for the 2026-04-25 KML reimport: renames Zone 3
+    /// heads `H3-1..H3-5` → `Z3-S7..Z3-S11` (preserves user data — only the
+    /// label and photoPaths string prefix change), appends 6 new northern
+    /// heads `Z3-S1..Z3-S6`, and re-seeds Zone 4 from "East Side" placeholder
+    /// to "Back Yard" with 12 KML-sourced heads. Safe to call on every load.
+    ///
+    /// Naming note: distinct from `applyPhase1PropertyMigrationIfNeeded()`
+    /// (async, geocoding) — this one is sync and runs from `load()`.
+    private func applyPhase1ZoneMigrationIfNeeded() {
+        var changed = false
+
+        // ---- Zone 3 rename: H3-N → Z3-S(N+6), preserving all user data ----
+        if let z3Idx = blob.zones.firstIndex(where: { $0.number == 3 }) {
+            for hIdx in blob.zones[z3Idx].heads.indices {
+                let head = blob.zones[z3Idx].heads[hIdx]
+                guard head.label.hasPrefix("H3-"),
+                      let n = Int(head.label.dropFirst(3)),
+                      (1...5).contains(n) else { continue }
+                let newLabel = "Z3-S\(n + 6)"
+                blob.zones[z3Idx].heads[hIdx].label = newLabel
+                blob.zones[z3Idx].heads[hIdx].photoPaths = head.photoPaths.map {
+                    $0.replacingOccurrences(of: "heads/H3-\(n)/", with: "heads/\(newLabel)/")
+                }
+                changed = true
+            }
+
+            // ---- Zone 3 add: append Z3-S1..Z3-S6 if not already present ----
+            let existingLabels = Set(blob.zones[z3Idx].heads.map(\.label))
+            for newHead in PreviewData.phase1Z3NewHeads() where !existingLabels.contains(newHead.label) {
+                blob.zones[z3Idx].heads.append(newHead)
+                changed = true
+            }
+        }
+
+        // ---- Zone 4 replace: only if untouched "East Side" placeholder ----
+        if let z4Idx = blob.zones.firstIndex(where: { $0.number == 4 }) {
+            let zone = blob.zones[z4Idx]
+            let isPlaceholder = zone.name == "East Side" &&
+                !zone.heads.isEmpty &&
+                zone.heads.allSatisfy { $0.label.hasPrefix("H4-") }
+            if isPlaceholder {
+                let preservedID = zone.id
+                var fresh = PreviewData.zone4()
+                fresh.id = preservedID
+                blob.zones[z4Idx] = fresh
+                changed = true
+            } else if zone.name == "East Side" || zone.heads.contains(where: { $0.label.hasPrefix("H4-") }) {
+                print("[Phase1Zone] Skipping Z4 reseed; user-customized (name=\(zone.name), \(zone.heads.count) heads)")
+            }
         }
 
         if changed { save() }

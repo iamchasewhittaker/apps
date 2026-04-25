@@ -417,7 +417,112 @@ enum PreviewData {
         return zone
     }
 
-    private static func zone3() -> ZoneData {
+    /// 6 new Z3 heads added by the 2026-04-25 KML reimport (north of the
+    /// original 5 red pins). Public so `applyPhase1ZoneMigrationIfNeeded()`
+    /// can append them to existing on-device blobs without going through
+    /// the full zone3() seed.
+    static func phase1Z3NewHeads() -> [HeadData] {
+        [
+            HeadData(
+                label: "Z3-S1",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: b yellow.",
+                isConfirmed: false,
+                latitude: 40.30053473638974,
+                longitude: -111.7457401702552,
+                photoPaths: [
+                    "heads/Z3-S1/photo-1.jpg",
+                    "heads/Z3-S1/photo-2.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z3-S2",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: b yellow.",
+                isConfirmed: false,
+                latitude: 40.30051924957012,
+                longitude: -111.7456873490801,
+                photoPaths: [
+                    "heads/Z3-S2/photo-1.jpg",
+                    "heads/Z3-S2/photo-2.jpg",
+                    "heads/Z3-S2/photo-3.jpg",
+                    "heads/Z3-S2/photo-4.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z3-S3",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: b black.",
+                isConfirmed: false,
+                latitude: 40.30049601145916,
+                longitude: -111.7457236854322,
+                photoPaths: [
+                    "heads/Z3-S3/photo-1.jpg",
+                    "heads/Z3-S3/photo-2.jpg",
+                    "heads/Z3-S3/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z3-S4",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: B black.",
+                isConfirmed: false,
+                latitude: 40.30049509265507,
+                longitude: -111.7456179983093,
+                photoPaths: [
+                    "heads/Z3-S4/photo-1.jpg",
+                    "heads/Z3-S4/photo-2.jpg",
+                    "heads/Z3-S4/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z3-S5",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: B Black.",
+                isConfirmed: false,
+                latitude: 40.30047305730761,
+                longitude: -111.7456258168152,
+                photoPaths: [
+                    "heads/Z3-S5/photo-1.jpg",
+                    "heads/Z3-S5/photo-2.jpg",
+                    "heads/Z3-S5/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z3-S6",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: b black.",
+                isConfirmed: false,
+                latitude: 40.30046482949889,
+                longitude: -111.7456645151178,
+                photoPaths: [
+                    "heads/Z3-S6/photo-1.jpg",
+                    "heads/Z3-S6/photo-2.jpg",
+                    "heads/Z3-S6/photo-3.jpg"
+                ]
+            )
+        ]
+    }
+
+    static func zone3() -> ZoneData {
         var zone = ZoneData(
             number: 3,
             name: "West Side",
@@ -427,9 +532,11 @@ enum PreviewData {
             notes: "West side yard along fence."
         )
 
-        zone.heads = [
+        zone.heads = phase1Z3NewHeads() + [
+            // Z3-S7..Z3-S11 inherit data from the original H3-1..H3-5 seed.
+            // Per-pin photo counts match disk state after the 2026-04-25 reimport.
             HeadData(
-                label: "H3-1",
+                label: "Z3-S7",
                 headType: "Hunter",
                 nozzle: "TBD",
                 arcDegrees: 90,
@@ -439,12 +546,13 @@ enum PreviewData {
                 latitude: 40.30045489168911,
                 longitude: -111.7457086814581,
                 photoPaths: [
-                    "heads/H3-1/photo-1.jpg",
-                    "heads/H3-1/photo-2.jpg"
+                    "heads/Z3-S7/photo-1.jpg",
+                    "heads/Z3-S7/photo-2.jpg",
+                    "heads/Z3-S7/photo-3.jpg"
                 ]
             ),
             HeadData(
-                label: "H3-2",
+                label: "Z3-S8",
                 headType: "Hunter",
                 nozzle: "TBD",
                 arcDegrees: 180,
@@ -454,12 +562,13 @@ enum PreviewData {
                 latitude: 40.30044324011,
                 longitude: -111.7456786858868,
                 photoPaths: [
-                    "heads/H3-2/photo-1.jpg",
-                    "heads/H3-2/photo-2.jpg"
+                    "heads/Z3-S8/photo-1.jpg",
+                    "heads/Z3-S8/photo-2.jpg",
+                    "heads/Z3-S8/photo-3.jpg"
                 ]
             ),
             HeadData(
-                label: "H3-3",
+                label: "Z3-S9",
                 headType: "Hunter",
                 nozzle: "TBD",
                 arcDegrees: 180,
@@ -469,12 +578,13 @@ enum PreviewData {
                 latitude: 40.30039406539294,
                 longitude: -111.7456939001862,
                 photoPaths: [
-                    "heads/H3-3/photo-1.jpg",
-                    "heads/H3-3/photo-2.jpg"
+                    "heads/Z3-S9/photo-1.jpg",
+                    "heads/Z3-S9/photo-2.jpg",
+                    "heads/Z3-S9/photo-3.jpg"
                 ]
             ),
             HeadData(
-                label: "H3-4",
+                label: "Z3-S10",
                 headType: "Hunter",
                 nozzle: "TBD",
                 arcDegrees: 180,
@@ -484,13 +594,13 @@ enum PreviewData {
                 latitude: 40.3003882496641,
                 longitude: -111.745666648806,
                 photoPaths: [
-                    "heads/H3-4/photo-1.jpg",
-                    "heads/H3-4/photo-2.jpg",
-                    "heads/H3-4/photo-3.jpg"
+                    "heads/Z3-S10/photo-1.jpg",
+                    "heads/Z3-S10/photo-2.jpg",
+                    "heads/Z3-S10/photo-3.jpg"
                 ]
             ),
             HeadData(
-                label: "H3-5",
+                label: "Z3-S11",
                 headType: "Hunter",
                 nozzle: "TBD",
                 arcDegrees: 90,
@@ -500,10 +610,10 @@ enum PreviewData {
                 latitude: 40.30036387431078,
                 longitude: -111.7456811868022,
                 photoPaths: [
-                    "heads/H3-5/photo-1.jpg",
-                    "heads/H3-5/photo-2.jpg",
-                    "heads/H3-5/photo-3.jpg",
-                    "heads/H3-5/photo-4.jpg"
+                    "heads/Z3-S11/photo-1.jpg",
+                    "heads/Z3-S11/photo-2.jpg",
+                    "heads/Z3-S11/photo-3.jpg",
+                    "heads/Z3-S11/photo-4.jpg"
                 ]
             )
         ]
@@ -530,27 +640,58 @@ enum PreviewData {
         return zone
     }
 
-    private static func zone4() -> ZoneData {
+    /// Zone 4 = Back Yard. 12 Hunter Pro-Spray heads from the 2026-04-25 KML
+    /// reimport (replaces the original 3-head "East Side" placeholder).
+    /// Per-head nozzle/arc/GPM data is TBD and gets filled by Chase in-app
+    /// during the season-test walk.
+    static func zone4() -> ZoneData {
         var zone = ZoneData(
             number: 4,
-            name: "East Side",
+            name: "Back Yard",
             type: .coolSeasonGrass,
             squareFootage: 711,
-            headType: "Hunter Pro-Spray fixed spray",
-            notes: "East side yard along patio."
+            headType: "Hunter Pro-Spray (TBD)",
+            notes: "Back yard rectangle along rear fence."
         )
 
-        zone.heads = [
-            HeadData(label: "H4-1", headType: "Hunter Pro-Spray", nozzle: "Fixed spray 15A", arcDegrees: 90, radiusFeet: 15, gpm: 1.85, location: "Patio edge", isConfirmed: true, issues: [.overspray]),
-            HeadData(label: "H4-2", headType: "Hunter Pro-Spray", nozzle: "Fixed spray 15F", arcDegrees: 360, radiusFeet: 15, gpm: 3.70, location: "Center strip", isConfirmed: true),
-            HeadData(label: "H4-3", headType: "Hunter Pro-Spray", nozzle: "Fixed spray 15H", arcDegrees: 180, radiusFeet: 15, gpm: 1.85, location: "East fence", isConfirmed: true)
+        let kmlNotes: [(String, String, Double, Double)] = [
+            ("Z4-S1",  "b",       40.30058142169406, -111.7455279973688),
+            ("Z4-S2",  "b",       40.3005726591168,  -111.7455549783393),
+            ("Z4-S3",  "b",       40.30056725921459, -111.7455952106812),
+            ("Z4-S4",  "b",       40.30055654324736, -111.7456475876912),
+            ("Z4-S5",  "b black", 40.30054929673655, -111.7456775591771),
+            ("Z4-S6",  "b red",   40.30054712884959, -111.7455114782393),
+            ("Z4-S7",  "b black", 40.30053944550406, -111.7455525895473),
+            ("Z4-S8",  "b red",   40.30052629371446, -111.7455312767651),
+            ("Z4-S9",  "b black", 40.30051933702742, -111.7455873320466),
+            ("Z4-S10", "b red",   40.30051213845528, -111.7456197989494),
+            ("Z4-S11", "b black", 40.30050961696043, -111.7455064083307),
+            ("Z4-S12", "b black", 40.30048656264817, -111.745501230088)
         ]
 
+        zone.heads = kmlNotes.map { (label, kmlName, lat, lon) in
+            HeadData(
+                label: label,
+                headType: "Hunter Pro-Spray",
+                nozzle: "TBD",
+                arcDegrees: 0,
+                location: "",
+                notes: "KML pin: \(kmlName).",
+                isConfirmed: false,
+                latitude: lat,
+                longitude: lon,
+                photoPaths: [
+                    "heads/\(label)/photo-1.jpg",
+                    "heads/\(label)/photo-2.jpg",
+                    "heads/\(label)/photo-3.jpg"
+                ]
+            )
+        }
+
         zone.problemAreas = [
-            ProblemData(title: "H4-1 overspray onto patio", description: "Confirmed last season — soaks patio furniture.", severity: .medium, isPreSeason: false),
-            ProblemData(title: "Dry strip east fence", description: "Browns out near fence in heat.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "NE corner gap", description: "Suspected dry corner.", severity: .low, isPreSeason: true),
-            ProblemData(title: "Uneven distribution", description: "Fixed spray PR is high — prone to runoff.", severity: .medium, isPreSeason: true)
+            ProblemData(title: "Coverage gaps to verify", description: "12 heads brand new from KML — coverage map unconfirmed.", severity: .medium, isPreSeason: true),
+            ProblemData(title: "Nozzle types unconfirmed", description: "All 12 heads need nozzle ID during season test.", severity: .medium, isPreSeason: true),
+            ProblemData(title: "Cycle time TBD pending PR test", description: "PR unknown until nozzles identified.", severity: .low, isPreSeason: true)
         ]
 
         zone.schedule = ScheduleData(
@@ -561,8 +702,8 @@ enum PreviewData {
             startTime: "5:30 AM",
             precipitationRate: 1.5,
             grassType: "KBG",
-            nozzleType: "Fixed spray",
-            notes: "High PR — shorter cycles, longer soak for clay."
+            nozzleType: "TBD",
+            notes: "PR to be confirmed during season test."
         )
 
         return zone

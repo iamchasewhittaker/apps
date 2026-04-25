@@ -5,13 +5,14 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 KML ingestion source edits DONE — `xcodebuild` build/test still blocked (iOS 17.2 sim runtime missing); 3 photo-audit docs not yet generated |
-| Last session | 2026-04-24 (interrupted mid-flow for docs sweep) |
-| Focus | PreviewData.swift Z2 6→18 + Z3 coords + Z2-S1/S5 corrections shipped; FairwayBlobTests +2 new tests. Build verification deferred until iOS 17.2 simulator runtime is installed. |
+| Status | 🟡 Phase 1 zone migration COMPLETE. `xcodebuild` blocked by missing iOS 17.2 runtime — install via Xcode → Settings → Platforms. Swift sources verified clean via `xcrun swiftc -parse`. |
+| Last session | 2026-04-25 (Swift migration + tests written; build/test deferred; docs updated) |
+| Focus | KML reimport fully wired up in Swift. Next: install simulator runtime → `xcodebuild test` + `xcodebuild build` → device smoke test. Then: 2026-04-24 docs-sweep (PHOTO_AUDIT, COVERAGE_ANALYSIS, PROPERTY_PLACEMENT). |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
 | Xcode project | `Fairway.xcodeproj` |
+| Plan | `/Users/chase/.claude/plans/i-have-a-new-cheeky-nova.md` |
 
 ---
 
@@ -22,6 +23,91 @@ iOS 17.2 simulator runtime is **not installed**. `xcodebuild` cannot build or te
 **Fix:** Xcode → Settings → Platforms → install iOS 17.2.
 
 This blocks `xcodebuild build` and `xcodebuild test`. It does NOT block editing. All source changes in this session are syntactically valid (verified by file inspection). Verify build after runtime install.
+
+---
+
+## 2026-04-25 KML Reimport — Zone 3 expansion + Zone 4 (Back Yard) seed
+
+**Plan:** `/Users/chase/.claude/plans/i-have-a-new-cheeky-nova.md`
+**Kickoff prompt for fresh chat:** [docs/SESSION_START_KML_REIMPORT.md](docs/SESSION_START_KML_REIMPORT.md)
+
+Chase exported a new Google Earth KML at `docs/Sprinklers Google Earth (1).kml` (41 placemarks, replacing the old 23-pin `docs/Sprinklers.kml`):
+- **Zone 2 unchanged** (18 pins — same 6 numbered park-strip + 12 color-named front yard)
+- **Zone 3 grew 5 → 11** (red pins, side yard) — old 5 are at the same lat/lon, plus 6 new red pins further north
+- **Zone 4 NEW = Back Yard** (12 white/no-color pins) — replaces the 3-head "East Side" placeholder
+
+Decisions locked in interview:
+1. Zone 4 = "Back Yard" (replace 3 H4 placeholders with 12 KML pins)
+2. Standardize labels to `Z*-S*` — existing `H3-*` rename to `Z3-S*`, `H4-*` rename to `Z4-S*`. Z2 keeps `Z2-S*`.
+3. Renumber Zone 3 N→S — old `H3-1..H3-5` slide to `Z3-S7..Z3-S11`
+4. Rewrite KML `<name>` tags + emit a `RENAME_MAP.md` for human verification before Chase re-imports to Google Earth
+
+### LANDED 2026-04-25 (do NOT redo)
+
+- ✅ **`tools/import-kml.py` rewritten:**
+  - Source switched to `docs/Sprinklers Google Earth (1).kml`
+  - New color rule: `red` → Z3, `no-color` → Z4, else → Z2
+  - New label scheme: `Z3-S1..Z3-S11`, `Z4-S1..Z4-S12` (sorted N→S by lat); Z2 unchanged
+  - Idempotent legacy folder migration: renames `docs/heads/H3-{1..5}` → `docs/heads/Z3-S{7..11}` before downloads
+- ✅ **`python3 tools/import-kml.py` ran clean** — 41 placemarks parsed: Z2 front-yard=12, Z2 park-strip=6, Z3=11, Z4=12. All 5 legacy `H3-*` photo folders moved to `Z3-S{7..11}/`. 6 new `Z3-S{1..6}/` folders + 12 new `Z4-S{1..12}/` folders downloaded fresh (3 photos each = 54 new photos). Manifest regenerated at `docs/heads/sprinklers.json` (41 heads, 126 photos total).
+- ✅ **`Fairway/CLAUDE.md` updated** — Sprinkler Head Data section rewritten: new KML source + color/zone rule + `Z*-S*` label scheme + legacy `H3-N`↔`Z3-S{N+6}` map; file-tree under `docs/` updated to show new folder layout.
+
+### COMPLETED 2026-04-25 (continuation session) ✅
+
+- ✅ **`tools/rewrite-kml-labels.py` written + run** — 41 placemarks rewritten, `RENAME_MAP.md` has 41 rows, second run is a no-op.
+- ✅ **`Fairway/PreviewData.swift`** — `zone3()` expanded to 11 heads `Z3-S1..Z3-S11` (photo counts from manifest: Z3-S1=2, Z3-S2=4, rest=3). `zone4()` renamed "Back Yard", 12 Z4-S* heads, 3 pre-season problem stubs (H4-1 overspray made-up problem removed).
+- ✅ **`Fairway/FairwayStore.swift`** — `applyPhase1ZoneMigrationIfNeeded()` added (sync, called from `load()` after Phase 0). Three idempotent ops: H3→Z3-S rename, Z3-S1..S6 append, Z4 "East Side" reseed with UUID preservation.
+- ✅ **`FairwayTests/FairwayBlobTests.swift`** — `test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard()` added; `testPreSeasonFlagsCorrect` updated to match new Z4 shape.
+
+### STILL NEEDED
+
+1. **Install iOS 17.2 simulator runtime** (Xcode → Settings → Platforms)
+2. **Run `xcodebuild test`** — verify new migration test + all prior tests pass
+3. **Run `xcodebuild build`** — verify clean compile
+4. **Manual smoke (simulator + device):**
+   - Fresh install: Zone 3 = 11 heads `Z3-S1..Z3-S11`; Zone 4 = "Back Yard" + 12 `Z4-S1..Z4-S12`
+   - Over-existing-install: old H3-* heads land at Z3-S7..Z3-S11 with original notes preserved; Z4 reseeded
+5. **Google Earth re-import (Chase manual):** open `docs/Sprinklers Google Earth (1).kml` in Google Earth web → confirm all 41 pins show `Z*-S*` labels.
+
+### Reference data — final label assignments
+
+**Zone 3 (red, N→S)** — 11 heads, 5 inherit existing data:
+| Label | KML pin | lat | lon | Was |
+|-------|---------|-----|-----|-----|
+| Z3-S1  | b yellow | 40.3005347 | -111.7457402 | NEW |
+| Z3-S2  | b yellow | 40.3005192 | -111.7456873 | NEW |
+| Z3-S3  | b black  | 40.3004960 | -111.7457237 | NEW |
+| Z3-S4  | B black  | 40.3004951 | -111.7456180 | NEW |
+| Z3-S5  | B Black  | 40.3004731 | -111.7456258 | NEW |
+| Z3-S6  | b black  | 40.3004648 | -111.7456645 | NEW |
+| Z3-S7  | b blue   | 40.3004549 | -111.7457087 | H3-1 |
+| Z3-S8  | b red    | 40.3004432 | -111.7456787 | H3-2 |
+| Z3-S9  | b red    | 40.3003941 | -111.7456939 | H3-3 |
+| Z3-S10 | b red    | 40.3003882 | -111.7456666 | H3-4 |
+| Z3-S11 | B bred   | 40.3003639 | -111.7456812 | H3-5 |
+
+**Zone 4 (no-color, N→S)** — 12 heads, all NEW:
+| Label | KML pin | lat | lon |
+|-------|---------|-----|-----|
+| Z4-S1  | b       | 40.3005814 | -111.7455280 |
+| Z4-S2  | b       | 40.3005727 | -111.7455550 |
+| Z4-S3  | b       | 40.3005673 | -111.7455952 |
+| Z4-S4  | b       | 40.3005565 | -111.7456476 |
+| Z4-S5  | b black | 40.3005493 | -111.7456776 |
+| Z4-S6  | b red   | 40.3005471 | -111.7455115 |
+| Z4-S7  | b black | 40.3005394 | -111.7455526 |
+| Z4-S8  | b red   | 40.3005263 | -111.7455313 |
+| Z4-S9  | b black | 40.3005193 | -111.7455873 |
+| Z4-S10 | b red   | 40.3005121 | -111.7456198 |
+| Z4-S11 | b black | 40.3005096 | -111.7455064 |
+| Z4-S12 | b black | 40.3004866 | -111.7455012 |
+
+### Out of scope (separate plans)
+
+- Visual matching of `Z2-MATCH-1st..6th` → `Z2-S1..Z2-S6` (still pending; see 2026-04-24 session below)
+- Per-head nozzle/arc/GPM data for the new 17 heads (Chase fills via in-app head detail editor as he walks the property)
+- HeadPinEditor MapKit work (separate WIP)
+- Rachio zone-link reconfiguration (zones unchanged in count — still 4)
 
 ---
 
@@ -368,8 +454,8 @@ xcodebuild test \
 |---|------|-------|------|-------|
 | 1 | Flower beds (shrubs) | 106 | Drip emitters | No granular fert ever |
 | 2 | Front yard + park strip | 1,028 | KBG cool season | **Single valve** — park strip on same line; Z2-S1..S6 cataloged |
-| 3 | West Side Backyard | 998 | Cool season | H3-* heads, nozzle type TBD |
-| 4 | East Side Backyard | 711 | KBG cool season | H4-* heads, fixed spray |
+| 3 | West Side | 998 | Cool season | `Z3-S1..Z3-S11` (11 heads); `H3-1..H3-5` migrated → `Z3-S7..Z3-S11` via `applyPhase1ZoneMigrationIfNeeded()`. PreviewData + migration both ✅. |
+| 4 | Back Yard | TBD | KBG cool season | `Z4-S1..Z4-S12` (12 heads); replaced 3 H4 "East Side" placeholders via migration. PreviewData + migration both ✅. |
 
 Total grass (Z2+Z3+Z4): 2,737 sq ft
 
@@ -386,57 +472,13 @@ Total grass (Z2+Z3+Z4): 2,737 sq ft
 
 ## Session Start Prompt (use this next session)
 
-```
-Read the following in order:
-1. /Users/chase/Developer/chase/CLAUDE.md
-2. /Users/chase/Developer/chase/portfolio/fairway-ios/CLAUDE.md
-3. /Users/chase/Developer/chase/portfolio/fairway-ios/HANDOFF.md
+The kickoff prompt for the **next session** lives at:
 
-Continuing Fairway iOS — KML ingestion source edits LANDED last session.
-Do NOT re-edit PreviewData.swift, FairwayBlobTests.swift, HeadData.swift,
-or re-run tools/import-kml.py. Read HANDOFF.md "KML Ingestion Progress
-(2026-04-24, second session)" for the full landed state.
+**[docs/SESSION_START_NEXT.md](docs/SESSION_START_NEXT.md)**
 
-What's already done (don't redo):
-- PreviewData.phase0Z2Heads() returns 18 heads (Z2-S1..S18) with lat/lon/photoPaths.
-- Z2-S1 corrected: Rain Bird VAN yellow, 4 ft.
-- Z2-S5 corrected: isConfirmed: false, "TBD — nozzle slot empty".
-- phase0Z2MixedPrecipProblem() text updated (drops S5-MP claim).
-- zone3() H3-1..H3-5 have lat/lon/photoPaths.
-- FairwayBlobTests.swift +2 tests:
-  testHeadDataPhotoPathsRoundTrip + testZone2HasEighteenSeededHeads.
+Open that file, copy its contents, paste into the new chat. It covers:
+- What to read first (CLAUDE.md + HANDOFF.md)
+- What's already done (don't redo)
+- Next immediate steps: install runtime → build/test → smoke test → docs-sweep
 
-Pick up here (in order):
-1. ⚠️ ENVIRONMENT: install iOS 17.2 simulator runtime if still missing
-   (Xcode → Settings → Platforms). Do NOT bypass by lowering deployment
-   target or changing destinations.
-2. Run xcodebuild build + xcodebuild test from portfolio/fairway-ios/.
-   If any test fails or build errors, fix before generating docs.
-3. Generate docs/heads/PHOTO_AUDIT.md — read photo-1/2/3 of all 23 heads
-   via Read tool (Read accepts JPG natively). Per head: nozzle brand/model,
-   visible defects (clogging, tilt, burial, missing parts), spray arc
-   inference (from photo-3 if water visible), placement context (from
-   photo-2). Group by zone: Z2 park strip (Z2-S1..S6, source dirs
-   Z2-MATCH-1st..6th/) → Z2 front yard (Z2-S7..S18) → Z3 west side
-   (H3-1..H3-5).
-4. Generate docs/heads/COVERAGE_ANALYSIS.md — haversine distance from
-   sprinklers.json lat/lon between each pair of heads in same zone.
-   Flag gaps (adjacent N→S distance > 20 ft) and overlaps (< 5 ft).
-   Park-strip expected spacing ~6–8 ft; front yard ~10–15 ft.
-5. Generate docs/heads/PROPERTY_PLACEMENT.md — cross-reference photo-2
-   landmarks + property-overhead.jpg + coords. Per-head placement
-   description (e.g., "Z2-S7: front yard NW corner, mulched bed edge,
-   3 ft from sidewalk"). Becomes source of truth for refining `location`
-   strings on a future PreviewData pass.
-6. Chase field-confirm provisional Z2 matching (see "Provisional seed
-   matching" table in HANDOFF.md). Especially Z2-S5 — does the empty
-   nozzle slot in 5th Sprinkler photo-1 actually correspond to seeded
-   Z2-S5, or is matching wrong?
-7. Once Z2 matching is confirmed in field: run
-   `git mv docs/heads/Z2-MATCH-1st docs/heads/Z2-S1` (and 5 more), then
-   update photoPaths in phase0Z2Heads() to drop the MATCH names.
-
-Provisional seed matching (NEEDS Chase field confirmation, esp. Z2-S5):
-  1st Sprinkler → Z2-S1  |  6th → Z2-S2  |  2nd → Z2-S3
-  4th Sprinkler → Z2-S4  |  5th → Z2-S5  |  3rd → Z2-S6
-```
+The earlier 2026-04-24 docs-sweep prompt (PHOTO_AUDIT, COVERAGE_ANALYSIS, PROPERTY_PLACEMENT) is valid follow-on work after build/test passes.
