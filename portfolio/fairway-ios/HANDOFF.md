@@ -5,9 +5,9 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 Phase 1 zone migration COMPLETE. `xcodebuild` blocked by missing iOS 17.2 runtime — install via Xcode → Settings → Platforms. Swift sources verified clean via `xcrun swiftc -parse`. |
-| Last session | 2026-04-25 (Swift migration + tests written; build/test deferred; docs updated) |
-| Focus | KML reimport fully wired up in Swift. Next: install simulator runtime → `xcodebuild test` + `xcodebuild build` → device smoke test. Then: 2026-04-24 docs-sweep (PHOTO_AUDIT, COVERAGE_ANALYSIS, PROPERTY_PLACEMENT). |
+| Status | 🟡 All tests passing, sim build clean, device build done. **Device install pending — connect iPhone 12 Pro Max.** |
+| Last session | 2026-04-25 (tests pass, 3 Codable bugs fixed, device build succeeded, install pending phone connection) |
+| Focus | Connect iPhone 12 Pro Max → `xcrun devicectl device install app` → manual smoke test (Zone 3=11 heads, Zone 4="Back Yard"+12). Then: docs-sweep + Phase 1 Map bug. |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
@@ -16,13 +16,43 @@
 
 ---
 
-## ⚠️ Environment Blocker
+## ✅ 2026-04-25 Verification Session — COMPLETE
 
-iOS 17.2 simulator runtime is **not installed**. `xcodebuild` cannot build or test.
+All sim verification done. Three pre-existing production bugs found and fixed.
 
-**Fix:** Xcode → Settings → Platforms → install iOS 17.2.
+### Tests (iPhone 15 simulator) — EXIT:0
 
-This blocks `xcodebuild build` and `xcodebuild test`. It does NOT block editing. All source changes in this session are syntactically valid (verified by file inspection). Verify build after runtime install.
+All tests pass including:
+- `test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard`
+- `testPreSeasonFlagsCorrect` (updated for new Z4 shape)
+- `testHeadDataMissingGeoFieldsDecodes`
+- `testV1BlobDecodesIntoV2WithDefaults`
+- All 7 `RachioDecodeTests`
+
+### Bugs fixed this session
+
+| File | Bug | Fix |
+|------|-----|-----|
+| `Fairway/Views/PropertySettingsView.swift` | Swift concurrency errors — `@MainActor`-isolated store properties accessed from non-isolated `@ViewBuilder` contexts | Added `@MainActor` to struct declaration |
+| `Fairway/Models/HeadData.swift` | `keyNotFound` for `photoPaths` — synthesized decoder requires non-optional keys even with default values; crashes on existing app data | Added `extension HeadData { init(from:) }` using `decodeIfPresent` for all newer fields |
+| `Fairway/FairwayBlob.swift` | `keyNotFound` for `observations`/`waterRuns`/`fertApplications` — same synthesized-decoder issue on v1 blobs | Added `extension FairwayBlob { init(from:) }` using `decodeIfPresent` for all newer array fields |
+
+### Device build (iPhone 12 Pro Max) — EXIT:0
+
+Built at:
+```
+/Users/chase/Library/Developer/Xcode/DerivedData/Fairway-cyxzigzaafugeyglqvaezxwbmdxr/Build/Products/Debug-iphoneos/Fairway.app
+```
+
+### Device install — PENDING
+
+iPhone 12 Pro Max (`A0C65578-B1E0-4E96-A1EC-EEB8913BD11C`) was `unavailable` (not connected). Once connected:
+
+```bash
+xcrun devicectl device install app \
+  --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C \
+  /Users/chase/Library/Developer/Xcode/DerivedData/Fairway-cyxzigzaafugeyglqvaezxwbmdxr/Build/Products/Debug-iphoneos/Fairway.app
+```
 
 ---
 
@@ -61,13 +91,10 @@ Decisions locked in interview:
 
 ### STILL NEEDED
 
-1. **Install iOS 17.2 simulator runtime** (Xcode → Settings → Platforms)
-2. **Run `xcodebuild test`** — verify new migration test + all prior tests pass
-3. **Run `xcodebuild build`** — verify clean compile
-4. **Manual smoke (simulator + device):**
-   - Fresh install: Zone 3 = 11 heads `Z3-S1..Z3-S11`; Zone 4 = "Back Yard" + 12 `Z4-S1..Z4-S12`
-   - Over-existing-install: old H3-* heads land at Z3-S7..Z3-S11 with original notes preserved; Z4 reseeded
-5. **Google Earth re-import (Chase manual):** open `docs/Sprinklers Google Earth (1).kml` in Google Earth web → confirm all 41 pins show `Z*-S*` labels.
+1. **Connect iPhone 12 Pro Max** → run install command above → manual smoke test (see SESSION_START_NEXT.md)
+2. **Google Earth re-import (Chase manual):** open `docs/Sprinklers Google Earth (1).kml` in Google Earth web → confirm all 41 pins show `Z*-S*` labels.
+3. **Docs-sweep** (future session): PHOTO_AUDIT.md, COVERAGE_ANALYSIS.md, PROPERTY_PLACEMENT.md
+4. **Phase 1 Map bug fix** — PropertySettings.swift + MapTabView.swift (spec in Phase 1 section below)
 
 ### Reference data — final label assignments
 
