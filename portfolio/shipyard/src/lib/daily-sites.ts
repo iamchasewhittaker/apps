@@ -1,4 +1,4 @@
-export type DailySiteCategory = 'job-search' | 'dev' | 'ai' | 'personal' | 'faith';
+export type DailySiteCategory = 'job-search' | 'dev' | 'ai' | 'money' | 'personal' | 'faith';
 
 export interface DailySite {
   category: DailySiteCategory;
@@ -11,6 +11,7 @@ export const CATEGORY_ORDER: { key: DailySiteCategory; label: string }[] = [
   { key: 'job-search', label: 'Job Search' },
   { key: 'dev', label: 'Dev / Deploy' },
   { key: 'ai', label: 'AI' },
+  { key: 'money', label: 'Money' },
   { key: 'personal', label: 'Personal' },
   { key: 'faith', label: 'Faith' },
 ];
@@ -31,11 +32,17 @@ export const DAILY_SITES: DailySite[] = [
   { category: 'ai', name: 'Claude', url: 'https://claude.ai' },
   { category: 'ai', name: 'ChatGPT', url: 'https://chat.openai.com' },
   { category: 'ai', name: 'Anthropic Console', url: 'https://console.anthropic.com' },
+  { category: 'ai', name: 'Claude Docs', url: 'https://docs.claude.com', note: 'API + SDK reference' },
+  { category: 'ai', name: 'Claude Code Docs', url: 'https://docs.claude.com/en/docs/claude-code/overview', note: 'CLI + agent guide' },
+
+  { category: 'money', name: 'Clarity Budget', url: 'https://clarity-budget-web.vercel.app', note: 'STS dashboard' },
+  { category: 'money', name: 'YNAB', url: 'https://app.ynab.com', note: 'Source of truth' },
 
   { category: 'personal', name: 'Gmail', url: 'https://mail.google.com' },
   { category: 'personal', name: 'Google Calendar', url: 'https://calendar.google.com' },
   { category: 'personal', name: 'Ash Reader', url: 'https://ash-reader.vercel.app', note: 'Mental health' },
   { category: 'personal', name: 'Knowledge Base', url: 'https://knowledge-base-hazel-iota.vercel.app', note: 'Bookmarks + notes' },
+  { category: 'personal', name: 'Extra', url: 'https://extra.email/home?cat=today', note: 'Email triage' },
 
   { category: 'faith', name: 'Gospel Library', url: 'https://www.churchofjesuschrist.org/study/scriptures' },
   { category: 'faith', name: 'Scripture Citation Index', url: 'https://scriptures.byu.edu' },
@@ -48,6 +55,7 @@ export function sitesByCategory(
     'job-search': [],
     dev: [],
     ai: [],
+    money: [],
     personal: [],
     faith: [],
   };
