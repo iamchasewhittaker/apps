@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 
 const navItems: { href: string; labelKey: LabelKey }[] = [
   { href: "/", labelKey: "fleet" },
+  { href: "/bridge", labelKey: "bridge" },
   { href: "/wip", labelKey: "wip" },
   { href: "/review", labelKey: "review" },
   { href: "/learnings", labelKey: "log" },
