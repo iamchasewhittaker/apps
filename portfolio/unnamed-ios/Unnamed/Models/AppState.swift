@@ -47,6 +47,12 @@ struct DailyLock: Codable {
         }
     }
 
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(date, forKey: .date)
+        try container.encode(lanes, forKey: .lanes)
+    }
+
     enum CodingKeys: String, CodingKey {
         case date, lanes, lane1, lane2
     }
