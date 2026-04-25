@@ -1,35 +1,39 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
 import { T } from "@/lib/constants";
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "signing-in" | "error";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
+  const canSubmit = email.trim().length > 0 && password.length > 0 && status !== "signing-in";
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim() || status === "sending") return;
-    setStatus("sending");
+    if (!canSubmit) return;
+    setStatus("signing-in");
     setError("");
     try {
       const supabase = getSupabaseBrowserClient();
-      const { error: otpErr } = await supabase.auth.signInWithOtp({
+      const { error: signInErr } = await supabase.auth.signInWithPassword({
         email: email.trim(),
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
+        password,
       });
-      if (otpErr) {
-        setError(otpErr.message);
+      if (signInErr) {
+        setError(signInErr.message);
         setStatus("error");
         return;
       }
-      setStatus("sent");
+      router.replace("/");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
       setStatus("error");
@@ -63,85 +67,85 @@ export default function LoginPage() {
           Safe to spend, from YNAB.
         </p>
 
-        {status === "sent" ? (
-          <div>
-            <div style={{ fontSize: 16, marginBottom: 8 }}>Check your email</div>
-            <div style={{ color: T.muted, fontSize: 14, lineHeight: 1.5 }}>
-              We sent a magic link to <strong style={{ color: T.text }}>{email}</strong>. Click it
-              to sign in.
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setStatus("idle");
-                setEmail("");
-              }}
-              style={{
-                marginTop: 20,
-                background: "transparent",
-                border: `1px solid ${T.border}`,
-                color: T.muted,
-                padding: "8px 14px",
-                borderRadius: 6,
-                fontSize: 13,
-                cursor: "pointer",
-              }}
-            >
-              Use a different email
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <label
-              htmlFor="email"
-              style={{ display: "block", fontSize: 13, color: T.muted, marginBottom: 6 }}
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              style={{
-                width: "100%",
-                boxSizing: "border-box",
-                padding: "10px 12px",
-                background: T.bg,
-                border: `1px solid ${T.border}`,
-                borderRadius: 6,
-                color: T.text,
-                fontSize: 14,
-                outline: "none",
-              }}
-            />
-            <button
-              type="submit"
-              disabled={status === "sending" || !email.trim()}
-              style={{
-                marginTop: 16,
-                width: "100%",
-                padding: "10px 14px",
-                background: T.accent,
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                fontSize: 14,
-                fontWeight: 500,
-                cursor: status === "sending" ? "wait" : "pointer",
-                opacity: status === "sending" || !email.trim() ? 0.6 : 1,
-              }}
-            >
-              {status === "sending" ? "Sending…" : "Send magic link"}
-            </button>
-            {error && (
-              <div style={{ marginTop: 12, color: T.danger, fontSize: 13 }}>{error}</div>
-            )}
-          </form>
-        )}
+        <form onSubmit={handleSubmit}>
+          <label
+            htmlFor="email"
+            style={{ display: "block", fontSize: 13, color: T.muted, marginBottom: 6 }}
+          >
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            required
+            autoFocus
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              padding: "10px 12px",
+              background: T.bg,
+              border: `1px solid ${T.border}`,
+              borderRadius: 6,
+              color: T.text,
+              fontSize: 14,
+              outline: "none",
+            }}
+          />
+
+          <label
+            htmlFor="password"
+            style={{ display: "block", fontSize: 13, color: T.muted, marginTop: 14, marginBottom: 6 }}
+          >
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              padding: "10px 12px",
+              background: T.bg,
+              border: `1px solid ${T.border}`,
+              borderRadius: 6,
+              color: T.text,
+              fontSize: 14,
+              outline: "none",
+            }}
+          />
+
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            style={{
+              marginTop: 20,
+              width: "100%",
+              padding: "10px 14px",
+              background: T.accent,
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              fontSize: 14,
+              fontWeight: 500,
+              cursor: status === "signing-in" ? "wait" : canSubmit ? "pointer" : "not-allowed",
+              opacity: canSubmit ? 1 : 0.6,
+            }}
+          >
+            {status === "signing-in" ? "Signing in…" : "Sign in"}
+          </button>
+          {error && (
+            <div style={{ marginTop: 12, color: T.danger, fontSize: 13 }}>{error}</div>
+          )}
+        </form>
       </div>
     </div>
   );
