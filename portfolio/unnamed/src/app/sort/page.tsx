@@ -1,7 +1,7 @@
 "use client";
 
 import { useApp } from "@/lib/context";
-import { getInboxItems, moveToLane } from "@/lib/store";
+import { getInboxItems, moveToLane, skipItem } from "@/lib/store";
 import { Lane, LANE_LABELS, LANE_DESCRIPTIONS } from "@/lib/types";
 
 const LANES: Exclude<Lane, "inbox">[] = [
@@ -84,6 +84,13 @@ export default function SortPage() {
           </button>
         ))}
       </div>
+
+      <button
+        onClick={() => update((s) => skipItem(s, currentItem.id))}
+        className="w-full text-zinc-500 text-sm py-3 mt-4 active:scale-[0.98] transition-all"
+      >
+        Skip
+      </button>
     </div>
   );
 }

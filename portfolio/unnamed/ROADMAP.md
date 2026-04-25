@@ -9,6 +9,7 @@
 | Date | Version | Summary |
 |------|---------|---------|
 | 2026-04-17 | v0.1 | MVP built: 5 flows, 4 lanes, dark UI, localStorage, PWA manifest |
+| 2026-04-24 | v0.1 | Web/iOS parity: Sort Skip button, `skipItem` cycle-to-end, FocusView reads `state.items` directly. Build clean; deploy to Vercel pending. |
 
 ---
 

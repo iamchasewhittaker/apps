@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Changed — Web/iOS parity (2026-04-24)
+- **Sort flow:** added Skip button (matches iOS, matches CLAUDE.md spec "pick a lane or skip")
+- **Skip semantics:** `skipItem` now cycles the item to the end of `state.items` instead of marking `status="skipped"`. Item stays active and reappears later — matches iOS's `skipItem` / `skipActiveItem` behavior. Previously Skip was a discard.
+- **FocusView ordering:** items now filtered directly from `state.items` (preserves cycle order) instead of `lanes.flatMap(...)` (which iterated by lane and broke the visible Skip cycle when there was one item per lane). Mirrors iOS `activeItems` computed property.
+- `ItemStatus = "skipped"` is left in the type as dead-code parity with iOS's `enum ItemStatus { case ..., skipped }` (defined but never written).
+
 ### Added — iOS (2026-04-17)
 - Native SwiftUI iOS app at `portfolio/unnamed-ios/` — all 5 flows, matches web behavior exactly
 - `AppStore` (@Observable @MainActor) with UserDefaults persistence (`unnamed_ios_v1`)

@@ -5,7 +5,6 @@ import { useApp } from "@/lib/context";
 import {
   getTodayLock,
   lockLanes,
-  getActiveItemsForLane,
   completeItem,
   skipItem,
 } from "@/lib/store";
@@ -107,8 +106,10 @@ function FocusView() {
   const lock = getTodayLock(state)!;
   const lanes = lock.lanes;
 
-  const allItems = lanes.flatMap((lane) =>
-    getActiveItemsForLane(state, lane).map((item) => ({ ...item, lane }))
+  const allItems = state.items.filter(
+    (i) =>
+      i.status === "active" &&
+      lanes.includes(i.lane as Exclude<Lane, "inbox">)
   );
 
   const currentItem = allItems[0];

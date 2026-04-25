@@ -9,10 +9,10 @@
 | Field | Value |
 |-------|-------|
 | **Path** | `portfolio/unnamed/` (web) · `portfolio/unnamed-ios/` (iOS) |
-| **Focus** | **iOS v0.1 complete (2026-04-17).** Native SwiftUI app built, 10/10 tests passing, installed and launched on iPhone 12 Pro Max. Web MVP also live at localhost:3000 (not yet deployed to Vercel). |
+| **Focus** | **Web/iOS parity complete locally (2026-04-24).** Sort now has a Skip button; `skipItem` cycles to end of items array (matches iOS); FocusView reads from `state.items` directly to preserve cycle order. `pnpm build` passes clean. **Vercel deploy pending in next session.** |
 | **Stack** | Web: Next.js 16 + TypeScript + Tailwind 4 + localStorage. iOS: SwiftUI + @Observable + UserDefaults |
-| **Last touch** | 2026-04-17 — **iOS Phase 1 complete:** all 5 flows, logo, tests pass, on-device. |
-| **Next** | 1. Use the iOS app for 7 days — no features until then. 2. Deploy web app to Vercel. 3. Generate PWA icons for web (192px + 512px). |
+| **Last touch** | 2026-04-24 — Parity audit + 3 fixes (Sort Skip button, skipItem cycle-to-end, FocusView ordering). All 5 flows verified end-to-end. |
+| **Next** | 1. Deploy web to Vercel: `vercel project add unnamed --scope iamchasewhittakers-projects` → `vercel link` → `vercel git connect` → `vercel --prod`. 2. Update repo-root `CLAUDE.md` portfolio table URL after deploy. 3. Run `cd portfolio/shipyard && npm run sync:projects`. 4. Use both iOS + web for 7 days — no new features. 5. Generate PWA icons (192px + 512px) before public share. |
 
 ---
 

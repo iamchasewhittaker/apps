@@ -92,12 +92,12 @@ export function completeItem(state: AppState, itemId: string): AppState {
 }
 
 export function skipItem(state: AppState, itemId: string): AppState {
-  return {
-    ...state,
-    items: state.items.map((i) =>
-      i.id === itemId ? { ...i, status: "skipped" } : i
-    ),
-  };
+  const idx = state.items.findIndex((i) => i.id === itemId);
+  if (idx === -1) return state;
+  const items = [...state.items];
+  const [moved] = items.splice(idx, 1);
+  items.push(moved);
+  return { ...state, items };
 }
 
 export function lockLanes(

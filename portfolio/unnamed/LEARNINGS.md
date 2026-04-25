@@ -36,3 +36,20 @@ iOS-specific learnings are in [`portfolio/unnamed-ios/LEARNINGS.md`](../unnamed-
 **The hand-crafted xcodeproj approach works.** xcodegen failed to install (macOS 13/Xcode 15.3 mismatch). Adapting an existing `project.pbxproj` with fresh sequential UUIDs took ~15 minutes and xcodebuild accepted it cleanly. Good pattern to know.
 
 **`@MainActor` must be explicit on view helper methods.** SwiftUI view body runs on MainActor, but private `func` inside a view struct does not inherit it. Calls to the `@MainActor`-isolated store produce a compile error. Mark the method explicitly.
+
+---
+
+## 2026-04-24 — Web/iOS parity audit
+
+**iOS as source of truth.** When two implementations of the same app drift, picking the newer one as canonical works well — iOS shipped second (2026-04-17), was hand-tuned on device, and reflected sharper thinking about Skip semantics. Web bent to match it.
+
+**Three divergences found, not the planned two.**
+1. **Sort missing a Skip button** — flagged in plan, easy add.
+2. **`skipItem` semantics differ** — flagged in plan: web marked `status: "skipped"` (item gone forever); iOS cycles the item to the end of `state.items` (defer / come back later). Web rewritten to match.
+3. **Surprise: FocusView lane-iteration vs. items-iteration.** Web's FocusView built `allItems` via `lanes.flatMap((lane) => getActiveItemsForLane(state, lane).map(...))` — iterating BY LANE first, then by items within each lane. iOS's `activeItems` reads `state.items.filter(...)` directly. With one item per active lane, the lane-flatMap order made the *first* lane's first item always render first, so cycling Skip to the end of `state.items` had no visible effect. Caught only because end-to-end verification noticed the same item kept showing after Skip even though localStorage clearly had it cycled. **Lesson: when you change a state-mutation's ordering semantics, also audit every reader that depends on order.**
+
+**Verification needs to actually verify, not just type-check.** `pnpm build` passed at every stage. The FocusView bug only revealed itself when I clicked Skip in the running preview and watched the same item come back. Type checks and unit-style smoke tests would have missed it; live observation caught it in 30 seconds.
+
+**Skip button styling: subtle, not equal to lane choices.** iOS Skip is gray text — secondary, deferring. Match this on web with `text-zinc-500 text-sm py-3` rather than the full-bordered button styling used for lane choices. The visual weight teaches users that Skip is the cheaper action.
+
+**`ItemStatus = "skipped"` left in the type even though now unwritten.** iOS keeps `enum ItemStatus { case ..., skipped }` defined-but-unused. Type parity is worth more than dead-code cleanup when the cost is one enum case that's been there since v0.1.
