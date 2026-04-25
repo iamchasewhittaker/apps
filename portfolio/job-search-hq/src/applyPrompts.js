@@ -26,7 +26,7 @@ const ANTI_AI_RESUME_RULES = `CRITICAL WRITING RULES:
 const VOICE_DIRECTION_FOOTER = `
 ---
 VOICE + DIRECTION (use when drafting):
-- Frame the candidate for Implementation Consultant / Sales Engineer / Solutions Consultant at payments-adjacent companies (Stripe, Adyen, Checkout.com, Finix, etc.). AE at a payments SaaS is the backup, not the lead.
+- Frame the candidate for EITHER Implementation Consultant / Sales Engineer / Solutions Consultant OR Account Executive — at payments-adjacent companies (Stripe, Adyen, Checkout.com, Finix, etc.). Pick the frame that matches the specific role's title. Equal lanes (revised 2026-04-24).
 - Lead with merchant-live implementation wins (Authorize.Net onboarding, 98% integration resolution, SOPs adopted by the team) — not cold-outbound pipeline metrics.
 - Write in Chase's voice: warm, direct, no hype. Short sentences.
 - NO em-dashes. NO rule-of-threes. NO consultant phrasing ("compounds future optionality", "unlocks growth", "synergy", "leverages"). NO hype words ("amazing", "incredible", "thrilled", "passionate").
@@ -104,7 +104,7 @@ ${ANTI_AI_RESUME_RULES}
 ${resumeType === "PM"
   ? "Lead with implementation/PM framing (legacy — see tailor prompt rules for PM)."
   : resumeType === "AE"
-    ? "Lead with consultative AE framing (backup path — see tailor prompt rules for AE)."
+    ? "Lead with consultative AE framing (equal-lane path — see tailor prompt rules for AE)."
     : "Lead with Implementation Consultant / Sales Engineer framing for payments-adjacent companies — merchant-live implementation wins first."}
 
 BASE RESUME:

@@ -74,6 +74,22 @@ Fairway/
 FairwayTests/
   FairwayBlobTests.swift
   RachioDecodeTests.swift    ← 7 tests: PersonInfo, Person+device tree, schedule status, event mapping, legacy migration, zone-link lookup
+
+docs/
+  Sprinklers.kml             ← Google Earth export: 23 sprinkler pins with lat/lon + photo URLs
+  heads/
+    property-overhead.jpg    ← Google Earth top-down screenshot with all 23 pins labeled
+    sprinklers.json          ← generated manifest (run tools/import-kml.py)
+    <label>/
+      photo-1.jpg            ← top-down nozzle close-up
+      photo-2.jpg            ← placement-wide shot
+      photo-3.jpg            ← sprinkler running (arc + direction)
+    PHOTO_AUDIT.md           ← nozzle ID, defects, arc/bearing per head (pending)
+    COVERAGE_ANALYSIS.md     ← haversine spacing analysis (pending)
+    PROPERTY_PLACEMENT.md    ← cross-reference coords + photos + overhead (pending)
+
+tools/
+  import-kml.py              ← one-time Python script: parse KML → download photos → write manifest (pending creation)
 ```
 
 ## Architecture
@@ -119,11 +135,47 @@ xcodebuild test \
 8. **Z2 (Front yard + park strip) is a single valve** — any Z2 irrigation or fert application covers the park strip automatically. Always call this out explicitly.
 9. **Spreader calculator is necessary but not sufficient** — always run 100 sq ft TARE calibration before applying any product. Log calibration result on `InventoryItem` before logging `FertApplication`.
 
+## Sprinkler Head Data — KML Source (2026-04-24)
+
+Chase exported all 23 sprinkler head locations + photos from Google Earth.
+
+**Source files:**
+- `docs/Sprinklers.kml` — 23 placemarks with lat/lon/alt + 2–4 photo URLs each
+- `docs/heads/property-overhead.jpg` — Google Earth top-down screenshot with all 23 pins labeled
+- `docs/heads/sprinklers.json` — generated manifest (run `tools/import-kml.py` to create)
+- `docs/heads/<label>/photo-N.jpg` — downloaded head photos (run `tools/import-kml.py`)
+
+**Zone assignment rule:** RED pins (`#d32f2f`) = Zone 3, all other colors = Zone 2.
+
+**Label assignment (locked 2026-04-24):**
+- Zone 2: Z2-S1..S6 = existing 6 seeded heads (matched by photo-2 visual context, NOT lat order)
+- Zone 2: Z2-S7..S18 = 12 color-named KML pins, sorted N→S by latitude; KML name stored in `notes` as `"KML pin: <name>"`
+- Zone 3: b blue→H3-1, b red(21)→H3-2, b red(22)→H3-3, b red(20)→H3-4, B bred→H3-5
+
+**Visual anchors for numbered-pin matching:**
+- Z2-S5 = MP Rotator blue cap (distinctive; only head with blue nozzle color on it)
+- Z2-S6 = erosion pit / buried head (bowl-shaped depression, head sits ~4-5" low)
+
+**Photo carousel convention (Z2, confirmed):** 3 photos per head:
+1. Top-down close-up of nozzle (for hardware ID)
+2. Wider shot showing placement against house / sidewalk / driveway / park strip
+3. Sprinkler running with visible water spray (for arc + direction)
+
+**Photo download:** `earth.usercontent.google.com` URLs are publicly accessible — no auth needed. Use s1024 size for nozzle-marking legibility. Run `python3 tools/import-kml.py` from `portfolio/fairway-ios/`.
+
+**HeadData.photoPaths:** `[String]` field added 2026-04-24. Bundle-relative paths, e.g. `"heads/Z2-S1/photo-1.jpg"`. Default empty array — Codable migration automatic.
+
+**Known corrections needed:**
+- Z2-S1 seed nozzle = "Brass adjustable" → photo 1 shows Rain Bird VAN yellow (4 ft radius). Fix in PreviewData.swift during photo audit.
+
 ## References
 
 - Soil test: `docs/soil-test-april-2026.pdf`
 - Jimmy Lewis email: `docs/jimmy-lewis-email-apr-2026.eml`
 - Original irrigation spec: `docs/original-claude-spec.md`
 - Original zone analysis: `docs/original-handoff.md`
+- KML data: `docs/Sprinklers.kml`
+- KML ingestion plan: `/Users/chase/.claude/plans/are-you-able-to-squishy-marble.md`
+- KML import tool: `tools/import-kml.py` (pending creation)
 - Store pattern: `portfolio/unnamed-ios/Unnamed/Services/AppStore.swift`
 - Portfolio conventions: `/CLAUDE.md`

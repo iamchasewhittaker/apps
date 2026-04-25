@@ -16,6 +16,9 @@ final class FairwayStore {
     var rachioSyncing: Bool
     var rachioLastError: String?
 
+    // MARK: - Property observable state
+    var propertyLocationIssue: String?
+
     private let rachioAPI = RachioAPI()
 
     init() {
@@ -23,6 +26,7 @@ final class FairwayStore {
         photos = PhotoStore()
         rachioSyncing = false
         rachioLastError = nil
+        propertyLocationIssue = nil
     }
 
     func load() {
@@ -33,6 +37,91 @@ final class FairwayStore {
         }
         blob = decoded
         if !blob.seeded { seedIfNeeded() }
+        applyPhase0MigrationIfNeeded()
+    }
+
+    /// Idempotently applies the 2026-04-23 IFA over-application data (companion
+    /// plan `what-went-wrong-here-playful-lemur.md`) to blobs that were seeded
+    /// before this data shipped. Safe to call on every load — each insert
+    /// checks for an existing record first.
+    private func applyPhase0MigrationIfNeeded() {
+        var changed = false
+
+        // 1. IFA Crabgrass Preventer inventory item.
+        let ifaName = "IFA Crabgrass Preventer + Lawn Food 23-3-8"
+        let ifaID: UUID
+        if let existing = blob.inventory.first(where: { $0.name == ifaName }) {
+            ifaID = existing.id
+        } else {
+            let newItem = PreviewData.phase0IFAItem()
+            ifaID = newItem.id
+            blob.inventory.append(newItem)
+            changed = true
+        }
+
+        // 2. 2026-04-23 FertApplication (match by same day + product).
+        let appDate = PreviewData.date(2026, 4, 23)
+        let hasApplication = blob.fertApplications.contains { app in
+            Calendar.current.isDate(app.date, inSameDayAs: appDate) &&
+                app.productName.contains("23-3-8")
+        }
+        if !hasApplication {
+            blob.fertApplications.append(PreviewData.phase0IFAApplication(ifaID: ifaID))
+            changed = true
+        }
+
+        // 3. Z2 head catalog — replace only if still on the legacy H2-* seed.
+        if let z2Idx = blob.zones.firstIndex(where: { $0.number == 2 }) {
+            let hasNewCatalog = blob.zones[z2Idx].heads.contains { $0.label.hasPrefix("Z2-S") }
+            let isLegacySeed = blob.zones[z2Idx].heads.allSatisfy { $0.label.hasPrefix("H2-") }
+            if !hasNewCatalog && isLegacySeed {
+                blob.zones[z2Idx].heads = PreviewData.phase0Z2Heads()
+                changed = true
+            }
+
+            // 4. Z2 mixed-precip problem.
+            let hasMixedProblem = blob.zones[z2Idx].problemAreas.contains {
+                $0.title.contains("mixed precip rate")
+            }
+            if !hasMixedProblem {
+                blob.zones[z2Idx].problemAreas.insert(PreviewData.phase0Z2MixedPrecipProblem(), at: 0)
+                changed = true
+            }
+        }
+
+        // 5. 9 recovery maintenance tasks (match by title).
+        let existingTitles = Set(blob.maintenanceTasks.map { $0.title })
+        for task in PreviewData.phase0RecoveryTasks() where !existingTitles.contains(task.title) {
+            blob.maintenanceTasks.append(task)
+            changed = true
+        }
+
+        if changed { save() }
+    }
+
+    /// Phase 1 self-heal: a persisted blob may have property coords == (0,0)
+    /// from the map-on-Atlantic bug. Re-geocode the address once; on success,
+    /// overwrite coords. On failure, surface a banner via propertyLocationIssue.
+    /// Idempotent: no-op when coords are already valid.
+    ///
+    /// Invoked from FairwayApp.swift after store.load(). Separate from
+    /// applyPhase0MigrationIfNeeded() because re-geocoding is async and we
+    /// keep the load() path sync.
+    func applyPhase1PropertyMigrationIfNeeded() async {
+        guard let current = blob.property else { return }
+        guard !current.hasValidCoordinates else { return }
+
+        if let coord = await Geocoder.geocode(address: current.address) {
+            var updated = current
+            updated.latitude = coord.latitude
+            updated.longitude = coord.longitude
+            updated.geocodedAt = Date()
+            blob.property = updated
+            propertyLocationIssue = nil
+            save()
+        } else {
+            propertyLocationIssue = "Couldn't auto-locate your property. Open Settings to fix."
+        }
     }
 
     func save() {

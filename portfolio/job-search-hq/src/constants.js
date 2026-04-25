@@ -129,7 +129,7 @@ export const FOLLOWUP_SCENARIOS = [
 ];
 
 // ── JOB SEARCH ────────────────────────────────────────────────────────────────
-// Ordered by direction priority — IC/SE first, AE backup last. See identity/direction.md.
+// IC/SE and AE queries treated as equal lanes (revised 2026-04-24). See identity/direction.md.
 export const JOB_SEARCH_QUERIES = [
   "Implementation Consultant payments remote",
   "Solutions Engineer payment gateway remote",
@@ -138,7 +138,7 @@ export const JOB_SEARCH_QUERIES = [
   "Implementation Specialist Stripe OR Adyen OR Checkout.com",
   "Solutions Consultant merchant onboarding remote",
   "Customer Success Manager payments platform remote",
-  // Backup AE queries:
+  // Equal-lane AE queries:
   "Account Executive inbound fintech payments",
   "Merchant Success Manager payment gateway remote",
 ];
@@ -162,7 +162,7 @@ export const daysSinceLayoff = (now = new Date()) => {
 
 // ── DIRECTION (source of truth for UI — mirrors identity/direction.md) ──────
 export const DIRECTION = {
-  primaryRole: "Implementation Consultant / Sales Engineer",
+  primaryRole: "Implementation Consultant / Sales Engineer OR Account Executive",
   primaryCompanies: [
     "Stripe", "Adyen", "Checkout.com", "Finix", "Rainforest Pay",
     "Spreedly", "Fiserv", "FIS", "Braintree", "NMI", "Worldpay", "Global Payments",
@@ -172,8 +172,9 @@ export const DIRECTION = {
     "Vercel", "Supabase", "Clerk", "Neon", "Retool", "Anthropic",
     "Linear", "PostHog", "Sentry", "Railway", "Render",
   ],
-  backupRole: "Account Executive at payments SaaS or inbound-heavy fintech",
+  backupRole: "Dev-tools SE at Vercel / Supabase / etc.",
   committedDate: "2026-04-21",
+  revisedDate: "2026-04-24",
   reassessWeek4: "2026-05-19",
   reassessWeek10: "2026-06-30",
 };
@@ -182,7 +183,7 @@ export const DIRECTION = {
 export const DIRECTION_TRACKS = [
   { value: "IC", label: "Implementation / SE (payments-adjacent)", color: "#10b981" },
   { value: "SE", label: "SE (dev-tools)",                         color: "#3b82f6" },
-  { value: "AE", label: "AE (backup)",                            color: "#8b5cf6" },
+  { value: "AE", label: "AE (payments-adjacent)",                 color: "#8b5cf6" },
   { value: "Other", label: "Other",                               color: "#6b7280" },
 ];
 
@@ -306,12 +307,12 @@ KEY SKILLS: Payment gateways (Authorize.Net, CyberSource/Visa), fraud prevention
 
 AVOID: Do not frame Chase as a cold-outbound SDR or pure quota-driven salesperson. He excels at implementation, merchant support, and inbound/consultative roles.
 
-DIRECTION (primary frame for all drafts — committed 2026-04-21):
-Target role: Implementation Consultant / Sales Engineer / Solutions Consultant
-Target companies (payments-adjacent, PRIMARY): Stripe, Adyen, Checkout.com, Finix, Rainforest Pay, Spreedly, Fiserv, FIS, Braintree, NMI, Worldpay, Global Payments, Nuvei, Paddle, Stax, Tilled, Payrix, Chargebee, Recurly, Zuora.
-Secondary target (dev-tools): Vercel, Supabase, Clerk, Neon, Retool, Anthropic, Linear, PostHog, Sentry, Railway, Render.
-Backup path: AE at a payments SaaS or inbound-heavy fintech.
-Why this fits: 6 yrs Authorize.Net + CyberSource implementation experience is the exact credential payments-adjacent IC/SE hiring managers want on day one. Chase's energy is ~70% implementation, ~20% building/demoing, ~10% coaching peers.
+DIRECTION (primary frame for all drafts — revised 2026-04-24, originally committed 2026-04-21):
+Target roles (equal lanes): Implementation Consultant / Sales Engineer / Solutions Consultant, OR Account Executive.
+Target companies (payments-adjacent, PRIMARY for both lanes): Stripe, Adyen, Checkout.com, Finix, Rainforest Pay, Spreedly, Fiserv, FIS, Braintree, NMI, Worldpay, Global Payments, Nuvei, Paddle, Stax, Tilled, Payrix, Chargebee, Recurly, Zuora.
+Secondary target (dev-tools SE): Vercel, Supabase, Clerk, Neon, Retool, Anthropic, Linear, PostHog, Sentry, Railway, Render.
+Backup path: Dev-tools SE (higher technical gate — week 10 review).
+Why this fits: 6 yrs Authorize.Net + CyberSource is day-one credential for IC/SE AND AE at payments-adjacent. Energy still leans ~70% implementation, but AE is being treated as equal *volume* for application-speed reasons.
 
 STRENGTHS (CliftonStrengths Top 5):
 - HARMONY — frames interactions around reducing friction and finding common ground
@@ -477,12 +478,12 @@ export const defaultData = {
     phone: "",
     linkedin: "linkedin.com/in/chase-whittaker",
     location: "Vineyard, UT (Remote Only)",
-    targetRoles: "Implementation Consultant, Sales Engineer, Solutions Consultant (payments-adjacent); AE at a payments SaaS as backup",
+    targetRoles: "Implementation Consultant, Sales Engineer, Solutions Consultant, OR Account Executive — all at payments-adjacent companies (equal lanes)",
     targetIndustries: "Payments, Fintech, Dev Tools, B2B SaaS",
     yearsExp: "6",
     topAchievements: "• Onboarded ~200 merchants/month at Authorize.Net — guided each from application through first live transaction\n• 98% integration issue resolution rate — resolved the vast majority without escalation\n• Exceeded KPI targets 10–15% consistently across four-plus years\n• Built onboarding SOPs adopted by the full SMB team — cut repeat questions and shortened new-hire ramp\n• Managed both SMB accounts solo and larger deals up to $100K alongside AEs",
     salaryTarget: "",
-    notes: "6+ years digital payments. Strongest experience: Authorize.Net merchant onboarding + integration troubleshooting (inbound, 98% resolution). Remote only. Target: Implementation Consultant / Sales Engineer at payments-adjacent companies (Stripe, Adyen, Checkout.com, Finix, etc.). AE at payments SaaS is the backup path, not the lead. Not a cold-outbound SDR.",
+    notes: "6+ years digital payments. Strongest experience: Authorize.Net merchant onboarding + integration troubleshooting (inbound, 98% resolution). Remote only. Target: Implementation Consultant / Sales Engineer OR Account Executive — both at payments-adjacent companies (Stripe, Adyen, Checkout.com, Finix, etc.). Equal lanes (revised 2026-04-24). Not a cold-outbound SDR.",
     weeklyTarget: 5,
   },
 };

@@ -83,7 +83,7 @@ All Wave 3 items shipped 2026-04-18. Wave 4 is next.
 
 ## Confidence Bedrock wave — Shipped (v8.13, 2026-04-21)
 
-- [x] **Direction committed** — Implementation Consultant / Sales Engineer at payments-adjacent companies. AE at payments SaaS = backup. Source of truth: `/Users/chase/Developer/chase/identity/direction.md`.
+- [x] **Direction committed** — Implementation Consultant / Sales Engineer at payments-adjacent companies. AE at payments SaaS = backup. Source of truth: `/Users/chase/Developer/chase/identity/direction.md`. *(Revised 2026-04-24 to equal lanes: IC/SE OR AE at payments-adjacent. Dev-tools SE became the new backup.)*
 - [x] **Direction + Strengths + Friend Feedback in ProfileModal** — three collapsible read-only panels reading `DIRECTION`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `FRIEND_FEEDBACK_CONSENSUS`.
 - [x] **Kassie urgency layer on FocusTab** — UrgencyHeader (Day-N since Visa), DailyMinimums (5 apps + 3 outreach + rest floor, Sunday-aware), KassieCard (rotating excerpts, per-day dismiss), DirectionSplit (IC/SE/AE/Other counts + response rates), WinsLog (auto + manual).
 - [x] **Wins Log** — `wins: []`, `blankWin()`, `normalizeWins()`, `WIN_TYPES`; auto-logged on stage progression, debrief entry, outreachStatus → replied. `autoLogged` flag distinguishes auto from manual.

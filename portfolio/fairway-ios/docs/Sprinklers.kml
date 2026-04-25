@@ -1,0 +1,1140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="1hfkAezq_WdMEJHFdOpkdZXyFla_LSyyi">
+	<name>Sprinklers</name>
+	<Schema name="__managed_schema" id="__managed_schema">
+		<SimpleField type="int" name="1C0D1BBB403EF7D8EC44">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="07409918A23EF7D722E5">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1869EBCD933EF7D506FD">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1CF268E9343EF7D38772">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1B0D36EEFA3EF7D117DF">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1D931595513EF7B8E31B">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="19C0976EF03EF7B5EB61">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="13485F67463EF7B3D020">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1F274A66B23EF7AF46A4">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="13FCC47FF83EF7ACD213">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1515CB9FA03EF7AB2757">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="16340EB26E3EF7AA1F51">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="14E7DB00E73EF7A6F866">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="19BFECE51D3EF7A4F73A">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1859D96FAF3EF7A369BE">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1DFBE3CEF23EF79E4124">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1885CFBFAC3EF79CC88D">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="1BB2F044A73EF74918A2">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+		<SimpleField type="int" name="0C2D366DC53EF7473F9C">
+			<displayName>Accuracy (m)</displayName>
+		</SimpleField>
+	</Schema>
+	<gx:CascadingStyle kml:id="__managed_style_282CAD8CBD3EF80FB9C1">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_517C3555583EF80FB9C0">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=42a5f5&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_49341312B93EF80FB9C0">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=42a5f5&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_35650F49503EF80FB9C0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_49341312B93EF80FB9C0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_517C3555583EF80FB9C0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_2574E946E53EF80FB9C0">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=757575&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0D6CD9153F3EF80FB9C0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_14F2C27DB53EF80FB9C0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2574E946E53EF80FB9C0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_2ECDBE021B3EF80FB9BF">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_14F2C27DB53EF80FB9C0">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=757575&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_18E6A804BB3EF80FB9BF">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_12B86966383EF80FB9C1">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_331B4BDAF83EF80FB9BC">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=000000&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_27737440953EF80FB9BC">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_331B4BDAF83EF80FB9BC</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_4376199DDC3EF80FB9BC</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="__managed_style_02C2E89EE33EF80FB9BF">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_18E6A804BB3EF80FB9BF</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2ECDBE021B3EF80FB9BF</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="__managed_style_07F7F116763EF80FB9BB">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_08D49BF8F53EF80FB9BC</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_134A6276D33EF80FB9BC</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_134A6276D33EF80FB9BC">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_4376199DDC3EF80FB9BC">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=000000&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0D1A9D8FE53EF80FB9C1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_12B86966383EF80FB9C1</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_282CAD8CBD3EF80FB9C1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_08D49BF8F53EF80FB9BC">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.1.0.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<Placemark id="0D3007B1AC3EF33AFE51">
+		<name>1st Sprinkler</name>
+		<LookAt>
+			<longitude>-111.7455680313127</longitude>
+			<latitude>40.30030153311697</latitude>
+			<altitude>1378.745727298035</altitude>
+			<heading>343.5173314182668</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>25.0007000730102</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_07F7F116763EF80FB9BB</styleUrl>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNlh6alNidGZ1a0lxZllNaWJ6UXZDYyt6V1FFY1QwUE1nR0dLQ1NMb0M1WHk0a2dPOWxEeGdDQUUwU2JCd1k1cnBzVVRhSkhrVmU0SXY0cUY2MmlkSnJqU3FCaWxCbXpmbUdLcmE4Sk1rNi9WbFY3Z1c5MzZDVitKZExSNUZWc2hPZTltZGxRRGpSeVdBVXBSWkIvWXVzQlVQWStXWVQvSFFZL1ZJcjcwL3FscEZPODFPaU41QXg1cktRRGU2emYvU0dra1NDZHVhaWtZd3F1d1ZTbEdOWk5RVDRQSW9uWFd0SytSUSs0TmdMcGIwazZVRm11am5LTWR2MmoraDMzTjA9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5iVtgxJgOWvb4cQctRHyfnQ0fMBWs43HtFqMiC44b1BupHJJtSCy_s3q7dju7k_qQTd7i1iBKPsoB3Mju_VNErB3pT0y6jZ421aMTB0NreBLNLRWrui6xaGbRU69xw-w6qxUfwp-Ln0UYeD2wcWEHd-NDPL7Et8Y_QrT4IiOei7108O0IGhm7cM-8_VqGE6w1_-Wt-sgzWLRO5W8lW3TvjZxrgzb2v8wimvpxB6VBJpEsn-BbLs-XtYni1gUIjsCPJC8CWBhsu1PlP?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNUtjZ3dydld0Ykhtc1ZRYjgyVlY1ejRqOUVUQnF1ZmdOSjYxblBTU0pBR2NXcVpnSTR1S056MUVkS0dBay9palZMb29IcjlGVTFmK1BUL01LVHVJTStlR0c3UTlUNWtlSTczVVlEOWRhUXNNRzhnVXhEeEszTkhaOE5iTlVFNEY1WkhOeWN0MTBTdk5LTVVneHEvei84R2xRKzZXdmdURnlyVDFUeThXajh6QmNMTXgxMnFLSkRQV0docTYyU2IyQjJiVksxTk5SY1BKSXN4TlVGaUlvYzU4aWJ5TEhKN0NmNnNiWjF1ZHA5NWZSbVBDRldmamlRbzVhWmwrNUVvRGM9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6ixi1x5oYaCKNUOoARX0SbW5LTM__zrlfhaFIZlbzl4bvSGh8U-dywyG0TY8NOBalNK9QGQ1wFH58RF9rrkuFDnchIlWHUsttIPorfNsjbw47xpcF_dPHTPbeW5CBFeuSnIwTzgLfhdDTYA3x-k2bB3ADku4kPVGmKDnraOiBiSO45sxtoLS9Z-vEOu1m2i9hgWb0DyFK4Ajbgu9qXOLgKS9eqDksgXTir5AsVPnCw8s1k402aqWYoHTDixhRZ8QuxEywLBz8IewY5?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNDhYSlNXUVVPUlZBTERLcXgrV3NpbFMrZUZmSmUzRTViZGNlK3o5NkNOMDRMUTBZYTNWYjM5SVVSTGlQdU85N2tPVldmcWM0WCs0cXBVUE9oVm9hMDhGZ1FEbll5ZGN3SmV1eE1JYmovY2U3ZDFiYzNqTjdrQ3dkY3hCQldVM0txSFRQd1J1NmExS3QxcEhrTndYTkJOUi9OUGtubDU5dkQ3emxSUWt3YlphaU5xdjVxcDBhSHN2dHRqWU1lR3pNcjVTVE5iUHBNTGdtNDErR0IyUFNxQVhlT0ZDQzFVaU1SVW9kOHFVaHdWcFVON0dyZUFlYm8wYlJXVnJwRWxBY1U9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5JOHWXYFZfiJxrTJ0sZOwidIUUPGqa95KU8VLBJ0ZXcZPZRyzkFT7Whp9FQvWWOxCI4ikDNsvsV3UgvQJJJnz0NqKL0iMkWpGDpEZMFwwLSzZKPtNgvAkWyGSLJb39ZslBPlrLbLAfTc9FJYuVBdc6PXkFX9IgjS4U5FulxdjzC9sL7wlcawsYfFWm02GyvwiIeE5A8TVmCWzZ0lST7h694a5g1Z3fcC1Ps9PgduNAqWXXaszBXISitIx2gql3rwojHSAm-68rJJbj?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<coordinates>-111.7455404391101,40.30028099196461,1378.525555627054</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="052919A8073EF33DC2E7">
+		<name>2nd Sprinkler</name>
+		<LookAt>
+			<longitude>-111.7456212498179</longitude>
+			<latitude>40.3002719581373</latitude>
+			<altitude>1378.46879993048</altitude>
+			<heading>343.9887527455298</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>25.1066448796837</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN1VvQVFaK2pjZlRzSSs3NFlubWtXZVVSbnBuMHpvWjNTVkZ6bTRVMmw5cE9BTjJiM3luN3ZmVFovSVFBbUtUZnRMY0dzTXF5c2VwYStoRWJuVGlOOEhvVXpLTjJkT2JiWFB2aXl0WmJYUGsvMmpmN3Yvd0VjK3BEakVoc2wvcUpwWVBGNVVIcU42VFdMbkt5dnMrYkhrMHBjZlR2UjRsNVBwb0o1Vis0dnNDandvemtVekNjR0ZzeUJCa0VlSFRnTGh3QmhacGIvbHptV01NaEx6bnNPNEhKWlZHMi9ZbFZsMytkZnlBNFdGUkRaOUxZaUdOMTA3bDB5V2l1aWxFSms9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X54JNFpOT2DIRRsn7OPnWjYgEey8Rck2Fk94yfUK0PTl2yJHeuucav59rw25duxSPUe9NCC_BjlwusBxBku1QjyycSNHxRdUAgTmfBpQkDG8rSEKVpeNCnKfmOkLMc97dhjV38uT_TF1Ab73R0ghdNmb3hEs42DcK4EGMqzrn7OI0zv-blpv4xH1u1E3MSlgEeQilKUu0uXofvmSEaWTBDn45G5KH2Z3X1KcYPR_iftuCtRzFHm5fnTY_4S4iRzp65AGCgOtJPtQk-a?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNXhWaVFsNUNRKzdzcm1xTXhOZVI2Uk1QTERWZnhQcTZ3dVhKSVZTZHk5R3VjbXZ6N2MvSk9NY0czRUQ1SExxZGVZbjZBc2h4UUs3TDdWSUhKd25zZ24vL1h1ZzJEajZWa1BXdHZNR3d3TTFGdDYwcnE4bEpacFNmbXhpc2lTTUF5dDdMekFvSlpIc2tlMC9ua09Rc1dqRHlmVEF3U2g0dTY1RXVFNDY4QUJwMmtwNU5xMlo4Q1dPdWtuTzBFQmpMclB0VkxycjVyYzF4UUFYMjY3NUxETk0rOUphVmlxN09vckc4dnVCZzQ2QmVISlM5bnZ4anZUMVRIVE1Qa0ZqbVk9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5UigWHH1jX3xDt8HE6FllUSVKar3U_rwWRVSBOKoh5QIOn6rnCqnfPEvOnOIYRjG7YBHDdd90fzXBqQ5LyAJEImbpIRdv24ROaE8ns6IfjA_enxcCuZ-7KY29NR8wkSGEgR9F-clL2JWbvChMa0HQJBqdkbdlyCWvXAXU2TLEaaM9Y3S4MuwXZxJ4xhIMLF4lvRuf70JgDryY5SRUZPk6lR8CLc_mSC5jGMsqS7LIsXAMm70wkx6ukKs98OZvSOn2hku56nu_x1CiY?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN0duNHFFVXdUVzZpRW5vazROaEFsRFRpRmkzdUZZV2JWN0RVOWZiRlBUUnZBNE9KaE9LZkxtUGRaUHUzY0RUcDMyUDBycDd4MVMrK2ZGZTRCby9WNlZRK0laODludGdldVhncVFlVmxoeEU3aGE0UmhISkFYU01YMjlWQWpwa1h5TWl2ajJNTzNpR0I1bnJ1NGRNeWhVRWlkenluV2JXRnd3c2VjcWh5VmlwM3p1eUxNS24wT3hPTU9UOE5FemlDa3AxOXJ2RlJXS21ZamlZR3hvZk1KR25ua3ZmS1JQTnRIdUJsK0tLUUMzQ2lzcnJ3RXZnWXNTU1hydFNNZlBRaGs9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7KIU8txx6yob3EenXlXBWGhGQtQNx8ssh_P5kQUm-Mxq157BsAums3NnHa63FqhRQein-xR96SKLthiKuWdtn2q7jmNqkGqjEHcOMBghPNEDEJkKfK2hkCSOX81oEgvmMoXw4kmBZy0zsDGeY1JcqH3HFNQE1Pko-uwLUqdHNXDxkUOgtgz1uxEZgctQOVkqkhTUK8qOk8TSWYidSgeTIcriPSNIPa53qigpGkhuWHPiA_w4HPUf1oxkAgAnQS0gv8sH3uGBzlv4lE?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<coordinates>-111.7455631374153,40.30026189777501,1378.521019307987</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0134C1F7693EF34F9084">
+		<name>3rd Sprinkler</name>
+		<LookAt>
+			<longitude>-111.7456144481512</longitude>
+			<latitude>40.30029308378572</latitude>
+			<altitude>1378.713924438852</altitude>
+			<heading>-15.21578556492443</heading>
+			<tilt>30.45781801353061</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>28.93696625827943</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNmJ2YmtEck1wZERQZWlQWXFEWDB4Qm4xMElEeWtJVVJrendXOWhWRjl5Tzl1MVBRQjBMNlUrY1VtOUJSUHdCVGhqaHNVYk1QRTJmeGlTeXNZVU94WUIwNEJ3NVBTUC9sbFpJNDVIRjJISGh2T1RMV3hyS0NDU1gxd242a1ovaVdVNjBoTk9EVktQL2lEM2UrTmt4eE4rQmJDa2V1cHBvQSs1SGYyRUxMaG14Uk5RbnFoVzcyajdSWDZKOXNMUHIzT0xvREVRdThBRGRwS2UzSDJTVDN1OGdXdUNZSUttdWczZ0I5aXNFWGt4SGxpMFA5djlTc2xRcFhscUlhRFkreTA9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5RUecneIP3LQ8jxwn5fAW1L6jSFd2R8_TibcyyqPIBJhpTobRC6lAdRjOnLC-gmHlyHmuLXdoYm_EeLm_GIs07Qb2W9I8aqknzv2Uqh74W-rGb8YrvoCDaVmnogNPG4ojgCncog6s9FAaI3kwDHsb5HQ1WFNKIqhSr_kKbtPn8dNSmHKBBhUolBcl3F3AoVaHZWjKEFxXLlQVg0Je9nbCQzMRoA3nGq5JdZLqzmCI9nZZ7F4JSlY8OV7VOlvciY4E-ABkNhPgEGtEZ?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNy9NbWdFU2J5WWNmWWF3cjJreE5NKzJiNTZRR2dRL08wd1BmUjE2ZldWN3ROQlc1ZS9mTWxJTmI1eEcrWEtMMTBjVVNkODg3cjNMYlU5a1ZkamJzcittZGxuWUNNY05jaTJxdWs2MHNZZzloY3I1YjlxK1Z5dGZpTW00VFV6c3NISEh3NGNMMjB2czdDOHp1K1dOb1NJcXVJc2MwN2kxL2w3L25BVkVjWWd2WXQ3Ym1jOWhyODRlN29wYWdPaUYxYzgyWHhMWHEzeHJJcjQwckFBTEFQcUFYUVlMU3AxQ2Zwc2wwbGFhWEQrUFlabDBLVmFLR3BSK0JWcWIzcHIxR2s9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6w2up-kMAjo9_jYuO52MbgKRrm3TVL3WI4xrBxWVqA-GuA4Nbm7jGdFLQWXYeWM_U2ZzFBDwQXoFJlf7s4zXt8nCztVIdMVkPeNEdeW_mzH6ihM8_FnPVMlwNlhMepwE8dj1vfYUbBH-T0eWTihaDLEAm7zrhjHG5sOKZN-WisCrHiV7jWyeXGpkXHS6YQJsxF87mYPgnOMhl5D5UyG2QRRK12mIjN-6oySfJWuWnfkALRFcGOtAT1VBJde4ymf1eJDg4SugQRd1Hc?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNXdIbEpOQWxXdElZRnRvTGlqTjdCbUFxY3dNZjM0bEs2TXJYd3ZicWNBanZIVkZCV3ZhYkFZeTNEb3ZVRWo0WEdXWVVJNDlIZmFQV2prdzB6NzZuNThnK2JXUzAvYUJQaC9CbUtVYUkycDJxRHNVbnRUZ2VDamZkV0ZKNDRya1p2RHhLbzI5ZFB2QjJoQWIyMmdzNjRpQkFiSXpsSzJ0UzI3ZGYyOUNsbUpoTitrT1plaS9wbGIzTXdCbFRRS3p5UkdrVGNBdjJrZGtzMm9IcFBOUkYyNVg3U1VRMVczMkplRUZNYkp0VGllb0VMRzFRZ2dJa2E2M3ZEU0dWUEl4RXc9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4Z6NFmSjItdTjvJtn87KNOrgod8WjoCu42705szf0FQ_6ZUAsUCjzZrC-qeM4wN579kzvBVuos7uyRuRdtv9xygieBrD3BiIuZiQcn_luln5ZxEq-CEusxYVK3Z0PI2xff4BvYcYNJ12Uqn47GriXFmtqONC2_msuRJsRUM9y4brFb5xkA4aI2TDC2llJI6OJujr_oace4QvvYWQ-HAatKuWTZw48MZc3hlCCkaUVuSKyjHKcBgaI9BV24X9N0RoPmPa6ouu82d3kT?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<coordinates>-111.7456124798277,40.30025224491366,1378.451652517482</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="055DEA411C3EF35625B3">
+		<name>4th Sprinkler</name>
+		<LookAt>
+			<longitude>-111.7455927083755</longitude>
+			<latitude>40.30028882081745</latitude>
+			<altitude>1378.600460007787</altitude>
+			<heading>-15.21575108286467</heading>
+			<tilt>30.45781014132169</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>33.80356679585021</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_07F7F116763EF80FB9BB</styleUrl>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNlhqRHRlMzlxY1NzckpKN0hadUcwRUwrM3h5bnRpblVOZ3BmZ04xS1RrMWdUMUNSWS8zaCtnL2ljZWcxRFFUdCtuV3p6QnczSjk0c2JJbng3dHdLUk5DY0xiazJ3MHQrKzVHQzZBNVl3a0Jqbnh1TUZ0VmxEWElvL3hYckpkV3V6Y01xK3czeHlHSk5iNjFFRGFRbUtnOSs1aktPT1l0Y1k4RFgrS0xYVzR5NnNlZWhLdnVSajI5RjdzVHhKNU5iM3B1VGZEKzAzb1NGQzZtaU02bzh3UXpndWNRTkhwUDd4bGZWbnIxRGpYTnZ0OGFXbmFjZk1vSFZOWTBoaUpBbk09">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7LYgNgO5X8_bzDUwK19mmwi6dvKbUaPegABl232cyAgGP6ME273w_mbavDnFC80BvKkFd2ly2wOr7pkHTreOZ3Kp35hCAaTQGjclM9lVU3nCjxIuW26534hqC2tjKRw1SIde1ntoyrROwWrpvtorCB73YnYywzqCX0oGO5sCkcIIhaaucKwv-nZ0xV5bK07nhiTfoP5FEukHpIBl3UJRw0qeFxAH24qfL7SUy9S_LF2_DTHsHzKnihD69_juQ9RPdrGJ0t74hhBWBy?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNDdGK1JtbXVJbk9rdUhmRUIxR085cmd4NCtJazZxQlAwSmJCdElQTzc1UmNJVEFpRG04OG1MWnpuQWsrVTVsdkhydHJLbEpqWjNGZEg0UWswZ0lXNmtHVUNDVjBvZlQwa2krT2Q2SnEzYlhHUDA4ZTJjeXErUURSZERyVEg0RzZOK3BMS1lEY2h0TUltc0ZmN3VYejRsTHkvNkVRbG15dlQ2RWZhdmEybEhGemZITk9qRGE2S3dzaVNyUUN5Mk5JblgzZE5tNUxYZWdaSXJoNXlCQ0NOZjJhN0FuTWxsWERML1JVMWtESEJ3eUMzQ0NSR0JndlNGQnNEdzdMNlhvdG89_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6AGkiTQKl_Z_7dAa7KkDn-dKcZwQGnMgH-LGqv5rkDQg5116niYsACcvpL6HG2c5eTE6mopZq8ZZDJx2qEInvuDH2acX4ECzYovJxjDpv3F8ETsLqHrUwXXwRi_BgCqWA_8Y_MVxjLiuvpoNkNkpHH6Gzzd6eGmwYVvjq6_Za9bPS8hDPwC_NTG5pIhR2smlEMyglYR-mANY4yQrgsz4ugMN1iC6HD-XXqf0nyuOerx0uyBMFkSFIMfOES4KE2DTk0n6GsCmaiIsXV?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNTFOVkQ0VlN0VW1sQ1prTk1IdGhtQytrS2lvTExTVXZqVkpMRkRPZGF5SzgrQmZUVTVCbHdFS3hzWDlFU2IvVzlxRThOQU1ubzg3N0l6MEtiZXk2TEowVEYzNFhkUlBpdkd5U1ljZ1JzNUFRTjBuWWxDSWpzM0plS0FjT0xiajBWYVlCTGtCTFFHaVdVZFhveThmVlNUVDNSMlRVMmlYeHp5b3NHSUM3QkxRdGk5VkZOa3lqaWhXNnlhM3c5UTVqemRzWWk3dTlWSlg3ZVB2UVhGY3U2QXFaOHFUMzhjdUZ1VDlVeVFwQll0TDg3NStwVW5mMnBwRW03dVFlNDJIR1E9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6z1R2qPWBKu_OeGO4etu3Q9EI3L4Koug4NMXxDY6yYDnSKMHe1mZgQUlEV3QNI4oPh9z3WRlBLiw8Wjjqe-oUrxmfVHp3rNvSlRT6uGV7bVuexEW7T0nU9aPZjxb0OiCgyjkTN1ReVu60UG1CpQqTpjqVgLSZb2l9XdudKRurOOD8viH-_qAEbI3WxoQF0LlDR4U6YBpu0S1y587hpWqhNSPhZCyeDucWoz7J5YsA3Awn8owONMY8X6n1M-0XfMjWvoZdOzsD2bq-O?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<coordinates>-111.7456497901446,40.3002439130473,1378.445858839113</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0974328B4D3EF359A117">
+		<name>5th Sprinkler</name>
+		<LookAt>
+			<longitude>-111.745603915573</longitude>
+			<latitude>40.30028712440265</latitude>
+			<altitude>1378.600780828824</altitude>
+			<heading>-15.21575833159427</heading>
+			<tilt>30.45781013963709</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>33.80319885146037</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNjNrM3FiSEM5bitXbW1xMGpxRm1UTlk3WjBCb3Y1OHdVK1FxaFpWUk1WOGFGWU5RVkx2SGRFWDhkeEl2K0ExSmNLc0FrU1BqQkdZamVvVW4yR1JRQVNuL09wdWZ6d3pVT3lRd0NQaWI4azdVZTkzYnNCS1ZNVVdtWERURFBjZlp1ZDFFc1ZrZmU0VFA4VzRhMTIxL3lzR2NYT1RvQzRrOXNtamxwcGhnZjFodkhUQjBDdHpaV3hEYm5XdlJ1dDZrajR6UFJ5TEE0dS9zSmF4bU0yRjVWRzNjS3lyaFBiNSttOStrdXEyMFArNlI3dlBDWWp0ZTI2R2Q5WFFiQ1FPRjg9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5HZGCap0t2dTFtznSMioYd7PXns0uG__dSbNnOaHIf3lbxwttBygoFCJJxomvMCNTA4zfD2QfrVmHVJfHgha347wjMN8OdqsDEvr4xCQE5-W0TZHmgUEaDti2tfwOLaKNnGPo_rKJKsQ900e0tHnSZE-0_ONHztr2-NxFTqaa5arvSfA5ibupkUU7hO9DEHsuC162HFbFH91v6OG6IXQjAzDwrNCQ7sd9QwIctvqrHBtV28fUAMskAy6IJ4A6QevtgiAM29kdDnI8K?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNHcza21wZ1VGanNIZVRXMUx5czA1TGFwRWx6em53SDloMTNXc2tocFRhRU5FRUJod1grNmRFeVVnSTd4eDJqdm9mMEVHb1h1d01lVGhkZlN4WkIyekJkK2lpUmZ4R3gwcENsYnZnWGdnK2xYR3laUzZ2QTV1NlQ3WGROU3BMeXBZOFJnTGZNTWp4V00wZVB3ZklMaVFDbDZDb3pSRkZUS25rUUZLN0I5YWZaclBiMDY3eEVRdkVqQStMSG0xSlNsUjZPQVV0NWxONEp3TUhVRUZzazZsUjd1R21UVWgzQWlKenFzcjRHT050TEhidmM2UkZtelc0R3NxK0x5U0RxUXc9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4Ggblfl-9TcBm4ILJjG6wFqpkisZzxNOF3yG963tqCLe9UGzRJnfwzjCftMKDEedtGG4eB9BLgSSpCmGlR5a3L5akcKyihJfziFRX373ck4UXyebY77RESNjFpNoP67Btj8v63I1Fhg3n4Hshu5wzpgF6bxICQJ9HDluEppGGFB7AEmQGvOOXhM499iL3___MEuJoUwAlLcw4nKJM627ng8KENHgI0wT_HC9TOWMyFvuxYHnOu8adVFAOdfxZEtgAf5w-8XUN1swd-?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNnZOeE5lZ1hWV0hoaGVwWlQ4SSsxa21JMHNpallabjhqYjB1TXllOEVXMTRnQlp6bHJRNm0vS1BPUmZ4bUdxVEZ1blUyY2ZnMEFVdytGV0NPMkRmaGh4REhLV0NIWFA1c1pXTUpIVE1ueUlNalYxT3hHYjcyVFhnM3BOT3M1aHJOOFhlSk50SGxlb01XNkRKRm5jcUtUUnNKN3c5c2l5ZTlTTlNsRDFvR0o0RWxKNFJIbXhKR3c3N1VJRHpJY1ZkNG1MQjhSNkZIMkM2TjBJOVBCTFNJb3dBcEhReEozQ0pFV0RDR1kzbUxqY2hRVWhuRS9NYXNDUXh3blBGQ2x0YjA9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7eCyzDKgue1RvOVHDDYX0nFnq3hLLQpJ6n5XiF0ZXZ37eV75jv1uG5Dt2nTl3mYc3Bymu9qHo1JHvmUyePI7IuTPcOCRTKYZUNg3FljgmY9q27zgAlbhwp8BMl_6M1BBnD69xGSzGZ62IOPclIyNZY1JaID_y950Sv1baS1W8wqWEoRDxOm_xJ03hW7xPMjsHpYeN8-qZd9lTJItwXpsN8cXSiwJix98k6_R3zAmFKOV2edAOe9xBRDu2TV3f2bKuijN9T8xECVwvc?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<coordinates>-111.745632151369,40.30026159439472,1378.512595704878</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0B3DD3A7203EF35B8CE3">
+		<name>6th Sprinkler</name>
+		<description><![CDATA[<div>Buried<br></div>]]></description>
+		<LookAt>
+			<longitude>-111.7456081546704</longitude>
+			<latitude>40.30028512899803</latitude>
+			<altitude>1378.57616772349</altitude>
+			<heading>-15.21570688778217</heading>
+			<tilt>30.45778781746153</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>28.90488846076551</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNXA4RW1YSThPSUN5WTMrTmZUZ0Q3L2duSnhqcmhkbDJHaXJCeU1WTzQ1eWxpQzU0aTNlbVFEU0F1c0RzS3JrK2lwWUVwSmc0Vk1qVk95SStkQ0lMYnJjOG95TFNVTXFhaHNZYzhhU1Z6MUVGV3pESERad0FGMGtsZjROcDBPazlPaWJrTU4wcFZrUW9ZL1hzWk5ETmk3ZmsvQzhNamtMdFUySHptMHJubC9SRlBUbnN2TXJyNGY3Q3hKRi9udGl6UUVKdUJFRzRRYml6VnZjOTNjRUJuUy9IRWo3R3FtQWlZeXB3UUtkQUx2QTRGUzNUdzJWUG5nMDh0a3V4SCs4Rk09">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6kCeERqXC4YYHfMzoUcLDVfkZFaJ4cZp9ExAAOBDQaI4z3stFIK2BkryiFV0rCCFR1QoKF__9u1Rb_LnYPbVh_Fq8n_gfX-ZTCzJzNjOTLRiJEGVnV5XkVGG3Rov8eDgEfUg70xeiC-r_pTnfvXk5kETvEmiTw8vAowt9YEqLU1IOhQZxXNS5kOb_8qeCSU4x0hhPa4jo5Nzu_QpK6X3jFylm68Bzw11hC9SCohSWFZmuIiBh2rmNkODd7cOz2gjOr4g5tHrnDqM-K?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNGRvWjdQZUhDQ2pvYlVOaExsQktMTWZWUkwzcTVrbllGUlFrbjBFZm1CeWVuZmhTT0NKV3d0NDNOYkszN2VJc3d1MVA3WUtYcDNFdGZOSGoxYjBldVRQb0pqNnBOZGM4M2lUSTdUU1NoaWJWbVBjVDVYam5ia1pxaEVIZE9xbHY4eHpMRS80YnBFNGpkUEhDcy9EMEJpQjBlYVlhS2dQcGRQUW9EZDB3OWJteGVLd0ZyZGJ2ZlZjcHNVQjJmYTJnZEJuNHJSL2crVHVFNnlhZ0FXYUhnV1VaR0Y1VEZXaStYaVRuOW5EVFN2WHA2NVpDeEFIR0twdEFIRm1TRndDN009_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5lDQg5iIf8kLYTRsMpujr4cTpwHccHj1vMXy2KBIl_N7343t8ABn4oyCy_Z0PLtisfrYHT0oYH16speM0o7yvgoR2J_RVdIhL4MwFiGrsMflhJEEKit2gOyshAhvb0RfevARVSMkQB_UaK51zfiYwH51o660xb9jAHVkaBsKfTOA7RBqjluuXCbLoJ1VQYVl5tB-Fl17y8BBRWJNgmeNjiKbcbAsGl9e1dmQwrh-i0HNIXgwBSJT8htHPK6oR2B0WysrTnp2kLoYtc?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN1ptWThnNTVIbHpNUzc5cFY5RG1OZmZpZEk5ZFVtMnY3RjdMUmNXY1dwWmRBaGhsU25pdDFUcEdUSW9OblVUUXcrYjZGSFhxcHNycEFmYjJpeldGTitEc21seEQwc2hhZzJ2UjdXZXZOcHE3SGlKZCs0RkdvaFJkOHNRd0VQc25VV3F2aUpZbFBRUkU2TTRqWEFROURUUkQ4eDNRaUYzTW5rOUR1M3lSNDBrVzFoWkZoUzJHMmFWYkhJWUtaMTVYeXlHZEJidVJvd1NHTXNRS285cjZWb3BpWWY2UWVDZ3BkSnRmTUJmMDcwZ0F3VWJDVkh3MVM2NUt5RmZtdzU5WVE9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5zPveUHugVX4XI6n9yiG5MSSVYOsWlRFOZfynZkc6HQqgxjVlGdxILRrB8-mXZaGLedk9_fFga7S2Plz0oci8_Oa-V0OArQRMTSOl7p0YE0erUN-WU2ZTS5NG8cZDzO3_SVmHVmicFO5OPAMQihZyQYpD4WhOMA0ldE_nRVbQF6PisB1b7WFlTD1Nv52v0E3xuQ7FgqplWwMz4J1PPsWjD8JEMf-fzEMzVOlPwdHgFO9dYPlVWmvQLC6AatWAPY3PF5C8Qt8tSSzxM?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<coordinates>-111.7455993735302,40.30026935353735,1378.513786284287</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0B4BBB16EE3EF79CC88D">
+		<name>blue Sprinkler</name>
+		<LookAt>
+			<longitude>-111.7455536495252</longitude>
+			<latitude>40.30031293997932</latitude>
+			<altitude>1378.78143343103</altitude>
+			<heading>341.9622227910879</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>24.99690184391511</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_02C2E89EE33EF80FB9BF</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1885CFBFAC3EF79CC88D">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNFBWRm12emJ0YWd4SGZWdlRPc2wxOUN0TThaN2pXTlQycVB1dTFkM28vMlduQ2hEZ0N6c0ZYdTA3eklUTnRDajRORVpkUzhpSDVET2ZDOTJIWlQ2RUxORDhRc2FJazBXNXAwMzdNMzB2VElEQ2hJcjR0QTdtZGYvcmNQYkZuSWRLODRNSU1HYk5DWnBtUzRVWkFvcnEzbUhJS3prUWpEd00weG9Ed0ZjY2lnQ0k5WEVUZ0Z0UEk4aWZzeE0wRi9SS0t4VCttb0g0U0s4aHRHR3pWY2U0YzJRNFplOEtxbThWdXhWN3pVM2pYamlIWHF1aW82OE1JZFUrb0ZOS05ZUGM9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5ar55dPwIu6JAxN9gvXHna2lQhhg0mayGOcGoDA94zmgUPEKvjAAGHzsMii9l0W6uz4lDvvZYykW41PzYx7g5uIsk46-iFiF_s8D1thKcvMBlqq2MpSgSncKS-YG6LPm85z0H-tpnyqVaunH-muWnGrQRqgB2MQGkcoBmb-eGhKeB-iKKZqo87b2YSfrwnprBc5LqUKnLn1K3HBDGLZQKOjQFtSkMob7l_MGmfGd4gACfEBE6wMi5WANO81dXlLIHbLfNSm-0PyjLz?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN1g0ZDUrSlFEczRJdGdieXBmUDI3TkpCKzhCNnJUS1VGdHFOZ0hHNGR2UlFGdDhFRXZkYVlPU0RzWW85M2V0UUdzSlBIMVgvaWpwRFRycFRydy9UWVpEVENCbS83Mk5ITCtjcjBOUCtNMjFyQWZkSmhQQUpicnUwQ3JhKzd0cTlrTzJCMlVqT2JrSjNzbzVzNEpuNkk0eUdROXc5WlluQ1UyR09WYkp3ek9SbzRiNXZrZnRPMzYyNlFXYmIzVlpCc00zWGhMZDlrZmtLaGpVbWdrTzlnS2FKaXFDdTRIVXQxSXhOaU1kaERRM2pxUXdTYzZuaC9wZTJZeC9ud1lqTms9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X443BYzC-Qj735iuZan8XJ8nyokPwvW-ht_zyZUyGdi6ph6Ulr5th9Bl3T12Elf4VR-IhqEt-gkEBl8N9mgPTHOTaITZuuv915ADnKlGcHFyYxDVIBxZ1aEEFZ6eWmYt45FO4c3okerzwTviBwBnkY_gLRMqOj4KepkP5YvOow8drHVXjjz4INW0MUppahURxc8umLmtJ5tjZXuW0EgOQiY7DW01XuhWtjq_OsBJwNBk5AcuZekv6utar7uRpMKCESCvBYEte-PMBOr?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNEEzVitHTG9ReVJnS3BNNDExOGFtZ0diZ2RjSExORFJNU0x0emJLN09CQnYvelVJYlJUVFB0R2pSRERNSUozaFl5cklhL1lFMjUxUVFxU2pTQkJKS2pYM0VXcGZyNXBueW40N0RIa2dCS3ppOFR4Sis1RGxrYU9KN0FtZXh6a0c2UlB0dTRwR0R5SzZkWGVCaFZEaW1GR1lvdjAvemtndlEvMVYwWUFaZDZibnVvSUdKT3JVSjZkbXRmWlhpcTdJZUJ2eDBOMWRmSGQ4SG5mRHR1UTd0RjR6c3oxSFBHbkJrbndPZlBFaUd5TFovdHJlTW9vd0JZWXozOEZ1Nzh4d289">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X58sI4TZj-RNxTsFlQ1TQTmJHv0Kz1Xz2GZ_Wf8OzfCyPMFL1loaeOwFtYN0WR_G8EZkuCdVIwsJdn_0pjbA34Ld-Qf7UsI4oMb_PZ1ZUZ8vjgP4xU2ukgX5iqb7aiKksnZJugQ9G3jcY2uEPVe5hXQ65LohFvwSQ2ep78H3mFkfAceEgbKXH9b9bxbZMoPsAdn40UIM7S1oHpLc5gvSIxX3BL4J56QoVP9ZLiO4quro9Bahmu_n3k-G1JDq5zW-pgvc_kHWxryce5e?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7455562457889,40.30032502234945,1378.860127511943</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0A063F42233EF79E4124">
+		<name>Blue </name>
+		<LookAt>
+			<longitude>-111.7455395996528</longitude>
+			<latitude>40.30028613496236</latitude>
+			<altitude>1378.548841107501</altitude>
+			<heading>341.9622292025443</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>25.23262672100373</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_02C2E89EE33EF80FB9BF</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1DFBE3CEF23EF79E4124">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN0xXc0VqZy9Rd1c2a0llSURQeDRENldqYU9NeFZ2NWNYOEovV0Vvckplbi8rYVdjRjVyQmxvUVpSVnhQY0RpQ3NCajBnSVk2cTZVNHYxdU5CNUZyVThTemVJekpDRFRoc0xmWWEvNWd3cnp1V1RuT1VCckxUdTdjTmdhb2NsWENzb1JKQ3pGNTNVZXlWbXlJM3RIVHZqRnlweG1YcmpkZkduNnlsbTlLY1JNU0hrdUxSNE5mcGMzZmNLMEk1bkRrVXI4UWE5RGdDSThLQmt2NytVdXNEeGhmWVFEakMwaHdlRHFCQ2RaWitRQi92M0VPZkNreEVRQUJoaXYyWHRLcjQ9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4qx3MTFxzbJLgIqXGfBFB1Fh5fS4mwb8PZ5R6K3DtaXOo3GHlVl7tXJtCgWid2hrXoD8wv8sTxni_c03j7XDdq_FiFq5qHR8mtwesmLDLzgARiFGKt6pPg2TmaPkh0u3skIuZXPHgxq72azBWTaKKnMz-UiFXSzbrYw6DBvrpZL72LVrctYPwmpXh7qj4wa7DWtTswM7_O4NHuwaiLeuPijwVQOigJ8P5qiVq7C7XAMVcYwDqnMxYQPvksfpUj7dBHUl7CtHvuqw10?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNjVuQjFNN0tKSXZQRXVQVFM4WnlMTllqalhvUEFnNXZXMWk0NWFBUzArTXFFNHNCQTYrckw4Z3BQMFNNMWlwdVllM0NPTFZoOGVNNG1aQWg1QVo3SlE4YmhXb0FDWTVFNm5Ma050elVWRlZoTVo5bHBmSUJJL3JNSVRDZXRlVDBPRngrZEF4STRBYmVqdFkvQ2ZWUldudFJ6MmFGaFk3eEk2MzhlMFZhd1hrV1hhM0FLaFBQYnZBd1BSLzkvVGN6czFqcE5xaHZyTlF3dDZ0ODkyZTZ2azZ6alRLbnh6Yld4YmNjSVMxTjlnNE50TythaWlSR0JDTVFNd3BTQWFFb1U9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5tpzjV1YVLnfKNKISG2TminaL1fq5Te21cPXpDoUb4Og3L064V4PN5UuDo_8rbOgdySWBE2dW4DLEage-fNviAsySvvNNF5ziwd_CJ0VdQQCVfpItruGuzHB6SPBkuKTHm-qfa_YSQkPLu9EWvKeBGQ1MJ3rQZhIRvV-vNrGhfUw1C9MRO7Jvm7KxKD1AE9K0dtfnTY4s9sbabrUL3nn00taJxJ_IIEGmiOupAHYtWhADJ81EAIMOHjaUk13PJjMwimvn7wX3C1BU-?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN3lRY1JaTzNZcURwT2c3dHlDZUlvWUpMUnNQVnFYVnFnQktzUDlBc1I2SFRHZkZaZ2VkQldrVDRaL3Q3RnZWdGdJa1d6Q2pxOEcrTVVPVm5mc3Q5dHFISHBpQTkzSFBsdDQ0d2dDWXBQMHBWbTR6aDFGVUNrUDdKREFZbmZZVTM2WUt4MkVMQTdPTndUYkV2SWJJVmJvK1FQbE5obUpURktDa25nSHlocmZaMW1hR25iZGRnZEllZVNCV2VYMzdMY1c0V0g4bmhMNkhYTm5nNk9GVFFiYUJBSjhBRVVhbUowZXdBVEpYdml3MUJqdXBaNFZQYndvbmVKMWpBbHlUdEk9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6H9D2sOkOVgzbBW3pYMr-pEb45j-WmZBp_iFERDKRohI_3NFIs4XqnzuSk23nMiZz5LavTFoj8wMZ9qtUsNhkqra4mE5hqMwO4WbjvSJ8H9AiPus44VLfcrU7ARifopXUjo_d8QxhWIc43c5iwmWJpp7aZYQfeTVy1Vo6xYzwErVBueHGI24sIYn5byTmoF_ES6m1e1tm4bBnheUaOT7cAFnU4gZt81Q8f-lyFGch3OniHkqiVQusFygsIb8dvEqBWtQ2ORvUrjMkp?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7455465149624,40.30029540993178,1378.567606569874</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0C5672444E3EF7A369BE">
+		<name>black </name>
+		<LookAt>
+			<longitude>-111.7456482366556</longitude>
+			<latitude>40.30027777769272</latitude>
+			<altitude>1378.5640973393</altitude>
+			<heading>341.9621566223875</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>25.22579512359243</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1859D96FAF3EF7A369BE">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNEJWYmx1VGkrK0xISG9iaFVQNGtBVDd0cU8vYStmR2Q1TThUYktESWdSVkVQazhsVk1QYjZNNW91Zzl1T2NuR2FsSWpFbWtVZEVuR3gvN1NMZTM3NTk2dUJESHFJaDdvRmhZc3JTdEVwcHY2Sk0xN3NId1JjaWgrNk5ERkFBWjhkc0xnQlpCalBqY3lVZy8vWk1HQmZra3IyQVl5MUJIa2RUbVBYSENZZHJ4ajJzMUZOZUVqSjZhVVc4Y01qbnZlSjRiNjFVZ0V5NFhaRjlNcFYvMVkvWVpGdk1jNGQ4R1FQVERPYjBqTEVITTBLQnd2MFpqSS9iZXllODY3MnVzN1U9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5XGhDw76RiMtIr5iJuLZqWYpxEoHFIUsJuzlaI58tTjOulG5BY2p9kWOGBwAvRZxR1CwzQewl-giP10njDv0URQ86ZRh6a_fND3OhLNsbmEZ6_B0luhlUqot3zK9cVhTZgATSG4Hni7SZa0LAjSqV7ntGGNJO7f6-hwP7JuqcEzF_xuK7MqIHEF2JMQC42I7EIg-RyI0514ij4ESf3VlCg9QxUp8ibbigX7H0hmiFHL_NggWJIWvSOunUMdudyqrsDG9NUU_m3UQNh?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNTFtV05QRlJIcWE3ejNpcFZrUWN6MWRpRHpYRzllTEowYStLZ1NKQXZIVC9tRUdvUUFnblgzRnRnUnNTYnZkT0lCUFAwZ0Z2andJbHMvRTJvVnVGTHlqTVJmZktJN3lNRnJHM3BzOWJ5Z2JEZDA0dEZIdWNhb3RNMkwxZ080OGZVQVVUTUd4cXpqOThaa0QxdGRQU2N0a2thdExNTFpoTFV5OWJONDFiQlhaQzFmSCtRbG0wRTV0UnNpWVVMYkNjdklTMWVRR2o4YkgyOHpTZGxCS3RQVGM5K0JjdU4yQ0dnSGlSMjZrd3J4bXB5clRJSy9QWUJDZk5sd3Jwc0k2bDA9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5UwgjG-lbnJCU4ewOT47Hizt8oaUuw95GzUc-9aDgXHvZHl5PD1GJwCvenv2KtfhXGYLi1ID_sK577YkwSpTDHrQDcJmul9hhrI-cIrO9RzQ1u_kbZrtFvbdIOx9tAYKzelMI3pfQVap5P1iB0xtK2spZsmBpaav2ROMLgyu7l_eTS86DHGPZUA5xl2unrzroolrEx-qt2pQ0eVpsqrqxN1rnfwLF8XPCEEDnB_qGLNpHSlAt5xj-EkfvKoMltTIHInoSzok5Ifu_k?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN2M2SEZiOUlNOW96a1RzZVMrNndQNHo2dS92RS9GTndiWno3ZTdndEl3dkJRbVRBbkduQW5reUxnendpTnJ2Qm42bTVYZHVjU01GNFNhd1hJYTlqNHYxbGhKK3FjZ0xsdmNNYWE5bEVWbFo3NFJXbG5tTDhJMXlOblQzeVZZLzZTS0Z1amEyZHVRdHl5Smhzb2N3NVVIT09UbUJnVG5LOVZKdDNNZ002RUF5eVpLdzVtclFjNHI5Z29udzZkWXY1VTJnUHQ1Vm9TTmZQQVl2NE9mTnRoSWw3YURJQ05aa3RmZlZXR2xMMXJjTml2K1ZDaktWL1c1dldKVE02dkxWWG89">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4B6EHek9ypb26Pu-wch8AaP7sNLVGxmp5zhVVnZgIlWI4jnVMXn450-mqo4EOnAKt3tkJfZtnFZ38YDito7lLONd7eEWkUt95Xypq4E-6H7xdc7rMiw87I8kl5V1ATgoZYw_7yzadSEzluJfwkv0qHps1bgLxU8t0w120jv3LxgW2TL1j1IbXC9idzCCg63N_CiAHI1hz7d1oj-gorL2y9qisHfwec1HfHDa0xQ42yovPLi8p5qNF24moq1VBg22NcMVR65HlDc42P?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456575402995,40.30027270460789,1378.550510285098</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0E56BA05B33EF7A4F73A">
+		<name>Black</name>
+		<LookAt>
+			<longitude>-111.745659963328</longitude>
+			<latitude>40.30031222242271</latitude>
+			<altitude>1378.767183062341</altitude>
+			<heading>56.71820298807691</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>43.3933014281547</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="19BFECE51D3EF7A4F73A">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNzB1bVp2cFZybzZYOTMwMitPUWRIN0ZpMlZLcG5LR3dQQkxnVzlNNE81dnBtWmxyQ2ZGdDZ5TXduTnJmK0R4QkdzeU1WSWx5VUZ5a0lycE9ZazZvWmFlRXA0LzR6Wmx4VjlQMEhZdjBQeE5VMFlXVHBVUlV1TGlnYlBZa2VEcTViV1d6blRraWVtNnd0ZE5jSTl5VFZ5NjA3RWhYdUpHWnpzMjRGSFhXN2h2MUdjZDVpenkzMVcxUGtZUWJCWFNLZXpFczNuK2RxZkRicTUxNFhUNW1iSURaZ1JUMnFXZ2VDU0N1YkVoQzR2R3l1cS9KV1ozRERkRFJudG00NU15bWs9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4vdC6Eie6blMot7uoqAQQXt9_f52YZ0jH34g2HcEm68XpWsGsd2Pmxi4zVl0gqXJu5Bx5NgjqeuUgxzeTxgGlIE570xykKWniwyfLnrK16Q6CwfmfYnhjdSZ-7ttHb9-J3PFGh68esKSffY9Hsjbcxa9VO8rR7A6YCiv-3GKu3vt3KapOgH0okabEIFuGA1tqYDEV91vB_uHcUBVEVyIXb1G0Q3y2GfZFEgJ1XnNZudjvwnKb1Gxkqwp9iotiZSgvQ5kzUyXgbb5V6?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNEFLTHpFRERkYXJBYzhGb2cwQnJaNVk4ZDJod1MxY3Eva3MrZ2YzeEIwbERrUlhZTFJWUVQwZk5lS1FvNURlQ1RmR2FQQ2pzOHp3SEoxYlUxU2wrRlZUVFp3MTFOa2lPQzFUQStJb1NxMWswWXc4N0ROcGNBWG9YWXExaDFHZWR4YXo4WW00TWpSQ1BES3lGL0ZTcm1ta05yOG9JRzErSktNYUFnZi9OdjdEdVBoT3BPdTl6N2UzdS8rdno5TDlpa0xDVElNeTJHMzJTV0xkNWNqVXJJNzBVdk9rYm8rc0lRZm8yL3BtV3V4K0VzVGMzbWw0NzBPZlVUaGF6RERmVXM9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4uNZZz3MJjEAYUptV1_aQEtHKDQODKuZx3soKleNKyvM9hsn2sd7X5VUgNebE11xeYXN3G5SjZyvMcGjqGmrO0-2BQSXXbUHeLkYJOMp4Nb5nSp0bOsL2RUXUqh0idgfxN6jrqcvJoT9OXpdvuWvy1MudqsngCl37nl-0o5VNjDnQyy92BBoqHCTVJz6IodJbc_C-xWm4LBeY6BhO_IpTy-nfB1DsA9oxG4TmU6Zs9Lye9HwO8QLBWzeTc-SszifNW83Ha-H1c_C31?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNE96czlRNGpEaDh5a3NjYVJIMDBMaDlETlV1dnhoeWlWNnlYOFdpWVZQdmIzZmRlRTIzYkZLcmgxM2JQSmtQNGd1aGtFZElzOUlVVk80Wkk4cDZ1L0pFTmMxSmUrcHFqbVR0NnpLQStCdW5WcGxkaUgzL1FBSGt4TmZvRk5LSUZlazllVUlOajFZa2tiNDR2RW1nc1R1Sjd3eUFTaGpDWktMS0ZSaVg0c1JmTElndnNwNzZjcDBRYi9mVnBtY2xrOGgxZ05wSnZlZjA3bzRuRExHZGdUSzRRNEdzbll3S3pXdTlOYU9SczhhVzFFMkJJTnZMdVdEUVJzRk1sNWtrWGM9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4NOJwMJzPT9F9sa5dscd0SG86vhFaPVbxbkYcNAYIF6yazGOwNMMZdh_Cze7K09qBFEyO-g8dN8hsxFfcsDk79T6bHVIyIt9zhqiC52XeQ9XYuaC3lfJ3CzKizypVLwAtWiZwe62egze0O56QpPLp9T86DVpl-j6V2Y3aS-XTmNcthmWmS2tJHUR9qLoPWweWACvl6KCZG4mnLXgGGI-kRt9vpHbg7Vyv9S3ADCFDha4gvASOgHOfgX0YSYqV5jyM6wn9LvTYk4zKK?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.745666148677,40.30030750592285,1378.752558882715</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0CB9FFF1893EF7A6F866">
+		<name>black</name>
+		<description><![CDATA[<div>Need to raise up&nbsp;<br></div>]]></description>
+		<LookAt>
+			<longitude>-111.7456054518557</longitude>
+			<latitude>40.30028639111005</latitude>
+			<altitude>1378.592749383227</altitude>
+			<heading>329.6973711042564</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>40.6726597685065</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="14E7DB00E73EF7A6F866">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNERZc2RiSitwVDNrekxxYkZMY1F3WmdzcHFwTS9iYnVVVUlpb0FZYUdVVFhNeDFxZmFoRXNpSEV6VEE5RjREcEdrb3JlV3RJOXVTckl3R0RUQWlSdXp6aS8yTmNOdDg4RG1LbFlXMVloUllHWEU3aG1IekhtdWlrNHNZNHl2U1Mvdlp4QWF2V2F0dzcxK3RTanBOTDdvQ0hsWFFyY1l2NklheEMzVFV0UDk0NEpHQitiTHV5aVBsd1VpVWp6ZVd1OUZITjZ1NGhGRXBTRUtEV1c5cnEvOTByY2xQQklaRXdxamZ1dTZZOEhqUmdzTkFNQnd2UEZVM1NLdlFvekpxSHc9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7Xrxu6uPYKgg9Pv7L_1jnilhfeOTCfdQ4gFnp7n-ZXFXMJq6PL5hRz50-Vf3QZVwG_IzsKzZm5owbdfmsQ9qr-e1Qz-DFD4yp58vJdSc6ULvu62q4z_YKuuGu71gQfoLkSfTUos27Li7HMeDW_ai9dssRzE7zRadNm1CbTPIxJvq5nHi6tHFTMMw06LxuCcq3XrDCpC3jijS7ImM760Riwk-9AVfXBqvEcKxlfaIlO-EEE414pvT4TQWd6vyuM_kY-enaRa1guX2XZ?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNit5ZkIweHdra3MxSnpZc0J1VVdlRHR4UWhzNmc1OWJlRU5OcHNuUmxOc0lMbkxUSnlPVFBkTkw1MTZtbTY2a0g5L0hmZEcwZEpvNG44c25FK3A4YnB4bHBEeHp5SUYzekswUHhDdVpCT2JLMkIzTis2YldlbjQzMVIwQzZnaTNmdUNKZlpPdmR2K2ZQdDJIZXZaSWI3V1pPLzMxN1VoOVpiWUMvWTJ3ckRJN2t5cncrUXE1a09lV1ZRV29JVG5yY0hqNnd1aVNvWTdnMi9nRlZwVXp3OFR2TjRjTU1MQXFCckJNU1NUQzY2c0swWUR4UHBLb2xQV3oxRGRRNjVMZmc9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7soesFyrAcy2y4WnVmTgo0tk_5Z0GaNBmgiOBJY1eWFqx6jyMcs2Zkz_dfBFjpFr_SlUphJDgAyuTaQFoxjcX-BWL2dI4ajnia4ESEuFYNxoDWhesH0Hcb5GmgzJOMAhWO4Uyuy2oyvVan_raorMeFhWmMaNkznRH2VUSNK3IgMLQntzFwznk2c4bQxzJ5ahwHQ2jxXGNE11xcsksv5AxkzhB6v8lMva8G5dAfq1J1ogeJU6riSu2uHWor_tbSjgi-FSb4Zrq9dtyX?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNzhpY1VhdlFralk0WmU2cmc1eGZnWEFjaWZtbThDeXJJay9uZExKOUNuanV5cU1zMDNBbGNPRXlpeUdrWm5jVytGeVNjTXdpeC8zazNiMXNlMy9FTE54MkRSdm5EMVQrdjUrcUNvQU11eERBbVpZSWxsMmwrS2Q4aVpNblpwOWJ3MDI3L3BqdzV1Y3lxQVliVEhZMWEwWjVKWmRJbXZ2RlQyNUwwSFJ4aE0rYWhOZHpsVGZvUzg2ZUFJNzVybnRlT3NjTjRhd084WjREWkdOVjBnd0tZdXg4LzBLajdDWlR5eURrNnJDWVk1WURtTmc3UlFHaHJKUVhjOFdjZ1V4VDA9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6nYA0hY3FLMsIOg1wOOjSozbCdkBTY3xaX3ZWJ6Jj0So2yOc87do6S7jUVC_6a7MfLU_w7oCa88Z5uCBAoPa25pBI7IUpHlX0zy_mXOSfNlLfRd7WlkWoGpduxYw1XamDknxrUrhiBoGPW06AqpIAuD8XmcbvFszc3vgafOku7Bb_ny6uNkg28nHw5lDAY1rO5TwLBXvbUF7nXh1kgO3DWRck_XzR75UKF8a0mFkfd-nDhmVMAePw34PudGHm80IrbCr3uzelz3RaJ?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456077864582,40.30028746463701,1378.615664836922</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="091D8AEE1D3EF7AA1F51">
+		<name>grey</name>
+		<LookAt>
+			<longitude>-111.7455554763212</longitude>
+			<latitude>40.30028183660724</latitude>
+			<altitude>1378.524890416938</altitude>
+			<heading>329.6974029468383</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>40.74051508783214</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D6CD9153F3EF80FB9C0</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="16340EB26E3EF7AA1F51">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNmI3dWdJeGRlWWg4ZmVZR0dXWGRGakJndG5LVytFWERvQm15aGQwMGlvMkhvWnk3dTVncnBGeXFQcFNkSUZQY1F5UVhYeFNuTHMyRmZuSklTQ3I5b2tXZnBvWnA1UDJTeXg1SHpNQWVDVEFkWjVDM21vTlV0L0tLUmtBbGQ0SnJXR2c2ZFU3Y3R2ZWpoOTdweE5WdTNKaldrTkpxckY2K2JFQ1dFRzNKSDVuc1hFUHo0NTY5alMrSVp6NmFJdWZCejV1WnZuZmFJZCtWNE5yWnErQmt2akI4OHdDTWFjQjdQZjZidkdtczF1OXBSVStYTG4xeFQxQk9SS25SM2tDU0U9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4_uUnyFBhrrmUPebJ8GGR879bk09IpLruMBpa0eTpbP8CBjMHXUwDlcXzh5ze2hYI6X1hZ6rBEj5R7CxVsE_sgrBD3sJ7dQKRl3zuOOptCz2n_PndcRBXlZ1J_xnB9-JfKEKr20X-v7G4NaKeB5CB-r6WHiJWD6XgSRO3gsfw706focZcEMLdXT3zNLe8Q1btOxGIakzTdsyzTFg5WiJrAqaY1DALVYWuleaOVuSj19j6r_xUnUf6VxJwRlzpG6AAn3LjdlxUPs7Zv?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNGdqTmYzc0NBZ3dyVnJOU2NwaVpPZVQ5YUNONE9mU1Zra1Rud0lVeTJkR0VCTWdQWmdhNnIza04zclFmMkhhK3JBZDc1OTF6ZXVYQkdCRWJTRHhtdTJaRFpvWHA0Y2VheCt6MzVHazI0VElTaEl0MXBmc2N1T0orN0p4WjdHaVRUSjZUQW8ydDU5UGhaMnFPdVdXejdLY1pVd3kweGxwbFp3cHZlMG53c3pwbFpSd2d4QlpWZHIweXJwc2xWSWNBRmFranA4USs2NXVrUytwSnQrVDV3aWt0eWlyb2kxK2UxckUwTWZ6WDdxZWlRQ2RTL08yK1BXaDUxVjdzdElhT3c9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7-sdOwggPsySo3lgac_5P5MOBkL-HEtrFjNAUCNQEkSR725Z6929xKD0Gf7o3z6SdIJqn_C5cCj-E6yHjtNDgt8eetarA6LDVUdf_LHTb-2wSU0eNDBTkfaYAQYF06zpL57cRSyjDLXYMOaLeG9q6BUflHgMIwhJkSDRad-uHU5Gcz4GGqEeL1uq57OF-8loA62hcFs9-xwACSbQ02PhP7FJ3QweEzZSnA2H-VBsBGStJRYdtVsoMkUNDFCI0GX_R3_z6fy5eRGlWh?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNnlKbDhid2c4ZzFZUnpHcDNkNHRPZXlHVW9BUHBUOWdnU05TZmo2MVIrRkZzUkpqeVdRa1dYSVMzU09XV3ZQdTBQYTJxZzJpYU9DL2tvUG9hQ3dWSTh2WjMvOFArQlI0cHF0UHd3NXRGQndBZXZyR0NGZkIrdmgwTDhqVlpuV010MXZZcTU1dFkrQnNpY3kvbW95VlFVMU5PK3UvamUrcHBjM0drRXptVnhGVkNGTHNVYWVYR3F1TVQ5b1ZEUUtuWTMrZDkxK2VZOFFuOVY4TlFPZ1dkTjU0UWJ3anBBQjZvYU5BbStWeE5KS1ozZVNwZm1UZXZOeUZyZFh1VHYzV2M9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7143lhQvz9tMcE8EPBFzjG8heaicZt56lzrRgaY9Wyn1Bs22doBJimQL-0b0wFlkxFnElweqwEM5hbh9AeLoZJfP_Uo1wVmCDXbqFTKgQSMJilEwlikzutPZ3zSVOGg-YWpEqwVi4fW780Ya04E4380YKICm2XXvtRiwo1x8m_HCtwfPB4SBxtdKDZM1IIhqyeEFSs83d5j2DiDn1AUFJp_F8dK_RHCohNdFtUacnY5DdnHdjGgg9IUgdN5YsOXmzR3xE-W4ETJ_RP?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7455899331795,40.30031846380709,1378.841602947217</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0FDC5C07F23EF7AB2757">
+		<name>black</name>
+		<LookAt>
+			<longitude>-111.745590363083</longitude>
+			<latitude>40.30033145272426</latitude>
+			<altitude>1378.900123106445</altitude>
+			<heading>300.4876007628981</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>25.01774430013938</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1515CB9FA03EF7AB2757">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNlN1M2ZjRnBwUVNoY0ZZZE9jTVp3ZE9tVlpjN2JxRjBGL0NwdFBvSG9DbzJFRTEvc2VGSFR2VmVUNS95RHNrcmlGZWxob2R6MElzMGxaZWRPMkJWbWNyOEk5NmIwTFVCVHlETGN2SWtXVFV1ZEtsUGpLbGMvWXZ5K1FWemhPNWhHcGF2UTJmeDV0amFYdWRuRTE4aCsvenBwUjM4TFU0MmRXYVIvc1lyNTA5MS9GZHB6YjlFSDBFNE9QT2RLWmI1K04xVHp4SWV0REw0U0J2VEZsdXlrOUlSZnY3a29qK2FHb2pHeVByb1Z4NEh2MjdBdlBQdWRyeCtzTGhVcFhlVlE9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5PH6YxaMvWiGTCbU8ixK3bg3coQkbqTIP-GeeuhJv3SYbLNUCNmZnSo5fOW95EgDzPuuKTr95Lowe6QjuvEuMKwpDrz4E8n0ACl77T03PFvZGQ2d8QOc5RmcRhebKSGDtIQmnbKNMLXL1DVw1MuNk0mLv-7-O72up_Vuo_Jqvc-CeFjuIW9iFQ_SIU2bivKrj8SDdJm39nNz0Kg_7JV0blEa-CSEflTMlV7LLOgwu7IvVaypQRazBrJxvBazuQuJjLd-oTpsKJTryB?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNThHc3NQcUwrdGFMUHFoSHFjRmJoSmtRaHMrUEtLNGxXZzNkUEU2SVBoS08wL1NmdkY0cFptcjE2WGI3Z2dWTFVEK3BLdjFQMnJhUnMrZTI5VE5IZ1lacFlvN2xjRFZZaHNJZjVNV1JRRW9CVUpFQzR0MEYrbzJsT2VyYitidVFoUm9JSFFiejZRVXp4QjlUb043b1JseCtnU3NYODZSTnk5bkR2Z1hnRytUbUpZSE9jallUdWdJbFdmMUx0cUhXeTAxL2I4MUMweHREd3BsVHRqUGV0Q1JHWVRuUDh5QlVYMWNyYVQzQlZJZUxET0RHdTN0N09mQW1XbkluRitzMmM9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6rimeuArqKiFg5nv-BKthSgfwqN9v8PPJ5SNiGkdgpPr-VJpWjIrrTM61kNFo7ciDg2Uoc0p5vEbCnHqO5Bf4HYzetl2QDDvIasWIjtnOstFihKvMcWzQ_IGY_lQTtQiWiDDTK-Jcp5f0UDNwS-b_2tXCmbzXvElhrOwUKI7_4bIryhsuJnHUENEL-bpoja_ok4PxWyn5oG2XXD5jClajJbpwMvuEjMaqaYSzK1arfP4hO4JUCOEk4362ssmU6VrEzQh4InS6jXQXf?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN3phRlFZaldvUEVJMjNzcHFpNTdxS0s4TEl0MHFuOC9LYytwZ0hNcGwwVC8rZEQwN1hwTWFRb3kzWGpVOUxob2tyY3BYSlM1aktaMnVseFVKY01USDJrendhYXU2WDBhMTBSRXhqNGMyRmNNR3JnSXhSb0RXQnM0Q3VuZjMyOEhteWJqUTc4WU1xK1RPNVF5eG4rUnZ3eDlJUW9HUWJxV2dkalQwSHRVSzM2UnlXZmwzdlh2blBLVzBMSDMrelRSS2NFRCt4QjVQUTR1K1E4Y29RUUdQTXYxTEptaSs0a0R4SDJBaVYwNURtWFRNK1NPS1YyTUJNbktqYXNGbVVlNlU9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5O3FQ5zbw6kAhMmGqFFjvvGiK_g_JTjaTySHNb3tbyISJY_noFgz_QIphMNS3n9jJGfhxDpzOssydtcJrY4KomxKXsswKjseL--8eBTgfMDMEr6v45On1Jbx30Hnuq4yAePKUQ7bMNeC7dkiVj1PnWu9hyMSu9XjqGP9oAj6aolPyC8Sq7rwiYrK63a0ne26wR6YTIVBlAMAoBldgy-QHyhjVQFS6snO5j7GYklvclnMg8btVVBUPjLjvO6dETFyjpMzFBkO3KdeX9?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7455996651123,40.30033912476767,1378.905277198225</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="05F9C7074E3EF7ACD213">
+		<name>Black</name>
+		<LookAt>
+			<longitude>-111.7456140953207</longitude>
+			<latitude>40.30031169927577</latitude>
+			<altitude>1378.790520802729</altitude>
+			<heading>-26.07284147663183</heading>
+			<tilt>42.91616364151451</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>35.75965477981755</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="13FCC47FF83EF7ACD213">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNXU4YkNYZk1qVStCNXY1K3BQWnJaeCsxb3BKMm54Y2FyQU44dG5INWwvdTg2QW5kYVNVb0tSY3U5bmVJVDJwb2c1MkpGV2F1OFpCMzZiT0JlRW10V1dwcWxEOHZaTEM1aXEzak9jNzZacUtZa1E4YTJubDVUNjM2NFVSalFRTFo0RU55N0JrWUlEbDFxWlNJNUpmOGk1a1ZneWVnQ0lCT1RSVXMvL0xISDN0bnpCZGswRTVnVm1DUVJGSDZOWHR2QVRPa2libmNTbER4d3JqdXgyRnlmNlZZUk5ZOEs5dm0zY05jc3BsRFdwN2JENGd0S3prdTBFdEoyeWtzSkpRaEU9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4-NaLXzNNj-RBsnlvnywQPi936ua7wIqd7OYczwcefgtzViX1_Pv4KJ5V53667b8apP89V7Ccz1tfics7hv0g50GcGmcaPw5QiPHYnknqhZFfjFIsuox_QKoGefLp-9DFE070h3PoYV9wqiIkLzcMcr03v2m2iXRzANhwqX4CzEGTS_Zw-fT4ErFzCEPbLSYYVjhZaXybNzynTVgjGngvsp5rdoIJ5-HObt2z0xcJ25Ri28jrxNa5NvF6rGS-s14EIfwyoiadkEWgO?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNm5GMXFmd0hNSndlSkdrblcyRFcxYjNUeW05aVRuNGp4RjV4UjBtWWxTcXZNSEpva2dLS0M4QW1FQmhOSld5eXZMdDcyczVFSGdtYlpvUk1vSHFGZHM2bm9GMEM0MHN5dmE4dkxsV2lTRHc2dTJVNEsvOWIwdkl0Z0tkQjJFVGRMWjBsVDZzbUROQS9xbXJmZ3h0N0NSbjc0M0ZzWTZjNS9YVHJtUUk0enFSTUFWVWJVQjJqNzV3UTIwMnFkaVlxL0U1ajcxYWFRd2gxMlIxOURBeGI3SkdRWlZnSytDTUU2d0lKRitMVTQxbWRweXFQMGZNRmN6THh1R0pQam1wZTA9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X68am73ZrsaIaBKYYfmswtTCNBgwpcD3CpT8rTn672xdtOitFVdlGmnE9nlnOd4fBhtHgiS3EJcwTYoED7Vqqk_HmjeuR7kyXQlJ0Tcue8lP4Fcu1xGOwytyuw7SID_sCF0YYeJKGphkeMnjlv9m40C-95Z4Cv9GVvrPGK_6rYyapZXS4k5_4S3lRDa5egy2-Tm-NFPH5P5v4SWBd_Zrnn0vMG9opWRmyeFXN37IMM21I2kajB1o4TtwhQAnCVeXOpegFRNsYiIQ167?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNkZvUURhTVhqMVpSb1o5NEluOG5XWnM1VS80OXpmOXVJalBmdVJhZFZtT1h6cTRmNElVV2dNRE9XY01kUFgwNWFBZjVKNEUrSlJHa2sxZm9QaWVxUmU2bVFOM3pRTTVmaHlHbkZSZGJKbHR3MTMrV2xUN1RxSHVPSHozSDJxVHFUejRtZFA2YURwcTUzcnNlVlV1UXpIcnlBdXMrTldjK0ZSV2hHQ21rQThKaGZhQ0FMOUFoaWJQczRvNDdaSVJ3K3B1SklqTk1XWTZ1dDgxZy9xSG5XMDBjQ1pOc2RUOXhTNEh1ckd3MnRjQWJIM0tmTk4zdHEzTVUxSzFHcTF1dHM9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4aT1LftMOz0G68Dkv7RmhjY7lV5YhZIkPMV5_Yi45ebbdLFjlr7-4WahGaync6MIB2ZtmvLFsWdkazDPPTm7sWAKkspsfKrgW65u-4fF7_0xsxdV-9xU5C6vyelzjIEcIMswxCxclVZiwjLrRmB-0dzS7MIVSDLohCYc1PGTYmc0-1JzRCCA8qEOcLooS3-psYXkz5KFdcec-VjNnyxLdPeLncbGcyA9nfEQPvOID0H74nzX_hisbq5YmJs3dKTLXNriq8myuTaEu7?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456284823084,40.30033220970269,1378.857949222192</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0F4851458C3EF7AF46A4">
+		<name>grey</name>
+		<LookAt>
+			<longitude>-111.7456703733729</longitude>
+			<latitude>40.30034467721865</latitude>
+			<altitude>1378.904558793085</altitude>
+			<heading>68.96091428344383</heading>
+			<tilt>34.12018071161037</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>38.56503374272506</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D6CD9153F3EF80FB9C0</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1F274A66B23EF7AF46A4">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNWtNNGhaM3VFdlJDTjVWMVpLRDg1WmhERXhvbWVFaHl0dEhoeFdGZlpZeVZNZ24vTFVTcHQ5ZForaHdaaWZ4d3BEbEk2VzNMZjVQTzlPcXFOZ3lQUjd6TDJCOFU2a0xVUENGbTZJaVE1am5KWXF4WHU5K0I1eXF2cjA4RnZNR2tDYjdNeTJXam8rV3NZa0xzNW03R3g1SXZSQ0sxL29MT2xEeVM2bysyT1ovenpXWG1aZ0Y5dlI2YW9oYzJoWEIzTE1ibGtCWVpIMWZJVU5ZclJxWnlnN1JMY2Y5ZnJTaER5ZmNTYytXMjc0NWNYRTI1RHR0dEpiVUhKS2lqWlZFblE9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4TgpH6xu6y7ovAg7ZgGfBVzg_PSWavSFszzca7gZn7i5PFYSgt-yDsymNq7zxSKLwlPv7m2DOUDKd57QJR6TNuTjNtuF5EAgm8EP3DdQatw8DIsDSaSGew2oVuF_pQrAVxJZeDOtiUqHYCe5FgVOUu_6DZzoTq41Y3ixh3iJFCFd7gY5uYI2zrkIX97E2dxhCICycBWAvpreIzyThw1LBU7ei_3l0s68zmJvomoAelMIPxBWg0KvQCVEBynf5Z1Bvcq5u5ZKi5Dt1T?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNEZQUTBSK2xWUU5oN2RHdWxaNmNRdTJCbjdzZWR1NFExdSswQzRWeHNYclFXd1FrWmRPa0x1ZnE1TTNUakVFaDBXQlJYcVQ2NlRwWjg4UzhLaGpYY0ZZTjVLSldDTHhBZzVXMGxkV2dlUE85VU04SVBlSFE5amdWbCs2b2I0UDRvNG1iWkdkVVorY0V5eGk5eXdndkZOSXFoSlJNN3pQMjZrenZKRkZ6aUJXdDQ2Ykdadmppd0wxdlo4ZGNwN2kxaGY0SmUwb05QS0RPSUo1NnZZSmJ3UEF3eWVmSXhkQmxnWlJYbk03RjRRa1NaS0ZwQXlRZzFzVnJIOUdGQTVqNTA9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5aVivN-d1eB7V7D3_WIc4lOd-LaBOYlf0FyEVdab28kB5PWl61t3S98nsLnilgNuwRKShrwmplATicJpdIZdw2vdiSJC617pRUgLLQomhA1HsCvCjX9MOrD5Hq2Wmb1tz1JK4eyQkls8odZJDdcSm0gQ85Fp9KV9YjaHoNWyiXT-7ce5YuSLgRSi5-HsWddkmERtylv9ZFoGLDrXIoEooEG61khilkZz8iCAeBRAjBJHRPRA4X2BuSvc5iMH4e9LIAgFA5D_Deuo1w?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNkVDalZXb09qazZ3RmhGR2xrRUhNR3V0elc3VXBXY2xwcDlFdGJYcGUxclBEcVd3YndhN29sSU5mS21ZVUtuRmRPd3dzL3MyTEI5VlR0S0IrTEdJbFowczhWTGtHSjV6SzBDL1dlNzZ1SkJRcjlPS2N2YVlTZklRdGZEWGxKQ1RnNEcrMDkrbTZNV1hmVUFTOElmZHhyMUhGTUNJV0w1aW1jVEJFNGlxeXlxWFVBekd0bkxyRWw5cmRsT2s2ajdIZWZkR2VmcHErdDRKeFg2ZmZldWV5QngzUmxOQXgrWnRSSmtMTDIwTUUrODdLMVAxTldwVGtDOWdoMjlVUEhxbUE9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7NVuPNLTdiKkbr1t6c-swuqVzE2mA-KuUCgsLp4DBrysm_Jy121y4M6JRGzSV-5P7ekvE9GNFIDkwCOENUJl6hWltw9U4C84gonOvqeNpXxWU8Oc30pw8Ut3oJxlJ0dP5cRe86PtZO2Py8mE0QXg3CfP3zQ5mg8j6f_wJ4mXcM-Z4NZ0Ke4NVHzxBmnlOt49A4diwOHvWIg9jUPR3FmGxOTvKtl7oHRao_CphrQQF5JUoQhPBWbPuboudjnsTFdLW2eqycahOOLr5M?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456576627038,40.30036257724772,1378.883180528877</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0CBBA9A7BD3EF7B3D020">
+		<name>Blue</name>
+		<LookAt>
+			<longitude>-111.7456210460358</longitude>
+			<latitude>40.3002859598741</latitude>
+			<altitude>1378.624057486109</altitude>
+			<heading>-11.73391997395764</heading>
+			<tilt>36.83119403545144</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>42.06822358675709</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_35650F49503EF80FB9C0</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="13485F67463EF7B3D020">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN0hCVVJRL3NVNmhTRzBoTDFwSFBVUHU4em4xNGxtRHdRTURhMnB3bW9USklSUnJrWjgxRUVlemVVUUJKWDl5b1ltVFErdUtxbWxtNVU4YVVFTVhqV1lsSTNBQVNOVkoyTTN1QnZmNHIxK3F1cmtXKy9sUGJtRVVibGdpWXlOZERIR1FVWGMzaDlNU01hdDF3VDQ0cVNoUVRtb0VOdVUyMUd5TFdFZmpvMTZlRW13V0dYT3BoTUU4ektvc2pVWmpZZEVUeUJSUmIwQ2xSWXpxekxUWGtDTUQ1WDdISjZOMEJza1VSMlR2LzhzZ1J0amYxSDFkRi9FOGRzTU92K1BwcFk9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7SDkYkdF_CLkcyLVHMPdkNU0_1KaVU6arDirnRNyUXolXppUsh3vW5VkSuyzusVrty8p5X-TVFTpFwOW5u5qSzE0W5r4AwHg0PLCUilPkSl2VJ7HroYs_aJPO9vb5WeWcPgRJqFq4KvrVu5PyYI0-RpdHEvhjHY624-FcC5ajBMAPq2sloB0qf4wkj0YJEpm7IRoe4Oet8XAOR8U_Fo_oRe_qOu8nh2eWYTRtPAaodLr9-TL3g3Rey-QzEcWNevkTlG0PIsBmVrve9?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNUtxaGl5T01xV0t3WlhFRzdVcU1OdFdHc1dYemFRbVNodisyUitUY1locDROMnE4emROZk95TVZDR1g0a3R3STcxbEFSWXMybTl6WXZwbjJ1L0RlVmFLeU0vR2VnNnRtUUp5alk4MklDMzRmcE1SaDlKTG1KRlluZEpDdDNQQkEyb2xDT1ZKbjIyWG43MVV1Znl0akcrWkRVbVF2VFBjcGx3NkdwNDVDbktwTDJUckNud1FUdXlXM1FNc1R6bldtVDA3dFQyOVdCeXphZVFIQ0NTUTk0bkNsOGczS2VKVXNTeEE3cmtEcGRxUzdNSXBRVWhLUHkwVmcwUjNtckgzbTg9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7LrYM3JBIoiMtAVBbVC5PjHRJ_eGfzJy787QzImsZ6S7jpeun0qfeDhfj0xFIhPkQJv7VoyZqAk9CnIBeek_vUU5t8NKlM0Dh_bw_fR9Yp4X382eVL8sT1vKO5qQ3RkulbW5mmXvHl4nMGmpbi6Vb0mnJ7KakWyFpBsOCAuXaEraeQGwn2fQbW6TEanElu4m5yeCtMQkVrGLSvQYRfPP7eJONcHefRHW1jXJpa0y2LrNvw8VEyZCD3ckn7XYC1xGvnV1iujjZB0MIv?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNzY1Z2QyV1JEOWE2MGxhMFdFeFBvZGt3aDlINytKUUNCaDhvL0xnSnU5U2ExTW1Remo1amdmRW5vVk5UdURYOWhtWFByVUF2SDhwbVJiV1lVRkFRMFFKdG1CV1poK1B4U3lVOFRMT3N3VFBmMU5MaERveUx6cXhGaE0rZlQzR2RkbU1lb0kzRUEwM2c2Zlp3dDRxM045SkJTd2ZaTkswVGdTbHBBMjlTYUg5MDFiS2tjUDVMOFhrVUN3Y0ttZXJvUmFOdlR2MlZEK0hubi84dndmUDlySS9yeml5SnVJVSsxQXBLMW5ldWczcE4vZkJBcUEwN0FsU1VqNlJHbllYWXM9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6GBz1J8XGsSnzi5KCedROUok4Ke4QRSBLU09hWd6rDkw4DndOnIRrqq-m07QMOp4eUTtZawVe39NXKPiOIOcO_sDmfRZr_ZlN8s52f7Y1w2vD_B4-mWWGEU5Mdw1jNmVvHJRnFzQnfK8RN4JaZzXYRMv8lVETh7L67qdhzoXB9yyyLEX9Fxq5FbNv62cRgp6byef0IPyLiD1FFAkBuIPEQRwnYKo-QtuLs4lC-i_gDGDD4QmsQ2zG7o_gIK8t4aGIX5PZ0z6qufUtx?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNFUwbi92SmV6UlJkUGhVblRQSCtWLzNBcko0WHVTRkhCcEU0a0p1cklWdUkxRXJyQXFpWWJ3ZnVrV005ZGJBNDc2ODE1ZzV1elF4SHAyWnYzNnJjbDV6TmU3NitYa2VMTFVHVUZ4Z21mVU9DYkVaUFJqek0xWGt0d21YT0I1dFFmcmhNdlBZWXNQQlpoSmlzRy9QOEk1eit2b3dvK0ZGS2ZCTFVjSGRYMmhiNlR4Z2NSMU9KSWsvQWFoMFY3bHIxS2FlNVdxT2JXVzdaeHBPZUZxZHNKMkEyL2ZoYk1sVnZHNDFEVFd0bTBKZ3VXVGxVNGE5NVV2djVxV1Jta0kza0k9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4_0Peb2Xo2mZAPVk1BzCgKPIyvVgEsLy_Bg83EP5NkTAHphQJFTiH3sqgx19BRNzXgiOmUG3eI2y-4gmCNrltq4S07xQD1lyM2qnRGpd19aAltgekgWfyqWhIfHX4cZrRUByqZ-ndy6qnyj1s_PL0RtSfM_0xqgMXRgznf8N5rBjIwsXmN-h1ZptS9_KTNjshDeMNWQB21hucWSKFJpycvy6upRQ7kHY5u7Xw_9mGQW3eXG10FnxVRmEbIFkkpaeaE8X6-nbhgW-Uc?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.745615152674,40.30030673853877,1378.772807125782</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0B1E4372953EF7B5EB61">
+		<name>black</name>
+		<LookAt>
+			<longitude>-111.7456986676699</longitude>
+			<latitude>40.3003100865409</latitude>
+			<altitude>1378.876926321624</altitude>
+			<heading>62.56427664215806</heading>
+			<tilt>35.88530319841396</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>30.78668644438494</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="19C0976EF03EF7B5EB61">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNi9JSDJTSW9mUGp4OTZuM2ZMUElQWnRiRjhJZHgwNFJlK2VOT0NUVGVRZUZUUHZKakordVN1dXVweVBXYzJZSnNYdlF6d3dUMGdVRDgveDBZU005cTVHWGtudk1ObHJ2WUxlNEZ0SkVmdlNCS09uV3V3cHhBU3BMYUhqQjF5UWVIbmdOYlQ4c0JxdWJMNFVrV2VQeE9pNkcyYzJ2bjZnS2NFTnd6anBHSnIrcjVMQzNDOTdUWUFBeUUxOUlVbUF1QStsQW0wMi96dlVDMUhMYjJGNURraGN4bVk2N3E0WW1kTjVPMXM5bDFVelhXSmlDWENuR0tGcHpEL0g0MGRXR289">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6D7Eol0wuJjwqLp3_IXVWbpo1sM0fieZ7VSk2CF2_4ozSTdiB9OEhkN7J0l4y5thwnqS3h_mla-KqV3aeInImtMs4YUU2PO20s78ogYabxN8ow-OAvKVueOu0dfASaunMWxIJjVi4qtdbCi6ZdA64shNk3rtj2OfaVTLFOBfJaROFaCguRLiRPgxs8uZEdrZALRNqBxsdapI1k6LXAoh8FJfKAUa2oOc6pGrT2BWqeW7CZpLnntcKVb-SS7PksUAOfAO2L-jm2yK6w?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNUxUa3VqenBDT3QxQkNxQmZGMzBieXRpdkpSS0I5eGJzM1p0V1E5U0M4Q2ZUOFczcW9INjRiWmxKejRGenZkaHhtMWNlVVVzblBoaWFMZ3d2ZDF1amQxdWFJM0lOVis3RVZrcklWeTFLZ0ZnMGRVRzVRa3o0M29EdHJHWDRBUTluaDJhL2traGl3K0ErWXkrdldqVGxYTmVoaW9zTjh1c2tLcTc4SHJwdE94ckVmWkJiWGlWZ0huQVRQa3kyOHdBZFBXYkRMbTJybk00U1JwOU1GTkFaVGVILzdsWmRuS1RIQ0tVMCtnY0pwczNvRGsvZnlOQlFyMzJYUmxJR2Q2elE9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X57ma_19Vz0_vFcdDc926K-umPqxJuqmh1lmak2IGd8VSRq1dAWCVxv1tUUvGps2vRvq2BD1MEGluRmc5Rsa3VRWwto4ww_4peGN8cgsR7P4h83abnfMcM7zyXCgbrfBo4CulYaLTnWrNOEiXLKJ8eEf6xE_NKOJcoBaHKl0m7YNeGmiPSM8jZzddBKYmm9mS8lxcT_aGNzKSvsngjL6yOClTCoAh6EYVKzaoczi3WHUV1vPjMye0bYaA32MIfv5gIU2qTTwt1cEsEZ?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYN080T0ZiMnRWMDhPdC9KVWhZRDVaTVZYNjVRWlpGcXZNcUNsVFd5N1ZIM1p4K09pY2dFazFpdHk5Z3IrOHRUTmhjTGtUNlk1dk5iMWtnUmtTWHBpU3V1Y0xXRHA4Q0xhSEtuMjVaNUdrTHhmUmQ5MEhodzNzSENrRXVXd2YrYnY1azBLRzNSVVpTUEh1cWNLandwVmQrR0N3R2t2ZSs2anFqOElKUkVPcnFDcnYzT0p0UU1vNjNDeWF5MkJLaGpVKzE2ZzYyTEk4ckVvanA1SG5ldCtMenMvdHh1Y21wN3lvem9saC9ER01YSG9DaEx6WDZ1YjQrY0p5a1VFWkxCZW89">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4KrZnRxFgrwvFRveBc1-YtTmzy4dMOK7z1BSCCOVJ97LDH_iNGbDoZEqOTmL1kG_m5gmQVFIJfIrlpd1EI1gnEB1nMb3t102DocVcu25dACVRVWRtHjfaNzQptyk1kgkI1s4MplbqpzuRLmj7JK_JsSDKlkgmaZqubil7exLeWJOYwKT6vAu2STy13L-2uTkVn3-AEDntkPbx0NaR5y3vS8B7g2jar9s9qyEGA6qQxZ6NRowNWN8HK_zChu4uvRLSi7udPpV5tbMKq?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456749984465,40.30033049080497,1378.910635708112</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0E79CFD8D43EF7B8E31B">
+		<name>green</name>
+		<LookAt>
+			<longitude>-111.7456569442815</longitude>
+			<latitude>40.30032856454977</latitude>
+			<altitude>1378.847758073911</altitude>
+			<heading>47.79160127470514</heading>
+			<tilt>33.07454823697171</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>29.68866216071547</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_27737440953EF80FB9BC</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1D931595513EF7B8E31B">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNndNMDNLeVJnYUxtYSs2aGFNY25ObngxbTZOYmliaUVuaG9haWlMc2Y4STNPNi91RHd6SGROL3daQnMwS1lseElaR01ySWtKTk0vOS9LajlrTmR1eEVxazFpUmxxZ3BIU2RuazRwcmZna2FIZm0wRjljTXc2NFBBa3pBemxVZGd4b2RHZjZseGpIZTlFN1hUSXAvVlIvOWZEUHZ6bE5UK1VncXhjWFY5VDJhT1VrbTlqM2w3czFrajcvUjZrWmdsWE9QQlRqREpRY2hYRTlBNk9zdlhsVlp0UDhnOGlrRUFVRVQ3ZTVoMEJNU0VORFdqNGtQblFnQStPb2IvT1FrZWc9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7T4ZqUMldgmLNsaGZoqkJ40YIs_Y1yCU1In8IxIC3vKx5v8WSWE6LFQT_gVXV5jSQMPXYSio8sEfirxAu_EpHA56Itsrt37pAAqcqbfbVMifbacW1fnw4aLW7YLUzzCD6c-eb6uQvxeepZJG3gYVqoP31Rpv_QqO5cCm81N9Uy2J9r4eScBtegLdOPlAh1FKUQK-uqFTANP3QWWnXdNx_RInv9NBz5xNsTia_VeOX0D9gBqFKcw2m5w5HIGZR4t6EbB71ik7BxptWW?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNkNqTHFxTXRkVjEwa210eDBZQmJjTnhOZUs5cEtCQVh6UHZGM3Mzd3NLWkhTa2RDMUJ5emhTZExRZlpTZEY3WDVCTzNTdWdrL25zMjRwUDdFN2pyVWNOZmpycXFVT08ydjBGYnpvaFR2TjJ2Rm40UnlPUlJ4dGZ0MHFLZ21Jd3RmVzFyRnY5b3hDWWlwVm5oUFhtQmcySjk5eW4vRHV1V3lpRXhtNXd6ME1kcUxqZWIyeEFpY0ErVkVTQWtBck4rUEpzU3dMbFl0UE84blJ2UnpwRGNKZDVXdy9vVG51dlYxcXdjRHFKem5RVHlGRkFDNGRQV1lqNDBOK0hUWFdwNm89_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5GEInah9mTEum7whW4LZQjG8JCMUs16HT_oGauZkNoFQoMbhIsmIMgVXze9RTjBQCfAOMDY8-pD2Z8q6LakcgmJQ9wg-Cp4GrJgslTbtiMIVkUicB1clZzwD102-YkgvAfoNQSJZ129SArV5L9zOAQnL2wuS12x_rzR-vf4GN7Xc7ITsW6rjKygGDWdbEPU5-HkHBnqGzRGlCELPTVtDEgmKNHlFYDrtKtv86OQsekVKKrbpBS0-puM0T-bwV1HiQvuRcVq94sShJL?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNUd1d3l2YzdWc1NxY2ZreEtkWllnTzJXdEVIeFZFZTZQM3VWSTZjbmhwbWN1cENQVlpDeldHSHJOZEc0VmZqNFlxdTVRaWZGZCtCSG5SQzhGQVpPYkVnQVNtbHZBbERDZEE0dTBFcTY2Y1M1ek9SZ2RHTkVGbjd0RWV5M0N2V0lDUHFLM2hMVkMwd1JiczJ0VFUrMkNqakJvaGRkQkt2WHZWTHJJU3ZyczgySWppaEp5bFZBaGx4a1pLTjkvdmJHb3JxV1hZNE1mTUkwaUF1cnJIVWhQZFQ4U0txS0JvaGc3Z0I5bXBmcmE5RGxoWDlmejVIa0RtOTNVMi9sR3o4dEk9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7b_JOYT6G4di9IKnfCzcYohAXtgvLWpGyRtJe9dwZqO_fzT6sfE-o0cak5xSl15cETodAJpVzpCP-0M75IxdzKc-PqUmgEv9briotW6WVALgkvaGfz2pXNr812DOQrpenm5whPNM2zw8wMbXjlu5kf0VSLN3pnB-2u9osd9rF7WiBSzYquQjsypxPVrUYtUDM6fFiy3qKQAb-cYkPcdhnraV8oj1s01dxZ9qnNIl0vHq58PIxDoaSc3S9ZOF70FMvKsiGbSOe3YAZv?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456538330628,40.30033526776812,1378.878607651051</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="07CC52AA293EF7D117DF">
+		<name>B bred</name>
+		<LookAt>
+			<longitude>-111.7456718961885</longitude>
+			<latitude>40.30035791446164</latitude>
+			<altitude>1378.952171508132</altitude>
+			<heading>-18.8159416128248</heading>
+			<tilt>24.7880286382217</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>30.4569677102927</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D1A9D8FE53EF80FB9C1</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1B0D36EEFA3EF7D117DF">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNzhCR05RcDRFdmpNQUg2ekRmMXd4V3diTTJ2L2ZZUFk0eDJxSWRibHJaSmRuM1E5UDF2cVVVVXdENk43OVh3c2FMZWRDcGlqVWhVTjYxeWJ1WlJoUVBWR2p0OFh2bGhlZmYvOG1tSXZWUy9oU1BTcXcxT0ZxZHY5MUN2bmVhRWV5cHFvVnJJVWk4RnFtcmVkeUJuQ0dnWTdCaVNHSktRY3VJWWpiRW9TQ0tlMjdhNmhVQ0xXZXEvL3o0VDRHTDFNNm4vRVBqMGRCWTBjMzM5azZSa20xN3VYMmx5WHNYdnBPSXRVd0RKYTZkZVpxY1R6S2JJN0dLcnpzcDU5UHd0dHc9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5oJPymjXi5iyLUuC4IEQ0eqp3b-D_ynrNuUxb4MIpUOJ7PJLmU8u-LqdEG_CKijPIjaSlESPULdxeP8bFnpY3aN0yAtWTtavpme14Qbrvqf0h4ARq2rHDKUk9zUzBi9bZcce4mXnPTlkDgqkglaNsUvO6SeUq0Rl4-bQEMKbuUt3qHNvfmixur-s9aAUZmyjkMNENQGycY1kNoJyArSCmSjl5gSM4lSSzTOUZaWUelxeYqteuQBT4By4D6bvvfV0vkDkK7Uw4AovIC?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNXRWYVZjb2pGdi9ocXR2K1pSYVM3dVRzbm1WVVlGaG5LMllzbjVDMWVYQUs0ZTBQcVBPeE4zY3EwRjRzcEJUWC9hRVFmRDNSem9BMzJETnArMGJqNE5KYTVGSUc3cDRzS2RzaVZUNXdic1p1Q09BTlRqWE1ZeTRKelU3VFBiNlplcnpLNTlBQU01Smd5N1ZyL0JObm1TbU9Lci9UdlVkNGxPVGF5bEVDU3BvdS9rMTEyN2NGV1pxdnNmVHFIY2dueHBIRDJUUFFvVWZXYjhMRHlUK3lZWGpvdFVUSG13ZytIbUxpNlNpbmtoZ3J2Vk53UjZXTTBLSjhKVnNDQUlpQ3M9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7FEmT7vj-tdxsSeQLYkx_ZGN-Q3zkrw2enDZcy4-N5Kz4XzSGDBedUXMXeziik_LnWYbPFHCb-c3mfXXBVUHhlm3-aypLyskO50Hw8BgBse8d6LwE1jk-l6NEqPUGngjIkmOlRgsIOcS7Fn97QZkHEe0RLuoEcMSe0zbTNSfTbNxwtyomdRAx3n0MBNUkGexwzBPIaREzvmUPHf4B2bouTOZsAebo_O5PuhS6N3DJTi-XwKVJgMx1CrH5ypak8lDb7ypOtOwlFChUu?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNHN0V0tvZXFmaGVJS3JoZXYwc0NId3VzZkw4cW8wNFR6MGh6eDg3RVREWE5QVDk1ekx4M1pVQnMvVlNLLzQrcVMvNjRsYjd6Ti9SaUd0bjlsV3NiWkd6R3BUTHRHNEhkZlk5UmpFWWdWNjJQbUNVZTNUaVVDY0p5M1BsUlZqRExzQWo4S21MVU9qL2F0c2x4VjRVNjNTZlo2SVljYThMSkFzL3o5R25IaHk3dVZ6VVNFQmYyUkM1c3o3T2hyZWJKNUlIL3l6QTh4T0llSTQ2WVh2bGdKVHM5cGtrT1M0MG5COWtrRElGMnRoMzFwcGtRMFlFNUlqM0VXdTMvcGxXQlU9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7LExtCQnmjMKhcWjE9udBPIczY1bXwPI0dqwDb99CjHQpkeNVwmXtYxZmUgW0bnPq1onbpRXrzNQ7dX_wjMPYFsDVLbOn91bKueTyhCoJWUGsQ_bwP9rFtiZA7HHmmxH-Y6mqFMVDuE_0l7ONvCtPqFxM2XilAiXkfzfWE3-evHCrg9uRKVZ9jPMRhyoIc0hJM_MEtzCbQCg3xipp5A0GjQjEozPXkxtHvIHHt9EE87RlVBM75oze_USi1pfORnPlEvdHlOWKw6DI6?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNXpMUzkxVzgzRFZmWlJmWFpDUjZxa1BtTFpaZ056aTl2VWcydEMrUXFaSDVXcmJDSXpaRWtJKzlkV3lsSkt5bjhCakl6aW9GeGJyNVVKbjlSdmdFWGtWREhVam1zN0N3TmdZSk0zMGF0U3lOdnJtTDFQWmRGWEVKTDZvK0psNWlaYzlaQitmWnYxU0YvS0ovd3pRYmtxdjBIdDNrdlh3UTF4OEFBL2cwbXhGZmxpU2VEZjlMSzJEcm93ZmZUTnczUWFCU1p4V015Z2ZxTnNLTDhWNU1tZ3g3MmEzbFNNU2dGZUQ1TE5td3l6dzM0NDJYSjFKRktqdXppekRTQU5JeDg9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X7VvrMlU-T0DNrPqSyOUz5Yb292370-B2epgkfJG5lJyvqNylX4NB_AUMTHdQoThcAW-P70D-6S4GswM-qhOAcEj9WlYSb6jhh1Q7-yiA0THq4IAImA4lbhRiowJ4v_06UV9wFE5RJ3MOK2g7sqoPmf0IFMnf6MmYxORxZQ_s5eAGewNvGT50JKWVucetnbPnI5TR9w-SKwQBqshfPJHHtdN80krPlC9BIZv6fD7RNrEVtWLrUavYr3TooI3hOq9ntf_sYT341txlx9?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456811868022,40.30036387431078,1378.9303640976</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="09E7E5EFA63EF7D38772">
+		<name>b red</name>
+		<LookAt>
+			<longitude>-111.7456608782845</longitude>
+			<latitude>40.30036450954582</latitude>
+			<altitude>1378.900860390068</altitude>
+			<heading>-0.09355114708237387</heading>
+			<tilt>7.482705558326153</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>25.21482632469542</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D1A9D8FE53EF80FB9C1</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1CF268E9343EF7D38772">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNmp5a1BiUTRZYTdma1Z0S3NtZEpXZStrZkFBeEROak5QekJJdlpNa05IUDJSK1A2Q21zdk05VGhpMFpIcmZIQ0tJaFFoRFlGeHlQQ3Z2S2lqWFJMbzV6TjVKUEswQjJyclRCWk1NVEJLRnNPUUg4TVpCY1ZMUTNTU2NNNlZaVjhNTCthV1V6bjE5bTRFT2VJSnVlNGU2QTdycjdXZVpWYTIzVzZPa093aVVBQXpnNC8valpYQ1JBYVIxUHl4aDNhZHkxa0JUL3YvRXQ4N3B5VXdvV0ZBb09YWVdtZWJsUmxDL3p1Y1AwNDFYajVhSXQ2NUwrTFpkNzhvMm9BWXlCem89">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6vg-fW_Cd5PTUkSPU-KGO_WivWb3LiXMJI8wF2u9cYr2FPycJw95XBNrvlYmT-GgxwbNwDR9Jam_hFMuJr0qpyOD4dUxXNOe9CGUtUt9uPIax4n1pDcfau6QhCzBLQ_2j2lP8pO4GKrfx3j1RxnaFcsSLX5sVEU62eJRaodShmLEHGdeoVTggkxU_iSyoZB_w0sTYcTjJvtgwtdTrrrXWzHZN0EiAvbJIm90OW4or2OLPTIojhHpkCmY0j0T5sqsw0Vgl6OgxLAA3S?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNGN3ZGpaSkIxS3VTRjFaWXd2a1lrUTRHRVZOdUJrSFRtcUdQcjZmRDBXelVpS0s0OVR1M0ROa05ZT1psR2x0Nm9selorRVppRlRmeXc5aTJ6c3lUTlF2ZWd0b1lpVmxFRnh3anhoWU9qOWRHb1dqVkVNanlDbmh1T3R4TjhQSlpmOHk1TXdGa21lZHBSWGNSdTA0TCtaYStxUTM3SzZvLzR4YVNmWHUvbVVuVm5CVGtodSsxSUgvN3ByYW5JbjQ5Ly9ML0F1cVo3LzZYVmh1WmV6NW9RUzFZbW92ekwvdVlXcjJJbXhLcFpGZE9YOFhmTzBXTFo3VytiYTFwYUxTcUk9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6JzcwQdEnQXLjjI8v2f_u3wlZNNRehO08QEdpJU4-BpDtFwgaE8dW5YQjokH4zO9dhm3DDJhK88D9O00RGUiaIOspuyTB_zehx6hNTVXdzsIB6R-5hF1qKwNEzyp1VftqlX_oTWki2w7Rk3oTrtfFxoHy4PW6XdgjlDi8gm_UNEVOzzCsmE9pxmTKv9QRT-TlV2WHsz7qDlulsrQCiqQXcjR82ErHOn4WjBpiSblMlFkeWfpgb1BayrjKD2_oGa2AgduIscEwaNtOd?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNTF4U1R1VWxhWkJYTUxJZ1FzNDV0RTFNbDU1NS8vcitGT3ZzVG9EL2h3UHpVeWZYZFp6ajdMbmU5SzQ1enpQZ3R2UnRhYURvdWM2WWw1QmZPOXgzckZLZ2IzcStpalpJV2Z3TW9yMTIraDJzZ2o1dFJMMUpmdFFaYmhwSWh3TDdXMTNKY21EeEZTT3lqMGhEMUpJaHZoM0dIMVh2SS9UTlBmRWNPTGY4UkpYdDlGMnBQeUZuTzZNalhjdk05WlhKOWxLREtzMTBXVlVpTHV4WHg0TmFNZm4ybnNwcFBTWVVQd253K3JNdEsrMG5rMllzbUlyV2xvV2xVMHBycU80azQ9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4FCm_I4w2Ifq6W9QA978zmjMDOMedTNQNIJEilWU8I1fy78cnJlM8yXXWIGYJJMhDndwWgav98Lu-Hh-sIUy6nhXJFJ-OtNFLxIXdO_v1vaXS2ecWIX2sfE4UVENL7gD7g8MODC7kOjo0657Q4ask61YDngWkh2afgBUOzF3MiDYVgVxbfhPlA4JqvPYSYVuRcsRfdC5FZQCcyQMzmnP9jz7P5fgxdJ8NfuG4QHRxwsniWlM1BjCqM3d4sKMYWGKutVxvDJQ8VVDyF?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.745666648806,40.3003882496641,1379.016569020768</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0BB59244E43EF7D506FD">
+		<name>b red</name>
+		<LookAt>
+			<longitude>-111.745728824156</longitude>
+			<latitude>40.30042601085674</latitude>
+			<altitude>1379.0602965596</altitude>
+			<heading>67.63103905740876</heading>
+			<tilt>26.53010231926302</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>35.2849398813305</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D1A9D8FE53EF80FB9C1</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1869EBCD933EF7D506FD">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNk8rdG9QYW9UODViM2pQUi94VHJmTHNrWitxWjc0WTRpWWxiUUJLTjhOUlA0cWVhUlUrVzY2elRoWTNxYWZIZnJGMGQ3d1ltcmsrUlRzM3M2UTdkSHlnZGlIYU5saW5ESVpQcGNuOWd6ME95US9nSWlENnBoZkUyYkdpdXNkQWcyeDNWS0gvbUljREs5MVVZY0NUWnhjcUtDdDZabXRybzY3RkZyV0d6OWoxNk5oQUttcXBLdUpySnQ2N3F0U09hZisrbnBkZk1ISjJtNkJtMm54RWtiTEpoZnlOa3FCWHNtTlA2WUhURm9ST3FKUFB5dU55SUlVSk9jNjNnVnZ2N0k9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X5K1J3KJvLLqTYlueRGaduTtlzbNlEPMq2otVZb1QrjgAC0UflbvEvhsfqYzXWhHQHPo3VTibuLOW_aXnQ9p_B3Yw3_diOTMN4BEeZJQnXA2LbqhD7ORpHGGdDlGi601dEcgFp6ct6ucEcgSMTbdQakmov7ogAk4Mnul1WVkpo2YadknDsn_VP8yxKvPEEGbjharK-cJ41CjIqYyQRD-J36jNVMPKyVOUPdoMqb70WNp6xNj0WfSQcMQsMOn_08YXOJV8IEj_rKyVp4?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNmhlTlo1N29DNnV4eXNManZYMS93QVlpVDcweWdOdko3SmErVk1kWDE2M3ZyWWtxUGovMGd5Rmhkd0p1QzViUFVqVkJQZ1MvdnRnU1U5d1pNK2c1MHdrNk15ejhDZzNDWG5paE05bWRPTDU5ajNPYUZTdFQwZlZidElvdzJIVTUyVEc4cW5oS3lPc29EUXVha0IrbUMyalgwNnZBalQ5cTFKL2IvVDFOSGt5NFMxM0FQYTdVNnFMVlVRRDRobFgrVWxiQVhMeWNKa2RNOHZtelRUUmYrc3NEbjJncDVoY0I0SFdvcVgyaUFBdHI0MTFLRW5SQVdVZnNxblBmdHh5aEU9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X6uLsTo2ocF56iLp7qIkYSWkfkowvB172R2u8XvAni0zK7th358vcKM73jUcs9rp1ING7MC2NgNe9Bt2vCRSAL1tK4e_I2KNPMi7z6wGCrQQY09SzkZt9px3JW6TCEB8oB0Cl5UD-0PEd-qDVHGLfD7J3JT_8H_WVV2gZ0Q_pwtin_VhtIzNbN1DnZvGPgDaQkILmSCwi5Ah67_MYSaTqBh8QyZyHAzgKWchpRHkjubIh8eLdCorV5-wzsU6COt0TywlNhp89Mrfx8f?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456786858868,40.30044324011,1378.830076140259</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0FE34E25D63EF7D722E4">
+		<name>b red</name>
+		<LookAt>
+			<longitude>-111.7456895595632</longitude>
+			<latitude>40.30039014493615</latitude>
+			<altitude>1379.794100921346</altitude>
+			<heading>-7.804592941061866</heading>
+			<tilt>26.33380712485396</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>26.68767005361133</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D1A9D8FE53EF80FB9C1</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="07409918A23EF7D722E5">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNkdOTnd3WnZxU2hkeVFxMWVYeXFUVDFQU3IzeGpOV3hjYkFJQVBoTlF6c1VuNFhBUW1lSUI5SEZTSnVBSUs0TWNoZUhrMmt1SW8zOG81UDYvb05HWjQyNGJBejJ0VXhHbmcvTW9RMisza1FWdHVqeTQ4RExsTFA5UnhpeHhnemVNYWJUeVZUOVRSd0dqemFSVTB6OFZrbm5ncGFJbFlVV0ZMWlB0N0U1K1pXeEU3bTJmRENsRitpQ29Ka3NDcEs4K29qWG03bUZsSk9tVVBGdXFPV1crZmZ2UllpeHRONUNhRVF2cER3ZlgrSFV2enNrblVjODU3Sm9ib1lBTFhmM289_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X76fRhYn25TdNSPKRwHiYyUG0LquMQisQnlj_C1GbcCQQXMOTboU0p0zawyCjDynzR9Ntr56flfaNXIrIPBNsyqjWZsJ2Ese0xJYFSpGAtdCPP5MSm_LKOU7iMV0VhyeYw19wkOk8u3RctMmDJAz93T06nnguq7o9TdB4jOXH8v_K9K2Q0xXODR223Y4V-v28bSSOvMx0Gpdx4ucTv6VpAaYHxSSfX4W7C6I3od4RZyeLpCCB3WZOnyR6vnYPNGb823nH9jWxqxK9zw?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNEM1MmdVYVV0WHNmYXZHeGdZczF4bTdrNEZrVDZ4K3FLY2g5ZVJTbWNzelBINlBhRmNEUjV3NFdMK0o1NWEweVpwdE0zN0R2b0g3SHErcTdFa092WjhBYlcxVHpESHlQSDlHNUFBR3lGVWhwQ09hb25XNG10alhNRXg0aGZZNUEwOFFMcHFHdFpVRUN4WUw1OUZ2N09qK2U1K3dSZlprLzBld3NmcjBidVJHOFUyWGt6NlhqWUdCR2hyZ2tpSHN0eUxaYVZjOTVVSkJKYm9TaWpIWmo4Z2IrUThaNTF6M0lhQlZiYkN5cnJhZWN1WEZxcDQvUkRDcTMyQ0k3amJqU3M9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4CW9jT2ZWhzUAyBfgyV3Z-5IgJ-loOzcBVA9VRkVD1k2FwYFc_kl3XN33Ps6x1UqK0pOPBDpJ-ZC9eOgM-SLVawgd8aJrN6s-5mwGY4xjMwicyz-efFepONw43sPBKwVffgxUcCFKXc6M2sDo3ZJXN6BrRSRgwCyleqV1wB7H5aQ8kN2hcUNStUIvCdpR_DsA59piXCwjdDRVzlTTbt7N9z4dq7RzdaskKy9Wc_z5gNIH9X2znEsefuGZXCcoV7hIbUgAvguGhNEpN?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7456939001862,40.30039406539294,1380.360037199393</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="032E1494803EF7D8EC44">
+		<name>b blue</name>
+		<LookAt>
+			<longitude>-111.7457374248721</longitude>
+			<latitude>40.30046392546299</latitude>
+			<altitude>1379.061159373463</altitude>
+			<heading>130.6798310599806</heading>
+			<tilt>22.33874761291059</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>39.11024041246493</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0D1A9D8FE53EF80FB9C1</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1C0D1BBB403EF7D8EC44">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<gx:Carousel>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNEFiOEFsZllTaE5kQld5WFN6RTd1MmpDbkVBTG9nbzB4eEk5ejAzZi9CN0ZhR1lDcDcza1kwVnU2bWx1TzhnKzl2WDJ1N1FOV1U1dkRlbFZ1UmxkNUgrODRHTWsvaWZKdkFuVTdhaWlxWW1BLzBCTjRmRVNsa3d6UFhwTUVqSjJXSG5Namlid3FIRHlpOGQ5ekw5S2RjclVkRjFkRVBMVkNVN1FWRXA5U0lQK2t1RHZzZEhIME5vdGhmU2JzM1hIVG1XNTlxS0tlU0lVYzlGQmNZdjJEOXoyQXdta2JaTG1vL2E3WDFEd215dSt0WTg2Z2RncldWQ1NHQ1hpTDZuUlU9_0">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4svLvIXKAl3Ygy8UbDWe36KhRGculQ9kisZsPLb7T29asoPCJ0J6Uw3LFVFPhgLTRAHBD1WH-tdlAPpPY6tv6jrjJfPt_cHAVHYEPmjcnr1gHLsoyng3fsfgZG6vo5sKjoZi2dpujlqoFqJ2e0PzX9N1-7k4SMeS81wEX3ObwN68w2IfeeN4b7XGatyI2QUMHDY2JtIGGv1l3C3IjgofFnLL-fDVv4bykhlOX6UtEweR5G0Wu87amQTBYDg1V1yJFegMQV4KylXMbq?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+			<gx:Image kml:id="hosted_image_QUwvWTJYNmxuQ2M1VDBSRlQzYWVTaDZxNUMyRU9rUk13Q29qVFd2eE9DaWZ0UGsvcVVYNENjSXJYUm9NUjR3NkNUT05TRWpteXRnWkRPK1NHOFUyL0lQKzhCbDFWaXBod25rajZXTHViYzR5dXhlTmRQaXRDRlFteWxQNnNXWHlXdEtrd1BKMmdUTXBIUFd0Y3NhVzNpNEl1bDdiZzQ0cDZBdkNzY04rTjFBWkZkYmZnQU9kODZrOXB3ZktvbWJRaDBnZGRmU3VKNFRuOEErMklwZU9lYXdBbmR2QWhnR0F5TEdlZFNFZGVsR1pHbmw0K1Z6WHFNM25wSTBnbkhHdlQvMHhaNjg9">
+				<gx:imageUrl>https://earth.usercontent.google.com/hostedimage/e/*/4AL_Y2X4Ifk9Gx-MnR3QEtraz9xzLXO85UQyfKsgP8zfmFxjf2M7sw9Fi_0gYOQ2x6Ycd6yuVCxog1yetx3HUVfSS4UtycGoepqwcslqaRy9yQ0Jn3HPlOLLTFM649mdpTajGaopjLgJ-u8dPPCqOo9XqQsMmTmXJzEp5WNrI6D9yApMaVBjqiGCe_acKPLeSEGqeM4hwJbcas2MqCXWmRUjAQZ7TuoDFIdWy7W619KvzcnfaYMYMe4fnoO1uE7ytc3gB5nNcBfV4K7OTdcQa?authuser=0&amp;fife=s{size}</gx:imageUrl>
+			</gx:Image>
+		</gx:Carousel>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>-111.7457086814581,40.30045489168911,1379.299260739616</coordinates>
+		</Point>
+	</Placemark>
+</Document>
+</kml>

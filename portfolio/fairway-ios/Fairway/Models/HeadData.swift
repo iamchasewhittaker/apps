@@ -31,6 +31,7 @@ struct HeadData: Codable, Identifiable {
     var latitude: Double? = nil
     var longitude: Double? = nil
     var startBearingDegrees: Int? = nil
+    var photoPaths: [String] = []
 
     var hasCoordinates: Bool {
         latitude != nil && longitude != nil

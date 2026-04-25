@@ -19,7 +19,9 @@ enum PreviewData {
         blob.fertilizerPlan = seedFertilizerPlan()
         blob.maintenanceTasks = seedMaintenanceTasks()
         blob.mowLog = []
-        blob.inventory = seedInventory()
+        let ifaID = UUID()
+        blob.inventory = seedInventory(ifaID: ifaID)
+        blob.fertApplications = [seedIFAOverApplication(ifaID: ifaID)]
         blob.property = PropertySettings(address: "345 E 170 N, Vineyard, UT 84059",
                                          latitude: 40.3330, longitude: -111.7550)
         blob.observations = seedObservations()
@@ -29,12 +31,286 @@ enum PreviewData {
 
     private static func seedObservations() -> [LawnObservation] {
         [
-            LawnObservation(zoneNumber: 2, text: "Dry patch near H2-3, likely overspray is missing this section"),
+            LawnObservation(zoneNumber: 2, text: "Dry patch near Z2-S3, likely overspray is missing this section"),
             LawnObservation(zoneNumber: 4, text: "Possible grub activity near Zone 4 NW corner — need to investigate")
         ]
     }
 
     static var previewBlob: FairwayBlob { seededBlob() }
+
+    // MARK: - Phase 0 shared helpers (2026-04-23 IFA over-application + Z2 catalog)
+    //
+    // These helpers are called by both `seededBlob()` for fresh installs AND
+    // `FairwayStore.applyPhase0MigrationIfNeeded()` for existing installs whose
+    // blob was seeded before the companion plan shipped.
+
+    static func phase0Z2Heads() -> [HeadData] {
+        // Provisional matching (KML pin → Z2-Sn) per HANDOFF.md 2026-04-24.
+        // Z2-S1..S6 = 6 numbered park-strip pins; Z2-S7..S18 = 12 color-named front-yard pins.
+        // Photo dirs for S1..S6 stay under Z2-MATCH-{1st..6th}/ until field-confirmed (then mv).
+        var heads: [HeadData] = [
+            HeadData(
+                label: "Z2-S1",
+                headType: "Hunter Pro-Spray",
+                nozzle: "Rain Bird VAN yellow",
+                arcDegrees: 90,
+                radiusFeet: 4,
+                location: "Park strip east end, next to driveway concrete. Got over-applied fert 2026-04-23.",
+                notes: "KML pin: 1st Sprinkler. Photo-1: Rain Bird VAN yellow nozzle (4 ft radius).",
+                isConfirmed: false,
+                latitude: 40.30028099196461,
+                longitude: -111.7455404391101,
+                photoPaths: [
+                    "heads/Z2-MATCH-1st/photo-1.jpg",
+                    "heads/Z2-MATCH-1st/photo-2.jpg",
+                    "heads/Z2-MATCH-1st/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z2-S2",
+                headType: "Hunter Pro-Spray",
+                nozzle: "TBD (per closer photo)",
+                arcDegrees: 180,
+                location: "Park strip east end, large concrete apron. Got over-applied fert 2026-04-23.",
+                notes: "KML pin: 6th Sprinkler. Nozzle type to be confirmed during season test.",
+                isConfirmed: false,
+                latitude: 40.30026935353735,
+                longitude: -111.7455993735302,
+                photoPaths: [
+                    "heads/Z2-MATCH-6th/photo-1.jpg",
+                    "heads/Z2-MATCH-6th/photo-2.jpg",
+                    "heads/Z2-MATCH-6th/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z2-S3",
+                headType: "Hunter Pro-Spray",
+                nozzle: "Rain Bird 1555 fixed spray (dark nozzle)",
+                arcDegrees: 180,
+                location: "Park strip mid, narrow mulch strip by curb. Dormant ring — under-coverage symptom. Got over-applied fert 2026-04-23.",
+                notes: "KML pin: 2nd Sprinkler.",
+                isConfirmed: false,
+                issues: [.coverageGap],
+                latitude: 40.30026189777501,
+                longitude: -111.7455631374153,
+                photoPaths: [
+                    "heads/Z2-MATCH-2nd/photo-1.jpg",
+                    "heads/Z2-MATCH-2nd/photo-2.jpg",
+                    "heads/Z2-MATCH-2nd/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z2-S4",
+                headType: "Hunter Pro-Spray",
+                nozzle: "Rain Bird VAN yellow",
+                arcDegrees: 180,
+                radiusFeet: 4,
+                location: "Park strip far west end. Got over-applied fert 2026-04-23.",
+                notes: "KML pin: 4th Sprinkler. Photo-1: Rain Bird VAN yellow (4 ft radius).",
+                isConfirmed: false,
+                latitude: 40.3002439130473,
+                longitude: -111.7456497901446,
+                photoPaths: [
+                    "heads/Z2-MATCH-4th/photo-1.jpg",
+                    "heads/Z2-MATCH-4th/photo-2.jpg",
+                    "heads/Z2-MATCH-4th/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z2-S5",
+                headType: "Hunter Pro-Spray",
+                nozzle: "TBD — nozzle slot empty in photo (dirt-packed)",
+                arcDegrees: 180,
+                location: "Park strip west, sidewalk side. Got over-applied fert 2026-04-23.",
+                notes: "KML pin: 5th Sprinkler. CORRECTION: prior seed claimed 'MP Rotator confirmed (blue cap)'. Photo-1 shows EMPTY nozzle slot packed with dirt — no MP cap installed. Needs field check before swap-strategy assumption stands.",
+                isConfirmed: false,
+                issues: [.cloggedNozzle],
+                latitude: 40.30026159439472,
+                longitude: -111.745632151369,
+                photoPaths: [
+                    "heads/Z2-MATCH-5th/photo-1.jpg",
+                    "heads/Z2-MATCH-5th/photo-2.jpg",
+                    "heads/Z2-MATCH-5th/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "Z2-S6",
+                headType: "Hunter Pro-Spray",
+                nozzle: "Buried — nozzle TBD after dig-out",
+                arcDegrees: 180,
+                location: "Park strip mid-north, sidewalk side. BURIED in 4–5\" erosion pit — won't pop up properly. Needs dig-out + swing-pipe raise. Got over-applied fert 2026-04-23.",
+                notes: "KML pin: 3rd Sprinkler. Heavily clogged with calcium + dirt; head buried in erosion pit.",
+                isConfirmed: false,
+                issues: [.tiltedHead, .coverageGap],
+                latitude: 40.30025224491366,
+                longitude: -111.7456124798277,
+                photoPaths: [
+                    "heads/Z2-MATCH-3rd/photo-1.jpg",
+                    "heads/Z2-MATCH-3rd/photo-2.jpg",
+                    "heads/Z2-MATCH-3rd/photo-3.jpg"
+                ]
+            )
+        ]
+
+        // Z2-S7..S18 = 12 front-yard color-named KML pins, sorted N→S by latitude.
+        // Nozzle/arc TBD during season test; isConfirmed: false. Defaults: arc 180°.
+        let frontYard: [(label: String, kmlName: String, lat: Double, lon: Double, photoCount: Int)] = [
+            ("Z2-S7",  "grey",            40.30036257724772, -111.7456576627038, 3),
+            ("Z2-S8",  "black",           40.30033912476767, -111.7455996651123, 3),
+            ("Z2-S9",  "green",           40.30033526776812, -111.7456538330628, 3),
+            ("Z2-S10", "Black",           40.30033220970269, -111.7456284823084, 3),
+            ("Z2-S11", "black",           40.30033049080497, -111.7456749984465, 3),
+            ("Z2-S12", "blue Sprinkler",  40.30032502234945, -111.7455562457889, 3),
+            ("Z2-S13", "grey",            40.30031846380709, -111.7455899331795, 3),
+            ("Z2-S14", "Black",           40.30030750592285, -111.745666148677,  3),
+            ("Z2-S15", "Blue",            40.30030673853877, -111.745615152674,  4),
+            ("Z2-S16", "Blue",            40.30029540993178, -111.7455465149624, 3),
+            ("Z2-S17", "black",           40.30028746463701, -111.7456077864582, 3),
+            ("Z2-S18", "black",           40.30027270460789, -111.7456575402995, 3)
+        ]
+        for (idx, entry) in frontYard.enumerated() {
+            let position = idx + 1
+            heads.append(HeadData(
+                label: entry.label,
+                headType: "Hunter Pro-Spray",
+                nozzle: "TBD — confirm during season test",
+                arcDegrees: 180,
+                location: "Front yard, position N→S #\(position) of 12",
+                notes: "KML pin: \(entry.kmlName)",
+                isConfirmed: false,
+                latitude: entry.lat,
+                longitude: entry.lon,
+                photoPaths: (1...entry.photoCount).map { "heads/\(entry.label)/photo-\($0).jpg" }
+            ))
+        }
+        return heads
+    }
+
+    static func phase0Z2MixedPrecipProblem() -> ProblemData {
+        ProblemData(
+            title: "Z2 mixed precip rate (park strip nozzle inconsistency)",
+            description: "Park strip heads (S1–S6) span at least three nozzle families: Rain Bird VAN yellow (~0.5 in/hr at 4 ft), Rain Bird 1555 fixed spray (~1.5 in/hr), and one head (S5) with an empty/dirt-packed nozzle slot. Run-time tuning cannot reconcile this. Park strip suffers worst (concrete heat + narrow profile). Earlier seed claimed S5 was an MP Rotator already — photo-1 disproved that. Resolution: full inventory + standardize Z2 park strip on MP Rotators (matching radius per location).",
+            severity: .high,
+            isPreSeason: false,
+            dateLogged: date(2026, 4, 23)
+        )
+    }
+
+    static func phase0IFAItem(id: UUID = UUID()) -> InventoryItem {
+        InventoryItem(
+            id: id,
+            name: "IFA Crabgrass Preventer + Lawn Food 23-3-8",
+            category: .fertilizer,
+            brand: "IFA",
+            productSource: "IFA Store",
+            notes: "Pre-emergent + starter N. Apply BEFORE soil temps hit 55°F (Vineyard window: mid-Mar → late-Apr). Water in 0.25–0.5\" within 24–48h. No aerate/dethatch for 8–12 wk.",
+            lastUsedDate: date(2026, 4, 23),
+            spreaderSettings: [
+                SpreaderSetting(
+                    spreaderModel: "Spyker HHS100",
+                    setting: "3.5",
+                    notes: "Used 2026-04-23 WITHOUT calibration test → over-applied 62%. Future use: do the 100 sq ft TARE calibration first."
+                )
+            ],
+            defaultRatePer1000SqFt: 4.0,
+            bagSizeLbs: 25,
+            currentStockLbs: 7.2,
+            lastStockUpdateDate: date(2026, 4, 23),
+            usageLog: [
+                UsageEntry(
+                    date: date(2026, 4, 23),
+                    amountLbs: 17.8,
+                    zonesApplied: [2, 3, 4],
+                    notes: "Over-applied 62% — skipped calibration. Target 11 lb, applied 17.8 lb across 2,737 sq ft (6.5 lb/1,000 vs target 4.0)."
+                )
+            ],
+            storageLocation: "Shed",
+            storageNotes: "Cool, dry. Reseal bag after use."
+        )
+    }
+
+    static func phase0IFAApplication(ifaID: UUID) -> FertApplication {
+        FertApplication(
+            date: date(2026, 4, 23),
+            inventoryItemID: ifaID,
+            productName: "IFA Crabgrass Preventer + Lawn Food 23-3-8",
+            zoneNumbers: [2, 3, 4],
+            amountLbs: 17.8,
+            notes: "Spyker HHS100 dial 3.5. OVER-APPLIED 62% (target 11 lb / 4 lb per 1,000 sq ft; applied 17.8 lb / 6.5 lb per 1,000). Includes park strip (on Z2 valve). Cause: skipped calibration. Recovery: 75min Quick Run + 30min AM top-off. Skip next app until late June at HALF rate (2 lb per 1,000). No aerate until 2026-07-16."
+        )
+    }
+
+    static func phase0RecoveryTasks() -> [MaintenanceTask] {
+        [
+            MaintenanceTask(
+                title: "Water in IFA pre-emergent (0.25–0.5\") — TONIGHT 75min + AM 30min top-off",
+                category: .irrigation,
+                targetDate: date(2026, 4, 24),
+                notes: "Z2/Z3/Z4 only. Skip Z1 (flower beds). Z2 covers park strip automatically.",
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Pre-emergent active — no aerate/dethatch (over-app extends barrier)",
+                category: .weedControl,
+                targetDate: date(2026, 7, 16),
+                notes: "Over-app 2026-04-23 → pre-emergent barrier runs longer. No mechanical disturbance until this date.",
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Burn check Z2 (incl. park strip) / Z3 / Z4 — yellowing tips, brown stripes",
+                category: .inspection,
+                targetDate: date(2026, 5, 3),
+                notes: "Daily 2026-04-24 → 2026-05-03. Watch fert lines + edges first. Park strip is highest-risk — concrete heat + already-stressed grass.",
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Late-June fert — HALF RATE (2 lb/1,000 sq ft) — slow-release N",
+                category: .seasonal,
+                targetDate: date(2026, 6, 23),
+                notes: "Half rate because 2026-04-23 over-applied IFA 62%. CALIBRATE FIRST (100 sq ft TARE test).",
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "October overseeding window — repair thin spots",
+                category: .seasonal,
+                targetDate: date(2026, 9, 15),
+                notes: "Window: mid-Sep → mid-Oct. KBG over-seed any thin spots from spring over-app — especially park strip.",
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Measure park strip width + check S5 MP cap color (blue=MP1000, purple=MP800SR)",
+                category: .inspection,
+                targetDate: date(2026, 4, 26),
+                notes: "Determines whether to order MP1000 (10–15ft radius) or MP800SR (8–12ft) for the swap. 4-6ft wide strip → MP800SR; 6-8ft → MP1000. Match what's already on S5.",
+                zoneNumber: 2,
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Order 5× MP Rotator nozzles (model TBD)",
+                category: .irrigation,
+                targetDate: date(2026, 4, 27),
+                notes: "Need 5 (S5 already has one). ~$8-10 each. Amazon or Hunter dealer. Model confirmed by prior measure-strip task.",
+                zoneNumber: 2,
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Dig out Z2-S6 (buried head) — raise to grade with swing pipe",
+                category: .irrigation,
+                targetDate: date(2026, 4, 25),
+                notes: "Sitting in 4–5\" erosion pit. Identify nozzle once exposed. Add to MP swap order if not already MP.",
+                zoneNumber: 2,
+                reminderEnabled: true
+            ),
+            MaintenanceTask(
+                title: "Install 5× MP Rotator nozzles on Z2 + adjust arc/radius per head",
+                category: .irrigation,
+                targetDate: date(2026, 5, 4),
+                notes: "Match S5 model. Tune arc to avoid sidewalk/street overspray. Run-time after swap: ~3× longer Z2 (MP delivers ~0.4 in/hr vs sprays at ~1.5 in/hr). If Z2 was 15 min on sprays, it'll need ~45 min on MP for same precip.",
+                zoneNumber: 2,
+                reminderEnabled: true
+            )
+        ]
+    }
 
     // MARK: - Zones
 
@@ -117,23 +393,12 @@ enum PreviewData {
             notes: "KBG front lawn, park strip included."
         )
 
-        zone.heads = [
-            {
-                var h = HeadData(label: "H2-1", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 90, radiusFeet: 10, gpm: 0.5, location: "NE corner", isConfirmed: true)
-                h.latitude = 40.3332; h.longitude = -111.7548; h.startBearingDegrees = 0
-                return h
-            }(),
-            HeadData(label: "H2-2", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 90, radiusFeet: 10, gpm: 0.5, location: "NW corner", isConfirmed: true),
-            HeadData(label: "H2-3", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 8-30", arcDegrees: 180, radiusFeet: 8, gpm: 0.4, location: "Park strip south", isConfirmed: true, issues: [.overspray]),
-            HeadData(label: "H2-4", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 180, radiusFeet: 10, gpm: 0.5, location: "Center lawn", isConfirmed: true),
-            HeadData(label: "H2-5", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 8-30", arcDegrees: 180, radiusFeet: 8, gpm: 0.4, location: "Park strip north", isConfirmed: true, issues: [.overspray]),
-            HeadData(label: "H2-6", headType: "Hunter Pro-Spray", nozzle: "MP Rotator 10-30", arcDegrees: 90, radiusFeet: 10, gpm: 0.5, location: "SW corner", isConfirmed: true)
-        ]
+        zone.heads = phase0Z2Heads()
 
         zone.problemAreas = [
+            phase0Z2MixedPrecipProblem(),
             ProblemData(title: "Dry park strip", description: "Park strip browns out by mid-July.", severity: .medium, isPreSeason: true),
             ProblemData(title: "Dry lawn center", description: "Suspected coverage gap mid-lawn.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "H2-3 / H2-5 overspray", description: "Misting onto driveway/sidewalk.", severity: .low, isPreSeason: true),
             ProblemData(title: "Weed pressure park strip", description: "Crabgrass and dandelions last summer.", severity: .medium, isPreSeason: true)
         ]
 
@@ -163,11 +428,84 @@ enum PreviewData {
         )
 
         zone.heads = [
-            HeadData(label: "H3-1", headType: "Hunter", nozzle: "TBD", arcDegrees: 90, location: "NW corner", isConfirmed: true),
-            HeadData(label: "H3-2", headType: "Hunter", nozzle: "TBD", arcDegrees: 180, location: "West fence N", isConfirmed: true),
-            HeadData(label: "H3-3", headType: "Hunter", nozzle: "TBD", arcDegrees: 180, location: "West fence mid", isConfirmed: true),
-            HeadData(label: "H3-4", headType: "Hunter", nozzle: "TBD", arcDegrees: 180, location: "West fence S", isConfirmed: true),
-            HeadData(label: "H3-5", headType: "Hunter", nozzle: "TBD", arcDegrees: 90, location: "SW corner (unconfirmed)", isConfirmed: false)
+            HeadData(
+                label: "H3-1",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 90,
+                location: "NW corner",
+                notes: "KML pin: b blue (red marker, NW-most).",
+                isConfirmed: true,
+                latitude: 40.30045489168911,
+                longitude: -111.7457086814581,
+                photoPaths: [
+                    "heads/H3-1/photo-1.jpg",
+                    "heads/H3-1/photo-2.jpg"
+                ]
+            ),
+            HeadData(
+                label: "H3-2",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 180,
+                location: "West fence N",
+                notes: "KML pin: b red.",
+                isConfirmed: true,
+                latitude: 40.30044324011,
+                longitude: -111.7456786858868,
+                photoPaths: [
+                    "heads/H3-2/photo-1.jpg",
+                    "heads/H3-2/photo-2.jpg"
+                ]
+            ),
+            HeadData(
+                label: "H3-3",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 180,
+                location: "West fence mid",
+                notes: "KML pin: b red.",
+                isConfirmed: true,
+                latitude: 40.30039406539294,
+                longitude: -111.7456939001862,
+                photoPaths: [
+                    "heads/H3-3/photo-1.jpg",
+                    "heads/H3-3/photo-2.jpg"
+                ]
+            ),
+            HeadData(
+                label: "H3-4",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 180,
+                location: "West fence S",
+                notes: "KML pin: b red.",
+                isConfirmed: true,
+                latitude: 40.3003882496641,
+                longitude: -111.745666648806,
+                photoPaths: [
+                    "heads/H3-4/photo-1.jpg",
+                    "heads/H3-4/photo-2.jpg",
+                    "heads/H3-4/photo-3.jpg"
+                ]
+            ),
+            HeadData(
+                label: "H3-5",
+                headType: "Hunter",
+                nozzle: "TBD",
+                arcDegrees: 90,
+                location: "SW corner (unconfirmed)",
+                notes: "KML pin: B bred (visible in property overhead).",
+                isConfirmed: false,
+                latitude: 40.30036387431078,
+                longitude: -111.7456811868022,
+                photoPaths: [
+                    "heads/H3-5/photo-1.jpg",
+                    "heads/H3-5/photo-2.jpg",
+                    "heads/H3-5/photo-3.jpg",
+                    "heads/H3-5/photo-4.jpg"
+                ]
+            )
         ]
 
         zone.problemAreas = [
@@ -364,12 +702,16 @@ enum PreviewData {
             MaintenanceTask(title: "Bed A mulch refresh", category: .shrubBeds, targetDate: date(2026, 4, 15), isRecurring: false, zoneNumber: 1, reminderEnabled: true),
             MaintenanceTask(title: "Bed B heat stress check", category: .shrubBeds, targetDate: date(2026, 6, 1), isRecurring: false, zoneNumber: 1),
             MaintenanceTask(title: "Bed C ornamental tree pruning", category: .shrubBeds, targetDate: date(2026, 4, 15), isRecurring: false, zoneNumber: 1)
-        ]
+        ] + phase0RecoveryTasks()
+    }
+
+    private static func seedIFAOverApplication(ifaID: UUID) -> FertApplication {
+        phase0IFAApplication(ifaID: ifaID)
     }
 
     // MARK: - Inventory
 
-    private static func seedInventory() -> [InventoryItem] {
+    private static func seedInventory(ifaID: UUID = UUID()) -> [InventoryItem] {
         [
             InventoryItem(
                 name: "Spyker HHS100 Handheld Spreader",
@@ -379,6 +721,7 @@ enum PreviewData {
                 storageLocation: "Garage",
                 storageNotes: "Rinse thoroughly after each use. Store dry."
             ),
+            phase0IFAItem(id: ifaID),
             InventoryItem(
                 name: "ProPeat 17-0-4",
                 category: .fertilizer,

@@ -681,13 +681,6 @@
     "notes": "- **Label:** `YNAB` (52px, weight 600, Rose `#f43f5e`, letter-spacing 14)\n- **Main:** `FUNDED` (110px, weight 800, `#f3f4f6`, letter-spacing -4)\n- **Canvas:** 512x512, `#0f1117` bg, `rx=96`\n- **Accent color:** Rose `#f43f5e`\n- **Font:** DM Sans",
     "sourceFile": "portfolio/funded-web/docs/BRANDING.md"
   },
-  "gmail-forge": {
-    "slug": "gmail-forge",
-    "colors": [],
-    "fonts": [],
-    "sourceFile": "missing",
-    "missing": true
-  },
   "gmat-mastery-web": {
     "slug": "gmat-mastery-web",
     "colors": [],
@@ -1117,46 +1110,97 @@
     "colors": [
       {
         "hex": "#0e1015",
-        "name": "bg",
-        "usage": "Logo canvas / PWA theme_color + background_color"
+        "name": "Background",
+        "usage": "bg"
       },
       {
-        "hex": "#eaedf0",
-        "name": "text",
-        "usage": "Letter W (negative space / cutout)"
+        "hex": "#1a1d24",
+        "name": "Surface",
+        "usage": "surface"
       },
       {
         "hex": "#4f92f2",
-        "name": "accent",
-        "usage": "Horizon arc (interactive blue)"
+        "name": "Primary accent",
+        "usage": "accent"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "Text primary",
+        "usage": "text"
+      },
+      {
+        "hex": "#9ca3af",
+        "name": "Text secondary",
+        "usage": "muted"
       },
       {
         "hex": "#e8bb32",
-        "name": "caution",
-        "usage": "Sun gradient (amber → gold)"
+        "name": "Caution (sun)",
+        "usage": "caution"
       },
       {
         "hex": "#3cb77c",
-        "name": "safe",
-        "usage": "Optional small accent only"
-      },
-      {
-        "hex": "#f3f4f6"
+        "name": "Safe",
+        "usage": "safe"
       },
       {
         "hex": "#0f1117"
       }
     ],
-    "fonts": [],
+    "fonts": [
+      {
+        "family": "DM Sans"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
     "iconPath": "/branding/wellness-tracker/icon.png",
-    "notes": "**Spend Clarity** (`portfolio/spend-clarity/`) is a **Python CLI** — there is **no logo raster** checked into that repo.",
+    "notes": "Wellness Tracker shares the **Clarity family** palette. Source of truth for the iOS side is [`portfolio/clarity-ui/Sources/ClarityUI/Theme/ClarityTheme.swift`](../../clarity-ui/Sources/ClarityUI/Theme/ClarityTheme.swift); web hex values are kept in lockstep here.",
     "sourceFile": "portfolio/wellness-tracker/docs/BRANDING.md"
   },
   "wellness-tracker-ios": {
     "slug": "wellness-tracker-ios",
-    "colors": [],
-    "fonts": [],
-    "sourceFile": "missing",
-    "missing": true
+    "appName": "Wellness Tracker iOS",
+    "colors": [
+      {
+        "hex": "#0e1015",
+        "name": "Background",
+        "usage": "clarityBackground"
+      },
+      {
+        "hex": "#1a1d24",
+        "name": "Surface",
+        "usage": "claritySurface"
+      },
+      {
+        "hex": "#4f92f2",
+        "name": "Primary accent",
+        "usage": "clarityBlue"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "Text primary",
+        "usage": "clarityTextPrimary"
+      },
+      {
+        "hex": "#9ca3af",
+        "name": "Text secondary",
+        "usage": "clarityTextSecondary"
+      }
+    ],
+    "fonts": [
+      {
+        "family": "SF Pro"
+      },
+      {
+        "family": "System (SF)",
+        "role": "UI"
+      }
+    ],
+    "iconPath": "/branding/wellness-tracker-ios/icon.png",
+    "notes": "Note: iOS palette should stay in sync with web. Any drift should be corrected in `ClarityPalette.swift` against BASE tokens.",
+    "sourceFile": "portfolio/wellness-tracker-ios/docs/BRANDING.md"
   }
 }

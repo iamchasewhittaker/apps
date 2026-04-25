@@ -56,7 +56,7 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
             <Field label="Salary Target" value={p.salaryTarget} onChange={v => set("salaryTarget", v)} placeholder="$75,000–$95,000" />
           </div>
           <Field label="Top 3–5 Career Achievements (AI uses these in cover letters)" type="textarea" rows={4} value={p.topAchievements} onChange={v => set("topAchievements", v)} placeholder={"• Guided 100s of merchants from application to live transactions at Authorize.Net\n• 98% integration issue resolution rate\n• Exceeded KPI targets 10–15% consistently\n• Built onboarding materials adopted by full team"} />
-          <Field label="Additional context for AI (strengths, background, tone)" type="textarea" rows={3} value={p.notes} onChange={v => set("notes", v)} placeholder="Implementation and payments background. Strongest at merchant onboarding, integration troubleshooting, SOPs. Remote only. Targeting Implementation Consultant / Sales Engineer at payments-adjacent companies; AE at payments SaaS is the backup." />
+          <Field label="Additional context for AI (strengths, background, tone)" type="textarea" rows={3} value={p.notes} onChange={v => set("notes", v)} placeholder="Implementation and payments background. Strongest at merchant onboarding, integration troubleshooting, SOPs. Remote only. Targeting Implementation Consultant / Sales Engineer OR Account Executive at payments-adjacent companies (equal lanes)." />
           <div style={s.profileSectionLabel}>Base Resume</div>
           <p style={{ color: "#6b7280", fontSize: 12, marginBottom: 8 }}>AI tailors every document from this. Edit directly or load a fresh template below.</p>
           <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
@@ -64,13 +64,13 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
               style={{ ...s.btnSecondary, fontSize: 12, padding: "5px 12px" }}
               onClick={() => { if (window.confirm("Load the Implementation Consultant / SE template? This will replace your current base resume.")) setResume(RESUME_TEMPLATE_IC); }}
             >
-              🧭 Load IC / SE Template (primary)
+              🧭 Load IC / SE Template
             </button>
             <button
               style={{ ...s.btnSecondary, fontSize: 12, padding: "5px 12px" }}
               onClick={() => { if (window.confirm("Load the Account Executive template? This will replace your current base resume.")) setResume(RESUME_TEMPLATE_AE); }}
             >
-              💼 Load AE Template (backup)
+              💼 Load AE Template
             </button>
             <button
               style={{ ...s.btnSecondary, fontSize: 12, padding: "5px 12px" }}

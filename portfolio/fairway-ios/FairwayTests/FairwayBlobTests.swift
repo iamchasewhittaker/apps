@@ -176,6 +176,39 @@ final class FairwayBlobTests: XCTestCase {
         XCTAssertTrue(decoded.hasCoordinates)
     }
 
+    func testHeadDataPhotoPathsRoundTrip() throws {
+        var head = HeadData(
+            label: "Z2-S99",
+            headType: "Hunter Pro-Spray",
+            nozzle: "Test nozzle",
+            arcDegrees: 180,
+            location: "Test location"
+        )
+        head.photoPaths = [
+            "heads/Z2-S99/photo-1.jpg",
+            "heads/Z2-S99/photo-2.jpg",
+            "heads/Z2-S99/photo-3.jpg"
+        ]
+
+        let data = try JSONEncoder().encode(head)
+        let decoded = try JSONDecoder().decode(HeadData.self, from: data)
+
+        XCTAssertEqual(decoded.photoPaths.count, 3)
+        XCTAssertEqual(decoded.photoPaths, head.photoPaths)
+    }
+
+    func testZone2HasEighteenSeededHeads() {
+        XCTAssertEqual(PreviewData.phase0Z2Heads().count, 18)
+
+        // Spot-check the structural invariants the seed promises:
+        let heads = PreviewData.phase0Z2Heads()
+        let labels = heads.map(\.label)
+        XCTAssertEqual(labels.first, "Z2-S1")
+        XCTAssertEqual(labels.last, "Z2-S18")
+        XCTAssertTrue(heads.allSatisfy { $0.hasCoordinates }, "All Z2 heads should have lat/lon after KML ingestion")
+        XCTAssertTrue(heads.allSatisfy { !$0.photoPaths.isEmpty }, "All Z2 heads should have at least one photo path")
+    }
+
     func testHeadDataMissingGeoFieldsDecodes() throws {
         // Pre-v2 encoded HeadData (no geo fields) must decode with nil coords.
         let oldHeadJson = """

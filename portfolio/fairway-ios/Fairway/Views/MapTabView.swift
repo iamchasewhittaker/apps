@@ -12,7 +12,11 @@ struct MapTabView: View {
         NavigationStack {
             Group {
                 if let property = store.blob.property {
-                    mapContent(property: property)
+                    if property.hasValidCoordinates {
+                        mapContent(property: property)
+                    } else {
+                        invalidCoordinatesState(property: property)
+                    }
                 } else {
                     emptyState
                 }
@@ -42,7 +46,6 @@ struct MapTabView: View {
 
     @MainActor @ViewBuilder
     private func mapContent(property: PropertySettings) -> some View {
-        let center = CLLocationCoordinate2D(latitude: property.latitude, longitude: property.longitude)
         let snapshot = store.blob.zones
         let visZones = visibleZones
         ZStack(alignment: .top) {
@@ -68,17 +71,54 @@ struct MapTabView: View {
             }
             .mapStyle(.hybrid)
             .onAppear {
-                cameraPosition = .camera(MapCamera(
-                    centerCoordinate: center,
-                    distance: 120,
-                    heading: 0,
-                    pitch: 0
-                ))
+                cameraPosition = makeCamera(for: property)
+            }
+            .onChange(of: store.blob.property) { _, newValue in
+                if let p = newValue, p.hasValidCoordinates {
+                    cameraPosition = makeCamera(for: p)
+                }
             }
 
             zoneFilterChips
                 .padding(.top, 8)
         }
+    }
+
+    private func makeCamera(for property: PropertySettings) -> MapCameraPosition {
+        let center = CLLocationCoordinate2D(
+            latitude: property.latitude,
+            longitude: property.longitude
+        )
+        return .camera(MapCamera(
+            centerCoordinate: center,
+            distance: 120,
+            heading: 0,
+            pitch: 0
+        ))
+    }
+
+    @ViewBuilder
+    private func invalidCoordinatesState(property: PropertySettings) -> some View {
+        VStack(spacing: 16) {
+            Image(systemName: "mappin.slash")
+                .font(.system(size: 48))
+                .foregroundStyle(FairwayTheme.textSecondary)
+            Text("Property Location Needs Attention")
+                .font(.headline)
+                .foregroundStyle(FairwayTheme.textPrimary)
+            Text("We have your address but not a valid pin yet. Re-geocode or edit in Settings.")
+                .font(.subheadline)
+                .foregroundStyle(FairwayTheme.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+            Button("Fix in Settings") {
+                showPropertySettings = true
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(FairwayTheme.accentGold)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(FairwayTheme.backgroundPrimary)
     }
 
     // MARK: - Zone filter chips
