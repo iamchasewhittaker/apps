@@ -33,9 +33,20 @@ struct HeadData: Codable, Identifiable {
     var startBearingDegrees: Int? = nil
     var photoPaths: [String] = []
 
+    // Pre-season audit fields (populated from photo audit; confirmed in-field during season test)
+    var auditObservation: String = ""   // what photo audit found (nozzle + condition)
+    var auditConfidence: String = ""    // "high", "med", "low", "blocked"
+    var preSeasonChecked: Bool = false  // Chase completed field walk for this head
+    var fieldNozzle: String = ""        // nozzle confirmed in field (overrides audit)
+    var fieldArcDegrees: Int? = nil     // measured arc
+    var fieldRadiusFeet: Double? = nil  // measured radius
+
     var hasCoordinates: Bool {
         latitude != nil && longitude != nil
     }
+
+    var auditIsBlocked: Bool { auditConfidence == "blocked" }
+    var auditNeedsFieldWork: Bool { auditConfidence == "blocked" || auditConfidence == "low" }
 }
 
 extension HeadData {
@@ -60,5 +71,11 @@ extension HeadData {
         longitude = try c.decodeIfPresent(Double.self, forKey: .longitude)
         startBearingDegrees = try c.decodeIfPresent(Int.self, forKey: .startBearingDegrees)
         photoPaths = try c.decodeIfPresent([String].self, forKey: .photoPaths) ?? []
+        auditObservation = try c.decodeIfPresent(String.self, forKey: .auditObservation) ?? ""
+        auditConfidence = try c.decodeIfPresent(String.self, forKey: .auditConfidence) ?? ""
+        preSeasonChecked = try c.decodeIfPresent(Bool.self, forKey: .preSeasonChecked) ?? false
+        fieldNozzle = try c.decodeIfPresent(String.self, forKey: .fieldNozzle) ?? ""
+        fieldArcDegrees = try c.decodeIfPresent(Int.self, forKey: .fieldArcDegrees)
+        fieldRadiusFeet = try c.decodeIfPresent(Double.self, forKey: .fieldRadiusFeet)
     }
 }

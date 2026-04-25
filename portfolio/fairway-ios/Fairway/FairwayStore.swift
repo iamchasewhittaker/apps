@@ -520,6 +520,17 @@ final class FairwayStore {
         save()
     }
 
+    /// Update a single head across all zones (used by pre-season audit).
+    func updateHead(_ updated: HeadData) {
+        for zi in blob.zones.indices {
+            if let hi = blob.zones[zi].heads.firstIndex(where: { $0.id == updated.id }) {
+                blob.zones[zi].heads[hi] = updated
+                save()
+                return
+            }
+        }
+    }
+
     /// Override the auto-detected link for a Fairway zone.
     func setRachioZoneLink(fairwayZoneNumber: Int, rachioZoneId: String?) {
         guard var state = blob.rachio else { return }

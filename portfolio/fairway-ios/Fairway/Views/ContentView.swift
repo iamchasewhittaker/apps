@@ -66,6 +66,19 @@ struct MoreView: View {
             }
 
             Section("Tools") {
+                NavigationLink {
+                    PreSeasonAuditView()
+                } label: {
+                    HStack {
+                        Text("Pre-Season Audit")
+                        Spacer()
+                        let total = store.blob.zones.filter { $0.number != 1 }.reduce(0) { $0 + $1.heads.count }
+                        let cleared = store.blob.zones.filter { $0.number != 1 }.reduce(0) { $0 + $1.heads.filter { $0.preSeasonChecked }.count }
+                        Text("\(cleared)/\(total)")
+                            .font(.caption)
+                            .foregroundStyle(cleared == total && total > 0 ? FairwayTheme.accentGold : FairwayTheme.textSecondary)
+                    }
+                }
                 NavigationLink("Spreader Calculator") {
                     SpreaderCalcView()
                 }

@@ -11,6 +11,61 @@ enum PreviewData {
         return Calendar.current.date(from: comps) ?? Date()
     }
 
+    // MARK: - Photo audit data (2026-04-25)
+    // Returns (observation, confidence) for each head from the photo audit.
+    // confidence values: "high", "med", "low", "blocked"
+    static func auditData(for label: String) -> (obs: String, conf: String) {
+        switch label {
+        // Z2 park strip
+        case "Z2-S1": return ("Rain Bird VAN yellow nozzle (text legible on cap). Hunter PROS-04 body. ~4 ft radius per label print. Park strip east end, next to driveway.", "high")
+        case "Z2-S2": return ("Rain Bird 1555 fixed spray (photo-3 confirms single fan-spray pattern across driveway). Hunter Pro-Spray body. Park strip east, concrete apron.", "high")
+        case "Z2-S3": return ("Rain Bird 1555ST fixed spray — text stamped on white nozzle ring and fully legible. Hunter Pro-Spray body. Park strip mid, narrow mulch strip.", "high")
+        case "Z2-S4": return ("Rain Bird VAN yellow (yellow cap body + 'INCREASE+' arrow stamping visible). Hunter Pro-Spray body. Park strip far west end.", "high")
+        case "Z2-S5": return ("BLOCKED — empty nozzle slot packed with dirt. No nozzle hardware present. Hunter Pro-Spray body only. Must clear slot and install nozzle before use.", "blocked")
+        case "Z2-S6": return ("BLOCKED — buried in 4-5\" erosion pit. Head cannot pop up. Calcium-encrusted cap. Hunter Pro-Spray body only. Needs dig-out, swing-pipe raise, then re-photo.", "blocked")
+        // Z2 front yard
+        case "Z2-S7":  return ("MP Rotator, cream cap (likely MP1000, 8-15 ft). Hunter Pro-Spray body. Geared rotator visible top-down. North-most front yard head.", "high")
+        case "Z2-S8":  return ("BLOCKED — empty nozzle slot packed with dirt. Same failure as S5. Hunter Pro-Spray body only. Clear slot and install nozzle.", "blocked")
+        case "Z2-S9":  return ("MP Rotator, teal/sea-green cap (MP800 SR family, 6-12 ft, 0-30° arc). Photo-3 confirms multi-stream rotating pattern.", "high")
+        case "Z2-S10": return ("MP Rotator, dark cap (MP800 or MP1000). Photo-3 confirms multi-stream rotating pattern.", "high")
+        case "Z2-S11": return ("BLOCKED — empty nozzle slot packed with dirt. Same failure as S5 and S8. Hunter Pro-Spray body only.", "blocked")
+        case "Z2-S12": return ("MP Rotator, cobalt blue cap (MP2000, 13-21 ft). Distinctive cobalt blue cap clearly visible.", "high")
+        case "Z2-S13": return ("MP Rotator, cream cap (likely MP1000, 8-15 ft). 'Hunter' stamping + cream rotator cap visible.", "high")
+        case "Z2-S14": return ("Hunter Pro-Spray body with 'PROS-04', 'PRS40' (40 PSI pressure-regulating), 'CHECK VALVE' markings. Nozzle center unclear in photos — fan or MP Rotator. Field re-photo needed while running.", "low")
+        case "Z2-S15": return ("MP Rotator, cobalt blue cap (MP2000, 13-21 ft). Body + blue cap both legible.", "high")
+        case "Z2-S16": return ("MP Rotator, cobalt blue cap (MP2000). Distinctive cobalt blue cap.", "high")
+        case "Z2-S17": return ("Conflicting signals: photo-1 shows gear pattern (MP Rotator?), photo-3 shows single fan-spray pattern (fixed spray?). Needs field re-photo with clean close-up + running confirmation.", "low")
+        case "Z2-S18": return ("BLOCKED — nozzle slot dark and encrusted. Hunter Pro-Spray body legible but nozzle hardware not visible. Clear and re-photo.", "blocked")
+        // Z3 new (north) heads
+        case "Z3-S1":  return ("MP Rotator-style turret visible inside white ring. Hunter Pro-Spray body. Only head missing a running photo — re-photo next valve-on.", "med")
+        case "Z3-S2":  return ("MP Rotator, cream cap (likely MP1000, 8-15 ft). Hunter Pro-Spray body. Cream cap + gear clearly visible.", "high")
+        case "Z3-S3":  return ("Hunter Pro-Spray body. Nozzle shows radial slots from above — consistent with either fixed spray or MP Rotator. Running photo recommended.", "med")
+        case "Z3-S4":  return ("MP Rotator, cream/tan cap (likely MP1000). Hunter Pro-Spray body. Geared rotator visible.", "high")
+        case "Z3-S5":  return ("MP Rotator, dark cap (MP800 or MP1000). Hunter Pro-Spray body. 'Hunter' + gear turret visible; cap color reads dark/charcoal.", "med")
+        case "Z3-S6":  return ("MP Rotator, dark cap. Hunter Pro-Spray body. Similar appearance to S5.", "med")
+        // Z3 legacy heads (was H3-1..H3-5)
+        case "Z3-S7":  return ("MP Rotator, dark cap. Hunter Pro-Spray body (NW corner). Partially buried — turret + gear visible. Was H3-1.", "med")
+        case "Z3-S8":  return ("MP Rotator, RED cap (MP3000, 22-30 ft). Hunter Pro-Spray body. Red cap is distinctive. Was H3-2.", "high")
+        case "Z3-S9":  return ("MP Rotator, RED cap (MP3000). Hunter Pro-Spray body. Was H3-3.", "high")
+        case "Z3-S10": return ("MP Rotator, RED cap (MP3000). Hunter Pro-Spray body. Was H3-4.", "high")
+        case "Z3-S11": return ("MP Rotator, RED cap (MP3000). Hunter Pro-Spray body. Partly buried. Was H3-5.", "high")
+        // Z4 back yard
+        case "Z4-S1":  return ("BLOCKED — head fully submerged in mud at house corner. None of 3 photos show visible head or nozzle. Highest-priority blocked head (zero coverage). Needs dig-out.", "blocked")
+        case "Z4-S2":  return ("MP Rotator, dark cap. Hunter Pro-Spray body. Running photo inconclusive — verify during season test.", "med")
+        case "Z4-S3":  return ("MP Rotator, cream cap (likely MP1000). Hunter Pro-Spray body. Cream cap geared rotator clearly visible.", "high")
+        case "Z4-S4":  return ("MP Rotator, dark cap. Hunter Pro-Spray body. Geared cap visible from above.", "med")
+        case "Z4-S5":  return ("MP Rotator, dark cap. Hunter Pro-Spray body ('PRO-SPRAY' stamped). Running photo inconclusive.", "med")
+        case "Z4-S6":  return ("MP Rotator, RED cap (MP3000, 22-30 ft). Hunter Pro-Spray body. Red cap distinctive.", "high")
+        case "Z4-S7":  return ("BLOCKED — partially buried at sidewalk edge. Turret visible but cap not legible. Needs clearing and re-photo.", "blocked")
+        case "Z4-S8":  return ("MP Rotator, RED cap (MP3000). Hunter Pro-Spray body ('PRO-SPRAY' stamped). Red cap distinctive.", "high")
+        case "Z4-S9":  return ("MP Rotator, dark cap. Hunter Pro-Spray body ('PRO-SPRAY' fully legible). Gear cap visible.", "high")
+        case "Z4-S10": return ("MP Rotator, RED cap (MP3000). Hunter Pro-Spray body.", "high")
+        case "Z4-S11": return ("MP Rotator, dark cap (small, partially obscured). Hunter Pro-Spray body.", "med")
+        case "Z4-S12": return ("MP Rotator, RED cap (MP3000). Hunter Pro-Spray body.", "high")
+        default: return ("", "")
+        }
+    }
+
     // MARK: - Public entry point
     static func seededBlob() -> FairwayBlob {
         var blob = FairwayBlob()
@@ -49,107 +104,107 @@ enum PreviewData {
         // Z2-S1..S6 = 6 numbered park-strip pins; Z2-S7..S18 = 12 color-named front-yard pins.
         // Photo dirs for S1..S6 stay under Z2-MATCH-{1st..6th}/ until field-confirmed (then mv).
         var heads: [HeadData] = [
-            HeadData(
-                label: "Z2-S1",
-                headType: "Hunter Pro-Spray",
-                nozzle: "Rain Bird VAN yellow",
-                arcDegrees: 90,
-                radiusFeet: 4,
-                location: "Park strip east end, next to driveway concrete. Got over-applied fert 2026-04-23.",
-                notes: "KML pin: 1st Sprinkler. Photo-1: Rain Bird VAN yellow nozzle (4 ft radius).",
-                isConfirmed: false,
-                latitude: 40.30028099196461,
-                longitude: -111.7455404391101,
-                photoPaths: [
-                    "heads/Z2-MATCH-1st/photo-1.jpg",
-                    "heads/Z2-MATCH-1st/photo-2.jpg",
-                    "heads/Z2-MATCH-1st/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z2-S2",
-                headType: "Hunter Pro-Spray",
-                nozzle: "TBD (per closer photo)",
-                arcDegrees: 180,
-                location: "Park strip east end, large concrete apron. Got over-applied fert 2026-04-23.",
-                notes: "KML pin: 6th Sprinkler. Nozzle type to be confirmed during season test.",
-                isConfirmed: false,
-                latitude: 40.30026935353735,
-                longitude: -111.7455993735302,
-                photoPaths: [
-                    "heads/Z2-MATCH-6th/photo-1.jpg",
-                    "heads/Z2-MATCH-6th/photo-2.jpg",
-                    "heads/Z2-MATCH-6th/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z2-S3",
-                headType: "Hunter Pro-Spray",
-                nozzle: "Rain Bird 1555 fixed spray (dark nozzle)",
-                arcDegrees: 180,
-                location: "Park strip mid, narrow mulch strip by curb. Dormant ring — under-coverage symptom. Got over-applied fert 2026-04-23.",
-                notes: "KML pin: 2nd Sprinkler.",
-                isConfirmed: false,
-                issues: [.coverageGap],
-                latitude: 40.30026189777501,
-                longitude: -111.7455631374153,
-                photoPaths: [
-                    "heads/Z2-MATCH-2nd/photo-1.jpg",
-                    "heads/Z2-MATCH-2nd/photo-2.jpg",
-                    "heads/Z2-MATCH-2nd/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z2-S4",
-                headType: "Hunter Pro-Spray",
-                nozzle: "Rain Bird VAN yellow",
-                arcDegrees: 180,
-                radiusFeet: 4,
-                location: "Park strip far west end. Got over-applied fert 2026-04-23.",
-                notes: "KML pin: 4th Sprinkler. Photo-1: Rain Bird VAN yellow (4 ft radius).",
-                isConfirmed: false,
-                latitude: 40.3002439130473,
-                longitude: -111.7456497901446,
-                photoPaths: [
-                    "heads/Z2-MATCH-4th/photo-1.jpg",
-                    "heads/Z2-MATCH-4th/photo-2.jpg",
-                    "heads/Z2-MATCH-4th/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z2-S5",
-                headType: "Hunter Pro-Spray",
-                nozzle: "TBD — nozzle slot empty in photo (dirt-packed)",
-                arcDegrees: 180,
-                location: "Park strip west, sidewalk side. Got over-applied fert 2026-04-23.",
-                notes: "KML pin: 5th Sprinkler. CORRECTION: prior seed claimed 'MP Rotator confirmed (blue cap)'. Photo-1 shows EMPTY nozzle slot packed with dirt — no MP cap installed. Needs field check before swap-strategy assumption stands.",
-                isConfirmed: false,
-                issues: [.cloggedNozzle],
-                latitude: 40.30026159439472,
-                longitude: -111.745632151369,
-                photoPaths: [
-                    "heads/Z2-MATCH-5th/photo-1.jpg",
-                    "heads/Z2-MATCH-5th/photo-2.jpg",
-                    "heads/Z2-MATCH-5th/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z2-S6",
-                headType: "Hunter Pro-Spray",
-                nozzle: "Buried — nozzle TBD after dig-out",
-                arcDegrees: 180,
-                location: "Park strip mid-north, sidewalk side. BURIED in 4–5\" erosion pit — won't pop up properly. Needs dig-out + swing-pipe raise. Got over-applied fert 2026-04-23.",
-                notes: "KML pin: 3rd Sprinkler. Heavily clogged with calcium + dirt; head buried in erosion pit.",
-                isConfirmed: false,
-                issues: [.tiltedHead, .coverageGap],
-                latitude: 40.30025224491366,
-                longitude: -111.7456124798277,
-                photoPaths: [
-                    "heads/Z2-MATCH-3rd/photo-1.jpg",
-                    "heads/Z2-MATCH-3rd/photo-2.jpg",
-                    "heads/Z2-MATCH-3rd/photo-3.jpg"
-                ]
-            )
+            {
+                let a = auditData(for: "Z2-S1")
+                return HeadData(
+                    label: "Z2-S1",
+                    headType: "Hunter Pro-Spray",
+                    nozzle: "Rain Bird VAN yellow",
+                    arcDegrees: 90,
+                    radiusFeet: 4,
+                    location: "Park strip east end, next to driveway concrete. Got over-applied fert 2026-04-23.",
+                    notes: "KML pin: 1st Sprinkler.",
+                    isConfirmed: false,
+                    latitude: 40.30028099196461,
+                    longitude: -111.7455404391101,
+                    photoPaths: ["heads/Z2-MATCH-1st/photo-1.jpg","heads/Z2-MATCH-1st/photo-2.jpg","heads/Z2-MATCH-1st/photo-3.jpg"],
+                    auditObservation: a.obs, auditConfidence: a.conf
+                )
+            }(),
+            {
+                let a = auditData(for: "Z2-S2")
+                return HeadData(
+                    label: "Z2-S2",
+                    headType: "Hunter Pro-Spray",
+                    nozzle: "Rain Bird 1555 fixed spray",
+                    arcDegrees: 180,
+                    location: "Park strip east end, large concrete apron. Got over-applied fert 2026-04-23.",
+                    notes: "KML pin: 6th Sprinkler.",
+                    isConfirmed: false,
+                    latitude: 40.30026935353735,
+                    longitude: -111.7455993735302,
+                    photoPaths: ["heads/Z2-MATCH-6th/photo-1.jpg","heads/Z2-MATCH-6th/photo-2.jpg","heads/Z2-MATCH-6th/photo-3.jpg"],
+                    auditObservation: a.obs, auditConfidence: a.conf
+                )
+            }(),
+            {
+                let a = auditData(for: "Z2-S3")
+                return HeadData(
+                    label: "Z2-S3",
+                    headType: "Hunter Pro-Spray",
+                    nozzle: "Rain Bird 1555ST fixed spray",
+                    arcDegrees: 180,
+                    location: "Park strip mid, narrow mulch strip by curb. Dormant ring — under-coverage symptom. Got over-applied fert 2026-04-23.",
+                    notes: "KML pin: 2nd Sprinkler.",
+                    isConfirmed: false,
+                    issues: [.coverageGap],
+                    latitude: 40.30026189777501,
+                    longitude: -111.7455631374153,
+                    photoPaths: ["heads/Z2-MATCH-2nd/photo-1.jpg","heads/Z2-MATCH-2nd/photo-2.jpg","heads/Z2-MATCH-2nd/photo-3.jpg"],
+                    auditObservation: a.obs, auditConfidence: a.conf
+                )
+            }(),
+            {
+                let a = auditData(for: "Z2-S4")
+                return HeadData(
+                    label: "Z2-S4",
+                    headType: "Hunter Pro-Spray",
+                    nozzle: "Rain Bird VAN yellow",
+                    arcDegrees: 180,
+                    radiusFeet: 4,
+                    location: "Park strip far west end. Got over-applied fert 2026-04-23.",
+                    notes: "KML pin: 4th Sprinkler.",
+                    isConfirmed: false,
+                    latitude: 40.3002439130473,
+                    longitude: -111.7456497901446,
+                    photoPaths: ["heads/Z2-MATCH-4th/photo-1.jpg","heads/Z2-MATCH-4th/photo-2.jpg","heads/Z2-MATCH-4th/photo-3.jpg"],
+                    auditObservation: a.obs, auditConfidence: a.conf
+                )
+            }(),
+            {
+                let a = auditData(for: "Z2-S5")
+                return HeadData(
+                    label: "Z2-S5",
+                    headType: "Hunter Pro-Spray",
+                    nozzle: "TBD — nozzle slot empty (dirt-packed)",
+                    arcDegrees: 180,
+                    location: "Park strip west, sidewalk side. Got over-applied fert 2026-04-23.",
+                    notes: "KML pin: 5th Sprinkler. CORRECTION: prior seed claimed MP Rotator. Photo shows empty slot. Needs field check.",
+                    isConfirmed: false,
+                    issues: [.cloggedNozzle],
+                    latitude: 40.30026159439472,
+                    longitude: -111.745632151369,
+                    photoPaths: ["heads/Z2-MATCH-5th/photo-1.jpg","heads/Z2-MATCH-5th/photo-2.jpg","heads/Z2-MATCH-5th/photo-3.jpg"],
+                    auditObservation: a.obs, auditConfidence: a.conf
+                )
+            }(),
+            {
+                let a = auditData(for: "Z2-S6")
+                return HeadData(
+                    label: "Z2-S6",
+                    headType: "Hunter Pro-Spray",
+                    nozzle: "Buried — nozzle TBD after dig-out",
+                    arcDegrees: 180,
+                    location: "Park strip mid-north, sidewalk side. BURIED in 4–5\" erosion pit. Needs dig-out + swing-pipe raise. Got over-applied fert 2026-04-23.",
+                    notes: "KML pin: 3rd Sprinkler. Heavily clogged with calcium + dirt.",
+                    isConfirmed: false,
+                    issues: [.tiltedHead, .coverageGap],
+                    latitude: 40.30025224491366,
+                    longitude: -111.7456124798277,
+                    photoPaths: ["heads/Z2-MATCH-3rd/photo-1.jpg","heads/Z2-MATCH-3rd/photo-2.jpg","heads/Z2-MATCH-3rd/photo-3.jpg"],
+                    auditObservation: a.obs, auditConfidence: a.conf
+                )
+            }()
         ]
 
         // Z2-S7..S18 = 12 front-yard color-named KML pins, sorted N→S by latitude.
@@ -170,6 +225,7 @@ enum PreviewData {
         ]
         for (idx, entry) in frontYard.enumerated() {
             let position = idx + 1
+            let a = auditData(for: entry.label)
             heads.append(HeadData(
                 label: entry.label,
                 headType: "Hunter Pro-Spray",
@@ -180,7 +236,9 @@ enum PreviewData {
                 isConfirmed: false,
                 latitude: entry.lat,
                 longitude: entry.lon,
-                photoPaths: (1...entry.photoCount).map { "heads/\(entry.label)/photo-\($0).jpg" }
+                photoPaths: (1...entry.photoCount).map { "heads/\(entry.label)/photo-\($0).jpg" },
+                auditObservation: a.obs,
+                auditConfidence: a.conf
             ))
         }
         return heads
@@ -422,104 +480,27 @@ enum PreviewData {
     /// can append them to existing on-device blobs without going through
     /// the full zone3() seed.
     static func phase1Z3NewHeads() -> [HeadData] {
-        [
-            HeadData(
-                label: "Z3-S1",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 0,
-                location: "",
-                notes: "KML pin: b yellow.",
-                isConfirmed: false,
-                latitude: 40.30053473638974,
-                longitude: -111.7457401702552,
-                photoPaths: [
-                    "heads/Z3-S1/photo-1.jpg",
-                    "heads/Z3-S1/photo-2.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S2",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 0,
-                location: "",
-                notes: "KML pin: b yellow.",
-                isConfirmed: false,
-                latitude: 40.30051924957012,
-                longitude: -111.7456873490801,
-                photoPaths: [
-                    "heads/Z3-S2/photo-1.jpg",
-                    "heads/Z3-S2/photo-2.jpg",
-                    "heads/Z3-S2/photo-3.jpg",
-                    "heads/Z3-S2/photo-4.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S3",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 0,
-                location: "",
-                notes: "KML pin: b black.",
-                isConfirmed: false,
-                latitude: 40.30049601145916,
-                longitude: -111.7457236854322,
-                photoPaths: [
-                    "heads/Z3-S3/photo-1.jpg",
-                    "heads/Z3-S3/photo-2.jpg",
-                    "heads/Z3-S3/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S4",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 0,
-                location: "",
-                notes: "KML pin: B black.",
-                isConfirmed: false,
-                latitude: 40.30049509265507,
-                longitude: -111.7456179983093,
-                photoPaths: [
-                    "heads/Z3-S4/photo-1.jpg",
-                    "heads/Z3-S4/photo-2.jpg",
-                    "heads/Z3-S4/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S5",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 0,
-                location: "",
-                notes: "KML pin: B Black.",
-                isConfirmed: false,
-                latitude: 40.30047305730761,
-                longitude: -111.7456258168152,
-                photoPaths: [
-                    "heads/Z3-S5/photo-1.jpg",
-                    "heads/Z3-S5/photo-2.jpg",
-                    "heads/Z3-S5/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S6",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 0,
-                location: "",
-                notes: "KML pin: b black.",
-                isConfirmed: false,
-                latitude: 40.30046482949889,
-                longitude: -111.7456645151178,
-                photoPaths: [
-                    "heads/Z3-S6/photo-1.jpg",
-                    "heads/Z3-S6/photo-2.jpg",
-                    "heads/Z3-S6/photo-3.jpg"
-                ]
-            )
+        let specs: [(String, String, Double, Double, [String])] = [
+            ("Z3-S1", "KML pin: b yellow.", 40.30053473638974, -111.7457401702552,
+             ["heads/Z3-S1/photo-1.jpg","heads/Z3-S1/photo-2.jpg"]),
+            ("Z3-S2", "KML pin: b yellow.", 40.30051924957012, -111.7456873490801,
+             ["heads/Z3-S2/photo-1.jpg","heads/Z3-S2/photo-2.jpg","heads/Z3-S2/photo-3.jpg","heads/Z3-S2/photo-4.jpg"]),
+            ("Z3-S3", "KML pin: b black.", 40.30049601145916, -111.7457236854322,
+             ["heads/Z3-S3/photo-1.jpg","heads/Z3-S3/photo-2.jpg","heads/Z3-S3/photo-3.jpg"]),
+            ("Z3-S4", "KML pin: B black.", 40.30049509265507, -111.7456179983093,
+             ["heads/Z3-S4/photo-1.jpg","heads/Z3-S4/photo-2.jpg","heads/Z3-S4/photo-3.jpg"]),
+            ("Z3-S5", "KML pin: B Black.", 40.30047305730761, -111.7456258168152,
+             ["heads/Z3-S5/photo-1.jpg","heads/Z3-S5/photo-2.jpg","heads/Z3-S5/photo-3.jpg"]),
+            ("Z3-S6", "KML pin: b black.", 40.30046482949889, -111.7456645151178,
+             ["heads/Z3-S6/photo-1.jpg","heads/Z3-S6/photo-2.jpg","heads/Z3-S6/photo-3.jpg"])
         ]
+        return specs.map { (label, notes, lat, lon, paths) in
+            let a = auditData(for: label)
+            return HeadData(label: label, headType: "Hunter Pro-Spray", nozzle: "TBD",
+                            arcDegrees: 0, location: "", notes: notes, isConfirmed: false,
+                            latitude: lat, longitude: lon, photoPaths: paths,
+                            auditObservation: a.obs, auditConfidence: a.conf)
+        }
     }
 
     static func zone3() -> ZoneData {
@@ -532,91 +513,30 @@ enum PreviewData {
             notes: "West side yard along fence."
         )
 
-        zone.heads = phase1Z3NewHeads() + [
-            // Z3-S7..Z3-S11 inherit data from the original H3-1..H3-5 seed.
-            // Per-pin photo counts match disk state after the 2026-04-25 reimport.
-            HeadData(
-                label: "Z3-S7",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 90,
-                location: "NW corner",
-                notes: "KML pin: b blue (red marker, NW-most).",
-                isConfirmed: true,
-                latitude: 40.30045489168911,
-                longitude: -111.7457086814581,
-                photoPaths: [
-                    "heads/Z3-S7/photo-1.jpg",
-                    "heads/Z3-S7/photo-2.jpg",
-                    "heads/Z3-S7/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S8",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 180,
-                location: "West fence N",
-                notes: "KML pin: b red.",
-                isConfirmed: true,
-                latitude: 40.30044324011,
-                longitude: -111.7456786858868,
-                photoPaths: [
-                    "heads/Z3-S8/photo-1.jpg",
-                    "heads/Z3-S8/photo-2.jpg",
-                    "heads/Z3-S8/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S9",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 180,
-                location: "West fence mid",
-                notes: "KML pin: b red.",
-                isConfirmed: true,
-                latitude: 40.30039406539294,
-                longitude: -111.7456939001862,
-                photoPaths: [
-                    "heads/Z3-S9/photo-1.jpg",
-                    "heads/Z3-S9/photo-2.jpg",
-                    "heads/Z3-S9/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S10",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 180,
-                location: "West fence S",
-                notes: "KML pin: b red.",
-                isConfirmed: true,
-                latitude: 40.3003882496641,
-                longitude: -111.745666648806,
-                photoPaths: [
-                    "heads/Z3-S10/photo-1.jpg",
-                    "heads/Z3-S10/photo-2.jpg",
-                    "heads/Z3-S10/photo-3.jpg"
-                ]
-            ),
-            HeadData(
-                label: "Z3-S11",
-                headType: "Hunter",
-                nozzle: "TBD",
-                arcDegrees: 90,
-                location: "SW corner (unconfirmed)",
-                notes: "KML pin: B bred (visible in property overhead).",
-                isConfirmed: false,
-                latitude: 40.30036387431078,
-                longitude: -111.7456811868022,
-                photoPaths: [
-                    "heads/Z3-S11/photo-1.jpg",
-                    "heads/Z3-S11/photo-2.jpg",
-                    "heads/Z3-S11/photo-3.jpg",
-                    "heads/Z3-S11/photo-4.jpg"
-                ]
-            )
+        let legacySpecs: [(String, Int, String, String, Bool, Double, Double, [String])] = [
+            ("Z3-S7", 90, "NW corner", "KML pin: b blue (red marker, NW-most). Was H3-1.", true,
+             40.30045489168911, -111.7457086814581,
+             ["heads/Z3-S7/photo-1.jpg","heads/Z3-S7/photo-2.jpg","heads/Z3-S7/photo-3.jpg"]),
+            ("Z3-S8", 180, "West fence N", "KML pin: b red. Was H3-2.", true,
+             40.30044324011, -111.7456786858868,
+             ["heads/Z3-S8/photo-1.jpg","heads/Z3-S8/photo-2.jpg","heads/Z3-S8/photo-3.jpg"]),
+            ("Z3-S9", 180, "West fence mid", "KML pin: b red. Was H3-3.", true,
+             40.30039406539294, -111.7456939001862,
+             ["heads/Z3-S9/photo-1.jpg","heads/Z3-S9/photo-2.jpg","heads/Z3-S9/photo-3.jpg"]),
+            ("Z3-S10", 180, "West fence S", "KML pin: b red. Was H3-4.", true,
+             40.3003882496641, -111.745666648806,
+             ["heads/Z3-S10/photo-1.jpg","heads/Z3-S10/photo-2.jpg","heads/Z3-S10/photo-3.jpg"]),
+            ("Z3-S11", 90, "SW corner (unconfirmed)", "KML pin: B bred (visible in property overhead). Was H3-5.", false,
+             40.30036387431078, -111.7456811868022,
+             ["heads/Z3-S11/photo-1.jpg","heads/Z3-S11/photo-2.jpg","heads/Z3-S11/photo-3.jpg","heads/Z3-S11/photo-4.jpg"])
         ]
+        zone.heads = phase1Z3NewHeads() + legacySpecs.map { (label, arc, loc, notes, confirmed, lat, lon, paths) in
+            let a = auditData(for: label)
+            return HeadData(label: label, headType: "Hunter Pro-Spray", nozzle: "TBD",
+                            arcDegrees: arc, location: loc, notes: notes, isConfirmed: confirmed,
+                            latitude: lat, longitude: lon, photoPaths: paths,
+                            auditObservation: a.obs, auditConfidence: a.conf)
+        }
 
         zone.problemAreas = [
             ProblemData(title: "East fence coverage gap", description: "Dry strip along east fence line.", severity: .medium, isPreSeason: true),
@@ -670,7 +590,8 @@ enum PreviewData {
         ]
 
         zone.heads = kmlNotes.map { (label, kmlName, lat, lon) in
-            HeadData(
+            let a = auditData(for: label)
+            return HeadData(
                 label: label,
                 headType: "Hunter Pro-Spray",
                 nozzle: "TBD",
@@ -680,11 +601,9 @@ enum PreviewData {
                 isConfirmed: false,
                 latitude: lat,
                 longitude: lon,
-                photoPaths: [
-                    "heads/\(label)/photo-1.jpg",
-                    "heads/\(label)/photo-2.jpg",
-                    "heads/\(label)/photo-3.jpg"
-                ]
+                photoPaths: ["heads/\(label)/photo-1.jpg","heads/\(label)/photo-2.jpg","heads/\(label)/photo-3.jpg"],
+                auditObservation: a.obs,
+                auditConfidence: a.conf
             )
         }
 

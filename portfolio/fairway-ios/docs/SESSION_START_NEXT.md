@@ -1,6 +1,59 @@
-# Session Start — Fairway iOS, next session after 2026-04-25 device smoke test
+# Fairway iOS — Session Start (2026-04-25 post-audit)
 
-> Copy everything in the fenced block below into a fresh Claude Code chat.
+> Copy everything below the line into a new Claude Code chat.
+
+---
+
+Read `portfolio/fairway-ios/CLAUDE.md` and `portfolio/fairway-ios/HANDOFF.md` first, then continue from this context.
+
+## What was done (2026-04-25 audit session)
+
+- **Photo audit complete** — read all 126 photos across 41 heads; produced `docs/heads/PHOTO_AUDIT.md` with per-head nozzle ID, confidence, and blocked-action list.
+- **Pre-Season Audit feature shipped** — `More → Pre-Season Audit`:
+  - 41 heads listed by zone with photo-audit observations pre-populated
+  - Confidence badges: CONFIRMED (green) / LIKELY (orange) / UNCLEAR (yellow) / BLOCKED (red)
+  - Tap head → sheet with audit finding, what still needs field measurement, editable nozzle/arc/radius fields, "Head cleared" toggle
+  - Progress indicator per zone + overall
+- **HeadData model** — 6 new backward-compat fields: `auditObservation`, `auditConfidence`, `preSeasonChecked`, `fieldNozzle`, `fieldArcDegrees`, `fieldRadiusFeet`
+- **Build:** EXIT:0. Tests NOT re-run. Device install NOT done.
+
+## Blocked heads (physical work required)
+
+| Head | Failure | Action |
+|------|---------|--------|
+| **Z4-S1** | Fully buried in mud | Dig out completely — **zero coverage now** |
+| Z2-S6 | Buried in erosion pit | Dig out + swing-pipe raise |
+| Z2-S5, S8, S11 | Empty/dirt-packed nozzle slots | Clear slot, install nozzle |
+| Z2-S18 | Encrusted slot | Clear slot, re-photo |
+| Z2-S14 | Conflicting photos | Field re-photo while running |
+| Z2-S17 | Conflicting photos | Field re-photo + running confirmation |
+| Z4-S7 | Partly buried | Clear soil, re-photo |
+
+## Next steps (pick one)
+
+- **Install on device** and walk the audit (More → Pre-Season Audit)
+- **Run tests** to verify new HeadData fields decode cleanly
+- **Phase 1 Map bug fix** — MapTabView renders Atlantic Ocean at (0,0) coords
+- **Seed cleanup** — once field walk done, update `nozzle:` strings in PreviewData with confirmed values
+
+## Key invariants
+
+- New HeadData fields must use `decodeIfPresent` in the extension `init(from:)` — missing key = crash for existing users
+- Z2 is a single valve (park strip always irrigates with front yard)
+- Rachio token: Keychain only
+- Mount iOS 17.2 runtime DMG before any `xcodebuild` call (see root CLAUDE.md)
+
+## Changed files this session
+
+`HeadData.swift` · `FairwayStore.swift` · `PreviewData.swift` · `PreSeasonAuditView.swift` (NEW) · `ContentView.swift` · `project.pbxproj` · `docs/heads/PHOTO_AUDIT.md` (NEW) · `CHANGELOG.md` · `LEARNINGS.md` · `HANDOFF.md`
+
+---
+
+_End of paste block_
+
+---
+
+# (archive) Original 2026-04-25 smoke-test session start
 
 ```
 Read these in order before doing anything:

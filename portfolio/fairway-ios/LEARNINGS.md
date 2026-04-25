@@ -229,6 +229,30 @@ Kept the `Z2-MATCH-Nth/` names; `phase0Z2Heads()` photoPaths point at them. Z2-S
 
 ---
 
+## 2026-04-25 — Closure-based initializer trick for inline audit data in PreviewData
+
+When seeding a large number of structs (41 heads) where each needs a lookup call (`auditData(for:)`) alongside other parameters, Swift doesn't allow calling a static function mid-array-literal cleanly. Two patterns that work:
+
+1. **Immediately-invoked closure** for individually-named heads: `{ let a = auditData(for: "Z2-S1"); return HeadData(..., auditObservation: a.obs) }()`
+2. **Array map** for heads defined from a specs array: declare a `[(label, ...)]` tuple array, then `.map { ... let a = auditData(for: $0.label); return HeadData(...) }`.
+
+The map pattern is strictly cleaner and preferred for large batches. The closure trick is OK for 1-6 individually-shaped heads.
+
+---
+
+## 2026-04-25 — Photo audit confidence levels inform blocked-head action wording
+
+When the `HeadAuditSheet` needs to show a human-readable action for "BLOCKED" heads, the action text comes from pattern-matching the `auditObservation` string rather than from a separate enum. This avoids a new data model type for what amounts to a display string. The pattern:
+
+```swift
+if head.auditObservation.contains("erosion pit") { return "Dig out head + raise with swing-pipe extender" }
+if head.auditObservation.contains("mud") { return "Dig out head completely, clean cap, re-photo" }
+```
+
+Works fine for the current set. If blocked-head action logic gets more complex, migrate to an `auditAction: String` field on `HeadData` (populated in `auditData(for:)` alongside observation + confidence).
+
+---
+
 ## ⚠️ Swift Codable: synthesized init(from:) does NOT use property defaults — APPLIES TO EVERY IOS APP
 
 **Date:** 2026-04-25

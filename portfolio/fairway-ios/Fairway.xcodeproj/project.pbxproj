@@ -66,6 +66,7 @@
 		FW01000000000000000003B /* RachioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003B /* RachioSettingsView.swift */; };
 		FW01000000000000000003C /* RachioHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003C /* RachioHistoryView.swift */; };
 		FW01000000000000000003D /* RachioDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003D /* RachioDecodeTests.swift */; };
+		FW01000000000000000003E /* PreSeasonAuditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003E /* PreSeasonAuditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +141,7 @@
 		FW02000000000000000003B /* RachioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioSettingsView.swift; sourceTree = "<group>"; };
 		FW02000000000000000003C /* RachioHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioHistoryView.swift; sourceTree = "<group>"; };
 		FW02000000000000000003D /* RachioDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioDecodeTests.swift; sourceTree = "<group>"; };
+		FW02000000000000000003E /* PreSeasonAuditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSeasonAuditView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,7 @@
 				FW020000000000000000036 /* HeadPinEditor.swift */,
 				FW02000000000000000003B /* RachioSettingsView.swift */,
 				FW02000000000000000003C /* RachioHistoryView.swift */,
+				FW02000000000000000003E /* PreSeasonAuditView.swift */,
 				FW020000000000000000010 /* ZoneListView.swift */,
 				FW020000000000000000011 /* ZoneDetailView.swift */,
 				FW020000000000000000012 /* HeadInventoryView.swift */,
@@ -436,6 +439,7 @@
 				FW01000000000000000003A /* RachioState.swift in Sources */,
 				FW01000000000000000003B /* RachioSettingsView.swift in Sources */,
 				FW01000000000000000003C /* RachioHistoryView.swift in Sources */,
+				FW01000000000000000003E /* PreSeasonAuditView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

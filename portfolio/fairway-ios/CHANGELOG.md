@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-25 — Pre-Season Audit view + photo audit data
+
+**New feature: More → Pre-Season Audit**
+
+A head-by-head pre-season checklist for walking the property before opening the season.
+
+- **`Fairway/Views/PreSeasonAuditView.swift`** (NEW) — list of all 41 heads across Z2/Z3/Z4 grouped by zone. Each head shows the photo-audit observation, confidence badge (CONFIRMED / LIKELY / UNCLEAR / BLOCKED), and field-entered confirmed nozzle. Progress indicator per zone + overall. Tap any head → detail sheet.
+- **`HeadAuditSheet`** (inline in view file) — per-head sheet showing: photo-audit finding with confidence dot, "still needed from field" items (arc°, radius, GPM, nozzle re-confirm for unclear heads), required action for blocked heads, editable fields for confirmed nozzle / arc° / radius ft / notes, and a "Head cleared" toggle.
+- **`Fairway/Models/HeadData.swift`** — 6 new audit fields: `auditObservation`, `auditConfidence`, `preSeasonChecked`, `fieldNozzle`, `fieldArcDegrees`, `fieldRadiusFeet`. All use `decodeIfPresent` in the existing extension to maintain backward-compat. Added `auditIsBlocked` and `auditNeedsFieldWork` computed helpers.
+- **`Fairway/FairwayStore.swift`** — `updateHead(_:)` helper for saving single-head edits from the audit sheet.
+- **`Fairway/PreviewData.swift`** — `auditData(for:)` static lookup populated for all 41 heads from the 2026-04-25 photo audit. All head initializers now pass `auditObservation` + `auditConfidence`. Z3 legacy heads and Z4 back-yard heads refactored to array/map pattern to stay DRY.
+- **`docs/heads/PHOTO_AUDIT.md`** (NEW) — full 41-head photo audit: nozzle ID, cap color, confidence, blocked-action table, cross-reference with CLAUDE.md TODOs.
+
+**Blocked heads requiring physical work (9 of 41):**
+Z2: S5 (empty slot), S6 (erosion pit), S8 (empty slot), S11 (empty slot), S14 (field re-photo), S17 (conflicting signals), S18 (encrusted slot)
+Z4: S1 (fully buried — highest priority), S7 (partly buried)
+
 ### Verified — 2026-04-25 — Build + test + device install COMPLETE
 
 All tests pass on iPhone 15 simulator (EXIT:0). Device build succeeded for iPhone 12 Pro Max. App installed and smoke-tested on device: Zone 3 = 11 heads Z3-S1..Z3-S11, Zone 4 = "Back Yard" + 12 Z4-S1..Z4-S12.

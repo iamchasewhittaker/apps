@@ -5,9 +5,9 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 App installed and smoke-tested on iPhone 12 Pro Max. ✅ Zone 3=11 heads, Zone 4="Back Yard"+12. Next: docs-sweep + Phase 1 Map bug. |
-| Last session | 2026-04-25 (tests pass, 3 Codable bugs fixed, device build + install + smoke test complete) |
-| Focus | Docs-sweep (PHOTO_AUDIT.md, COVERAGE_ANALYSIS.md, PROPERTY_PLACEMENT.md) or Phase 1 Map bug fix — pick one. |
+| Status | 🟡 Pre-Season Audit live. 41 heads audited from photos. BUILD SUCCEEDED. Device install needed. |
+| Last session | 2026-04-25 (photo audit + PreSeasonAuditView shipped; all docs updated) |
+| Focus | **Install on device + field walk with the audit**. 9 heads blocked (Z4-S1 highest priority — fully buried). |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
