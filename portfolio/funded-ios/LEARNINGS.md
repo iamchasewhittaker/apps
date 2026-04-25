@@ -91,3 +91,23 @@
 **Root cause:** `PayeeDisplayFormatter.itemContextSubtitle` now returns the same string for all merchants when memo is empty: `No item details yet`.
 **Fix / lesson:** Renamed test to `testItemContextSubtitle_universalFallbackWhenMemoEmpty` and asserted equality with that string.
 **Tags:** swift, tests, ui-copy
+
+
+---
+
+## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)
+
+**The iOS 17.2 simulator runtime DMG unmounts on every reboot.**
+actool (invoked by every `xcodebuild` call, even for device targets) looks up the runtime at:
+`/Library/Developer/CoreSimulator/Volumes/iOS_21C62/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 17.2.simruntime`
+If the DMG is not mounted, actool fails with a runtime-not-found error and the build fails.
+
+Run this once per session before any `xcodebuild` call:
+```bash
+sudo hdiutil attach \
+  /Library/Developer/CoreSimulator/Images/B3B0953C-8EEB-4DF1-8149-B9770CC90CC7.dmg \
+  -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 \
+  -readonly -noverify
+```
+
+The SDK plist patch (`iPhoneSimulator17.2.sdk SystemVersion.plist ProductBuildVersion = 21C62`) is **persistent** — no re-run after reboot. Only the DMG mount is needed each session. Full diagnostic trail: `portfolio/unnamed-ios/LEARNINGS.md` (2026-04-24 and 2026-04-25).

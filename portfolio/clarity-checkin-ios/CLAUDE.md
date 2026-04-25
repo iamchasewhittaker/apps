@@ -23,6 +23,9 @@ A native iOS morning and evening wellness check-in app covering mood logging, me
 SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. No SwiftData, no external dependencies beyond ClarityUI.
 
 ## Commands
+
+> **Pre-build (2017 MBP · Ventura · Xcode 15.2):** Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite`.
+
 - Open `ClarityCheckin.xcodeproj` in Xcode → ⌘B to build, ⌘R to run
 - Tests: ⌘U (`CheckinBlobTests`)
 - Build check (no signing): `xcodebuild build -scheme ClarityCheckin -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO`

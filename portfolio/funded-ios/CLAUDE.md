@@ -23,6 +23,10 @@ Writes require user confirmation and are equivalent to the user manually assigni
 
 > *"For Reese. For Buzz. Forward — no excuses."*
 
+## Pre-build prerequisite (2017 MBP · Ventura · Xcode 15.2)
+
+Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite` for the full command.
+
 ## Tech stack
 
 - Swift 5.0 · SwiftUI · SwiftData · iOS 17.0+

@@ -1,6 +1,7 @@
 import SwiftUI
 import MapKit
 
+@MainActor
 struct PropertySettingsView: View {
     @Environment(FairwayStore.self) private var store
     @State private var address: String = ""

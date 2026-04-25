@@ -87,6 +87,8 @@ UnnamedTests/
 
 ## Build Commands
 
+> **Pre-build (2017 MBP · Ventura · Xcode 15.2):** Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite`.
+
 ```bash
 # Build for simulator (no signing needed)
 xcodebuild build \
@@ -102,16 +104,14 @@ xcodebuild test \
   -destination 'platform=iOS Simulator,name=iPhone 15' \
   CODE_SIGNING_ALLOWED=NO
 
-# Build + install on device (requires signing)
-xcodebuild build \
-  -project Unnamed.xcodeproj \
-  -scheme Unnamed \
-  -destination 'id=A0C65578-B1E0-4E96-A1EC-EEB8913BD11C' \
-  -allowProvisioningUpdates
+# Build for device (bypasses destination resolver — required on this machine for iOS 26.x device)
+xcodebuild -target Unnamed -configuration Debug -sdk iphoneos17.2 \
+  -allowProvisioningUpdates build \
+  2>&1 | tee /tmp/unnamed-build.log
 
 xcrun devicectl device install app \
   --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C \
-  ~/Library/Developer/Xcode/DerivedData/Unnamed-*/Build/Products/Debug-iphoneos/Unnamed.app
+  build/Debug-iphoneos/Unnamed.app
 
 xcrun devicectl device process launch \
   --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C \

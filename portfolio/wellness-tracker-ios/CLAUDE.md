@@ -32,6 +32,10 @@ The native SwiftUI companion to Wellness Tracker — supports daily check-ins (m
 - **UI shell:** `ContentView.swift` uses tab navigation for `Check-in`, `Tasks`, `Time`, `Capture`, and `Sync`.
 - **UI modules:** `Features/Checkin/`, `Features/PastDays/`, `Features/Tasks/`, `Features/Time/`, `Features/Capture/`, `Features/Sync/`, `Theme/WellnessTheme.swift`.
 
+## Pre-build prerequisite (2017 MBP · Ventura · Xcode 15.2)
+
+Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite` for the full command.
+
 ## When editing
 
 - Small, focused changes; update **CHANGELOG.md** under `## [Unreleased]` for user-visible work.

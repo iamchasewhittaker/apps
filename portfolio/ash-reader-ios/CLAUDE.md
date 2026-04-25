@@ -47,6 +47,10 @@ The native SwiftUI companion to Ash Reader — the full 138k-word capture system
 ## Bundle ID
 `com.chasewhittaker.AshReader`
 
+## Pre-build prerequisite (2017 MBP · Ventura · Xcode 15.2)
+
+Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite` for the full command. SDK plist patch is persistent; only the DMG mount is needed after reboot.
+
 ## Build + run on device
 ```bash
 xcodebuild \

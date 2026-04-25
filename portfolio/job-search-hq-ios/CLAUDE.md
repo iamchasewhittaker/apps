@@ -22,6 +22,8 @@ SwiftUI · iOS 17 · `@Observable` · `UserDefaults` + `Codable` · local SPM [`
 
 ## Commands
 
+> **Pre-build (2017 MBP · Ventura · Xcode 15.2):** Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite`.
+
 - Open `JobSearchHQ.xcodeproj` in Xcode → ⌘B / ⌘R
 - **Regenerate launcher + in-app logo:** `python3 tools/generate_brand_assets.py` (Pillow) — commit updated PNGs when art changes.
 - Tests: ⌘U (requires signing for the new bundle id once)

@@ -25,6 +25,9 @@ The native iOS port of Clarity Command — a daily accountability hub with a mor
 SwiftUI + iOS 17 + `@Observable` + UserDefaults + Codable structs. Gold accent (`#c8a84b`) via app-local `CommandPalette`. **Supabase Swift** (`supabase-swift` SPM) for optional cloud sync — same `user_data` row as web Clarity Command (`app_key = command`). No SwiftData.
 
 ## Commands
+
+> **Pre-build (2017 MBP · Ventura · Xcode 15.2):** Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite`.
+
 - Open `ClarityCommand.xcodeproj` in Xcode → ⌘B to build, ⌘R to run
 - Tests: ⌘U (`CommandBlobTests`)
 - Build check (no signing): `xcodebuild build -scheme ClarityCommand -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO`

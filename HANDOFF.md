@@ -302,6 +302,8 @@ Update CHANGELOG [Unreleased], app ROADMAP, app HANDOFF, root ROADMAP Change Log
 
 ## Notes (optional, human + long-lived context)
 
+- **iOS build prerequisite — all apps (2026-04-25):** The iOS 17.2 simulator runtime DMG at `/Library/Developer/CoreSimulator/Images/B3B0953C-8EEB-4DF1-8149-B9770CC90CC7.dmg` **unmounts on every reboot**. Run `sudo hdiutil attach ... -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 -readonly -noverify` once per build session before any `xcodebuild` call. actool requires the runtime even for device builds. SDK plist patch (21C52→21C62) is persistent. Full details in `portfolio/unnamed-ios/LEARNINGS.md` and root `CLAUDE.md § iOS Build Prerequisite`.
+
 - **Gmail Forge (2026-04-18):** `portfolio/gmail-forge/` — Sort button fully wired: `doPost(e)` in Apps Script applies labels via Gmail API; extension extracts `data-legacy-message-id` from DOM rows and POSTs batch. Added `?` Guide button (in-extension overlay + standalone `guide.html` dark-mode minisite). Fixed "Extension context invalidated" crash with safe wrappers + graceful teardown. **Remaining setup:** open extension popup → enter Web App URL + Trigger Token.
 - **Linear — Job Search HQ (applied 2026-04-15):** Project [Overview](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) updated via API (iOS companion section + commit link); short description mentions iOS v0.1. Done issue **[WHI-53](https://linear.app/whittaker/issue/WHI-53/jshq-ios-v01-device-install-brand)** — *JSHQ iOS v0.1 — device install + brand* (links [fdecbb1](https://github.com/iamchasewhittaker/apps/commit/fdecbb1)).
 

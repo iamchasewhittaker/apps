@@ -28,6 +28,8 @@ SwiftUI · iOS 17 · `@Observable` · UserDefaults + JSON `Codable` · ClarityUI
 
 ## Commands
 
+> **Pre-build (2017 MBP · Ventura · Xcode 15.2):** Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite`.
+
 ```bash
 cd portfolio/clarity-triage-ios
 

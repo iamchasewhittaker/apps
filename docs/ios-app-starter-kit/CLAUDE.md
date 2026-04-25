@@ -10,6 +10,19 @@
 
 This project must follow PRODUCT_BUILD_FRAMEWORK.md before implementation begins.
 
+## iOS Build Prerequisite (This Machine — 2017 MBP · Ventura · Xcode 15.2)
+
+The iOS 17.2 simulator runtime DMG unmounts on every reboot. Run this once per build session before any `xcodebuild` call:
+
+```bash
+sudo hdiutil attach \
+  /Library/Developer/CoreSimulator/Images/B3B0953C-8EEB-4DF1-8149-B9770CC90CC7.dmg \
+  -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 \
+  -readonly -noverify
+```
+
+SDK plist patch (`ProductBuildVersion` 21C52→21C62) is persistent — no re-run after reboot. Full context: `portfolio/unnamed-ios/LEARNINGS.md`.
+
 ## Rules for Claude
 - enforce scope discipline
 - do not allow V1 creep without explicit approval

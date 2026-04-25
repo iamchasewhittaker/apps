@@ -153,6 +153,24 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 - **Claude Usage Tool** (`portfolio/claude-usage-tool/`): **Electron 28** + **React 18** + **TypeScript** + **Vite** — macOS menu bar app. Exception to the portfolio "no TypeScript" norm. Run via `npm run electron:dev`.
 - No Redux, no external state libraries (portfolio-wide). TypeScript exception: Claude Usage Tool only.
 
+## iOS Build Prerequisite (This Machine)
+
+> **Applies to every iOS app on this 2017 MBP (macOS Ventura 13.7.8 · Xcode 15.2).**
+> The iOS 17.2 simulator runtime ships as a DMG and is **not auto-mounted on reboot**. actool — invoked by every `xcodebuild` call, even for device targets — requires the runtime to be mounted. If it isn't, the build fails with a `runtimeBundlePath` / actool error.
+
+**Run this once per build session, before any `xcodebuild` call:**
+
+```bash
+sudo hdiutil attach \
+  /Library/Developer/CoreSimulator/Images/B3B0953C-8EEB-4DF1-8149-B9770CC90CC7.dmg \
+  -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 \
+  -readonly -noverify
+```
+
+- The SDK plist patch (`iPhoneSimulator17.2.sdk SystemVersion.plist ProductBuildVersion = 21C62`) is **persistent** — no re-run needed after reboot.
+- Verify mount: `ls "/Library/Developer/CoreSimulator/Volumes/iOS_21C62/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 17.2.simruntime"` should return `Contents`.
+- Full diagnostic trail: `portfolio/unnamed-ios/LEARNINGS.md` (2026-04-24 + 2026-04-25 entries).
+
 ## Monorepo Layout
 
 ```

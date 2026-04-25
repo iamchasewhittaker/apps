@@ -43,6 +43,10 @@ RollerTaskTycoon/
 - Small, focused changes; update **CHANGELOG.md** under `## [Unreleased]` for user-visible work.
 - Match existing Swift style; no TypeScript (N/A here).
 
+## Pre-build prerequisite (2017 MBP · Ventura · Xcode 15.2)
+
+Mount the iOS 17.2 runtime DMG once per session before any `xcodebuild` call — see root `CLAUDE.md § iOS Build Prerequisite` for the full command.
+
 ## Physical device install (CLI)
 
 For a **clean reinstall** (e.g. dim SpringBoard icon after sideload): `xcrun devicectl device uninstall app --device <UUID> com.chasewhittaker.ParkChecklist`, then `xcodebuild … -destination 'generic/platform=iOS' -derivedDataPath /tmp/rtt-iphone-build build`, then `xcrun devicectl device install app --device <UUID> /tmp/rtt-iphone-build/Build/Products/Debug-iphoneos/RollerTaskTycoon.app`. UUID from `xcrun devicectl list devices`. Full context: [README.md](README.md#dim--gray-home-screen-icon-development--sideload).

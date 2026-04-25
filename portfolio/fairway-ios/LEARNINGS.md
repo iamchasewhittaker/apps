@@ -225,3 +225,23 @@ Was tempted to rename `docs/heads/Z2-MATCH-1st/`..`Z2-MATCH-6th/` to `docs/heads
 Kept the `Z2-MATCH-Nth/` names; `phase0Z2Heads()` photoPaths point at them. Z2-S7..S18 + H3-1..H3-5 already had final names from the import script (KML pin names → label-based dirs), so no provisional naming was needed there.
 
 **Rule:** When directory naming encodes a hypothesis (here, "1st Sprinkler IS Z2-S1"), wait for confirmation before locking it in. Reversible names beat clean names if the data underneath is still settling.
+
+
+---
+
+## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)
+
+**The iOS 17.2 simulator runtime DMG unmounts on every reboot.**
+actool (invoked by every `xcodebuild` call, even for device targets) looks up the runtime at:
+`/Library/Developer/CoreSimulator/Volumes/iOS_21C62/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 17.2.simruntime`
+If the DMG is not mounted, actool fails with a runtime-not-found error and the build fails.
+
+Run this once per session before any `xcodebuild` call:
+```bash
+sudo hdiutil attach \
+  /Library/Developer/CoreSimulator/Images/B3B0953C-8EEB-4DF1-8149-B9770CC90CC7.dmg \
+  -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 \
+  -readonly -noverify
+```
+
+The SDK plist patch (`iPhoneSimulator17.2.sdk SystemVersion.plist ProductBuildVersion = 21C62`) is **persistent** — no re-run after reboot. Only the DMG mount is needed each session. Full diagnostic trail: `portfolio/unnamed-ios/LEARNINGS.md` (2026-04-24 and 2026-04-25).
