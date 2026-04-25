@@ -2,9 +2,32 @@
 
 ## [Unreleased]
 
-### Updated — 2026-04-25 — KML reimport: Phase 1 zone migration COMPLETE
+### Verified — 2026-04-25 — Build + test + device install COMPLETE
 
-All Swift edits, migration logic, and tests shipped. `xcodebuild` build/test still blocked by missing iOS 17.2 simulator runtime (install via Xcode → Settings → Platforms to unblock). All Swift source verified clean via `xcrun swiftc -parse`.
+All tests pass on iPhone 15 simulator (EXIT:0). Device build succeeded for iPhone 12 Pro Max. App installed and smoke-tested on device: Zone 3 = 11 heads Z3-S1..Z3-S11, Zone 4 = "Back Yard" + 12 Z4-S1..Z4-S12.
+
+**Three production bugs found and fixed during verification:**
+
+`Fairway/Views/PropertySettingsView.swift`:
+- Added `@MainActor` to struct declaration. Without it, `@ViewBuilder` helper properties and `Button` action closures calling `store.blob`, `store.propertyLocationIssue`, and `store.clearProperty()` produced Swift concurrency errors (main actor-isolated property accessed from non-isolated context).
+
+`Fairway/Models/HeadData.swift`:
+- Added `extension HeadData { init(from:) }` using `decodeIfPresent` for all fields. Swift's synthesized `init(from:)` requires a JSON key for every non-optional property even when that property has a Swift default value (`= []`, `= false`, etc.). Any existing user blob without `"photoPaths"` in the JSON would crash on launch. **This class of bug applies to every Codable struct in every iOS app in the portfolio.**
+- Custom decoder placed in an `extension`, NOT in the struct body. Reason: putting `init(from:)` inside the struct body suppresses Swift's synthesized memberwise initializer, breaking every callsite that constructs a `HeadData(label:, headType:, ...)`.
+
+`Fairway/FairwayBlob.swift`:
+- Added `extension FairwayBlob { init(from:) }` using `decodeIfPresent` for `observations`, `waterRuns`, `fertApplications`, and all other array fields. Same root cause as above — v1 blobs without these keys would crash on decode when upgrading.
+
+**Tests — all passing (iPhone 15 simulator):**
+- `test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard`
+- `testPreSeasonFlagsCorrect`
+- `testHeadDataMissingGeoFieldsDecodes`
+- `testV1BlobDecodesIntoV2WithDefaults`
+- All 7 `RachioDecodeTests`
+
+---
+
+### Updated — 2026-04-25 — KML reimport: Phase 1 zone migration COMPLETE (Swift)
 
 **`tools/rewrite-kml-labels.py` (NEW):**
 - Stdlib-only script; reads `docs/heads/sprinklers.json` for `(lat, lon) → label` map.
@@ -14,40 +37,20 @@ All Swift edits, migration logic, and tests shipped. `xcodebuild` build/test sti
 
 **`docs/Sprinklers Google Earth (1).kml` (MODIFIED):**
 - All 41 `<name>` tags rewritten to `Z*-S*` labels. Ready to re-import to Google Earth web.
-- `grep "<name>Z3-S1</name>"` matches.
 
-**`docs/heads/RENAME_MAP.md` (NEW):**
-- 41 rows sorted by zone then label; old Google Earth names → new Fairway labels.
+**`docs/heads/RENAME_MAP.md` (NEW):** 41 rows sorted by zone then label.
 
 **`Fairway/PreviewData.swift` (MODIFIED):**
-- `zone3()` (`private static` → `static`): now returns 11 heads `Z3-S1..Z3-S11`.
-  - `Z3-S1..Z3-S6` — NEW; `headType: "Hunter"`, `nozzle: "TBD"`, `arcDegrees: 0`, `isConfirmed: false`, lat/lon + `notes: "KML pin: <kml_name>."`, `photoPaths` from manifest (Z3-S1=2, Z3-S2=4, rest=3).
-  - `Z3-S7..Z3-S11` — copied from old H3-1..H3-5: arc, location, notes, isConfirmed preserved; only label and `photoPaths` strings updated.
-  - Problem areas and schedule unchanged.
-- `zone4()` (`private static` → `static`): zone renamed "East Side" → **"Back Yard"**; 3 H4-* placeholder heads replaced with 12 `Z4-S1..Z4-S12` entries (all 3 photos; lat/lon from manifest; `notes: "KML pin: <kml_name>."`). Old placeholder `problemAreas` (including the made-up H4-1 patio overspray) replaced with 3 pre-season stubs (`isPreSeason: true`): "Coverage gaps to verify", "Nozzle types unconfirmed", "Cycle time TBD pending PR test". Schedule shape preserved (Cycle & Soak).
-- Added `static func phase1Z3NewHeads() -> [HeadData]` — public helper for the 6 new Z3-S1..Z3-S6 heads; used by migration.
+- `zone3()` expanded to 11 heads `Z3-S1..Z3-S11`. Z3-S1..S6 new; Z3-S7..S11 carry over H3-1..H3-5 data.
+- `zone4()` renamed "East Side" → "Back Yard"; 12 Z4-S1..Z4-S12 heads seeded; 3 pre-season problem stubs.
+- `phase1Z3NewHeads()` added as public helper for migration.
 
 **`Fairway/FairwayStore.swift` (MODIFIED):**
-- `applyPhase1ZoneMigrationIfNeeded()` added as a sync `private func`; called from `load()` immediately after `applyPhase0MigrationIfNeeded()`. Three idempotent operations:
-  1. **Zone 3 rename** — any head with `label.hasPrefix("H3-")` → `Z3-S{N+6}`; `photoPaths` strings rewritten in place.
-  2. **Zone 3 add** — if no head with `label == "Z3-S1"` exists, appends the 6 new Z3-S1..Z3-S6 heads from `PreviewData.phase1Z3NewHeads()`. Skips by label individually to avoid duplicates.
-  3. **Zone 4 replace** — only when `zone.name == "East Side"` AND every head has `label.hasPrefix("H4-")` (pristine placeholder fingerprint). Replaces zone with `PreviewData.zone4()`, preserving the original `id` UUID. Prints a warning and skips if the zone appears user-customized.
-- Named `applyPhase1ZoneMigrationIfNeeded` (not `applyPhase1MigrationIfNeeded`) to avoid collision with the existing async `applyPhase1PropertyMigrationIfNeeded()` at line 110.
+- `applyPhase1ZoneMigrationIfNeeded()` — sync, idempotent, 3 ops: H3→Z3-S rename + photoPaths rewrite, Z3-S1..S6 append, Z4 "East Side" reseed with UUID preservation.
 
 **`FairwayTests/FairwayBlobTests.swift` (MODIFIED):**
-- `testPreSeasonFlagsCorrect` updated: removed assertion on the now-deleted H4-1 patio overspray problem; added `XCTAssertEqual(zone4.name, "Back Yard")` and check that all Z4 `problemAreas` have `isPreSeason == true`.
-- `test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard()` (NEW): builds an old-shape blob (5 H3-* heads with custom notes/nozzles/photoPaths; Z4 "East Side" with 3 H4-* heads); injects via `UserDefaults`; calls `store.load()`; asserts:
-  - Z3 has exactly 11 heads with labels Z3-S1..Z3-S11; no H3-* remain.
-  - Z3-S7 carries the original custom notes/nozzle; photoPaths rewritten to `heads/Z3-S7/...`.
-  - Z3-S9 preserves empty photoPaths array (input had 0 paths).
-  - Z3-S1 has `isConfirmed: false`, `notes == "KML pin: b yellow."`.
-  - Z4 name == "Back Yard"; 12 heads Z4-S1..Z4-S12; no H4-* remain; all `problemAreas.isPreSeason == true`.
-  - Idempotency: second `store.load()` doesn't change head counts.
-
-**Pending (manual):**
-- Install iOS 17.2 simulator runtime → run `xcodebuild test` + `xcodebuild build`.
-- Chase re-imports `docs/Sprinklers Google Earth (1).kml` to Google Earth web → confirm all 41 pins show `Z*-S*` labels.
-- Install Fairway on device (fresh install + over-existing-install) to smoke test migration.
+- `testPreSeasonFlagsCorrect` updated for new Z4 shape.
+- `test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard()` added — covers rename, data preservation, append, Z4 reseed, idempotency.
 
 ---
 

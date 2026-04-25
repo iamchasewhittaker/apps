@@ -229,6 +229,59 @@ Kept the `Z2-MATCH-Nth/` names; `phase0Z2Heads()` photoPaths point at them. Z2-S
 
 ---
 
+## ⚠️ Swift Codable: synthesized init(from:) does NOT use property defaults — APPLIES TO EVERY IOS APP
+
+**Date:** 2026-04-25
+
+When you add a new field to a `Codable` struct with a Swift default value, e.g.:
+```swift
+var photoPaths: [String] = []
+var observations: [LawnObservation] = []
+```
+Swift's synthesized `init(from: Decoder)` requires those keys to exist in the JSON. If they're absent (any blob saved before you added the field), decoding throws `keyNotFound` and the app crashes on launch for existing users.
+
+**Fix — always do this when adding a field to any Codable model:**
+```swift
+extension MyStruct {        // ← extension, NOT struct body (see below)
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        newField = try c.decodeIfPresent([T].self, forKey: .newField) ?? []
+        // ... decode all other fields with decodeIfPresent where appropriate
+    }
+}
+```
+
+**Critical: put `init(from:)` in an extension, not the struct body.** Any `init` declared inside the struct body suppresses Swift's synthesized memberwise initializer. Downstream callsites like `HeadData(label:, headType:, nozzle:, ...)` break with "extra arguments" compile errors. Moving the same init to an extension avoids the suppression — both the custom decoder and the memberwise init coexist.
+
+**What this caught in Fairway (2026-04-25):**
+- `HeadData.photoPaths` (added 2026-04-24) — any user who had saved app data before this field existed would crash on launch.
+- `FairwayBlob.observations` / `.waterRuns` / `.fertApplications` — same. Every existing user blob was a v1 blob without these keys.
+
+**How to prevent in future sessions:** Before shipping any new Codable field:
+1. Check if the struct has an existing custom `init(from:)` extension — if yes, add the new field there with `decodeIfPresent`.
+2. If no custom decoder exists yet, add one in an extension, decoding all fields, new ones with `decodeIfPresent`.
+3. Write a test: save a blob WITHOUT the new field key, reload, assert the field equals its default. See `testV1BlobDecodesIntoV2WithDefaults` and `testHeadDataMissingGeoFieldsDecodes` in `FairwayBlobTests.swift` for the pattern.
+
+---
+
+## 2026-04-25 — xcodebuild pipe exits mask real exit code
+
+**Date:** 2026-04-25
+
+```bash
+xcodebuild test ... 2>&1 | tail -200   # ← WRONG — tail's exit code is always 0
+```
+
+Even if `xcodebuild` fails (EXIT:1, tests failing), the pipe reports `tail`'s exit code. The command appears to succeed. Use:
+
+```bash
+xcodebuild test ... 2>&1; echo "EXIT:$?"   # ← correct — xcodebuild's exit code printed explicitly
+```
+
+This applies to any long-running build or test command you want to check after piping to `tail` or `grep`.
+
+---
+
 ## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)
 
 **The iOS 17.2 simulator runtime DMG unmounts on every reboot.**

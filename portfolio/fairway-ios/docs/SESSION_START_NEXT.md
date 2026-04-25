@@ -1,4 +1,4 @@
-# Session Start — Fairway iOS, next session after 2026-04-25 Phase 1 verification
+# Session Start — Fairway iOS, next session after 2026-04-25 device smoke test
 
 > Copy everything in the fenced block below into a fresh Claude Code chat.
 
@@ -15,8 +15,13 @@ Working directory: /Users/chase/Developer/chase/portfolio/fairway-ios
 CONTEXT
 
 Fairway iOS is a lawn OS for a 4-zone Rachio irrigation system in Vineyard, UT.
-The 2026-04-25 KML reimport (Zone 3: 5→11 heads, Zone 4 reseed "East Side"→"Back Yard" 3→12 heads)
-is FULLY COMPLETE — Swift code written, tests passing, app builds clean.
+The 2026-04-25 KML reimport (Zone 3: 5→11 heads, Zone 4 "East Side"→"Back Yard" 3→12 heads)
+is FULLY COMPLETE — Swift code written, all tests passing (EXIT:0), app installed and
+smoke-tested on Chase's iPhone 12 Pro Max.
+
+Codable safety rules for this app are documented in CLAUDE.md § iOS Codable Safety Rules.
+Every Codable struct that has had new fields added has a custom init(from:) extension
+using decodeIfPresent. Do not remove or shortcut these.
 
 ---
 
@@ -28,40 +33,27 @@ WHAT'S ALREADY DONE (do NOT redo)
 ✅ Fairway/PreviewData.swift — zone3() = 11 heads Z3-S1..Z3-S11; zone4() = "Back Yard" + 12 Z4-S1..Z4-S12 + 3 pre-season problem stubs
 ✅ Fairway/FairwayStore.swift — applyPhase1ZoneMigrationIfNeeded() (sync, called from load() after Phase 0)
 ✅ FairwayTests/FairwayBlobTests.swift — test_phase1ZoneMigration_renamesH3toZ3S_andSeedsZ4BackYard() passing
-✅ Fairway/Views/PropertySettingsView.swift — @MainActor added (fixes Swift concurrency errors)
-✅ Fairway/Models/HeadData.swift — custom init(from:) in extension (decodeIfPresent for photoPaths — fixes backward compat)
-✅ Fairway/FairwayBlob.swift — custom init(from:) in extension (decodeIfPresent for observations/waterRuns/fertApplications — fixes backward compat)
+✅ Fairway/Views/PropertySettingsView.swift — @MainActor on struct (Swift concurrency fix)
+✅ Fairway/Models/HeadData.swift — extension HeadData { init(from:) } using decodeIfPresent (backward compat)
+✅ Fairway/FairwayBlob.swift — extension FairwayBlob { init(from:) } using decodeIfPresent (backward compat)
 ✅ All tests passing: xcodebuild test on iPhone 15 simulator → EXIT:0
+✅ Device build: xcodebuild build for iPhone 12 Pro Max → EXIT:0
+✅ Device smoke test on iPhone 12 Pro Max: Zone 3=11 heads, Zone 4="Back Yard"+12 ✅
 
 ---
 
-IMMEDIATE NEXT STEPS (in order)
+PICK ONE: IMMEDIATE NEXT STEPS
 
-1. SMOKE TEST on iPhone 12 Pro Max (Chase's primary device — id A0C65578-B1E0-4E96-A1EC-EEB8913BD11C):
-   a. Delete and reinstall: verify Zone 3 = 11 heads Z3-S1..Z3-S11, Zone 4 = "Back Yard" + 12 heads Z4-S1..Z4-S12
-   b. Over-existing-install: keep old app data, launch — verify migration runs and H3-* heads rename to Z3-S7..Z3-S11, Z4 reseeds to "Back Yard"
-   c. Migration spot check: tap Zone 3 → head labeled Z3-S7 should still have the original nozzle/notes Chase entered as H3-1
+OPTION A — Docs-sweep (read-only, no code changes):
+  1. docs/heads/PHOTO_AUDIT.md — read photo-1 of each head folder; record nozzle type, defects, arc/bearing estimate
+  2. docs/heads/COVERAGE_ANALYSIS.md — haversine spacing from sprinklers.json; flag gaps >20 ft, overlaps <5 ft
+  3. docs/heads/PROPERTY_PLACEMENT.md — cross-ref photo-2 landmarks + coords + property-overhead.jpg
 
-   To build for the device (if not already done):
-     xcodebuild build \
-       -project Fairway.xcodeproj -scheme Fairway \
-       -destination 'id=A0C65578-B1E0-4E96-A1EC-EEB8913BD11C' \
-       CODE_SIGNING_ALLOWED=YES -allowProvisioningUpdates
-
-   To install after build:
-     xcrun devicectl device install app \
-       --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C \
-       <path-to-Fairway.app>
-   (find the .app path in the build output under DerivedData/.../Fairway.app)
-
-2. DOCS-SWEEP (separate task — do after smoke test):
-   - docs/heads/PHOTO_AUDIT.md — nozzle ID, defects, arc/bearing per head (read photo-1 of each head folder)
-   - docs/heads/COVERAGE_ANALYSIS.md — haversine spacing from sprinklers.json coords, flag gaps >20 ft
-   - docs/heads/PROPERTY_PLACEMENT.md — cross-ref photo-2 landmarks + coords + property-overhead.jpg
-
-3. PHASE 1 Map bug fix (first item in the 10-phase plan):
-   Files: Fairway/Models/PropertySettings.swift, Fairway/Views/MapTabView.swift, Fairway/Views/PropertySettingsView.swift (partially done)
-   See HANDOFF.md Phase 1 section for the full spec.
+OPTION B — Phase 1 Map bug fix (first item in the 10-phase plan):
+  Files: Fairway/Models/PropertySettings.swift, Fairway/Views/MapTabView.swift, Fairway/Views/PropertySettingsView.swift
+  See HANDOFF.md § Phase 1 for the full spec.
+  Summary: MapTabView initializes camera once in onAppear — renders Atlantic Ocean when (0,0) coords.
+  Fix: hasValidCoordinates guard + empty state + reactive camera + drag-to-adjust pin flow.
 
 ---
 
@@ -73,6 +65,20 @@ KEY FACTS IF YOU NEED THEM
 - Chase's iPhone 12 Pro Max devicectl id: A0C65578-B1E0-4E96-A1EC-EEB8913BD11C
 - Source of truth for all head coords: docs/heads/sprinklers.json
 
+PRE-BUILD (run once per session before any xcodebuild call):
+  sudo hdiutil attach \
+    /Library/Developer/CoreSimulator/Images/B3B0953C-8EEB-4DF1-8149-B9770CC90CC7.dmg \
+    -mountpoint /Library/Developer/CoreSimulator/Volumes/iOS_21C62 \
+    -readonly -noverify
+
+BUILD COMMANDS:
+  xcodebuild test -project Fairway.xcodeproj -scheme FairwayTests \
+    -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO 2>&1; echo "EXIT:$?"
+
+  xcodebuild build -project Fairway.xcodeproj -scheme Fairway \
+    -destination 'id=A0C65578-B1E0-4E96-A1EC-EEB8913BD11C' \
+    CODE_SIGNING_ALLOWED=YES -allowProvisioningUpdates 2>&1; echo "EXIT:$?"
+
 ---
 
 OUT OF SCOPE (don't drift)
@@ -80,5 +86,5 @@ OUT OF SCOPE (don't drift)
 - Z2-MATCH visual matching (separate task)
 - HeadPinEditor MapKit work
 - Phase 2+ of the 10-phase plan
-- Any new feature work not listed in IMMEDIATE NEXT STEPS
+- Any new feature work not listed above
 ```

@@ -153,6 +153,52 @@ This repo is designed to work across multiple AI coding tools. The handoff patte
 - **Claude Usage Tool** (`portfolio/claude-usage-tool/`): **Electron 28** + **React 18** + **TypeScript** + **Vite** — macOS menu bar app. Exception to the portfolio "no TypeScript" norm. Run via `npm run electron:dev`.
 - No Redux, no external state libraries (portfolio-wide). TypeScript exception: Claude Usage Tool only.
 
+## iOS Codable Safety Rules (ALL iOS apps)
+
+> **Violation of rule 1 causes silent data loss on app update for existing users.** Read before touching any iOS Codable model.
+
+### Rule 1 — Always use `decodeIfPresent` for new fields
+
+Swift's synthesized `init(from: Decoder)` requires every non-optional property to have a matching JSON key, even when the property has a Swift default value (`= []`, `= false`, `= 0`, etc.). If existing user blobs don't have that key, decoding throws `keyNotFound` and the app crashes on launch.
+
+**Every time you add a field to a Codable struct:**
+1. Check if the struct has an `extension YourType { init(from:) }` — if yes, add `decodeIfPresent` for the new field there.
+2. If no custom decoder exists, add one in an extension, decoding all fields (`decodeIfPresent` for defaulted ones, `decode` only for truly required keys).
+3. Write a backward-compat test: serialize a blob WITHOUT the new field key, reload the store, assert the field equals its default. See `FairwayBlobTests.testV1BlobDecodesIntoV2WithDefaults` for the pattern.
+
+### Rule 2 — Put `init(from:)` in an extension, never the struct body
+
+Declaring any `init` inside a struct body suppresses Swift's synthesized memberwise initializer. Every callsite using `MyType(label:, ...)` breaks with "extra arguments" compile errors. Moving the same init to `extension MyType { ... }` coexists with the synthesized memberwise init.
+
+```swift
+// ✅ correct
+extension HeadData {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        photoPaths = try c.decodeIfPresent([String].self, forKey: .photoPaths) ?? []
+        // ... all other fields
+    }
+}
+
+// ❌ wrong — suppresses memberwise init
+struct HeadData: Codable {
+    init(from decoder: Decoder) throws { ... }
+}
+```
+
+### Rule 3 — @MainActor view structs that touch @MainActor stores
+
+`var body` on a `View` runs in a `@MainActor` context implicitly, but helper computed `@ViewBuilder` properties and `Button` action closures on the same struct do NOT inherit that isolation. If any helper accesses an `@Observable @MainActor` store, add `@MainActor` to the whole struct:
+
+```swift
+@MainActor
+struct MyView: View { ... }   // all helpers + closures now inherit @MainActor
+```
+
+Per-property `@MainActor @ViewBuilder private var` works too, but annotating the struct is cheaper when multiple helpers touch the store.
+
+---
+
 ## iOS Build Prerequisite (This Machine)
 
 > **Applies to every iOS app on this 2017 MBP (macOS Ventura 13.7.8 · Xcode 15.2).**

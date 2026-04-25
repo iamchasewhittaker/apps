@@ -5,9 +5,9 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 All tests passing, sim build clean, device build done. **Device install pending — connect iPhone 12 Pro Max.** |
-| Last session | 2026-04-25 (tests pass, 3 Codable bugs fixed, device build succeeded, install pending phone connection) |
-| Focus | Connect iPhone 12 Pro Max → `xcrun devicectl device install app` → manual smoke test (Zone 3=11 heads, Zone 4="Back Yard"+12). Then: docs-sweep + Phase 1 Map bug. |
+| Status | 🟡 App installed and smoke-tested on iPhone 12 Pro Max. ✅ Zone 3=11 heads, Zone 4="Back Yard"+12. Next: docs-sweep + Phase 1 Map bug. |
+| Last session | 2026-04-25 (tests pass, 3 Codable bugs fixed, device build + install + smoke test complete) |
+| Focus | Docs-sweep (PHOTO_AUDIT.md, COVERAGE_ANALYSIS.md, PROPERTY_PLACEMENT.md) or Phase 1 Map bug fix — pick one. |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
@@ -44,15 +44,11 @@ Built at:
 /Users/chase/Library/Developer/Xcode/DerivedData/Fairway-cyxzigzaafugeyglqvaezxwbmdxr/Build/Products/Debug-iphoneos/Fairway.app
 ```
 
-### Device install — PENDING
+### Device install + smoke test — ✅ COMPLETE (2026-04-25)
 
-iPhone 12 Pro Max (`A0C65578-B1E0-4E96-A1EC-EEB8913BD11C`) was `unavailable` (not connected). Once connected:
-
-```bash
-xcrun devicectl device install app \
-  --device A0C65578-B1E0-4E96-A1EC-EEB8913BD11C \
-  /Users/chase/Library/Developer/Xcode/DerivedData/Fairway-cyxzigzaafugeyglqvaezxwbmdxr/Build/Products/Debug-iphoneos/Fairway.app
-```
+Installed on iPhone 12 Pro Max. Chase confirmed:
+- Zone 3 = 11 heads Z3-S1..Z3-S11 ✅
+- Zone 4 = "Back Yard" + 12 Z4-S1..Z4-S12 ✅
 
 ---
 
