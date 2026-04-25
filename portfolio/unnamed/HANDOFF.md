@@ -11,7 +11,7 @@
 | **Path** | `portfolio/unnamed/` (web) · `portfolio/unnamed-ios/` (iOS) |
 | **Focus** | **Deployed to Vercel 2026-04-25.** Production: https://unnamed-gold.vercel.app. Phase 1 7-day clock running — install on phone as PWA and use it. **No new features until 7 consecutive days of use.** |
 | **Stack** | Web: Next.js 16 + TypeScript + Tailwind 4 + localStorage. iOS: SwiftUI + @Observable + UserDefaults |
-| **Last touch** | 2026-04-25 — Vercel deploy. Project settings: `framework: nextjs`, `rootDirectory: portfolio/unnamed`, SSO disabled. All 5 routes serving 200; manifest + PWA icons confirmed. Git auto-deploy connected (`vercel-check-git` OK). |
+| **Last touch** | 2026-04-25 — UX clarifications from real use: inbox rows now have visible pencil + trash buttons (with confirm-delete), each sort lane has an ⓘ help sheet (summary + examples + rule), `/check` shows today's locked lanes as chips and the two questions are reworded for concreteness. 5 src files + 3 docs committed; verified end-to-end in preview. Earlier today: Vercel deploy with `framework: nextjs`, `rootDirectory: portfolio/unnamed`, SSO disabled, git auto-deploy connected. |
 | **Next** | 1. Add to home screen on iPhone (PWA install). 2. Use both iOS + web for 7 consecutive days — log notes in private memory, do not modify the app. 3. After day 7, review what (if anything) actually felt missing in real use; update `ROADMAP.md` Phase 2 candidates accordingly. |
 
 ---

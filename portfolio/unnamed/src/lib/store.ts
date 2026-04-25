@@ -80,6 +80,28 @@ export function moveToLane(
   };
 }
 
+export function updateItemText(
+  state: AppState,
+  itemId: string,
+  text: string
+): AppState {
+  const trimmed = text.trim();
+  if (!trimmed) return state;
+  return {
+    ...state,
+    items: state.items.map((i) =>
+      i.id === itemId ? { ...i, text: trimmed } : i
+    ),
+  };
+}
+
+export function deleteItem(state: AppState, itemId: string): AppState {
+  return {
+    ...state,
+    items: state.items.filter((i) => i.id !== itemId),
+  };
+}
+
 export function completeItem(state: AppState, itemId: string): AppState {
   return {
     ...state,

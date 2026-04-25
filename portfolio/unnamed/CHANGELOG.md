@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed — UX clarifications from real use (2026-04-25)
+- **Inbox edit/delete:** each captured item now shows a pencil + trash button (44×44pt, accessibility-first, no hidden gestures). Pencil swaps the row to an inline edit input (Enter saves, Escape cancels, empty cancels). First trash tap turns the row red and shows a 3-second confirm-or-keep prompt; second tap deletes. Backed by new `updateItemText` and `deleteItem` mutations in `src/lib/store.ts`.
+- **Sort lane help sheet:** each lane card now has an ⓘ button (right-aligned, 44×44pt). Tapping it opens a slide-up bottom sheet with the lane's summary, 5 example items, and a "goes here when…" rule. Sheet dismisses on Escape, backdrop click, or "Sort into [Lane]" CTA. Body scroll locks while open. ⓘ click uses `stopPropagation` so it never accidentally sorts the item. Content lives in `LANE_HELP` in `src/lib/types.ts` (4 lanes × {summary, examples[], rule}).
+- **Check question clarity:** `/check` now shows today's locked lanes as colored chips at the top (or a "no lanes locked today" note). Q1 reworded from "Did you produce?" → "Did you finish at least one thing today?" with a helper line. Q2 reworded from "Did you stay in your lanes?" → "Did your effort mostly stay in today's two lanes?" with a conditional helper that references the lane chips above. Result summary updated accordingly.
+
 ### Deployed — 2026-04-25
 - **Production URL:** https://unnamed-gold.vercel.app
 - Linked to `iamchasewhittakers-projects/unnamed`, connected to `iamchasewhittaker/apps` for git auto-deploy from `main`.

@@ -76,3 +76,29 @@ iOS-specific learnings are in [`portfolio/unnamed-ios/LEARNINGS.md`](../unnamed-
 **Verification via curl, not preview tools.** The repo's `preview_*` MCP tools require a local server in `.claude/launch.json`; they cannot smoke-test a remote URL. For deploys, fall back to `curl -sI` on each route + `curl -s` to confirm body content matches local. The 5-flow click-through verification was already done locally before commit, and the deployed code is byte-identical (same git SHA), so this is sufficient.
 
 **Note for next deploy in this portfolio:** `scripts/vercel-add-env` exists for Supabase apps but unnamed is localStorage-only — skipped. Worth adding a "framework + rootDirectory + sso" patch step to `CLAUDE.md`'s Vercel-Git Connection section, or wrapping the four PATCHes into a `scripts/vercel-bootstrap-nextjs` script.
+
+---
+
+## 2026-04-25 — UX clarifications from real use
+
+**The Phase 1 7-day clock is doing its job.** Three rough edges surfaced within hours of the deploy: typos in inbox were permanent, lane meanings on the sort screen were ambiguous, and `/check`'s "did you stay in your lanes" had no on-screen referent (the picked lanes weren't visible). All three are real-use feedback, not feature additions — the right kind of input to act on. Lesson: ship → use → fix what hurts. Don't pre-design fixes for problems you haven't felt.
+
+**Visible accessibility-first controls beat hidden gestures, every time.** First instinct for inbox edit/delete was swipe-to-edit / swipe-to-delete. Rejected because (a) swipe is invisible, (b) hand tremors and low vision make accidental swipes likely, and (c) the user explicitly asked for "a way to edit" — discoverability is the request. Pencil + trash buttons on every row, 44×44pt, aria-labeled. The row gets visually busier but the function is undeniable.
+
+**Confirm-delete via state machine, not modal.** Inbox `InboxRow` has three modes: `view | edit | confirm-delete`. First trash click sets `confirm-delete`; row turns red, shows "Tap trash again to delete" with a 3s auto-revert via `setTimeout`. No modal, no toast, no portal — just a row that briefly changes shape. Cheaper than a confirm modal and harder to dismiss accidentally than a toast undo.
+
+**`stopPropagation` is the right pattern when nesting interactive elements.** Each sort-lane card is a `<button>` (sorts the item) with an absolutely-positioned ⓘ `<button>` inside it (opens help sheet). Without `e.stopPropagation()` on the ⓘ click, tapping ⓘ would *also* sort the item into that lane. Verified by clicking ⓘ in the preview and asserting `state.items[0].lane === "inbox"` afterward.
+
+**`preview_fill` doesn't trigger React's `onChange`.** Native `input.value = "x"` sets the DOM property but doesn't fire React's synthetic event. Fix: use the prototype's value setter then dispatch an `input` event:
+```js
+const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+setter.call(input, 'text');
+input.dispatchEvent(new Event('input', { bubbles: true }));
+```
+Useful for any preview-driven verification where React state must reflect the typed value.
+
+**Auto-revert timeouts can race with verification scripts.** The 3s confirm-delete timeout fired before my eval could read the resulting DOM. Fix was to combine the click + DOM read into a single async eval with a 100ms `await` — short enough to catch the red state, long enough for React to commit.
+
+**Show the user what the question is about.** `/check` originally asked "Did you stay in your lanes?" with no rendering of which lanes were picked. The fix wasn't rewording the question — it was rendering the lane chips above it. Once the answer's referent is on screen, the question almost answers itself. Lesson: when a question feels confusing, check whether the context it depends on is even visible.
+
+**Co-locate help content with types, not components.** `LANE_HELP` lives in `src/lib/types.ts` next to `LANE_LABELS` and `LANE_DESCRIPTIONS`, not in the sort page. The sort page imports it. Why: lane semantics are a domain concept; multiple screens may need to render help content (e.g. someday Today might explain a lane on first lock). Putting it next to the lane definitions keeps everything that describes a lane in one place.
