@@ -26,6 +26,18 @@ final class AppStore {
         save()
     }
 
+    func updateItemText(id: UUID, text: String) {
+        let trimmed = text.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return }
+        updateItem(id) { $0.text = trimmed }
+        save()
+    }
+
+    func deleteItem(id: UUID) {
+        state.items.removeAll { $0.id == id }
+        save()
+    }
+
     // MARK: - Sort
 
     var inboxItems: [Item] {

@@ -22,6 +22,7 @@
 		UN01000000000000000000D /* CheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UN02000000000000000000D /* CheckView.swift */; };
 		UN01000000000000000000E /* CheckFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UN02000000000000000000E /* CheckFormView.swift */; };
 		UN01000000000000000000F /* CheckDoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UN02000000000000000000F /* CheckDoneView.swift */; };
+		UN010000000000000000012 /* LockedLanesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = UN020000000000000000014 /* LockedLanesHeader.swift */; };
 		UN010000000000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = UN020000000000000000010 /* Assets.xcassets */; };
 		UN010000000000000000011 /* AppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = UN020000000000000000011 /* AppStateTests.swift */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,7 @@
 		UN02000000000000000000D /* CheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckView.swift; sourceTree = "<group>"; };
 		UN02000000000000000000E /* CheckFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckFormView.swift; sourceTree = "<group>"; };
 		UN02000000000000000000F /* CheckDoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckDoneView.swift; sourceTree = "<group>"; };
+		UN020000000000000000014 /* LockedLanesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedLanesHeader.swift; sourceTree = "<group>"; };
 		UN020000000000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		UN020000000000000000011 /* AppStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateTests.swift; sourceTree = "<group>"; };
 		UN020000000000000000012 /* Unnamed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unnamed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +179,7 @@
 				UN02000000000000000000D /* CheckView.swift */,
 				UN02000000000000000000E /* CheckFormView.swift */,
 				UN02000000000000000000F /* CheckDoneView.swift */,
+				UN020000000000000000014 /* LockedLanesHeader.swift */,
 			);
 			path = Check;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				UN01000000000000000000D /* CheckView.swift in Sources */,
 				UN01000000000000000000E /* CheckFormView.swift in Sources */,
 				UN01000000000000000000F /* CheckDoneView.swift in Sources */,
+				UN010000000000000000012 /* LockedLanesHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

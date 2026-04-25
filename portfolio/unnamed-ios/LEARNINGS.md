@@ -63,3 +63,21 @@ Once `sudo hdiutil attach ... -mountpoint /Library/Developer/CoreSimulator/Volum
 **The DMG unmounts on reboot; the SDK plist patch is persistent.** After a Mac restart, re-run the `hdiutil attach` command before building. No need to re-run the PlistBuddy patch — that edit survives reboots. Keep the command in the HANDOFF Fresh Session Prompt so future sessions don't have to rediscover it.
 
 **`xcrun devicectl` install status `unavailable` just means the phone isn't plugged in.** Plugging in the USB cable and unlocking the phone changed the status from `unavailable` to `connected` immediately. Install and launch then worked first try.
+
+---
+
+## 2026-04-25 — UX parity with web (inbox edit/delete, sort help, check clarification)
+
+**Actor-isolated computed properties can't access `@MainActor` store outside `body`.** A struct-level `var q2Helper: String` tried to read `store.todayLock` (which is `@MainActor`-isolated). The compiler rejected it: "main actor-isolated property can not be referenced from a non-isolated context." Fix: move the `let q2Helper = ...` inline inside `body` and add `return` before the `VStack`. SwiftUI calls `body` on the main actor, so store reads are fine there. Rule: never put store-reading logic in struct-level computed properties — always inside `body` or an `@MainActor`-marked function.
+
+**`Lane: Identifiable` is required for `.sheet(item:)`.** `.sheet(item: $helpLane)` where `helpLane: Lane?` won't compile unless `Lane` is `Identifiable`. Fix: `extension Lane: Identifiable { var id: Self { self } }`. The web version uses a plain string state variable; iOS `.sheet(item:)` is the idiomatic native pattern.
+
+**`HStack` column separation is cleaner than `ZStack` for button-within-a-card.** With `ZStack(alignment: .trailing)`, a full-width sort button and an overlaid ⓘ button compete for touches — SwiftUI has no `stopPropagation`. Using `HStack { sortButton.frame(maxWidth: .infinity); infoButton }` gives each button its own non-overlapping tap area. Prefer this pattern whenever a row has two distinct actions.
+
+**New files in a hand-crafted pbxproj require 4 edits.** Adding `LockedLanesHeader.swift` required entries in: (1) `PBXBuildFile` section, (2) `PBXFileReference` section, (3) the `PBXGroup` children array for the Check/ folder, (4) the `PBXSourcesBuildPhase` files array. Missing any one causes the file to be invisible in the navigator or fail to link. Use `grep` on existing nearby UUIDs (`UN01…`, `UN02…`) and increment from the highest found value.
+
+**`@MainActor` conversion warnings in `CaptureView` are benign in Swift 5.9.** Warnings like "converting `@MainActor () -> ()` to `() -> Void` loses global actor" on `onSubmit(submit)` are warnings in Swift 5.9 (Xcode 15.2), errors in Swift 6. Safe to leave for now; note for future Swift 6 migration.
+
+**Visible buttons beat `.swipeActions` for this app.** SwiftUI's `.swipeActions` is the "native iOS" pattern for inbox edit/delete, but rejected: (1) swipe actions are invisible — no affordance, (2) user explicitly asked for visible controls, (3) low-vision accessibility favors stable visible targets over gesture-dependent interactions. `InboxRowView` with pencil/trash columns matches the web implementation and the accessibility-first principle.
+
+**`presentationDetents([.medium, .large])` with `.presentationDragIndicator(.visible)` is ideal for a help sheet.** Lets the user control how much content they see, drag-to-dismiss by default, feels native. No custom overlay or full-screen cover needed for purely informational content.

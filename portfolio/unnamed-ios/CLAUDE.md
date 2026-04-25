@@ -36,21 +36,22 @@ Unnamed/
     DateHelpers.swift  ← DateHelpers.todayString ("YYYY-MM-DD"), isToday()
     StorageHelpers.swift ← thin UserDefaults wrapper (load/save generic Codable)
   Constants/
-    Lanes.swift        ← Lane extensions: label, laneDescription, color; Color(hex:)
+    Lanes.swift        ← Lane extensions: label, laneDescription, color, summary, examples[], rule; Lane: Identifiable; Color(hex:)
   Views/
     ContentView.swift  ← TabView with 4 tabs + badges
     Capture/
-      CaptureView.swift
+      CaptureView.swift      ← InboxRowView (view/edit/confirmDelete modes) + CaptureView
     Sort/
-      SortView.swift
+      SortView.swift         ← LaneHelpSheet (bottom sheet) + SortView with ⓘ button per lane
     Today/
       TodayView.swift        ← switches LanePickerView ↔ FocusView
       LanePickerView.swift   ← pick 2 lanes + lock (irreversible)
       FocusView.swift        ← one item at a time, Done/Skip
     Check/
       CheckView.swift        ← switches CheckFormView ↔ CheckDoneView
-      CheckFormView.swift
-      CheckDoneView.swift
+      CheckFormView.swift    ← LockedLanesHeader + reworded Q1/Q2 with helper text
+      CheckDoneView.swift    ← LockedLanesHeader + updated result labels
+      LockedLanesHeader.swift ← shared: today's locked lanes as colored chips
 
 UnnamedTests/
   AppStateTests.swift  ← 10 tests: encode/decode, lock, check, date format
@@ -69,9 +70,10 @@ UnnamedTests/
 
 - `DailyLock` is irreversible — `lockLanes()` has a `guard !isLockedToday` check
 - `today()` uses `YYYY-MM-DD` in local time — `DateHelpers.todayString`
-- Sort: one inbox item at a time (skip cycles to end via array remove+append)
+- Capture: items are editable and deletable via visible 44pt pencil/trash buttons — no hidden gestures
+- Sort: one inbox item at a time (skip cycles to end via array remove+append); ⓘ button opens help sheet without assigning
 - Focus: one active item at a time — done/skip cycles same way
-- Check: once per day — `guard !hasCheckedToday`
+- Check: once per day — `guard !hasCheckedToday`; shows locked lanes as chips above questions
 - Haptics: `.medium` on lane lock, `.light` on Done
 
 ## Anti-Features (never add these)

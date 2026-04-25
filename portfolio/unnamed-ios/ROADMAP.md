@@ -8,6 +8,8 @@
 
 | Date | Version | Summary |
 |------|---------|---------|
+| 2026-04-25 | v0.1.2 | UX parity with web: inbox edit/delete, sort lane help sheet (ⓘ), check clarification with locked-lane chips |
+| 2026-04-25 | v0.1.1 | Build unblocked: mounted iOS 17.2 DMG; BUILD SUCCEEDED; installed on device |
 | 2026-04-17 | v0.1 | Phase 1 complete: all 5 flows, 10/10 tests, installed on iPhone 12 Pro Max |
 
 ---

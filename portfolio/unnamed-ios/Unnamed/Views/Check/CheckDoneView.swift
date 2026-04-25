@@ -21,13 +21,16 @@ struct CheckDoneView: View {
                         .fontWeight(.medium)
                         .foregroundStyle(.white)
 
+                    LockedLanesHeader()
+                        .padding(.top, 8)
+
                     VStack(spacing: 4) {
-                        Text("Produced: \(check.produced ? "Yes" : "No")")
+                        Text("Finished a thing: \(check.produced ? "Yes" : "No")")
                         Text("Stayed in lanes: \(check.stayedInLanes ? "Yes" : "No")")
                     }
                     .font(.subheadline)
                     .foregroundStyle(Color(.systemGray))
-                    .padding(.top, 8)
+                    .padding(.top, 4)
                 }
             }
 
