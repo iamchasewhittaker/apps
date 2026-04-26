@@ -653,6 +653,17 @@ extension FairwayStore {
               let target = zone.schedule?.nozzleType,
               !target.isEmpty else { return [] }
 
+        // When the zone's target nozzle is still TBD, every head needs an ID
+        // pass before we can recommend specific replacements. Surface that as
+        // a single advisory item instead of returning an empty list.
+        if target.localizedCaseInsensitiveContains("TBD") {
+            return [NozzleShoppingItem(
+                recommendedNozzle: "Identify nozzles during season test",
+                reason: "Zone target nozzle is TBD — confirm nozzle family before ordering replacements",
+                headLabels: zone.heads.map(\.label).sorted()
+            )]
+        }
+
         let targetLower = target.lowercased()
         let mismatches = zone.heads.filter { head in
             let n = head.nozzle.lowercased()

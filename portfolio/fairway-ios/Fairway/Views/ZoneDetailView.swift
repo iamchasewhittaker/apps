@@ -12,7 +12,14 @@ enum ZoneDetailTab: String, CaseIterable, Identifiable {
 struct ZoneDetailView: View {
     @Environment(FairwayStore.self) private var store
     let zoneID: UUID
-    @State private var selectedTab: ZoneDetailTab = .heads
+    let initialTab: ZoneDetailTab
+    @State private var selectedTab: ZoneDetailTab
+
+    init(zoneID: UUID, initialTab: ZoneDetailTab = .heads) {
+        self.zoneID = zoneID
+        self.initialTab = initialTab
+        _selectedTab = State(initialValue: initialTab)
+    }
 
     @MainActor private var zone: ZoneData? {
         store.zone(withID: zoneID)

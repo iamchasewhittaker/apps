@@ -7,6 +7,8 @@ struct MapTabView: View {
     @State private var showList = false
     @State private var showPropertySettings = false
     @State private var cameraPosition: MapCameraPosition = .automatic
+    @State private var selectedHead: HeadData?
+    @State private var selectedZoneNumber: Int = 0
 
     var body: some View {
         NavigationStack {
@@ -33,12 +35,20 @@ struct MapTabView: View {
                     .accessibilityLabel("Show heads and observations as list")
                 }
             }
+            .navigationDestination(for: UUID.self) { zoneID in
+                ZoneDetailView(zoneID: zoneID, initialTab: .problems)
+            }
         }
         .sheet(isPresented: $showList) {
             MapListToggleView()
         }
         .sheet(isPresented: $showPropertySettings) {
             NavigationStack { PropertySettingsView() }
+        }
+        .sheet(item: $selectedHead) { head in
+            NavigationStack {
+                HeadMapCallout(head: head, zoneNumber: selectedZoneNumber)
+            }
         }
     }
 
@@ -50,30 +60,25 @@ struct MapTabView: View {
         let visZones = visibleZones
         ZStack(alignment: .top) {
             Map(position: $cameraPosition) {
-                // Zone-hull overlays — gives clear spatial boundary per zone even
-                // when individual head pins are physically close at zone borders.
-                ForEach(snapshot) { zone in
-                    if visZones.contains(zone.number) {
-                        let zColor = zoneColor(zone.number)
-                        let hull = zoneHull(zone: zone)
-                        if hull.count >= 3 {
-                            MapPolygon(coordinates: hull)
-                                .foregroundStyle(zColor.opacity(0.10))
-                                .stroke(zColor.opacity(0.6), style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
-                        }
-                    }
-                }
-
-                // Head pins + arcs.
+                // Head pins + arcs. Zone-hull overlays were removed — convex
+                // hulls of L-shaped zones cross each other and confuse more
+                // than they clarify. Pin color + filter chips do the work.
                 ForEach(snapshot) { zone in
                     if visZones.contains(zone.number) {
                         let zColor = zoneColor(zone.number)
                         ForEach(zone.heads.filter(\.hasCoordinates)) { head in
                             if let lat = head.latitude, let lng = head.longitude {
                                 let coord = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                                Annotation(head.label, coordinate: coord) {
-                                    HeadMapPin(head: head, zoneNumber: zone.number)
+                                Annotation("", coordinate: coord) {
+                                    Button {
+                                        selectedZoneNumber = zone.number
+                                        selectedHead = head
+                                    } label: {
+                                        HeadMapPin(head: head, zoneNumber: zone.number)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
+                                .annotationTitles(.hidden)
                                 if let poly = arcPolygonCoords(for: head, center: coord) {
                                     MapPolygon(coordinates: poly)
                                         .foregroundStyle(zColor.opacity(0.18))
@@ -94,8 +99,11 @@ struct MapTabView: View {
                 }
             }
 
-            zoneFilterChips
-                .padding(.top, 8)
+            VStack(spacing: 0) {
+                zoneSummaryStrip(snapshot: snapshot, visible: visZones)
+                zoneFilterChips
+            }
+            .padding(.top, 8)
         }
     }
 
@@ -134,6 +142,25 @@ struct MapTabView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(FairwayTheme.backgroundPrimary)
+    }
+
+    // MARK: - Zone summary strip
+
+    @MainActor @ViewBuilder
+    private func zoneSummaryStrip(snapshot: [ZoneData], visible: Set<Int>) -> some View {
+        let cards = snapshot.filter { visible.contains($0.number) && !openActionsForZone($0).isEmpty }
+        if !cards.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(cards) { zone in
+                        ZoneSummaryCard(zone: zone, actions: openActionsForZone(zone))
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 6)
+            }
+            .background(.ultraThinMaterial)
+        }
     }
 
     // MARK: - Zone filter chips
@@ -192,6 +219,10 @@ struct MapTabView: View {
     // MARK: - Helpers
 
     private func zoneColor(_ number: Int) -> Color {
+        MapTabView.zoneColor(number)
+    }
+
+    static func zoneColor(_ number: Int) -> Color {
         switch number {
         case 1: return FairwayTheme.accentGreen
         case 2: return Color(red: 0.2, green: 0.5, blue: 1.0)
@@ -216,46 +247,6 @@ struct MapTabView: View {
         return points
     }
 
-    /// Convex hull of a zone's head coordinates (Andrew's monotone-chain).
-    /// Returns counter-clockwise points. Empty if fewer than 3 distinct heads.
-    private func zoneHull(zone: ZoneData) -> [CLLocationCoordinate2D] {
-        var pts = zone.heads.compactMap { h -> CLLocationCoordinate2D? in
-            guard let lat = h.latitude, let lng = h.longitude else { return nil }
-            return CLLocationCoordinate2D(latitude: lat, longitude: lng)
-        }
-        guard pts.count >= 3 else { return [] }
-
-        // Sort by longitude, then latitude.
-        pts.sort {
-            $0.longitude == $1.longitude ? $0.latitude < $1.latitude : $0.longitude < $1.longitude
-        }
-
-        func cross(_ o: CLLocationCoordinate2D, _ a: CLLocationCoordinate2D, _ b: CLLocationCoordinate2D) -> Double {
-            (a.longitude - o.longitude) * (b.latitude - o.latitude)
-                - (a.latitude - o.latitude) * (b.longitude - o.longitude)
-        }
-
-        var lower: [CLLocationCoordinate2D] = []
-        for p in pts {
-            while lower.count >= 2 && cross(lower[lower.count - 2], lower[lower.count - 1], p) <= 0 {
-                lower.removeLast()
-            }
-            lower.append(p)
-        }
-
-        var upper: [CLLocationCoordinate2D] = []
-        for p in pts.reversed() {
-            while upper.count >= 2 && cross(upper[upper.count - 2], upper[upper.count - 1], p) <= 0 {
-                upper.removeLast()
-            }
-            upper.append(p)
-        }
-
-        lower.removeLast()
-        upper.removeLast()
-        return lower + upper
-    }
-
     private func destination(from origin: CLLocationCoordinate2D, bearing: Double, meters: Double) -> CLLocationCoordinate2D {
         let earthRadius = 6_371_000.0
         let d = meters / earthRadius
@@ -270,6 +261,25 @@ struct MapTabView: View {
     }
 }
 
+// MARK: - Compact-nozzle + open-action helpers (file-internal so tests can reach them)
+
+func compactNozzle(for head: HeadData) -> String? {
+    let trimmedField = head.fieldNozzle.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !trimmedField.isEmpty {
+        return String(trimmedField.prefix(14))
+    }
+    let trimmedSpec = head.nozzle.trimmingCharacters(in: .whitespacesAndNewlines)
+    if trimmedSpec.isEmpty { return nil }
+    if trimmedSpec.uppercased().hasPrefix("TBD") { return "TBD" }
+    return String(trimmedSpec.prefix(14))
+}
+
+func openActionsForZone(_ zone: ZoneData) -> [String] {
+    zone.problemAreas
+        .filter { !$0.isResolved }
+        .flatMap(\.actions)
+}
+
 // MARK: - Head map pin
 
 private struct HeadMapPin: View {
@@ -277,16 +287,15 @@ private struct HeadMapPin: View {
     let zoneNumber: Int
 
     private var zoneColor: Color {
-        switch zoneNumber {
-        case 1: return FairwayTheme.accentGreen
-        case 2: return Color(red: 0.2, green: 0.5, blue: 1.0)
-        case 3: return FairwayTheme.sunAmber
-        default: return Color(red: 0.8, green: 0.4, blue: 0.9)
-        }
+        MapTabView.zoneColor(zoneNumber)
+    }
+
+    private var nozzleLine: String? {
+        compactNozzle(for: head)
     }
 
     var body: some View {
-        VStack(spacing: 2) {
+        VStack(spacing: 1) {
             Text(head.label)
                 .font(.system(size: 9, weight: .bold))
                 .foregroundStyle(.white)
@@ -294,10 +303,268 @@ private struct HeadMapPin: View {
                 .padding(.vertical, 2)
                 .background(zoneColor)
                 .clipShape(Capsule())
+            if let line = nozzleLine {
+                Text(line)
+                    .font(.system(size: 8, weight: .medium))
+                    .foregroundStyle(zoneColor)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 1)
+                    .background(Color.black.opacity(0.55))
+                    .clipShape(Capsule())
+            }
             Circle()
                 .fill(zoneColor)
                 .frame(width: 8, height: 8)
         }
-        .accessibilityLabel("\(head.label), Zone \(zoneNumber), \(head.location)")
+        .accessibilityLabel("\(head.label), Zone \(zoneNumber), \(head.location), nozzle \(head.nozzle)")
+    }
+}
+
+// MARK: - Zone summary card
+
+private struct ZoneSummaryCard: View {
+    let zone: ZoneData
+    let actions: [String]
+
+    private var openCount: Int { zone.problemAreas.filter { !$0.isResolved }.count }
+    private var bullets: [String] { Array(actions.prefix(3)) }
+
+    var body: some View {
+        NavigationLink(value: zone.id) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("ZONE \(zone.number) · \(zone.name.uppercased())")
+                        .font(.caption2.bold())
+                        .foregroundStyle(FairwayTheme.textSecondary)
+                        .lineLimit(1)
+                    Spacer()
+                    Text("\(openCount) open")
+                        .font(.caption2.bold())
+                        .padding(.horizontal, 6).padding(.vertical, 2)
+                        .background(MapTabView.zoneColor(zone.number).opacity(0.25))
+                        .foregroundStyle(MapTabView.zoneColor(zone.number))
+                        .clipShape(Capsule())
+                }
+                ForEach(bullets, id: \.self) { action in
+                    HStack(alignment: .top, spacing: 6) {
+                        Text("•")
+                            .font(.footnote.bold())
+                            .foregroundStyle(FairwayTheme.accentGold)
+                        Text(action)
+                            .font(.footnote)
+                            .foregroundStyle(FairwayTheme.textPrimary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                    }
+                }
+                HStack {
+                    Spacer()
+                    Text("more →")
+                        .font(.caption2.bold())
+                        .foregroundStyle(FairwayTheme.accentGold)
+                }
+            }
+            .padding(10)
+            .frame(width: 280, alignment: .leading)
+            .background(FairwayTheme.backgroundSurface.opacity(0.95))
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(MapTabView.zoneColor(zone.number).opacity(0.5), lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Zone \(zone.number) \(zone.name), \(openCount) open problems. Tap for details.")
+    }
+}
+
+// MARK: - Head detail callout
+
+@MainActor
+private struct HeadMapCallout: View {
+    @Environment(FairwayStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+    let head: HeadData
+    let zoneNumber: Int
+
+    private var zone: ZoneData? {
+        store.blob.zones.first(where: { $0.number == zoneNumber })
+    }
+
+    private var linkedActions: [String] {
+        guard let zone else { return [] }
+        let openActions = zone.problemAreas.filter { !$0.isResolved }.flatMap(\.actions)
+        let needles = [head.label.lowercased(), head.label.replacingOccurrences(of: "Z\(zoneNumber)-", with: "").lowercased()]
+        let specific = openActions.filter { action in
+            let lower = action.lowercased()
+            return needles.contains { !$0.isEmpty && lower.contains($0) }
+        }
+        return specific.isEmpty ? openActions : specific
+    }
+
+    private var fieldNozzleDisplay: String {
+        head.fieldNozzle.isEmpty ? "—" : head.fieldNozzle
+    }
+
+    private var fieldArcDisplay: String {
+        head.fieldArcDegrees.map { "\($0)°" } ?? "—"
+    }
+
+    private var fieldRadiusDisplay: String {
+        head.fieldRadiusFeet.map { String(format: "%.0f ft", $0) } ?? "—"
+    }
+
+    private var fieldGPMDisplay: String {
+        head.fieldGPM.map { String(format: "%.2f", $0) } ?? "—"
+    }
+
+    private var auditChipColor: Color {
+        switch head.auditConfidence.lowercased() {
+        case "high": return FairwayTheme.statusHealthy
+        case "med", "medium": return FairwayTheme.statusAttention
+        case "low": return FairwayTheme.statusAttention
+        case "blocked": return FairwayTheme.statusAction
+        default: return FairwayTheme.textSecondary
+        }
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
+                header
+                metrics
+                if !head.auditObservation.isEmpty {
+                    auditCard
+                }
+                if !linkedActions.isEmpty {
+                    actionsCard
+                }
+            }
+            .padding(16)
+        }
+        .background(FairwayTheme.backgroundPrimary)
+        .navigationTitle(head.label)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Done") { dismiss() }
+                    .foregroundStyle(FairwayTheme.accentGold)
+            }
+        }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(head.label)
+                    .font(.title2.bold())
+                    .foregroundStyle(FairwayTheme.textPrimary)
+                Spacer()
+                Text("Zone \(zoneNumber)")
+                    .font(.caption.bold())
+                    .padding(.horizontal, 10).padding(.vertical, 4)
+                    .background(MapTabView.zoneColor(zoneNumber).opacity(0.25))
+                    .foregroundStyle(MapTabView.zoneColor(zoneNumber))
+                    .clipShape(Capsule())
+                if !head.isConfirmed {
+                    PreSeasonBadge()
+                } else if head.confirmedBySeasonTest {
+                    ConfirmedBadge()
+                }
+            }
+            if !head.location.isEmpty {
+                Text(head.location)
+                    .font(.subheadline)
+                    .foregroundStyle(FairwayTheme.textSecondary)
+            }
+            if !head.notes.isEmpty {
+                Text(head.notes)
+                    .font(.footnote)
+                    .foregroundStyle(FairwayTheme.textSecondary)
+            }
+        }
+    }
+
+    private var metrics: some View {
+        FairwayCard {
+            VStack(alignment: .leading, spacing: 10) {
+                metricRow(label: "NOZZLE",
+                          field: fieldNozzleDisplay,
+                          spec: head.nozzle.isEmpty ? "—" : head.nozzle)
+                metricRow(label: "ARC",
+                          field: fieldArcDisplay,
+                          spec: "\(head.arcDegrees)°")
+                metricRow(label: "RADIUS",
+                          field: fieldRadiusDisplay,
+                          spec: head.radiusFeet > 0 ? String(format: "%.0f ft", head.radiusFeet) : "—")
+                metricRow(label: "GPM",
+                          field: fieldGPMDisplay,
+                          spec: head.gpm > 0 ? String(format: "%.2f", head.gpm) : "—")
+            }
+        }
+    }
+
+    private func metricRow(label: String, field: String, spec: String) -> some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(label)
+                .font(.caption.bold())
+                .foregroundStyle(FairwayTheme.textSecondary)
+                .frame(width: 64, alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("field \(field)")
+                    .font(.footnote.bold())
+                    .foregroundStyle(FairwayTheme.textPrimary)
+                Text("spec \(spec)")
+                    .font(.footnote)
+                    .foregroundStyle(FairwayTheme.textSecondary)
+            }
+            Spacer()
+        }
+    }
+
+    private var auditCard: some View {
+        FairwayCard {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text("AUDIT")
+                        .font(.caption.bold())
+                        .foregroundStyle(FairwayTheme.textSecondary)
+                    Spacer()
+                    if !head.auditConfidence.isEmpty {
+                        Text(head.auditConfidence.uppercased())
+                            .font(.caption2.bold())
+                            .padding(.horizontal, 6).padding(.vertical, 2)
+                            .background(auditChipColor.opacity(0.18))
+                            .foregroundStyle(auditChipColor)
+                            .clipShape(Capsule())
+                    }
+                }
+                Text(head.auditObservation)
+                    .font(.footnote)
+                    .foregroundStyle(FairwayTheme.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var actionsCard: some View {
+        FairwayCard {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("LINKED ACTIONS")
+                    .font(.caption.bold())
+                    .foregroundStyle(FairwayTheme.textSecondary)
+                ForEach(linkedActions, id: \.self) { action in
+                    HStack(alignment: .top, spacing: 6) {
+                        Text("•")
+                            .font(.footnote.bold())
+                            .foregroundStyle(FairwayTheme.accentGold)
+                        Text(action)
+                            .font(.footnote)
+                            .foregroundStyle(FairwayTheme.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+        }
     }
 }

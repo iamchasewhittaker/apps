@@ -445,6 +445,107 @@ final class FairwayBlobTests: XCTestCase {
         let unknownItem = InventoryItem(name: "Test Unknown", category: .fertilizer)
         XCTAssertEqual(unknownItem.stockStatus, .unknown)
     }
+
+    // MARK: - Map helpers (compactNozzle, openActionsForZone) + TBD shopping list
+
+    func testCompactNozzleRule() {
+        // 1. fieldNozzle non-empty → first 14 chars (overrides spec, even when spec is also set).
+        let withField = HeadData(
+            label: "T1",
+            headType: "Hunter",
+            nozzle: "Hunter MP Rotator 1000 90-210",
+            arcDegrees: 180,
+            location: "Test",
+            fieldNozzle: "Rain Bird 1804 VAN red 12ft"
+        )
+        XCTAssertEqual(compactNozzle(for: withField), "Rain Bird 1804")
+
+        // 2. fieldNozzle empty + spec starts with "TBD" → "TBD" (case-insensitive).
+        let tbd = HeadData(
+            label: "T2",
+            headType: "Unknown",
+            nozzle: "tbd — needs season test ID",
+            arcDegrees: 0,
+            location: "Test"
+        )
+        XCTAssertEqual(compactNozzle(for: tbd), "TBD")
+
+        // 3. fieldNozzle empty + long spec → first 14 chars of spec.
+        let specOnly = HeadData(
+            label: "T3",
+            headType: "Hunter",
+            nozzle: "MP Rotator 2000 90-210 cream",
+            arcDegrees: 180,
+            location: "Test"
+        )
+        XCTAssertEqual(compactNozzle(for: specOnly), "MP Rotator 200")
+
+        // 4. fieldNozzle empty + spec empty → nil (hides the second pin line).
+        let nothing = HeadData(
+            label: "T4",
+            headType: "",
+            nozzle: "",
+            arcDegrees: 0,
+            location: "Test"
+        )
+        XCTAssertNil(compactNozzle(for: nothing))
+    }
+
+    func testNozzleShoppingListForTBDZone() {
+        // When zone.schedule.nozzleType == "TBD", the shopping list should
+        // surface a single advisory item covering all heads instead of being
+        // silently empty (the bug Z3/Z4 hit before the guard).
+        let store = freshStore()
+        var blob = store.blob
+        guard let z3Index = blob.zones.firstIndex(where: { $0.number == 3 }) else {
+            return XCTFail("Z3 missing from seeded blob")
+        }
+        // Z3 schedule is seeded; flip its nozzleType to TBD.
+        blob.zones[z3Index].schedule?.nozzleType = "TBD"
+        store.blob = blob
+
+        let z3 = blob.zones[z3Index]
+        let list = store.recommendedNozzleShoppingList(for: z3.id)
+
+        XCTAssertEqual(list.count, 1, "TBD zone should produce exactly 1 advisory item")
+        XCTAssertEqual(list.first?.recommendedNozzle, "Identify nozzles during season test")
+        XCTAssertEqual(list.first?.headLabels, z3.heads.map(\.label).sorted())
+    }
+
+    func testZoneSummaryActionsFlatten() {
+        // openActionsForZone must (a) skip resolved problems and (b) preserve
+        // the original action order across the remaining open problems.
+        let openA = ProblemData(
+            title: "Open A",
+            severity: .medium,
+            isPreSeason: false,
+            actions: ["A1", "A2"]
+        )
+        let openB = ProblemData(
+            title: "Open B",
+            severity: .low,
+            isPreSeason: false,
+            actions: ["B1", "B2"]
+        )
+        var resolved = ProblemData(
+            title: "Resolved",
+            severity: .high,
+            isPreSeason: false,
+            actions: ["X-skip"]
+        )
+        resolved.isResolved = true
+
+        let zone = ZoneData(
+            number: 99,
+            name: "Synthetic",
+            type: .coolSeasonGrass,
+            squareFootage: 0,
+            headType: "n/a",
+            problemAreas: [openA, openB, resolved]
+        )
+
+        XCTAssertEqual(openActionsForZone(zone), ["A1", "A2", "B1", "B2"])
+    }
 }
 
 // Allow XCTAssertEqual on StockStatus
