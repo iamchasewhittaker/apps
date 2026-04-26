@@ -29,8 +29,12 @@ export async function createRouteClient(): Promise<SupabaseClient> {
         return cookieStore.getAll();
       },
       setAll(items) {
-        for (const { name, value, options } of items) {
-          cookieStore.set(name, value, options);
+        try {
+          for (const { name, value, options } of items) {
+            cookieStore.set(name, value, options);
+          }
+        } catch {
+          // Called from a Server Component — middleware handles token refresh.
         }
       },
     },
