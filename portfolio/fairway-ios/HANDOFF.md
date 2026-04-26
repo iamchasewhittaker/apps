@@ -464,7 +464,7 @@ xcodebuild test \
 
 ## Property Context
 
-- Location: 345 E 170 N, Vineyard, UT 84059 (lat 40.3330, lng -111.7550)
+- Location: 345 E 170 N, Vineyard, UT 84059 (lat 40.3004, lng -111.7456 — corrected 2026-04-25 by Phase 3 migration from wrong seed 40.3330/−111.7550)
 - Controller: Rachio 4-zone
 - Grass: Kentucky Bluegrass (cool-season), zone 6b
 - Soil: Utah clay, pH 6.75, N+K deficient, micronutrients broadly low
