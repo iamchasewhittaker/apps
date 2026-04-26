@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-04-25 — Phase 2 audit data migration (on-device audit observations blank)
+
+**Root cause:** `auditObservation` and `auditConfidence` were seeded in `PreviewData.swift` but the existing on-device UserDefaults blob was written before these fields existed. `decodeIfPresent` correctly decoded them as `""` — no crash — but the audit list showed heads with no observations and the detail sheet showed "No audit data for this head".
+
+**Fix:** Added `applyPhase2AuditDataMigrationIfNeeded()` to `FairwayStore.load()`. Iterates all grass-zone heads; for any head with empty `auditObservation`, looks up `PreviewData.auditData(for: head.label)` and backfills both fields. Idempotent — skips heads that already have data (field-entered nozzle data is preserved).
+
+- **`Fairway/FairwayStore.swift`** — `applyPhase2AuditDataMigrationIfNeeded()` added, called from `load()` after Phase 1.
+
 ### Added — 2026-04-25 — Pre-Season Audit view + photo audit data
 
 **New feature: More → Pre-Season Audit**

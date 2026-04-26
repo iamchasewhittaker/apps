@@ -1,5 +1,31 @@
 # Fairway iOS — Learnings
 
+## Seeding audit data into PreviewData is NOT enough — you also need a store migration
+
+**Date:** 2026-04-25
+
+When a new field is added to a Codable struct AND the intent is to pre-populate it for existing users (not just new installs), two things are required:
+
+1. **PreviewData**: populate the field in every seed helper so fresh installs get it.
+2. **FairwayStore migration**: a new `applyPhaseNXxxMigrationIfNeeded()` that backfills the field for any existing blob where it decoded as the default (`""`, `false`, `nil`).
+
+Without step 2, existing users always see the default (empty observation, no badge, "No audit data for this head") even though `decodeIfPresent` correctly prevented a crash.
+
+**Pattern:**
+```swift
+for zi in blob.zones.indices {
+    for hi in blob.zones[zi].heads.indices {
+        guard blob.zones[zi].heads[hi].targetField.isEmpty else { continue }
+        let value = PreviewData.lookup(for: blob.zones[zi].heads[hi].label)
+        guard !value.isEmpty else { continue }
+        blob.zones[zi].heads[hi].targetField = value
+        changed = true
+    }
+}
+```
+
+The guard on `isEmpty` makes it idempotent — field-entered data (non-empty) is never overwritten by a migration.
+
 ## KML reimport workflow — separate "ingest" from "wire up app"
 
 **Date:** 2026-04-25

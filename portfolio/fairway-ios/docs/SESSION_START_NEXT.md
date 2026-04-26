@@ -1,4 +1,4 @@
-# Fairway iOS — Session Start (2026-04-25 post-audit)
+# Fairway iOS — Session Start (2026-04-25 current)
 
 > Copy everything below the line into a new Claude Code chat.
 
@@ -6,18 +6,14 @@
 
 Read `portfolio/fairway-ios/CLAUDE.md` and `portfolio/fairway-ios/HANDOFF.md` first, then continue from this context.
 
-## What was done (2026-04-25 audit session)
+## What's done and on device (2026-04-25)
 
-- **Photo audit complete** — read all 126 photos across 41 heads; produced `docs/heads/PHOTO_AUDIT.md` with per-head nozzle ID, confidence, and blocked-action list.
-- **Pre-Season Audit feature shipped** — `More → Pre-Season Audit`:
-  - 41 heads listed by zone with photo-audit observations pre-populated
-  - Confidence badges: CONFIRMED (green) / LIKELY (orange) / UNCLEAR (yellow) / BLOCKED (red)
-  - Tap head → sheet with audit finding, what still needs field measurement, editable nozzle/arc/radius fields, "Head cleared" toggle
-  - Progress indicator per zone + overall
-- **HeadData model** — 6 new backward-compat fields: `auditObservation`, `auditConfidence`, `preSeasonChecked`, `fieldNozzle`, `fieldArcDegrees`, `fieldRadiusFeet`
-- **Build:** EXIT:0. Tests NOT re-run. Device install NOT done.
+- **Pre-Season Audit** live at `More → Pre-Season Audit` — 41 heads by zone, photo-audit observations, confidence badges, detail sheet with field-entry inputs, progress counter
+- **Phase 2 audit migration** (`applyPhase2AuditDataMigrationIfNeeded` in `FairwayStore.load()`) — backfills `auditObservation`/`auditConfidence` for existing blobs that predate the audit fields. Without this, the audit list showed heads with no observations. Fixed and shipped.
+- **Linear project:** https://linear.app/whittaker/project/fairway-ios-674db91fc8d1
+- **Build + install:** EXIT:0, installed on iPhone 12 Pro Max. App opens, Pre-Season Audit nav visible, audit data shows on each head.
 
-## Blocked heads (physical work required)
+## Blocked heads (physical work required before season test)
 
 | Head | Failure | Action |
 |------|---------|--------|
@@ -29,23 +25,24 @@ Read `portfolio/fairway-ios/CLAUDE.md` and `portfolio/fairway-ios/HANDOFF.md` fi
 | Z2-S17 | Conflicting photos | Field re-photo + running confirmation |
 | Z4-S7 | Partly buried | Clear soil, re-photo |
 
-## Next steps (pick one)
+## Next steps (priority order)
 
-- **Install on device** and walk the audit (More → Pre-Season Audit)
-- **Run tests** to verify new HeadData fields decode cleanly
-- **Phase 1 Map bug fix** — MapTabView renders Atlantic Ocean at (0,0) coords
-- **Seed cleanup** — once field walk done, update `nozzle:` strings in PreviewData with confirmed values
+1. **Field walk** — open `More → Pre-Season Audit` on iPhone, walk each zone, enter field data (arc°, radius, confirmed nozzle), tick "Head cleared". Z4-S1 first.
+2. **Seed cleanup** — after field walk, update `nozzle:` strings in `PreviewData.swift` with confirmed values; flip `confirmedBySeasonTest: true`
+3. **Phase 1 Map bug fix** — `MapTabView` renders Atlantic Ocean at (0,0) coords. Spec in `HANDOFF.md § Phase 1`.
+4. **Tests** — new HeadData audit fields need a backward-compat decode test (TODO from previous session)
 
 ## Key invariants
 
 - New HeadData fields must use `decodeIfPresent` in the extension `init(from:)` — missing key = crash for existing users
+- New data fields also need a `FairwayStore.applyPhaseN...MigrationIfNeeded()` to backfill existing blobs — PreviewData seed alone is not enough
 - Z2 is a single valve (park strip always irrigates with front yard)
-- Rachio token: Keychain only
+- Rachio token: Keychain only, never in blob or logs
 - Mount iOS 17.2 runtime DMG before any `xcodebuild` call (see root CLAUDE.md)
 
-## Changed files this session
+## Changed files this session (both commits)
 
-`HeadData.swift` · `FairwayStore.swift` · `PreviewData.swift` · `PreSeasonAuditView.swift` (NEW) · `ContentView.swift` · `project.pbxproj` · `docs/heads/PHOTO_AUDIT.md` (NEW) · `CHANGELOG.md` · `LEARNINGS.md` · `HANDOFF.md`
+`FairwayStore.swift` · `HeadData.swift` · `PreviewData.swift` · `PreSeasonAuditView.swift` (NEW) · `ContentView.swift` · `project.pbxproj` · `docs/heads/PHOTO_AUDIT.md` (NEW) · `CHANGELOG.md` · `LEARNINGS.md` · `HANDOFF.md` · `docs/SESSION_START_NEXT.md`
 
 ---
 

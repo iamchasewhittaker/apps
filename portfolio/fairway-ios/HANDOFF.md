@@ -5,9 +5,9 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 Pre-Season Audit live. 41 heads audited from photos. BUILD SUCCEEDED. Device install needed. |
-| Last session | 2026-04-25 (photo audit + PreSeasonAuditView shipped; all docs updated) |
-| Focus | **Install on device + field walk with the audit**. 9 heads blocked (Z4-S1 highest priority — fully buried). |
+| Status | 🟡 Pre-Season Audit live. Phase 2 audit migration shipped. Rebuilt + installed on device (2026-04-25). Audit observations now visible — field walk ready. |
+| Last session | 2026-04-25 (audit migration bug found + fixed; device install; Linear project updated; docs updated) |
+| Focus | **Field walk with Pre-Season Audit** (More → Pre-Season Audit). Z4-S1 highest priority — fully buried, zero coverage. |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |

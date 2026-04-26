@@ -39,6 +39,7 @@ final class FairwayStore {
         if !blob.seeded { seedIfNeeded() }
         applyPhase0MigrationIfNeeded()
         applyPhase1ZoneMigrationIfNeeded()
+        applyPhase2AuditDataMigrationIfNeeded()
     }
 
     /// Idempotently applies the 2026-04-23 IFA over-application data (companion
@@ -151,6 +152,26 @@ final class FairwayStore {
             }
         }
 
+        if changed { save() }
+    }
+
+    /// Backfills auditObservation + auditConfidence from the 2026-04-25 photo audit
+    /// for any head whose auditObservation is still empty. Idempotent — only touches
+    /// heads that haven't been field-edited (empty observation = not yet migrated).
+    private func applyPhase2AuditDataMigrationIfNeeded() {
+        var changed = false
+        for zi in blob.zones.indices {
+            guard blob.zones[zi].number != 1 else { continue }
+            for hi in blob.zones[zi].heads.indices {
+                let head = blob.zones[zi].heads[hi]
+                guard head.auditObservation.isEmpty else { continue }
+                let (obs, conf) = PreviewData.auditData(for: head.label)
+                guard !obs.isEmpty else { continue }
+                blob.zones[zi].heads[hi].auditObservation = obs
+                blob.zones[zi].heads[hi].auditConfidence = conf
+                changed = true
+            }
+        }
         if changed { save() }
     }
 
