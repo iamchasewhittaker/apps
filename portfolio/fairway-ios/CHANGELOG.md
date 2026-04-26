@@ -2,6 +2,29 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-25 (session 4) — Zone-menu refinements: actions, shopping list, Z2 sub-grouping, schedule explainers, map zone-hulls
+
+- **`ProblemData.actions: [String]`** — new field for "specific things needed" bullets per problem. Codable extension with `decodeIfPresent` and default `[]` (Codable Rule #1, #2). Backward-compat decode test added.
+- **`HeadInventoryView`** — when zone is Z2, sectioned into **Park Strip** (Z2-S1..S6 + Z2-MATCH-*) and **Main Yard** (Z2-S7..S18). Other zones unchanged.
+- **`ProblemAreaView`** — Open section now renders a bullet list of `actions` under each problem (gold • markers). New **More — Shopping List** section after Resolved, derived from `FairwayStore.recommendedNozzleShoppingList(for:)`.
+- **`FairwayStore.recommendedNozzleShoppingList(for zoneID:)`** — produces `[NozzleShoppingItem]` grouped by short-radius (≤5 ft → MP800 SR) vs. standard (zone target nozzle). Mismatch heuristic: head's `nozzle`/`fieldNozzle` doesn't contain the zone schedule's `nozzleType`.
+- **`AddProblemSheet`** — new "Specific things needed" section with add/remove rows, lets users seed action bullets when logging a problem.
+- **`ScheduleView`** — added **Read-only mirror** banner at top (Fairway plans, Rachio runs); **info popovers** ("?" button) on every parameter row explaining cycle length, soak between, cycles, precip rate, grass, nozzle; **Recent fertilizer** card if any `FertApplication` in the last 7 days for this zone (water-in window status).
+- **`MapTabView`** — per-zone **convex-hull polygon overlay** (Andrew's monotone-chain) drawn under the head pins. Translucent fill + dashed stroke. Makes zone boundaries unambiguous when individual head pins are physically close at borders (e.g., Z3 NW corner abutting Z4).
+
+### Changed — 2026-04-25 (session 4) — Pre-season problem cleanup
+
+Dropped speculative pre-season problems across all zones (no irrigation signal yet):
+
+- **Z2:** removed `Dry park strip`, `Dry lawn center`, `Weed pressure park strip`. Kept `phase0Z2MixedPrecipProblem()` (real, confirmed) — now seeded with 4 action bullets covering the swap plan.
+- **Z3:** removed `East fence coverage gap` (dry strip) and `Hardscape overspray`. Kept `Misdirected head near foundation` and `Nozzle type unconfirmed` — both reseeded with action bullets.
+- **Z4:** kept all three audit-task problems but reseeded with action bullets (coverage walk, nozzle ID, tuna-can PR test).
+- **Observations:** removed Z2 lawn observation `"Dry patch near Z2-S3, likely overspray"` (speculation). Z4 grub-activity observation kept.
+
+### Documented — 2026-04-25 (session 4) — Per-head fertilizer rule
+
+- `Fairway/CLAUDE.md` Key Business Rules — new rule #10: "Heads are irrigation hardware only — never store per-head fertilizer history on `HeadData`. Fert applications live at the zone or product level (`InventoryItem.usageLog`, `FertApplication.zoneNumbers`)."
+
 ### Added — 2026-04-25 (session 3) — Audit sheet: pre-filled estimates, GPM field, measurement guide
 
 - **`HeadData.fieldGPM: Double?`** — new optional field for catch-cup-tested GPM per head; uses `decodeIfPresent` (backward compat).

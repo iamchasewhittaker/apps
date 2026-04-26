@@ -144,6 +144,7 @@ xcodebuild test \
 7. **Rachio token lives in Keychain only** — never in UserDefaults, FairwayBlob, logs, or committed files. Entered via SecureField, validated, then written with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`. On 401: Keychain cleared, last-known snapshot preserved.
 8. **Z2 (Front yard + park strip) is a single valve** — any Z2 irrigation or fert application covers the park strip automatically. Always call this out explicitly.
 9. **Spreader calculator is necessary but not sufficient** — always run 100 sq ft TARE calibration before applying any product. Log calibration result on `InventoryItem` before logging `FertApplication`.
+10. **Heads are irrigation hardware only** — never store per-head fertilizer history on `HeadData`. Fertilizer applications live at the zone or product level (`InventoryItem.usageLog`, `FertApplication.zoneNumbers`). Don't add fert fields to head detail UI.
 
 ## Sprinkler Head Data — KML Source
 

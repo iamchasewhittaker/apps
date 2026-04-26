@@ -632,3 +632,54 @@ final class FairwayStore {
         }
     }
 }
+
+// MARK: - Shopping list
+
+struct NozzleShoppingItem: Identifiable {
+    let id = UUID()
+    let recommendedNozzle: String
+    let reason: String
+    let headLabels: [String]
+    var quantity: Int { headLabels.count }
+}
+
+extension FairwayStore {
+    /// Recommended nozzle swaps for a zone, derived from heads whose current
+    /// nozzle disagrees with the zone's target nozzle family. Park-strip
+    /// (4 ft) heads on a zone whose target is "MP Rotator" group as MP800 SR
+    /// to match the short radius; everything else groups as the zone's target.
+    func recommendedNozzleShoppingList(for zoneID: UUID) -> [NozzleShoppingItem] {
+        guard let zone = blob.zones.first(where: { $0.id == zoneID }),
+              let target = zone.schedule?.nozzleType,
+              !target.isEmpty else { return [] }
+
+        let targetLower = target.lowercased()
+        let mismatches = zone.heads.filter { head in
+            let n = head.nozzle.lowercased()
+            let f = head.fieldNozzle.lowercased()
+            return !n.contains(targetLower) && !f.contains(targetLower)
+        }
+        guard !mismatches.isEmpty else { return [] }
+
+        // Bucket: short-radius park strip (≤ 4 ft) vs everything else.
+        let shortRadius = mismatches.filter { $0.radiusFeet > 0 && $0.radiusFeet <= 5 }
+        let standard = mismatches.filter { !($0.radiusFeet > 0 && $0.radiusFeet <= 5) }
+
+        var items: [NozzleShoppingItem] = []
+        if !shortRadius.isEmpty, target.localizedCaseInsensitiveContains("MP Rotator") {
+            items.append(NozzleShoppingItem(
+                recommendedNozzle: "MP800 SR (6–12 ft, 0–30° arc)",
+                reason: "Short-radius park strip — narrow profile + concrete heat",
+                headLabels: shortRadius.map(\.label).sorted()
+            ))
+        }
+        if !standard.isEmpty {
+            items.append(NozzleShoppingItem(
+                recommendedNozzle: "\(target) — match cap color to head radius",
+                reason: "Mismatch vs zone target nozzle (cream MP1000, blue MP2000, red MP3000)",
+                headLabels: standard.map(\.label).sorted()
+            ))
+        }
+        return items
+    }
+}

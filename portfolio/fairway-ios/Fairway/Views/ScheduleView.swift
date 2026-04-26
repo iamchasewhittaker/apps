@@ -1,16 +1,20 @@
 import SwiftUI
 
+@MainActor
 struct ScheduleView: View {
     @Environment(FairwayStore.self) private var store
     let zoneID: UUID
     @State private var editing = false
     @State private var draft: ScheduleData?
+    @State private var infoPopover: ParameterInfo? = nil
 
-    @MainActor private var zone: ZoneData? { store.zone(withID: zoneID) }
-    @MainActor private var schedule: ScheduleData? { zone?.schedule }
+    private var zone: ZoneData? { store.zone(withID: zoneID) }
+    private var schedule: ScheduleData? { zone?.schedule }
 
     var body: some View {
         VStack(spacing: 12) {
+            readOnlyBanner
+
             if let schedule = draft ?? schedule {
                 summaryCard(schedule: schedule)
                 if editing {
@@ -23,6 +27,7 @@ struct ScheduleView: View {
             }
 
             rachioMirrorCard
+            recentFertilizerCard
 
             HStack {
                 Spacer()
@@ -49,6 +54,27 @@ struct ScheduleView: View {
                     .background(FairwayTheme.backgroundElevated)
                     .foregroundStyle(FairwayTheme.textPrimary)
                     .clipShape(Capsule())
+                }
+            }
+        }
+        .sheet(item: $infoPopover) { info in
+            ParameterInfoSheet(info: info)
+        }
+    }
+
+    private var readOnlyBanner: some View {
+        FairwayCard {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: "info.circle.fill")
+                    .foregroundStyle(FairwayTheme.accentGold)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Read-only mirror")
+                        .font(.caption.bold())
+                        .foregroundStyle(FairwayTheme.textPrimary)
+                    Text("Set the schedule in the Rachio app — Fairway plans, Rachio runs. Cycle & Soak is recommended for Vineyard's clay soil.")
+                        .font(.caption)
+                        .foregroundStyle(FairwayTheme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
@@ -109,12 +135,12 @@ struct ScheduleView: View {
         FairwayCard {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Parameters").font(.caption.bold()).foregroundStyle(FairwayTheme.textSecondary).textCase(.uppercase)
-                InfoLine(label: "Cycle length", value: "\(schedule.cycleMinutes) min")
-                InfoLine(label: "Soak between", value: "\(schedule.soakMinutes) min")
-                InfoLine(label: "Cycles", value: "\(schedule.cycles)")
-                InfoLine(label: "Precip rate", value: String(format: "%.2f", schedule.precipitationRate) + " in/hr")
-                InfoLine(label: "Grass", value: schedule.grassType.isEmpty ? "—" : schedule.grassType)
-                InfoLine(label: "Nozzle", value: schedule.nozzleType.isEmpty ? "—" : schedule.nozzleType)
+                paramLine(.cycleLength, value: "\(schedule.cycleMinutes) min")
+                paramLine(.soakBetween, value: "\(schedule.soakMinutes) min")
+                paramLine(.cycles, value: "\(schedule.cycles)")
+                paramLine(.precipRate, value: String(format: "%.2f", schedule.precipitationRate) + " in/hr")
+                paramLine(.grassType, value: schedule.grassType.isEmpty ? "—" : schedule.grassType)
+                paramLine(.nozzleType, value: schedule.nozzleType.isEmpty ? "—" : schedule.nozzleType)
                 if !schedule.notes.isEmpty {
                     Divider().background(FairwayTheme.textSecondary.opacity(0.3))
                     Text(schedule.notes)
@@ -123,6 +149,24 @@ struct ScheduleView: View {
                 }
             }
         }
+    }
+
+    private func paramLine(_ info: ParameterInfo, value: String) -> some View {
+        HStack {
+            Text(info.label).foregroundStyle(FairwayTheme.textSecondary)
+            Button {
+                infoPopover = info
+            } label: {
+                Image(systemName: "questionmark.circle")
+                    .font(.caption)
+                    .foregroundStyle(FairwayTheme.accentGold)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("About \(info.label)")
+            Spacer()
+            Text(value).foregroundStyle(FairwayTheme.textPrimary)
+        }
+        .font(.footnote)
     }
 
     @ViewBuilder
@@ -218,7 +262,7 @@ struct ScheduleView: View {
         }
     }
 
-    @MainActor @ViewBuilder
+    @ViewBuilder
     private var rachioMirrorCard: some View {
         if let state = store.blob.rachio,
            let zone,
@@ -277,9 +321,115 @@ struct ScheduleView: View {
         }
     }
 
+    @ViewBuilder
+    private var recentFertilizerCard: some View {
+        if let zone {
+            let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+            let recent = store.blob.fertApplications
+                .filter { $0.date >= cutoff && $0.zoneNumbers.contains(zone.number) }
+                .sorted { $0.date > $1.date }
+            if let last = recent.first {
+                let daysAgo = max(0, Calendar.current.dateComponents([.day], from: last.date, to: Date()).day ?? 0)
+                FairwayCard {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            Label("Recent fertilizer", systemImage: "leaf.fill")
+                                .font(.caption.bold())
+                                .foregroundStyle(FairwayTheme.statusHealthy)
+                                .textCase(.uppercase)
+                            Spacer()
+                            Text(daysAgoLabel(daysAgo))
+                                .font(.caption2)
+                                .foregroundStyle(FairwayTheme.textSecondary)
+                        }
+                        Text(last.productName.isEmpty ? "Fertilizer applied" : last.productName)
+                            .font(.subheadline.bold())
+                            .foregroundStyle(FairwayTheme.textPrimary)
+                        Text(waterInStatus(daysAgo: daysAgo))
+                            .font(.caption)
+                            .foregroundStyle(FairwayTheme.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+        }
+    }
+
+    private func daysAgoLabel(_ d: Int) -> String {
+        d == 0 ? "today" : (d == 1 ? "1 day ago" : "\(d) days ago")
+    }
+
+    private func waterInStatus(daysAgo d: Int) -> String {
+        switch d {
+        case 0...1:  return "Water-in window: water 0.25–0.5″ within 24–48 hours."
+        case 2:      return "Water-in still useful — apply if you haven't yet."
+        default:     return "Water-in window has passed. Granules should have activated."
+        }
+    }
+
     private func statusBackground(_ rule: RachioScheduleSnapshot) -> Color {
         if !rule.enabled { return FairwayTheme.statusAttention }
         if rule.rainDelay { return FairwayTheme.sunAmber }
         return FairwayTheme.statusHealthy
+    }
+}
+
+enum ParameterInfo: String, Identifiable {
+    case cycleLength, soakBetween, cycles, precipRate, grassType, nozzleType
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .cycleLength: return "Cycle length"
+        case .soakBetween: return "Soak between"
+        case .cycles:      return "Cycles"
+        case .precipRate:  return "Precip rate"
+        case .grassType:   return "Grass"
+        case .nozzleType:  return "Nozzle"
+        }
+    }
+
+    var explanation: String {
+        switch self {
+        case .cycleLength:
+            return "How long the zone runs in one burst, in minutes. Set short enough that applied water is no more than the soil can absorb before runoff. Vineyard's clay soil tolerates ~3–5 min for spray nozzles, ~10–15 min for MP Rotators."
+        case .soakBetween:
+            return "Wait time between cycles, in minutes. Lets surface water move down out of the top inch before the next burst. Typical: 30–60 min."
+        case .cycles:
+            return "Number of burst+soak iterations per watering day. Total run time = cycle minutes × cycles. Three cycles is usually enough for KBG."
+        case .precipRate:
+            return "How fast the zone applies water, in inches per hour. This is the most important number to get right — it drives total run time for a target depth.\n\nTypical precip rates:\n• Fixed spray ~1.5 in/hr\n• Rotor ~0.5 in/hr\n• MP Rotator ~0.4 in/hr\n\nIt's set by the nozzle, not the controller. To measure: tuna-can audit (4–6 cans across the zone, 15-min run, average depth × 4)."
+        case .grassType:
+            return "Cool-season grass like KBG (Kentucky Bluegrass) needs ~1.0–1.5 in/wk peak summer in Vineyard. Warm-season grasses (rare here) need less. Drives the weekly water budget."
+        case .nozzleType:
+            return "The dominant nozzle family in this zone. Should match HeadData.nozzle for most heads. Drives the precipitation rate, which drives the run time. Mixed nozzle families on a single zone are bad — see the mixed-precip rule."
+        }
+    }
+}
+
+private struct ParameterInfoSheet: View {
+    let info: ParameterInfo
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                Text(info.explanation)
+                    .font(.body)
+                    .foregroundStyle(FairwayTheme.textPrimary)
+                    .padding(20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .background(FairwayTheme.backgroundPrimary)
+            .navigationTitle(info.label)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }.bold()
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
 }

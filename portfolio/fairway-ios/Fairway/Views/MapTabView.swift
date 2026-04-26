@@ -50,6 +50,21 @@ struct MapTabView: View {
         let visZones = visibleZones
         ZStack(alignment: .top) {
             Map(position: $cameraPosition) {
+                // Zone-hull overlays — gives clear spatial boundary per zone even
+                // when individual head pins are physically close at zone borders.
+                ForEach(snapshot) { zone in
+                    if visZones.contains(zone.number) {
+                        let zColor = zoneColor(zone.number)
+                        let hull = zoneHull(zone: zone)
+                        if hull.count >= 3 {
+                            MapPolygon(coordinates: hull)
+                                .foregroundStyle(zColor.opacity(0.10))
+                                .stroke(zColor.opacity(0.6), style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
+                        }
+                    }
+                }
+
+                // Head pins + arcs.
                 ForEach(snapshot) { zone in
                     if visZones.contains(zone.number) {
                         let zColor = zoneColor(zone.number)
@@ -199,6 +214,46 @@ struct MapTabView: View {
         }
         points.append(center)
         return points
+    }
+
+    /// Convex hull of a zone's head coordinates (Andrew's monotone-chain).
+    /// Returns counter-clockwise points. Empty if fewer than 3 distinct heads.
+    private func zoneHull(zone: ZoneData) -> [CLLocationCoordinate2D] {
+        var pts = zone.heads.compactMap { h -> CLLocationCoordinate2D? in
+            guard let lat = h.latitude, let lng = h.longitude else { return nil }
+            return CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        }
+        guard pts.count >= 3 else { return [] }
+
+        // Sort by longitude, then latitude.
+        pts.sort {
+            $0.longitude == $1.longitude ? $0.latitude < $1.latitude : $0.longitude < $1.longitude
+        }
+
+        func cross(_ o: CLLocationCoordinate2D, _ a: CLLocationCoordinate2D, _ b: CLLocationCoordinate2D) -> Double {
+            (a.longitude - o.longitude) * (b.latitude - o.latitude)
+                - (a.latitude - o.latitude) * (b.longitude - o.longitude)
+        }
+
+        var lower: [CLLocationCoordinate2D] = []
+        for p in pts {
+            while lower.count >= 2 && cross(lower[lower.count - 2], lower[lower.count - 1], p) <= 0 {
+                lower.removeLast()
+            }
+            lower.append(p)
+        }
+
+        var upper: [CLLocationCoordinate2D] = []
+        for p in pts.reversed() {
+            while upper.count >= 2 && cross(upper[upper.count - 2], upper[upper.count - 1], p) <= 0 {
+                upper.removeLast()
+            }
+            upper.append(p)
+        }
+
+        lower.removeLast()
+        upper.removeLast()
+        return lower + upper
     }
 
     private func destination(from origin: CLLocationCoordinate2D, bearing: Double, meters: Double) -> CLLocationCoordinate2D {

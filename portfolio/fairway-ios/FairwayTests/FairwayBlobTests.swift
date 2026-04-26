@@ -344,6 +344,48 @@ final class FairwayBlobTests: XCTestCase {
         XCTAssertEqual(store.blob.zones.first(where: { $0.number == 4 })?.heads.count, snapshotZ4Count)
     }
 
+    func testProblemActionsBackwardCompat() throws {
+        // v1 ProblemData blob: no `actions` key. Field must default to [].
+        let oldJson = """
+        {
+            "id": "\(UUID().uuidString)",
+            "title": "Legacy problem",
+            "description": "Before actions were added",
+            "severity": "Medium",
+            "isPreSeason": true,
+            "isResolved": false,
+            "dateLogged": 776937600,
+            "notes": ""
+        }
+        """.data(using: .utf8)!
+        let decoded = try JSONDecoder().decode(ProblemData.self, from: oldJson)
+        XCTAssertEqual(decoded.title, "Legacy problem")
+        XCTAssertEqual(decoded.actions, [])
+    }
+
+    func testProblemActionsRoundTrip() throws {
+        let original = ProblemData(
+            title: "With actions",
+            severity: .high,
+            isPreSeason: false,
+            actions: ["Step one", "Step two", "Step three"]
+        )
+        let data = try JSONEncoder().encode(original)
+        let decoded = try JSONDecoder().decode(ProblemData.self, from: data)
+        XCTAssertEqual(decoded.actions, ["Step one", "Step two", "Step three"])
+    }
+
+    func testNozzleShoppingListForZ2() {
+        // Z2 schedule.nozzleType == "MP Rotator"; park-strip heads S1–S6 are
+        // Rain Bird VAN/1555 fixed sprays at 4 ft radius → MP800 SR bucket.
+        let store = freshStore()
+        let z2 = store.blob.zones.first(where: { $0.number == 2 })!
+        let list = store.recommendedNozzleShoppingList(for: z2.id)
+        XCTAssertFalse(list.isEmpty, "Z2 should have at least one shopping bucket (mismatched nozzles)")
+        let allLabels = list.flatMap(\.headLabels)
+        XCTAssertTrue(allLabels.contains("Z2-S1"), "Z2-S1 (Rain Bird VAN yellow) should be flagged for swap")
+    }
+
     func testHeadDataMissingGeoFieldsDecodes() throws {
         // Pre-v2 encoded HeadData (no geo fields) must decode with nil coords.
         let oldHeadJson = """

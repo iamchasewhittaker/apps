@@ -1,5 +1,17 @@
 # Fairway iOS — Learnings
 
+## When the user says "the map is messed up," diagnose before guessing
+
+**Date:** 2026-04-25 (session 4)
+
+User reported "the west side of the backyard is being merged in with zone 2" and later clarified: "the ones on the west side were labeled starting with a b and they were all red." Rather than start changing zone assignments, the diagnostic step (cross-reference `docs/heads/sprinklers.json` ↔ `Fairway/PreviewData.swift`) revealed the data was correct: 41 heads, Z2=18, Z3=11, Z4=12, all classified by KML icon color matching the import-script rule. The "merge" was visual — Z3-S1..S6 (red side-yard pins) sit at the same NW corner as Z4 (back yard) because that's their physical location. The fix wasn't a data correction; it was a UX clarification: per-zone convex-hull polygon overlays on the map. **Lesson: always run the diagnostic the plan calls for before applying a fix — three candidate root causes were on the table and only one was right.**
+
+## Bullet-list "actions" field on a problem beats overloaded `description`
+
+**Date:** 2026-04-25 (session 4)
+
+The original `ProblemData.description: String` accumulated into a wall-of-text "what's wrong AND what to do" blob (see the original `phase0Z2MixedPrecipProblem` description). Splitting it into `description` (what's wrong) + `actions: [String]` (specific things needed) gives the UI clean affordances: a paragraph for context, a checkable bullet list for execution. Migration is Codable Rule #1 — extension `init(from:)` with `decodeIfPresent`, default `[]`.
+
 ## Pre-filled form defaults: use seed values as estimates, not blank fields
 
 **Date:** 2026-04-25

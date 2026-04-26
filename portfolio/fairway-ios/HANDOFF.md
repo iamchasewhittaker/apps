@@ -5,14 +5,14 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 Pre-Season Audit live. Audit sheet now pre-fills estimates + has measurement guide (GPM catch-cup test). Map coordinates fixed. Installed on device 2026-04-25. |
-| Last session | 2026-04-25 (session 3): fieldGPM added; audit sheet pre-fill + estimates + guide; property coords fixed (Phase 3 migration); map camera 200m; device install EXIT:0 |
-| Focus | **Field walk with Pre-Season Audit** (More → Pre-Season Audit). Z4-S1 highest priority — fully buried, zero coverage. |
+| Status | 🟡 Session 4 complete + verified: Z2 sub-grouping, problem actions + shopping list, schedule explainers, map zone-hulls. 37/37 tests passing. Pre-Season Audit live on device. |
+| Last session | 2026-04-25 (session 4): `ProblemData.actions` field + bullet UI; `recommendedNozzleShoppingList`; Z2 Heads sectioned (park strip / main yard); ScheduleView read-only banner + info popovers + recent-fert card; MapTabView convex-hull zone overlays. Removed pre-season dry/overspray/weed seeds. 37/37 tests pass (3 new: `testProblemActionsBackwardCompat`, `testProblemActionsRoundTrip`, `testNozzleShoppingListForZ2`). |
+| Focus | Field walk with Pre-Season Audit (More → Pre-Season Audit). Z4-S1 highest priority (fully buried, zero coverage). Verify zone-hull overlays visually separate Z3 NW pins from Z4 on device. |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
 | Xcode project | `Fairway.xcodeproj` |
-| Plan | `/Users/chase/.claude/plans/i-have-a-new-cheeky-nova.md` |
+| Plan | `/Users/chase/.claude/plans/in-the-zone-menu-memoized-breeze.md` (session 4) |
 
 ---
 

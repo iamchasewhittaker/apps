@@ -88,7 +88,6 @@ enum PreviewData {
 
     private static func seedObservations() -> [LawnObservation] {
         [
-            LawnObservation(zoneNumber: 2, text: "Dry patch near Z2-S3, likely overspray is missing this section"),
             LawnObservation(zoneNumber: 4, text: "Possible grub activity near Zone 4 NW corner — need to investigate")
         ]
     }
@@ -249,10 +248,16 @@ enum PreviewData {
     static func phase0Z2MixedPrecipProblem() -> ProblemData {
         ProblemData(
             title: "Z2 mixed precip rate (park strip nozzle inconsistency)",
-            description: "Park strip heads (S1–S6) span at least three nozzle families: Rain Bird VAN yellow (~0.5 in/hr at 4 ft), Rain Bird 1555 fixed spray (~1.5 in/hr), and one head (S5) with an empty/dirt-packed nozzle slot. Run-time tuning cannot reconcile this. Park strip suffers worst (concrete heat + narrow profile). Earlier seed claimed S5 was an MP Rotator already — photo-1 disproved that. Resolution: full inventory + standardize Z2 park strip on MP Rotators (matching radius per location).",
+            description: "Park strip heads run a mix of Rain Bird VAN yellow (~0.5 in/hr at 4 ft), Rain Bird 1555 fixed spray (~1.5 in/hr), and one head (S5) with an empty/dirt-packed nozzle slot. Run-time tuning cannot reconcile this on a single valve.",
             severity: .high,
             isPreSeason: false,
-            dateLogged: date(2026, 4, 23)
+            dateLogged: date(2026, 4, 23),
+            actions: [
+                "Standardize Z2 park strip on MP Rotators (matching radius per location)",
+                "Replace S5 (empty/dirt-packed slot) with MP Rotator 1000-360",
+                "Verify each replacement nozzle's radius vs. its location before installing",
+                "After swap, expect ~3× longer run time (MP ~0.4 in/hr vs sprays ~1.5 in/hr)"
+            ]
         )
     }
 
@@ -455,12 +460,7 @@ enum PreviewData {
 
         zone.heads = phase0Z2Heads()
 
-        zone.problemAreas = [
-            phase0Z2MixedPrecipProblem(),
-            ProblemData(title: "Dry park strip", description: "Park strip browns out by mid-July.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "Dry lawn center", description: "Suspected coverage gap mid-lawn.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "Weed pressure park strip", description: "Crabgrass and dandelions last summer.", severity: .medium, isPreSeason: true)
-        ]
+        zone.problemAreas = [phase0Z2MixedPrecipProblem()]
 
         zone.schedule = ScheduleData(
             mode: "Flex Daily",
@@ -541,10 +541,28 @@ enum PreviewData {
         }
 
         zone.problemAreas = [
-            ProblemData(title: "East fence coverage gap", description: "Dry strip along east fence line.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "Misdirected head near foundation", description: "Spraying foundation wall.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "Hardscape overspray", description: "Water hitting sidewalk/concrete.", severity: .low, isPreSeason: true),
-            ProblemData(title: "Nozzle type unconfirmed", description: "Need to identify nozzle series during season test.", severity: .low, isPreSeason: true)
+            ProblemData(
+                title: "Misdirected head near foundation",
+                description: "Spraying foundation wall.",
+                severity: .medium,
+                isPreSeason: true,
+                actions: [
+                    "Identify which Z3 head is hitting the wall during first runtime test",
+                    "Adjust arc and direction; cap radius to clear the foundation",
+                    "Photograph the corrected spray pattern for the head record"
+                ]
+            ),
+            ProblemData(
+                title: "Nozzle type unconfirmed",
+                description: "Need to identify nozzle series during season test.",
+                severity: .low,
+                isPreSeason: true,
+                actions: [
+                    "Walk Z3 during a season-test cycle and ID nozzle family per head",
+                    "Update HeadData.nozzle for each Z3-S* head from \"TBD\"",
+                    "Recompute zone precip rate once the dominant family is confirmed"
+                ]
+            )
         ]
 
         zone.schedule = ScheduleData(
@@ -610,9 +628,39 @@ enum PreviewData {
         }
 
         zone.problemAreas = [
-            ProblemData(title: "Coverage gaps to verify", description: "12 heads brand new from KML — coverage map unconfirmed.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "Nozzle types unconfirmed", description: "All 12 heads need nozzle ID during season test.", severity: .medium, isPreSeason: true),
-            ProblemData(title: "Cycle time TBD pending PR test", description: "PR unknown until nozzles identified.", severity: .low, isPreSeason: true)
+            ProblemData(
+                title: "Coverage gaps to verify",
+                description: "12 heads brand new from KML — coverage map unconfirmed.",
+                severity: .medium,
+                isPreSeason: true,
+                actions: [
+                    "Run Z4 for 5 min and walk the back yard during the burst",
+                    "Mark dry corners and overlap zones on the property photo",
+                    "Photograph each head while running for the head record"
+                ]
+            ),
+            ProblemData(
+                title: "Nozzle types unconfirmed",
+                description: "All 12 heads need nozzle ID during season test.",
+                severity: .medium,
+                isPreSeason: true,
+                actions: [
+                    "ID nozzle family on each Z4-S* head during first runtime",
+                    "Update HeadData.nozzle for all 12 heads from \"TBD\"",
+                    "Photograph nozzle markings (top-down close-up) for audit"
+                ]
+            ),
+            ProblemData(
+                title: "Cycle time TBD pending PR test",
+                description: "PR unknown until nozzles identified.",
+                severity: .low,
+                isPreSeason: true,
+                actions: [
+                    "After nozzle ID, set zone precipitationRate from the dominant family",
+                    "Run a tuna-can audit (4–6 cans across the zone, 15-min run)",
+                    "Update ScheduleData.cycleMinutes to match measured PR"
+                ]
+            )
         ]
 
         zone.schedule = ScheduleData(

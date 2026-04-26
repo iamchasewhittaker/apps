@@ -1,11 +1,12 @@
 import SwiftUI
 
+@MainActor
 struct HeadInventoryView: View {
     @Environment(FairwayStore.self) private var store
     let zoneID: UUID
     @State private var showAddHead = false
 
-    @MainActor private var zone: ZoneData? { store.zone(withID: zoneID) }
+    private var zone: ZoneData? { store.zone(withID: zoneID) }
 
     var body: some View {
         VStack(spacing: 10) {
@@ -26,28 +27,72 @@ struct HeadInventoryView: View {
             if let zone, zone.heads.isEmpty {
                 emptyState
             } else if let zone {
-                VStack(spacing: 8) {
-                    ForEach(zone.heads) { head in
-                        NavigationLink {
-                            HeadDetailView(zoneID: zone.id, headID: head.id)
-                        } label: {
-                            HeadRow(head: head)
-                        }
-                        .buttonStyle(.plain)
-                        .swipeActions {
-                            Button(role: .destructive) {
-                                store.deleteHead(id: head.id, from: zone.id)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                    }
+                if zone.number == 2 {
+                    z2GroupedList(zone: zone)
+                } else {
+                    flatList(zone: zone, heads: zone.heads)
                 }
             }
         }
         .sheet(isPresented: $showAddHead) {
             AddHeadSheet(zoneID: zoneID)
         }
+    }
+
+    @ViewBuilder
+    private func z2GroupedList(zone: ZoneData) -> some View {
+        let parkStrip = zone.heads.filter { isParkStrip(label: $0.label) }
+        let mainYard  = zone.heads.filter { !isParkStrip(label: $0.label) }
+        VStack(spacing: 8) {
+            if !parkStrip.isEmpty {
+                sectionHeader("Park Strip")
+                flatList(zone: zone, heads: parkStrip)
+            }
+            if !mainYard.isEmpty {
+                sectionHeader("Main Yard")
+                flatList(zone: zone, heads: mainYard)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func flatList(zone: ZoneData, heads: [HeadData]) -> some View {
+        VStack(spacing: 8) {
+            ForEach(heads) { head in
+                NavigationLink {
+                    HeadDetailView(zoneID: zone.id, headID: head.id)
+                } label: {
+                    HeadRow(head: head)
+                }
+                .buttonStyle(.plain)
+                .swipeActions {
+                    Button(role: .destructive) {
+                        store.deleteHead(id: head.id, from: zone.id)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
+            }
+        }
+    }
+
+    private func sectionHeader(_ title: String) -> some View {
+        HStack {
+            Text(title.uppercased())
+                .font(.caption.bold())
+                .foregroundStyle(FairwayTheme.textSecondary)
+            Spacer()
+        }
+        .padding(.top, 4)
+    }
+
+    /// Park strip: Z2-S1..Z2-S6 + Z2-MATCH-* (the 6 numbered park-strip pins).
+    /// Everything else inside Z2 is treated as Main Yard.
+    private func isParkStrip(label: String) -> Bool {
+        if label.hasPrefix("Z2-MATCH-") { return true }
+        guard label.hasPrefix("Z2-S"),
+              let n = Int(label.dropFirst(4)) else { return false }
+        return (1...6).contains(n)
     }
 
     private var emptyState: some View {
