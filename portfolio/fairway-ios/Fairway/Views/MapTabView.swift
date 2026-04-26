@@ -91,7 +91,7 @@ struct MapTabView: View {
         )
         return .camera(MapCamera(
             centerCoordinate: center,
-            distance: 120,
+            distance: 200,
             heading: 0,
             pitch: 0
         ))

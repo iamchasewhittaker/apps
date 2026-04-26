@@ -40,6 +40,7 @@ final class FairwayStore {
         applyPhase0MigrationIfNeeded()
         applyPhase1ZoneMigrationIfNeeded()
         applyPhase2AuditDataMigrationIfNeeded()
+        applyPhase3PropertyCoordsMigrationIfNeeded()
     }
 
     /// Idempotently applies the 2026-04-23 IFA over-application data (companion
@@ -173,6 +174,21 @@ final class FairwayStore {
             }
         }
         if changed { save() }
+    }
+
+    /// Fixes the wrong seeded property coordinates (40.3330, -111.7550) shipped
+    /// in the original seed. The correct center is 40.3004, -111.7456, derived
+    /// from the centroid of all 41 KML-sourced head coordinates.
+    /// Guard condition is exact match on the wrong seed value — never overwrites
+    /// manually-adjusted coordinates.
+    private func applyPhase3PropertyCoordsMigrationIfNeeded() {
+        guard var p = blob.property else { return }
+        guard abs(p.latitude - 40.3330) < 0.0001 && abs(p.longitude - (-111.7550)) < 0.0001 else { return }
+        p.latitude = 40.3004
+        p.longitude = -111.7456
+        p.geocodedAt = Date()
+        blob.property = p
+        save()
     }
 
     /// Phase 1 self-heal: a persisted blob may have property coords == (0,0)

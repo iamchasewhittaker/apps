@@ -1,5 +1,27 @@
 # Fairway iOS — Learnings
 
+## Pre-filled form defaults: use seed values as estimates, not blank fields
+
+**Date:** 2026-04-25
+
+For field-data sheets where the user will confirm values, initialize the @State form fields from the saved field value first, then fall back to the best available estimate (seed nozzle, seed arcDegrees, etc.) rather than showing blank. The fallback should be filtered: skip "TBD…" placeholder strings so the user sees either a real estimate or a blank input — never a TBD that they'd have to manually clear.
+
+Pattern for init:
+```swift
+let prefilledNozzle: String = {
+    if !head.fieldNozzle.isEmpty { return head.fieldNozzle }       // saved wins
+    if !head.nozzle.hasPrefix("TBD") { return head.nozzle }        // seed estimate
+    return ""                                                        // blank for TBD
+}()
+_fieldNozzle = State(initialValue: prefilledNozzle)
+```
+
+## Map property coords: seed a centroid, not a manually guessed lat/lon
+
+**Date:** 2026-04-25
+
+The original seeded property center (40.3330, -111.7550) was ~3.6 km off from the actual house. The reliable approach: compute the centroid of all KML-sourced head coordinates and use that as the seed value. Add a `applyPhaseNPropertyCoordsMigrationIfNeeded()` that detects the exact wrong value and patches it — guard condition is tight so manually-adjusted coords are never overwritten.
+
 ## Seeding audit data into PreviewData is NOT enough — you also need a store migration
 
 **Date:** 2026-04-25

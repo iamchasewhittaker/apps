@@ -5,8 +5,8 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 Pre-Season Audit live. Phase 2 audit migration shipped. Rebuilt + installed on device (2026-04-25). Audit observations now visible — field walk ready. |
-| Last session | 2026-04-25 (audit migration bug found + fixed; device install; Linear project updated; docs updated) |
+| Status | 🟡 Pre-Season Audit live. Audit sheet now pre-fills estimates + has measurement guide (GPM catch-cup test). Map coordinates fixed. Installed on device 2026-04-25. |
+| Last session | 2026-04-25 (session 3): fieldGPM added; audit sheet pre-fill + estimates + guide; property coords fixed (Phase 3 migration); map camera 200m; device install EXIT:0 |
 | Focus | **Field walk with Pre-Season Audit** (More → Pre-Season Audit). Z4-S1 highest priority — fully buried, zero coverage. |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |

@@ -40,6 +40,7 @@ struct HeadData: Codable, Identifiable {
     var fieldNozzle: String = ""        // nozzle confirmed in field (overrides audit)
     var fieldArcDegrees: Int? = nil     // measured arc
     var fieldRadiusFeet: Double? = nil  // measured radius
+    var fieldGPM: Double? = nil         // measured GPM (catch cup test)
 
     var hasCoordinates: Bool {
         latitude != nil && longitude != nil
@@ -77,5 +78,6 @@ extension HeadData {
         fieldNozzle = try c.decodeIfPresent(String.self, forKey: .fieldNozzle) ?? ""
         fieldArcDegrees = try c.decodeIfPresent(Int.self, forKey: .fieldArcDegrees)
         fieldRadiusFeet = try c.decodeIfPresent(Double.self, forKey: .fieldRadiusFeet)
+        fieldGPM = try c.decodeIfPresent(Double.self, forKey: .fieldGPM)
     }
 }

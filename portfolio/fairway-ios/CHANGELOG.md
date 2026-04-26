@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-25 (session 3) — Audit sheet: pre-filled estimates, GPM field, measurement guide
+
+- **`HeadData.fieldGPM: Double?`** — new optional field for catch-cup-tested GPM per head; uses `decodeIfPresent` (backward compat).
+- **`HeadAuditSheet`** — pre-fills Confirmed Nozzle, Arc°, Radius, GPM from audit-derived estimates when the field hasn't been set yet (arc/radius from seed; nozzle from audit if not "TBD"; GPM from nozzle-type table). User sees a useful starting value instead of blank forms.
+- **"Still needed from field"** section now shows estimated values in gold (e.g. "~0.4–0.8 GPM", "8–15 ft") derived from the photo audit observation text. Falls back to descriptive hint text where no estimate is available.
+- **"Field Measurement Guide"** — collapsible DisclosureGroup at bottom of sheet explaining arc°, radius, and GPM catch-cup test (15-min run, flat tuna cans, depth × 4 = in/hr). Includes MP Rotator and Rain Bird nozzle reference table.
+
+### Fixed — 2026-04-25 (session 3) — Map showing wrong property location
+
+**Root cause:** Seeded `PropertySettings.latitude` was `40.3330` — ~3.6 km north of the actual house. The correct center (centroid of all 41 KML-sourced heads) is `40.3004`.
+
+**Fix:** Updated seed to `40.3004, -111.7456`. Added `applyPhase3PropertyCoordsMigrationIfNeeded()` in `FairwayStore.load()` — detects the exact wrong value and patches it on next launch; guard condition is tight (matches only the original wrong seed), so manually-adjusted coords are never overwritten. Also bumped map camera distance 120→200 m for full-property coverage.
+
 ### Fixed — 2026-04-25 — Phase 2 audit data migration (on-device audit observations blank)
 
 **Root cause:** `auditObservation` and `auditConfidence` were seeded in `PreviewData.swift` but the existing on-device UserDefaults blob was written before these fields existed. `decodeIfPresent` correctly decoded them as `""` — no crash — but the audit list showed heads with no observations and the detail sheet showed "No audit data for this head".

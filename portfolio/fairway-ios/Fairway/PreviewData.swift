@@ -77,8 +77,10 @@ enum PreviewData {
         let ifaID = UUID()
         blob.inventory = seedInventory(ifaID: ifaID)
         blob.fertApplications = [seedIFAOverApplication(ifaID: ifaID)]
+        // Centroid of all 41 KML-sourced head coordinates (Z2-S1..S18 front yard,
+        // Z3-S1..S11 side yard, Z4-S1..S12 back yard). Original seed had wrong coords.
         blob.property = PropertySettings(address: "345 E 170 N, Vineyard, UT 84059",
-                                         latitude: 40.3330, longitude: -111.7550)
+                                         latitude: 40.3004, longitude: -111.7456)
         blob.observations = seedObservations()
         blob.seeded = true
         return blob
