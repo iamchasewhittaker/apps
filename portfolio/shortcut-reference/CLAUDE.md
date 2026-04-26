@@ -1,5 +1,8 @@
 # CLAUDE.md — Shortcut Reference
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 Instructions for AI assistants and humans working in this repo.
 
 ## What this project is

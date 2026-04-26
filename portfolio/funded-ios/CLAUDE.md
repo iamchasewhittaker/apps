@@ -1,5 +1,8 @@
 # CLAUDE.md — Funded iOS
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 > Read this before touching any file in this project. Both Claude Code and Cursor use this file.
 
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.

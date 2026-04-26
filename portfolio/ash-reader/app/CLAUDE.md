@@ -1,5 +1,8 @@
 # ash-reader
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 Personal tool for processing the capture system ChatGPT conversation with Ash.
 
 ## Stack

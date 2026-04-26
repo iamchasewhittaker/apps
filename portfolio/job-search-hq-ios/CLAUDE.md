@@ -1,5 +1,8 @@
 # Job Search HQ (iOS) — Project Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 > See also: [`/CLAUDE.md`](../../CLAUDE.md) (repo root) and web app [`../job-search-hq/CLAUDE.md`](../job-search-hq/CLAUDE.md).
 
 **Project tracking (shared with web):** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d)

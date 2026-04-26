@@ -1,5 +1,8 @@
 # CLAUDE.md
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 ## Project Overview
 macOS menu bar app that tracks Claude Max subscription usage and API costs. Built with Electron + React + TypeScript + Vite.
 

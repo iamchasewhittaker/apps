@@ -1,5 +1,8 @@
 # GMAT Mastery Web — Project Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 > See also: `/CLAUDE.md` at the monorepo root (`~/Developer/chase`) for portfolio-wide conventions.
 > See also: `AGENTS.md` in this folder — **Next 16 has breaking changes** from model training data. Check `node_modules/next/dist/docs/` before writing App Router code.
 

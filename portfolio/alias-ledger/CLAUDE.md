@@ -1,5 +1,8 @@
 # Alias Ledger — Claude Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 ## Project
 Chase's Hide My Email alias tracker. One alias per company — when spam arrives, you know exactly who leaked or sold the data. Single-file HTML app, `localStorage`-only, no build step.
 

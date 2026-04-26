@@ -1,5 +1,8 @@
 # Shipyard — Project Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 <!-- auto-start: overview -->
 > Fleet command for Chase's app portfolio. A local CLI scanner walks every portfolio app and upserts metadata into Supabase; the deployed Next.js dashboard surfaces project health, compliance scores, MVP steps, a WIP priority queue, weekly reviews, learning logs, and thematic analysis.
 

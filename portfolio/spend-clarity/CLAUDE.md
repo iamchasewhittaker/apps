@@ -1,5 +1,8 @@
 # CLAUDE.md — Spend Clarity
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 Python CLI at `portfolio/spend-clarity/` in the monorepo (`chase/`). Enriches YNAB transactions with memos (receipt items / Privacy descriptors) and optional category assignments.
 
 ## What This App Is

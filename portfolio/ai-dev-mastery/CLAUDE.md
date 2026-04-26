@@ -1,5 +1,8 @@
 # AI Dev Mastery — Course Maintenance
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 ## What this is
 Single-file React JSX course app (~155kb). Curriculum data at top,
 React component at bottom. 13 tracks, 68+ modules.

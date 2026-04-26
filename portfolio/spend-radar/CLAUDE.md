@@ -1,5 +1,8 @@
 # Spend Radar — Claude Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 ## Project
 Standalone subscription + receipt tracker. Scans Gmail `label:Receipt` emails (last 180d), detects recurring charges and parses per-receipt merchant/item/amount, and writes two tabs to a dedicated Google Sheet.
 

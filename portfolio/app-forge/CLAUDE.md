@@ -1,5 +1,8 @@
 # App Forge — Project Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions (monorepo root: `~/Developer/chase`).
 
 **Project tracking:** [Linear — App Forge](https://linear.app/whittaker/project/app-forge-64221811d236)

@@ -1,5 +1,8 @@
 # Spend Radar (web) — Claude Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 > Read-only dashboard for the Spend Radar Google Sheet.
 > CRA + React 18 + inline styles. No auth, no Supabase.
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions.

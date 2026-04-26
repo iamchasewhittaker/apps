@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# add-voice-brief-pointer — idempotently inject a 1-line pointer to
+# identity/voice-brief.md into every portfolio app's CLAUDE.md so AI
+# coding sessions automatically pick up Chase's voice rules.
+#
+# Safe to re-run. Reports added/skipped counts.
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TARGET="${ROOT}/identity/voice-brief.md"
+MARKER="identity/voice-brief.md"
+
+if [[ ! -f "$TARGET" ]]; then
+  echo "error: voice brief not found at $TARGET" >&2
+  exit 1
+fi
+
+POINTER='> **Voice brief:** This project follows Chase'\''s voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.'
+
+added=0
+skipped=0
+total=0
+
+while IFS= read -r -d '' file; do
+  total=$((total + 1))
+  if grep -q "$MARKER" "$file"; then
+    skipped=$((skipped + 1))
+    continue
+  fi
+
+  # Insert pointer after the first H1 (line starting with "# ") plus the
+  # immediate blank line that usually follows. Falls back to prepending
+  # if no H1 is found.
+  tmp="$(mktemp)"
+  awk -v pointer="$POINTER" '
+    BEGIN { inserted = 0 }
+    /^# / && inserted == 0 {
+      print
+      print ""
+      print pointer
+      print ""
+      inserted = 1
+      next
+    }
+    { print }
+    END {
+      if (inserted == 0) {
+        print pointer
+      }
+    }
+  ' "$file" > "$tmp"
+  mv "$tmp" "$file"
+  added=$((added + 1))
+done < <(find "${ROOT}/portfolio" -maxdepth 3 -name CLAUDE.md \
+  -not -path '*/node_modules/*' \
+  -not -path '*/archive/*' \
+  -print0)
+
+echo "added: ${added} · skipped: ${skipped} · total: ${total}"

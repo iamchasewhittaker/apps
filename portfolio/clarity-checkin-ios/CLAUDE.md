@@ -1,5 +1,8 @@
 # Clarity Check-in (iOS) — Project Instructions
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 > See also: `/CLAUDE.md` (repo root) for portfolio-wide conventions.
 
 ## App Identity

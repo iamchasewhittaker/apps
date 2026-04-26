@@ -1,5 +1,8 @@
 # Clarity Budget Web — CLAUDE.md
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 ## What This App Is
 
 YNAB-backed Safe-to-Spend (STS) dashboard showing how much is safe to spend today, this week, and this month — plus a 60-day transaction spending breakdown by category. Phase 2 adds a Claude-powered money companion that questions you about spending patterns.

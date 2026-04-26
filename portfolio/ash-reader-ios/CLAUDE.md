@@ -1,5 +1,8 @@
 # ash-reader-ios
 
+> **Voice brief:** This project follows Chase's voice rules — see [`identity/voice-brief.md`](../../identity/voice-brief.md). No em-dashes, no rule-of-threes, no hype, no consultant phrasing.
+
+
 Native SwiftUI companion to [ash-reader](../ash-reader) — the full 138k-word capture system conversation is baked in. Opens directly to the reader, no paste needed.
 
 **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, app icon spec (P6 electric yellow "AR"), generation pipeline.
