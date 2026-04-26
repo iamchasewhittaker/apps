@@ -4,11 +4,12 @@
 
 | Field | Value |
 |---|---|
-| Focus | v1 Redesign — auth refactor (steps 1–2 of 10 done) |
-| Status | Step 2 complete; Step 3 (Privacy integration) is next |
-| Last touch | 2026-04-24 |
-| URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 unpushed) |
+| Focus | v1 Redesign — auth refactor (steps 1–2 of 10 done; password + GitHub OAuth shipped) |
+| Status | Step 2 complete; password auth shipped (`72799f9`); GitHub OAuth button added to `/login` (uncommitted) |
+| Last touch | 2026-04-25 |
+| URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 deployed) |
 | Branch | main |
+| Manual TODO (auth) | **Supabase Dashboard:** (a) Auth → URL Configuration → Site URL = `https://clarity-budget-web.vercel.app`; Redirect URLs allowlist must include `https://clarity-budget-web.vercel.app/auth/callback` and `http://localhost:3000/auth/callback`; remove `apps.chasewhittaker.com`. (b) Auth → Providers → GitHub → enable + paste Client ID + Secret from a new GitHub OAuth App (`github.com/settings/developers`, callback URL = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). Until both are done, clicking "Continue with GitHub" will return a provider-not-enabled error. |
 
 ---
 
@@ -95,9 +96,11 @@ None — reused `@supabase/ssr` added in step 1.
 | `GET /auth/callback` no code | ✅ 307 → `/login?error=callback` |
 | Login form submit (real Supabase) | ✅ POST to `/auth/v1/otp` → 200; UI switched to "Check your email" |
 
-### Still needs manual verification (requires receiving the magic-link email)
-- Click magic link → `/auth/callback?code=…` → land on `/` with `<NavBar>` visible
-- Sign out → back to `/login`
+### Superseded 2026-04-25 — login switched to password
+
+The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`). Reason: magic-link emails were redirecting to the dead `apps.chasewhittaker.com` domain (deferred shared-login canonical host) — see `LEARNINGS.md` 2026-04-25 for the full postmortem. `app/auth/callback/route.ts` is left in place as harmless dead code; it'll only fire if OTP is reintroduced.
+
+### Still needs manual verification
 - With a pre-seeded YNAB token in localStorage, visit `/settings` → banner appears → Migrate → localStorage key gone, row in `clarity_budget_credentials`, audit log row with `action = 'credentials_upsert'`
 
 ---

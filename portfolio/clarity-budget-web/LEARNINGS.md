@@ -1,5 +1,29 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-25 — OTP callback route is reusable for OAuth without modification
+
+`app/auth/callback/route.ts` was originally written for the magic-link OTP flow — reads `?code=`, calls `exchangeCodeForSession`, redirects to `next ?? "/"`. When adding GitHub OAuth, no callback route changes were needed: PKCE OAuth uses the **same** `?code=` exchange. The only code change for OAuth was a button on `app/login/page.tsx` calling `signInWithOAuth({ provider: 'github', options: { redirectTo: ${origin}/auth/callback?next=/ } })`.
+
+**Reminder reinforcing the 2026-04-25 redirect-allowlist trap below:** OAuth has the same silent-fallback failure mode as OTP. If the deploy domain's `/auth/callback` isn't on the Supabase Redirect URLs allowlist, the entire OAuth round-trip will land on Site URL with no error.
+
+## 2026-04-25 — Magic-link redirect to dead `apps.chasewhittaker.com`
+
+**Symptom.** Sign-in attempt resulted in a magic-link email (despite the user wanting password auth) whose link redirected to `https://apps.chasewhittaker.com/...` — a domain that has **no DNS record** (`DNS_PROBE_FINISHED_NXDOMAIN`). URL pattern: `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/verify?token=pkc...&type=magiclink&redirect_to=https://apps.chasewhittaker.com`.
+
+**Three stacked causes** (any one is enough to break sign-in):
+
+1. **Code** — `app/login/page.tsx` was refactored from `signInWithOtp` → `signInWithPassword` on 2026-04-24, but the diff sat uncommitted. Production was still on the OTP path.
+2. **Supabase Site URL** — set to `https://apps.chasewhittaker.com` from the deferred `SHARED_LOGIN_STRATEGY.md` plan. That domain was never DNS-configured.
+3. **Supabase Redirect URLs allowlist** — did not contain `clarity-budget-web.vercel.app/auth/callback`. When the OTP code passed `emailRedirectTo: window.location.origin + "/auth/callback"`, Supabase **silently** ignored it (because not on allowlist) and fell back to Site URL. This is the exact failure mode `funded-web` documented on 2026-04-16.
+
+**Fix.**
+- Committed + pushed the password-auth refactor (commit `72799f9`).
+- Manual: in Supabase Dashboard → Auth → URL Configuration, set Site URL to `https://clarity-budget-web.vercel.app` and add the deploy domain (+ `localhost:3000`) to Redirect URLs. Remove `apps.chasewhittaker.com`.
+
+**The trap to remember.** Supabase's `emailRedirectTo` parameter is **silently ignored** if the URL isn't on the Redirect URLs allowlist. No error, no warning — it just falls back to Site URL. If you ever reintroduce `signInWithOtp` (or `signInWithOAuth`, or `resetPasswordForEmail`) here, **the deploy domain MUST be in the allowlist first**.
+
+**Decision: `apps.chasewhittaker.com` is not used by this app.** This app is at `clarity-budget-web.vercel.app` and uses password auth. `SHARED_LOGIN_STRATEGY.md` (canonical-host login) is deferred indefinitely — until/unless someone actually buys + DNS-configures that domain.
+
 ## 2026-04-24 — Step 2 auth refactor
 
 **Supabase migration tracker can lie.** First `supabase db push` returned "Remote database is up to date" and `migration list` showed both `0001` and `0002` as applied — but the REST API returned HTTP 404 for `clarity_budget_credentials`. The tracker had rows in `supabase_migrations.schema_migrations` but the DDL had never actually run. `supabase migration repair --status reverted 0001 0002` + `db push` fixed it. **Lesson:** after every `db push`, probe a concrete table via the REST API before trusting the tracker.

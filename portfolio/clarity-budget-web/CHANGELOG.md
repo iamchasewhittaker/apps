@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-25 — GitHub OAuth on /login
+- `app/login/page.tsx` — "Continue with GitHub" button above the email/password form (with "or" divider). Calls `supabase.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: <origin>/auth/callback?next=/ } })`. Reuses the existing `app/auth/callback/route.ts` from the OTP era — PKCE OAuth uses the same `?code=` exchange.
+- New `oauthBusy` state gates against double-submit; password submit also disables while OAuth is busy.
+
+**Manual prereqs (not code, must be done in dashboards before the button works):**
+- GitHub OAuth App created at github.com/settings/developers (callback URL = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`)
+- GitHub provider enabled in Supabase Dashboard → Authentication → Providers (paste Client ID + Secret)
+- Site URL + Redirect URLs allowlist fixed in Supabase Dashboard (still tracked in `HANDOFF.md` line 12)
+
 ### Added — Session 3 / Step 2 (2026-04-24) — auth refactor
 - `lib/supabase-browser.ts` — singleton `getSupabaseBrowserClient()` via `@supabase/ssr` `createBrowserClient`
 - `middleware.ts` — Supabase SSR cookie refresher; runs on every non-asset route so `getUser()` sees a fresh session
