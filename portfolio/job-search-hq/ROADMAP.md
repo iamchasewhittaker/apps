@@ -108,13 +108,27 @@ Chase can greenlight any of these in a follow-up session.
 - [ ] Wins → Shipyard bridge — "Chase shipped N wins this week across apps" on the portfolio hub.
 - [ ] Kassie's actual quotes — paste into `chase/identity/kassie-notes.md` when Chase is ready; also his "tool quotes" about Job Search HQ itself.
 
-## Daily Flow Automation — Deferred options (captured 2026-04-21)
+## Daily Flow Automation — Status
 
-Option A (Today's 5 queue + Outreach Autopilot) shipped in v8.14. The remaining automation options are deferred below.
+Options A + B + C shipped. Option E is now unblocked.
 
-- [ ] **Option B — Discovery Sprint panel** — time-boxed 15-min panel on Focus tab; rotates through `JOB_SEARCH_QUERIES` daily; "Open all searches" button opens LinkedIn + Indeed + Google in tabs with that query; quick-capture strip (paste URL + company/title → one-click Interested entry); DIRECTION.primaryCompanies checklist showing applied vs. untouched. Pairs with Option A to keep the queue full.
-- [ ] **Option C — Application Assembly Line** — single-screen guided wizard: Step 1 select Interested app → Step 2 confirm/paste JD → Step 3 copy tailor prompt → step 4 copy cover prompt → Step 5 open apply URL + mark Applied → Step 6 auto-log action + set follow-up date → Step 7 "Next →" resets for next app. Progress bar: "2/5 done today."
-- [ ] **Option E — Morning Launchpad (full package)** — replaces daily blocks section with a linear step-by-step launchpad; wires together Discovery Sprint → Today's 5 Queue → Outreach Autopilot into one guided ~80-min daily flow; each step auto-logs daily actions as you complete items; resets daily. Build incrementally: ship A+D first (done), then B+C, then wire into launchpad.
+- [x] **Option A — Today's 5 queue + Outreach Autopilot** (v8.14, 2026-04-23)
+- [x] **Option B — Discovery Sprint panel** (v8.16, 2026-04-26) — `DiscoverySprint` on Focus tab; deterministic daily rotation via `getDailyDiscoveryQueries(now)`; "Open all searches" launcher (LinkedIn + Indeed + Google); quick-capture URL/Company/Title → pre-filled `AppModal` at `stage: "Interested"`. The DIRECTION.primaryCompanies checklist part of the original spec is already covered by `TargetCompanyBoard` (v8.15).
+- [x] **Option C — Application Assembly Line** (v8.16, 2026-04-26) — `ApplyWizardModal` 7-step wizard launched from TodaysQueue's 🚀 Apply button. Confirm → JD paste → Copy tailor prompt → Copy cover prompt → Open apply URL + Mark Applied (auto-logs daily action + 7-day follow-up date) → Reset for next Interested app.
+- [ ] **Option D — see Outreach Autopilot in v8.14** (already shipped as part of Option A).
+- [ ] **Option E — Morning Launchpad (full package)** — replaces daily blocks section with a linear step-by-step launchpad; wires together Discovery Sprint → Today's 5 Queue → Apply Wizard → Outreach Autopilot into one guided ~80-min daily flow; each step auto-logs daily actions as you complete items; resets daily. **Now unblocked — A + B + C all live.**
+
+### Discovery Sprint v2 polish (v8.17 candidates)
+
+- 15-min countdown timer on the Discovery Sprint panel (currently just the "15 MIN" label).
+- "Track sprint completion in `dailyActions`" — when the sprint produces ≥1 Interested capture, log a `discovery` daily action.
+- Manual rotation lock — let the user pin a specific query for multiple days.
+
+### Apply Wizard v2 polish (v8.17 candidates)
+
+- Keyboard shortcuts (Tab between steps, Enter to advance).
+- Inline diff of tailor result vs. base resume.
+- Resume-type chooser inside the wizard (currently hard-coded to IC).
 
 ## Project tracking
 

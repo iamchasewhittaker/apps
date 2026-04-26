@@ -13,6 +13,7 @@ import ProfileModal from "./components/ProfileModal";
 import PrepModal from "./components/PrepModal";
 import DebriefModal from "./components/DebriefModal";
 import OfferModal from "./components/OfferModal";
+import ApplyWizardModal from "./components/ApplyWizardModal";
 import FocusTab from "./tabs/FocusTab";
 import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
@@ -241,6 +242,7 @@ export default function JobSearchTracker() {
   const [prepModal, setPrepModal] = useState(null);
   const [debriefModal, setDebriefModal] = useState(null);
   const [offerModal, setOfferModal] = useState(null);
+  const [applyWizard, setApplyWizard] = useState(null);
 
   // Shared state that multiple tabs read or set
   const [draftContact, setDraftContact] = useState(null);
@@ -550,6 +552,7 @@ export default function JobSearchTracker() {
           profile={data.profile} saveProfile={saveProfile}
           wins={data.wins || []} addWin={addWin} removeWin={removeWin}
           setKitApp={setKitApp} setResumeTab={setResumeTab} saveApp={saveApp}
+          setApplyWizard={setApplyWizard}
         />
       )}
       {tab === "pipeline" && (
@@ -629,6 +632,17 @@ export default function JobSearchTracker() {
           app={offerModal.app}
           onSave={app => { saveApp(app); setOfferModal({ app }); }}
           onClose={() => setOfferModal(null)}
+        />
+      )}
+      {applyWizard && (
+        <ApplyWizardModal
+          app={applyWizard.app}
+          data={data}
+          applications={data.applications}
+          saveApp={saveApp}
+          addDailyAction={addDailyAction}
+          showError={showError}
+          onClose={() => setApplyWizard(null)}
         />
       )}
     </div>

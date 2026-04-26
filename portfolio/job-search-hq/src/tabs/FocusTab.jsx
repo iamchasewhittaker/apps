@@ -18,7 +18,9 @@ import {
   WIN_TYPES,
   blankApp,
   blankContact,
+  getDailyDiscoveryQueries,
 } from "../constants";
+import { JOB_SEARCH_EXTERNAL_LINKS } from "../applyPrompts";
 import ErrorBoundary from "../ErrorBoundary";
 
 const KASSIE_DISMISS_KEY = "chase_js_kassie_dismiss_v1";
@@ -438,6 +440,115 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
   );
 }
 
+// ── DISCOVERY SPRINT (Option B) ──────────────────────────────────────────────
+// 15-min time-boxed panel: rotating daily query, multi-board launcher, quick-capture strip.
+// Pairs with Today's 5 — Discovery fills the queue, Today's 5 drains it.
+function DiscoverySprint({ setAppModal }) {
+  const [queries, setQueries] = useState(() => getDailyDiscoveryQueries());
+  const [url, setUrl] = useState("");
+  const [company, setCompany] = useState("");
+  const [title, setTitle] = useState("");
+
+  function openAll() {
+    JOB_SEARCH_EXTERNAL_LINKS.forEach(link => {
+      window.open(link.buildUrl(queries.today), "_blank", "noopener,noreferrer");
+    });
+  }
+
+  function skipToNext() {
+    setQueries(q => {
+      const newToday = q.next;
+      const newNextIdx = (q.nextIdx + 1) % q.total;
+      // Reuse helper for consistency — feed it a date offset by one day
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const rotated = getDailyDiscoveryQueries(tomorrow);
+      return { ...rotated, today: newToday, nextIdx: newNextIdx };
+    });
+  }
+
+  function quickSave(e) {
+    e.preventDefault();
+    if (!url.trim() && !company.trim()) return;
+    setAppModal({
+      mode: "new",
+      app: {
+        ...blankApp(),
+        url: url.trim(),
+        company: company.trim(),
+        title: title.trim(),
+        stage: "Interested",
+      },
+    });
+    setUrl(""); setCompany(""); setTitle("");
+  }
+
+  return (
+    <div style={s.discoverySprint}>
+      <div style={s.discoveryHeader}>
+        <div style={s.discoveryTitle}>
+          <span>🔎</span>
+          <span>Discovery sprint</span>
+          <span style={{ fontSize: 10, fontWeight: 500, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            15 min
+          </span>
+        </div>
+        <span style={{ fontSize: 11, color: "#6b7280" }}>
+          query {queries.todayIdx + 1} of {queries.total}
+        </span>
+      </div>
+
+      <div style={s.discoveryQueryBox}>
+        <div style={s.discoveryQueryLabel}>Today's query</div>
+        <div style={s.discoveryQueryText}>{queries.today}</div>
+      </div>
+
+      <div style={s.discoveryActions}>
+        <button onClick={openAll} style={s.discoveryOpenAll}>
+          🚀 Open all searches (LinkedIn · Indeed · Google)
+        </button>
+        <button onClick={skipToNext} style={s.discoverySkipBtn} title={`Next: ${queries.next}`}>
+          ↻ Skip to next
+        </button>
+      </div>
+
+      <div style={s.discoveryCaptureLabel}>Quick capture — paste a job into Interested</div>
+      <form onSubmit={quickSave}>
+        <input
+          type="url"
+          value={url}
+          onChange={e => setUrl(e.target.value)}
+          placeholder="Job URL (paste from LinkedIn, Indeed, etc.)"
+          style={{ ...s.discoveryCaptureInput, width: "100%", marginBottom: 8 }}
+        />
+        <div style={s.discoveryCaptureGrid}>
+          <input
+            value={company}
+            onChange={e => setCompany(e.target.value)}
+            placeholder="Company"
+            style={s.discoveryCaptureInput}
+          />
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="Title"
+            style={s.discoveryCaptureInput}
+          />
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button
+            type="submit"
+            disabled={!url.trim() && !company.trim()}
+            style={{ ...s.discoveryCaptureSave, opacity: (!url.trim() && !company.trim()) ? 0.5 : 1 }}
+          >
+            + Save to Interested
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 // ── TODAY'S 5 QUEUE (Option A) ───────────────────────────────────────────────
 // Surfaces up to 5 Interested apps as a daily apply queue.
 // Priority: has JD saved > has next-step date > appliedDate (oldest first as proxy for age in queue).
@@ -459,7 +570,7 @@ function buildTodaysQueue(applications) {
     .slice(0, 5);
 }
 
-function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setTab, saveApp, setAppModal }) {
+function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setTab, saveApp, setAppModal, setApplyWizard }) {
   const todayStr = today();
   const todayApps = (dailyActions || []).filter(a => a.date === todayStr && a.type === "application").length;
   const queue = buildTodaysQueue(applications);
@@ -468,10 +579,14 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
   const remaining = Math.max(0, target - todayApps);
 
   function handleStartApply(app) {
-    // Jump to Apply Kit with this app pre-selected
-    setKitApp(app);
-    setResumeTab("kit");
-    setTab("ai");
+    // Open the 7-step Apply Wizard in place; falls back to Apply Tools tab if not wired.
+    if (setApplyWizard) {
+      setApplyWizard({ app });
+    } else {
+      setKitApp(app);
+      setResumeTab("kit");
+      setTab("ai");
+    }
   }
 
   function handleMarkApplied(app) {
@@ -539,13 +654,13 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
                   onClick={() => handleStartApply(app)}
                   style={{
                     fontSize: 11, padding: "4px 8px", borderRadius: 5, border: "none",
-                    background: app.jobDescription ? "#1e3a5f" : "#161b27",
-                    color: app.jobDescription ? "#60a5fa" : "#4b5563",
+                    background: "#1e3a5f",
+                    color: "#60a5fa",
                     cursor: "pointer", fontWeight: 600
                   }}
-                  title={app.jobDescription ? "Open in Apply Kit" : "No JD — add one first"}
+                  title="Walk through the 7-step Apply Wizard"
                 >
-                  Apply Kit ↗
+                  🚀 Apply
                 </button>
                 <button
                   onClick={() => handleMarkApplied(app)}
@@ -897,6 +1012,7 @@ export default function FocusTab({
   profile, saveProfile,
   wins, addWin, removeWin,
   setKitApp, setResumeTab, saveApp,
+  setApplyWizard,
 }) {
   const queue = buildQueue(applications || [], contacts || []);
   const outreachList = buildOutreachPriorityList(contacts || [], applications || []);
@@ -928,6 +1044,8 @@ export default function FocusTab({
 
         <KassieCard />
 
+        <DiscoverySprint setAppModal={setAppModal} />
+
         <TodaysQueue
           applications={applications}
           dailyActions={dailyActions}
@@ -936,6 +1054,7 @@ export default function FocusTab({
           setTab={setTab}
           saveApp={saveApp}
           setAppModal={setAppModal}
+          setApplyWizard={setApplyWizard}
         />
 
         <TargetCompanyBoard

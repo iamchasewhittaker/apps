@@ -143,6 +143,23 @@ export const JOB_SEARCH_QUERIES = [
   "Merchant Success Manager payment gateway remote",
 ];
 
+// Discovery Sprint — deterministic daily rotation through JOB_SEARCH_QUERIES.
+// Keeps the daily flow predictable (same query all day) but rotates without manual input.
+export function getDailyDiscoveryQueries(now = new Date()) {
+  const start = new Date(now.getFullYear(), 0, 0);
+  const doy = Math.floor((now - start) / 86400000);
+  const len = JOB_SEARCH_QUERIES.length;
+  const todayIdx = ((doy % len) + len) % len;
+  const nextIdx = (todayIdx + 1) % len;
+  return {
+    today: JOB_SEARCH_QUERIES[todayIdx],
+    next: JOB_SEARCH_QUERIES[nextIdx],
+    todayIdx,
+    nextIdx,
+    total: len,
+  };
+}
+
 // ── LAYOFF + DAILY FLOOR (Kassie's urgency layer) ────────────────────────────
 // Day 0 was the last day at Visa (Feb 15, 2025). Used for "Day N since Visa" counter.
 export const LAYOFF_DATE = "2025-02-15";
@@ -1480,6 +1497,33 @@ export const s = {
   outcomeValue: { fontSize: 12, color: "#9ca3af", textAlign: "right" },
   // Next step urgency badge on cards
   urgencyBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
+  // Discovery Sprint (Option B)
+  discoverySprint: { background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 },
+  discoveryHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 },
+  discoveryTitle: { fontSize: 13, fontWeight: 700, color: "#f3f4f6", display: "flex", alignItems: "center", gap: 8 },
+  discoveryQueryBox: { background: "#0a0d14", border: "1px solid #1f2937", borderRadius: 8, padding: "10px 12px", marginBottom: 10 },
+  discoveryQueryLabel: { fontSize: 10, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 },
+  discoveryQueryText: { fontSize: 14, color: "#f3f4f6", fontWeight: 600 },
+  discoveryActions: { display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" },
+  discoveryOpenAll: { background: "#1e3a5f", border: "none", color: "#60a5fa", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" },
+  discoverySkipBtn: { background: "#161b27", border: "1px solid #1f2937", color: "#9ca3af", borderRadius: 6, padding: "6px 12px", fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
+  discoveryCaptureLabel: { fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 },
+  discoveryCaptureGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 },
+  discoveryCaptureInput: { background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 6, color: "#f3f4f6", fontSize: 13, padding: "7px 10px", fontFamily: "inherit", outline: "none" },
+  discoveryCaptureSave: { background: "#3b82f6", border: "none", color: "#fff", borderRadius: 6, padding: "7px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" },
+  // Apply Wizard (Option C)
+  wizModal: { background: "#161b27", border: "1px solid #374151", borderRadius: 16, width: "100%", maxWidth: 640, maxHeight: "90vh", display: "flex", flexDirection: "column" },
+  wizProgressTrack: { height: 4, background: "#1f2937", margin: "0 20px", borderRadius: 2, marginTop: 4, marginBottom: 4 },
+  wizProgressFill: { height: "100%", background: "#3b82f6", borderRadius: 2, transition: "width 0.25s" },
+  wizStepLabel: { fontSize: 11, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em", padding: "0 20px 6px" },
+  wizBody: { padding: "16px 20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 12, flex: 1 },
+  wizPrompt: { fontSize: 13, color: "#9ca3af", lineHeight: 1.55 },
+  wizCta: { background: "#3b82f6", border: "none", color: "#fff", borderRadius: 8, padding: "10px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
+  wizCtaCopied: { background: "#14532d", border: "none", color: "#6ee7b7", borderRadius: 8, padding: "10px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
+  wizFooter: { display: "flex", justifyContent: "space-between", gap: 8, padding: "12px 20px", borderTop: "1px solid #1f2937" },
+  wizSecondary: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 8, padding: "8px 16px", fontSize: 13, cursor: "pointer", fontFamily: "inherit" },
+  wizDoneBadge: { background: "#0c1a0c", border: "1px solid #14532d", color: "#6ee7b7", borderRadius: 8, padding: "10px 14px", fontSize: 13, lineHeight: 1.5 },
+  wizCounter: { fontSize: 12, color: "#6b7280" },
 };
 
 export const css = `

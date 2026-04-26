@@ -18,6 +18,18 @@
 
 ## Entries
 
+### 2026-04-26 — Reuse the day-of-year rotation pattern, don't reinvent it
+**What happened:** Building DiscoverySprint, the temptation was to write a `Math.floor(Date.now() / 86400000) % len` for "today's query" rotation. KassieCard already has the right pattern: anchor at Jan 1 of the current year (`new Date(year, 0, 0)`), subtract, divide by ms-per-day, modulo array length. That handles year boundaries, leap years, and time-zone drift consistently across cards.
+**Root cause:** Two different rotation calculations on the same day would surface different content out of sync — Kassie quote and Discovery query would feel disconnected.
+**Fix / lesson:** Pulled `getDailyDiscoveryQueries(now)` into `constants.js` so the helper is reusable and the math lives in one place. Future rotations (e.g., daily Resource highlight) use the same helper signature.
+**Tags:** react · time · ux · architecture
+
+### 2026-04-26 — Wizard modal beats new tab when daily flow is the goal
+**What happened:** Apply Wizard (Option C) could have shipped as a new tab (consolidating with Apply Tools) or as an in-place modal. Chose the modal — same pattern as DebriefModal/OfferModal/PrepModal — so the user never leaves Focus tab during their morning routine.
+**Root cause:** A new tab fragments the daily flow: Focus → AI tab → back to Focus. Modal stays "on top of" Focus and closes back to it. Less context-switch cost.
+**Fix / lesson:** Default to modal when the feature is part of an existing routine on the current tab. Reserve new tabs for distinct workflows that need their own surface (Apply Tools, Pipeline, Contacts). Apply Wizard pairs naturally with TodaysQueue → both live on Focus.
+**Tags:** ux · architecture · daily-flow
+
 ### 2026-04-21 — Identity folder beats duplicating doctrine in constants
 **What happened:** Confidence Bedrock wave needed direction + strengths + friend feedback + Kassie's letter + voice rules surfaced inside Job Search HQ. Temptation was to inline everything into `constants.js`. Instead: source of truth lives at `/Users/chase/Developer/chase/identity/` (direction.md, strengths/, voice-brief.md, friend-feedback.md, kassie-notes.md). `constants.js` mirrors just what the app renders (`DIRECTION`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `KASSIE_EXCERPTS`). Memory (`user_strengths.md`, `project_job_search_direction.md`) points at the identity folder so future Claude sessions pull from one place.
 **Root cause:** Cross-app problem — Shipyard, LinkedIn rewrite, other portfolio apps need the same identity data. Duplicating in every app's constants would rot fast.

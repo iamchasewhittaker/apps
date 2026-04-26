@@ -1,5 +1,28 @@
 # Changelog
 
+## [Unreleased] — 2026-04-26 — Daily Flow Options B + C: Discovery Sprint + Apply Wizard (v8.16)
+
+Pairs with v8.14 Today's 5: Discovery Sprint fills the daily Interested queue, the Apply Wizard drains it. Removes the last manual hand-off in hitting the 5-applications-per-day floor.
+
+### Added
+- **`getDailyDiscoveryQueries(now)`** in `constants.js` — deterministic day-of-year rotation through `JOB_SEARCH_QUERIES` (9 queries). Returns `{ today, next, todayIdx, nextIdx, total }`. Same pattern `KassieCard` uses, so today's query is stable for the whole day.
+- **`DiscoverySprint` component** on Focus tab (between `KassieCard` and `TodaysQueue`) — three pieces: (1) today's rotating query in a callout, (2) "🚀 Open all searches" launches LinkedIn / Indeed / Google in three tabs (reuses `JOB_SEARCH_EXTERNAL_LINKS` from `applyPrompts.js`), (3) Quick-capture strip (URL + Company + Title) → opens `AppModal` pre-filled with `stage: "Interested"`. Optional "↻ Skip to next" button to flip the rotation manually.
+- **`ApplyWizardModal.jsx`** — single-screen 7-step modal that walks one Interested app to Applied. Steps: Confirm → JD paste → Copy tailor prompt → Copy cover prompt → Open apply URL + Mark Applied → Auto-log + 7-day follow-up date → Reset for next Interested app. Mark Applied calls `saveApp` (stage = Applied, `appliedDate` = today, `nextStepDate` = +7d, `nextStepType` = `follow_up`) and `addDailyAction("application", ...)`. Counter "Today: N/5" reads `data.dailyActions`. Reuses `buildTailorResumePrompt` and `buildCoverLetterPrompt` from `applyPrompts.js` — voice + direction footer is already baked into both.
+- **6 style tokens for Discovery Sprint** + **9 style tokens for Apply Wizard** in `s.*` (`s.discoverySprint`, `s.discoveryQueryBox`, `s.discoveryOpenAll`, `s.discoveryCaptureGrid`, …, `s.wizModal`, `s.wizProgressTrack`, `s.wizProgressFill`, `s.wizStepLabel`, `s.wizCta`, `s.wizCtaCopied`, `s.wizFooter`, `s.wizDoneBadge`, `s.wizCounter`).
+
+### Changed
+- **TodaysQueue's "Apply Kit ↗" button** → **"🚀 Apply"** button. Opens the in-place wizard via new `setApplyWizard` shell prop instead of routing to the AI tab + Apply Kit. Falls back to the old behavior if `setApplyWizard` is missing.
+- **`App.jsx`** — new `applyWizard` shell state, `<ApplyWizardModal />` render alongside `<DebriefModal />` / `<OfferModal />`, `setApplyWizard` threaded into `<FocusTab />` → `<TodaysQueue />`.
+- **`FocusTab.jsx`** — imports `getDailyDiscoveryQueries` + `JOB_SEARCH_EXTERNAL_LINKS`, mounts `<DiscoverySprint />` between `KassieCard` and `TodaysQueue`, accepts `setApplyWizard` prop.
+
+### Notes
+- No data-shape changes, no migration. Pure additive UI.
+- Build: zero warnings, +2.87 kB gzipped.
+- Verified end-to-end: Discovery quick-capture → Interested app → 🚀 Apply → wizard step 1–5 → Mark Applied → step 7 reset → Today's floor counter increments → close cleanly.
+- Email/LinkedIn notification feed (Gmail OAuth or forward-to-alias) stays on the deferred next-wave list. Bigger lift; revisit after v8.16 lands.
+
+---
+
 ## [Unreleased] — 2026-04-21 — Confidence Bedrock wave (v8.13)
 
 Committed direction: **Implementation Consultant / Sales Engineer at payments-adjacent companies** (Stripe, Adyen, Checkout.com, Finix, etc.). AE at payments SaaS is the documented backup, not the lead. Source of truth for direction, strengths, and voice lives in `/Users/chase/Developer/chase/identity/`.

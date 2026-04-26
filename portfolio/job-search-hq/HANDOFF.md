@@ -8,27 +8,27 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.12 |
-| **Branch** | `main` |
+| **Version** | v8.16 |
+| **Branch** | `feat/job-search-v8.16` (off `main`) |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Wave 4 #5 shipped (v8.12): email forward parsing — `parseRecruiterEmail()` regex parser in constants.js; 📧 Email Parse sub-tab in Apply Tools; editable extracted fields (name, email, company, role, job title, LinkedIn, job URL) → pre-filled ContactModal or AppModal. |
-| **Next** | Wave 4 #6: PWA share target (mobile URL sharing). |
+| **Focus** | Daily Flow Options B + C shipped (v8.16): `DiscoverySprint` on Focus tab between KassieCard and TodaysQueue (rotating daily query + Open All searches + quick-capture); `ApplyWizardModal` 7-step wizard triggered from TodaysQueue's 🚀 Apply button. Pairs with v8.14 Today's 5 to remove all manual hand-offs in hitting the 5-app daily floor. |
+| **Next** | Option E — Morning Launchpad: wire A + B + C into one guided ~80-min daily flow (now unblocked). Or Email/LinkedIn notification feed (deferred next-wave). |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-20 — v8.12: `parseRecruiterEmail()` in constants.js; `EmailParsePanel` component + "email" sub-tab in AITab.jsx; `setAppModal`/`setContactModal`/`setTab` threaded through App.jsx to AITab. Build clean (+1.64 kB). |
+| **Last touch** | 2026-04-26 — v8.16: `getDailyDiscoveryQueries(now)` in constants.js; `DiscoverySprint` component in FocusTab.jsx; `components/ApplyWizardModal.jsx` (NEW); `applyWizard` shell state + render in App.jsx. Plus side quests: Wins → Shipyard bridge + per-app voice-brief pointers. Build clean (+2.87 kB gzipped, zero warnings). End-to-end verified via preview. |
 
 ---
 
 ## What's Next
 
-### Web — Wave 3 ✅ Complete
-All four Wave 3 items shipped in v8.7:
-- ✅ Logo redesign (outline, deep blue)
-- ✅ Post-interview debrief log
-- ✅ Application velocity dashboard
-- ✅ Mock interview mode
+### Web — Wave 4 + Daily Flow A/B/C ✅ Complete
+- ✅ Wave 4 #1–#6 all shipped (Weekly Review, Draft Message, Outreach cadence, Offer compare, Email parse, PWA share)
+- ✅ Confidence Bedrock layer (v8.13): direction frame, Kassie urgency, Wins log, Direction tracker
+- ✅ Daily Flow Option A — Today's 5 + Outreach Autopilot (v8.14)
+- ✅ TargetCompanyBoard (v8.15)
+- ✅ Daily Flow Option B + C — Discovery Sprint + Apply Wizard (v8.16)
 
-**Next for web:** Wave 4 #6 — PWA share target (mobile URL sharing). See ROADMAP.md.
+**Next for web:** Option E — Morning Launchpad (wires A + B + C into one guided daily flow). Or Email/LinkedIn notification feed (Gmail OAuth or forward-to-alias) — deferred next-wave, bigger lift.
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`
@@ -90,6 +90,7 @@ Update CHANGELOG [Unreleased], ROADMAP, HANDOFF, root ROADMAP Change Log, root H
 | `src/components/PrepModal.jsx` | Interview prep — sectioned `prepSections` + regenerate |
 | `src/components/DebriefModal.jsx` | Post-interview debrief log — per-round entry form + history list |
 | `src/mockInterviewQuestions.js` | Static question bank for mock interview mode (5 scenarios) |
+| `src/components/ApplyWizardModal.jsx` | 7-step Apply Wizard (v8.16) — JD paste, copy tailor + cover prompts, Mark Applied + auto-log |
 | `extension/*` | Chrome MV3: LinkedIn scrape → HQ import; `content-jobhq-bridge.js` sets Action Queue badge |
 
 ## Data model additions (v8.7)
