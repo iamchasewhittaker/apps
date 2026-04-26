@@ -20,7 +20,8 @@ import {
   safePerWeek,
   safeToSpend,
 } from "@/lib/metrics";
-import { createSupabaseBrowserClient, pullBlob, pushBlob } from "@/lib/sync";
+import { pullBlob, pushBlob } from "@/lib/sync";
+import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
 import { suggestRole, type RoleRaw } from "@/lib/suggestRole";
 import { groupMappingsForDisplay, mergeCategoryMappingsFromGroups } from "@/lib/ynabCategoryMerge";
 import {
@@ -98,10 +99,6 @@ function saveTxCache(data: YNABTransaction[]) {
 export function HomeDashboard() {
   const [blob, setBlob] = useState<BudgetBlob>(defaultBlob());
   const [ynabToken, setYnabToken] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [authMsg, setAuthMsg] = useState<string | null>(null);
-  const [userLabel, setUserLabel] = useState<string | null>(null);
 
   const [safeM, setSafeM] = useState<number | null>(null);
   const [safeD, setSafeD] = useState<number | null>(null);
@@ -124,16 +121,10 @@ export function HomeDashboard() {
     // Hydrate from cache immediately so breakdown renders on load
     const cache = loadTxCache();
     if (cache?.data?.length) setTransactions(cache.data);
-    const sb = createSupabaseBrowserClient();
-    if (!sb) return;
-    void sb.auth.getSession().then(({ data: { session } }) => {
-      setUserLabel(session?.user?.email ?? null);
-    });
   }, []);
 
   const syncFromCloud = useCallback(async (b: BudgetBlob) => {
-    const sb = createSupabaseBrowserClient();
-    if (!sb) return b;
+    const sb = getSupabaseBrowserClient();
     const {
       data: { session },
     } = await sb.auth.getSession();
@@ -148,8 +139,7 @@ export function HomeDashboard() {
   }, []);
 
   const pushIfSignedIn = useCallback(async (b: BudgetBlob) => {
-    const sb = createSupabaseBrowserClient();
-    if (!sb) return;
+    const sb = getSupabaseBrowserClient();
     const {
       data: { session },
     } = await sb.auth.getSession();
@@ -310,29 +300,6 @@ export function HomeDashboard() {
     !hasMetrics &&
     (!ynabToken.trim() || !blob.ynabBudgetId || !blob.ynabCategoryMappings.length);
   const hasSpending = spendLines.length > 0;
-
-  const signIn = async () => {
-    setAuthMsg(null);
-    const sb = createSupabaseBrowserClient();
-    if (!sb) {
-      setAuthMsg("Configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
-      return;
-    }
-    const { error } = await sb.auth.signInWithPassword({ email: email.trim(), password });
-    if (error) {
-      setAuthMsg(error.message);
-      return;
-    }
-    setUserLabel(email.trim());
-    const b = await syncFromCloud(loadLocalBlob());
-    setBlob(b);
-  };
-
-  const signOut = async () => {
-    const sb = createSupabaseBrowserClient();
-    await sb?.auth.signOut();
-    setUserLabel(null);
-  };
 
   return (
     <div className="min-h-screen px-5 py-10" style={{ background: T.bg, color: T.text }}>
@@ -643,60 +610,6 @@ export function HomeDashboard() {
           >
             Refresh numbers
           </button>
-        </section>
-
-        {/* Supabase sync */}
-        <section
-          className="space-y-2 rounded-xl border p-4"
-          style={{ borderColor: T.border, background: T.surface }}
-        >
-          <h2 className="text-sm font-semibold">Supabase sync</h2>
-          <p className="text-xs" style={{ color: T.muted }}>
-            Sign in to merge your blob with{" "}
-            <code className="text-neutral-300">user_data</code> (
-            <code className="text-neutral-300">clarity_budget</code>). YNAB token and
-            transactions stay in this browser only.
-          </p>
-          {userLabel ? (
-            <div className="flex items-center justify-between gap-2 text-sm">
-              <span>{userLabel}</span>
-              <button
-                type="button"
-                className="text-xs underline"
-                style={{ color: T.muted }}
-                onClick={() => void signOut()}
-              >
-                Sign out
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <input
-                className="w-full rounded-lg border px-3 py-2 text-sm text-neutral-100"
-                style={{ borderColor: T.border, background: T.bg }}
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                className="w-full rounded-lg border px-3 py-2 text-sm text-neutral-100"
-                style={{ borderColor: T.border, background: T.bg }}
-                placeholder="Password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                type="button"
-                className="w-full rounded-lg py-2 text-sm"
-                style={{ background: T.border, color: T.text }}
-                onClick={() => void signIn()}
-              >
-                Sign in
-              </button>
-              {authMsg && <p className="text-xs text-red-400">{authMsg}</p>}
-            </div>
-          )}
         </section>
       </div>
     </div>
