@@ -4,8 +4,8 @@
 
 | Field | Value |
 |---|---|
-| Focus | v1 Redesign — auth refactor (steps 1–2 of 10 done; password + GitHub OAuth shipped) |
-| Status | Step 2 complete; password auth shipped (`72799f9`); GitHub OAuth button added to `/login` (uncommitted) |
+| Focus | v1 Redesign — Step 4 (reconcile logic) up next; steps 1–3 of 10 done |
+| Status | Step 3 complete (Privacy.com integration: `lib/privacy/{types,client,sync}.ts`); typecheck + lint + build all clean. Manual smoke pending (needs `SUPABASE_SERVICE_ROLE_KEY` + Privacy.com API token). |
 | Last touch | 2026-04-25 |
 | URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 deployed) |
 | Branch | main |
@@ -105,11 +105,36 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 
 ---
 
-## Remaining steps (3–10 from the plan)
+## What was built — Session 3 / Redesign step 3 (2026-04-25)
+
+### New files
+- `lib/privacy/types.ts` — Privacy.com REST response shapes: `PrivacyCard`, `PrivacyTransaction` (with nested `card: PrivacyCardRef` + `merchant: PrivacyMerchant`), `PrivacyPage<T>`, plus `PrivacyCardState` / `PrivacyCardType` / `PrivacyTxStatus` string unions.
+- `lib/privacy/client.ts` — `createPrivacyClient(token)` factory. Internal `paginate<T>` walks `page` 1..N (50/page) until `data.length === 0` or `page >= total_pages`. Auth header is `Authorization: api-key <token>` (Privacy's scheme — not Bearer like YNAB). 401 → `"Privacy token invalid or expired."`; other non-2xx → `"Privacy API error: ${status}"`. `server-only` guarded. Endpoints currently `/card` + `/transaction` (singular) — verify against live API during smoke test.
+- `lib/privacy/sync.ts` — `pullCards(userId)` + `pullTransactions(userId, since?)`. Both use `createServiceClient()` (no user session) and decrypt the user's `privacy_token_*` from `clarity_budget_credentials` via `lib/crypto.ts`. Each function:
+  - Pre-fetches existing rows so user-owned columns survive re-syncs (`linked_payee_id` on cards, `matched_ynab_txn_id` on transactions — never written from sync)
+  - Upserts in chunks of 500 with `onConflict: "token"`
+  - Stamps `clarity_budget_sync_state` (`source='privacy'`) with `last_run_at` + `last_success_at` on success, `last_error` on failure (truncated to 500 chars)
+  - Inserts a `clarity_budget_audit_log` row (`actor='system'`, `entity_type='privacy_sync'`, action `privacy_sync_cards` / `privacy_sync_transactions` on success or `*_failed` on error)
+  - Returns `{ fetched, upserted }`; rethrows after recording failure
+  - Note: schema CHECK constraint forces `source` ∈ {`ynab`, `privacy`}. Decision: both card + transaction syncs share `source='privacy'`; the cron caller (Step 5) will orchestrate cards-then-transactions atomically. Cursor stays null in v1.
+
+### Verification results
+| Check | Result |
+|---|---|
+| `pnpm exec tsc --noEmit` | ✅ clean |
+| `pnpm lint` | ✅ clean |
+| `pnpm build` | ✅ clean — route table unchanged from Step 2 (no new routes; pure lib code) |
+
+### Still needs manual verification
+- With `SUPABASE_SERVICE_ROLE_KEY` set + a real Privacy.com token upserted via `/api/credentials`: write a one-off `scripts/test-privacy-sync.ts` that calls `pullCards(userId)` then `pullTransactions(userId)`. Probe `clarity_budget_privacy_cards` + `clarity_budget_privacy_transactions` for rows, `clarity_budget_sync_state` for a `source='privacy'` row with `last_success_at`, `clarity_budget_audit_log` for the two `privacy_sync_*` entries. Rerun to confirm idempotency (only `updated_at` advances).
+- During that smoke, confirm whether Privacy's current API uses `/card` + `/transaction` (singular — what we wrote) or `/cards` + `/transactions` (plural). Both are in the wild; swap the two strings in `client.ts` if 404s appear.
+
+---
+
+## Remaining steps (4–10 from the plan)
 
 | # | Step | Key files |
 |---|---|---|
-| 3 | Privacy integration | `lib/privacy/client.ts`, `lib/privacy/sync.ts`, `lib/privacy/types.ts` |
 | 4 | Reconcile logic + first unit tests | `lib/reconcile/match.ts`, `propose-rename.ts`, `detect-weirdness.ts`, `fingerprint.ts`, `__tests__/` |
 | 5 | Cron endpoints + `vercel.json` | `app/api/cron/sync/route.ts`, `app/api/cron/backfill/route.ts`, `vercel.json` |
 | 6 | `/review` UI | `app/review/page.tsx`, `components/review/ProposalList.tsx`, `ProposalRow.tsx` |
@@ -120,38 +145,43 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 
 ---
 
-## Step 3 — what to build next
+## Step 4 — what to build next
 
-**Privacy.com integration.** Pulls the user's Privacy virtual cards + transactions so `lib/reconcile` (step 4) has something to match against YNAB transactions.
+**Reconcile logic + first unit tests.** Now that Step 3 lands cards + transactions in `clarity_budget_privacy_*`, Step 4 builds the matchers + proposers that produce review-queue entries (later surfaced in Step 6's `/review` UI) and weirdness flags (Step 7's `/flags` inbox).
 
 Key files:
-- `lib/privacy/types.ts` — shape of Privacy card + transaction API responses
-- `lib/privacy/client.ts` — fetch wrapper, takes a decrypted `privacy_token`, returns typed responses
-- `lib/privacy/sync.ts` — pull cards into `clarity_budget_privacy_cards`, pull transactions into `clarity_budget_privacy_transactions`; uses `createServiceClient()` (requires `SUPABASE_SERVICE_ROLE_KEY` to be set first)
+- `lib/reconcile/match.ts` — fuzzy match a Privacy transaction to a YNAB transaction (date window + amount + payee similarity); returns confidence score
+- `lib/reconcile/propose-rename.ts` — when a match is found, derive the proposed YNAB payee rename (e.g. card memo or merchant descriptor) and write a `clarity_budget_proposals` row (type `payee_rename`, status `pending`)
+- `lib/reconcile/detect-weirdness.ts` — emit `clarity_budget_flags` rows for `duplicate_txn`, `orphan_privacy_charge`, `orphan_ynab_privacy_payee`
+- `lib/reconcile/fingerprint.ts` — deterministic hash for the `clarity_budget_flags.fingerprint` unique constraint (so cron reruns don't duplicate flags)
+- `lib/reconcile/__tests__/*` — first vitest suite; the project already has `vitest ^4.1.5` in `devDependencies`
 
 **Open items before step 5 (cron):**
-- `SUPABASE_SERVICE_ROLE_KEY` is blank in `.env.local` — paste from Supabase dashboard → project settings → API
-- Vercel env vars still say `REACT_APP_SUPABASE_*`; before deploying Step 2, add `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` to Vercel (Production + Preview)
+- `SUPABASE_SERVICE_ROLE_KEY` is blank in `.env.local` — paste from Supabase dashboard → project settings → API. Required by Step 3's `createServiceClient()` and Step 5's cron handler.
+- Vercel env vars still say `REACT_APP_SUPABASE_*`; before deploying any redesign step, add `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` to Vercel (Production + Preview).
+- Manual smoke of Step 3 (see "Still needs manual verification" above) is best done before Step 4 so the matcher has real Privacy data to test against — but Step 4 can be written + unit-tested with synthetic fixtures if the smoke is blocked.
 
 ---
 
-## Fresh session prompt — Step 3 (Privacy integration)
+## Fresh session prompt — Step 4 (reconcile)
 
 ```
 Read portfolio/clarity-budget-web/HANDOFF.md then plans/clarity-budget-web-redesign.md.
 Run checkpoint before touching anything.
 
-Implement step 3 of the redesign: Privacy.com integration.
+Implement step 4 of the redesign: reconcile logic + first unit tests.
 
 Files to create:
-- lib/privacy/types.ts — API response shapes (Card, Transaction)
-- lib/privacy/client.ts — fetch wrapper; takes a decrypted privacy_token string; paginates
-- lib/privacy/sync.ts — pullCards(userId) + pullTransactions(userId, since); uses
-  createServiceClient() + clarity_budget_credentials row to decrypt the token
+- lib/reconcile/fingerprint.ts — deterministic hash for clarity_budget_flags.fingerprint
+- lib/reconcile/match.ts — fuzzy-match a Privacy tx to a YNAB tx (date window + amount + payee)
+- lib/reconcile/propose-rename.ts — write clarity_budget_proposals rows when a match implies a YNAB payee rename
+- lib/reconcile/detect-weirdness.ts — emit clarity_budget_flags for duplicate_txn,
+  orphan_privacy_charge, orphan_ynab_privacy_payee (idempotent via fingerprint unique constraint)
+- lib/reconcile/__tests__/* — first vitest suite (vitest already in devDependencies)
 
-Do NOT wire this into a cron or UI yet — that's steps 5 and 6.
+Do NOT wire this into a cron, route handler, or UI yet — that's steps 5–7.
 
-Stop after step 3 and show the diff before moving on.
+Stop after step 4 and show the diff before moving on.
 ```
 
 ---

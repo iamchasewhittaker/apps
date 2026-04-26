@@ -1,6 +1,6 @@
 # Clarity Budget Web — ROADMAP
 
-> **v1 Redesign in progress.** Phase 2 (Money Companion) deferred. Active plan: `plans/clarity-budget-web-redesign.md` (10 steps). Progress: Step 1 (backend foundation, 2026-04-23) + Step 2 (auth refactor, 2026-04-24) ✅ done.
+> **v1 Redesign in progress.** Phase 2 (Money Companion) deferred. Active plan: `plans/clarity-budget-web-redesign.md` (10 steps). Progress: Step 1 (backend foundation, 2026-04-23) + Step 2 (auth refactor, 2026-04-24) + Step 3 (Privacy.com integration, 2026-04-25) ✅ done. Step 4 (reconcile logic + first unit tests) up next.
 
 ## Phase 1 — Spending Visibility
 

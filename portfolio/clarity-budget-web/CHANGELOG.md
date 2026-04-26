@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Added — Session 3 / Step 3 (2026-04-25) — Privacy.com integration
+- `lib/privacy/types.ts` — `PrivacyCard`, `PrivacyTransaction`, `PrivacyMerchant`, `PrivacyCardRef`, `PrivacyPage<T>`; state/type/status string unions matching Privacy.com REST shapes.
+- `lib/privacy/client.ts` — `createPrivacyClient(token)` factory exposing `listCards()` + `listTransactions({ begin? })`. Uses Privacy's `Authorization: api-key <token>` scheme (not Bearer). Internal `paginate<T>` loops `page` until `total_pages` (50/page). `server-only` guarded.
+- `lib/privacy/sync.ts` — `pullCards(userId)` + `pullTransactions(userId, since?)` using `createServiceClient()`. Decrypts `privacy_token_*` from `clarity_budget_credentials` via `lib/crypto.ts`. **Preserves user-owned columns** on upsert: never writes `linked_payee_id` (cards) or `matched_ynab_txn_id` (transactions) — pre-fetches existing rows and re-applies their values. Stamps `clarity_budget_sync_state` (`source='privacy'`) with `last_run_at` + `last_success_at` on success, `last_error` on failure. Emits `clarity_budget_audit_log` rows (`actor='system'`, `action='privacy_sync_cards' | 'privacy_sync_transactions'` + `*_failed` variants). Idempotent — rerun advances only `updated_at` via the `clarity_budget_update_updated_at` trigger.
+
+**Verification:** `pnpm exec tsc --noEmit` ✅ · `pnpm lint` ✅ · `pnpm build` ✅ (route output unchanged from Step 2 — pure lib code).
+
+**Manual smoke pending:** requires `SUPABASE_SERVICE_ROLE_KEY` + a real Privacy.com token upserted via `/api/credentials`. Author throwaway `scripts/test-privacy-sync.ts` that calls `pullCards(userId)` then `pullTransactions(userId)`; probe both `clarity_budget_privacy_*` tables, `clarity_budget_sync_state` for the `source='privacy'` row, and `clarity_budget_audit_log` for `privacy_sync_*` rows; rerun to verify idempotency. Will also confirm whether Privacy's endpoints are `/card`+`/transaction` (singular, current code) or `/cards`+`/transactions` (plural) — flag if 404s appear.
+
+**Out of scope (later steps):** Step 4 reconcile logic, Step 5 `vercel.json` cron, Steps 6–8 `/review` + `/flags` + `/settings` UI, Phase 2 Money Companion.
+
 ### Added — 2026-04-25 — GitHub OAuth on /login
 - `app/login/page.tsx` — "Continue with GitHub" button above the email/password form (with "or" divider). Calls `supabase.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: <origin>/auth/callback?next=/ } })`. Reuses the existing `app/auth/callback/route.ts` from the OTP era — PKCE OAuth uses the same `?code=` exchange.
 - New `oauthBusy` state gates against double-submit; password submit also disables while OAuth is busy.

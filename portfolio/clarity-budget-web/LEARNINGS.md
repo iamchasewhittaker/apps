@@ -1,5 +1,17 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-25 — Step 3: Privacy.com integration
+
+**Privacy.com auth is `api-key`, not Bearer.** `lib/ynab.ts` uses `Authorization: Bearer <token>` (YNAB convention). Privacy.com uses `Authorization: api-key <token>`. Copying ynab.ts as the template for `lib/privacy/client.ts` would silently send Bearer headers and Privacy would 401 every request. **Lesson:** when modeling a new third-party client on an existing one, the structure transfers but the auth scheme + request shape don't — verify the target API's auth header explicitly, don't assume.
+
+**`source` CHECK constraint forced a v1 simplification.** `clarity_budget_sync_state.source` has `check (source in ('ynab','privacy'))` (0001_init.sql:118). The plan originally wanted distinct sub-sources (`privacy_cards` vs `privacy_transactions`) so cron could track each separately. The CHECK forbids that, so both `pullCards` and `pullTransactions` write the same `source='privacy'` row — last writer wins. The cron caller (Step 5) must orchestrate cards-then-transactions atomically and report at the boundary; the audit log carries the per-call breakdown. Could have widened the CHECK in a new migration but not worth it for v1.
+
+**Preserve user-owned columns on upsert by reading first.** `clarity_budget_privacy_cards.linked_payee_id` and `clarity_budget_privacy_transactions.matched_ynab_txn_id` are written by users (Step 8) and reconcile (Step 4), respectively — never by sync. The simple solution is "don't include those columns in the upsert payload," but Postgres `upsert` will still null them on conflict if they're listed in the column set... or will it? Testing TBD, but the safe pattern (used here): pre-fetch existing rows via `.in("token", tokens)`, build a `Map<token, value>`, and explicitly re-apply existing values to the upsert payload. Costs one extra round-trip per sync; eliminates the "did upsert reset that column?" question entirely.
+
+**Files were already partially scaffolded.** `lib/privacy/{types,client,sync}.ts` existed from a 2026-04-24 checkpoint commit (`839e861`) but were never finished — `sync.ts` was missing the `clarity_budget_sync_state` + `clarity_budget_audit_log` writes, and `pullTransactions` required `since` instead of making it optional. **Lesson when picking up a redesign:** always `git log` the touched directory before assuming files don't exist. The HANDOFF said "Step 3 — what to build next" because the scaffolding was uncommitted-to-main but the on-disk files were further along than the doc claimed.
+
+**Endpoint plurality is unverified.** Privacy.com's REST API has used both `/card` + `/transaction` (singular) and `/cards` + `/transactions` (plural) at various points; current docs aren't pinned in this codebase. Code ships with singular paths matching the prior scaffold; smoke test will reveal if 404s appear and a one-line swap is needed.
+
 ## 2026-04-25 — OTP callback route is reusable for OAuth without modification
 
 `app/auth/callback/route.ts` was originally written for the magic-link OTP flow — reads `?code=`, calls `exchangeCodeForSession`, redirects to `next ?? "/"`. When adding GitHub OAuth, no callback route changes were needed: PKCE OAuth uses the **same** `?code=` exchange. The only code change for OAuth was a button on `app/login/page.tsx` calling `signInWithOAuth({ provider: 'github', options: { redirectTo: ${origin}/auth/callback?next=/ } })`.
