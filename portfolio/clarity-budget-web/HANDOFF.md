@@ -4,11 +4,12 @@
 
 | Field | Value |
 |---|---|
-| Focus | v1 Redesign — Step 4 (reconcile logic) up next; steps 1–3 of 10 done |
-| Status | Step 3 complete (Privacy.com integration: `lib/privacy/{types,client,sync}.ts`); typecheck + lint + build all clean. Manual smoke pending (needs `SUPABASE_SERVICE_ROLE_KEY` + Privacy.com API token). |
-| Last touch | 2026-04-25 |
-| URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 deployed) |
-| Branch | main |
+| Focus | **AI auto-categorization** v0 shipped on `feature/ai-categorize` (2026-04-26). Awaiting manual smoke + migration push before merge. v1 Redesign Step 4 (reconcile) is still the next main-line task. |
+| Status | Categorize feature: typecheck ✅ · lint ✅ · 49 tests pass ✅ · build ✅ · runtime auth gate verified. Migration `0003` written but **not yet pushed**. `AI_GATEWAY_API_KEY` not yet in env. |
+| Last touch | 2026-04-26 |
+| URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 deployed; AI categorize NOT deployed yet) |
+| Branch | feature/ai-categorize (off main) |
+| Manual TODO (categorize) | (a) `cd portfolio/clarity-budget-web && supabase db push` to apply `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` and to Vercel preview env. (c) Sign in → `/categorize` → click **Run categorization** → verify on YNAB. (d) Re-run for idempotency. (e) When green, merge to main. |
 | Manual TODO (auth) | **Supabase Dashboard:** (a) Auth → URL Configuration → Site URL = `https://clarity-budget-web.vercel.app`; Redirect URLs allowlist must include `https://clarity-budget-web.vercel.app/auth/callback` and `http://localhost:3000/auth/callback`; remove `apps.chasewhittaker.com`. (b) Auth → Providers → GitHub → enable + paste Client ID + Secret from a new GitHub OAuth App (`github.com/settings/developers`, callback URL = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). Until both are done, clicking "Continue with GitHub" will return a provider-not-enabled error. |
 
 ---

@@ -2,6 +2,35 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-26 — AI auto-categorization (feature/ai-categorize branch)
+- `supabase/migrations/0003_categorization_suggestions.sql` — new `clarity_budget_categorization_suggestions` table (id, user_id, ynab_txn_id, status, category_id, category_name, confidence, reasoning, model_id, prompt_hash, subtransactions jsonb, txn_snapshot jsonb, audit timestamps). Unique on (user_id, ynab_txn_id). RLS `owner_all`. Widens `clarity_budget_sync_state.source` CHECK to include `'ynab_categorize'`.
+- `lib/ynab.ts` — `fetchUncategorizedTransactions(token, budgetId)` (GET `/transactions?type=uncategorized`), `bulkUpdateTransactions(token, budgetId, updates)` (PATCH `/transactions`), shared `patchJson` helper, new types `YNABTransactionUpdate` + `YNABUpdateSubTransaction`.
+- `lib/ai/gateway.ts` + `lib/ai/index.ts` — single `generateObject<T>` wrapper around the Vercel AI Gateway. Default model `"openai/gpt-4o-mini"` (string, not provider SDK). Reads `AI_GATEWAY_API_KEY`. Normalized `TokenUsage`. Nothing else in the codebase imports `ai` directly.
+- `lib/categorize/types.ts` — `Suggestion`, `RunSummary`, `CategoryAllowlistEntry`, `FewShotExample`, `CategorizableTxn`, `SuggestionStatus`, `CONFIDENCE_THRESHOLD = 0.85`.
+- `lib/categorize/prompt.ts` — `buildPrompt(input)` deterministic: alphabetical category sort, lowercase-payee dedupe with cap of 30 few-shot examples, splits-aware system block, SHA-256 hash for idempotency.
+- `lib/categorize/logic.ts` — pure helpers (`buildAllowlist`, `buildFewShots`, `toCategorizable`, `classifySuggestion`, `buildPatchBody`). Test-friendly (no `server-only`).
+- `lib/categorize/persist.ts` — `buildSuggestionRow`, `upsertSuggestions`, `fetchPendingHashes`, `markStatus`. Conflict on `(user_id, ynab_txn_id)`.
+- `lib/categorize/run.ts` — `runCategorization(userId)` orchestrator. Fetch uncategorized + categories + 90-day history → batch (size 20) → `generateObject` → allowlist filter → split-aware classification → upsert → bulk PATCH high-confidence → audit + sync_state. Hard rollback on PATCH failure (auto-applied rows revert to pending). Idempotent via prompt_hash.
+- `lib/categorize/__tests__/{prompt,classify}.test.ts` — 20 vitest cases covering prompt determinism, few-shot dedupe + cap, hash sensitivity, allowlist enforcement, confidence threshold, split parent invariants, PATCH body shape (sub amount preservation, original sub IDs), `buildAllowlist` exclusions, `buildFewShots` split expansion.
+- `app/api/categorize/run/route.ts` — POST, `runtime = "nodejs"`, `maxDuration = 60`. 401 unauth → calls `runCategorization` → returns `{ ok, summary }`. 400 on token-not-configured.
+- `app/api/categorize/apply/route.ts` — POST `{ suggestion_id, action: "apply"|"dismiss"|"undo", override_category_id? }`. Verifies ownership via `createRouteClient` (RLS), applies via `createServiceClient` + bulk PATCH. Splits require full sub coverage.
+- `app/(app-shell)/categorize/page.tsx` + `components/categorize/{CategorizeQueue,CategorizeRow}.tsx` — review queue page. Header card shows last-run timestamp + last-error + "Run categorization" button. Rows show payee, amount, suggested category, confidence color (green ≥75%, amber ≥50%, red <50%), reasoning, sub breakdown for splits. Apply / Dismiss buttons → POST `/api/categorize/apply` → `router.refresh()`.
+- `components/shell/NavBar.tsx` — added `Categorize` nav link between Dashboard and Settings.
+
+**Deps added:** `ai@6.0.168`, `zod@4.3.6`.
+
+**Verification (this branch):** `pnpm exec tsc --noEmit` ✅ · `pnpm lint` ✅ · `pnpm test` ✅ (49 pass · 6 files) · `pnpm build` ✅ — `/categorize` 2.19 kB / `/api/categorize/run` ƒ / `/api/categorize/apply` ƒ. Runtime smoke: `/categorize` 307→`/login` unauth'd, `/login` 200, `POST /api/categorize/run` 401 unauth'd. No server compile errors.
+
+**Manual smoke required before merge:**
+1. Push migration: `cd portfolio/clarity-budget-web && supabase db push` (applies `0003_categorization_suggestions.sql`).
+2. Set `AI_GATEWAY_API_KEY` in `.env.local` and Vercel preview env (Settings → Environment Variables).
+3. Sign in → `/categorize` → click **Run categorization**.
+4. Expect HTTP 200 + `{ summary: { fetched, autoApplied, queued, ... } }`. High-confidence rows now show categories + green checks in YNAB. Re-running yields `cached > 0`.
+5. Inspect `clarity_budget_audit_log` for `categorize_run_succeeded` with token `usage`. Sanity-check cost (< $0.01 for ~100 txns on `openai/gpt-4o-mini`).
+6. Hallucination guard: manually edit a suggestion's `category_id` to a non-existent UUID → re-run → row marks `invalid`, never PATCHes YNAB.
+
+**Where this fits in the roadmap:** This is a parallel-track workstream off the v1 redesign main line (which still has Steps 4-10 ahead). Plan target: merge before Step 9 so the dashboard split can surface "Uncategorized to review" as a first-class card. See `~/.claude/plans/whats-the-next-step-fluffy-wadler.md` for the full design rationale.
+
 ### Added — Session 3 / Step 3 (2026-04-25) — Privacy.com integration
 - `lib/privacy/types.ts` — `PrivacyCard`, `PrivacyTransaction`, `PrivacyMerchant`, `PrivacyCardRef`, `PrivacyPage<T>`; state/type/status string unions matching Privacy.com REST shapes.
 - `lib/privacy/client.ts` — `createPrivacyClient(token)` factory exposing `listCards()` + `listTransactions({ begin? })`. Uses Privacy's `Authorization: api-key <token>` scheme (not Bearer). Internal `paginate<T>` loops `page` until `total_pages` (50/page). `server-only` guarded.

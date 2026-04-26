@@ -15,6 +15,27 @@ async function getJson<T>(path: string, token: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+async function patchJson<T>(path: string, token: string, body: unknown): Promise<T> {
+  const url = new URL(BASE_URL + path);
+  const res = await fetch(url.toString(), {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (res.status === 401) throw new Error("Token invalid or expired.");
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`YNAB API error: ${res.status}${text ? ` — ${text.slice(0, 200)}` : ""}`);
+  }
+
+  return res.json() as Promise<T>;
+}
+
 export interface YNABMonthCategory {
   id: string;
   name: string;
@@ -114,4 +135,65 @@ export async function fetchTransactions(
     token
   );
   return json.data.transactions.filter((t) => !t.deleted);
+}
+
+/**
+ * Fetch all non-deleted, uncategorized transactions for a budget.
+ * Splits surface as parent rows with `category_name === "Split"`; their per-sub
+ * `category_id` lives inside `subtransactions[]`.
+ */
+export async function fetchUncategorizedTransactions(
+  token: string,
+  budgetId: string
+): Promise<YNABTransaction[]> {
+  const json = await getJson<{ data: { transactions: YNABTransaction[] } }>(
+    `/budgets/${budgetId}/transactions?type=uncategorized`,
+    token
+  );
+  return json.data.transactions.filter((t) => !t.deleted);
+}
+
+export interface YNABUpdateSubTransaction {
+  id?: string;
+  amount: number;
+  category_id: string | null;
+  memo?: string | null;
+  payee_id?: string | null;
+  payee_name?: string | null;
+}
+
+export interface YNABTransactionUpdate {
+  id: string;
+  category_id?: string | null;
+  approved?: boolean;
+  memo?: string | null;
+  subtransactions?: YNABUpdateSubTransaction[];
+}
+
+/**
+ * Bulk-update transactions in a single PATCH call. The YNAB API accepts up to
+ * the entire response of a categorization run in one request, well under the
+ * 200 req / 60 min limit.
+ *
+ * Returns the IDs YNAB confirmed updated plus any duplicate import IDs it
+ * rejected (we never send `import_id`, but the field is in the response).
+ */
+export async function bulkUpdateTransactions(
+  token: string,
+  budgetId: string,
+  updates: YNABTransactionUpdate[]
+): Promise<{ updated: string[]; duplicateImportIds: string[] }> {
+  if (updates.length === 0) return { updated: [], duplicateImportIds: [] };
+
+  const json = await patchJson<{
+    data: {
+      transaction_ids?: string[];
+      duplicate_import_ids?: string[];
+    };
+  }>(`/budgets/${budgetId}/transactions`, token, { transactions: updates });
+
+  return {
+    updated: json.data.transaction_ids ?? [],
+    duplicateImportIds: json.data.duplicate_import_ids ?? [],
+  };
 }

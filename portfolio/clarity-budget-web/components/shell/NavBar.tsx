@@ -7,6 +7,7 @@ import { UserMenu } from "./UserMenu";
 
 const LINKS: { href: string; label: string }[] = [
   { href: "/", label: "Dashboard" },
+  { href: "/categorize", label: "Categorize" },
   { href: "/settings", label: "Settings" },
 ];
 
