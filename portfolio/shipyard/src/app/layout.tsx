@@ -45,6 +45,7 @@ const navItems: { href: string; labelKey: LabelKey }[] = [
   { href: "/review", labelKey: "review" },
   { href: "/learnings", labelKey: "log" },
   { href: "/themes", labelKey: "charts" },
+  { href: "/manifest", labelKey: "manifest" },
   { href: "/portfolio", labelKey: "showcase" },
   { href: "/linear", labelKey: "harbor" },
   { href: "/settings", labelKey: "settings" },

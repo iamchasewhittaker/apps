@@ -47,6 +47,8 @@ export interface Project {
   tagline: string | null;
   summary: string | null;
   priority_rank: number | null;
+  revenue_potential: number | null;
+  monthly_revenue_usd: number | null;
   localstorage_keys: string[];
   supabase_tables: string[];
   external_apis: string[];
@@ -120,6 +122,29 @@ export interface Learning {
   raw_source_ref: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ChangelogEntry {
+  id: string;
+  project_slug: string;
+  version: string | null;
+  entry_date: string | null;
+  heading: string;
+  body_md: string;
+  sort_index: number;
+  scanned_at: string;
+}
+
+export interface RoadmapEntry {
+  id: string;
+  project_slug: string;
+  phase_name: string;
+  phase_status: string | null;
+  item_text: string;
+  item_done: boolean;
+  item_date: string | null;
+  sort_index: number;
+  scanned_at: string;
 }
 
 export interface Theme {

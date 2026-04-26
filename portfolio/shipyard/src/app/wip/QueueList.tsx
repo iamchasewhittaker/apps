@@ -20,7 +20,7 @@ import { QueueRow } from './QueueRow';
 import { updateRanks, seedRanksByCommit } from './actions';
 import type { Project } from '@/lib/types';
 
-type SortMode = 'priority' | 'last_updated' | 'mvp_step' | 'name';
+type SortMode = 'priority' | 'last_updated' | 'mvp_step' | 'name' | 'money';
 const STORAGE_KEY = 'shipyard_wip_sort_mode';
 
 interface Props {
@@ -36,7 +36,7 @@ export function QueueList({ ships: initialShips }: Props) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY) as SortMode | null;
-      if (stored && ['priority', 'last_updated', 'mvp_step', 'name'].includes(stored)) {
+      if (stored && ['priority', 'last_updated', 'mvp_step', 'name', 'money'].includes(stored)) {
         setSortMode(stored);
       }
     } catch {
@@ -83,6 +83,17 @@ export function QueueList({ ships: initialShips }: Props) {
         break;
       case 'name':
         copy.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'money':
+        copy.sort((a, b) => {
+          const ar = a.revenue_potential ?? -1;
+          const br = b.revenue_potential ?? -1;
+          if (ar !== br) return br - ar;
+          const am = a.monthly_revenue_usd ?? -1;
+          const bm = b.monthly_revenue_usd ?? -1;
+          if (am !== bm) return bm - am;
+          return a.name.localeCompare(b.name);
+        });
         break;
     }
     return copy;
@@ -179,6 +190,7 @@ export function QueueList({ ships: initialShips }: Props) {
           >
             <option value="priority">Priority</option>
             <option value="last_updated">Last Updated</option>
+            <option value="money">Money</option>
             <option value="mvp_step">MVP Step</option>
             <option value="name">Name</option>
           </select>

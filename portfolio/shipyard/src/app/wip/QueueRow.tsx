@@ -97,6 +97,19 @@ export function QueueRow({ ship, isActive, draggable }: Props) {
             Compliance:{' '}
             <span className={compliance}>{Math.round(ship.compliance_score)}%</span>
           </span>
+          {(ship.revenue_potential !== null || (ship.monthly_revenue_usd ?? 0) > 0) && (
+            <span
+              className="rounded border border-success/40 bg-success/10 px-1.5 py-0.5 text-success"
+              title="Money signal"
+            >
+              {ship.monthly_revenue_usd && ship.monthly_revenue_usd > 0
+                ? `$${Math.round(ship.monthly_revenue_usd)}/mo`
+                : ''}
+              {ship.revenue_potential !== null
+                ? `${ship.monthly_revenue_usd && ship.monthly_revenue_usd > 0 ? ' · ' : ''}${'★'.repeat(ship.revenue_potential)}`
+                : ''}
+            </span>
+          )}
         </div>
       </Link>
 

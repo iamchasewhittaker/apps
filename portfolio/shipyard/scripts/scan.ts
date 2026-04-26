@@ -206,6 +206,157 @@ function parseClaudeMd(dir: string): {
   }
 }
 
+function parseChangelog(dir: string, slug: string): Array<Record<string, unknown>> {
+  const path = join(dir, 'CHANGELOG.md');
+  if (!existsSync(path)) return [];
+
+  let content: string;
+  try {
+    content = readFileSync(path, 'utf-8');
+  } catch {
+    return [];
+  }
+
+  const out: Array<Record<string, unknown>> = [];
+  const versionBlocks = content.split(/\n(?=##\s)/g).filter((b) => /^##\s+(\[|v\d)/i.test(b.trim()));
+  let sortIndex = 0;
+  const versionCounts = new Map<string, number>();
+  const usedKeys = new Set<string>();
+
+  for (const block of versionBlocks) {
+    const lines = block.split('\n');
+    const versionLine = lines[0].replace(/^##\s+/, '').trim();
+    const versionMatch = versionLine.match(/^(?:\[([^\]]+)\]|(v[\d.]+))(?:\s+[—-]\s+(\d{4}-\d{2}-\d{2}))?/);
+    if (!versionMatch) continue;
+    const baseVersion = (versionMatch[1] ?? versionMatch[2] ?? '').trim();
+    const versionDate = versionMatch[3] ?? null;
+    const versionCount = versionCounts.get(baseVersion) ?? 0;
+    versionCounts.set(baseVersion, versionCount + 1);
+    const fullVersionLabel =
+      versionLine.length > baseVersion.length
+        ? versionLine.replace(/^\[/, '').replace(/\]/, '')
+        : baseVersion;
+    const version =
+      versionCount === 0 && fullVersionLabel === baseVersion
+        ? baseVersion
+        : fullVersionLabel;
+
+    const rest = lines.slice(1).join('\n');
+    const entryBlocks = rest.split(/\n(?=###\s)/g);
+    const headingCounts = new Map<string, number>();
+
+    for (const entryBlock of entryBlocks) {
+      const trimmed = entryBlock.trim();
+      if (!trimmed) continue;
+
+      let heading: string;
+      let body: string;
+      if (trimmed.startsWith('### ')) {
+        const elines = trimmed.split('\n');
+        heading = elines[0].replace(/^###\s+/, '').trim();
+        body = elines.slice(1).join('\n').trim();
+      } else {
+        if (entryBlocks.indexOf(entryBlock) !== 0) continue;
+        heading = `[${version}]${versionDate ? ` — ${versionDate}` : ''}`;
+        body = trimmed;
+      }
+
+      if (!heading) continue;
+
+      const seenCount = headingCounts.get(heading) ?? 0;
+      headingCounts.set(heading, seenCount + 1);
+      let dedupedHeading = seenCount === 0 ? heading : `${heading} (#${seenCount + 1})`;
+      let key = `${version}|${dedupedHeading}`;
+      let suffix = 2;
+      while (usedKeys.has(key)) {
+        dedupedHeading = `${heading} (#${suffix++})`;
+        key = `${version}|${dedupedHeading}`;
+      }
+      usedKeys.add(key);
+
+      const dateMatch = heading.match(/(\d{4}-\d{2}-\d{2})/);
+      const entryDate = dateMatch?.[1] ?? versionDate ?? null;
+
+      out.push({
+        project_slug: slug,
+        version,
+        entry_date: entryDate,
+        heading: dedupedHeading,
+        body_md: body,
+        sort_index: sortIndex++,
+      });
+    }
+  }
+
+  return out;
+}
+
+function parseRoadmap(dir: string, slug: string): Array<Record<string, unknown>> {
+  const path = join(dir, 'ROADMAP.md');
+  if (!existsSync(path)) return [];
+
+  let content: string;
+  try {
+    content = readFileSync(path, 'utf-8');
+  } catch {
+    return [];
+  }
+
+  const out: Array<Record<string, unknown>> = [];
+  const sections = content.split(/\n(?=##\s)/g);
+  let sortIndex = 0;
+  const seen = new Set<string>();
+
+  for (const section of sections) {
+    const trimmed = section.trim();
+    if (!trimmed.startsWith('##')) continue;
+    const lines = trimmed.split('\n');
+    const heading = lines[0].replace(/^##\s+/, '').trim();
+    if (!/phase/i.test(heading)) continue;
+
+    const phaseName = heading.replace(/\s*\(.*\)\s*$/, '').trim();
+    const parenMatch = heading.match(/\(([^)]+)\)/);
+    let phaseStatus: string | null = null;
+    if (parenMatch) {
+      const inside = parenMatch[1].trim();
+      if (/complete|in progress|deferred|planning|done|shipped/i.test(inside)) {
+        phaseStatus = inside;
+      }
+    }
+    if (!phaseStatus) {
+      const dashStatus = heading.match(/[—-]\s*(Complete|In Progress|Deferred|Planning|Done|Shipped)\b/i);
+      if (dashStatus) phaseStatus = dashStatus[1];
+    }
+
+    for (const line of lines.slice(1)) {
+      const m = line.match(/^\s*-\s+\[([ xX])\]\s+(.+)$/);
+      if (!m) continue;
+      const done = m[1].toLowerCase() === 'x';
+      const itemText = m[2].trim();
+      if (!itemText) continue;
+
+      const dedupKey = `${phaseName}::${itemText}`;
+      if (seen.has(dedupKey)) continue;
+      seen.add(dedupKey);
+
+      const dateMatch = itemText.match(/\((\d{4}-\d{2}-\d{2})\)/);
+      const itemDate = dateMatch?.[1] ?? null;
+
+      out.push({
+        project_slug: slug,
+        phase_name: phaseName,
+        phase_status: phaseStatus,
+        item_text: itemText,
+        item_done: done,
+        item_date: itemDate,
+        sort_index: sortIndex++,
+      });
+    }
+  }
+
+  return out;
+}
+
 function parseLearnings(dir: string, slug: string): Array<Record<string, unknown>> {
   const learningsPath = join(dir, 'LEARNINGS.md');
   if (!existsSync(learningsPath)) return [];
@@ -268,6 +419,10 @@ async function main() {
 
   const projects: Record<string, unknown>[] = [];
   const allLearnings: Record<string, unknown>[] = [];
+  const allChangelog: Record<string, unknown>[] = [];
+  const allRoadmap: Record<string, unknown>[] = [];
+  const slugsWithChangelog = new Set<string>();
+  const slugsWithRoadmap = new Set<string>();
   const errors: Record<string, string>[] = [];
 
   for (const name of entries) {
@@ -298,6 +453,22 @@ async function main() {
       const relPath = `portfolio/${name}`;
 
       const learningRows = parseLearnings(dir, name);
+
+      let changelogRows: Array<Record<string, unknown>> = [];
+      try {
+        changelogRows = parseChangelog(dir, name);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`  [WARN] ${name}: changelog parse failed — ${msg}`);
+      }
+
+      let roadmapRows: Array<Record<string, unknown>> = [];
+      try {
+        roadmapRows = parseRoadmap(dir, name);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`  [WARN] ${name}: roadmap parse failed — ${msg}`);
+      }
 
       projects.push({
         slug: name,
@@ -334,7 +505,21 @@ async function main() {
         allLearnings.push(...learningRows);
       }
 
-      console.log(`  [OK] ${name} (${type}, step ${mvp_step_actual}, ${status}${learningRows.length ? `, ${learningRows.length} learnings` : ''})`);
+      if (changelogRows.length > 0) {
+        allChangelog.push(...changelogRows);
+        slugsWithChangelog.add(name);
+      }
+      if (roadmapRows.length > 0) {
+        allRoadmap.push(...roadmapRows);
+        slugsWithRoadmap.add(name);
+      }
+
+      const tags = [
+        learningRows.length ? `${learningRows.length} learnings` : null,
+        changelogRows.length ? `${changelogRows.length} changelog` : null,
+        roadmapRows.length ? `${roadmapRows.length} roadmap` : null,
+      ].filter(Boolean);
+      console.log(`  [OK] ${name} (${type}, step ${mvp_step_actual}, ${status}${tags.length ? `, ${tags.join(', ')}` : ''})`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       errors.push({ project: name, error: msg });
@@ -366,6 +551,50 @@ async function main() {
     } else {
       learningsCaptured = allLearnings.length;
       console.log(`Upserted ${allLearnings.length} learnings (deduped)`);
+    }
+  }
+
+  // Sync changelog entries — delete then insert per project (idempotent + handles removals)
+  if (slugsWithChangelog.size > 0) {
+    console.log(`\nSyncing changelog entries for ${slugsWithChangelog.size} projects…`);
+    const slugList = Array.from(slugsWithChangelog);
+    const { error: delErr } = await supabase
+      .from('changelog_entries')
+      .delete()
+      .in('project_slug', slugList);
+    if (delErr) {
+      console.error('Changelog delete error:', delErr.message);
+    } else {
+      const { error: insErr } = await supabase
+        .from('changelog_entries')
+        .insert(allChangelog);
+      if (insErr) {
+        console.error('Changelog insert error:', insErr.message);
+      } else {
+        console.log(`Inserted ${allChangelog.length} changelog entries`);
+      }
+    }
+  }
+
+  // Sync roadmap entries — delete then insert per project
+  if (slugsWithRoadmap.size > 0) {
+    console.log(`\nSyncing roadmap entries for ${slugsWithRoadmap.size} projects…`);
+    const slugList = Array.from(slugsWithRoadmap);
+    const { error: delErr } = await supabase
+      .from('roadmap_entries')
+      .delete()
+      .in('project_slug', slugList);
+    if (delErr) {
+      console.error('Roadmap delete error:', delErr.message);
+    } else {
+      const { error: insErr } = await supabase
+        .from('roadmap_entries')
+        .insert(allRoadmap);
+      if (insErr) {
+        console.error('Roadmap insert error:', insErr.message);
+      } else {
+        console.log(`Inserted ${allRoadmap.length} roadmap entries`);
+      }
     }
   }
 

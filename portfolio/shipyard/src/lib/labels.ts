@@ -9,6 +9,7 @@ export const LABELS = {
   showcase: { nautical: 'Fleet Showcase',  regular: 'Portfolio' },
   harbor:   { nautical: 'Harbor',          regular: 'Linear' },
   bridge:   { nautical: 'Bridge',          regular: 'Daily' },
+  manifest: { nautical: 'Manifest',        regular: 'Changelog & Roadmap' },
   settings: { nautical: 'Settings',        regular: 'Settings' },
 
   // MVP steps

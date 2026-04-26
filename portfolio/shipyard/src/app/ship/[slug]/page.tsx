@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase';
 import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
-import { EditableText, EditableStatus, BlockerManager } from '@/components/EditableField';
+import { EditableText, EditableStatus, EditableNumber, BlockerManager } from '@/components/EditableField';
 import { RetireButton } from './RetireButton';
 import { CopyDevCommand } from './CopyDevCommand';
-import type { Project, Blocker, Compliance } from '@/lib/types';
+import type { Project, Blocker, Compliance, ChangelogEntry, RoadmapEntry } from '@/lib/types';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,7 +17,12 @@ export default async function ShipDetailPage({ params }: Props) {
   const { slug } = await params;
   const supabase = await createServerClient();
 
-  const [{ data: project }, { data: blockers }] = await Promise.all([
+  const [
+    { data: project },
+    { data: blockers },
+    { data: changelog },
+    { data: roadmap },
+  ] = await Promise.all([
     supabase.from('projects').select('*').eq('slug', slug).single(),
     supabase
       .from('blockers')
@@ -25,13 +30,40 @@ export default async function ShipDetailPage({ params }: Props) {
       .eq('project_slug', slug)
       .order('resolved_at', { ascending: true, nullsFirst: true })
       .order('created_at', { ascending: false }),
+    supabase
+      .from('changelog_entries')
+      .select('*')
+      .eq('project_slug', slug)
+      .order('sort_index', { ascending: true }),
+    supabase
+      .from('roadmap_entries')
+      .select('*')
+      .eq('project_slug', slug)
+      .order('sort_index', { ascending: true }),
   ]);
 
   if (!project) notFound();
 
   const p = project as Project;
   const blockerList: Blocker[] = blockers ?? [];
+  const changelogList: ChangelogEntry[] = changelog ?? [];
+  const roadmapList: RoadmapEntry[] = roadmap ?? [];
   const step = p.mvp_step_actual ?? p.mvp_step ?? 0;
+
+  const changelogByVersion = new Map<string, ChangelogEntry[]>();
+  for (const c of changelogList) {
+    const key = c.version ?? '—';
+    const arr = changelogByVersion.get(key) ?? [];
+    arr.push(c);
+    changelogByVersion.set(key, arr);
+  }
+
+  const roadmapByPhase = new Map<string, RoadmapEntry[]>();
+  for (const r of roadmapList) {
+    const arr = roadmapByPhase.get(r.phase_name) ?? [];
+    arr.push(r);
+    roadmapByPhase.set(r.phase_name, arr);
+  }
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
@@ -78,6 +110,37 @@ export default async function ShipDetailPage({ params }: Props) {
       {/* Next Action */}
       <Section title="Next Action">
         <EditableText slug={p.slug} field="next_action" value={p.next_action} placeholder="No next action set. Click to add…" />
+      </Section>
+
+      {/* Money */}
+      <Section title="Money">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <p className="mb-1 text-xs font-medium text-muted">Revenue potential (1–5)</p>
+            <EditableNumber
+              slug={p.slug}
+              field="revenue_potential"
+              value={p.revenue_potential}
+              min={1}
+              max={5}
+              step={1}
+              placeholder="Unrated"
+            />
+          </div>
+          <div>
+            <p className="mb-1 text-xs font-medium text-muted">Monthly revenue (USD)</p>
+            <EditableNumber
+              slug={p.slug}
+              field="monthly_revenue_usd"
+              value={p.monthly_revenue_usd}
+              min={0}
+              step={1}
+              prefix="$"
+              suffix="/mo"
+              placeholder="$0"
+            />
+          </div>
+        </div>
       </Section>
 
       {/* Blockers */}
@@ -170,6 +233,86 @@ export default async function ShipDetailPage({ params }: Props) {
               <p className="text-sm italic text-muted">No links available.</p>
             )}
         </div>
+      </Section>
+
+      {/* Changelog */}
+      <Section title="Changelog">
+        {changelogList.length === 0 ? (
+          <p className="text-sm italic text-muted">
+            No changelog parsed. Add a <code className="text-xs">CHANGELOG.md</code> in the app and run{' '}
+            <code className="text-xs">npx tsx scripts/scan.ts</code>.
+          </p>
+        ) : (
+          <div className="space-y-5">
+            {Array.from(changelogByVersion.entries()).map(([version, entries]) => (
+              <div key={version} className="space-y-2">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-gold">
+                  {version}
+                </h3>
+                <div className="space-y-3">
+                  {entries.map((e) => (
+                    <ChangelogEntryCard key={e.id} entry={e} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Section>
+
+      {/* Roadmap */}
+      <Section title="Roadmap">
+        {roadmapList.length === 0 ? (
+          <p className="text-sm italic text-muted">
+            No roadmap parsed. Add a <code className="text-xs">ROADMAP.md</code> with{' '}
+            <code className="text-xs">## Phase</code> sections and{' '}
+            <code className="text-xs">- [ ]</code> items, then run the scanner.
+          </p>
+        ) : (
+          <div className="space-y-5">
+            {Array.from(roadmapByPhase.entries()).map(([phase, items]) => {
+              const status = items[0]?.phase_status;
+              const done = items.filter((i) => i.item_done).length;
+              return (
+                <div key={phase} className="space-y-2">
+                  <div className="flex flex-wrap items-baseline gap-2">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gold">
+                      {phase}
+                    </h3>
+                    {status && (
+                      <span className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-medium text-muted">
+                        {status}
+                      </span>
+                    )}
+                    <span className="text-[10px] text-muted">
+                      {done}/{items.length} done
+                    </span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {items.map((item) => (
+                      <li
+                        key={item.id}
+                        className={`flex items-start gap-2 text-sm ${
+                          item.item_done ? 'text-muted line-through' : 'text-foreground'
+                        }`}
+                      >
+                        <span className="mt-0.5 shrink-0 font-mono text-xs">
+                          {item.item_done ? '☑' : '☐'}
+                        </span>
+                        <span className="flex-1">{stripBoldMarkers(item.item_text)}</span>
+                        {item.item_date && (
+                          <span className="shrink-0 text-[10px] text-muted">
+                            {item.item_date}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </Section>
 
       {/* Danger zone — only shown for non-archived projects */}
@@ -277,6 +420,51 @@ function PillGroup({
           </span>
         ))}
       </div>
+    </div>
+  );
+}
+
+function stripBoldMarkers(text: string): string {
+  return text.replace(/\*\*/g, '');
+}
+
+function ChangelogEntryCard({ entry }: { entry: ChangelogEntry }) {
+  const lines = entry.body_md.split('\n');
+  const bullets: string[] = [];
+  let buffer: string[] = [];
+  for (const line of lines) {
+    if (/^\s*-\s+/.test(line)) {
+      if (buffer.length) {
+        bullets[bullets.length - 1] += '\n' + buffer.join('\n');
+        buffer = [];
+      }
+      bullets.push(line.replace(/^\s*-\s+/, '').trim());
+    } else if (line.trim()) {
+      buffer.push(line);
+    }
+  }
+
+  return (
+    <div className="rounded-md border border-border bg-card/50 p-3 space-y-2">
+      <div className="flex flex-wrap items-baseline gap-2">
+        <h4 className="text-sm font-semibold text-foreground">
+          {stripBoldMarkers(entry.heading)}
+        </h4>
+        {entry.entry_date && (
+          <span className="text-[10px] text-muted">{entry.entry_date}</span>
+        )}
+      </div>
+      {bullets.length > 0 ? (
+        <ul className="list-disc space-y-1 pl-5 text-xs text-muted">
+          {bullets.map((b, i) => (
+            <li key={i}>{stripBoldMarkers(b)}</li>
+          ))}
+        </ul>
+      ) : entry.body_md ? (
+        <p className="text-xs text-muted whitespace-pre-line">
+          {stripBoldMarkers(entry.body_md)}
+        </p>
+      ) : null}
     </div>
   );
 }

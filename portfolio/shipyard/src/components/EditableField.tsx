@@ -118,6 +118,110 @@ export function EditableStatus({ slug, value }: EditableStatusProps) {
   );
 }
 
+interface EditableNumberProps {
+  slug: string;
+  field: 'revenue_potential' | 'monthly_revenue_usd';
+  value: number | null;
+  min?: number;
+  max?: number;
+  step?: number;
+  prefix?: string;
+  suffix?: string;
+  placeholder?: string;
+}
+
+export function EditableNumber({
+  slug,
+  field,
+  value,
+  min,
+  max,
+  step,
+  prefix,
+  suffix,
+  placeholder = 'Click to set…',
+}: EditableNumberProps) {
+  const [editing, setEditing] = useState(false);
+  const [current, setCurrent] = useState<string>(value === null ? '' : String(value));
+  const [saving, setSaving] = useState(false);
+
+  async function save() {
+    setSaving(true);
+    const payload =
+      current.trim() === '' ? null : Number(current);
+    await fetch(`/api/ship/${slug}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ [field]: payload }),
+    });
+    setSaving(false);
+    setEditing(false);
+  }
+
+  if (editing) {
+    return (
+      <div className="flex items-center gap-2">
+        <input
+          autoFocus
+          type="number"
+          inputMode="decimal"
+          min={min}
+          max={max}
+          step={step}
+          value={current}
+          onChange={(e) => setCurrent(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') save();
+            if (e.key === 'Escape') {
+              setCurrent(value === null ? '' : String(value));
+              setEditing(false);
+            }
+          }}
+          className="w-28 rounded-md border border-accent/50 bg-card px-2 py-1 text-sm text-foreground focus:outline-none focus:border-accent"
+        />
+        <button
+          onClick={save}
+          disabled={saving}
+          className="rounded-md border border-accent/40 bg-accent/10 px-2 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+        >
+          {saving ? 'Saving…' : 'Save'}
+        </button>
+        <button
+          onClick={() => {
+            setCurrent(value === null ? '' : String(value));
+            setEditing(false);
+          }}
+          className="rounded-md border border-border px-2 py-1 text-xs font-medium text-muted hover:text-foreground transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setEditing(true)}
+      className="text-left text-sm group"
+    >
+      {value === null ? (
+        <span className="italic text-muted group-hover:text-accent/60 transition-colors">
+          {placeholder}
+        </span>
+      ) : (
+        <span className="text-foreground group-hover:text-accent transition-colors">
+          {prefix ?? ''}
+          {value}
+          {suffix ?? ''}
+        </span>
+      )}
+      <span className="ml-1.5 text-[10px] text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+        edit
+      </span>
+    </button>
+  );
+}
+
 interface BlockerManagerProps {
   slug: string;
   initialBlockers: Array<{ id: string; text: string; resolved_at: string | null }>;
