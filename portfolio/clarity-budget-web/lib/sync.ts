@@ -1,18 +1,6 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { BudgetBlob } from "./blob";
 import { SUPABASE_APP_KEY } from "./constants";
-
-function getEnv() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-  return { url, key };
-}
-
-export function createSupabaseBrowserClient(): SupabaseClient | null {
-  const { url, key } = getEnv();
-  if (!url || !key) return null;
-  return createClient(url, key);
-}
 
 export async function pushBlob(client: SupabaseClient, blob: BudgetBlob, userId: string) {
   const payload = { ...blob, _syncAt: Date.now() };

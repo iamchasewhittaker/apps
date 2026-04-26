@@ -6,12 +6,16 @@
 
 Read `portfolio/fairway-ios/CLAUDE.md` and `portfolio/fairway-ios/HANDOFF.md` first, then continue from this context.
 
-## What's done and on device (2026-04-25)
+## What's done and on device (2026-04-25, three sessions)
 
-- **Pre-Season Audit** live at `More → Pre-Season Audit` — 41 heads by zone, photo-audit observations, confidence badges, detail sheet with field-entry inputs, progress counter
-- **Phase 2 audit migration** (`applyPhase2AuditDataMigrationIfNeeded` in `FairwayStore.load()`) — backfills `auditObservation`/`auditConfidence` for existing blobs that predate the audit fields. Without this, the audit list showed heads with no observations. Fixed and shipped.
+- **Pre-Season Audit** live at `More → Pre-Season Audit` — 41 heads by zone, photo-audit observations, confidence badges, progress counter
+- **Audit sheet** (tap any head) — pre-fills Nozzle/Arc/Radius/GPM from audit-derived estimates; "Still needed from field" shows gold estimated values (e.g. "~0.45–0.6 GPM", "8–15 ft"); "Field Measurement Guide" (collapsible) explains arc°, radius, catch-cup PR test with nozzle reference table
+- **GPM field** added to `HeadData.fieldGPM` (decodeIfPresent, backward compat)
+- **Phase 2 migration** — backfills `auditObservation`/`auditConfidence` for existing blobs
+- **Phase 3 migration** — fixes wrong seeded property center (40.3330→40.3004, -111.7550→-111.7456); tight guard so manually-adjusted pins are never overwritten
+- **Map camera** bumped to 200 m so full property fits in frame
 - **Linear project:** https://linear.app/whittaker/project/fairway-ios-674db91fc8d1
-- **Build + install:** EXIT:0, installed on iPhone 12 Pro Max. App opens, Pre-Season Audit nav visible, audit data shows on each head.
+- **Build + install:** EXIT:0, installed on iPhone 12 Pro Max. All three migrations run on next launch.
 
 ## Blocked heads (physical work required before season test)
 
@@ -27,22 +31,23 @@ Read `portfolio/fairway-ios/CLAUDE.md` and `portfolio/fairway-ios/HANDOFF.md` fi
 
 ## Next steps (priority order)
 
-1. **Field walk** — open `More → Pre-Season Audit` on iPhone, walk each zone, enter field data (arc°, radius, confirmed nozzle), tick "Head cleared". Z4-S1 first.
-2. **Seed cleanup** — after field walk, update `nozzle:` strings in `PreviewData.swift` with confirmed values; flip `confirmedBySeasonTest: true`
-3. **Phase 1 Map bug fix** — `MapTabView` renders Atlantic Ocean at (0,0) coords. Spec in `HANDOFF.md § Phase 1`.
-4. **Tests** — new HeadData audit fields need a backward-compat decode test (TODO from previous session)
+1. **Field walk** — open `More → Pre-Season Audit` on iPhone, walk each zone. Audit sheet is pre-filled with estimates — just correct and save. Tap "Head cleared" when done. Z4-S1 first (buried, zero coverage).
+2. **Map pin tuning** — after field walk, open Map tab. If pin isn't exactly on the house, go to Settings → Property → drag to adjust. (`HeadPinEditor.swift` is WIP but the property settings flow exists.)
+3. **Seed cleanup** — after field walk, update `nozzle:` strings in `PreviewData.swift` with confirmed values; flip `confirmedBySeasonTest: true` for cleared heads
+4. **Tests** — `fieldGPM` and the other three audit fields need a backward-compat decode test (pattern: encode blob without the key, reload, assert default value). See `FairwayBlobTests.testV1BlobDecodesIntoV2WithDefaults` for the pattern.
 
 ## Key invariants
 
 - New HeadData fields must use `decodeIfPresent` in the extension `init(from:)` — missing key = crash for existing users
-- New data fields also need a `FairwayStore.applyPhaseN...MigrationIfNeeded()` to backfill existing blobs — PreviewData seed alone is not enough
+- New data fields that should be pre-populated for existing users ALSO need a `FairwayStore.applyPhaseN...MigrationIfNeeded()` — PreviewData seed alone backfills fresh installs only
+- Pre-fill form defaults: check saved field value first, skip "TBD…" placeholder strings, fall back to seed estimate
 - Z2 is a single valve (park strip always irrigates with front yard)
 - Rachio token: Keychain only, never in blob or logs
 - Mount iOS 17.2 runtime DMG before any `xcodebuild` call (see root CLAUDE.md)
 
-## Changed files this session (both commits)
+## Changed files (all three sessions)
 
-`FairwayStore.swift` · `HeadData.swift` · `PreviewData.swift` · `PreSeasonAuditView.swift` (NEW) · `ContentView.swift` · `project.pbxproj` · `docs/heads/PHOTO_AUDIT.md` (NEW) · `CHANGELOG.md` · `LEARNINGS.md` · `HANDOFF.md` · `docs/SESSION_START_NEXT.md`
+`FairwayStore.swift` · `HeadData.swift` · `PreviewData.swift` · `PreSeasonAuditView.swift` · `MapTabView.swift` · `ContentView.swift` · `project.pbxproj` · `docs/heads/PHOTO_AUDIT.md` · `CHANGELOG.md` · `LEARNINGS.md` · `HANDOFF.md` · `docs/SESSION_START_NEXT.md`
 
 ---
 
