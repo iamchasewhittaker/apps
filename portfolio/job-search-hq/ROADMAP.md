@@ -110,13 +110,13 @@ Chase can greenlight any of these in a follow-up session.
 
 ## Daily Flow Automation — Status
 
-Options A + B + C shipped. Option E is now unblocked.
+All five options shipped (A + B + C + D + E).
 
 - [x] **Option A — Today's 5 queue + Outreach Autopilot** (v8.14, 2026-04-23)
 - [x] **Option B — Discovery Sprint panel** (v8.16, 2026-04-26) — `DiscoverySprint` on Focus tab; deterministic daily rotation via `getDailyDiscoveryQueries(now)`; "Open all searches" launcher (LinkedIn + Indeed + Google); quick-capture URL/Company/Title → pre-filled `AppModal` at `stage: "Interested"`. The DIRECTION.primaryCompanies checklist part of the original spec is already covered by `TargetCompanyBoard` (v8.15).
 - [x] **Option C — Application Assembly Line** (v8.16, 2026-04-26) — `ApplyWizardModal` 7-step wizard launched from TodaysQueue's 🚀 Apply button. Confirm → JD paste → Copy tailor prompt → Copy cover prompt → Open apply URL + Mark Applied (auto-logs daily action + 7-day follow-up date) → Reset for next Interested app.
-- [ ] **Option D — see Outreach Autopilot in v8.14** (already shipped as part of Option A).
-- [ ] **Option E — Morning Launchpad (full package)** — replaces daily blocks section with a linear step-by-step launchpad; wires together Discovery Sprint → Today's 5 Queue → Apply Wizard → Outreach Autopilot into one guided ~80-min daily flow; each step auto-logs daily actions as you complete items; resets daily. **Now unblocked — A + B + C all live.**
+- [x] **Option D — Outreach Autopilot** (v8.14, also surfaced as Stage 3 of Morning Launchpad in v8.17 with ✓ Mark Sent button).
+- [x] **Option E — Morning Launchpad** (v8.17, 2026-04-26) — `MorningLaunchpad` at top of Focus tab wraps Discover (Option B) + Apply (Options A + C) + Outreach (Option D) into a soft-gated 3-stage daily flow. `getLaunchpadProgress(applications, dailyActions, now)` derives all stage state from existing data — no new persistence beyond per-day "sent" Set. Sunday returns rest mode. Bonus fix: TodaysQueue's ✓ Applied shortcut now also logs the daily action so Stage 2 progress is reachable without the wizard.
 
 ### Discovery Sprint v2 polish (v8.17 candidates)
 

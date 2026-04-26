@@ -1,6 +1,28 @@
 # Changelog
 
-## [Unreleased] — 2026-04-26 — Daily Flow Options B + C: Discovery Sprint + Apply Wizard (v8.16)
+## [Unreleased] — 2026-04-26 — Daily Flow Option E: Morning Launchpad (v8.17)
+
+Wires A + B + C + D into one soft-gated 3-stage daily flow at the top of the Focus tab. The math: Discover 15 min + Apply 50 min + Outreach 15 min = ~80 min from "open the app" to "daily floor cleared." Replaces the prior pattern of hunting through 16 stacked sections to figure out where to start.
+
+### Added
+- **`getLaunchpadProgress(applications, dailyActions, now)`** in `constants.js` — derives the 3-stage state from existing data (no new persistence). Stage targets: Discover ≥1 Interested job (flow trigger), Apply ≥`DAILY_MINIMUMS.applications` daily actions, Outreach ≥`DAILY_MINIMUMS.outreach` daily actions. Returns `{ stages, activeKey, allDone, totalMinutes, isSunday }`. `activeKey` = first stage where `!done`. Sunday returns rest mode.
+- **`MorningLaunchpad` component** in `FocusTab.jsx` (mounted between `KassieCard` and `TargetCompanyBoard`). Header: "🚀 Morning Launchpad · ~80 min" + 3-dot stage strip + "✓ Day cleared" pill. Each stage renders as a `launchpadStage` panel: active = full nested UI, done = collapsed checkmark + summary, future = collapsed goal-label preview. All stage headers are clickable to override the active key — soft gating, not hard locks.
+- **`OutreachSprint` sub-component** — Stage 3 body. Top 3 from `buildOutreachPriorityList` with Copy Prompt + **✓ Mark Sent** + Edit + Open App buttons per row. The new ✓ Sent button calls `addDailyAction("outreach", "Messaged ${name} at ${company}")` so the 3-per-day outreach floor can be cleared inside the launchpad. Sent state persists per-day via `chase_js_outreach_sent_${date}` localStorage entries — survives reload, auto-resets next day.
+- **17 launchpad style tokens** in `s.*` (`launchpad`, `launchpadHead`, `launchpadTitle`, `launchpadStripe`, `launchpadDot` + `Active` + `Done`, `launchpadCleared`, `launchpadStage` + `Active` + `Done`, `launchpadStageHeader`, `launchpadStageBadge` + `Active` + `Done`, `launchpadStageBody`, `launchpadRest`, `launchpadRestTitle`, `outreachSentRow`, `outreachBtnSent`).
+
+### Changed
+- **`FocusTab.jsx`** — replaced standalone `<DiscoverySprint />` + `<TodaysQueue />` mounts with a single `<MorningLaunchpad />` that renders both internally as Stage 1 and Stage 2 bodies. The full "Who should I message today?" outreach list at the bottom of the tab stays unchanged for browsing — Stage 3 of the launchpad is the compact top-3 sprint.
+- **`TodaysQueue`'s ✓ Applied shortcut** — now also calls `addDailyAction("application", ...)` (with a guard so it's idempotent if the app is already Applied). Pre-v8.17 only `ApplyWizardModal.markApplied` logged the daily action, which meant the shortcut moved an app to Applied but didn't tick the daily floor counter. Stage 2 progress was previously unreachable via the shortcut alone.
+
+### Notes
+- No data-shape changes, no migration. Pure additive UI + one bugfix.
+- Build: zero warnings, +2.0 kB gzipped (176.34 → 176.38 kB).
+- Verified end-to-end via preview: Discover stage active by default → AppModal save flow with pre-filled URL/Company/Title → Stage 1 collapses to "1 job queued · 15 min" + Stage 2 activates with TodaysQueue inside. Sunday branch verified separately (today is Sunday 2026-04-26 — the rest card renders cleanly).
+- Email/LinkedIn notification feed stays on the deferred next-wave list.
+
+---
+
+## 2026-04-26 — Daily Flow Options B + C: Discovery Sprint + Apply Wizard (v8.16)
 
 Pairs with v8.14 Today's 5: Discovery Sprint fills the daily Interested queue, the Apply Wizard drains it. Removes the last manual hand-off in hitting the 5-applications-per-day floor.
 

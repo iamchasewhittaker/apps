@@ -171,6 +171,60 @@ export const DAILY_MINIMUMS = {
   restDay: 0, // Sunday
 };
 
+// ── MORNING LAUNCHPAD (Option E) — derives 3-stage daily flow from existing data
+// Reads dailyActions + applications. No new persistence. Sunday returns rest mode.
+export function getLaunchpadProgress(applications = [], dailyActions = [], now = new Date()) {
+  const todayStr = now.toISOString().slice(0, 10);
+  const todays = dailyActions.filter(a => a.date === todayStr);
+  const interestedCount = applications.filter(a => a.stage === "Interested").length;
+  const appliedToday = todays.filter(a => a.type === "application").length;
+  const outreachToday = todays.filter(a => a.type === "outreach").length;
+  const isSunday = now.getDay() === 0;
+
+  const stages = [
+    {
+      key: "discover",
+      label: "Discover",
+      emoji: "🔎",
+      minutes: 15,
+      target: 1,
+      current: interestedCount,
+      done: interestedCount >= 1,
+      goalLabel: "1+ jobs in Interested",
+      doneLabel: `${interestedCount} job${interestedCount === 1 ? "" : "s"} queued`,
+    },
+    {
+      key: "apply",
+      label: "Apply",
+      emoji: "🚀",
+      minutes: 50,
+      target: DAILY_MINIMUMS.applications,
+      current: appliedToday,
+      done: appliedToday >= DAILY_MINIMUMS.applications,
+      goalLabel: `${DAILY_MINIMUMS.applications} applications`,
+      doneLabel: `${appliedToday}/${DAILY_MINIMUMS.applications} today`,
+    },
+    {
+      key: "outreach",
+      label: "Outreach",
+      emoji: "💬",
+      minutes: 15,
+      target: DAILY_MINIMUMS.outreach,
+      current: outreachToday,
+      done: outreachToday >= DAILY_MINIMUMS.outreach,
+      goalLabel: `${DAILY_MINIMUMS.outreach} outreach messages`,
+      doneLabel: `${outreachToday}/${DAILY_MINIMUMS.outreach} today`,
+    },
+  ];
+
+  const allDone = stages.every(s => s.done);
+  const firstUndone = stages.find(s => !s.done);
+  const activeKey = allDone ? "complete" : (firstUndone ? firstUndone.key : "discover");
+  const totalMinutes = stages.reduce((sum, st) => sum + st.minutes, 0);
+
+  return { stages, activeKey, allDone, totalMinutes, isSunday };
+}
+
 export const daysSinceLayoff = (now = new Date()) => {
   const start = new Date(LAYOFF_DATE + "T00:00:00");
   const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
@@ -1524,6 +1578,34 @@ export const s = {
   wizSecondary: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 8, padding: "8px 16px", fontSize: 13, cursor: "pointer", fontFamily: "inherit" },
   wizDoneBadge: { background: "#0c1a0c", border: "1px solid #14532d", color: "#6ee7b7", borderRadius: 8, padding: "10px 14px", fontSize: 13, lineHeight: 1.5 },
   wizCounter: { fontSize: 12, color: "#6b7280" },
+
+  // Morning Launchpad (Option E)
+  launchpad: { background: "#0a0d14", border: "1.5px solid #1e3a5f", borderRadius: 14, padding: "14px 16px 6px", marginBottom: 18 },
+  launchpadHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12, flexWrap: "wrap" },
+  launchpadTitleWrap: { display: "flex", flexDirection: "column", gap: 2 },
+  launchpadTitle: { fontSize: 14, fontWeight: 700, color: "#f3f4f6", display: "flex", alignItems: "center", gap: 8 },
+  launchpadSub: { fontSize: 11, color: "#9ca3af", letterSpacing: "0.04em" },
+  launchpadStripe: { display: "flex", gap: 6, alignItems: "center" },
+  launchpadDot: { width: 10, height: 10, borderRadius: 999, background: "#1f2937" },
+  launchpadDotActive: { background: "#3b82f6", boxShadow: "0 0 0 3px rgba(59,130,246,0.18)" },
+  launchpadDotDone: { background: "#10b981" },
+  launchpadCleared: { background: "#0c1a0c", border: "1px solid #14532d", color: "#6ee7b7", borderRadius: 999, padding: "4px 10px", fontSize: 11, fontWeight: 700 },
+  launchpadStage: { background: "#0f1117", borderWidth: 1, borderStyle: "solid", borderColor: "#1f2937", borderRadius: 10, marginBottom: 10, overflow: "hidden" },
+  launchpadStageActive: { borderColor: "#3b82f6", boxShadow: "0 0 0 1px rgba(59,130,246,0.25)" },
+  launchpadStageDone: { borderColor: "#14532d", background: "#0a1108" },
+  launchpadStageHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", cursor: "pointer", gap: 10 },
+  launchpadStageLeft: { display: "flex", alignItems: "center", gap: 10 },
+  launchpadStageBadge: { fontSize: 12, fontWeight: 700, color: "#9ca3af", background: "#161b27", borderRadius: 999, padding: "2px 8px", letterSpacing: "0.05em" },
+  launchpadStageBadgeActive: { color: "#60a5fa", background: "#1e3a5f" },
+  launchpadStageBadgeDone: { color: "#6ee7b7", background: "#0c1a0c" },
+  launchpadStageTitle: { fontSize: 13, fontWeight: 700, color: "#f3f4f6", display: "flex", alignItems: "center", gap: 6 },
+  launchpadStageMeta: { fontSize: 11, color: "#6b7280" },
+  launchpadStageMetaDone: { color: "#6ee7b7" },
+  launchpadStageBody: { padding: "0 8px 10px" },
+  launchpadRest: { background: "#0f1117", border: "1px solid #1f2937", borderRadius: 10, padding: "16px 18px", fontSize: 13, color: "#d1d5db", lineHeight: 1.5 },
+  launchpadRestTitle: { fontSize: 14, fontWeight: 700, color: "#f3f4f6", marginBottom: 6 },
+  outreachSentRow: { opacity: 0.55, transition: "opacity 0.2s" },
+  outreachBtnSent: { background: "#0c1a0c", border: "1px solid #14532d", color: "#6ee7b7", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
 };
 
 export const css = `

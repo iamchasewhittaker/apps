@@ -57,6 +57,7 @@
 - **Buttons (secondary):** transparent + border, text matches accent color
 - **Tab bar:** underline style, active tab `border-bottom: 2px solid #3b82f6`
 - **Modals:** full-screen overlay on mobile, centered panel on desktop
+- **Morning Launchpad (v8.17+):** soft-gated 3-stage daily flow, lives at the top of the Focus tab between `KassieCard` and `TargetCompanyBoard`. Container `border-color: #1e3a5f` (dimmer accent blue); active stage `border-color: #3b82f6` with a 1px outer ring; done stage `border-color: #14532d` with `background: #0a1108`. Stage badges use the same accent triad (muted / blue / green). All headers clickable for non-linear browsing — the launchpad recommends, never locks. Sunday returns a single rest card.
 
 ---
 
@@ -76,3 +77,4 @@
 | Date | Change |
 |------|--------|
 | 2026-04-14 | Initial `BRANDING.md` from template — WHI-37 |
+| 2026-04-26 | v8.17 — added Morning Launchpad component pattern (3-stage soft-gated daily flow on Focus tab) |

@@ -8,27 +8,28 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.16 |
-| **Branch** | `feat/job-search-v8.16` (off `main`) |
+| **Version** | v8.17 |
+| **Branch** | `feat/job-search-v8.16` (off `main`) — carrying v8.17 work |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` |
-| **Focus** | Daily Flow Options B + C shipped (v8.16): `DiscoverySprint` on Focus tab between KassieCard and TodaysQueue (rotating daily query + Open All searches + quick-capture); `ApplyWizardModal` 7-step wizard triggered from TodaysQueue's 🚀 Apply button. Pairs with v8.14 Today's 5 to remove all manual hand-offs in hitting the 5-app daily floor. |
-| **Next** | Option E — Morning Launchpad: wire A + B + C into one guided ~80-min daily flow (now unblocked). Or Email/LinkedIn notification feed (deferred next-wave). |
+| **Focus** | Daily Flow Option E shipped (v8.17): `MorningLaunchpad` at top of Focus tab wires A + B + C + D (Discover → Apply → Outreach) into one soft-gated ~80-min daily flow. `getLaunchpadProgress` derives all stage state from existing data — no new persistence beyond per-day "sent" Set. Stage 3's new `OutreachSprint` adds a `✓ Mark Sent` button (logs `dailyAction("outreach", ...)`) so the 3/day outreach floor is reachable inside the launchpad. Bonus fix: `TodaysQueue`'s ✓ Applied shortcut now also logs the daily action so Stage 2 progress is reachable without the wizard. |
+| **Next** | Email/LinkedIn notification feed (Gmail OAuth or forward-to-alias) — deferred next-wave, bigger lift. |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-26 — v8.16: `getDailyDiscoveryQueries(now)` in constants.js; `DiscoverySprint` component in FocusTab.jsx; `components/ApplyWizardModal.jsx` (NEW); `applyWizard` shell state + render in App.jsx. Plus side quests: Wins → Shipyard bridge + per-app voice-brief pointers. Build clean (+2.87 kB gzipped, zero warnings). End-to-end verified via preview. |
+| **Last touch** | 2026-04-26 — v8.17: `getLaunchpadProgress(applications, dailyActions, now)` in constants.js; `MorningLaunchpad` + `OutreachSprint` in FocusTab.jsx; 17 launchpad style tokens in `s.*`; TodaysQueue ✓ Applied bugfix. Build clean (+2.0 kB gzipped). Sunday rest mode verified live (today is Sunday); weekday flow verified via temp Sunday-bypass + AppModal save flow. |
 
 ---
 
 ## What's Next
 
-### Web — Wave 4 + Daily Flow A/B/C ✅ Complete
+### Web — Wave 4 + Daily Flow A/B/C/D/E ✅ Complete
 - ✅ Wave 4 #1–#6 all shipped (Weekly Review, Draft Message, Outreach cadence, Offer compare, Email parse, PWA share)
 - ✅ Confidence Bedrock layer (v8.13): direction frame, Kassie urgency, Wins log, Direction tracker
 - ✅ Daily Flow Option A — Today's 5 + Outreach Autopilot (v8.14)
 - ✅ TargetCompanyBoard (v8.15)
 - ✅ Daily Flow Option B + C — Discovery Sprint + Apply Wizard (v8.16)
+- ✅ Daily Flow Option E — Morning Launchpad (v8.17)
 
-**Next for web:** Option E — Morning Launchpad (wires A + B + C into one guided daily flow). Or Email/LinkedIn notification feed (Gmail OAuth or forward-to-alias) — deferred next-wave, bigger lift.
+**Next for web:** Email/LinkedIn notification feed (Gmail OAuth or forward-to-alias) — deferred next-wave, bigger lift.
 
 ### iOS — Phase 2
 1. **Supabase sync + email OTP** — replace `NoOpJobSearchRemoteSync` per `docs/SYNC_PHASE2.md`

@@ -19,6 +19,7 @@ import {
   blankApp,
   blankContact,
   getDailyDiscoveryQueries,
+  getLaunchpadProgress,
 } from "../constants";
 import { JOB_SEARCH_EXTERNAL_LINKS } from "../applyPrompts";
 import ErrorBoundary from "../ErrorBoundary";
@@ -570,7 +571,7 @@ function buildTodaysQueue(applications) {
     .slice(0, 5);
 }
 
-function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setTab, saveApp, setAppModal, setApplyWizard }) {
+function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setTab, saveApp, setAppModal, setApplyWizard, addDailyAction }) {
   const todayStr = today();
   const todayApps = (dailyActions || []).filter(a => a.date === todayStr && a.type === "application").length;
   const queue = buildTodaysQueue(applications);
@@ -590,7 +591,9 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
   }
 
   function handleMarkApplied(app) {
+    if (app.stage === "Applied") return;
     saveApp({ ...app, stage: "Applied", appliedDate: todayStr });
+    if (addDailyAction) addDailyAction("application", `Applied to ${app.company || "Unknown"}`);
   }
 
   const headerDone = todayApps >= target;
@@ -1005,6 +1008,252 @@ function VelocityDashboard({ applications, profile, saveProfile }) {
   );
 }
 
+// ── OUTREACH SPRINT (Stage 3) ────────────────────────────────────────────────
+// Compact top-N priority outreach list with ✓ Sent button that logs a daily action.
+// Used inside MorningLaunchpad. The full list at the bottom of the tab stays as-is.
+const OUTREACH_SENT_KEY_PREFIX = "chase_js_outreach_sent_";
+
+function loadSentToday(todayStr) {
+  try {
+    const raw = localStorage.getItem(OUTREACH_SENT_KEY_PREFIX + todayStr);
+    return new Set(raw ? JSON.parse(raw) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveSentToday(todayStr, set) {
+  try {
+    localStorage.setItem(OUTREACH_SENT_KEY_PREFIX + todayStr, JSON.stringify([...set]));
+  } catch { /* quota / privacy mode */ }
+}
+
+function OutreachSprint({ contacts, applications, addDailyAction, setContactModal, setAppModal, setTab, showError, maxItems = 3 }) {
+  const todayStr = today();
+  const list = useMemo(
+    () => buildOutreachPriorityList(contacts || [], applications || []).slice(0, maxItems),
+    [contacts, applications, maxItems]
+  );
+  const [sent, setSent] = useState(() => loadSentToday(todayStr));
+
+  async function copyPrompt(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      showError?.("Could not copy prompt — copy manually from Contacts tab");
+    }
+  }
+
+  function markSent(contact) {
+    if (sent.has(contact.id)) return;
+    const next = new Set(sent);
+    next.add(contact.id);
+    setSent(next);
+    saveSentToday(todayStr, next);
+    const noteName = contact.name || "contact";
+    const noteCo = contact.company ? ` at ${contact.company}` : "";
+    addDailyAction("outreach", `Messaged ${noteName}${noteCo}`);
+  }
+
+  if (list.length === 0) {
+    return (
+      <div style={{ padding: "10px 14px", fontSize: 12, color: "#6b7280", lineHeight: 1.55 }}>
+        No priority outreach yet — add contacts in the Contacts tab or use the discovery targets below.
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ padding: "0 8px 6px" }}>
+      <div style={s.outreachList}>
+        {list.map(item => {
+          const isSent = sent.has(item.contact.id);
+          return (
+            <div
+              key={item.id}
+              style={{
+                ...s.outreachItem,
+                borderLeft: `3px solid ${item.tone.color}`,
+                ...(isSent ? s.outreachSentRow : {}),
+              }}
+            >
+              <div style={s.outreachTop}>
+                <div style={s.outreachName}>
+                  {item.contact.name || "Unnamed contact"}
+                  {item.contact.company ? ` - ${item.contact.company}` : ""}
+                </div>
+                <span style={{ ...s.aqLabel, background: item.tone.bg, color: item.tone.color }}>{item.tone.label}</span>
+              </div>
+              <div style={s.outreachReason}>{item.primaryReason}</div>
+              {item.context && <div style={s.outreachContext}>{item.context}</div>}
+              <div style={s.outreachActions}>
+                <button style={s.outreachBtnPrimary} onClick={() => copyPrompt(item.draftPrompt)}>Copy Prompt</button>
+                <button
+                  style={isSent ? s.outreachBtnSent : s.outreachBtnSecondary}
+                  onClick={() => markSent(item.contact)}
+                  disabled={isSent}
+                >
+                  {isSent ? "✓ Sent" : "✓ Mark Sent"}
+                </button>
+                <button style={s.outreachBtnSecondary} onClick={() => setContactModal({ mode: "edit", contact: { ...item.contact } })}>Edit</button>
+                {item.linkedApp && (
+                  <button
+                    style={s.outreachBtnSecondary}
+                    onClick={() => {
+                      setTab("pipeline");
+                      setAppModal({ mode: "edit", app: { ...item.linkedApp } });
+                    }}
+                  >
+                    Open App
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── MORNING LAUNCHPAD (Option E) ─────────────────────────────────────────────
+// Soft-gated 3-stage daily flow: Discover → Apply → Outreach. ~80 min total.
+// Reuses DiscoverySprint, TodaysQueue, OutreachSprint as stage bodies. Derives
+// stage state from data (no new persistence beyond per-day "sent" Set).
+function MorningLaunchpad({
+  applications, contacts, dailyActions, addDailyAction,
+  setAppModal, setApplyWizard, setContactModal, setTab,
+  setKitApp, setResumeTab, saveApp, showError,
+}) {
+  const progress = useMemo(
+    () => getLaunchpadProgress(applications || [], dailyActions || []),
+    [applications, dailyActions]
+  );
+  const [override, setOverride] = useState(null); // user-clicked stage key, null = use activeKey
+
+  const activeKey = override || progress.activeKey;
+
+  function toggleStage(key) {
+    setOverride(prev => (prev === key ? null : key));
+  }
+
+  if (progress.isSunday) {
+    return (
+      <div style={s.launchpad}>
+        <div style={s.launchpadHead}>
+          <div style={s.launchpadTitleWrap}>
+            <div style={s.launchpadTitle}>
+              <span>🚀</span>
+              <span>Morning Launchpad</span>
+            </div>
+            <div style={s.launchpadSub}>Sunday — rest day</div>
+          </div>
+        </div>
+        <div style={s.launchpadRest}>
+          <div style={s.launchpadRestTitle}>🛌 Rest day</div>
+          No floor today. Recharge — Reese and Buzz need a dad with gas in the tank tomorrow.
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={s.launchpad}>
+      <div style={s.launchpadHead}>
+        <div style={s.launchpadTitleWrap}>
+          <div style={s.launchpadTitle}>
+            <span>🚀</span>
+            <span>Morning Launchpad</span>
+            <span style={{ fontSize: 11, fontWeight: 500, color: "#6b7280", letterSpacing: "0.05em" }}>
+              ~{progress.totalMinutes} min
+            </span>
+          </div>
+          <div style={s.launchpadSub}>
+            {progress.allDone ? "Day cleared — anything past here is bonus." : "Discover → Apply → Outreach. One stage at a time."}
+          </div>
+        </div>
+        <div style={s.launchpadStripe}>
+          {progress.stages.map(st => {
+            const isActive = !progress.allDone && st.key === activeKey;
+            return (
+              <span
+                key={st.key}
+                title={`${st.label} · ${st.doneLabel}`}
+                style={{
+                  ...s.launchpadDot,
+                  ...(st.done ? s.launchpadDotDone : {}),
+                  ...(isActive ? s.launchpadDotActive : {}),
+                }}
+              />
+            );
+          })}
+          {progress.allDone && <span style={s.launchpadCleared}>✓ Day cleared</span>}
+        </div>
+      </div>
+
+      {progress.stages.map(st => {
+        const isActive = st.key === activeKey;
+        const stageStyle = {
+          ...s.launchpadStage,
+          ...(isActive ? s.launchpadStageActive : {}),
+          ...(st.done && !isActive ? s.launchpadStageDone : {}),
+        };
+        const badgeStyle = {
+          ...s.launchpadStageBadge,
+          ...(isActive ? s.launchpadStageBadgeActive : {}),
+          ...(st.done && !isActive ? s.launchpadStageBadgeDone : {}),
+        };
+        const metaStyle = { ...s.launchpadStageMeta, ...(st.done ? s.launchpadStageMetaDone : {}) };
+
+        return (
+          <div key={st.key} style={stageStyle}>
+            <div style={s.launchpadStageHeader} onClick={() => toggleStage(st.key)}>
+              <div style={s.launchpadStageLeft}>
+                <span style={badgeStyle}>{st.done ? "✓" : st.emoji}</span>
+                <div>
+                  <div style={s.launchpadStageTitle}>{st.label}</div>
+                  <div style={metaStyle}>
+                    {st.done ? `${st.doneLabel} · ${st.minutes} min` : `${st.goalLabel} · ${st.minutes} min`}
+                  </div>
+                </div>
+              </div>
+              <span style={{ color: "#6b7280", fontSize: 12 }}>{isActive ? "▲" : "▼"}</span>
+            </div>
+            {isActive && (
+              <div style={s.launchpadStageBody}>
+                {st.key === "discover" && <DiscoverySprint setAppModal={setAppModal} />}
+                {st.key === "apply" && (
+                  <TodaysQueue
+                    applications={applications}
+                    dailyActions={dailyActions}
+                    setKitApp={setKitApp}
+                    setResumeTab={setResumeTab}
+                    setTab={setTab}
+                    saveApp={saveApp}
+                    setAppModal={setAppModal}
+                    setApplyWizard={setApplyWizard}
+                  />
+                )}
+                {st.key === "outreach" && (
+                  <OutreachSprint
+                    contacts={contacts}
+                    applications={applications}
+                    addDailyAction={addDailyAction}
+                    setContactModal={setContactModal}
+                    setAppModal={setAppModal}
+                    setTab={setTab}
+                    showError={showError}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function FocusTab({
   expandedBlock, setExpandedBlock, completedBlocks, setCompletedBlocks, todayDone,
   applications, contacts, dailyActions, addDailyAction, removeDailyAction,
@@ -1044,17 +1293,19 @@ export default function FocusTab({
 
         <KassieCard />
 
-        <DiscoverySprint setAppModal={setAppModal} />
-
-        <TodaysQueue
+        <MorningLaunchpad
           applications={applications}
+          contacts={contacts}
           dailyActions={dailyActions}
-          setKitApp={setKitApp}
-          setResumeTab={setResumeTab}
-          setTab={setTab}
-          saveApp={saveApp}
+          addDailyAction={addDailyAction}
           setAppModal={setAppModal}
           setApplyWizard={setApplyWizard}
+          setContactModal={setContactModal}
+          setTab={setTab}
+          setKitApp={setKitApp}
+          setResumeTab={setResumeTab}
+          saveApp={saveApp}
+          showError={showError}
         />
 
         <TargetCompanyBoard

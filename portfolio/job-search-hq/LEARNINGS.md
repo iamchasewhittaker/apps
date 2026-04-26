@@ -18,6 +18,18 @@
 
 ## Entries
 
+### 2026-04-26 — Morning Launchpad: derive stage state from existing data, don't persist a new schema
+**What happened:** Option E needed a 3-stage daily flow (Discover → Apply → Outreach) that resets each day. First instinct was a `launchpadStage` field on `data` with date stamping, manual reset on day rollover, etc.
+**Root cause:** Adding new persistence creates two sources of truth for daily progress (the new field AND `dailyActions` already counts apps + outreach for `DailyMinimums`). They drift, they need migration paths, they break sync.
+**Fix / lesson:** `getLaunchpadProgress(applications, dailyActions, now)` derives stages from existing `dailyActions` (filtered to today) + `applications` Interested count. Active stage = first stage where `!done`. No new field, no migration, no schema change. Reload at midnight, the new day's filter naturally returns zero counts. Per-day "sent" Set persists in `localStorage` keyed by date — small enough that day-rollover cleanup isn't needed.
+**Tags:** state · architecture · derive-don't-store
+
+### 2026-04-26 — TodaysQueue ✓ Applied wasn't logging the daily action
+**What happened:** While verifying Option E Stage 1 → Stage 2 transitions, noticed clicking "✓ Applied" on a TodaysQueue row moved the app to Applied stage but didn't increment the `0/5` applications counter on `DailyMinimums`. Only `ApplyWizardModal.markApplied` was logging `dailyAction("application", ...)`.
+**Root cause:** v8.14's `handleMarkApplied` was a fast shortcut that bypassed the wizard — but it also bypassed the wizard's logging side-effect. So the daily floor was unreachable without the wizard, even though the apps were getting marked Applied.
+**Fix / lesson:** Added `addDailyAction("application", ...)` to `handleMarkApplied` with an `app.stage === "Applied"` guard so it's idempotent if the user clicks twice or uses both shortcuts on the same app. Lesson: when adding a "shortcut path" parallel to a "long path" (wizard), audit which side-effects from the long path also belong on the shortcut. Logging counts as a side-effect.
+**Tags:** bug · state · ux · daily-actions
+
 ### 2026-04-26 — Reuse the day-of-year rotation pattern, don't reinvent it
 **What happened:** Building DiscoverySprint, the temptation was to write a `Math.floor(Date.now() / 86400000) % len` for "today's query" rotation. KassieCard already has the right pattern: anchor at Jan 1 of the current year (`new Date(year, 0, 0)`), subtract, divide by ms-per-day, modulo array length. That handles year boundaries, leap years, and time-zone drift consistently across cards.
 **Root cause:** Two different rotation calculations on the same day would surface different content out of sync — Kassie quote and Discovery query would feel disconnected.

@@ -8,7 +8,7 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
-- **Version:** v8.16 (Daily Flow Options B + C: `DiscoverySprint` on Focus tab — rotating daily query via `getDailyDiscoveryQueries(now)` + Open All searches + quick-capture URL/Company/Title → Interested; `ApplyWizardModal` 7-step wizard from TodaysQueue's 🚀 Apply button — Confirm → JD paste → Copy tailor → Copy cover → Open URL + Mark Applied → auto-log + 7-day follow-up → reset for next Interested.) · v8.15 TargetCompanyBoard · v8.14 Today's 5 queue + Outreach Autopilot · v8.13 Confidence Bedrock (direction frame = **IC/SE OR AE at payments-adjacent companies** equal lanes, Kassie urgency layer, Wins Log, Direction Tracker, IC resume template, voice + direction footer everywhere) · Wave 4 #1–#6 all shipped (Weekly Review, Draft Message, Outreach cadence, Offer compare, Email parse, PWA share target) · Wave 3 complete (debrief log, velocity dashboard, mock interview) · Apply Tools = copy prompts + external assistants.
+- **Version:** v8.17 (Daily Flow Option E: `MorningLaunchpad` at top of Focus tab between `KassieCard` and `TargetCompanyBoard` — soft-gated 3-stage daily flow Discover → Apply → Outreach, ~80 min total. `getLaunchpadProgress(applications, dailyActions, now)` derives stage state from existing data; Sunday returns rest mode. Stage 3 `OutreachSprint` adds a `✓ Mark Sent` button that logs `dailyAction("outreach", ...)` so the 3/day floor is reachable inside the launchpad. Bonus: TodaysQueue's ✓ Applied shortcut now also logs the daily action with an idempotency guard.) · v8.16 Discovery Sprint + Apply Wizard · v8.15 TargetCompanyBoard · v8.14 Today's 5 queue + Outreach Autopilot · v8.13 Confidence Bedrock · Wave 4 #1–#6 all shipped · Wave 3 complete · Apply Tools = copy prompts + external assistants.
 - **Storage key:** `chase_job_search_v1` (data only)
 - **URL:** https://job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
@@ -60,6 +60,7 @@ src/
 - `buildOutreachPriorityList()`, `getOutreachCadenceNudge()`, `getOutcomeAnalytics()`, `getDirectionSplit()`
 - `DIRECTION`, `DIRECTION_TRACKS`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `FRIEND_FEEDBACK_CONSENSUS`, `KASSIE_EXCERPTS`
 - `LAYOFF_DATE`, `daysSinceLayoff()`, `DAILY_MINIMUMS`
+- `getDailyDiscoveryQueries(now)`, `getLaunchpadProgress(applications, dailyActions, now)` — Daily Flow helpers (rotation + 3-stage launchpad state)
 - `DAILY_BLOCKS`, `RESOURCES`
 - `s` (all styles), `css` (global CSS string)
 - `backupData()`, `restoreData()`
