@@ -5,9 +5,9 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.1 |
-| Status | 🟡 Session 4 complete + verified: Z2 sub-grouping, problem actions + shopping list, schedule explainers, map zone-hulls. 37/37 tests passing. Pre-Season Audit live on device. |
-| Last session | 2026-04-25 (session 4): `ProblemData.actions` field + bullet UI; `recommendedNozzleShoppingList`; Z2 Heads sectioned (park strip / main yard); ScheduleView read-only banner + info popovers + recent-fert card; MapTabView convex-hull zone overlays. Removed pre-season dry/overspray/weed seeds. 37/37 tests pass (3 new: `testProblemActionsBackwardCompat`, `testProblemActionsRoundTrip`, `testNozzleShoppingListForZ2`). |
-| Focus | Field walk with Pre-Season Audit (More → Pre-Season Audit). Z4-S1 highest priority (fully buried, zero coverage). Verify zone-hull overlays visually separate Z3 NW pins from Z4 on device. |
+| Status | 🟢 2026-04-26 build + spot-check sweep: 40/40 tests passing on iPhone 15 sim, fresh install verified, all Phase 0 + Phase 1 migration data correct. Clean baseline. |
+| Last session | 2026-04-26: ran build + test sweep on iPhone 15 sim. `xcodebuild build` clean, `xcodebuild test` 40/40 passing (count drifted from 37 in prior HANDOFF — 3 net-new since session 4). Fresh-install spot checks verified property (40.3004/-111.7456), Z1=0 heads, Z2=18 heads + mixed-precip High problem, Z3=11 heads (no legacy H3-), Z4=12 heads, IFA inventory (7.2 lb, dial 3.5), maintenanceTasks=20 (recovery items present), 1 fert app on 2026-04-23 (17.8 lb / zones 2,3,4). Note: top-level key is `maintenanceTasks` not `maintenance`; head issues field is `issues` (not `flags`); Z2-S5 seed deliberately corrected to "empty nozzle slot, blocked". |
+| Focus | Pick next: (a) field walk with Pre-Season Audit + HeadPinEditor verification, (b) docs sweep — generate `docs/heads/COVERAGE_ANALYSIS.md` + `PROPERTY_PLACEMENT.md`, or (c) Rachio v2 zone control (manual start/stop). Z4-S1 dig-out highest real-world priority. |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |

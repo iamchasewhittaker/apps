@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Verified — 2026-04-26 — Build + spot-check sweep on iPhone 15 sim
+
+- `xcodebuild build` and `xcodebuild test` clean. **40/40 tests passing** (was 37 at last HANDOFF — 3 net-new tests since session 4).
+- Fresh sim install spot checks all pass:
+  - Property: `345 E 170 N, Vineyard, UT 84059` at `40.3004 / -111.7456` (Phase 3 property migration applied to seed)
+  - Z1 = 0 heads (drip emitters); Z2 = 18 heads + 1 open problem ("Z2 mixed precip rate" High); Z3 = 11 heads, **no legacy H3- heads** (Phase 1 zone migration applied); Z4 = 12 Z4-S* heads (replaces H4 placeholders)
+  - Z2-S6 = `Tilted Head + Coverage Gap`, blocked, "Buried — TBD after dig-out"
+  - Z2-S5 seed correctly says **empty nozzle slot, dirt-packed** (revised from prior MP Rotator claim — `auditConfidence: blocked`)
+  - IFA inventory: `currentStockLbs=7.2`, `spreaderSettings[].setting="3.5"`, `usageLog[]` has 2026-04-23 entry at 17.8 lb across zones [2,3,4]
+  - `maintenanceTasks` = 20 total (4+ recovery items: water-in IFA, no-aerate active, burn-check, late-June half-rate fert, plus audit-driven dig-out + nozzle-order tasks)
+  - `fertApplications` = 1 entry (2026-04-23, 17.8 lb, zones [2,3,4], over-application notes intact)
+- HeadPinEditor wiring verified at `Fairway/Views/HeadDetailView.swift:34` (`fullScreenCover` + state bindings + tap-to-place + drag handles all present). Compile-clean. Field-level UX verification still pending — needs real touch on a device.
+
 ### Added — 2026-04-25 (session 4) — Zone-menu refinements: actions, shopping list, Z2 sub-grouping, schedule explainers, map zone-hulls
 
 - **`ProblemData.actions: [String]`** — new field for "specific things needed" bullets per problem. Codable extension with `decodeIfPresent` and default `[]` (Codable Rule #1, #2). Backward-compat decode test added.

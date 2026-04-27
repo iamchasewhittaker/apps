@@ -382,3 +382,39 @@ sudo hdiutil attach \
 ```
 
 The SDK plist patch (`iPhoneSimulator17.2.sdk SystemVersion.plist ProductBuildVersion = 21C62`) is **persistent** — no re-run after reboot. Only the DMG mount is needed each session. Full diagnostic trail: `portfolio/unnamed-ios/LEARNINGS.md` (2026-04-24 and 2026-04-25).
+
+---
+
+## 2026-04-26 — HANDOFF.md spot-check field names drift from JSON storage
+
+When verifying the saved blob via plist extraction, several HANDOFF.md spot-check fields didn't match the actual JSON keys:
+
+- HANDOFF: "9 recovery tasks present" → actual key is `maintenanceTasks` (not `maintenance`), 20 total tasks of which several are recovery-tagged
+- HANDOFF: "Z2-S3 has coverageGap badge" → actual data has `issues: ["Coverage Gap"]` (no separate `flags` array)
+- HANDOFF: "Z2-S5 confirmed" → seed has been deliberately revised to `auditConfidence: blocked` with notes "CORRECTION: prior seed claimed MP Rotator. Photo shows empty slot."
+- HANDOFF: "37/37 tests" → 40/40 currently (3 net-new since session 4 was written)
+
+These aren't regressions — they're documentation drift. The data is correct; HANDOFF.md just describes a slightly older snapshot.
+
+**Rule:** Before declaring a "spot check failed" against HANDOFF.md, dump the actual blob keys with `plutil -convert xml1 -o - …plist` and decode the base64 inside `<data>...</data>`. Match what's actually persisted, not the doc's word for it. Update HANDOFF.md to match reality once verified.
+
+---
+
+## 2026-04-26 — Reading the Fairway blob from a sim install
+
+Storage is a binary blob inside `Library/Preferences/com.chasewhittaker.Fairway.plist`. `plutil -extract chase_fairway_ios_v1 raw -o -` returns hex bytes, not JSON. The actual extraction path:
+
+```bash
+plutil -convert xml1 -o - "$CONTAINER/Library/Preferences/com.chasewhittaker.Fairway.plist" | \
+  python3 -c "
+import sys, re, base64, json
+xml = sys.stdin.read()
+m = re.search(r'<key>chase_fairway_ios_v1</key>\s*<data>([^<]+)</data>', xml)
+b64 = m.group(1).strip().replace('\n', '').replace(' ', '')
+print(json.dumps(json.loads(base64.b64decode(b64).decode('utf-8')), indent=2))
+"
+```
+
+Where `$CONTAINER` is the path returned by `xcrun simctl get_app_container <udid> com.chasewhittaker.Fairway data`.
+
+Useful for any verification sweep that needs to confirm migration outcomes without launching the UI.
