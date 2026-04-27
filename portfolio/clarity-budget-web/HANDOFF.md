@@ -4,14 +4,17 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Categorize error fixed + YNAB connector moved to Settings** (2026-04-26). Verify in signed-in browser; next main-line task is Redesign Step 4 (reconcile). |
-| Status | typecheck ✅ · lint ✅ · 49 tests pass ✅ · build ✅ · runtime 401 verified. Needs smoke in real browser session. |
-| Last touch | 2026-04-26 |
-| URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 deployed; AI categorize NOT deployed yet) |
-| Branch | feature/ai-categorize (off main) |
-| Manual TODO (verify this session) | (a) Sign in → `/categorize` → **Run categorization** → expect success; check Supabase — `clarity_budget_credentials.default_budget_id` populated (self-heal). (b) `/settings` → YNAB card shows current token + budget picker with correct selection. (c) `/` Dashboard → metrics render; section reads "Category roles" with Settings link; token input + budget picker gone. (d) Change budget in Settings → re-check Supabase `clarity_budget_credentials.default_budget_id` updated. |
-| Manual TODO (categorize deploy) | (a) `cd portfolio/clarity-budget-web && supabase db push` to apply `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` and to Vercel preview env. (c) Sign in → `/categorize` → click **Run categorization** → verify on YNAB. (d) Re-run for idempotency. (e) When green, merge to main. |
-| Manual TODO (auth) | **Supabase Dashboard:** (a) Auth → URL Configuration → Site URL = `https://clarity-budget-web.vercel.app`; Redirect URLs allowlist must include `https://clarity-budget-web.vercel.app/auth/callback` and `http://localhost:3000/auth/callback`; remove `apps.chasewhittaker.com`. (b) Auth → Providers → GitHub → enable + paste Client ID + Secret from a new GitHub OAuth App (`github.com/settings/developers`, callback URL = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). Until both are done, clicking "Continue with GitHub" will return a provider-not-enabled error. |
+| Focus | **Unblock `/categorize` smoke test, commit 7 uncommitted files, then Step 5 (cron + vercel.json)** |
+| Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · dev-server unauth probes ✅. Signed-in smoke **blocked** — see "Blocker" below. 7 files uncommitted. |
+| Last touch | 2026-04-27 |
+| URL | clarity-budget-web.vercel.app (Steps 1–2 deployed; AI categorize + credentials fix NOT deployed) |
+| Branch | `feat/job-search-v8.16` (HANDOFF previously said `feature/ai-categorize` — that was wrong) |
+| Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files already on disk |
+| Blocker | `/categorize` → "no YNAB budget selected": `clarity_budget_credentials.default_budget_id` is NULL and `user_data.data.ynabBudgetId` is also null. **Fix: go to `/settings` → YNAB card → re-enter PAT (token was cleared from localStorage by MigrationBanner) → pick budget → writes `default_budget_id` to Supabase directly.** See LEARNINGS.md 2026-04-27 for full diagnosis. |
+| Manual TODO (0 — do first) | `/settings` → YNAB card → enter token → pick budget → confirm `clarity_budget_credentials.default_budget_id` written in Supabase Studio. This unblocks the smoke. |
+| Manual TODO (smoke, after 0) | (a) `/categorize` → Run → expect success + `default_budget_id` populated. (b) `/` Dashboard → "Category roles" section, no token input. (c) Change budget in Settings → Supabase row updates. |
+| Manual TODO (categorize deploy) | (a) `supabase db push` → applies `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` + Vercel preview env. (c) Sign in → `/categorize` → Run → verify YNAB. (d) Re-run for idempotency. (e) Merge to main. |
+| Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
 
 ---
 
@@ -245,57 +248,70 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 
 ---
 
-## Remaining steps (4–10 from the plan)
+## Remaining steps
 
-| # | Step | Key files |
-|---|---|---|
-| 4 | Reconcile logic + first unit tests | `lib/reconcile/match.ts`, `propose-rename.ts`, `detect-weirdness.ts`, `fingerprint.ts`, `__tests__/` |
-| 5 | Cron endpoints + `vercel.json` | `app/api/cron/sync/route.ts`, `app/api/cron/backfill/route.ts`, `vercel.json` |
-| 6 | `/review` UI | `app/review/page.tsx`, `components/review/ProposalList.tsx`, `ProposalRow.tsx` |
-| 7 | `/flags` UI | `app/flags/page.tsx`, `components/flags/FlagList.tsx`, `FlagRow.tsx` |
-| 8 | `/settings` UI | `app/settings/page.tsx`, `components/settings/ConnectorCard.tsx`, `CardMappingTable.tsx` |
-| 9 | Split `HomeDashboard.tsx` | Extract into `components/dashboard/{StsCard,ShortfallBanner,LastUpdated,EmptyState}.tsx`; move `SpendingBreakdown`, `TransactionList`, `TransactionFilters` under `components/dashboard/` |
-| 10 | Migration banner + first run | End-to-end on real data; all 11 acceptance criteria from `plans/clarity-budget-web-redesign.md` |
-
----
-
-## Step 4 — what to build next
-
-**Reconcile logic + first unit tests.** Now that Step 3 lands cards + transactions in `clarity_budget_privacy_*`, Step 4 builds the matchers + proposers that produce review-queue entries (later surfaced in Step 6's `/review` UI) and weirdness flags (Step 7's `/flags` inbox).
-
-Key files:
-- `lib/reconcile/match.ts` — fuzzy match a Privacy transaction to a YNAB transaction (date window + amount + payee similarity); returns confidence score
-- `lib/reconcile/propose-rename.ts` — when a match is found, derive the proposed YNAB payee rename (e.g. card memo or merchant descriptor) and write a `clarity_budget_proposals` row (type `payee_rename`, status `pending`)
-- `lib/reconcile/detect-weirdness.ts` — emit `clarity_budget_flags` rows for `duplicate_txn`, `orphan_privacy_charge`, `orphan_ynab_privacy_payee`
-- `lib/reconcile/fingerprint.ts` — deterministic hash for the `clarity_budget_flags.fingerprint` unique constraint (so cron reruns don't duplicate flags)
-- `lib/reconcile/__tests__/*` — first vitest suite; the project already has `vitest ^4.1.5` in `devDependencies`
-
-**Open items before step 5 (cron):**
-- `SUPABASE_SERVICE_ROLE_KEY` is blank in `.env.local` — paste from Supabase dashboard → project settings → API. Required by Step 3's `createServiceClient()` and Step 5's cron handler.
-- Vercel env vars still say `REACT_APP_SUPABASE_*`; before deploying any redesign step, add `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` to Vercel (Production + Preview).
-- Manual smoke of Step 3 (see "Still needs manual verification" above) is best done before Step 4 so the matcher has real Privacy data to test against — but Step 4 can be written + unit-tested with synthetic fixtures if the smoke is blocked.
+| # | Step | Status | Key files |
+|---|---|---|---|
+| 4 | Reconcile logic + unit tests | ✅ DONE | `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + `__tests__/` |
+| 5 | Cron endpoints + `vercel.json` | ⬜ next | `app/api/cron/sync/route.ts`, `app/api/cron/backfill/route.ts`, `vercel.json` |
+| 6 | `/review` UI | ⬜ | `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx` |
+| 7 | `/flags` UI | ⬜ | `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
+| 8 | `/settings` Privacy connector + card mapping | ⬜ | `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` |
+| 9 | Split `HomeDashboard.tsx` | ⬜ | Extract `components/dashboard/{StsCard,ShortfallBanner,LastUpdated,EmptyState}.tsx` |
+| 10 | First-run + acceptance criteria | ⬜ | End-to-end on real data; all 11 criteria |
 
 ---
 
-## Fresh session prompt — Step 4 (reconcile)
+## Fresh session prompt — unblock smoke + commit + Step 5
 
 ```
-Read portfolio/clarity-budget-web/HANDOFF.md then plans/clarity-budget-web-redesign.md.
+Read portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md first.
 Run checkpoint before touching anything.
 
-Implement step 4 of the redesign: reconcile logic + first unit tests.
+Continuing: clarity-budget-web, branch feat/job-search-v8.16
 
+## State coming in (2026-04-27)
+
+7 files are uncommitted — credentials fix + YNAB connector moved to Settings.
+`/categorize` smoke is blocked by a Supabase data gap. Fix it manually first, then commit.
+
+### Step 0 — manual Supabase fix (you do this, not Claude)
+1. Open http://localhost:3000 (or run `cd portfolio/clarity-budget-web && pnpm dev`)
+2. Sign in → go to /settings
+3. In the YNAB card: re-enter your personal access token (token was cleared from localStorage by
+   MigrationBanner even though it's in Supabase — the card reads localStorage, not Supabase).
+4. Pick your budget from the dropdown.
+5. Confirm in Supabase Studio: clarity_budget_credentials.default_budget_id is now populated.
+6. Then try /categorize → Run categorization — expect success.
+
+If you need Claude's help debugging this step, describe what you see in /settings.
+
+### Uncommitted files to commit after smoke passes
+New:
+- portfolio/clarity-budget-web/lib/categorize/credentials.ts
+- portfolio/clarity-budget-web/components/settings/YnabConnectorCard.tsx
+
+Modified:
+- portfolio/clarity-budget-web/lib/categorize/run.ts
+- portfolio/clarity-budget-web/app/api/categorize/apply/route.ts
+- portfolio/clarity-budget-web/lib/blob.ts
+- portfolio/clarity-budget-web/components/HomeDashboard.tsx
+- portfolio/clarity-budget-web/app/(app-shell)/settings/page.tsx
+
+### After committing, the next task is Step 5 — cron + vercel.json
 Files to create:
-- lib/reconcile/fingerprint.ts — deterministic hash for clarity_budget_flags.fingerprint
-- lib/reconcile/match.ts — fuzzy-match a Privacy tx to a YNAB tx (date window + amount + payee)
-- lib/reconcile/propose-rename.ts — write clarity_budget_proposals rows when a match implies a YNAB payee rename
-- lib/reconcile/detect-weirdness.ts — emit clarity_budget_flags for duplicate_txn,
-  orphan_privacy_charge, orphan_ynab_privacy_payee (idempotent via fingerprint unique constraint)
-- lib/reconcile/__tests__/* — first vitest suite (vitest already in devDependencies)
+- app/api/cron/sync/route.ts — POST, validates Authorization: Bearer $CRON_SECRET,
+  calls pullCards + pullTransactions (Privacy sync) then runs reconcile (match + propose + detect).
+  Returns { ok, cards, transactions, proposals, flags }.
+- app/api/cron/backfill/route.ts — one-shot POST to seed historical data (same logic, no schedule).
+- vercel.json — crons: [{ path: "/api/cron/sync", schedule: "*/15 * * * *" }]
 
-Do NOT wire this into a cron, route handler, or UI yet — that's steps 5–7.
+Prerequisites before Step 5 runs on the server:
+- SUPABASE_SERVICE_ROLE_KEY in .env.local (paste from Supabase dashboard → project settings → API)
+- CRON_SECRET in .env.local (already there from Step 1; copy to Vercel env too)
+- Privacy.com token upserted via POST /api/credentials { privacy_token: "..." }
 
-Stop after step 4 and show the diff before moving on.
+Stop after Step 5 and show the diff before moving on.
 ```
 
 ---

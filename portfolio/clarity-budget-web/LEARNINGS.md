@@ -1,5 +1,19 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-27 — credentials.ts self-heal: fallback finds nothing when user_data was never synced
+
+**Symptom.** `/categorize` "Run categorization" kept throwing a "no default budget id" / "no YNAB budget selected" error even after `lib/categorize/credentials.ts` was added with a fallback to `user_data.data.ynabBudgetId`. The new loader reads `clarity_budget_credentials.default_budget_id` first; if null, it reads `user_data` where `app_key='clarity_budget'` and pulls `data.ynabBudgetId`. Both were null.
+
+**Root cause.** Two things were never written:
+1. `clarity_budget_credentials.default_budget_id` — the old Dashboard's BudgetPicker never called `/api/credentials`; it only wrote to `localStorage` + `user_data` via `pushBlob`.
+2. `user_data.data.ynabBudgetId` — `pushBlob` only fires when `persistBlob` is called (user changes a role mapping, loads the page, etc.). If the user had already picked their budget before auth was introduced (or `_syncAt` never advanced), the `user_data` row may have `ynabBudgetId: null` or no row at all.
+
+**Why the fallback still fails.** `readBudgetIdFromUserData` looks for `app_key = SUPABASE_APP_KEY = "clarity_budget"`. If `pushBlob` ran but the blob's `ynabBudgetId` was null at that time (budget was picked after the last push), the row exists but the field is null. The fallback correctly returns null and throws.
+
+**The real fix.** The new `YnabConnectorCard` in `/settings` calls `POST /api/credentials { default_budget_id }` on budget change — writing directly to `clarity_budget_credentials`. But the card reads the token from `localStorage[YNAB_TOKEN_KEY]`. If `MigrationBanner` already ran and cleared that key, the card shows an empty token field and the budget dropdown says "Add a token first." **The user must re-enter their YNAB PAT in the Settings card to unlock the budget picker, even if the token is already in Supabase.** This is a UX gap — the card should detect "token stored in Supabase" and show a masked placeholder rather than an empty field.
+
+**Next session action.** Open `/settings`, re-enter YNAB personal access token, pick budget. That writes `default_budget_id` to `clarity_budget_credentials` and unblocks `/categorize`.
+
 ## 2026-04-26 — AI auto-categorization
 
 **`server-only` poisons test imports.** First pass put pure helpers (`buildAllowlist`, `classifySuggestion`, `buildPatchBody`, `toCategorizable`, `buildFewShots`) inside `lib/categorize/run.ts`, which has `import "server-only"` at the top because it also opens a Supabase service client. Vitest tries to import those helpers and the `server-only` package throws `'server-only' cannot be imported from a Client Component module` from inside a vitest run. Fix: extract pure helpers into a separate `lib/categorize/logic.ts` with no `server-only`, re-export from `run.ts` for runtime use, and have tests import from `logic.ts`. **Lesson:** any function you'll want to unit test belongs in a server-only-free module — don't put pure logic in the same file as Supabase/decrypt/etc.

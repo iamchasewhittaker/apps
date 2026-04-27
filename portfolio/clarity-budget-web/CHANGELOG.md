@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-27 — credentials self-heal + YNAB connector moved to Settings (uncommitted, branch feat/job-search-v8.16)
+- `lib/categorize/credentials.ts` (new) — shared `loadYnabCredentials(supabase, userId)`. Reads encrypted token from `clarity_budget_credentials`; if `default_budget_id` is null, falls back to `user_data.data.ynabBudgetId` and self-heals by writing it back. Throws `"no YNAB budget selected — open Settings and pick one"` if neither source has a value.
+- `lib/categorize/run.ts` + `app/api/categorize/apply/route.ts` — removed local credential loaders; both now import the shared loader.
+- `components/settings/YnabConnectorCard.tsx` (new) — YNAB token input + budget picker. Token change → `localStorage` + `POST /api/credentials { ynab_token }`. Budget change → `localStorage` blob + `pushBlob` + `POST /api/credentials { default_budget_id }`.
+- `app/(app-shell)/settings/page.tsx` — renders `MigrationBanner` + `YnabConnectorCard` (was a stub).
+- `components/HomeDashboard.tsx` — removed token input, `BudgetPicker`, `persistToken`; YNAB section renamed "Category roles"; empty state links to `/settings`.
+- `lib/blob.ts` — exports `loadLocalBlob()` + `saveLocalBlob()` (shared with the new connector card).
+
+**Verification:** `tsc --noEmit` ✅ · `eslint` ✅ · `vitest run` 49/49 ✅ · dev-server unauth probes correct (307/200/401) ✅. Runtime smoke in signed-in browser **blocked** — `/categorize` still returns "no YNAB budget selected" because `user_data.data.ynabBudgetId` is also null. Fix: user must re-enter YNAB PAT in `/settings` → YNAB card → pick budget → writes `default_budget_id` directly to Supabase. See `LEARNINGS.md` 2026-04-27 for full diagnosis.
+
+**These changes are uncommitted.** Commit them after the smoke test passes.
+
 ### Added — 2026-04-26 — AI auto-categorization (feature/ai-categorize branch)
 - `supabase/migrations/0003_categorization_suggestions.sql` — new `clarity_budget_categorization_suggestions` table (id, user_id, ynab_txn_id, status, category_id, category_name, confidence, reasoning, model_id, prompt_hash, subtransactions jsonb, txn_snapshot jsonb, audit timestamps). Unique on (user_id, ynab_txn_id). RLS `owner_all`. Widens `clarity_budget_sync_state.source` CHECK to include `'ynab_categorize'`.
 - `lib/ynab.ts` — `fetchUncategorizedTransactions(token, budgetId)` (GET `/transactions?type=uncategorized`), `bulkUpdateTransactions(token, budgetId, updates)` (PATCH `/transactions`), shared `patchJson` helper, new types `YNABTransactionUpdate` + `YNABUpdateSubTransaction`.
