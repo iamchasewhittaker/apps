@@ -1,7 +1,6 @@
 import "server-only";
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { decrypt } from "@/lib/crypto";
 import { createServiceClient } from "@/lib/supabase-server";
 import { generateObject, DEFAULT_MODEL } from "@/lib/ai";
 import {
@@ -11,6 +10,7 @@ import {
   fetchUncategorizedTransactions,
 } from "@/lib/ynab";
 import { buildPrompt } from "./prompt";
+import { loadYnabCredentials } from "./credentials";
 import {
   buildSuggestionRow,
   upsertSuggestions,
@@ -36,43 +36,6 @@ export {
 
 const BATCH_SIZE = 20;
 const SYNC_SOURCE = "ynab_categorize" as const;
-
-type CredentialsRow = {
-  ynab_token_ciphertext: string | null;
-  ynab_token_iv: string | null;
-  ynab_token_tag: string | null;
-  default_budget_id: string | null;
-};
-
-async function loadYnabCreds(
-  supabase: SupabaseClient,
-  userId: string
-): Promise<{ token: string; budgetId: string }> {
-  const { data, error } = await supabase
-    .from("clarity_budget_credentials")
-    .select(
-      "ynab_token_ciphertext, ynab_token_iv, ynab_token_tag, default_budget_id"
-    )
-    .eq("user_id", userId)
-    .maybeSingle<CredentialsRow>();
-  if (error) throw new Error(`credentials read failed: ${error.message}`);
-  if (!data) throw new Error("ynab token not configured");
-  const { ynab_token_ciphertext, ynab_token_iv, ynab_token_tag, default_budget_id } = data;
-  if (!ynab_token_ciphertext || !ynab_token_iv || !ynab_token_tag) {
-    throw new Error("ynab token not configured");
-  }
-  if (!default_budget_id) {
-    throw new Error("default_budget_id not set on credentials row");
-  }
-  return {
-    token: decrypt({
-      ciphertext: ynab_token_ciphertext,
-      iv: ynab_token_iv,
-      tag: ynab_token_tag,
-    }),
-    budgetId: default_budget_id,
-  };
-}
 
 const SuggestionSchema = z.object({
   ynabTxnId: z.string(),
@@ -141,7 +104,7 @@ export async function runCategorization(userId: string): Promise<RunSummary> {
   await recordAudit(supabase, userId, "categorize_run_started", {});
 
   try {
-    const { token, budgetId } = await loadYnabCreds(supabase, userId);
+    const { token, budgetId } = await loadYnabCredentials(supabase, userId);
 
     const [uncategorized, categoryGroups] = await Promise.all([
       fetchUncategorizedTransactions(token, budgetId),
@@ -266,7 +229,7 @@ export async function runCategorization(userId: string): Promise<RunSummary> {
 
     if (patchBody.length > 0) {
       try {
-        const { token: ynabToken, budgetId: bid } = await loadYnabCreds(
+        const { token: ynabToken, budgetId: bid } = await loadYnabCredentials(
           supabase,
           userId
         );

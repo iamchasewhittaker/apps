@@ -389,6 +389,231 @@ function parseLearnings(dir: string, slug: string): Array<Record<string, unknown
   });
 }
 
+// ── Themes (auto-generated) ───────────────────────────────────────────────────
+// Detect shared services (Common Inputs) and shared stacks (Cross-App Patterns)
+// per app, then aggregate into rows for the `themes` table after the scan loop.
+
+interface ThemeCtx {
+  slug: string;
+  type: string;
+  claudeMd: string;
+  deps: Record<string, string>;
+  localStorageKeys: string[];
+  hasLiveVercelUrl: boolean;
+}
+
+function hasDep(deps: Record<string, string>, name: string): boolean {
+  return name in deps;
+}
+
+const SERVICE_RULES: Array<{
+  id: string;
+  title: string;
+  description: string;
+  match: (c: ThemeCtx) => boolean;
+}> = [
+  {
+    id: 'supabase',
+    title: 'Supabase',
+    description: 'Auth + Postgres + Storage. Shared project across most portfolio apps.',
+    match: (c) =>
+      hasDep(c.deps, '@supabase/supabase-js') ||
+      hasDep(c.deps, '@supabase/ssr') ||
+      /\bSupabase\b/.test(c.claudeMd),
+  },
+  {
+    id: 'ynab',
+    title: 'YNAB',
+    description: 'You Need A Budget API — budget reads + transaction PATCH.',
+    match: (c) => /\bYNAB\b/.test(c.claudeMd),
+  },
+  {
+    id: 'gmail',
+    title: 'Gmail',
+    description: 'Gmail API + OAuth for inbox parsing, receipts, and job-search emails.',
+    match: (c) => /\bGmail\b/.test(c.claudeMd),
+  },
+  {
+    id: 'anthropic',
+    title: 'Anthropic / Claude API',
+    description: 'Direct Claude API calls for chat, classification, and generation.',
+    match: (c) =>
+      hasDep(c.deps, '@anthropic-ai/sdk') ||
+      /\bAnthropic\b|Claude API/.test(c.claudeMd),
+  },
+  {
+    id: 'privacy-com',
+    title: 'Privacy.com',
+    description: 'Virtual cards + transaction sync.',
+    match: (c) => /Privacy\.com/.test(c.claudeMd),
+  },
+  {
+    id: 'vercel',
+    title: 'Vercel',
+    description: 'Hosting + Functions + Cron. Auto-deploy on push to main.',
+    match: (c) => c.hasLiveVercelUrl || /\bVERCEL_|vercel\.app/.test(c.claudeMd),
+  },
+  {
+    id: 'linear',
+    title: 'Linear',
+    description: 'Issue + project tracking under team Whittaker.',
+    match: (c) => /linear\.app\/whittaker|LINEAR_API_KEY/.test(c.claudeMd),
+  },
+  {
+    id: 'stripe',
+    title: 'Stripe',
+    description: 'Payments + subscriptions.',
+    match: (c) => hasDep(c.deps, 'stripe') || /\bStripe\b/.test(c.claudeMd),
+  },
+  {
+    id: 'rachio',
+    title: 'Rachio',
+    description: 'Smart sprinkler API for irrigation control.',
+    match: (c) => /\bRachio\b/.test(c.claudeMd),
+  },
+];
+
+const PATTERN_RULES: Array<{
+  id: string;
+  title: string;
+  description: string;
+  match: (c: ThemeCtx) => boolean;
+}> = [
+  {
+    id: 'nextjs-tailwind-supabase',
+    title: 'Next.js + Tailwind + Supabase',
+    description: 'App Router web stack — server components, Tailwind utilities, Supabase data.',
+    match: (c) =>
+      hasDep(c.deps, 'next') &&
+      hasDep(c.deps, 'tailwindcss') &&
+      (hasDep(c.deps, '@supabase/supabase-js') || hasDep(c.deps, '@supabase/ssr')),
+  },
+  {
+    id: 'cra-localstorage',
+    title: 'CRA + localStorage',
+    description: 'Create React App with one big chase_* JSON blob per app — the portfolio web baseline.',
+    match: (c) => hasDep(c.deps, 'react-scripts') && c.localStorageKeys.length > 0,
+  },
+  {
+    id: 'swiftui-observable',
+    title: 'SwiftUI + @Observable',
+    description: 'iOS apps using the modern @Observable macro for state stores.',
+    match: (c) => c.type === 'ios' && /@Observable/.test(c.claudeMd),
+  },
+  {
+    id: 'swiftui-swiftdata',
+    title: 'SwiftUI + SwiftData',
+    description: 'iOS apps persisting via SwiftData @Model containers.',
+    match: (c) => c.type === 'ios' && /SwiftData/.test(c.claudeMd),
+  },
+  {
+    id: 'swiftui-supabase',
+    title: 'SwiftUI + supabase-swift',
+    description: 'iOS apps syncing through the supabase-swift v2 client.',
+    match: (c) => c.type === 'ios' && /supabase-swift/.test(c.claudeMd),
+  },
+  {
+    id: 'apps-script-sheets',
+    title: 'Apps Script + Sheets',
+    description: 'Google Apps Script backends with Sheets tabs as the data store.',
+    match: (c) => /Apps Script/.test(c.claudeMd),
+  },
+  {
+    id: 'electron-react-ts',
+    title: 'Electron + React + TS',
+    description: 'Desktop apps with Electron main process + React renderer.',
+    match: (c) => hasDep(c.deps, 'electron'),
+  },
+  {
+    id: 'python-cli',
+    title: 'Python CLI',
+    description: 'Standalone Python tooling outside the React/iOS stack.',
+    match: (c) => c.type !== 'web' && /\bPython\b/.test(c.claudeMd),
+  },
+];
+
+function readClaudeMd(dir: string): string {
+  const path = join(dir, 'CLAUDE.md');
+  if (!existsSync(path)) return '';
+  try {
+    return readFileSync(path, 'utf-8');
+  } catch {
+    return '';
+  }
+}
+
+function buildThemeCtx(
+  slug: string,
+  dir: string,
+  type: string,
+  pkg: Record<string, unknown> | null,
+  claudeData: ReturnType<typeof parseClaudeMd>,
+): ThemeCtx {
+  const deps: Record<string, string> = {
+    ...((pkg?.dependencies as Record<string, string> | undefined) ?? {}),
+    ...((pkg?.devDependencies as Record<string, string> | undefined) ?? {}),
+  };
+  return {
+    slug,
+    type,
+    claudeMd: readClaudeMd(dir),
+    deps,
+    localStorageKeys: claudeData.localstorage_keys,
+    hasLiveVercelUrl: !!claudeData.live_url,
+  };
+}
+
+function detectServices(ctx: ThemeCtx): string[] {
+  return SERVICE_RULES.filter((r) => r.match(ctx)).map((r) => r.id);
+}
+
+function detectPatterns(ctx: ThemeCtx): string[] {
+  return PATTERN_RULES.filter((r) => r.match(ctx)).map((r) => r.id);
+}
+
+function buildThemeRows(
+  servicesByApp: Map<string, Set<string>>,
+  patternsByApp: Map<string, Set<string>>,
+): Array<Record<string, unknown>> {
+  const rows: Array<Record<string, unknown>> = [];
+
+  // Common Inputs — one row per service, listing apps that use it
+  for (const rule of SERVICE_RULES) {
+    const apps = [...servicesByApp.entries()]
+      .filter(([, ids]) => ids.has(rule.id))
+      .map(([slug]) => slug)
+      .sort();
+    if (apps.length === 0) continue;
+    rows.push({
+      slug: `common-input-${rule.id}`,
+      title: rule.title,
+      kind: 'common_input',
+      description: rule.description,
+      project_slugs: apps,
+      auto_generated: true,
+    });
+  }
+
+  // Cross-App Patterns — one row per pattern, listing apps that match
+  for (const rule of PATTERN_RULES) {
+    const apps = [...patternsByApp.entries()]
+      .filter(([, ids]) => ids.has(rule.id))
+      .map(([slug]) => slug)
+      .sort();
+    if (apps.length < 2) continue; // a "shared" pattern needs 2+ apps
+    rows.push({
+      slug: `pattern-${rule.id}`,
+      title: rule.title,
+      kind: 'cross_app_pattern',
+      description: rule.description,
+      project_slugs: apps,
+      auto_generated: true,
+    });
+  }
+
+  return rows;
+}
+
 function daysSince(dateStr: string | null): number | null {
   if (!dateStr) return null;
   const d = new Date(dateStr);
@@ -423,6 +648,8 @@ async function main() {
   const allRoadmap: Record<string, unknown>[] = [];
   const slugsWithChangelog = new Set<string>();
   const slugsWithRoadmap = new Set<string>();
+  const servicesByApp = new Map<string, Set<string>>();
+  const patternsByApp = new Map<string, Set<string>>();
   const errors: Record<string, string>[] = [];
 
   for (const name of entries) {
@@ -453,6 +680,12 @@ async function main() {
       const relPath = `portfolio/${name}`;
 
       const learningRows = parseLearnings(dir, name);
+
+      const themeCtx = buildThemeCtx(name, dir, type, pkg, claudeData);
+      const services = detectServices(themeCtx);
+      const patterns = detectPatterns(themeCtx);
+      if (services.length > 0) servicesByApp.set(name, new Set(services));
+      if (patterns.length > 0) patternsByApp.set(name, new Set(patterns));
 
       let changelogRows: Array<Record<string, unknown>> = [];
       try {
@@ -598,6 +831,27 @@ async function main() {
     }
   }
 
+  // Sync auto-generated themes — delete all auto rows, insert fresh.
+  // Manual rows (auto_generated = false, e.g. portfolio_thesis) are preserved.
+  const themeRows = buildThemeRows(servicesByApp, patternsByApp);
+  let themesUpdated = 0;
+  console.log(`\nSyncing ${themeRows.length} auto-generated themes…`);
+  const { error: tDelErr } = await supabase
+    .from('themes')
+    .delete()
+    .eq('auto_generated', true);
+  if (tDelErr) {
+    console.error('Themes delete error:', tDelErr.message);
+  } else if (themeRows.length > 0) {
+    const { error: tInsErr } = await supabase.from('themes').insert(themeRows);
+    if (tInsErr) {
+      console.error('Themes insert error:', tInsErr.message);
+    } else {
+      themesUpdated = themeRows.length;
+      console.log(`Inserted ${themeRows.length} themes (auto-generated)`);
+    }
+  }
+
   // Write scan row
   const finishedAt = new Date().toISOString();
   const scanRow = {
@@ -606,7 +860,7 @@ async function main() {
     projects_found: entries.length,
     projects_updated: upsertErr ? 0 : projects.length,
     learnings_captured: learningsCaptured,
-    themes_updated: 0,
+    themes_updated: themesUpdated,
     errors: errors.length ? errors : null,
   };
 
@@ -619,6 +873,7 @@ async function main() {
   console.log('\n--- Scan Summary ---');
   console.log(`  Directories scanned: ${entries.length}`);
   console.log(`  Projects upserted:   ${projects.length}`);
+  console.log(`  Themes upserted:     ${themesUpdated}`);
   console.log(`  Errors:              ${errors.length}`);
   console.log(`  Duration:            ${((new Date(finishedAt).getTime() - new Date(startedAt).getTime()) / 1000).toFixed(1)}s`);
 

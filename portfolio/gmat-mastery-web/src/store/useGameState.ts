@@ -167,12 +167,8 @@ export function useGameReducer() {
     }
   }, []);
 
-  // Save to localStorage on change
   useEffect(() => {
     localStorage.setItem('gmat_mastery_state', JSON.stringify(state));
-    // Here we could also sync to Supabase...
-    // import { push } from '@/shared/sync'
-    // push('gmat-mastery', state)
   }, [state]);
 
   return { state, dispatch };

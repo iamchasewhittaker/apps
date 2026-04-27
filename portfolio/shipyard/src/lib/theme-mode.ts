@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import type { ThemeMode } from './labels';
 
 const STORAGE_KEY = 'shipyard_theme_mode';
-const DEFAULT_MODE: ThemeMode = 'nautical';
+const DEFAULT_MODE: ThemeMode = 'regular';
 
 export function readMode(): ThemeMode {
   if (typeof window === 'undefined') return DEFAULT_MODE;
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === 'regular' ? 'regular' : 'nautical';
+  return stored === 'nautical' ? 'nautical' : 'regular';
 }
 
 export function writeMode(mode: ThemeMode) {

@@ -29,7 +29,7 @@ export function useMode(): ModeContextValue {
   const ctx = useContext(ModeContext);
   if (!ctx) {
     return {
-      mode: 'nautical',
+      mode: 'regular',
       setMode: () => {},
     };
   }

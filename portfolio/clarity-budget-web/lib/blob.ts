@@ -1,5 +1,7 @@
 /** Mirrors iOS `BudgetBlob` + `_syncAt` for Supabase merge. */
 
+import { STORE_KEY } from "./constants";
+
 export interface BudgetScenario {
   id: string;
   label: string;
@@ -66,6 +68,25 @@ export function defaultBlob(): BudgetBlob {
     ynabIncomeSources: [],
     ynabAutoSuggestGroupIds: [],
   };
+}
+
+export function loadLocalBlob(): BudgetBlob {
+  if (typeof window === "undefined") return defaultBlob();
+  try {
+    const raw = window.localStorage.getItem(STORE_KEY);
+    if (!raw) return defaultBlob();
+    return mergeBlob(JSON.parse(raw));
+  } catch {
+    return defaultBlob();
+  }
+}
+
+export function saveLocalBlob(b: BudgetBlob): BudgetBlob {
+  const next = { ...b, _syncAt: Date.now() };
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(STORE_KEY, JSON.stringify(next));
+  }
+  return next;
 }
 
 export function mergeBlob(raw: unknown): BudgetBlob {

@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const response = await anthropic.messages.create({
-      model: 'claude-3-7-sonnet-20250219',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 1000,
       system: 'You are an expert GMAT tutor. Generate realistic, high-quality GMAT practice questions that accurately reflect the logic, style, and difficulty of the real exam. Data Sufficiency questions MUST use the standard 5 fixed options.',
       messages: [

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
 import { readVisibleSetFromCookie } from '@/lib/visible-projects-server';
 import type { Theme, ThemeKind } from '@/lib/types';
+import { ModeHeading } from '@/components/ModeHeading';
+import { ThesisEditor } from './ThesisEditor';
 
 const SECTION_META: Record<
   ThemeKind,
@@ -68,14 +70,11 @@ export default async function ThemesPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-10">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-accent">
-          Charts &amp; Constellations
-        </h1>
-        <p className="text-sm text-muted">
-          Themes, patterns, and the narrative threads that connect your fleet.
-        </p>
-      </div>
+      <ModeHeading
+        labelKey="analyticsHeading"
+        subtitle="Themes, patterns, and the narrative threads that connect your fleet."
+      />
+
 
       {/* Portfolio Thesis */}
       <ThesisSection themes={grouped.portfolio_thesis} />
@@ -109,20 +108,7 @@ function ThesisSection({ themes }: { themes: Theme[] }) {
       </div>
 
       <div className="rounded-lg border border-accent/30 bg-accent/5 p-6">
-        {thesis ? (
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-accent">
-              {thesis.title}
-            </h3>
-            <p className="text-sm text-foreground leading-relaxed">
-              {thesis.description}
-            </p>
-          </div>
-        ) : (
-          <p className="text-sm text-muted italic">
-            No thesis set yet. Define your north star.
-          </p>
-        )}
+        <ThesisEditor initialText={thesis?.description ?? null} />
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { decrypt } from "@/lib/crypto";
 import { createRouteClient, createServiceClient } from "@/lib/supabase-server";
 import { bulkUpdateTransactions } from "@/lib/ynab";
 import { markStatus } from "@/lib/categorize/persist";
+import { loadYnabCredentials } from "@/lib/categorize/credentials";
 import type { Suggestion } from "@/lib/categorize/types";
 
 export const runtime = "nodejs";
@@ -24,39 +24,6 @@ type Row = {
   subtransactions: Suggestion["subtransactions"] | null;
   txn_snapshot: { is_split?: boolean } & Record<string, unknown>;
 };
-
-type CredRow = {
-  ynab_token_ciphertext: string | null;
-  ynab_token_iv: string | null;
-  ynab_token_tag: string | null;
-  default_budget_id: string | null;
-};
-
-async function loadCredentials(
-  supabase: ReturnType<typeof createServiceClient>,
-  userId: string
-): Promise<{ token: string; budgetId: string }> {
-  const { data, error } = await supabase
-    .from("clarity_budget_credentials")
-    .select(
-      "ynab_token_ciphertext, ynab_token_iv, ynab_token_tag, default_budget_id"
-    )
-    .eq("user_id", userId)
-    .maybeSingle<CredRow>();
-  if (error) throw new Error(`credentials read failed: ${error.message}`);
-  if (!data?.ynab_token_ciphertext || !data.ynab_token_iv || !data.ynab_token_tag) {
-    throw new Error("ynab token not configured");
-  }
-  if (!data.default_budget_id) throw new Error("default_budget_id not set");
-  return {
-    token: decrypt({
-      ciphertext: data.ynab_token_ciphertext,
-      iv: data.ynab_token_iv,
-      tag: data.ynab_token_tag,
-    }),
-    budgetId: data.default_budget_id,
-  };
-}
 
 export async function POST(req: Request) {
   const route = await createRouteClient();
@@ -116,7 +83,7 @@ export async function POST(req: Request) {
     }
 
     if (action === "undo") {
-      const { token, budgetId } = await loadCredentials(service, userId);
+      const { token, budgetId } = await loadYnabCredentials(service, userId);
       await bulkUpdateTransactions(token, budgetId, [
         { id: row.ynab_txn_id, category_id: null, approved: false },
       ]);
@@ -152,7 +119,7 @@ export async function POST(req: Request) {
           { status: 400 }
         );
       }
-      const { token, budgetId } = await loadCredentials(service, userId);
+      const { token, budgetId } = await loadYnabCredentials(service, userId);
       await bulkUpdateTransactions(token, budgetId, [
         {
           id: row.ynab_txn_id,
@@ -171,7 +138,7 @@ export async function POST(req: Request) {
           { status: 400 }
         );
       }
-      const { token, budgetId } = await loadCredentials(service, userId);
+      const { token, budgetId } = await loadYnabCredentials(service, userId);
       await bulkUpdateTransactions(token, budgetId, [
         { id: row.ynab_txn_id, category_id: overrideId, approved: true },
       ]);

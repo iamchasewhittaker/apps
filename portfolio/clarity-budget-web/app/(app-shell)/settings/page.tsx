@@ -1,4 +1,5 @@
 import { MigrationBanner } from "@/components/settings/MigrationBanner";
+import { YnabConnectorCard } from "@/components/settings/YnabConnectorCard";
 import { T } from "@/lib/constants";
 
 export default function SettingsPage() {
@@ -9,18 +10,7 @@ export default function SettingsPage() {
         Manage your connectors and credentials.
       </p>
       <MigrationBanner />
-      <div
-        style={{
-          border: `1px dashed ${T.border}`,
-          borderRadius: 8,
-          padding: 24,
-          color: T.muted,
-          fontSize: 13,
-          textAlign: "center",
-        }}
-      >
-        Full settings UI ships in Step 8 of the redesign.
-      </div>
+      <YnabConnectorCard />
     </div>
   );
 }

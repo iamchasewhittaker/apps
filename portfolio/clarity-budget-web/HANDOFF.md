@@ -4,13 +4,126 @@
 
 | Field | Value |
 |---|---|
-| Focus | **AI auto-categorization** v0 shipped on `feature/ai-categorize` (2026-04-26). Awaiting manual smoke + migration push before merge. v1 Redesign Step 4 (reconcile) is still the next main-line task. |
-| Status | Categorize feature: typecheck ✅ · lint ✅ · 49 tests pass ✅ · build ✅ · runtime auth gate verified. Migration `0003` written but **not yet pushed**. `AI_GATEWAY_API_KEY` not yet in env. |
+| Focus | **Categorize error fixed + YNAB connector moved to Settings** (2026-04-26). Verify in signed-in browser; next main-line task is Redesign Step 4 (reconcile). |
+| Status | typecheck ✅ · lint ✅ · 49 tests pass ✅ · build ✅ · runtime 401 verified. Needs smoke in real browser session. |
 | Last touch | 2026-04-26 |
 | URL | clarity-budget-web.vercel.app (Session 2 / v0.4 live — Steps 1–2 deployed; AI categorize NOT deployed yet) |
 | Branch | feature/ai-categorize (off main) |
-| Manual TODO (categorize) | (a) `cd portfolio/clarity-budget-web && supabase db push` to apply `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` and to Vercel preview env. (c) Sign in → `/categorize` → click **Run categorization** → verify on YNAB. (d) Re-run for idempotency. (e) When green, merge to main. |
+| Manual TODO (verify this session) | (a) Sign in → `/categorize` → **Run categorization** → expect success; check Supabase — `clarity_budget_credentials.default_budget_id` populated (self-heal). (b) `/settings` → YNAB card shows current token + budget picker with correct selection. (c) `/` Dashboard → metrics render; section reads "Category roles" with Settings link; token input + budget picker gone. (d) Change budget in Settings → re-check Supabase `clarity_budget_credentials.default_budget_id` updated. |
+| Manual TODO (categorize deploy) | (a) `cd portfolio/clarity-budget-web && supabase db push` to apply `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` and to Vercel preview env. (c) Sign in → `/categorize` → click **Run categorization** → verify on YNAB. (d) Re-run for idempotency. (e) When green, merge to main. |
 | Manual TODO (auth) | **Supabase Dashboard:** (a) Auth → URL Configuration → Site URL = `https://clarity-budget-web.vercel.app`; Redirect URLs allowlist must include `https://clarity-budget-web.vercel.app/auth/callback` and `http://localhost:3000/auth/callback`; remove `apps.chasewhittaker.com`. (b) Auth → Providers → GitHub → enable + paste Client ID + Secret from a new GitHub OAuth App (`github.com/settings/developers`, callback URL = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). Until both are done, clicking "Continue with GitHub" will return a provider-not-enabled error. |
+
+---
+
+## What was built — Session N: Categorize fix + Settings connector (2026-04-26)
+
+### Problem
+`/categorize` threw `"default_budget_id not set on credentials row"`. The `clarity_budget_credentials` row had the encrypted YNAB token but `default_budget_id` was always NULL — no UI had ever written it. The selected budget lived only in `user_data.data.ynabBudgetId` (app_key="clarity_budget"), which server-side categorize endpoints never read.
+
+### Fix — shared credentials loader with self-heal fallback
+
+**New:** `lib/categorize/credentials.ts` — `loadYnabCredentials(supabase, userId)`:
+1. Read `clarity_budget_credentials` row.
+2. If token ciphertext missing → throw `"ynab token not configured"`.
+3. If `default_budget_id` set → decrypt + return immediately.
+4. Fall back: read `user_data` where `app_key = SUPABASE_APP_KEY`, pull `data.ynabBudgetId`.
+5. If found → fire-and-forget backfill of `default_budget_id`, decrypt + return.
+6. If still missing → throw `"no YNAB budget selected — open Settings and pick one"`.
+
+**Modified:** `lib/categorize/run.ts` — removed local `loadYnabCreds()` (was lines 40–75); imported shared loader. Both call sites updated.
+
+**Modified:** `app/api/categorize/apply/route.ts` — removed local `loadCredentials()` (was lines 28–59); imported shared loader. All three call sites updated.
+
+### YNAB connector moved to Settings
+
+**New:** `components/settings/YnabConnectorCard.tsx` — client component with:
+- YNAB token input: read/write localStorage `YNAB_TOKEN_KEY`; on change, POST `/api/credentials { ynab_token }`.
+- Budget picker: read/write `BudgetBlob.ynabBudgetId` via `loadLocalBlob` / `saveLocalBlob` / `pushBlob`; on change, POST `/api/credentials { default_budget_id }`.
+- Budget list populated from `fetchBudgets(token)`.
+
+**Modified:** `app/(app-shell)/settings/page.tsx` — renders `MigrationBanner` + `YnabConnectorCard` (was a stub with a placeholder).
+
+**Modified:** `components/HomeDashboard.tsx`:
+- Removed: token input `<section>`, `BudgetPicker` component definition, `persistToken` function.
+- Removed: `fetchBudgets` import (only used by BudgetPicker).
+- Moved `loadLocalBlob` / `saveLocalBlob` to `lib/blob.ts` as exports (shared by YnabConnectorCard).
+- YNAB section renamed "Category roles"; wrapped in `{ynabReady && (...)}`.
+- Empty state now links to `/settings` instead of "pick a budget below".
+
+**Modified:** `lib/blob.ts` — added exported `loadLocalBlob()` and `saveLocalBlob()` with SSR guard.
+
+### Verification results
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | ✅ clean |
+| `next lint` | ✅ clean |
+| `vitest run` | ✅ 49/49 pass |
+| `next build --turbopack` | ✅ all routes compile |
+| API routes (no auth) | ✅ 401 (no runtime errors) |
+
+### Still needs manual verification in signed-in browser
+See "Manual TODO (verify this session)" in State table above.
+
+---
+
+## Fresh session prompt — verify this session's changes
+
+```
+Read CLAUDE.md and HANDOFF.md first.
+
+Continuing work on: clarity-budget-web (portfolio/clarity-budget-web)
+Branch: feature/ai-categorize
+
+## What was just completed (2026-04-26)
+
+### 1. Fixed `default_budget_id not set on credentials row` on /categorize
+
+Root cause: `clarity_budget_credentials.default_budget_id` was never written by any UI. The
+selected budget lived in `user_data.data.ynabBudgetId` (app_key="clarity_budget") but
+server-side endpoints never read it.
+
+Fix:
+- Created `lib/categorize/credentials.ts` — shared `loadYnabCredentials(supabase, userId)`
+  that falls back to `user_data.data.ynabBudgetId` when `default_budget_id` is null,
+  self-heals by backfilling `clarity_budget_credentials.default_budget_id`, throws
+  "no YNAB budget selected — open Settings and pick one" if neither has a value.
+- Updated `lib/categorize/run.ts` and `app/api/categorize/apply/route.ts` to import the
+  shared loader (removed their local duplicates).
+
+### 2. Moved YNAB token + budget picker from Dashboard to Settings
+
+- Created `components/settings/YnabConnectorCard.tsx` — token input + budget picker.
+  On token change: localStorage + POST /api/credentials { ynab_token }.
+  On budget change: localStorage blob + pushBlob + POST /api/credentials { default_budget_id }.
+- Updated `app/(app-shell)/settings/page.tsx` to render MigrationBanner + YnabConnectorCard.
+- Updated `components/HomeDashboard.tsx`: removed token input, BudgetPicker, persistToken;
+  YNAB section renamed "Category roles"; empty state links to /settings.
+- Moved `loadLocalBlob` / `saveLocalBlob` from HomeDashboard to `lib/blob.ts` as exports.
+
+### Verified (pre-auth)
+- `npx tsc --noEmit` clean
+- `next lint` clean
+- `vitest run` — 49/49 pass
+- `next build --turbopack` — all routes compile
+- API routes return 401 (no runtime errors)
+
+### Needs verification in your signed-in browser
+1. `/categorize` → Run categorization → should succeed. Check Supabase:
+   `clarity_budget_credentials.default_budget_id` should now be populated (self-heal).
+2. `/settings` → YNAB card shows current token + budget picker with correct selection.
+3. `/` Dashboard → metrics still render; section reads "Category roles" with Settings link;
+   token input + budget picker are gone.
+4. Change budget in Settings → verify `clarity_budget_credentials.default_budget_id` updates.
+
+## Key files
+- `lib/categorize/credentials.ts` — new shared credentials loader (core fix)
+- `lib/blob.ts` — now exports `loadLocalBlob` / `saveLocalBlob`
+- `components/settings/YnabConnectorCard.tsx` — new YNAB connector UI
+- `app/(app-shell)/settings/page.tsx` — settings page (no longer a stub)
+- `components/HomeDashboard.tsx` — YNAB section stripped to category roles only
+
+Let me know what to work on next.
+```
 
 ---
 

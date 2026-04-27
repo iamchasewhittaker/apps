@@ -19,7 +19,7 @@ No-go for revenue today. The app cannot accept a payment, has no deployed surfac
 | Revenue model | 🔴 | No `MONETIZATION_BRIEF.md`. CLAUDE.md, README, AGENTS.md contain zero pricing language. |
 | Pricing surface | 🔴 | No `/pricing` route, no paywall component, no checkout button anywhere in `src/`. |
 | Payment infrastructure | 🔴 | No `stripe`, `lemonsqueezy`, or `paddle` in `package.json`. No payment env vars. |
-| Plan gating | 🔴 | No auth, no `plan`/`tier`/`is_pro` checks. Supabase SDK installed but unwired (`src/shared/sync.js` is dead code per CLAUDE.md). |
+| Plan gating | 🔴 | No auth, no `plan`/`tier`/`is_pro` checks. Supabase SDK installed but unwired — no `src/shared/` directory exists. |
 | Legal docs (TOS + Privacy) | 🔴 | No `TERMS.md`, `PRIVACY.md`, `LICENSE`, or `/terms` `/privacy` routes. Cannot legally collect payment. |
 | Analytics | 🔴 | No PostHog, Plausible, GA, Mixpanel. No way to measure landing-to-purchase conversion. |
 | Email capture | 🔴 | No Loops, Resend, ConvertKit, Mailchimp. No email field anywhere. Every non-converting visitor is lost. |
@@ -34,7 +34,7 @@ Legend: 🔴 blocking · 🟡 important · 🔵 pass · n/a not applicable
 
 1. Decide pricing in writing. Recommend $49 lifetime. Capture in `MONETIZATION_BRIEF.md` with target audience (people 6 to 12 weeks out from a GMAT date), free preview rules (e.g. 5 free questions, then paywall), and refund policy.
 2. Get a real `ANTHROPIC_API_KEY` into Vercel env. Without it the app crashes on first question and no one buys.
-3. Bump `claude-3-7-sonnet-20250219` to current Sonnet in both `src/app/api/generate-question/route.ts` and `src/app/api/generate-explanation/route.ts`. The pinned model will degrade quality versus competitors.
+3. Decide whether to keep Haiku (`claude-haiku-4-5-20251001`) once paying users exist. Both `src/app/api/generate-question/route.ts` and `src/app/api/generate-explanation/route.ts` use Haiku for cost; tool use enforces structure but explanation quality may need Sonnet at the paid tier.
 4. Set a free-question quota in `useGameState.ts` using localStorage (e.g. 5 free questions per device). After quota, show a paywall card instead of the next question.
 5. Generate `TERMS.md` and `PRIVACY.md` via Termly or hand-rolled. Add `/terms` and `/privacy` routes.
 6. Create a Stripe Payment Link for $49 lifetime. No subscription complexity, no webhook required for v1. On purchase, Stripe redirects to a `/unlock?token=...` page that writes a flag to localStorage. Trust-on-honor for v1, tighten with Supabase later.

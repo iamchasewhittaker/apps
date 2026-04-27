@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   defaultBlob,
+  loadLocalBlob,
   mergeBlob,
+  saveLocalBlob,
   type BudgetBlob,
 } from "@/lib/blob";
 import {
@@ -25,7 +27,6 @@ import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
 import { suggestRole, type RoleRaw } from "@/lib/suggestRole";
 import { groupMappingsForDisplay, mergeCategoryMappingsFromGroups } from "@/lib/ynabCategoryMerge";
 import {
-  fetchBudgets,
   fetchCategories,
   fetchMonth,
   fetchTransactions,
@@ -64,22 +65,6 @@ function txSinceDate(): string {
 interface TxCache {
   ts: number;
   data: YNABTransaction[];
-}
-
-function loadLocalBlob(): BudgetBlob {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (!raw) return defaultBlob();
-    return mergeBlob(JSON.parse(raw));
-  } catch {
-    return defaultBlob();
-  }
-}
-
-function saveLocalBlob(b: BudgetBlob) {
-  const next = { ...b, _syncAt: Date.now() };
-  localStorage.setItem(STORE_KEY, JSON.stringify(next));
-  return next;
 }
 
 function loadTxCache(): TxCache | null {
@@ -241,12 +226,6 @@ export function HomeDashboard() {
   useEffect(() => {
     void refreshMetrics();
   }, [refreshMetrics]);
-
-  const persistToken = (t: string) => {
-    setYnabToken(t);
-    if (t) localStorage.setItem(YNAB_TOKEN_KEY, t);
-    else localStorage.removeItem(YNAB_TOKEN_KEY);
-  };
 
   const updateMappingRole = (categoryId: string, roleRaw: RoleRaw) => {
     persistBlob({
@@ -468,8 +447,11 @@ export function HomeDashboard() {
           >
             <p className="font-medium">Connect YNAB to see live safe-to-spend.</p>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: T.muted }}>
-              Add a personal access token and pick a budget below. Map category roles in the
-              YNAB section (or sync from Supabase after signing in).
+              Add a personal access token and pick a budget in{" "}
+              <a href="/settings" className="underline" style={{ color: T.accent }}>
+                Settings
+              </a>
+              . Category roles map automatically once a budget loads.
             </p>
           </div>
         )}
@@ -483,55 +465,34 @@ export function HomeDashboard() {
           </p>
         )}
 
-        {/* YNAB config */}
+        {/* Category roles */}
+        {ynabReady && (
         <section
           className="space-y-3 rounded-xl border p-4"
           style={{ borderColor: T.border, background: T.surface }}
         >
-          <h2 className="text-sm font-semibold">YNAB</h2>
-          <label className="block text-xs" style={{ color: T.muted }}>
-            Personal access token
-            <input
-              className="mt-1 w-full rounded-lg border px-3 py-2 text-sm text-neutral-100"
-              style={{ borderColor: T.border, background: T.bg }}
-              type="password"
-              autoComplete="off"
-              value={ynabToken}
-              onChange={(e) => persistToken(e.target.value)}
-            />
-          </label>
-          <BudgetPicker
-            token={ynabToken}
-            budgetId={blob.ynabBudgetId ?? ""}
-            onSelect={(id) =>
-              persistBlob({
-                ...blob,
-                ynabBudgetId: id || null,
-                ynabCategoryMappings: id ? blob.ynabCategoryMappings : [],
-                ynabAutoSuggestGroupIds: id ? (blob.ynabAutoSuggestGroupIds ?? []) : [],
-              })
-            }
-          />
+          <h2 className="text-sm font-semibold">Category roles</h2>
+          <p className="text-[11px]" style={{ color: T.muted }}>
+            Token and budget live in{" "}
+            <a href="/settings" className="underline" style={{ color: T.accent }}>
+              Settings
+            </a>
+            .
+          </p>
 
-          {ynabReady && categorySyncErr && (
+          {categorySyncErr && (
             <p className="text-xs" style={{ color: T.danger }}>
               {categorySyncErr}
             </p>
           )}
-          {ynabReady && !categorySyncErr && blob.ynabCategoryMappings.length === 0 && (
+          {!categorySyncErr && blob.ynabCategoryMappings.length === 0 && (
             <p className="text-xs" style={{ color: T.muted }}>
               Loading categories…
             </p>
           )}
 
-          {ynabReady && blob.ynabCategoryMappings.length > 0 && (
+          {blob.ynabCategoryMappings.length > 0 && (
             <div className="space-y-3 border-t pt-3" style={{ borderColor: T.border }}>
-              <p
-                className="text-xs font-semibold uppercase tracking-wide"
-                style={{ color: T.muted }}
-              >
-                Category roles
-              </p>
               <p className="text-[11px] leading-relaxed" style={{ color: T.muted }}>
                 Grouped like YNAB.{" "}
                 <strong className="text-neutral-300">Auto from names</strong> re-applies
@@ -611,57 +572,8 @@ export function HomeDashboard() {
             Refresh numbers
           </button>
         </section>
+        )}
       </div>
     </div>
-  );
-}
-
-function BudgetPicker({
-  token,
-  budgetId,
-  onSelect,
-}: {
-  token: string;
-  budgetId: string;
-  onSelect: (id: string) => void;
-}) {
-  const [budgets, setBudgets] = useState<Array<{ id: string; name: string }>>([]);
-
-  useEffect(() => {
-    if (!token.trim()) {
-      setBudgets([]);
-      return;
-    }
-    let cancelled = false;
-    void (async () => {
-      try {
-        const b = await fetchBudgets(token.trim());
-        if (!cancelled) setBudgets(b);
-      } catch {
-        if (!cancelled) setBudgets([]);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [token]);
-
-  return (
-    <label className="block text-xs" style={{ color: T.muted }}>
-      Budget
-      <select
-        className="mt-1 w-full rounded-lg border px-3 py-2 text-sm text-neutral-100"
-        style={{ borderColor: T.border, background: T.bg }}
-        value={budgetId}
-        onChange={(e) => onSelect(e.target.value)}
-      >
-        <option value="">— Select —</option>
-        {budgets.map((b) => (
-          <option key={b.id} value={b.id}>
-            {b.name}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }

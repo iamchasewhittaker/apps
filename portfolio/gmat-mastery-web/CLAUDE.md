@@ -12,11 +12,11 @@
 - **Version:** v0.1 (initial scaffold — 2026-04-21)
 - **URL:** not deployed
 - **Entry:** `src/app/page.tsx`
-- **Storage:** in-memory React reducer at `src/store/useGameState.ts` — state resets on reload. No persistence wired yet.
+- **Storage:** React reducer at `src/store/useGameState.ts` with localStorage persistence (key: `gmat_mastery_state`). Per-browser only — no accounts, no cross-device sync.
 - **API routes:**
   - `POST /api/generate-question` — `src/app/api/generate-question/route.ts`
   - `POST /api/generate-explanation` — `src/app/api/generate-explanation/route.ts`
-- **LLM model:** `claude-3-7-sonnet-20250219` (hard-coded in both routes; should be bumped to current Sonnet — tracked as follow-up)
+- **LLM model:** `claude-haiku-4-5-20251001` (hard-coded in both routes — Haiku is sufficient given tool use enforces output structure)
 
 ## What This App Is
 
@@ -35,7 +35,7 @@ An interactive GMAT practice app. The user picks a section and difficulty; Claud
 
 **Vercel:** not yet created. No `vercel.json` / `vercel.ts`. Not connected to GitHub. When shipping, follow the monorepo's standard (see `~/.claude/CLAUDE.md` "Vercel-Git Connection").
 
-**Supabase:** dependency installed, not used. If/when persistence is added, follow the monorepo pattern — the app-agnostic sync layer lives at `~/Developer/chase/portfolio/shared/sync.js`. A copy at `src/shared/sync.js` was dropped in but **does not currently work** here: it imports `./auth` (not present) and uses `REACT_APP_*` env vars (CRA pattern, not Next). Treat as dead code until wired properly — Next routes should use `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` via a server-side client.
+**Persistence (decided 2026-04-26):** Session-only via localStorage. State persists per-browser via `gmat_mastery_state` key. No accounts, no cross-device sync, no Supabase wiring. Revisit only if v2 needs cross-device or revenue gates. The `@supabase/supabase-js` dependency stays installed (cheap to leave) but is unused.
 
 ## Environment
 
@@ -64,20 +64,15 @@ src/
     ExplanationScreen.tsx   ← per-question Socratic breakdown
     SummaryScreen.tsx       ← end-of-session recap (score, XP, per-topic)
   store/
-    useGameState.ts         ← reducer: question flow, XP, streak, per-topic metrics
-  shared/
-    sync.js                 ← copied from monorepo, NOT wired (see note above)
+    useGameState.ts         ← reducer: question flow, XP, streak, per-topic metrics; persists to localStorage
 ```
 
 ## Open Work (what's needed to reach Ship)
 
-1. Real `ANTHROPIC_API_KEY` in `.env.local`
-2. `vercel.ts` + `vercel git connect` to `iamchasewhittaker/apps`
-3. Bump `claude-3-7-sonnet-20250219` → current Sonnet in both API routes
-4. Decide on persistence: either wire Supabase properly (delete the stub `sync.js`, add Next-compatible client) or explicitly ship as session-only
-5. Remove or fix the dead `src/shared/sync.js` stub
-6. First self-use week (Step 5 — Ship): use it for a full prep session without breaking
+1. Real `ANTHROPIC_API_KEY` in `.env.local` (still mock)
+2. First Vercel deploy: `vercel project add` → `vercel link` → `vercel git connect https://github.com/iamchasewhittaker/apps.git` → `vercel env add ANTHROPIC_API_KEY production` → `vercel --prod`
+3. First self-use week (Step 5 — Ship): use it for a full prep session without daily fixes
 
-## WIP = 1 Note
+## WIP = 1 Status
 
-Per the parent playbook (`~/Developer/portfolio/CLAUDE.md`), the stated focus is **RollerTask V1** and the WIP limit is one project in Build at a time. This app being mid-Build is a rule violation the user needs to resolve explicitly — not a bug in this app. See `~/Developer/portfolio/audits/gmat-mastery-web.md` for the full snapshot.
+This app is the active WIP=1 Build slot as of 2026-04-26. RollerTask V1 was previously the focus and has been parked until GMAT ships. Parent playbook (`~/Developer/portfolio/CLAUDE.md`) reflects the swap.

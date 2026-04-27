@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const response = await anthropic.messages.create({
-      model: 'claude-3-7-sonnet-20250219',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 1000,
       system: 'You are an encouraging GMAT tutor for a beginner student. Explain answers clearly and concisely using the Socratic method.',
       messages: [

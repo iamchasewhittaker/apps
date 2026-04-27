@@ -25,6 +25,9 @@ export const LABELS = {
   fleetDashboard:    { nautical: 'Fleet Dashboard', regular: 'Dashboard' },
   shipsInBuild:      { nautical: 'Ships in Build',  regular: 'In Build' },
   pickOneActiveShip: { nautical: 'Pick ONE active ship. Others move to drydock (paused).', regular: 'Pick ONE focus project. Others get paused.' },
+
+  // Page headings (longer than the nav label)
+  analyticsHeading:  { nautical: 'Charts & Constellations', regular: 'Analytics & Themes' },
 } as const;
 
 export type LabelKey = keyof typeof LABELS;

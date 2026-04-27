@@ -1,27 +1,37 @@
 # GMAT Mastery Web
 
-Interactive GMAT practice with Claude-generated questions and Socratic explanations. Next.js 16 (App Router) + React 19 + Tailwind 4.
+Personal GMAT practice tool. Claude generates multiple-choice questions via tool use, the user answers, then Claude returns a 3-bullet Socratic explanation. Solo project, single user (me).
+
+Stack: Next.js 16.2 (App Router) + React 19 + TypeScript + Tailwind 4 + Framer Motion + `@anthropic-ai/sdk`. Both API routes call `claude-haiku-4-5-20251001` (Haiku is fine — tool use enforces the output schema).
 
 ## Quick start
 
 ```bash
 npm install
-# Create .env.local with:
+# Edit .env.local — replace the mock value with a real key:
 #   ANTHROPIC_API_KEY=sk-ant-...
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open http://localhost:3000.
+
+The committed `.env.local` ships with a mock Anthropic key, so both `/api/generate-question` and `/api/generate-explanation` will 500 until a real key is in place.
 
 ## Environment
 
 | Variable | Required | Notes |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | yes | Both `/api/generate-question` and `/api/generate-explanation` 500 without a real key |
+| `ANTHROPIC_API_KEY` | yes | Used by both API routes. Mock value crashes generation. |
+| `NEXT_PUBLIC_SUPABASE_URL` | no | Present in `.env.local` but unused — Supabase isn't wired. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | Same — installed dependency, no runtime use. |
+
+## Persistence
+
+localStorage only, key `gmat_mastery_state`. Per-browser, no accounts, no cross-device sync. State is loaded on mount and rewritten on every reducer change in `src/store/useGameState.ts`. Clearing site data resets XP, level, streak, and per-topic performance.
 
 ## Status
 
-Stage: **Build**. Not deployed. State is in-memory and resets on reload. See [`CLAUDE.md`](./CLAUDE.md) for the full identity, what's missing for Ship, and a Next 16 gotcha warning (`AGENTS.md`).
+Stage **Build** per the 6-step playbook (`~/Developer/portfolio/CLAUDE.md`). Active WIP=1 slot as of 2026-04-26. Not deployed. To reach Ship: real Anthropic key, first Vercel deploy, one self-use prep session without daily fixes. See [`CLAUDE.md`](./CLAUDE.md) for the full identity and remaining open work, and [`AGENTS.md`](./AGENTS.md) for the Next 16 gotcha (training-data drift).
 
 ## Scripts
 
