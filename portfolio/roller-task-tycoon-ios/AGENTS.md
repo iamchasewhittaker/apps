@@ -19,3 +19,4 @@ Read this together with [CLAUDE.md](CLAUDE.md) and portfolio master [`/CLAUDE.md
 - Set **Development Team** for device signing.
 
 - After changing **`BackupSupport`** / import-export: run **RollerTaskTycoonTests** (**⌘U**) or `xcodebuild test -scheme RollerTaskTycoon -destination 'platform=iOS Simulator,name=iPhone 15'`.
+- **Layout reference device:** **iPhone 12 Pro Max**; spot-check board/list and Overview on smaller simulators when touching UI.

@@ -2,6 +2,8 @@
 
 Companion to [`PARK_OPERATIONS_CONSOLE.md`](PARK_OPERATIONS_CONSOLE.md). **Support + contributors:** treat this as source of truth for UX copy and behavior.
 
+**Device:** The interface is **designed around iPhone 12 Pro Max** proportions; it works on other iPhones—if something feels tight on a smaller phone, that’s expected to vary slightly.
+
 ## Bottom tabs
 
 | Tab | Purpose |

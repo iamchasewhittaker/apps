@@ -2,8 +2,13 @@ import SwiftUI
 
 /// Optional stretch: read-only list of saved days (no charts).
 struct PastDaysView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject var store: WellnessStore
     @Environment(\.dismiss) private var dismiss
+
+    private var listMaxWidth: CGFloat {
+        horizontalSizeClass == .regular ? 560 : .infinity
+    }
 
     var body: some View {
         List {
@@ -16,6 +21,8 @@ struct PastDaysView: View {
                 .listRowBackground(WellnessTheme.surface)
             }
         }
+        .frame(maxWidth: listMaxWidth)
+        .frame(maxWidth: .infinity)
         .scrollContentBackground(.hidden)
         .background(WellnessTheme.bg)
         .navigationTitle("Past days")

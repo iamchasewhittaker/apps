@@ -1,5 +1,22 @@
 # Learnings — Shipyard
 
+## 2026-04-26 (Analytics & Themes — heading fix + plain default + auto-populate)
+
+**The nav label key and the page heading key are different things — don't reuse one for the other.**
+The sidebar nav uses the short `charts` key (`"Analytics"` / `"Charts"`). The page heading needs the full phrase (`"Analytics & Themes"` / `"Charts & Constellations"`). Using one key for both would force the nav label to be long or the heading to be short. The fix is a separate `analyticsHeading` key in `labels.ts`. Rule: when a label appears in two contexts with meaningfully different length constraints, use two keys.
+
+**`readMode()` had its fallback logic backwards — always verify the guard direction when flipping a default.**
+The old implementation was `return stored === 'regular' ? 'regular' : 'nautical'` — which means "default to nautical unless explicitly set." To flip the default to plain, the guard needs to be inverted: `return stored === 'nautical' ? 'nautical' : 'regular'`. The `useMode()` fallback in `ModeProvider.tsx` also had a hardcoded `'nautical'` that needed updating. When flipping a default, grep for every place the old default appears — there may be more than one.
+
+**Delete-then-insert is the right upsert strategy for auto-generated theme rows.**
+The themes table mixes manual rows (`auto_generated = false`, e.g. the Portfolio Thesis) with scanner-generated rows (`auto_generated = true`). A naive upsert-by-slug would leave stale rows if a service or pattern was renamed. Instead: delete all `auto_generated = true` rows before each scan run, then bulk insert fresh ones. Manual rows survive because they're filtered out by the `WHERE auto_generated = true` delete. This pattern is safe as long as `auto_generated` is always set correctly.
+
+**`preview_click` doesn't trigger React's synthetic event system in the headless preview harness.**
+When verifying the ThesisEditor, `preview_click` on the button fired the DOM `click` event but React's `onClick` handler did not run. Workaround: use `preview_eval` to call `element.click()` directly, which goes through the browser's native dispatch and does propagate to React. This is a preview-harness issue only — real users click through the normal event system.
+
+**`useTransition` is the right choice for server action calls in client components.**
+`useState(isPending)` + a manual async handler works but blocks re-renders. `startTransition(async () => { await serverAction() })` keeps the UI responsive during the round-trip without any loading-state boilerplate. The pending state is already provided by `useTransition`, so no extra state is needed.
+
 ## 2026-04-21 (Decommission Ship + editable fields + clipboard dev link)
 
 **`localhost:PORT` links only work when every project runs on a unique port — otherwise they're worse than nothing.**

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-26 (Analytics & Themes — heading fix + plain default + auto-populate + thesis editor)
+
+- **`analyticsHeading` label key.** New entry in `src/lib/labels.ts` with plain `"Analytics & Themes"` and nautical `"Charts & Constellations"`. The old page heading was a hardcoded string; now driven by `ModeHeading` so the toggle actually works on this page.
+- **Plain/regular mode as the new default.** `DEFAULT_MODE` in `src/lib/theme-mode.ts` flipped from `'nautical'` to `'regular'`. `readMode()` guard logic inverted so anything that isn't explicitly stored as `'nautical'` falls back to `'regular'` (was the reverse). `useMode()` fallback in `ModeProvider.tsx` updated to match.
+- **Auto-populated Common Inputs + Cross-App Patterns.** `scripts/scan.ts` gained `ThemeCtx` interface, `SERVICE_RULES` (9 services: Supabase, YNAB, Gmail/Google OAuth, Claude/Anthropic API, Privacy.com, Vercel, Linear, Stripe, GitHub), `PATTERN_RULES` (8 stacks: Next.js+Tailwind+Supabase, SwiftUI+Observable+Supabase, SwiftUI+SwiftData+Keychain, CRA+localStorage, Apps Script+Sheets, Electron+React+TS, Python CLI, SwiftUI+local). Per-app `ThemeCtx` is built in the main scan loop; services + patterns detected via matcher functions; `buildThemeRows()` aggregates to one row per service/pattern with `project_slugs[]`. Upsert strategy: delete all `auto_generated=true` rows before each scan run, then bulk insert fresh rows (preserves manual thesis row). `themes_updated` counter now populated in scan row and summary log (was hardcoded `0`). First run inserted 15 theme rows.
+- **Portfolio Thesis inline editor.** New `src/app/themes/actions.ts` server action (`updateThesis`) that upserts or deletes the `portfolio-thesis` slug row. New `src/app/themes/ThesisEditor.tsx` client component — click-to-edit pattern: static display with hover "edit" hint → textarea with ⌘+Enter save + Esc cancel. `useTransition` keeps the UI non-blocking during the server round-trip.
+
 ### Added — 2026-04-21 (Decommission Ship + editable detail fields + clipboard dev link)
 - **Decommission Ship workflow.** New Danger Zone on Ship detail page with a confirmation modal that archives the project in Supabase, cancels its Linear project (if `LINEAR_API_KEY` is set), and surfaces remaining manual steps (`git mv`, root-CLAUDE.md updates). Also available as CLI (`npx tsx scripts/retire-project.ts <slug> [reason]`).
 - **Supabase migration 0003.** Adds `retired_at timestamptz` + `retire_reason text` to `projects`. Apply once via Supabase SQL Editor (auto-apply via service role fails JWT verification against the Management API). The retire endpoint has a graceful fallback that archives status-only until the migration lands.

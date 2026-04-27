@@ -3,7 +3,7 @@
 ## What happened
 
 1. **`~/Documents/.git`** was **renamed** to **`.git-documents-archive-20260404`**, then that archive (**git metadata only**, ~90MB) was **deleted** so `~/Documents` stopped being a git working tree.
-2. Legacy **`~/Documents/apps`** and **`~/Documents/Projects`** were moved into **`~/Documents/_archive_legacy_monorepo_20260404/`**, then (same era) **`~/Documents/growth-tracker-old`** was grouped with them.
+2. The legacy monorepo folders **`apps`** and **`Projects`** (they previously lived under **~/Documents**) were moved into **`~/Documents/_archive_legacy_monorepo_20260404/`**, then (same era) **`~/Documents/growth-tracker-old`** was grouped with them.
 3. **2026-04-04 (bundle into Chase):** That whole bundle was moved to **`~/Developer/chase/projects/archive/from-documents-20260404/`** (`apps`, `Projects`, `growth-tracker-old`, plus the small **`README.txt`** from the Documents archive step). The directory is **gitignored** — see [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md).
 
 **Nothing under `~/Documents` should remain** named **`apps`**, **`Projects`**, **`growth-tracker-old`**, or **`_archive_legacy_monorepo_20260404`**.

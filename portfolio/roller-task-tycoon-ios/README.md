@@ -6,6 +6,8 @@
 
 **Note:** The app **bundle identifier** remains `com.chasewhittaker.ParkChecklist` for App Store continuity. **Linear** project may still be titled [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) until renamed.
 
+**Design target:** Layout and spacing are tuned for **iPhone 12 Pro Max** (6.7″). The app runs on all supported iPhone sizes (iOS 17+); QA on smaller phones when changing dense UI (board columns, toolbars).
+
 ## Portfolio snapshot
 
 | | |

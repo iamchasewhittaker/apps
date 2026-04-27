@@ -22,6 +22,8 @@
 ## Phase 3 — Automation
 
 - [x] **Auto-scan cron** — `com.chasewhittaker.shipyard-scan` launchd agent runs `scripts/scan-cron.sh` nightly at 3:00 AM local. *(Shipped 2026-04-19.)*
+- [x] **Auto-populate themes table** — scanner detects Common Inputs (9 services) + Cross-App Patterns (8 stacks) from each app's `package.json`, `CLAUDE.md`, and `.env.example`; upserts to `themes` table nightly. *(Shipped 2026-04-26.)*
+- [ ] **Narrative Threads** — deferred; requires structured format (e.g. `## Narrative` heading in CLAUDE.md) or manual entry UI
 - [ ] **Drift alerts** — flag projects whose `last_commit_at` exceeds review cadence threshold
 - [ ] **Public Fleet Showcase** — carve off `/portfolio` behind a separate public route (no auth gate) for the Fleet Showcase page
 
@@ -29,6 +31,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-26 | Analytics & Themes: heading fixed (mode-aware via `analyticsHeading` label), plain mode is now the default, scanner auto-populates Common Inputs + Cross-App Patterns (15 rows on first run), Portfolio Thesis inline editor |
 | 2026-04-21 | Decommission Ship workflow + editable detail fields + clipboard dev link (replaces dead localhost link from 04-20) |
 | 2026-04-20 | Local dev + Vercel access links — `local_port` column, scanner auto-detect, Ship detail header + Links section *(localhost link superseded 2026-04-21 — every CRA/Next app defaults to port 3000 so the link never reached the intended project; replaced by clipboard-copy button)* |
 | 2026-04-20 | Nautical rebrand — helm SVG logo, 8-token palette, BigShoulders + DM Mono + Instrument Sans |

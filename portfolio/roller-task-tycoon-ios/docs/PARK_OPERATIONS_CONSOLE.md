@@ -2,6 +2,8 @@
 
 **Audience:** PM, design, future you. **Canonical how-to / definitions:** [`PARK_OPERATIONS_KEY.md`](PARK_OPERATIONS_KEY.md).
 
+**Design reference:** Primary layout and visual density assume **iPhone 12 Pro Max**; other sizes are supported—verify dense screens (Attractions board, Overview cards) when changing UI.
+
 ## Thesis
 
 The user is the **park manager**; their life is the **park**. Work items are **attractions** with tycoon language (statuses, zones, staff roles, profit). The app stays **practical** (real tasks, due dates, backups) with a **retro control-panel** feel—not a toy that blocks shipping.

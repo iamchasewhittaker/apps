@@ -4,9 +4,9 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Decommission Ship workflow + editable detail fields + clipboard dev-link shipped |
-| Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in Supabase SQL Editor (auto-apply blocked by Management API auth) · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Linear Harbor Master sync |
-| Last touch | 2026-04-21                                                            |
+| Focus      | Analytics & Themes page — heading fix, plain default, auto-populated Common Inputs + Cross-App Patterns, Portfolio Thesis inline editor |
+| Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Narrative Threads (manual or structured CLAUDE.md format) · Linear Harbor Master sync |
+| Last touch | 2026-04-26                                                            |
 
 ## Production URL
 

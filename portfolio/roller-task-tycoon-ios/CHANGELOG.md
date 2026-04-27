@@ -67,6 +67,10 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- **Docs:** note that UI is **designed for iPhone 12 Pro Max** (README, `CLAUDE.md`, `AGENTS.md`, `docs/PARK_OPERATIONS_CONSOLE.md`, `docs/PARK_OPERATIONS_KEY.md`).
+
+- **`docs/planning/APP_FLOW.md`:** aligned with **Park Operations Console** (five tabs, Overview-first, global New Attraction, ledger/backup flows; links to `docs/PARK_OPERATIONS_CONSOLE.md` and `docs/PARK_OPERATIONS_KEY.md`).
+
 - **App icon:** single **1024×1024** `AppIcon.png` in `AppIcon.appiconset` (park green gradient, simple coaster silhouette + gold accent); center-cropped to square and scaled for App Store sizing; wired in `Contents.json`.
 
 - **Rebrand** to **RollerTask Tycoon:** monorepo path **`portfolio/roller-task-tycoon-ios`**; Xcode project **RollerTaskTycoon** / targets **RollerTaskTycoon**, **RollerTaskTycoonTests**; **`RollerTaskTycoonApp`** entry; display name **RollerTask Tycoon**; bundle id **`com.chasewhittaker.ParkChecklist`** unchanged.
