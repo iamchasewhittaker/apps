@@ -99,7 +99,7 @@ Chase can greenlight any of these in a follow-up session.
 
 - [ ] Huntr-style extension expansion — generic content scripts for Indeed, Glassdoor, Greenhouse, Lever, Workday, Ashby, Wellfound.
 - [ ] AI API re-add (secondary, not primary) — improve copy-paste first (one-click copy-all, section anchors, prompt history), then optional API toggle in Settings with fallback prompt view always accessible.
-- [ ] Email / LinkedIn notification feed — Gmail OAuth or forward-to-alias; unified inbox of recruiter pings, application updates, interview invites inside HQ. Extends v8.12 email-parse.
+- [x] **Email / LinkedIn notification feed** (v8.18, 2026-04-26) — browser Gmail OAuth (PKCE-style popup via Google Identity Services) + server-side token exchange in `api/gmail/*`. AES-256-GCM-encrypted refresh token in a separate Supabase row (`app_key='job-search:gmail'`). Heuristic classifier (`src/inbox/classifier.js`) buckets each Gmail-labeled message into recruiter / ats_update / interview_invite / linkedin / other. `InboxPanel` on Focus tab between MorningLaunchpad and TargetCompanyBoard — review-first queue with one-click Save Contact + App / Bump stage / Set interview / Dismiss / Snooze. Auto-logs wins on actioned recruiter pings + interview invites. Read-only — replies still happen in Gmail.
 - [ ] MBA Recruiting Workbook — parse Chase's Google Sheet, fold useful sections into Resources tab or a new Reference tab.
 - [ ] Shipyard public "About Chase" page — surface direction + strengths + friend feedback on the portfolio hub.
 - [ ] Per-app CLAUDE.md voice-brief references — 1-line pointer in each portfolio app's CLAUDE.md so Claude sessions pick up Chase's voice automatically.

@@ -8,14 +8,33 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.17 |
-| **Branch** | `feat/job-search-v8.16` (off `main`) — carrying v8.17 work |
+| **Version** | v8.18 |
+| **Branch** | `feat/job-search-v8.16` (off `main`) — carrying v8.17 + v8.18 work |
 | **URL** | job-search-hq.vercel.app |
-| **Storage key** | `chase_job_search_v1` |
-| **Focus** | Daily Flow Option E shipped (v8.17): `MorningLaunchpad` at top of Focus tab wires A + B + C + D (Discover → Apply → Outreach) into one soft-gated ~80-min daily flow. `getLaunchpadProgress` derives all stage state from existing data — no new persistence beyond per-day "sent" Set. Stage 3's new `OutreachSprint` adds a `✓ Mark Sent` button (logs `dailyAction("outreach", ...)`) so the 3/day outreach floor is reachable inside the launchpad. Bonus fix: `TodaysQueue`'s ✓ Applied shortcut now also logs the daily action so Stage 2 progress is reachable without the wizard. |
-| **Next** | Email/LinkedIn notification feed (Gmail OAuth or forward-to-alias) — deferred next-wave, bigger lift. |
-| **Blockers** | None. |
-| **Last touch** | 2026-04-26 — v8.17: `getLaunchpadProgress(applications, dailyActions, now)` in constants.js; `MorningLaunchpad` + `OutreachSprint` in FocusTab.jsx; 17 launchpad style tokens in `s.*`; TodaysQueue ✓ Applied bugfix. Build clean (+2.0 kB gzipped). Sunday rest mode verified live (today is Sunday); weekday flow verified via temp Sunday-bypass + AppModal save flow. |
+| **Storage key** | `chase_job_search_v1` (data) + Supabase `user_data` row `app_key='job-search:gmail'` (encrypted refresh token, server-only — never localStorage) |
+| **Focus** | Gmail Inbox Feed shipped (v8.18): Focus-tab `InboxPanel` between MorningLaunchpad and TargetCompanyBoard. Browser Gmail OAuth via GIS popup (`src/inbox/oauth.js`) → server-side token exchange in `api/gmail/exchange.js` (AES-256-GCM-encrypts refresh token before Supabase write) → browser fetches gmail.googleapis.com directly with the access token. Classifier (`src/inbox/classifier.js`) buckets messages into recruiter / ats_update / interview_invite / linkedin / other. Review-first queue with one-click Save Contact + App / Bump stage / Set interview / Dismiss / Snooze. Auto-logs wins on actioned recruiter pings + interview invites. Read-only — replies still happen in Gmail. |
+| **Next** | One-time GCP + Vercel env setup (see "Activation steps" below) — required before the panel can actually fetch. After that, run the verification flow from the plan: send test recruiter / ATS-reject / Calendly / LinkedIn-alert mails labeled JobSearch, click ↻ Refresh, exercise Save Contact + App / Bump stage / Set interview. |
+| **Blockers** | OAuth needs `REACT_APP_GOOGLE_CLIENT_ID` + server-only `GOOGLE_CLIENT_SECRET` + `GMAIL_TOKEN_ENC_KEY` + `SUPABASE_SERVICE_ROLE_KEY`. Without them the panel renders cleanly but Connect Gmail fails. |
+| **Last touch** | 2026-04-26 — v8.18: `api/gmail/{exchange,refresh,disconnect}.js` + `api/_lib/{crypto,supabase}.js`; `src/inbox/{oauth,gmailClient,classifier,syncInbox}.js`; `src/components/{InboxPanel,InboxItem}.jsx`; `inbox: []` + `INBOX_KINDS` + `normalizeInboxItems` + `isInboxPending` + `matchAppFromInboxItem` + 28 inbox style tokens in constants.js; App.jsx inbox handlers + `onAfterSave` modal hook for ContactModal/AppModal. Build clean (+8.73 kB gzipped, 176.38 → 185.11 kB). Preview-verified: panel renders not-connected state cleanly, setup guide toggles, no console errors. Real Gmail flow pending env setup. |
+
+---
+
+## Activation steps (one-time, Chase-side)
+
+1. **GCP project** — `console.cloud.google.com` → New project "Job Search HQ" → enable Gmail API.
+2. **OAuth consent screen** — External, status Testing, add `chase.t.whittaker@gmail.com` as test user.
+3. **OAuth client** — Web application. Authorized JavaScript origins: `http://localhost:3001` + `https://job-search-hq.vercel.app`. Authorized redirect URIs: `http://localhost:3001` + `https://job-search-hq.vercel.app` (popup mode uses `postmessage`, but Google still requires the JS origin to be listed).
+4. **Local `.env`** — add `REACT_APP_GOOGLE_CLIENT_ID=<client_id>` (next to the existing `REACT_APP_SUPABASE_*` lines).
+5. **Vercel env (Production + Preview)** — `cd portfolio/job-search-hq` then:
+   ```
+   vercel env add REACT_APP_GOOGLE_CLIENT_ID
+   vercel env add GOOGLE_CLIENT_SECRET
+   vercel env add GMAIL_TOKEN_ENC_KEY            # value: openssl rand -base64 32
+   vercel env add SUPABASE_SERVICE_ROLE_KEY      # from Supabase Settings → API
+   ```
+   Add to both Production and Preview when prompted.
+6. **Gmail filters** — open the running app's Inbox panel → "Show one-time Gmail setup" expands the filter recipe (label `JobSearch`, senders `linkedin.com` / `*.greenhouse.io` / `hire.lever.co` / `myworkday.com` / `ashbyhq.com`, subject `interview OR schedule OR availability`).
+7. **Connect** — click Connect Gmail in the panel → consent screen ("Job Search HQ wants to read your Gmail") → Advanced → continue → Allow. Token lands in Supabase encrypted.
 
 ---
 

@@ -18,6 +18,30 @@
 
 ## Entries
 
+### 2026-04-26 — Gmail OAuth in a browser SPA: keep `client_secret` server-side, fetch client-side
+**What happened:** Wiring Gmail OAuth into HQ for v8.18. First instinct was to do everything in the browser — load GIS, run popup, exchange code. Google's "Web application" OAuth client type still requires `client_secret` for the token POST, even with PKCE.
+**Root cause:** Two of Google's three SPA flows leak the secret into the bundle: (1) the `initTokenClient` implicit flow returns access tokens directly but no refresh token (re-consent every hour, useless for a daily workflow); (2) embedding `client_secret` in `REACT_APP_*` makes it world-readable on the deployed bundle. The third flow — popup auth code → server exchange — keeps the secret in env and gets a real refresh token.
+**Fix / lesson:** Added `api/gmail/exchange.js` + `api/gmail/refresh.js` Vercel functions. `client_secret` lives in `GOOGLE_CLIENT_SECRET` (server-only). Refresh tokens are AES-256-GCM-encrypted with `GMAIL_TOKEN_ENC_KEY` (32-byte base64) before going into a separate Supabase row keyed `app_key='job-search:gmail'`. Browser only ever holds the short-lived access token in module memory — never localStorage. `gmail.googleapis.com` supports CORS so per-message fetches still go browser-direct (no per-fetch server hop).
+**Tags:** oauth · security · architecture · vercel-functions
+
+### 2026-04-26 — Modal `onAfterSave` is the cleanest way to chain side-effects after a save
+**What happened:** Inbox actions like "Save Contact + App" need to: (1) open ContactModal pre-filled, (2) on save → open AppModal pre-filled with the saved company, (3) on app save → mark the inbox item actioned + auto-log a win. Previously every modal close was hardcoded in App.jsx's onSave handler.
+**Root cause:** ContactModal/AppModal know nothing about inbox items, and adding inbox-awareness to every modal would couple them to a feature they shouldn't care about.
+**Fix / lesson:** The modal config object now accepts an optional `onAfterSave(saved)` callback. App.jsx's onSave handler runs the existing `saveContact`/`saveApp`, closes the modal, then invokes `onAfterSave` if present. Inbox actions chain three steps: `setContactModal({ ..., onAfterSave: (c) => setAppModal({ ..., onAfterSave: (a) => markInboxActioned(...) }) })`. Modals stay agnostic; the call site composes the chain.
+**Tags:** react · architecture · composition
+
+### 2026-04-26 — Heuristic email classifier beats LLM for solo-user volume
+**What happened:** When deciding how to bucket Gmail messages into recruiter / ats_update / interview_invite / linkedin / other, the temptation was an LLM call (Claude / Gemini) per message for accuracy.
+**Root cause:** HQ's existing v8.6 decision rejected in-app LLM for cost + privacy reasons. Adding it back for inbox classification would rebuild the same complexity (key management, error handling, prompt versioning) for a feature that processes maybe 20 emails/day for one user.
+**Fix / lesson:** `src/inbox/classifier.js` is regex + sender-domain rules, mirroring the existing `parseRecruiterEmail` heuristic posture. False-positive cost is bounded because the queue is review-first — nothing creates a Contact / Application until Chase clicks. Confidence scores are tracked but not yet surfaced; if false-positive rate gets annoying, add a confidence-threshold filter before reaching for an LLM.
+**Tags:** architecture · simplicity · classifier
+
+### 2026-04-26 — Separate Supabase row for OAuth state, not a column on the data blob
+**What happened:** Tempting to put `gmail_email` + encrypted refresh token directly on `chase_job_search_v1` next to applications/contacts.
+**Root cause:** That blob round-trips through localStorage → Supabase → localStorage on every save. Tokens would be backed up alongside non-sensitive data, exported during backups, and visible to anyone with localStorage access (XSS scope).
+**Fix / lesson:** Tokens live in a separate `user_data` row with `app_key='job-search:gmail'` — same RLS gate, same table, but never spread into the data blob. Server endpoints read/write that row only. Browser sees the access token in memory and the gmail email address (returned in API responses); never the encrypted refresh token. Same pattern works for any future per-user OAuth (Slack, Calendar, etc.).
+**Tags:** security · architecture · supabase
+
 ### 2026-04-26 — Morning Launchpad: derive stage state from existing data, don't persist a new schema
 **What happened:** Option E needed a 3-stage daily flow (Discover → Apply → Outreach) that resets each day. First instinct was a `launchpadStage` field on `data` with date stamping, manual reset on day rollover, etc.
 **Root cause:** Adding new persistence creates two sources of truth for daily progress (the new field AND `dailyActions` already counts apps + outreach for `DailyMinimums`). They drift, they need migration paths, they break sync.

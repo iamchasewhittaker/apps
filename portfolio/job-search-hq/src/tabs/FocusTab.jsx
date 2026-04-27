@@ -23,6 +23,7 @@ import {
 } from "../constants";
 import { JOB_SEARCH_EXTERNAL_LINKS } from "../applyPrompts";
 import ErrorBoundary from "../ErrorBoundary";
+import InboxPanel from "../components/InboxPanel";
 
 const KASSIE_DISMISS_KEY = "chase_js_kassie_dismiss_v1";
 
@@ -1262,6 +1263,7 @@ export default function FocusTab({
   wins, addWin, removeWin,
   setKitApp, setResumeTab, saveApp,
   setApplyWizard,
+  inbox = [], inboxHandlers = null,
 }) {
   const queue = buildQueue(applications || [], contacts || []);
   const outreachList = buildOutreachPriorityList(contacts || [], applications || []);
@@ -1307,6 +1309,15 @@ export default function FocusTab({
           saveApp={saveApp}
           showError={showError}
         />
+
+        {inboxHandlers && (
+          <InboxPanel
+            inbox={inbox}
+            applications={applications}
+            handlers={inboxHandlers}
+            showError={showError}
+          />
+        )}
 
         <TargetCompanyBoard
           applications={applications}

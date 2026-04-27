@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   STORAGE_KEY,
   defaultData, blankApp, blankContact, normalizeApplication, normalizeStarStories, normalizeContact,
-  normalizeWins, blankWin,
+  normalizeWins, blankWin, normalizeInboxItems, matchAppFromInboxItem,
   s, css, today, generateId,
 } from "./constants";
 import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
@@ -265,6 +265,7 @@ export default function JobSearchTracker() {
     next.contacts = (next.contacts || []).map(normalizeContact);
     next.starStories = normalizeStarStories(next.starStories);
     next.wins = normalizeWins(next.wins);
+    next.inbox = normalizeInboxItems(next.inbox);
     setData(next);
   }
 
@@ -482,6 +483,191 @@ export default function JobSearchTracker() {
     setData(d => ({ ...d, dailyActions: (d.dailyActions || []).filter(a => a.id !== id) }));
   }
 
+  // ── INBOX (v8.18) ──────────────────────────────────────────────────────────
+  function mergeInboxItems(newItems = []) {
+    if (!newItems.length) return;
+    setData(d => {
+      const known = new Set((d.inbox || []).map(i => i.gmailMessageId).filter(Boolean));
+      const additions = newItems.filter(i => i.gmailMessageId && !known.has(i.gmailMessageId));
+      if (!additions.length) return d;
+      return { ...d, inbox: [...additions, ...(d.inbox || [])] };
+    });
+  }
+  function patchInboxItem(id, patch) {
+    setData(d => ({
+      ...d,
+      inbox: (d.inbox || []).map(i => i.id === id ? { ...i, ...patch } : i),
+    }));
+  }
+  function dismissInboxItem(id) {
+    patchInboxItem(id, { status: "dismissed", actionedAt: new Date().toISOString() });
+  }
+  function snoozeInboxItem(id, hours = 24) {
+    const until = new Date(Date.now() + hours * 60 * 60 * 1000).toISOString();
+    patchInboxItem(id, { status: "snoozed", snoozeUntil: until });
+  }
+  function markInboxActioned(id, actionedAs) {
+    patchInboxItem(id, { status: "actioned", actionedAt: new Date().toISOString(), actionedAs: actionedAs || null });
+  }
+
+  function inboxOpenContact(item) {
+    const parsed = item.classification?.parsed || {};
+    const prefill = {
+      ...blankContact(),
+      name: parsed.name || item.from?.name || "",
+      email: parsed.email || item.from?.email || "",
+      company: parsed.company || "",
+      role: parsed.role || (item.classification?.kind === "recruiter" ? "Recruiter" : ""),
+      linkedin: parsed.linkedin || "",
+      type: item.classification?.kind === "linkedin" ? "other" : "recruiter",
+      outreachStatus: "replied",
+      source: "gmail",
+      lastContact: today(),
+      notes: item.subject ? `From email: ${item.subject}` : "",
+    };
+    setContactModal({
+      mode: "new",
+      contact: prefill,
+      onAfterSave: (saved) => {
+        markInboxActioned(item.id, { kind: "contact", recordId: saved.id });
+        addWin({
+          ...blankWin(),
+          type: "response",
+          source: `contact:${saved.id}`,
+          title: `${saved.name || "Recruiter"}${saved.company ? ` (${saved.company})` : ""} reached out`,
+          note: item.subject || "",
+          autoLogged: true,
+        });
+      },
+    });
+  }
+
+  function inboxOpenContactAndApp(item) {
+    const parsed = item.classification?.parsed || {};
+    const company = parsed.company || "";
+    const contactPrefill = {
+      ...blankContact(),
+      name: parsed.name || item.from?.name || "",
+      email: parsed.email || item.from?.email || "",
+      company,
+      role: parsed.role || "Recruiter",
+      linkedin: parsed.linkedin || "",
+      type: "recruiter",
+      outreachStatus: "replied",
+      source: "gmail",
+      lastContact: today(),
+      notes: item.subject ? `From email: ${item.subject}` : "",
+    };
+    setContactModal({
+      mode: "new",
+      contact: contactPrefill,
+      onAfterSave: (savedContact) => {
+        const appPrefill = {
+          ...blankApp(),
+          company: savedContact.company || company,
+          title: parsed.jobTitle || "",
+          url: parsed.jobUrl || "",
+          stage: "Interested",
+        };
+        setAppModal({
+          mode: "new",
+          app: appPrefill,
+          onAfterSave: (savedApp) => {
+            markInboxActioned(item.id, { kind: "contact_app", recordId: savedApp.id });
+            addWin({
+              ...blankWin(),
+              type: "response",
+              source: `app:${savedApp.id}`,
+              title: `${savedContact.name || "Recruiter"} reached out${savedApp.company ? ` — ${savedApp.company}` : ""}`,
+              note: parsed.jobTitle ? `Role: ${parsed.jobTitle}` : (item.subject || ""),
+              autoLogged: true,
+            });
+          },
+        });
+      },
+    });
+  }
+
+  function inboxBumpStage(item, app, newStage) {
+    if (!app || !newStage) return;
+    saveApp({ ...app, stage: newStage });
+    markInboxActioned(item.id, { kind: "stage_bump", recordId: app.id });
+  }
+
+  function inboxOpenAppEdit(item, app) {
+    if (!app) return;
+    setAppModal({
+      mode: "edit",
+      app: { ...app },
+      onAfterSave: (savedApp) => {
+        markInboxActioned(item.id, { kind: "stage_bump", recordId: savedApp.id });
+      },
+    });
+  }
+
+  function inboxSetInterview(item, app) {
+    const parsed = item.classification?.parsed || {};
+    const schedulingUrl = parsed.schedulingUrl || "";
+    if (!app) {
+      // No matching application — open a new app pre-filled from the invite
+      setAppModal({
+        mode: "new",
+        app: {
+          ...blankApp(),
+          company: parsed.company || "",
+          title: parsed.jobTitle || "",
+          stage: "Phone Screen",
+          nextStep: schedulingUrl ? `Pick a time: ${schedulingUrl}` : (item.subject || "Schedule interview"),
+          nextStepType: "interview",
+          nextStepDate: today(),
+        },
+        onAfterSave: (savedApp) => {
+          markInboxActioned(item.id, { kind: "interview", recordId: savedApp.id });
+          addWin({
+            ...blankWin(),
+            type: "response",
+            source: `app:${savedApp.id}`,
+            title: `Interview scheduled${savedApp.company ? ` — ${savedApp.company}` : ""}`,
+            note: schedulingUrl || item.subject || "",
+            autoLogged: true,
+          });
+          setPrepModal({ app: savedApp });
+        },
+      });
+      return;
+    }
+    const updated = {
+      ...app,
+      stage: app.stage === "Interested" || app.stage === "Applied" ? "Phone Screen" : app.stage,
+      nextStep: schedulingUrl ? `Pick a time: ${schedulingUrl}` : `Schedule: ${item.subject || "Interview"}`,
+      nextStepType: "interview",
+      nextStepDate: today(),
+    };
+    saveApp(updated);
+    markInboxActioned(item.id, { kind: "interview", recordId: app.id });
+    addWin({
+      ...blankWin(),
+      type: "response",
+      source: `app:${app.id}`,
+      title: `Interview scheduled${app.company ? ` — ${app.company}` : ""}`,
+      note: schedulingUrl || item.subject || "",
+      autoLogged: true,
+    });
+    setPrepModal({ app: updated });
+  }
+
+  const inboxHandlers = {
+    mergeInboxItems,
+    dismissInboxItem,
+    snoozeInboxItem,
+    inboxOpenContact,
+    inboxOpenContactAndApp,
+    inboxBumpStage,
+    inboxOpenAppEdit,
+    inboxSetInterview,
+    matchAppFromInboxItem,
+  };
+
   const activeApps = data.applications.filter(a => !["Rejected", "Withdrawn"].includes(a.stage));
   const archivedApps = data.applications.filter(a => ["Rejected", "Withdrawn"].includes(a.stage));
   const profileComplete = !!(data.baseResume && data.profile.name && data.profile.targetRoles);
@@ -553,6 +739,7 @@ export default function JobSearchTracker() {
           wins={data.wins || []} addWin={addWin} removeWin={removeWin}
           setKitApp={setKitApp} setResumeTab={setResumeTab} saveApp={saveApp}
           setApplyWizard={setApplyWizard}
+          inbox={data.inbox || []} inboxHandlers={inboxHandlers}
         />
       )}
       {tab === "pipeline" && (
@@ -592,7 +779,12 @@ export default function JobSearchTracker() {
       {appModal && (
         <AppModal
           modal={appModal} contacts={data.contacts}
-          onSave={app => { saveApp(app); setAppModal(null); }}
+          onSave={app => {
+            saveApp(app);
+            const cb = appModal.onAfterSave;
+            setAppModal(null);
+            if (typeof cb === "function") cb(app);
+          }}
           onDelete={id => { deleteApp(id); setAppModal(null); }}
           onClose={() => setAppModal(null)}
         />
@@ -600,7 +792,12 @@ export default function JobSearchTracker() {
       {contactModal && (
         <ContactModal
           modal={contactModal} apps={data.applications}
-          onSave={c => { saveContact(c); setContactModal(null); }}
+          onSave={c => {
+            saveContact(c);
+            const cb = contactModal.onAfterSave;
+            setContactModal(null);
+            if (typeof cb === "function") cb(c);
+          }}
           onClose={() => setContactModal(null)}
         />
       )}

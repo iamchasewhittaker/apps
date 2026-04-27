@@ -1,6 +1,39 @@
 # Changelog
 
-## [Unreleased] — 2026-04-26 — Daily Flow Option E: Morning Launchpad (v8.17)
+## [Unreleased] — 2026-04-26 — Gmail Inbox Feed (v8.18)
+
+Closes the deferred next-wave item "Email / LinkedIn notification feed." HQ now pulls a Gmail label, classifies recruiter pings / ATS updates / interview invites / LinkedIn notifications, and surfaces them as a triage queue on Focus tab. Read-only — replies still happen in Gmail. Token exchange runs server-side so `client_secret` never enters the browser.
+
+### Added
+- **`api/gmail/exchange.js`, `api/gmail/refresh.js`, `api/gmail/disconnect.js`** — Vercel serverless functions wrapping Google's OAuth code-exchange + refresh. Validate the caller via the Supabase access-token JWT, encrypt the Google refresh token with AES-256-GCM via `api/_lib/crypto.js`, store at rest in a separate Supabase `user_data` row keyed `app_key='job-search:gmail'` (never written to localStorage). `api/_lib/supabase.js` is the server Supabase client (service-role) with helpers for read/write/delete of that row.
+- **`src/inbox/oauth.js`** — Browser GIS loader. Lazy-loads `accounts.google.com/gsi/client`, runs `initCodeClient` in popup mode with `access_type: offline` + `prompt: consent` to ensure refresh tokens. Caches `access_token` in module memory only; auto-refreshes within 5 min of expiry; throws `code: "reconnect_required"` on Google `invalid_grant` so the panel can prompt re-consent.
+- **`src/inbox/gmailClient.js`** — Browser Gmail REST client (CORS-enabled, no server hop). `findLabelId`, `listLabeledMessages`, `fetchMessage` with full MIME walk + base64url decode. Returns parsed `{ from: {name,email,domain}, subject, snippet, bodyText, bodyHtml, headers }`.
+- **`src/inbox/classifier.js`** — Heuristic classifier returning `{ kind, confidence, parsed }`. Branches: `linkedin` (sender domain), `ats_update` (sender domain match against `ATS_SENDER_DOMAINS` — Greenhouse / Lever / Workday / Ashby / SmartRecruiters / Jobvite / BambooHR / Workable / Recruitee / iCIMS / Taleo / SuccessFactors), `interview_invite` (calendar attachment OR subject keyword + scheduling URL — Calendly / GoodTime / x.ai / ChiliPiper / SavvyCal / cal.com / Zoom Scheduler), `recruiter` (delegates to existing `parseRecruiterEmail` when ≥3 of name/email/company/role are extractable from a non-personal-provider domain). ATS sub-kinds: `auto_reject` / `application_received` / `assessment` / `next_step` with suggested target stage.
+- **`src/inbox/syncInbox.js`** — Orchestrator. `runInboxSync({ existingInbox, labelName })` ensures a token, lists labeled messages, fetches + classifies any not already known by `gmailMessageId`, returns `{ newItems, labelMissing }`.
+- **`src/components/InboxPanel.jsx`** — Focus-tab panel mounted between `MorningLaunchpad` and `TargetCompanyBoard`. States: not-connected → "Connect Gmail" CTA + collapsible setup guide listing the Gmail filter rules; connected → header (`📬 Inbox · N pending` + `gmail-address · synced 2m ago` + ↻ Refresh + Disconnect), top 5 pending items, "+N more" tail; label-missing → guidance row; reconnect-required → inline error.
+- **`src/components/InboxItem.jsx`** — Single notification card. Action buttons by kind: recruiter → Save Contact + App / Save Contact / Snooze 24h / Dismiss; ats_update.next_step → Bump <Company> → <Stage> / Open application; ats_update.auto_reject → Mark <Company> rejected; interview_invite → Schedule + open prep (creates app if no match); linkedin.inmail → Save Contact; linkedin.* → Dismiss.
+- **`inbox: []`** added to `defaultData` in `constants.js`. New helpers: `INBOX_KINDS`, `INBOX_STATUSES`, `inboxKindMeta(kind)`, `normalizeInboxItems(items)`, `isInboxPending(item, now)`, `matchAppFromInboxItem(item, applications)` (case-insensitive, alphanumeric-only company match against parsed.company → from.name → from.domain). Tokens added to `s`: `inboxPanel`, `inboxHeader`, `inboxTitle`, `inboxSub`, `inboxActions`, `inboxRefreshBtn(+Spin)`, `inboxConnectBtn`, `inboxDisconnect`, `inboxEmpty`, `inboxIntro`, `inboxItem(+Top|Title|Time|Subject|Snippet|Actions)`, `inboxKindBadge`, `inboxBtn(Primary|Secondary|Dismiss)`, `inboxError`, `inboxSetupGuide(+Title)`.
+- **App.jsx inbox handlers**: `mergeInboxItems` (idempotent on `gmailMessageId`), `dismissInboxItem`, `snoozeInboxItem(id, hours)`, `inboxOpenContact`, `inboxOpenContactAndApp`, `inboxBumpStage`, `inboxOpenAppEdit`, `inboxSetInterview`, `markInboxActioned`. Modal config now accepts an optional `onAfterSave` callback that fires once after the existing `saveContact`/`saveApp` commits — used by inbox actions to mark items actioned + auto-log wins (`type: "response", source: "app:<id>" | "contact:<id>", autoLogged: true`).
+
+### Configuration (one-time, per-machine)
+- New env: `REACT_APP_GOOGLE_CLIENT_ID` (browser-safe), and server-only `GOOGLE_CLIENT_SECRET` + `GMAIL_TOKEN_ENC_KEY` (32-byte base64) + `SUPABASE_SERVICE_ROLE_KEY`. Add via `vercel env add` for production + preview. `.env.example` updated.
+- GCP: new "Job Search HQ" project, enable Gmail API, OAuth consent External (Testing) with `chase.t.whittaker@gmail.com` as test user, OAuth Web client with redirect URIs `http://localhost:3001` + `https://job-search-hq.vercel.app`.
+- Gmail: create label `JobSearch`, add filters from senders: `linkedin.com`, `greenhouse.io`, `hire.lever.co`, `myworkday.com`, `ashbyhq.com`; subject contains `interview OR schedule OR availability`. Setup-guide panel inside HQ documents this.
+
+### Architecture decisions
+- **Token storage:** Refresh token encrypted at rest in Supabase via AES-256-GCM (`GMAIL_TOKEN_ENC_KEY`); access token in browser memory only. Tokens never serialized to localStorage. Same RLS gate as `chase_job_search_v1` but a separate row (`app_key='job-search:gmail'`) so the row is never spread into the data blob and is revocable independently.
+- **Browser-side fetch, server-side exchange:** Token exchange + refresh require `client_secret` (Google Web Application client type), so they live in `api/gmail/*`. Email fetching uses Gmail's CORS endpoints directly with the access token — no per-fetch server hop.
+- **Review-first:** Nothing creates a Contact / Application / wins entry until Chase clicks the action button. Confidence threshold can be tuned post-ship if false positives bite.
+- **Cross-device:** `inbox` array rides along in `chase_job_search_v1`, so when Job Search HQ iOS Phase 2 sync ships, actioned items + wins flow to iPhone for free.
+
+### Notes
+- Build clean, +8.73 kB gzipped (176.38 → 185.11 kB). No data-shape break; `normalizeInboxItems` defaults missing fields.
+- Verified end-to-end via dev preview: panel renders the not-connected CTA between MorningLaunchpad and TargetCompanyBoard; setup-guide toggle expands the filter list; no console errors. Real Gmail-connected flow (the four-message classifier smoke test from the plan's verification) requires the GCP setup steps above and will be verified post-deploy.
+- Pre-existing dev-mode quirk noted: `useState(defaultData)` + StrictMode double-effect can briefly write defaults to localStorage during the load→save race on reload. Pre-dates v8.18, unchanged here, doesn't affect production. Worth a follow-up to move the load into a `useState(() => loadInitial())` lazy initializer.
+
+---
+
+## 2026-04-26 — Daily Flow Option E: Morning Launchpad (v8.17)
 
 Wires A + B + C + D into one soft-gated 3-stage daily flow at the top of the Focus tab. The math: Discover 15 min + Apply 50 min + Outreach 15 min = ~80 min from "open the app" to "daily floor cleared." Replaces the prior pattern of hunting through 16 stacked sections to figure out where to start.
 

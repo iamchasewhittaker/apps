@@ -542,6 +542,7 @@ export const defaultData = {
   starStories: [],
   dailyActions: [], // { id, date, type, note, time }
   wins: [],         // { id, date, type, source, title, note, autoLogged }
+  inbox: [],        // v8.18 — Gmail-derived notification feed (see normalizeInboxItems)
   baseResume: RESUME_TEMPLATE_IC,
   profile: {
     name: "Chase Whittaker",
@@ -1181,6 +1182,88 @@ export function blankContact() {
   };
 }
 
+// ── INBOX FEED (v8.18) ────────────────────────────────────────────────────────
+// Gmail-derived notifications. Persisted on the data blob; ride along to
+// Supabase + iOS via existing sync. Tokens live in a separate Supabase row,
+// never in localStorage. Classification fed by src/inbox/classifier.js.
+export const INBOX_KINDS = [
+  { value: "recruiter",        label: "Recruiter",   color: "#a78bfa", bg: "#312e81" },
+  { value: "ats_update",       label: "ATS update",  color: "#60a5fa", bg: "#1e3a5f" },
+  { value: "interview_invite", label: "Interview",   color: "#34d399", bg: "#0c1a0c" },
+  { value: "linkedin",         label: "LinkedIn",    color: "#9ca3af", bg: "#1f2937" },
+  { value: "other",            label: "Other",       color: "#9ca3af", bg: "#111827" },
+];
+
+export const INBOX_STATUSES = ["pending", "actioned", "dismissed", "snoozed"];
+
+export function inboxKindMeta(kind) {
+  return INBOX_KINDS.find(k => k.value === kind) || INBOX_KINDS[INBOX_KINDS.length - 1];
+}
+
+export function normalizeInboxItems(items = []) {
+  if (!Array.isArray(items)) return [];
+  return items.map(it => ({
+    id: it.id || generateId(),
+    gmailMessageId: it.gmailMessageId || "",
+    gmailThreadId: it.gmailThreadId || "",
+    receivedAt: it.receivedAt || null,
+    fetchedAt: it.fetchedAt || null,
+    from: {
+      name: it.from?.name || "",
+      email: it.from?.email || "",
+      domain: it.from?.domain || "",
+    },
+    subject: it.subject || "",
+    snippet: it.snippet || "",
+    classification: it.classification && typeof it.classification === "object"
+      ? {
+          kind: it.classification.kind || "other",
+          confidence: typeof it.classification.confidence === "number" ? it.classification.confidence : 0,
+          parsed: it.classification.parsed || {},
+        }
+      : { kind: "other", confidence: 0, parsed: {} },
+    status: INBOX_STATUSES.includes(it.status) ? it.status : "pending",
+    snoozeUntil: it.snoozeUntil || null,
+    actionedAt: it.actionedAt || null,
+    actionedAs: it.actionedAs && typeof it.actionedAs === "object" ? it.actionedAs : null,
+  }));
+}
+
+// Pending = visible in the panel today. Snoozed-until-past also counts as pending.
+export function isInboxPending(item, now = Date.now()) {
+  if (!item) return false;
+  if (item.status === "pending") return true;
+  if (item.status === "snoozed") {
+    const until = item.snoozeUntil ? Date.parse(item.snoozeUntil) : 0;
+    return !until || until <= now;
+  }
+  return false;
+}
+
+// Best-effort match of an inbox item to an existing application by company name.
+// Used by ATS-update + interview-invite actions ("bump <Company> stage").
+export function matchAppFromInboxItem(item, applications = []) {
+  if (!item || !applications.length) return null;
+  const candidates = [];
+  const parsed = item.classification?.parsed || {};
+  if (parsed.company) candidates.push(parsed.company);
+  if (item.from?.name) candidates.push(item.from.name);
+  if (item.from?.domain) candidates.push(item.from.domain.split(".")[0]);
+  const norm = s => (s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  for (const cand of candidates) {
+    const c = norm(cand);
+    if (!c) continue;
+    const exact = applications.find(a => norm(a.company) === c);
+    if (exact) return exact;
+    const partial = applications.find(a => {
+      const ac = norm(a.company);
+      return ac && (ac.includes(c) || c.includes(ac));
+    });
+    if (partial) return partial;
+  }
+  return null;
+}
+
 // ── EMAIL PARSING ─────────────────────────────────────────────────────────────
 export function parseRecruiterEmail(raw) {
   const text = raw || "";
@@ -1606,6 +1689,34 @@ export const s = {
   launchpadRestTitle: { fontSize: 14, fontWeight: 700, color: "#f3f4f6", marginBottom: 6 },
   outreachSentRow: { opacity: 0.55, transition: "opacity 0.2s" },
   outreachBtnSent: { background: "#0c1a0c", border: "1px solid #14532d", color: "#6ee7b7", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
+
+  // Inbox (v8.18 — Gmail-derived notification feed)
+  inboxPanel: { background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 14, padding: "14px 16px", marginBottom: 18 },
+  inboxHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10, flexWrap: "wrap" },
+  inboxTitleWrap: { display: "flex", flexDirection: "column", gap: 2 },
+  inboxTitle: { fontSize: 14, fontWeight: 700, color: "#f3f4f6", display: "flex", alignItems: "center", gap: 8 },
+  inboxSub: { fontSize: 11, color: "#6b7280", letterSpacing: "0.04em" },
+  inboxActions: { display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" },
+  inboxRefreshBtn: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 6, padding: "5px 10px", fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
+  inboxRefreshBtnSpin: { background: "#1e3a5f", border: "1px solid #3b82f6", color: "#60a5fa", borderRadius: 6, padding: "5px 10px", fontSize: 12, cursor: "wait", fontFamily: "inherit" },
+  inboxConnectBtn: { background: "#1e3a5f", border: "none", color: "#60a5fa", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" },
+  inboxDisconnect: { background: "transparent", border: "none", color: "#6b7280", cursor: "pointer", fontSize: 11, padding: 0, fontFamily: "inherit", textDecoration: "underline" },
+  inboxEmpty: { background: "#0c1a0c", border: "1px solid #14532d", borderRadius: 10, padding: "12px 16px", fontSize: 13, color: "#6ee7b7", textAlign: "center" },
+  inboxIntro: { fontSize: 13, color: "#9ca3af", lineHeight: 1.5, marginBottom: 10 },
+  inboxItem: { background: "#161b27", border: "1px solid #1f2937", borderRadius: 10, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 6 },
+  inboxItemTop: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" },
+  inboxItemTitle: { fontSize: 13, fontWeight: 600, color: "#f3f4f6", flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  inboxItemTime: { fontSize: 11, color: "#6b7280", flexShrink: 0 },
+  inboxItemSubject: { fontSize: 12, color: "#d1d5db", lineHeight: 1.4 },
+  inboxItemSnippet: { fontSize: 11, color: "#6b7280", lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  inboxKindBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
+  inboxItemActions: { display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 },
+  inboxBtnPrimary: { background: "#1e3a5f", border: "none", color: "#60a5fa", borderRadius: 6, padding: "5px 10px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" },
+  inboxBtnSecondary: { background: "#1f2937", border: "1px solid #374151", color: "#d1d5db", borderRadius: 6, padding: "5px 10px", fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
+  inboxBtnDismiss: { background: "transparent", border: "1px solid #374151", color: "#6b7280", borderRadius: 6, padding: "5px 10px", fontSize: 12, cursor: "pointer", fontFamily: "inherit" },
+  inboxError: { background: "#451a03", border: "1px solid #78350f", color: "#fbbf24", borderRadius: 8, padding: "8px 12px", fontSize: 12, marginBottom: 10 },
+  inboxSetupGuide: { background: "#0f1117", border: "1px solid #1f2937", borderRadius: 10, padding: "10px 14px", fontSize: 12, color: "#9ca3af", lineHeight: 1.6, marginTop: 10 },
+  inboxSetupTitle: { fontSize: 12, fontWeight: 700, color: "#d1d5db", marginBottom: 6 },
 };
 
 export const css = `

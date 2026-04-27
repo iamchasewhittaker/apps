@@ -8,8 +8,8 @@
 **Project tracking:** [Linear — Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) — includes **iOS companion** milestones (`../job-search-hq-ios/`); update Linear when iOS ships user-visible slices.
 
 ## App Identity
-- **Version:** v8.17 (Daily Flow Option E: `MorningLaunchpad` at top of Focus tab between `KassieCard` and `TargetCompanyBoard` — soft-gated 3-stage daily flow Discover → Apply → Outreach, ~80 min total. `getLaunchpadProgress(applications, dailyActions, now)` derives stage state from existing data; Sunday returns rest mode. Stage 3 `OutreachSprint` adds a `✓ Mark Sent` button that logs `dailyAction("outreach", ...)` so the 3/day floor is reachable inside the launchpad. Bonus: TodaysQueue's ✓ Applied shortcut now also logs the daily action with an idempotency guard.) · v8.16 Discovery Sprint + Apply Wizard · v8.15 TargetCompanyBoard · v8.14 Today's 5 queue + Outreach Autopilot · v8.13 Confidence Bedrock · Wave 4 #1–#6 all shipped · Wave 3 complete · Apply Tools = copy prompts + external assistants.
-- **Storage key:** `chase_job_search_v1` (data only)
+- **Version:** v8.18 (Gmail Inbox Feed: Focus-tab `InboxPanel` between `MorningLaunchpad` and `TargetCompanyBoard`. Browser Gmail OAuth via Google Identity Services popup (`src/inbox/oauth.js`) → server-side token exchange in `api/gmail/exchange.js` (refresh token AES-256-GCM-encrypted, stored in a separate Supabase row `app_key='job-search:gmail'` — never localStorage). Browser fetches `gmail.googleapis.com` directly with the access token. `src/inbox/classifier.js` buckets messages into recruiter / ats_update / interview_invite / linkedin / other via regex + sender-domain rules; recruiter branch delegates to existing `parseRecruiterEmail`. Review-first queue with one-click Save Contact + App / Bump stage / Set interview + open prep / Dismiss / Snooze 24h. Auto-logs wins on actioned recruiter pings + interview invites. Read-only — replies stay in Gmail.) · v8.17 Daily Flow Option E (Morning Launchpad) · v8.16 Discovery Sprint + Apply Wizard · v8.15 TargetCompanyBoard · v8.14 Today's 5 queue + Outreach Autopilot · v8.13 Confidence Bedrock · Wave 4 #1–#6 all shipped · Wave 3 complete · Apply Tools = copy prompts + external assistants.
+- **Storage key:** `chase_job_search_v1` (data) + Supabase `user_data` row `app_key='job-search:gmail'` (encrypted refresh token, server-only — not in localStorage)
 - **URL:** https://job-search-hq.vercel.app
 - **Entry:** `src/App.jsx`
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — palette, typography, component patterns; do not restate in session prompts.
@@ -24,14 +24,27 @@ An AI-assisted job search cockpit managing the full pipeline from application tr
 ```
 .claude/
   launch.json      ← Claude Code dev registry (port 3001; other `.claude/*` gitignored)
+api/               ← Vercel serverless functions (v8.18+; CRA + api/ deploys natively on Vercel)
+  _lib/
+    crypto.js      ← AES-256-GCM helpers (encrypt/decrypt refresh tokens)
+    supabase.js    ← service-role server client + getUserFromAuthHeader (validates JWT) + read/write/delete helpers for the `app_key='job-search:gmail'` row
+  gmail/
+    exchange.js    ← POST /api/gmail/exchange — code → tokens, encrypt refresh, store in Supabase
+    refresh.js     ← POST /api/gmail/refresh — read encrypted refresh, return new access token
+    disconnect.js  ← POST /api/gmail/disconnect — revoke refresh + delete row
 extension/         ← Chrome MV3 MVP: LinkedIn capture + HQ badge (see extension/README.md)
 src/
-  App.jsx          ← shell: state, load/save, helpers, modals, nav
+  App.jsx          ← shell: state, load/save, helpers, modals, nav, inbox handlers
   applyPrompts.js  ← markdown prompts + PREP_STAGE_PRESETS (no network)
   constants.js     ← ALL data/config/styles — no React (import from here first)
   ErrorBoundary.jsx
+  inbox/             ← Gmail Inbox Feed (v8.18)
+    oauth.js         ← GIS popup loader, /api/gmail/exchange + /api/gmail/refresh client, in-memory access-token cache
+    gmailClient.js   ← Gmail REST helpers (CORS-direct from browser); MIME walk + base64url decode
+    classifier.js    ← classifyMessage({...}) → { kind, confidence, parsed }; ATS_SENDER_DOMAINS, LINKEDIN_DOMAINS, SCHEDULING_URL_PATTERNS
+    syncInbox.js     ← runInboxSync({ existingInbox, labelName }) → { newItems, labelMissing }
   tabs/
-    FocusTab.jsx       ← daily focus blocks + weekly rhythm
+    FocusTab.jsx       ← daily focus blocks + weekly rhythm; mounts <InboxPanel /> between MorningLaunchpad and TargetCompanyBoard
     PipelineTab.jsx    ← application pipeline + stage bar + URL/JD paste
     ContactsTab.jsx    ← contacts list
     AITab.jsx          ← Apply Tools: copy prompts, STAR bank, job search links
@@ -40,11 +53,13 @@ src/
     Field.jsx          ← generic form field (text/textarea/select/date)
     AIResult.jsx       ← result display box with copy button
     AppCard.jsx        ← pipeline application card
-    AppModal.jsx       ← add/edit application modal
+    AppModal.jsx       ← add/edit application modal (now supports modal.onAfterSave callback)
     ContactCard.jsx    ← contact display card
-    ContactModal.jsx   ← add/edit contact modal
+    ContactModal.jsx   ← add/edit contact modal (now supports modal.onAfterSave callback)
     ProfileModal.jsx   ← master profile + base resume editor
     PrepModal.jsx      ← interview prep: stage templates + external prep brief copy
+    InboxPanel.jsx     ← Gmail-derived notification feed; not-connected/connected/error/label-missing states
+    InboxItem.jsx      ← single notification card; per-kind action buttons
 ```
 
 ## What Lives Where
@@ -54,15 +69,16 @@ src/
 - `STAGES`, `STAGE_COLORS`
 - `CHASE_CONTEXT`, `JOB_SEARCH_QUERIES`
 - `RESUME_TEMPLATE_IC` (IC/SE roles), `RESUME_TEMPLATE_AE` (AE roles — equal lane, not backup), `RESUME_TEMPLATE_PM` (legacy)
-- `defaultData`, `generateId`
+- `defaultData` (now includes `inbox: []`), `generateId`
 - `blankApp()` (now includes `track: "IC"`), `blankContact()`, `blankStarStory()`, `normalizeStarStories()`, `blankPrepSections()`, `normalizePrepSections()`
 - `blankWin()`, `normalizeWins()`, `WIN_TYPES`
+- `INBOX_KINDS`, `INBOX_STATUSES`, `inboxKindMeta(kind)`, `normalizeInboxItems(items)`, `isInboxPending(item, now)`, `matchAppFromInboxItem(item, applications)` — Gmail Inbox Feed helpers (v8.18)
 - `buildOutreachPriorityList()`, `getOutreachCadenceNudge()`, `getOutcomeAnalytics()`, `getDirectionSplit()`
 - `DIRECTION`, `DIRECTION_TRACKS`, `STRENGTHS_SUMMARY`, `FRIEND_FEEDBACK`, `FRIEND_FEEDBACK_CONSENSUS`, `KASSIE_EXCERPTS`
 - `LAYOFF_DATE`, `daysSinceLayoff()`, `DAILY_MINIMUMS`
 - `getDailyDiscoveryQueries(now)`, `getLaunchpadProgress(applications, dailyActions, now)` — Daily Flow helpers (rotation + 3-stage launchpad state)
 - `DAILY_BLOCKS`, `RESOURCES`
-- `s` (all styles), `css` (global CSS string)
+- `s` (all styles, now including 28 inbox tokens), `css` (global CSS string)
 - `backupData()`, `restoreData()`
 
 ### Direction, Strengths & Voice — Confidence Bedrock layer
@@ -122,6 +138,17 @@ Receives from shell: `data`, `profileComplete`, `kitApp`, `setKitApp`, `resumeTa
 
 ## Apply Tools (v8.6+)
 Prompts live in `src/applyPrompts.js`. Users copy markdown into ChatGPT, Claude, or another assistant; optional paste-back into text areas. No `fetch` to LLM providers from the app.
+
+## Gmail Inbox Feed (v8.18)
+Browser → server-side OAuth exchange → encrypted refresh token in Supabase → browser-direct Gmail REST. Read-only.
+
+- **Browser:** `src/inbox/oauth.js` lazy-loads Google Identity Services (`accounts.google.com/gsi/client`), runs `initCodeClient` in popup mode with `access_type: offline` + `prompt: consent`. Auth code POSTs to `/api/gmail/exchange`. Access token kept in module-memory closure only — never `localStorage`. Auto-refreshes 5 min before expiry via `/api/gmail/refresh`. Throws `code: "reconnect_required"` on Google `invalid_grant` so the panel can prompt re-consent.
+- **Server (Vercel functions):** `api/gmail/exchange.js` validates the caller via Supabase access-token JWT, exchanges code with Google using `GOOGLE_CLIENT_SECRET`, AES-256-GCM-encrypts the refresh token (key from `GMAIL_TOKEN_ENC_KEY`), stores in `user_data` row keyed `app_key='job-search:gmail'` (separate from the data blob — uses `SUPABASE_SERVICE_ROLE_KEY`). `api/gmail/refresh.js` mirrors this for refresh; `api/gmail/disconnect.js` revokes the grant + deletes the row. All three live in CRA-on-Vercel native `api/` directory.
+- **Fetching + classification:** `src/inbox/gmailClient.js` calls `gmail.googleapis.com` directly from the browser (CORS-enabled). `src/inbox/classifier.js` is regex + sender-domain heuristics (no LLM): branches by sender domain (`linkedin.com` → linkedin; `*.greenhouse.io` / `hire.lever.co` / `myworkday.com` / `ashbyhq.com` / others → ats_update); calendar-attachment or scheduling-link in body → interview_invite; recruiter branch delegates to existing `parseRecruiterEmail` when ≥3 of name/email/company/role are extractable from a non-personal-provider domain. ATS sub-kinds: `auto_reject` / `application_received` / `assessment` / `next_step` with suggested target stage.
+- **Data:** `inbox: []` array on the main data blob. Items normalized via `normalizeInboxItems` on load. Idempotent merge on `gmailMessageId`. Items ride the existing `chase_job_search_v1` Supabase sync, so iOS Phase 2 picks them up free.
+- **UI:** `InboxPanel` mounted between `MorningLaunchpad` and `TargetCompanyBoard` in `FocusTab`. Pending items render as cards; per-kind action buttons (Save Contact + App / Bump stage / Set interview + open prep / Dismiss / Snooze 24h) chain through existing modals via the new `modal.onAfterSave` callback. Wins auto-logged for actioned recruiter pings + interview invites.
+- **Activation:** see `HANDOFF.md` "Activation steps" section. New env vars (`REACT_APP_GOOGLE_CLIENT_ID` browser-safe + `GOOGLE_CLIENT_SECRET` / `GMAIL_TOKEN_ENC_KEY` / `SUPABASE_SERVICE_ROLE_KEY` server-only) + GCP OAuth client + Gmail label `JobSearch` with filter rules.
+- **Local dev:** `npm start` serves the CRA on :3001 but does NOT serve the `api/` functions. Use `vercel dev` instead when exercising the OAuth flow locally, or test on a Vercel preview URL.
 
 ## Supabase Sync — LIVE ✅ (wired in v8.1; email OTP auth in v8.3)
 
