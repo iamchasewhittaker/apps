@@ -209,6 +209,83 @@ final class WellnessStore: ObservableObject {
         return sessions.filter { ($0["day"] as? String) == today }
     }
 
+    /// Currently-running session (nil if none, or if stored day is no longer today).
+    var activeTimeSession: [String: Any]? {
+        let td = blob["timeData"] as? [String: Any] ?? [:]
+        guard (td["day"] as? String) == WellnessBlob.jsToDateString() else { return nil }
+        return td["active"] as? [String: Any]
+    }
+
+    /// Start (or swap to) a live session. Closes any in-flight session first.
+    func startCategorySession(categoryId: String) {
+        let trimmed = categoryId.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        mutateBlob { blob in
+            let today = WellnessBlob.jsToDateString()
+            var td = blob["timeData"] as? [String: Any] ?? [:]
+            // Day rollover: drop yesterday's `sessions` and `active`.
+            if (td["day"] as? String) != today {
+                td = ["day": today, "sessions": [[String: Any]](), "active": NSNull()]
+            }
+            var sessions = td["sessions"] as? [[String: Any]] ?? []
+            // Close current active (if any) into sessions list.
+            if let active = td["active"] as? [String: Any], let start = active["startTime"] as? Double {
+                let nowMs = Date().timeIntervalSince1970 * 1000
+                var closed = active
+                closed["endTime"] = nowMs
+                closed["duration"] = nowMs - start
+                if closed["day"] == nil { closed["day"] = today }
+                sessions.insert(closed, at: 0)
+                if sessions.count > 500 { sessions = Array(sessions.prefix(500)) }
+            }
+            let nowMs = Date().timeIntervalSince1970 * 1000
+            let new: [String: Any] = [
+                "id": Int(nowMs),
+                "catId": trimmed,
+                "day": today,
+                "startTime": nowMs,
+                "tags": [String](),
+                "background": NSNull(),
+                "note": "",
+                "nudged": false,
+            ]
+            td["active"] = new
+            td["sessions"] = sessions
+            td["day"] = today
+            blob["timeData"] = td
+        }
+    }
+
+    /// Stop the running session, push it into `sessions`, increment scripture streak if applicable.
+    func stopActiveSession() {
+        mutateBlob { blob in
+            var td = blob["timeData"] as? [String: Any] ?? [:]
+            guard let active = td["active"] as? [String: Any], let start = active["startTime"] as? Double else { return }
+            let today = WellnessBlob.jsToDateString()
+            var sessions = td["sessions"] as? [[String: Any]] ?? []
+            let nowMs = Date().timeIntervalSince1970 * 1000
+            var closed = active
+            closed["endTime"] = nowMs
+            closed["duration"] = nowMs - start
+            if closed["day"] == nil { closed["day"] = today }
+            sessions.insert(closed, at: 0)
+            if sessions.count > 500 { sessions = Array(sessions.prefix(500)) }
+            td["sessions"] = sessions
+            td["active"] = NSNull()
+            td["day"] = today
+            blob["timeData"] = td
+
+            if (closed["catId"] as? String)?.lowercased() == "scripture" {
+                var streak = blob["scriptureStreak"] as? [String: Any] ?? ["count": 0, "lastDate": NSNull()]
+                if (streak["lastDate"] as? String) != today {
+                    streak["count"] = (streak["count"] as? Int ?? 0) + 1
+                    streak["lastDate"] = today
+                }
+                blob["scriptureStreak"] = streak
+            }
+        }
+    }
+
     func addTask(title: String) {
         let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }

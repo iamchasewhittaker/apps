@@ -26,6 +26,7 @@
 		D30101000000000000000020 /* WellnessSupabaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000020 /* WellnessSupabaseConfig.swift */; };
 		D30101000000000000000021 /* WellnessCloudSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000021 /* WellnessCloudSync.swift */; };
 		D30101000000000000000022 /* SyncTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000022 /* SyncTabView.swift */; };
+		D30101000000000000000023 /* TimeCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30201000000000000000023 /* TimeCategories.swift */; };
 		E30101000000000000000001 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = E50401000000000000000002 /* Supabase */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		D30201000000000000000020 /* WellnessSupabaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessSupabaseConfig.swift; sourceTree = "<group>"; };
 		D30201000000000000000021 /* WellnessCloudSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellnessCloudSync.swift; sourceTree = "<group>"; };
 		D30201000000000000000022 /* SyncTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTabView.swift; sourceTree = "<group>"; };
+		D30201000000000000000023 /* TimeCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCategories.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				D30201000000000000000011 /* TimeTabView.swift */,
+				D30201000000000000000023 /* TimeCategories.swift */,
 			);
 			path = Time;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				D3010100000000000000000E /* PastDaysView.swift in Sources */,
 				D3010100000000000000000F /* TasksTabView.swift in Sources */,
 				D30101000000000000000010 /* TimeTabView.swift in Sources */,
+				D30101000000000000000023 /* TimeCategories.swift in Sources */,
 				D30101000000000000000011 /* CaptureTabView.swift in Sources */,
 				D30101000000000000000020 /* WellnessSupabaseConfig.swift in Sources */,
 				D30101000000000000000021 /* WellnessCloudSync.swift in Sources */,

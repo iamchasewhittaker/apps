@@ -10,7 +10,7 @@
 ## Next
 
 - [x] **UI palette parity (web):** `src/theme.js` `T` tokens aligned to portfolio BASE token set (`#0f1117` bg, `#161b27` surface, `#1f2937` border, `#f3f4f6` text, `#6b7280` muted); DM Sans font (2026-04-13)
-- [ ] **iOS palette parity:** align `ClarityPalette.swift` in `clarity-ui` to same BASE tokens — see [`docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md`](../../docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md)
+- [x] **iOS palette parity (Clarity-family apps):** `clarity-ui/Sources/ClarityUI/Theme/ClarityPalette.swift` + `funded-ios/Funded/Theme/ClarityTheme.swift` aligned to BASE tokens (shipped 2026-04-13, commit `91a58f6`); `clarity-command-ios/.../CommandPalette.swift` inherits via `ClarityPalette`. Wellness Tracker iOS deliberately keeps `WellnessTheme.swift` (cream paper / sage / terracotta) — not a token-parity candidate. See [`docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md`](../../docs/design/IOS_THEME_ALIGNMENT_HANDOFF.md).
 - [x] Split `TrackerTab` into `src/tabs/tracker/` (13 sub-components; orchestrator ~12 KB, down from 78 KB monolith)
 - [x] Portfolio text logo — WELLNESS/TRACK (`public/logo.svg`, `public/favicon.svg`, PNG assets)
 - [ ] Split `HistoryTab` (58 KB) into analytics, export, AI summary sub-components

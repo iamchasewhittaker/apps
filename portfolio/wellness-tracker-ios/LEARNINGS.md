@@ -53,6 +53,30 @@
 
 ---
 
+## 2026-04-28 — Live timer state lives in the blob, not a `@State` mirror
+
+**What happened:** Phase 2 #6 needed an active session that survives backgrounding, force-quit, and swap-category. The web pattern uses local `useState` mirrors of the persisted blob, then re-syncs on every persist. iOS doesn't need that — `WellnessStore` already publishes the blob via `@Published`, so a single `activeTimeSession` computed property reads straight from `blob["timeData"]["active"]` and SwiftUI redraws on each `mutateBlob` call.
+
+**Root cause:** Different reactivity models. React's `useState` is per-mount; the web tab needs to pull from `timeData` because the parent only writes via `setTimeData`. SwiftUI's `@Published` on the store means the view auto-rebinds.
+
+**Fix / lesson:** Skip the parallel state mirror. One source of truth (`blob`), one writer (`mutateBlob`). The ticking timer is the only piece of `@State` worth keeping in `TimeTabView` (`@State private var now` driven by `Timer.publish`).
+
+**Tags:** swift, swiftui, state
+
+---
+
+## 2026-04-28 — DST/midnight guard mirrors web exactly
+
+**What happened:** When live-timer code shipped on web, sessions started before midnight on a DST-transition night would show inflated or negative elapsed values. Fix at [TimeTrackerTab.jsx:181-184](../wellness-tracker/src/tabs/TimeTrackerTab.jsx) checks `new Date(active.startTime).toDateString() === todayStr` and treats elapsed as 0 otherwise.
+
+**Root cause:** `Date.now() - startTime` doesn't know about calendar boundaries. A session crossing midnight is "stale" for the new day's display.
+
+**Fix / lesson:** iOS port uses `WellnessBlob.jsToDateString(startDate) == today` for the same guard. Day rollover in `startCategorySession` also resets `td["sessions"]` and `td["active"]` when stored `day` ≠ today, so an old day's data doesn't bleed into the new one's grid.
+
+**Tags:** dst, time, gotcha
+
+---
+
 ## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)
 
 **The iOS 17.2 simulator runtime DMG unmounts on every reboot.**

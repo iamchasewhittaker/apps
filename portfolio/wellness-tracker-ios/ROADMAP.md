@@ -1,10 +1,10 @@
 # Roadmap — Wellness Tracker (iOS)
 
-Last updated: 2026-04-14
+Last updated: 2026-04-28
 
 ## Next release
 
-- [ ] **UI palette parity:** align `WellnessTracker/Theme/WellnessTheme.swift` to **YNAB Clarity** `ClarityTheme` (see `../wellness-tracker/docs/BRANDING.md`) so in-app chrome matches `AppIcon` + web direction.
+- [x] **UI palette parity (clarity-ui shared package):** `ClarityPalette.swift` aligned to portfolio BASE tokens (shipped 2026-04-13, commit `91a58f6`). Wellness Tracker iOS deliberately keeps its own `WellnessTheme.swift` (cream-paper / sage / terracotta — matches AppIcon direction) and is not a token-parity candidate.
 
 ## Branding
 
@@ -39,7 +39,7 @@ Deliver a high-quality native iOS Wellness Tracker experience in phased slices, 
 3. [x] Ship Time tracking essentials (+ scripture streak update rule)
 4. [x] Ship quick capture for Win and Pulse
 5. [ ] Expand tasks flow to include top-3 triage + one-thing modes
-6. [ ] Expand time flow to live timer and active-session controls
+6. [x] Expand time flow to live timer and active-session controls (2026-04-28)
 
 ## Phase 3 — Medium parity
 

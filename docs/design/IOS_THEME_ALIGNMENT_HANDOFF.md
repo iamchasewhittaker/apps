@@ -1,5 +1,12 @@
 # iOS Theme Alignment Handoff
 
+> **Status (2026-04-28): COMPLETE for Clarity-family iOS apps.**
+> - `portfolio/clarity-ui/Sources/ClarityUI/Theme/ClarityPalette.swift` aligned to BASE tokens (shipped 2026-04-13, commit `91a58f6`) — propagates to Clarity Check-in, Triage, Time, Budget, Growth.
+> - `portfolio/funded-ios/Funded/Theme/ClarityTheme.swift` aligned (Funded is the descendant of the legacy `ynab-clarity-ios/` referenced below; the YNAB Clarity path no longer exists).
+> - `portfolio/clarity-command-ios/ClarityCommand/Services/CommandPalette.swift` inherits from `ClarityPalette` and adds gold accent + purple variants — no changes needed.
+> - **Out of scope by design:** `portfolio/wellness-tracker-ios/WellnessTracker/Theme/WellnessTheme.swift` (cream paper / sage / terracotta — own brand identity, not Clarity-family).
+> - All other iOS apps (`job-search-hq-ios`, `fairway-ios`, `shipyard-ios`, `roller-task-tycoon-ios`) carry intentional brand themes and are not alignment candidates.
+
 > Goal: Align the Clarity iOS app suite to the same BASE token set now used by all 4 web apps, so the portfolio feels like one cohesive family across platforms.
 
 **Web reference:** `docs/design/PORTFOLIO_WEB_THEME_HANDOFF.md`
@@ -93,7 +100,7 @@ public static let muted   = Color(red: 0.420, green: 0.447, blue: 0.502)  // #6b
 
 ### Step 2: Update YNAB Clarity (separate local copy)
 
-**File:** `portfolio/ynab-clarity-ios/YNABClarity/Theme/ClarityTheme.swift`
+**File:** `portfolio/funded-ios/Funded/Theme/ClarityTheme.swift` (formerly `portfolio/ynab-clarity-ios/`)
 
 Same 5 value changes. YNAB Clarity uses `ClarityTheme` (local) not `ClarityPalette` (package).
 
@@ -159,7 +166,7 @@ AFTER (BASE-aligned):
 | File | Change | Apps affected |
 |------|--------|--------------|
 | `portfolio/clarity-ui/Sources/ClarityUI/Theme/ClarityPalette.swift` | 5 color token updates | Clarity Check-in, Triage, Time, Budget, Growth |
-| `portfolio/ynab-clarity-ios/YNABClarity/Theme/ClarityTheme.swift` | 5 color token updates | YNAB Clarity only |
+| `portfolio/funded-ios/Funded/Theme/ClarityTheme.swift` (formerly `portfolio/ynab-clarity-ios/`) | 5 color token updates | YNAB Clarity only |
 
 **Total effort: Low.** Two files, 5 color value changes each. No layout, logic, or component changes.
 

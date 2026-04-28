@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Phase 2 #6 — live timer + active-session controls (Time tab):** new `TimeCategories` (11 categories ported from web), `WellnessStore.startCategorySession` / `stopActiveSession` / `activeTimeSession`, day-rollover + DST-midnight guard, scripture streak increments on stop. `TimeTabView` rewritten: ticking active card (HH:MM:SS, monospaced), 2-col category grid (start / switch-to), Today's log. Retroactive `addTimeSession` API kept untouched. Backward-compat tests added for blobs without `timeData.active`. (Fulfils `ROADMAP.md` Phase 2 #6.)
 - **Unarchived** — project restored to `portfolio/wellness-tracker-ios` (active companion again).
 - **Cloud sync:** Supabase Swift + **Sync** tab (email OTP); REST upsert to `user_data` for `wellness` + `wellness-daily` (matches web + Clarity Command); debounced push after local saves; pull-on-launch when signed in.
 - **App icon:** fixed **1024×1024** square requirement (was 1376×768; Xcode “no applicable content”); `Contents.json` now includes `universal` + `ios-marketing` slots. Web `public/logo-*.png` re-synced from corrected master.
