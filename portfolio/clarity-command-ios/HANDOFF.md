@@ -3,9 +3,9 @@
 ## Current status: Phase 2 cross-app scoreboard shipped
 
 - **Version:** v0.2 → v0.3 (cross-app reads)
-- **Last session:** 2026-04-27 — Cross-app reads (`job-search-daily` + `wellness-daily`); new `LiveAppDataView` on Scoreboard tab; auto-pull on app launch
-- **Previous session:** 2026-04-15 — Supabase `command` row (same as web), Settings sync UI, `_syncAt` Codable parity, device QA doc, programmatic AppIcon (`tools/generate_app_icon.py`)
-- **Build status:** `xcodebuild build` clean for `generic/platform=iOS Simulator` (Debug)
+- **Last session:** 2026-04-28 — Removed `nonisolated` from `CommandStore.init()` — fixes 10 Swift 6 concurrency warnings; build is now warning-clean
+- **Previous session:** 2026-04-27 — Cross-app reads (`job-search-daily` + `wellness-daily`); new `LiveAppDataView` on Scoreboard tab; auto-pull on app launch
+- **Build status:** `xcodebuild build` clean, zero warnings (Debug + Simulator)
 - **Next:** Install on physical iPhone 12 Pro Max (id `A0C65578-B1E0-4E96-A1EC-EEB8913BD11C`) and verify the LIVE APP DATA section appears on the Scoreboard tab when signed in.
 
 ## What's shipped
@@ -36,7 +36,7 @@ Run on iPhone 16 simulator (command+R) or tests (command+U).
 
 ## Decisions made
 
-- `@Observable @MainActor` store, `nonisolated init()` to allow `@State` initialization in App
+- `@Observable @MainActor` store with plain `init()` (MainActor-isolated) — `@State private var store = CommandStore()` in App works because App body runs on MainActor in iOS 17+
 - `@Bindable var s = store` pattern in views for two-way binding into `@Observable` stores
 - Gold accent (`#c8a84b`) is app-local via `CommandPalette` — not added to shared ClarityUI palette
 - 3-tab structure mirrors web Clarity Command: Mission (daily), Scoreboard (history), Settings

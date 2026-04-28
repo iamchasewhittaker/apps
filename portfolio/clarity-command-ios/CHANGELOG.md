@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed (2026-04-28)
+- **`CommandStore` Swift 6 concurrency warnings:** removed `nonisolated` from `init()` — the class is `@Observable @MainActor`, so all stored properties are MainActor-isolated; the nonisolated init was flagging 10 "cannot access property in non-isolated initializer" warnings that will become hard errors in Swift 6. Construction site (`@State private var store = CommandStore()` in `App`) already runs on MainActor in iOS 17+, so no callsite changes needed. Build is now warning-clean.
+
 ### Added (2026-04-27) — Phase 2 cross-app scoreboard
 - **Cross-app reads:** `CommandCloudSync.pull(into:)` now also fetches `job-search-daily` and `wellness-daily` rows from Supabase in parallel after the main `command` pull. New private `fetchAppData(appKey:token:)` helper + generic `decodedSummary` powering both reads.
 - **Models:** `JobSearchDaily` and `WellnessDaily` Codable structs (`Models/CrossAppDaily.swift`) — both use `decodeIfPresent` for forward compatibility.

@@ -70,6 +70,12 @@
 
 ---
 
+### 2026-04-28 — `nonisolated init()` on `@MainActor @Observable` class is a Swift 6 error
+**What happened:** `CommandStore` showed 10 "Cannot access property '_X' in non-isolated initializer; this is an error in Swift 6" warnings across all stored properties.
+**Root cause:** The class is `@Observable @MainActor`, making every stored property MainActor-isolated. An explicit `nonisolated init() {}` promises Swift the init can run off-actor, but the property default expressions (`.init()`, `Calendar.current.component`, etc.) all require MainActor. Swift 5.10+ flags this as a future error.
+**Fix / lesson:** Remove `nonisolated` — a bare `init()` inherits the class's `@MainActor` isolation. The only construction site is `@State private var store = CommandStore()` in `ClarityCommandApp`, which is already MainActor (App body is MainActor in iOS 17+). The same `nonisolated init()` pattern exists in all 5 sibling Clarity iOS stores (`CheckinStore`, `TriageStore`, `TimeStore`, `GrowthStore`) — fix each when that app is next opened.
+**Tags:** swift, concurrency, swift6, gotcha
+
 ## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)
 
 **The iOS 17.2 simulator runtime DMG unmounts on every reboot.**
