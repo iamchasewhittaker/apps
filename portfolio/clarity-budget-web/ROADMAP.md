@@ -2,7 +2,7 @@
 
 > **v1 Redesign in progress.** Phase 2 (Money Companion) deferred. Active plan: `plans/clarity-budget-web-redesign.md` (10 steps). Progress: Steps 1–5 ✅ done + deployed (2026-04-27). Step 6 (`/review` UI — proposals queue) is next.
 >
-> **Parallel workstream — AI auto-categorization (feature/ai-categorize).** v0 implemented 2026-04-26. Migration `0003`, `lib/ai/gateway.ts`, `lib/categorize/*`, `app/api/categorize/{run,apply}`, `/categorize` review queue. 49 tests pass. Manual smoke + migration push pending; merge target is before Step 9 of the redesign so the dashboard split can surface a "Uncategorized to review" card. Plan: `~/.claude/plans/whats-the-next-step-fluffy-wadler.md`.
+> **Parallel workstream — AI auto-categorization.** v0 on main as of 2026-04-28 (commit `7a461b6`). Migration `0003` pushed. `AI_GATEWAY_API_KEY` set in production. Settings migration loop fixed. `/categorize` should now work end-to-end (pending production promotion + signed-in smoke test). Plan: `~/.claude/plans/whats-the-next-step-fluffy-wadler.md`.
 
 ## Phase 1 — Spending Visibility
 
@@ -29,11 +29,13 @@
 - [x] `app/api/categorize/{run,apply}/route.ts` — POST endpoints (run: orchestrate; apply: per-row apply/dismiss/undo)
 - [x] `app/(app-shell)/categorize/page.tsx` + `components/categorize/{CategorizeQueue,CategorizeRow}.tsx` — review queue UI
 - [x] `components/shell/NavBar.tsx` — `Categorize` nav link
-- [ ] **Manual: push migration** `supabase db push` against project `unqtnnxlltiadzbqpyhh`
-- [ ] **Manual: set `AI_GATEWAY_API_KEY`** in `.env.local` + Vercel preview env
-- [ ] **Manual: smoke** sign in → /categorize → run → confirm auto-applied + queued counts on YNAB; verify idempotent re-run
-- [ ] Merge to main when smoke passes (target: before Step 9 of v1 redesign)
-- [ ] Stretch: cron auto-run via Step 5's `/api/cron/sync` once that's live
+- [x] **Manual: push migration** `supabase db push` — applied 2026-04-28
+- [x] **Manual: set `AI_GATEWAY_API_KEY`** in `.env.local` + Vercel production env — done 2026-04-28 (preview env: set via dashboard or upgrade CLI)
+- [x] **Settings migration loop fix** — commit `7a461b6` on main (2026-04-28)
+- [ ] **Smoke: production** sign in → `/settings` (should show "Token stored ✓") → `/categorize` → Run → confirm auto-applied + queued counts; verify idempotent re-run
+- [ ] Add `AI_GATEWAY_API_KEY` to Vercel **preview** env (blocked by CLI 50.x bug; use dashboard or `pnpm add -g vercel@latest`)
+- [ ] Promote preview deployment `clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app` to production (or wait for next push)
+- [ ] Stretch: cron auto-run via `/api/cron/sync` once smoke passes
 
 ## Phase 2 — Money Companion
 

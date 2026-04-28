@@ -4,17 +4,43 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Step 6 next — `/review` UI (proposals review queue).** |
-| Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · `next build` ✅ · **deployed to production** (commit `8720ef8`). Cron registered at `0 6 * * *` (daily, 6 AM UTC) — Vercel Hobby plan limits cron to once/day; change to `*/15 * * * *` when Pro plan is active. |
-| Last touch | 2026-04-27 |
-| URL | clarity-budget-web.vercel.app — Steps 1–5 live. Cron runs daily. AI categorize NOT deployed (needs migration 0003 + AI_GATEWAY_API_KEY). |
-| Branch | `main` (consolidated 2026-04-27) |
-| Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files already on disk |
-| Step 5 (cron + vercel.json) | ✅ DONE + committed (`64467d8`, `8720ef8`) + deployed 2026-04-27. `lib/reconcile/run.ts` (orchestrator), `app/api/cron/sync/route.ts` (POST/GET, `Bearer $CRON_SECRET`, per-user error isolation), `app/api/cron/backfill/route.ts` (one-shot; user-session OR cron-secret + `?user_id=`), `vercel.json` (daily `0 6 * * *` — Hobby plan limit; bump to `*/15 * * * *` on Pro). |
-| Smoke test outcome (credentials, 2026-04-27) | ✅ Original blocker cleared. `clarity_budget_credentials.default_budget_id = ab0a40fe-…` for user `ffda23cc-…`; `user_data.data.ynabBudgetId` matches. `/categorize` no longer throws `default_budget_id not set` — now throws `Could not find the table 'public.clarity_budget_categorization_suggestions'` instead, which is a separate, expected gap (migration `0003` not yet applied). |
-| Step 5 deploy notes | Vercel Hobby plan blocks cron schedules that run more than once/day — deploy failed with `*/15 * * * *`, fixed to `0 6 * * *`. CLI deploy from app subdirectory fails (`rootDirectory` resolution bug); must deploy from monorepo root with a temp `.vercel/project.json`. On Pro plan: update schedule + redeploy. |
-| Manual TODO (categorize deploy — separate from Step 5) | (a) `supabase db push` → applies `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` + Vercel preview env. (c) Sign in → `/categorize` → Run → verify YNAB. (d) Re-run for idempotency. (e) Merge to main. |
+| Focus | **Smoke test `/settings` + `/categorize` on production, then Step 6 (`/review` UI).** |
+| Status | tsc ✅ · lint ✅ · 49/49 vitest ✅ · `next build` ✅ · commit `7a461b6` on `main`. Preview deployment `clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app` returns 401 on `/api/ynab/budgets` (route works). Production not yet promoted — `/api/ynab/budgets` still 404 on prod domain. |
+| Last touch | 2026-04-28 |
+| URL | clarity-budget-web.vercel.app — Steps 1–5 + categorize code live. Migration 0003 + AI key deployed. Settings loop fixed. |
+| Branch | `main` |
+| Steps 1–5 | ✅ DONE + deployed (commits `64467d8`, `8720ef8`) |
+| Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files |
+| Step 5 (cron + vercel.json) | ✅ DONE. `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` (daily `0 6 * * *` — Hobby plan limit; bump to `*/15 * * * *` on Pro). |
+| Migration 0003 | ✅ Pushed 2026-04-28. `clarity_budget_categorization_suggestions` table exists. Required `migration repair --status reverted 20260426174142 20260426174204` first. |
+| AI_GATEWAY_API_KEY | ✅ `.env.local` + Vercel production env. Preview env blocked by CLI 50.x — add via dashboard or upgrade CLI. |
+| Settings loop fix | ✅ Commit `7a461b6`. `MigrationBanner` no longer clears localStorage. `YnabConnectorCard` shows "Token stored ✓ [Replace]" when encrypted row exists. Budgets fetched via `/api/ynab/budgets` server proxy. |
+| Production promotion | ⬜ Promote preview `clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app` to production, or push any commit to trigger auto-deploy. |
+| Smoke test needed | `/settings` → "Token stored in Supabase ✓" (no yellow banner) + budget picker populated. `/categorize` → Run → no schema cache error. Dashboard `/` → STS metrics still load. |
 | Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
+
+---
+
+## What was built — 2026-04-28: Settings migration loop fix + categorize unblocked
+
+### Problems solved
+1. **`/categorize` schema cache error** — `Could not find the table 'public.clarity_budget_categorization_suggestions'`. Migration `0003` was written locally but never pushed. Fixed: `pnpm supabase migration repair --status reverted 20260426174142 20260426174204 && pnpm supabase db push`. Table now live in project `unqtnnxlltiadzbqpyhh`.
+2. **AI_GATEWAY_API_KEY missing** — `lib/ai/gateway.ts` reads this key for Vercel AI Gateway calls. Added to `.env.local` + Vercel production env. Preview env blocked by CLI 50.x bug; set via dashboard.
+3. **Settings yellow banner loop** — `MigrationBanner` reappeared every time the user entered their YNAB token in `/settings`. Root cause: banner had no awareness of the Supabase encrypted row; clearing localStorage on migrate made `YnabConnectorCard` show an empty field; user re-entered; localStorage refilled; banner reappeared.
+
+### Fix (commit `7a461b6`)
+- `app/(app-shell)/settings/page.tsx` — async server component; queries `clarity_budget_credentials.ynab_token_ciphertext`; passes `hasEncryptedYnabToken: boolean` to children.
+- `components/settings/MigrationBanner.tsx` — accepts `hasEncryptedYnabToken` prop; hides immediately when true; **does NOT clear localStorage on success** (HomeDashboard reads token from there).
+- `components/settings/YnabConnectorCard.tsx` — accepts `hasEncryptedYnabToken` prop; `stored = hasEncryptedYnabToken && !replacing`. Stored mode: "Token stored in Supabase ✓ [Replace]" + budgets from server proxy. Replace mode: `ReplaceTokenInput` sub-component.
+- `app/api/ynab/budgets/route.ts` — new GET endpoint; decrypts YNAB token server-side, returns `{ budgets }`. Does NOT use `loadYnabCredentials` (which errors on null `default_budget_id`).
+
+### Verification
+tsc ✅ · lint ✅ · vitest 49/49 ✅ · build ✅ · commit `7a461b6` on main · preview deployment 401 on `/api/ynab/budgets` ✓
+
+### What's still needed
+- Promote preview to production (or push a trivial commit to trigger GitHub auto-deploy)
+- Signed-in smoke test on production
+- Add `AI_GATEWAY_API_KEY` to Vercel preview env
 
 ---
 
@@ -69,63 +95,54 @@ See "Manual TODO (verify this session)" in State table above.
 
 ---
 
-## Fresh session prompt — verify this session's changes
+## Fresh session prompt — smoke test + Step 6
 
 ```
-Read CLAUDE.md and HANDOFF.md first.
+Read portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md first.
+Run checkpoint before touching anything.
 
-Continuing work on: clarity-budget-web (portfolio/clarity-budget-web)
-Branch: main
+Continuing: clarity-budget-web, branch main
+Last commit: 7a461b6 — fix(clarity-budget-web): break /settings token migration loop + add server budget proxy
 
-## What was just completed (2026-04-26)
+## State coming in (2026-04-28)
 
-### 1. Fixed `default_budget_id not set on credentials row` on /categorize
+Everything is committed and on main. Production may not be up-to-date (preview deployment
+clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app is at 7a461b6; production
+domain clarity-budget-web.vercel.app may still be on the prior deployment).
 
-Root cause: `clarity_budget_credentials.default_budget_id` was never written by any UI. The
-selected budget lived in `user_data.data.ynabBudgetId` (app_key="clarity_budget") but
-server-side endpoints never read it.
+## Step 0 — promote or re-deploy (you do this)
+Option A: `vercel promote clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app`
+Option B: Push any trivial commit to main to trigger the GitHub auto-deploy webhook.
+After this, verify: `curl -s -o /dev/null -w "%{http_code}" https://clarity-budget-web.vercel.app/api/ynab/budgets`
+→ expect 401 (not 404).
 
-Fix:
-- Created `lib/categorize/credentials.ts` — shared `loadYnabCredentials(supabase, userId)`
-  that falls back to `user_data.data.ynabBudgetId` when `default_budget_id` is null,
-  self-heals by backfilling `clarity_budget_credentials.default_budget_id`, throws
-  "no YNAB budget selected — open Settings and pick one" if neither has a value.
-- Updated `lib/categorize/run.ts` and `app/api/categorize/apply/route.ts` to import the
-  shared loader (removed their local duplicates).
+## Step 1 — signed-in smoke test (you do this in browser)
+Sign in at clarity-budget-web.vercel.app
 
-### 2. Moved YNAB token + budget picker from Dashboard to Settings
+1. `/settings`
+   - Yellow "Move your YNAB token" banner should NOT appear.
+   - YNAB card should show "Token stored in Supabase ✓ [Replace]".
+   - Budget dropdown should populate with your YNAB budgets.
+2. `/categorize` → click "Run categorization"
+   - Should return a summary (auto-applied + queued counts), NOT a schema cache error.
+   - Re-run should show cached > 0 (idempotency).
+3. Dashboard `/`
+   - STS metrics should still load.
+   - No token input visible.
 
-- Created `components/settings/YnabConnectorCard.tsx` — token input + budget picker.
-  On token change: localStorage + POST /api/credentials { ynab_token }.
-  On budget change: localStorage blob + pushBlob + POST /api/credentials { default_budget_id }.
-- Updated `app/(app-shell)/settings/page.tsx` to render MigrationBanner + YnabConnectorCard.
-- Updated `components/HomeDashboard.tsx`: removed token input, BudgetPicker, persistToken;
-  YNAB section renamed "Category roles"; empty state links to /settings.
-- Moved `loadLocalBlob` / `saveLocalBlob` from HomeDashboard to `lib/blob.ts` as exports.
+## Step 2 — optional fix-up
+If the production preview env is missing AI_GATEWAY_API_KEY:
+- `vercel env add AI_GATEWAY_API_KEY preview` — or set via Vercel dashboard.
 
-### Verified (pre-auth)
-- `npx tsc --noEmit` clean
-- `next lint` clean
-- `vitest run` — 49/49 pass
-- `next build --turbopack` — all routes compile
-- API routes return 401 (no runtime errors)
+## Step 3 — Step 6 of the redesign: `/review` UI
+Once smoke passes, build the proposals review queue:
+- `app/(app-shell)/review/page.tsx` — server component; queries `clarity_budget_proposals` via `createRouteClient()`; passes list to `ProposalList`.
+- `components/review/ProposalList.tsx` — renders a list of `ProposalRow`.
+- `components/review/ProposalRow.tsx` — shows payee rename suggestion (current name → proposed name), Accept / Reject buttons → POST to a new `/api/proposals/[id]/route.ts`.
+- `app/api/proposals/[id]/route.ts` — PATCH: accept → set `status='accepted'`, write `clarity_budget_privacy_cards.linked_payee_id`; reject → set `status='rejected'`.
+- `components/shell/NavBar.tsx` — add "Review" link between Categorize and Settings.
 
-### Needs verification in your signed-in browser
-1. `/categorize` → Run categorization → should succeed. Check Supabase:
-   `clarity_budget_credentials.default_budget_id` should now be populated (self-heal).
-2. `/settings` → YNAB card shows current token + budget picker with correct selection.
-3. `/` Dashboard → metrics still render; section reads "Category roles" with Settings link;
-   token input + budget picker are gone.
-4. Change budget in Settings → verify `clarity_budget_credentials.default_budget_id` updates.
-
-## Key files
-- `lib/categorize/credentials.ts` — new shared credentials loader (core fix)
-- `lib/blob.ts` — now exports `loadLocalBlob` / `saveLocalBlob`
-- `components/settings/YnabConnectorCard.tsx` — new YNAB connector UI
-- `app/(app-shell)/settings/page.tsx` — settings page (no longer a stub)
-- `components/HomeDashboard.tsx` — YNAB section stripped to category roles only
-
-Let me know what to work on next.
+Plan: plans/clarity-budget-web-redesign.md (Step 6).
 ```
 
 ---

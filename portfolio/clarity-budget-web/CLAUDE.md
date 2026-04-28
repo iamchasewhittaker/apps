@@ -20,20 +20,27 @@ STS (Safe-to-Spend) dashboard backed by YNAB. Fetches month-level category aggre
 | `chase_budget_web_tx_v1` | `{ ts: number, data: YNABTransaction[] }` (60-day cache) | ❌ Never |
 
 ## Key files
-- `components/HomeDashboard.tsx` — all UI, state, YNAB logic, spending breakdown
-- `lib/ynab.ts` — YNAB API client (fetchBudgets, fetchCategories, fetchMonth, fetchTransactions)
-- `lib/blob.ts` — BudgetBlob type, defaultBlob, mergeBlob
+- `components/HomeDashboard.tsx` — STS UI, category roles, spending breakdown (token/budget picker removed)
+- `components/settings/YnabConnectorCard.tsx` — YNAB token + budget picker; "stored ✓ / Replace" mode when encrypted row exists
+- `components/settings/MigrationBanner.tsx` — one-shot banner (localStorage → Supabase); hidden when `hasEncryptedYnabToken=true`
+- `app/(app-shell)/settings/page.tsx` — async server component; queries `clarity_budget_credentials` presence; passes `hasEncryptedYnabToken` prop
+- `app/api/ynab/budgets/route.ts` — server-side budget listing for migrated users (decrypts token, calls YNAB)
+- `app/api/credentials/route.ts` — POST/DELETE encrypted credential upsert
+- `lib/ynab.ts` — YNAB API client (fetchBudgets, fetchCategories, fetchMonth, fetchTransactions, fetchUncategorizedTransactions, bulkUpdateTransactions)
+- `lib/blob.ts` — BudgetBlob type, defaultBlob, mergeBlob, loadLocalBlob, saveLocalBlob
+- `lib/crypto.ts` — AES-256-GCM encrypt/decrypt (server-only)
+- `lib/supabase-server.ts` — createRouteClient() (RLS, cookie-bound) + createServiceClient() (service-role, cron only)
+- `lib/categorize/credentials.ts` — loadYnabCredentials(supabase, userId); self-heals default_budget_id from user_data fallback
+- `lib/categorize/run.ts` — runCategorization() orchestrator (batch LLM + PATCH YNAB)
+- `lib/ai/gateway.ts` — generateObject() wrapper around Vercel AI Gateway
 - `lib/metrics.ts` — STS math (buildBalances, safeToSpend, safePerDay, safePerWeek)
-- `lib/sync.ts` — Supabase push/pull (BudgetBlob only; transactions never synced)
 - `lib/constants.ts` — STORE_KEY, YNAB_TOKEN_KEY, YNAB_TX_KEY, T (theme tokens)
-- `lib/suggestRole.ts` — keyword-based category role classifier
-- `lib/ynabCategoryMerge.ts` — merge YNAB category groups into blob mappings
 
 ## Supabase sync rules (privacy)
-- YNAB token → localStorage only, **never** Supabase
+- YNAB token → `clarity_budget_credentials.ynab_token_ciphertext` (AES-256-GCM, server-only) + localStorage (legacy compat for HomeDashboard client-side calls — do NOT clear it)
 - Raw transactions → `chase_budget_web_tx_v1` localStorage only, **never** Supabase
-- BudgetBlob (mappings, roles, scenario settings) → Supabase `user_data`, `app_key = "clarity_budget"`
-- Future (Session 3): aggregates-only Supabase sync for cross-device spending summaries
+- BudgetBlob (mappings, roles) → Supabase `user_data`, `app_key = "clarity_budget"`
+- AI suggestions → `clarity_budget_categorization_suggestions` (server-side only)
 
 ## Conventions
 - No Redux, no component libraries — all styles via `T` theme tokens in `constants.ts`

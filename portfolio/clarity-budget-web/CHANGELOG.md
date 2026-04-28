@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-04-28 — Settings token migration loop + server budget proxy (commit `7a461b6`)
+- `app/(app-shell)/settings/page.tsx` — converted to async server component; fetches `clarity_budget_credentials.ynab_token_ciphertext` presence, passes `hasEncryptedYnabToken: boolean` prop to `MigrationBanner` and `YnabConnectorCard`.
+- `components/settings/MigrationBanner.tsx` — accepts `hasEncryptedYnabToken` prop; hides immediately when prop is true; **removed `window.localStorage.removeItem(YNAB_TOKEN_KEY)` from success handler** (localStorage must stay for HomeDashboard's client-side YNAB calls).
+- `components/settings/YnabConnectorCard.tsx` — accepts `hasEncryptedYnabToken` prop; `stored / replacing` modes. When stored: "Token stored in Supabase ✓ [Replace]" + budgets from server proxy. When replacing: `ReplaceTokenInput` sub-component (POST `/api/credentials`, writes localStorage). When editing (legacy): unchanged.
+- `app/api/ynab/budgets/route.ts` (new) — `GET` endpoint; `createRouteClient()`, decrypt YNAB token from `clarity_budget_credentials`, call `fetchBudgets(token)`, return `{ budgets }`.
+
+**Also shipped:**
+- Migration `0003_categorization_suggestions.sql` pushed to remote Supabase. Required `migration repair --status reverted` for two orphaned tracker entries.
+- `AI_GATEWAY_API_KEY` added to `.env.local` + Vercel production env.
+
+**Verification:** tsc ✅ · lint ✅ · vitest 49/49 ✅ · build ✅ · commit `7a461b6` on main. Preview deployment returns 401 on `/api/ynab/budgets`. Production promotion pending.
+
 ### Added — 2026-04-27 — Step 5: cron sync + backfill + vercel.json (commits `64467d8`, `8720ef8`)
 - `lib/reconcile/run.ts` (new) — `runReconcileForUser(userId, daysBack)` orchestrator. Reads Privacy cards + transactions from DB, loads YNAB credentials via `loadYnabCredentials`, fetches YNAB transactions, runs `matchPrivacyToYnab` → write-back `matched_ynab_txn_id`, idempotent `insertProposals` (dedupes against existing `ynab_txn_id` set), idempotent `insertFlags` (dedupes on `(type, fingerprint)`), records `reconcile_succeeded` / `reconcile_failed` audit log. Returns `{ privacyTxnsConsidered, ynabTxnsConsidered, totalMatches, newMatches, newProposals, newFlags }`.
 - `app/api/cron/sync/route.ts` (new) — Vercel cron entrypoint (GET + POST). Validates `Authorization: Bearer $CRON_SECRET`, queries eligible users (non-null YNAB + Privacy tokens), runs reconcile per user with per-user error isolation, returns `{ ok, processed, succeeded, failed, results }`.

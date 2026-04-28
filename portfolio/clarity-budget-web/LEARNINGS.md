@@ -1,5 +1,23 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-28 — Settings token migration loop fix + server budget proxy
+
+**Root cause of the migration banner loop.** `MigrationBanner` showed whenever `localStorage[YNAB_TOKEN_KEY]` was set — with no awareness of whether the Supabase encrypted row already existed. After a successful migrate, the banner cleared localStorage. On the next Settings load, `YnabConnectorCard` saw an empty localStorage token and showed a blank password field. The user re-entered their token. `handleTokenChange` wrote it back to localStorage on every keystroke. The banner reappeared. Infinite loop.
+
+**Fix: gate banner on a server-rendered prop.** `app/(app-shell)/settings/page.tsx` is a server component that can query `clarity_budget_credentials.ynab_token_ciphertext` before rendering. Passing `hasEncryptedYnabToken: boolean` to both children breaks the loop — the banner stays hidden as long as the encrypted row exists, regardless of localStorage state.
+
+**Do NOT clear localStorage in MigrationBanner's success handler.** The original code called `window.localStorage.removeItem(YNAB_TOKEN_KEY)` on successful migrate. `HomeDashboard.tsx` reads the token from localStorage for its client-side YNAB calls. Removing it would break the Dashboard. The localStorage value is now the legacy compat path — it stays in place until Dashboard is moved to server-side YNAB calls. The Supabase row is the canonical store.
+
+**When `hasEncryptedYnabToken` is true, budget listing must go through the server.** The old `YnabConnectorCard` called `fetchBudgets(token)` directly in the browser. With a migrated token, `localStorage[YNAB_TOKEN_KEY]` may be empty or stale. New route: `GET /api/ynab/budgets` decrypts the Supabase-stored token and calls YNAB server-side. The card falls back to this route when `stored` is true.
+
+**Don't use `loadYnabCredentials` for the budget picker.** `lib/categorize/credentials.ts:loadYnabCredentials` throws if `default_budget_id` is null — by design, to block categorization. That's the wrong gate for the budget *picker*, which is the UI that sets `default_budget_id` in the first place. `app/api/ynab/budgets/route.ts` uses its own credential read that only requires the encrypted token.
+
+**Supabase migration repair pattern repeated.** Pushing migration `0003_categorization_suggestions.sql` failed because the remote tracker had two unrecognized entries (`20260426174142`, `20260426174204`). Same fix as 2026-04-24: `pnpm supabase migration repair --status reverted <id1> <id2>` then `pnpm supabase db push`. See 2026-04-24 entry for the full lesson on the tracker lying.
+
+**Vercel CLI 50.x `env add` preview bug.** `vercel env add AI_GATEWAY_API_KEY preview` (any form: stdin, `--value`, `--yes --force`) fails with `"reason": "git_branch_required"` or `"reason": "branch_not_found"`. Production env adds work fine. Root cause: CLI 50.x regression fixed in 52.0.0. Workaround: set preview env via the Vercel dashboard UI, or upgrade CLI with `pnpm add -g vercel@latest`.
+
+**Preview deployment is correct even when production 404s.** After a `git push`, GitHub webhook triggers a Vercel build that first deploys to a preview URL, then promotes to production. If the production domain returns 404 for a new route, that doesn't mean the build failed — it may just mean production hasn't been promoted yet. Probe the preview URL directly (from `vercel ls`) to verify the route works.
+
 ## 2026-04-27 — Step 5: Vercel Hobby plan cron limitation + CLI deploy path
 
 **Hobby plan cron constraint.** Vercel Hobby only allows once-per-day cron jobs. `*/15 * * * *` (every 15 min) triggers the error "cron expression would run more than once per day." Changed schedule to `0 6 * * *` (6 AM UTC daily). When the account upgrades to Pro, update `vercel.json` schedule back to `*/15 * * * *` and redeploy. The backfill endpoint (`/api/cron/backfill`) covers manual runs in the meantime.
