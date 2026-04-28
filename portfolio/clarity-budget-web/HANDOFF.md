@@ -4,13 +4,14 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Step 8 — `/settings` Privacy connector + card mapping** |
-| Status | tsc ✅ · lint ✅ · build ✅ · vitest 49/49 ✅ · deployed `clarity-budget-web.vercel.app` (commit `2861907`). Steps 1–7 all done + live. |
+| Focus | **Step 9 — split `HomeDashboard.tsx`** (Step 8 implementation done; commit + deploy pending) |
+| Status | tsc ✅ · lint ✅ (touched files) · vitest 49/49 ✅ · build ✅ · all 3 new routes emit as `ƒ` dynamic. Unauth probes pass (401/401/401/307). Deploy pending push to `main`. |
 | Last touch | 2026-04-28 |
 | URL | clarity-budget-web.vercel.app |
 | Branch | `main` |
 | Steps 1–7 | ✅ DONE + deployed |
-| Step 8 (/settings Privacy connector) | ⬜ next — `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` |
+| Step 8 (/settings Privacy connector + card mapping) | ✅ DONE locally — commit + push pending |
+| Step 9 (split HomeDashboard.tsx) | ⬜ next — extract `components/dashboard/{StsCard,ShortfallBanner,LastUpdated,EmptyState}.tsx` |
 | AI_GATEWAY_API_KEY | ✅ All 3 Vercel envs (Production, Development, Preview) + `.env.local`. Key rotated 2026-04-28 — if auth fails again, generate a new key at vercel.com/[team]/~/ai/api-keys. |
 | Billing | ✅ Credit card on file for Vercel AI Gateway free tier. |
 | Categorize schema | ✅ Fixed — `subtransactions` + inner `id` changed from `.optional()` to `.nullable()` for OpenAI strict mode compatibility. |
@@ -18,58 +19,83 @@
 
 ---
 
-## Fresh session prompt — Step 8: `/settings` Privacy connector + card mapping
+## Fresh session prompt — Step 9: split `HomeDashboard.tsx`
 
 ```
 Read portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md first.
 Run checkpoint before touching anything.
 
 Continuing: clarity-budget-web, branch main
-Last deployed: clarity-budget-web.vercel.app (2026-04-28, Step 7 /flags UI, commit 2861907)
+Last work: Step 8 (Privacy connector + card mapping) implemented locally 2026-04-28.
 
-## State coming in (2026-04-28)
+## State coming in
 
-Steps 1–7 all done and live.
-- /review: payee rename proposals queue (approve → links privacy card to YNAB payee)
-- /flags: weirdness flags inbox (dismiss → status='acknowledged')
-- /categorize: AI auto-categorization (27 fetched, 6 auto-applied, 21 queued on last run)
-No uncommitted changes. No smoke tests pending.
+Steps 1–8 all implemented. Step 8 may or may not be deployed yet — check `git log -1`
+on main vs the production deployment.
 
-## Step 8 — `/settings` Privacy connector + card mapping
+If Step 8 is uncommitted: review the diff (lib/ynab.ts, settings/page.tsx, 5 new files
+under app/api/settings/, app/api/ynab/payees/, components/settings/), then:
+  git add -A && git commit -m "feat(clarity-budget-web): /settings Privacy connector + card mapping (Step 8)"
+  git push
 
-Add Privacy.com token entry and the card→payee mapping table to /settings.
+If Step 8 is committed but not deployed: just push to main.
 
-Files to create:
-- components/settings/PrivacyConnectorCard.tsx — client component; Privacy token input →
-  POST /api/credentials { privacy_token }; "stored ✓ / Replace" mode when token exists
-  (mirror YnabConnectorCard's stored/replacing pattern).
-- components/settings/CardMappingTable.tsx — client component; reads
-  clarity_budget_privacy_cards for user via GET /api/settings/cards; renders each card's
-  memo + state + linked_payee_id (editable dropdown of YNAB payees); on change →
-  PATCH /api/settings/cards/[token] { linked_payee_id }.
+After deploy:
+  - Sign in at clarity-budget-web.vercel.app
+  - /settings → Privacy card visible. Enter Privacy.com token → Save.
+  - Trigger backfill so cards are available:
+      curl -X POST -H "Authorization: Bearer $CRON_SECRET" \
+        https://clarity-budget-web.vercel.app/api/cron/backfill \
+        -H "content-type: application/json" -d '{"days_back":30}'
+  - Reload /settings → CardMappingTable should list cards. Pick a payee for at least
+    one card → reload to confirm persistence.
 
-Files to create (API):
-- app/api/settings/cards/route.ts — GET; returns clarity_budget_privacy_cards for user
-  (id, token, memo, state, linked_payee_id).
-- app/api/settings/cards/[token]/route.ts — PATCH { linked_payee_id }; validates auth +
-  ownership; updates clarity_budget_privacy_cards.linked_payee_id; writes audit log.
+## Step 9 — split HomeDashboard.tsx
 
-Files to modify:
-- app/(app-shell)/settings/page.tsx — add PrivacyConnectorCard below YnabConnectorCard;
-  add CardMappingTable below that (conditionally — only if hasPrivacyToken is true).
-  Query clarity_budget_credentials.privacy_token_ciphertext presence server-side (same
-  pattern as hasEncryptedYnabToken).
+components/HomeDashboard.tsx is ~600+ lines and mixes STS math UI, shortfall banner,
+last-updated chip, empty state, and YNAB role mapping. Extract into focused components:
 
-Schema reference:
-- clarity_budget_privacy_cards: token (PK), user_id, memo, state, type, linked_payee_id
-- clarity_budget_credentials: privacy_token_ciphertext/iv/tag (AES-256-GCM)
-- lib/crypto.ts: encrypt/decrypt — use same pattern as YNAB token
+- components/dashboard/StsCard.tsx — month/week/day safe-to-spend numbers
+- components/dashboard/ShortfallBanner.tsx — "you're $X over for this week" banner
+- components/dashboard/LastUpdated.tsx — refresh button + cache timestamp
+- components/dashboard/EmptyState.tsx — links to /settings for first-time users
 
-Also: YNAB payees list for the dropdown — fetch via YNAB API /budgets/{id}/payees
-(add fetchPayees to lib/ynab.ts if not present).
+Goal: HomeDashboard.tsx becomes a thin shell that wires data + props. No behavior change.
 
-Stop after Step 8 and show the diff.
+Plan: plans/clarity-budget-web-redesign.md (Step 9).
 ```
+
+---
+
+## What was built — 2026-04-28: Step 8 — `/settings` Privacy connector + card mapping (local)
+
+### New files
+- `components/settings/PrivacyConnectorCard.tsx` — mirrors YnabConnectorCard's three modes (stored / replacing / new). POST `/api/credentials { privacy_token }`. Hint copy clarifies that the daily cron is what actually pulls cards.
+- `components/settings/CardMappingTable.tsx` — fetches cards (`GET /api/settings/cards`) and YNAB payees (`GET /api/ynab/payees`) on mount. Each row: card memo + state/type chip + payee `<select>` bound to `linked_payee_id`. Optimistic update with rollback on PATCH error. Empty state when no cards yet.
+- `app/api/settings/cards/route.ts` — GET; user-scoped query of `clarity_budget_privacy_cards` ordered by memo.
+- `app/api/settings/cards/[token]/route.ts` — PATCH `{ linked_payee_id: string | null }`. Auth + ownership + audit log (`action='card_payee_linked'`). Mirrors `proposals/[id]/route.ts`.
+- `app/api/ynab/payees/route.ts` — GET; uses `loadYnabCredentials` (decrypts token + self-heals `default_budget_id`) → `fetchPayees`.
+
+### Modified files
+- `lib/ynab.ts` — added `fetchPayees(token, budgetID)` + `YNABPayee` type. Filters out deleted + transfer payees, sorts alphabetically.
+- `app/(app-shell)/settings/page.tsx` — credentials probe now also reads `privacy_token_ciphertext`. Renders `<PrivacyConnectorCard>` below YNAB card; conditionally renders `<CardMappingTable />` when `hasEncryptedPrivacyToken` is true.
+
+### Verification
+| Check | Result |
+|---|---|
+| `pnpm exec tsc --noEmit` | ✅ clean |
+| `pnpm lint` (touched files) | ✅ clean (`scripts/merge-ai-gateway-from-dev.cjs` errors pre-exist this session) |
+| `pnpm exec vitest run` | ✅ 49/49 |
+| `pnpm build` | ✅ clean — `/api/settings/cards`, `/api/settings/cards/[token]`, `/api/ynab/payees` all `ƒ` dynamic; `/settings` page 4.59 kB |
+| `curl GET /api/settings/cards` (unauth) | ✅ 401 |
+| `curl GET /api/ynab/payees` (unauth) | ✅ 401 |
+| `curl PATCH /api/settings/cards/fake-token` (unauth) | ✅ 401 |
+| `curl GET /settings` (unauth) | ✅ 307 → `/login` |
+
+### Notes
+- **No new migration needed.** `clarity_budget_privacy_cards.linked_payee_id` column already exists from `0001_init.sql`. `/api/credentials` already accepts a `privacy_token` field (Step 1).
+- **`/settings` page redirects unauth → 307**, then API routes return 401 because middleware doesn't gate them. Once signed in, both routes return JSON.
+- `pnpm build` corrupted the running dev server's `.next` (ENOENT storm on `_buildManifest.js.tmp.*`). Fix: `rm -rf .next` + `preview_stop` + `preview_start`. Same as Step 6.
 
 ---
 

@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-28 — Step 8: `/settings` Privacy connector + card mapping
+- `components/settings/PrivacyConnectorCard.tsx` — client; mirrors `YnabConnectorCard`'s stored / replacing / new modes. POST `/api/credentials { privacy_token }`. Hint line below: "After saving, the daily cron will pull your cards and transactions on its next run."
+- `components/settings/CardMappingTable.tsx` — client; loads `clarity_budget_privacy_cards` via `GET /api/settings/cards` and YNAB payees via `GET /api/ynab/payees`; renders one row per card with a payee dropdown bound to `linked_payee_id`; optimistic update + rollback on error; PATCH `/api/settings/cards/[token]`. Empty state copy: "No cards synced yet — they'll appear after the next sync runs."
+- `app/api/settings/cards/route.ts` — GET; returns user-scoped cards (`token`, `memo`, `state`, `type`, `linked_payee_id`) ordered by `memo`. RLS-bound + explicit `eq("user_id", ...)`.
+- `app/api/settings/cards/[token]/route.ts` — PATCH `{ linked_payee_id: string | null }`. 401/400/404/403/500 gates mirror `proposals/[id]`. Audit log `action='card_payee_linked'` with `payload: { linked_payee_id }`.
+- `app/api/ynab/payees/route.ts` — GET; uses `loadYnabCredentials` (token + self-healed budget id) → `fetchPayees`. Returns 400 with the underlying error on token/budget gaps.
+- `lib/ynab.ts` — added `fetchPayees(token, budgetID)` + `YNABPayee` type. Filters out `deleted` and transfer payees, sorts alphabetically.
+- `app/(app-shell)/settings/page.tsx` — credentials probe now selects both `ynab_token_ciphertext` and `privacy_token_ciphertext`. Renders `<PrivacyConnectorCard>` below YNAB card; conditionally renders `<CardMappingTable />` when `hasEncryptedPrivacyToken` is true.
+
+**No new migration needed** — `clarity_budget_privacy_cards` already has `linked_payee_id` from `0001_init.sql`, and `/api/credentials` already encrypts `privacy_token` (Step 1).
+
+**Verification:** tsc ✅ · lint ✅ (touched files clean; `scripts/merge-ai-gateway-from-dev.cjs` lint errors pre-exist this session) · vitest 49/49 ✅ · build ✅ — all 3 new routes (`/api/settings/cards`, `/api/settings/cards/[token]`, `/api/ynab/payees`) emit as `ƒ` dynamic; `/settings` page now 4.59 kB. Unauth probes against fresh dev server: GET `/api/settings/cards` → 401 ✓, GET `/api/ynab/payees` → 401 ✓, PATCH `/api/settings/cards/fake-token` → 401 ✓, GET `/settings` → 307 ✓.
+
 ### Added — 2026-04-28 — Step 7: `/flags` UI — weirdness flags inbox (commit `2861907`)
 - `app/(app-shell)/flags/page.tsx` — async server component; queries `clarity_budget_flags` (status=open, user-scoped via `createRouteClient()`) and passes list to `<FlagList>`.
 - `components/flags/FlagList.tsx` — client component; owns flags state; optimistic removal on dismiss (no page reload).

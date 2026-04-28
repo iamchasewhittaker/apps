@@ -1,6 +1,6 @@
 # Clarity Budget Web — ROADMAP
 
-> **v1 Redesign in progress.** Phase 2 (Money Companion) deferred. Active plan: `plans/clarity-budget-web-redesign.md` (10 steps). Progress: Steps 1–7 ✅ done + deployed (2026-04-28). Step 8 (`/settings` Privacy connector + card mapping) is next.
+> **v1 Redesign in progress.** Phase 2 (Money Companion) deferred. Active plan: `plans/clarity-budget-web-redesign.md` (10 steps). Progress: Steps 1–8 ✅ done (Step 8 local 2026-04-28; deploy pending commit + push). Step 9 (split `HomeDashboard.tsx`) is next.
 >
 > **Parallel workstream — AI auto-categorization.** v0 on main as of 2026-04-28 (commit `7a461b6`). Migration `0003` pushed. `AI_GATEWAY_API_KEY` set in production. Settings migration loop fixed. `/categorize` should now work end-to-end (pending production promotion + signed-in smoke test). Plan: `~/.claude/plans/whats-the-next-step-fluffy-wadler.md`.
 

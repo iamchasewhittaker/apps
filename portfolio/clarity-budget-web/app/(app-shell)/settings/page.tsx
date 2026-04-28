@@ -1,4 +1,6 @@
+import { CardMappingTable } from "@/components/settings/CardMappingTable";
 import { MigrationBanner } from "@/components/settings/MigrationBanner";
+import { PrivacyConnectorCard } from "@/components/settings/PrivacyConnectorCard";
 import { YnabConnectorCard } from "@/components/settings/YnabConnectorCard";
 import { T } from "@/lib/constants";
 import { createRouteClient } from "@/lib/supabase-server";
@@ -9,13 +11,15 @@ export default async function SettingsPage() {
     data: { user },
   } = await supabase.auth.getUser();
   let hasEncryptedYnabToken = false;
+  let hasEncryptedPrivacyToken = false;
   if (user) {
     const { data: cred } = await supabase
       .from("clarity_budget_credentials")
-      .select("ynab_token_ciphertext")
+      .select("ynab_token_ciphertext, privacy_token_ciphertext")
       .eq("user_id", user.id)
       .maybeSingle();
     hasEncryptedYnabToken = !!cred?.ynab_token_ciphertext;
+    hasEncryptedPrivacyToken = !!cred?.privacy_token_ciphertext;
   }
 
   return (
@@ -26,6 +30,8 @@ export default async function SettingsPage() {
       </p>
       <MigrationBanner hasEncryptedYnabToken={hasEncryptedYnabToken} />
       <YnabConnectorCard hasEncryptedYnabToken={hasEncryptedYnabToken} />
+      <PrivacyConnectorCard hasEncryptedPrivacyToken={hasEncryptedPrivacyToken} />
+      {hasEncryptedPrivacyToken && <CardMappingTable />}
     </div>
   );
 }

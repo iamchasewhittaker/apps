@@ -95,6 +95,29 @@ export async function fetchCategories(token: string, budgetID: string): Promise<
   return json.data.category_groups;
 }
 
+export interface YNABPayee {
+  id: string;
+  name: string;
+}
+
+export async function fetchPayees(token: string, budgetID: string): Promise<YNABPayee[]> {
+  type Resp = {
+    data: {
+      payees: Array<{
+        id: string;
+        name: string;
+        deleted: boolean;
+        transfer_account_id: string | null;
+      }>;
+    };
+  };
+  const json = await getJson<Resp>(`/budgets/${budgetID}/payees`, token);
+  return json.data.payees
+    .filter((p) => !p.deleted && !p.transfer_account_id)
+    .map((p) => ({ id: p.id, name: p.name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export interface YNABSubTransaction {
   id: string;
   amount: number; // milliunits; negative = outflow

@@ -1,5 +1,15 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-28 — Step 8 `/settings` Privacy connector + card mapping
+
+**`/api/credentials` already accepted `privacy_token` from Step 1.** No backend change needed for the connector — Step 8 was almost entirely UI plus one PATCH route + one read route. Worth checking the existing API surface before drafting new endpoints; saves a migration and a route that don't need to exist.
+
+**Server-side YNAB proxy + `loadYnabCredentials` self-heal handled the budget-id requirement for free.** `fetchPayees(token, budgetId)` needs a budget id, but the encrypted credentials row may have `default_budget_id = NULL` for users who haven't picked one in Settings yet. Reusing `loadYnabCredentials` (the categorize helper) gives token + budgetId with self-heal fallback to `user_data.data.ynabBudgetId` — no new code path.
+
+**`{ [k]: _omit, ...rest } = m` destructure trips `@typescript-eslint/no-unused-vars`.** Cleaner: `const next = { ...m }; delete next[k]; return next;` — same shape, no warning, no eslint-disable comment.
+
+**Running `pnpm build` while a `preview_start` dev server is up corrupts `.next` (again).** Same ENOENT-storm pattern as Step 6. Fix is the same: `rm -rf .next` + `preview_stop` + `preview_start`. Worth adding to a future pre-build sanity check.
+
 ## 2026-04-28 — Step 7 `/flags` UI: schema drift between HANDOFF and migration
 
 **HANDOFF prompt used three wrong field names.** The session prompt said `flag_type` (column is `type`), `status='dismissed'` (CHECK constraint allows only `'open' | 'acknowledged'`), and `resolved_at` (column is `acknowledged_at`). The SQL migration is always authoritative — check `supabase/migrations/0001_init.sql` before trusting any doc that names DB columns. Same pattern bit us in Step 6 (`'accepted'/'rejected'` vs `'approved'/'dismissed'`). The lesson: **schema first, doc second, every time.**
