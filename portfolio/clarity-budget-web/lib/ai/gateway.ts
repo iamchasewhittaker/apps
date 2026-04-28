@@ -63,6 +63,9 @@ export async function generateObject<T>(opts: {
     system: opts.system,
     maxOutputTokens: opts.maxOutputTokens,
     temperature: opts.temperature ?? 0,
+    // "json" mode injects the schema into the prompt rather than relying on
+    // native structured-output features — more reliable with gateway string IDs.
+    mode: "json",
   });
 
   return {
