@@ -40,6 +40,7 @@ export const DAILY_SITES: DailySite[] = [
 
   { category: 'personal', name: 'Gmail', url: 'https://mail.google.com' },
   { category: 'personal', name: 'Google Calendar', url: 'https://calendar.google.com' },
+  { category: 'personal', name: 'GMAT Mastery', url: 'https://gmat-mastery-web.vercel.app', note: 'Daily practice' },
   { category: 'personal', name: 'Ash Reader', url: 'https://ash-reader.vercel.app', note: 'Mental health' },
   { category: 'personal', name: 'Knowledge Base', url: 'https://knowledge-base-hazel-iota.vercel.app', note: 'Bookmarks + notes' },
   { category: 'personal', name: 'Extra', url: 'https://extra.email/home?cat=today', note: 'Email triage' },

@@ -4,15 +4,15 @@
 
 | Field | Value |
 |-------|-------|
-| Version | v0.1 |
-| Status | 🟢 2026-04-26 build + spot-check sweep: 40/40 tests passing on iPhone 15 sim, fresh install verified, all Phase 0 + Phase 1 migration data correct. Clean baseline. |
-| Last session | 2026-04-26: ran build + test sweep on iPhone 15 sim. `xcodebuild build` clean, `xcodebuild test` 40/40 passing (count drifted from 37 in prior HANDOFF — 3 net-new since session 4). Fresh-install spot checks verified property (40.3004/-111.7456), Z1=0 heads, Z2=18 heads + mixed-precip High problem, Z3=11 heads (no legacy H3-), Z4=12 heads, IFA inventory (7.2 lb, dial 3.5), maintenanceTasks=20 (recovery items present), 1 fert app on 2026-04-23 (17.8 lb / zones 2,3,4). Note: top-level key is `maintenanceTasks` not `maintenance`; head issues field is `issues` (not `flags`); Z2-S5 seed deliberately corrected to "empty nozzle slot, blocked". |
-| Focus | Pick next: (a) field walk with Pre-Season Audit + HeadPinEditor verification, (b) docs sweep — generate `docs/heads/COVERAGE_ANALYSIS.md` + `PROPERTY_PLACEMENT.md`, or (c) Rachio v2 zone control (manual start/stop). Z4-S1 dig-out highest real-world priority. |
+| Version | v0.2 |
+| Status | 🟢 2026-04-27 Overview tab shipped. 58/58 tests passing on iPhone 15 sim. `** BUILD SUCCEEDED **` + `** TEST SUCCEEDED **`. Overview tab is tab #1 with Open-Meteo weather, alerts feed, pre-emergent soil-temp chart, audit-progress card, Rachio status, schedule sanity, mow streak, and quick-log row. |
+| Last session | 2026-04-27: built the full Overview tab (v0.2). 6 new files, 5 modified. 58 tests passing (up from 40). Test suite ran clean after CoreSimulator service restart (`killall -9 com.apple.CoreSimulator.CoreSimulatorService`). All Codable fields use `decodeIfPresent` in extension `init(from:)` per Rule #1. |
+| Focus | (a) Manual sim smoke test — open iPhone 15 sim in Xcode, run app, verify weather card populates (~3s), pre-emergent chart renders with 55°F line, audit card shows real counts. (b) Device install on iPhone 12 Pro Max (UDID A0C65578-B1E0-4E96-A1EC-EEB8913BD11C) via `devicectl`. (c) Real-world: Z4-S1 dig-out (highest priority field work). |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
 | Xcode project | `Fairway.xcodeproj` |
-| Plan | `/Users/chase/.claude/plans/in-the-zone-menu-memoized-breeze.md` (session 4) |
+| Plan | `/Users/chase/.claude/plans/we-need-to-make-cryptic-hellman.md` (Overview tab plan) |
 
 ---
 

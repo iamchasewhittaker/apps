@@ -15,19 +15,46 @@
  *   5. If no match → fall through to AI classification
  */
 
-var JOB_SEARCH_DOMAINS = [
-  'greenhouse-mail.io',
-  'lever.co',
-  'myworkday.com',
-  'ziprecruiter.com',
-];
-
-var JOB_SEARCH_ADDRESSES = [
-  'jobs-listings@linkedin.com',
-  'inmail@linkedin.com',
-];
-
 var RULES = {
+  // Job search emails stay in inbox (never archived by Forge) and are
+  // picked up by Job Search HQ's InboxPanel via the Gmail label 'JobSearch'.
+  // Domains mirror ATS_SENDER_DOMAINS + LINKEDIN_DOMAINS in
+  // portfolio/job-search-hq/src/inbox/classifier.js — keep in sync.
+  'JobSearch': {
+    domains: [
+      // ATS platforms
+      'greenhouse-mail.io',
+      'greenhouse.io',
+      'hire.lever.co',
+      'lever.co',
+      'myworkday.com',
+      'workday.com',
+      'ashbyhq.com',
+      'smartrecruiters.com',
+      'jobvite.com',
+      'bamboohr.com',
+      'workable.com',
+      'recruitee.com',
+      'rippling.com',
+      'icims.com',
+      'taleo.net',
+      'successfactors.com',
+      // General job boards
+      'ziprecruiter.com',
+      // LinkedIn (all sub-domains)
+      'linkedin.com',
+      'e.linkedin.com',
+      'el.linkedin.com',
+    ],
+    addresses: [
+      'jobs-listings@linkedin.com',
+      'inmail@linkedin.com',
+      'jobalerts-noreply@linkedin.com',
+      'notifications-noreply@linkedin.com',
+    ],
+    toAliases: [],
+  },
+
   'Newsletter': {
     domains: [
       'substack.com',
@@ -73,8 +100,6 @@ var RULES = {
       'mail.app.supabase.io',
     ],
     addresses: [
-      'invitations@linkedin.com',
-      'messages-noreply@linkedin.com',
       'USPSInformeddelivery@email.informeddelivery.usps.com',
       'fantasy@espnmail.com',
       'no-reply@backblaze.com',

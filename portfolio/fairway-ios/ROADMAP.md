@@ -12,6 +12,7 @@
 - [x] Soil test display
 - [x] Shrub bed tracking
 - [x] Maintenance tasks + mow log
+- [x] **Overview tab (v0.2, shipped 2026-04-27)** — weather + alerts + pre-emergent tracker + audit progress + Rachio status + schedule sanity + mow streak + quick-log row. Open-Meteo (soil temp at 6cm, free, no API key). 58 tests passing.
 
 ## Phase 2 — Polish
 - [ ] App icon (1024×1024 — Augusta green + white sprinkler arc)
@@ -78,7 +79,7 @@ Full plan at `/Users/chase/.claude/plans/on-fairway-the-map-stateless-plum.md` �
 - [ ] Once Z2 matching confirmed: `git mv docs/heads/Z2-MATCH-Nth/` → `docs/heads/Z2-S{1..6}/`, update photoPaths in `phase0Z2Heads()`
 
 ## Ideas Backlog
-- Weather integration (manual rainfall entry)
+- ~~Weather integration (manual rainfall entry)~~ — shipped via Open-Meteo in Overview tab (v0.2)
 - Push spreader support (when HHS100 is replaced)
 - Zone coverage map (draw spray arcs on satellite image) — partially addressed by `HeadPinEditor`
 - **Schema bump:** add `precipRateInPerHour: Double?` to `HeadData` — would be the right home for the precip-mismatch story

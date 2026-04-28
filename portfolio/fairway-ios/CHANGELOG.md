@@ -2,6 +2,42 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-27 — Overview tab (v0.2)
+
+New first tab — **Overview** — answers "what does the lawn need today?" without navigating across all tabs.
+
+**New files:**
+- `Fairway/Models/WeatherSnapshot.swift` — `WeatherSnapshot`, `CurrentConditions`, `DailyWeather`, `HourlySoil` Codable structs; WMO weather-code → SF Symbol mapping
+- `Fairway/Services/WeatherAPI.swift` — Open-Meteo client (free, no API key, HTTPS, returns soil temp at 6cm depth); `OpenMeteoDTO` internal wire types mirroring `RachioDTOs.swift` pattern; 30-min fetch throttle
+- `Fairway/Models/OverviewDerived.swift` — all read-only derivations: `AlertItem` (severity + destination), `AuditSummary`, `WaterBalance`, `ScheduledRunInfo`; `extension FairwayBlob` with `lastMow`, `daysSinceLastMow`, `nextMowDueDate`, `auditSummary`, `overdueMaintenance`, `missedFertilizerWindows`, `lowStockItems`, `alertItems`, `rachioLastRun`, `rachioNextRun`, `rachioActiveRainDelay`, `rachioMinutesLast7Days`, `rainfallInchesLast7Days`, `weeklyWaterBalance`, `preEmergentTask`, `soilTempCrossingDate`, `daysUntilSoilTempCrossing`
+- `Fairway/Views/OverviewView.swift` — `@MainActor` view with 10 card sections (see layout below); `.task {}` auto-refreshes weather on appear; toolbar `↻` forces refresh; `.navigationDestination(for: AlertItem.Destination.self)` registered once at root; `.sheet(item: $quickLog)` reuses existing `AddMowSheet / AddWaterRunSheet / AddFertAppSheet / AddObservationSheet`
+- `FairwayTests/WeatherSnapshotTests.swift` — 4 tests: round-trip, rain helpers, Open-Meteo fixture decode, history/forecast split
+- `FairwayTests/OverviewDerivedTests.swift` — 13 tests: mow due math, audit summary, maintenance filter, missed fert, alert priority order, water balance (3 cases), pre-emergent task match, soil-temp crossing, Rachio next-run picker
+
+**Modified files:**
+- `Fairway/FairwayBlob.swift` — `var weather: WeatherSnapshot? = nil`; `decodeIfPresent` in extension `init(from:)` (Codable Rule #1)
+- `Fairway/FairwayStore.swift` — `refreshWeather(force:)` async method; 30-min throttle; Open-Meteo fetch; on success `blob.weather = snapshot; save()`; `weatherFetching` + `weatherLastError` observables
+- `Fairway/Views/ContentView.swift` — Overview inserted as tab #1 (`house.fill`); total tabs now 6
+- `FairwayTests/FairwayBlobTests.swift` — `testV1BlobWithoutWeatherDecodesAsNil` backward-compat test
+- `Fairway.xcodeproj/project.pbxproj` — 6 new files registered (FW01...3F–44)
+
+**Overview layout (top → bottom):**
+1. `WeatherCard` — current temp + WMO icon + soil temp + today precip; 7-day forecast columns (bar + high/low); last-7-days rain footer
+2. `QuickLogRow` — Mow / Water / Fert / Observation icon buttons
+3. Alerts section — priority-sorted `AlertItem` rows; each taps to destination view
+4. `PreEmergentSoilTempCard` — Swift Charts `LineMark` + `RuleMark` at 55°F; hidden when task complete
+5. `PreEmergentCountdownCard` — days until targetDate or soil crossing; hidden when task complete
+6. `AuditProgressCard` — progress bar + confirmed/fieldwork/low-confidence counts; hidden at 100%
+7. `RachioStatusCard` — last run + next run + rain delay badge
+8. `ScheduleSanityCard` — minutes/rain → Over/About Right/Under capsule; shown only when both data sources present
+9. `MowStreakCard` — last mow date + blade height + next due (5-day cadence)
+
+**Why Open-Meteo (not WeatherKit):** bundle builds with `CODE_SIGNING_ALLOWED=NO`; WeatherKit requires a signed entitlement. Open-Meteo is free, HTTPS-only, no API key, and crucially returns **soil temperature at 6cm depth** — exactly what the pre-emergent 55°F tracking needs.
+
+**Test count: 58 total (was 40) — all passing on iPhone 15 sim.**
+
+---
+
 ### Verified — 2026-04-26 — Build + spot-check sweep on iPhone 15 sim
 
 - `xcodebuild build` and `xcodebuild test` clean. **40/40 tests passing** (was 37 at last HANDOFF — 3 net-new tests since session 4).

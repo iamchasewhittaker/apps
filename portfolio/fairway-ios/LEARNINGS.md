@@ -1,5 +1,82 @@
 # Fairway iOS — Learnings
 
+## 2026-04-27 — Open-Meteo beats WeatherKit for unsigned builds
+
+WeatherKit requires the `com.apple.developer.weatherkit` entitlement provisioned through the Apple Developer Portal. Any project building with `CODE_SIGNING_ALLOWED=NO` cannot use it — WeatherKit calls will be rejected at runtime regardless of the import statement.
+
+Open-Meteo is the right alternative for personal/portfolio iOS apps:
+- Free, no API key, HTTPS-only (no App Transport Security exception needed)
+- Returns **soil temperature at 6cm depth** — not available from WeatherKit at all
+- Single GET call, standard JSON, URLSession async/await, no third-party deps
+- Wrap the wire format in an internal `OpenMeteoDTO` namespace (same pattern as `RachioDTOs.swift`) to isolate app models from wire shape changes
+
+Endpoint pattern (Vineyard, UT):
+```
+https://api.open-meteo.com/v1/forecast?latitude=40.3004&longitude=-111.7456
+  &current=temperature_2m,precipitation,weather_code
+  &daily=temperature_2m_max,temperature_2m_min,precipitation_sum
+  &hourly=soil_temperature_6cm
+  &past_days=7&forecast_days=7
+  &timezone=America%2FDenver&temperature_unit=fahrenheit&precipitation_unit=inch
+```
+
+The hourly `soil_temperature_6cm` array uses "yyyy-MM-dd'T'HH:mm" date strings (no seconds, no timezone suffix) in the requested timezone — parse with an explicit `DateFormatter` in `America/Denver`.
+
+---
+
+## 2026-04-27 — Swift Charts LineMark + RuleMark for a threshold chart
+
+For the pre-emergent soil-temp tracker (soil temp vs. 55°F threshold):
+
+```swift
+import Charts
+
+Chart {
+    ForEach(samples) { s in
+        LineMark(
+            x: .value("Date", s.date, unit: .day),
+            y: .value("Temp (°F)", s.tempF)
+        )
+        .foregroundStyle(FairwayTheme.accentGold)
+    }
+    RuleMark(y: .value("Threshold", 55.0))
+        .lineStyle(StrokeStyle(lineWidth: 1, dash: [4]))
+        .foregroundStyle(FairwayTheme.statusAction)
+        .annotation(position: .top, alignment: .leading) {
+            Text("55°F").font(.caption2).foregroundStyle(FairwayTheme.statusAction)
+        }
+}
+.chartXAxis { AxisMarks(values: .stride(by: .day, count: 2)) { _ in AxisGridLine(); AxisValueLabel(format: .dateTime.month(.abbreviated).day()) } }
+```
+
+No Y-domain override needed — Charts auto-ranges. The `.stride(by: .day, count: 2)` keeps labels from overlapping on a 10-day window. `unit: .day` on the X value aggregates multiple hourly samples to the day correctly.
+
+---
+
+## 2026-04-27 — NavigationLink(value:) must register destination at the view that owns the NavigationStack
+
+If you put `.navigationDestination(for: AlertItem.Destination.self)` inside a subview (e.g., `AlertRow`), SwiftUI silently ignores it — the modifier has no effect unless it's at or above the `NavigationStack` root. The rule: register `.navigationDestination` on the view that is the direct or near child of the `NavigationStack`, not inside reusable rows.
+
+For `OverviewView`, all `AlertRow` instances share one `NavigationLink(value: alert.destination)` and the single `.navigationDestination(for: AlertItem.Destination.self)` is on the `ScrollView` inside `OverviewView.body`.
+
+---
+
+## 2026-04-27 — CoreSimulator service restart when launchd_sim crashes
+
+`xcodebuild test` can fail with `NSPOSIXErrorDomain code 60` (connection timed out) if the iOS Simulator's launchd service has crashed. `xcrun simctl boot <udid>` will also error.
+
+Fix (no sudo needed):
+```bash
+killall -9 com.apple.CoreSimulator.CoreSimulatorService
+# wait ~5 seconds for the daemon to respawn
+xcrun simctl boot 5E8F2054-8B78-4A09-9C98-A9F72CCB07FC
+# then re-run xcodebuild test
+```
+
+The service auto-restarts under launchd after being killed. Rebooting the Mac is not required.
+
+---
+
 ## When the user says "the map is messed up," diagnose before guessing
 
 **Date:** 2026-04-25 (session 4)
