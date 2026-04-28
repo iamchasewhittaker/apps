@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|-------|
 | **Version** | v8.18 |
-| **Branch** | `feat/job-search-v8.16` (off `main`) — carrying v8.17 + v8.18 work |
+| **Branch** | `main` (consolidated 2026-04-27 — v8.16/v8.17/v8.18 all shipped) |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` (data) + Supabase `user_data` row `app_key='job-search:gmail'` (encrypted refresh token, server-only — never localStorage) |
 | **Focus** | Gmail Inbox Feed shipped (v8.18): Focus-tab `InboxPanel` between MorningLaunchpad and TargetCompanyBoard. Browser Gmail OAuth via GIS popup (`src/inbox/oauth.js`) → server-side token exchange in `api/gmail/exchange.js` (AES-256-GCM-encrypts refresh token before Supabase write) → browser fetches gmail.googleapis.com directly with the access token. Classifier (`src/inbox/classifier.js`) buckets messages into recruiter / ats_update / interview_invite / linkedin / other. Review-first queue with one-click Save Contact + App / Bump stage / Set interview / Dismiss / Snooze. Auto-logs wins on actioned recruiter pings + interview invites. Read-only — replies still happen in Gmail. |

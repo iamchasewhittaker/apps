@@ -8,7 +8,7 @@
 | Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · dev-server unauth probes ✅. Signed-in smoke **blocked** — see "Blocker" below. 7 files uncommitted. |
 | Last touch | 2026-04-27 |
 | URL | clarity-budget-web.vercel.app (Steps 1–2 deployed; AI categorize + credentials fix NOT deployed) |
-| Branch | `feat/job-search-v8.16` (HANDOFF previously said `feature/ai-categorize` — that was wrong) |
+| Branch | `main` (consolidated 2026-04-27) |
 | Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files already on disk |
 | Blocker | `/categorize` → "no YNAB budget selected": `clarity_budget_credentials.default_budget_id` is NULL and `user_data.data.ynabBudgetId` is also null. **Fix: go to `/settings` → YNAB card → re-enter PAT (token was cleared from localStorage by MigrationBanner) → pick budget → writes `default_budget_id` to Supabase directly.** See LEARNINGS.md 2026-04-27 for full diagnosis. |
 | Manual TODO (0 — do first) | `/settings` → YNAB card → enter token → pick budget → confirm `clarity_budget_credentials.default_budget_id` written in Supabase Studio. This unblocks the smoke. |
@@ -75,7 +75,7 @@ See "Manual TODO (verify this session)" in State table above.
 Read CLAUDE.md and HANDOFF.md first.
 
 Continuing work on: clarity-budget-web (portfolio/clarity-budget-web)
-Branch: feature/ai-categorize
+Branch: main
 
 ## What was just completed (2026-04-26)
 
@@ -268,7 +268,7 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 Read portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md first.
 Run checkpoint before touching anything.
 
-Continuing: clarity-budget-web, branch feat/job-search-v8.16
+Continuing: clarity-budget-web, branch main
 
 ## State coming in (2026-04-27)
 
