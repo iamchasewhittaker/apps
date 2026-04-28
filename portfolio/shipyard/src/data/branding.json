@@ -681,6 +681,13 @@
     "notes": "- **Label:** `YNAB` (52px, weight 600, Rose `#f43f5e`, letter-spacing 14)\n- **Main:** `FUNDED` (110px, weight 800, `#f3f4f6`, letter-spacing -4)\n- **Canvas:** 512x512, `#0f1117` bg, `rx=96`\n- **Accent color:** Rose `#f43f5e`\n- **Font:** DM Sans",
     "sourceFile": "portfolio/funded-web/docs/BRANDING.md"
   },
+  "gmail-forge": {
+    "slug": "gmail-forge",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
   "gmat-mastery-web": {
     "slug": "gmat-mastery-web",
     "colors": [],
@@ -781,6 +788,15 @@
         "hex": "#ef4444",
         "name": "Accent — red",
         "usage": "Rejections, errors, destructive actions"
+      },
+      {
+        "hex": "#1e3a5f"
+      },
+      {
+        "hex": "#14532d"
+      },
+      {
+        "hex": "#0a1108"
       }
     ],
     "fonts": [

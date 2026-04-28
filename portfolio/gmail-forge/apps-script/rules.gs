@@ -44,6 +44,12 @@ var RULES = {
       'digest.producthunt.com',
       'mailer.puzzmo.com',
       'mail.joinsuperhuman.ai',
+      'ship30for30.com',
+      'daily.therundown.ai',
+      'thedailydad.com',
+      'aisecret.us',
+      'the-dailee.com',
+      'nickwignall.com',
     ],
     addresses: [
       'hello@readwise.io',
@@ -55,7 +61,9 @@ var RULES = {
       'natia@space-leads.com',
     ],
     // Optional static aliases; prefer Script Property NEWSLETTER_TO_ALIASES (see apps-script/README.md)
-    toAliases: [],
+    toAliases: [
+      'pipe.evasive_9z@icloud.com',  // WordPress Daily Crossword relay — can't match by wordpress.com broadly
+    ],
   },
 
   'Notification': {
@@ -93,6 +101,7 @@ var RULES = {
   'Security': {
     domains: [
       'accounts.google.com',
+      'github.com',
     ],
     addresses: [],
     toAliases: [],
@@ -131,6 +140,10 @@ var RULES = {
       'hello.treatmyocd.com',
       'lakeview.com',
       'officialjackcarr.com',
+      'twelvesouth.com',
+      'gygi.com',
+      'mail.grammarly.com',
+      'yardmastery.com',
     ],
     addresses: [],
     toAliases: [],

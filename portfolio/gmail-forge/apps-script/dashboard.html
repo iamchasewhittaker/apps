@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gmail Forge — Dashboard</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3250;
+    --blue: #4f8ef7;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --green: #34c98d;
+    --yellow: #f5a623;
+    --red: #f06464;
+    --radius: 10px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Google Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.3px;
+  }
+
+  .generated {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .stat-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .stat-value.healthy { color: var(--green); }
+  .stat-value.warn    { color: var(--yellow); }
+  .stat-value.error   { color: var(--red); }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  section h2 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .label-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .capped::after {
+    content: '+';
+    color: var(--yellow);
+    margin-left: 1px;
+  }
+
+  .empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .source {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .truncate {
+    max-width: 420px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 16px; }
+    header { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .truncate { max-width: 200px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Gmail Forge — Dashboard</h1>
+    <span class="generated" id="generated">Loading…</span>
+  </header>
+
+  <div class="grid">
+    <div class="stat">
+      <div class="stat-label">Auto-sort today</div>
+      <div class="stat-value" id="autoSortToday">—</div>
+      <div class="stat-sub">new senders labeled since midnight</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Review queue</div>
+      <div class="stat-value" id="reviewQueue">—</div>
+      <div class="stat-sub">unknown senders awaiting a rule</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Classifier</div>
+      <div class="stat-value" id="classifierMode">—</div>
+      <div class="stat-sub" id="classifierNote">&nbsp;</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Trigger health</div>
+      <div class="stat-value" id="triggerHealth">—</div>
+      <div class="stat-sub" id="triggerNote">5-minute auto-sort</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Label counts</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th class="num">Today</th>
+          <th class="num">Last 7d</th>
+          <th class="num">Last 30d</th>
+        </tr>
+      </thead>
+      <tbody id="labelCountsBody"></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Recent auto-sort activity</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>When</th>
+          <th>Sender</th>
+          <th>Subject</th>
+          <th>Label</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody id="recentBody"></tbody>
+    </table>
+  </section>
+
+  <div class="footer">
+    Counts cap at <span id="searchCapFooter">500</span> threads per query.
+    Timezone: <span id="tzFooter">—</span>.
+    Filters: <span id="filterCount">—</span>.
+  </div>
+</div>
+
+<script>
+  var RAW = <?= payload ?>;
+  var DATA = JSON.parse(RAW);
+
+  function fmtTime(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return String(iso);
+    return d.toLocaleString([], {
+      month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit'
+    });
+  }
+
+  function escape(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function renderCount(cell) {
+    if (!cell) return '0';
+    var s = String(cell.count);
+    return cell.capped ? '<span class="capped">' + s + '</span>' : s;
+  }
+
+  function render() {
+    document.getElementById('generated').textContent =
+      'Generated ' + fmtTime(DATA.generatedAt);
+    document.getElementById('tzFooter').textContent = DATA.timezone || '—';
+    document.getElementById('filterCount').textContent =
+      DATA.health.filterCount + ' rules';
+    document.getElementById('searchCapFooter').textContent = DATA.searchCap;
+
+    // Auto-sort today
+    var today = DATA.autoSortToday;
+    document.getElementById('autoSortToday').textContent =
+      today == null ? 'n/a' : today;
+
+    // Review queue
+    var rq = DATA.reviewQueue;
+    var rqEl = document.getElementById('reviewQueue');
+    if (!rq.available) {
+      rqEl.textContent = 'n/a';
+    } else {
+      rqEl.textContent = rq.count;
+      if (rq.count > 0) rqEl.classList.add('warn');
+    }
+
+    // Classifier
+    var modeEl = document.getElementById('classifierMode');
+    modeEl.textContent = DATA.health.classifierMode;
+    var note = document.getElementById('classifierNote');
+    if (DATA.health.classifierMode === 'RULES_ONLY') {
+      note.textContent = 'Gemini disabled — rules-only matching';
+    } else {
+      note.textContent = DATA.health.geminiKeyPresent
+        ? 'Gemini classifying unknown senders'
+        : 'GEMINI mode but no key set';
+      if (!DATA.health.geminiKeyPresent) modeEl.classList.add('error');
+    }
+
+    // Trigger health
+    var th = document.getElementById('triggerHealth');
+    if (DATA.health.triggerHealthy) {
+      th.textContent = 'OK';
+      th.classList.add('healthy');
+    } else if (DATA.health.triggerCount === 0) {
+      th.textContent = 'missing';
+      th.classList.add('error');
+      document.getElementById('triggerNote').textContent =
+        'run setupTrigger() in the script editor';
+    } else {
+      th.textContent = DATA.health.triggerCount + 'x';
+      th.classList.add('warn');
+      document.getElementById('triggerNote').textContent =
+        'multiple triggers — investigate duplicates';
+    }
+
+    // Label counts
+    var body = document.getElementById('labelCountsBody');
+    body.innerHTML = DATA.labelCounts.map(function (row) {
+      return '<tr>' +
+        '<td><span class="label-chip">' + escape(row.label) + '</span></td>' +
+        '<td class="num">' + renderCount(row.today) + '</td>' +
+        '<td class="num">' + renderCount(row.sevenDay) + '</td>' +
+        '<td class="num">' + renderCount(row.thirtyDay) + '</td>' +
+        '</tr>';
+    }).join('');
+
+    // Recent activity
+    var rb = document.getElementById('recentBody');
+    if (!DATA.recentActivity.length) {
+      rb.innerHTML =
+        '<tr><td colspan="5" class="empty">No auto-sort activity logged yet</td></tr>';
+    } else {
+      rb.innerHTML = DATA.recentActivity.map(function (row) {
+        return '<tr>' +
+          '<td>' + escape(fmtTime(row.when)) + '</td>' +
+          '<td class="truncate" title="' + escape(row.email) + '">' + escape(row.email) + '</td>' +
+          '<td class="truncate" title="' + escape(row.subject) + '">' + escape(row.subject) + '</td>' +
+          '<td><span class="label-chip">' + escape(row.label) + '</span></td>' +
+          '<td class="source">' + escape(row.source) + '</td>' +
+          '</tr>';
+      }).join('');
+    }
+  }
+
+  render();
+</script>
+</body>
+</html>

@@ -406,16 +406,28 @@ function hasDep(deps: Record<string, string>, name: string): boolean {
   return name in deps;
 }
 
-const SERVICE_RULES: Array<{
+interface ServiceRule {
   id: string;
   title: string;
   description: string;
+  keywords: string[]; // for usage-context heuristic
+  doc_url: string;
+  auth_method: string;
+  env_vars: string[];
+  cost_tier: string;
   match: (c: ThemeCtx) => boolean;
-}> = [
+}
+
+const SERVICE_RULES: ServiceRule[] = [
   {
     id: 'supabase',
     title: 'Supabase',
     description: 'Auth + Postgres + Storage. Shared project across most portfolio apps.',
+    keywords: ['Supabase'],
+    doc_url: 'https://supabase.com/dashboard/project/unqtnnxlltiadzbqpyhh',
+    auth_method: 'Anon key (browser) + Service Role (server) + email/password or OTP',
+    env_vars: ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'REACT_APP_SUPABASE_URL', 'REACT_APP_SUPABASE_ANON_KEY'],
+    cost_tier: 'Free tier (shared project unqtnnxlltiadzbqpyhh)',
     match: (c) =>
       hasDep(c.deps, '@supabase/supabase-js') ||
       hasDep(c.deps, '@supabase/ssr') ||
@@ -425,18 +437,33 @@ const SERVICE_RULES: Array<{
     id: 'ynab',
     title: 'YNAB',
     description: 'You Need A Budget API — budget reads + transaction PATCH.',
+    keywords: ['YNAB'],
+    doc_url: 'https://api.ynab.com/',
+    auth_method: 'Personal Access Token (Bearer)',
+    env_vars: ['YNAB_TOKEN', 'REACT_APP_YNAB_TOKEN'],
+    cost_tier: 'Requires paid YNAB subscription',
     match: (c) => /\bYNAB\b/.test(c.claudeMd),
   },
   {
     id: 'gmail',
     title: 'Gmail',
     description: 'Gmail API + OAuth for inbox parsing, receipts, and job-search emails.',
+    keywords: ['Gmail'],
+    doc_url: 'https://developers.google.com/gmail/api',
+    auth_method: 'OAuth 2.0 (installed app or web flow); refresh token encrypted in Supabase',
+    env_vars: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI'],
+    cost_tier: 'Free (Google quota: 1B units/day)',
     match: (c) => /\bGmail\b/.test(c.claudeMd),
   },
   {
     id: 'anthropic',
     title: 'Anthropic / Claude API',
     description: 'Direct Claude API calls for chat, classification, and generation.',
+    keywords: ['Anthropic', 'Claude API'],
+    doc_url: 'https://docs.anthropic.com/',
+    auth_method: 'API key (x-api-key header)',
+    env_vars: ['ANTHROPIC_API_KEY', 'chase_anthropic_key (localStorage)'],
+    cost_tier: 'Pay-per-token (Sonnet ~$3/M in, $15/M out)',
     match: (c) =>
       hasDep(c.deps, '@anthropic-ai/sdk') ||
       /\bAnthropic\b|Claude API/.test(c.claudeMd),
@@ -445,30 +472,55 @@ const SERVICE_RULES: Array<{
     id: 'privacy-com',
     title: 'Privacy.com',
     description: 'Virtual cards + transaction sync.',
+    keywords: ['Privacy.com'],
+    doc_url: 'https://docs.privacy.com/',
+    auth_method: 'API key (Bearer); encrypted at rest in Supabase',
+    env_vars: ['PRIVACY_API_KEY'],
+    cost_tier: 'Free tier (limited transaction volume)',
     match: (c) => /Privacy\.com/.test(c.claudeMd),
   },
   {
     id: 'vercel',
     title: 'Vercel',
     description: 'Hosting + Functions + Cron. Auto-deploy on push to main.',
+    keywords: ['Vercel', 'vercel.app'],
+    doc_url: 'https://vercel.com/iamchasewhittakers-projects',
+    auth_method: 'CLI token (vercel login) + GitHub auto-deploy',
+    env_vars: ['VERCEL_TOKEN', 'VERCEL_ORG_ID', 'VERCEL_PROJECT_ID'],
+    cost_tier: 'Hobby plan (free, with limits: 1 cron/day max)',
     match: (c) => c.hasLiveVercelUrl || /\bVERCEL_|vercel\.app/.test(c.claudeMd),
   },
   {
     id: 'linear',
     title: 'Linear',
     description: 'Issue + project tracking under team Whittaker.',
+    keywords: ['Linear', 'linear.app'],
+    doc_url: 'https://linear.app/whittaker',
+    auth_method: 'Personal API key',
+    env_vars: ['LINEAR_API_KEY'],
+    cost_tier: 'Free plan (single user)',
     match: (c) => /linear\.app\/whittaker|LINEAR_API_KEY/.test(c.claudeMd),
   },
   {
     id: 'stripe',
     title: 'Stripe',
     description: 'Payments + subscriptions.',
+    keywords: ['Stripe'],
+    doc_url: 'https://docs.stripe.com/',
+    auth_method: 'Secret key + webhook signing secret',
+    env_vars: ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'],
+    cost_tier: '2.9% + 30¢ per transaction',
     match: (c) => hasDep(c.deps, 'stripe') || /\bStripe\b/.test(c.claudeMd),
   },
   {
     id: 'rachio',
     title: 'Rachio',
     description: 'Smart sprinkler API for irrigation control.',
+    keywords: ['Rachio'],
+    doc_url: 'https://rachio.readme.io/',
+    auth_method: 'Personal API key (Bearer)',
+    env_vars: ['RACHIO_API_KEY'],
+    cost_tier: 'Free (requires Rachio device)',
     match: (c) => /\bRachio\b/.test(c.claudeMd),
   },
 ];
@@ -571,9 +623,257 @@ function detectPatterns(ctx: ThemeCtx): string[] {
   return PATTERN_RULES.filter((r) => r.match(ctx)).map((r) => r.id);
 }
 
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function stripMarkdown(s: string): string {
+  return s
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') // [text](url) → text
+    .replace(/[`*_#>]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractUsageContext(claudeMd: string, keywords: string[], maxLen = 160): string {
+  if (!claudeMd) return '';
+  for (const kw of keywords) {
+    const re = new RegExp(`[^.!?\\n]*\\b${escapeRegex(kw)}\\b[^.!?\\n]*[.!?]?`, 'i');
+    const m = re.exec(claudeMd);
+    if (!m) continue;
+    let s = stripMarkdown(m[0]);
+    if (s.length < 20) continue; // too tiny to be useful
+    if (s.length > maxLen) s = s.slice(0, maxLen - 1).trimEnd() + '…';
+    return s;
+  }
+  return '';
+}
+
+const SOURCE_SKIP_DIRS = new Set([
+  'node_modules', '.next', '.git', 'build', 'dist', 'coverage',
+  'public', 'archive', 'Pods', '.vercel', '.turbo', 'out',
+]);
+
+function walkSourceFiles(dir: string, exts: string[], maxDepth = 4, maxFiles = 500): string[] {
+  const out: string[] = [];
+  function walk(d: string, depth: number): void {
+    if (depth > maxDepth || out.length >= maxFiles) return;
+    let entries: import('fs').Dirent[];
+    try {
+      entries = readdirSync(d, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const e of entries) {
+      if (out.length >= maxFiles) return;
+      if (e.name.startsWith('.') && depth === 0) continue;
+      const full = join(d, e.name);
+      if (e.isDirectory()) {
+        if (SOURCE_SKIP_DIRS.has(e.name) || e.name.startsWith('.')) continue;
+        walk(full, depth + 1);
+      } else if (e.isFile() && exts.some((x) => e.name.endsWith(x))) {
+        out.push(full);
+      }
+    }
+  }
+  walk(dir, 0);
+  return out;
+}
+
+interface PromptHit {
+  slug: string;
+  title: string;
+  source_kind: 'system_prompt' | 'session_template' | 'slash_command' | 'prompt_md';
+  source_path: string; // relative to repo
+  excerpt: string;
+  project_slug?: string;
+}
+
+function relFromHome(p: string): string {
+  return p.startsWith(HOME) ? p.replace(HOME, '~') : p;
+}
+
+function snippetSlug(prefix: string, raw: string): string {
+  const hash = createHash('sha1').update(raw).digest('hex').slice(0, 10);
+  return `${prefix}:${hash}`;
+}
+
+const SYSTEM_PROMPT_PATTERNS: RegExp[] = [
+  /system\s*:\s*(`([^`]{40,800})`|"([^"\\]{40,800})"|'([^'\\]{40,800})')/g,
+  /callClaude\s*\(\s*(`([^`]{40,800})`|"([^"\\]{40,800})"|'([^'\\]{40,800})')/g,
+];
+
+function parsePromptsForProject(slug: string, dir: string): PromptHit[] {
+  const hits: PromptHit[] = [];
+  const seen = new Set<string>();
+  const sourceFiles = walkSourceFiles(dir, ['.ts', '.tsx', '.js', '.jsx'], 4, 200);
+  for (const file of sourceFiles) {
+    let content: string;
+    try {
+      content = readFileSync(file, 'utf-8');
+    } catch {
+      continue;
+    }
+    if (content.length > 400_000) continue; // skip giant bundles
+    for (const pat of SYSTEM_PROMPT_PATTERNS) {
+      pat.lastIndex = 0;
+      let m: RegExpExecArray | null;
+      while ((m = pat.exec(content)) !== null) {
+        const raw = (m[2] ?? m[3] ?? m[4] ?? '').trim();
+        if (raw.length < 40) continue;
+        const fingerprint = raw.slice(0, 80);
+        if (seen.has(fingerprint)) continue;
+        seen.add(fingerprint);
+        const excerpt = raw.length > 320 ? raw.slice(0, 317) + '…' : raw;
+        const relFile = file.replace(dir, '').replace(/^\//, '');
+        const titleSeed = excerpt.split(/\s+/).slice(0, 6).join(' ');
+        hits.push({
+          slug: snippetSlug(`prompt:sys:${slug}`, fingerprint),
+          title: `${titleCase(slug)} — ${titleSeed}`,
+          source_kind: 'system_prompt',
+          source_path: `portfolio/${slug}/${relFile}`,
+          excerpt,
+          project_slug: slug,
+        });
+        if (hits.length >= 10) return hits; // cap per project
+      }
+    }
+  }
+  // PROMPT.md
+  const promptMdPath = join(dir, 'PROMPT.md');
+  if (existsSync(promptMdPath)) {
+    try {
+      const content = readFileSync(promptMdPath, 'utf-8');
+      const heading = (content.match(/^#\s+(.+)$/m)?.[1] ?? `${titleCase(slug)} — PROMPT.md`).trim();
+      const body = stripMarkdown(content.replace(/^#.*$/m, '').trim());
+      const excerpt = body.length > 320 ? body.slice(0, 317) + '…' : body;
+      hits.push({
+        slug: snippetSlug(`prompt:md:${slug}`, heading),
+        title: heading,
+        source_kind: 'prompt_md',
+        source_path: `portfolio/${slug}/PROMPT.md`,
+        excerpt,
+        project_slug: slug,
+      });
+    } catch {}
+  }
+  return hits;
+}
+
+function parsePortfolioTemplates(rootDocs: string): PromptHit[] {
+  const dir = join(rootDocs, 'templates');
+  if (!existsSync(dir)) return [];
+  let entries: string[];
+  try {
+    entries = readdirSync(dir);
+  } catch {
+    return [];
+  }
+  const hits: PromptHit[] = [];
+  for (const name of entries) {
+    if (!name.startsWith('SESSION_START_') || !name.endsWith('.md')) continue;
+    const full = join(dir, name);
+    try {
+      const content = readFileSync(full, 'utf-8');
+      const heading = (content.match(/^#\s+(.+)$/m)?.[1] ?? name.replace(/\.md$/, '')).trim();
+      const firstPara = content
+        .split(/\n{2,}/)
+        .map((p) => p.trim())
+        .find((p) => p && !p.startsWith('#') && !p.startsWith('>')) ?? '';
+      const cleaned = stripMarkdown(firstPara);
+      const excerpt = cleaned.length > 320 ? cleaned.slice(0, 317) + '…' : cleaned;
+      hits.push({
+        slug: snippetSlug('prompt:tpl', name.replace(/\.md$/, '')),
+        title: heading,
+        source_kind: 'session_template',
+        source_path: relFromHome(full),
+        excerpt,
+      });
+    } catch {}
+  }
+  return hits;
+}
+
+function parseSlashCommands(): PromptHit[] {
+  const dir = join(HOME, '.claude', 'commands');
+  if (!existsSync(dir)) return [];
+  let entries: string[];
+  try {
+    entries = readdirSync(dir);
+  } catch {
+    return [];
+  }
+  const hits: PromptHit[] = [];
+  for (const name of entries) {
+    if (!name.endsWith('.md')) continue;
+    const full = join(dir, name);
+    try {
+      const content = readFileSync(full, 'utf-8');
+      const heading = (content.match(/^#\s+(.+)$/m)?.[1] ?? `/${name.replace(/\.md$/, '')}`).trim();
+      const firstPara = content
+        .split(/\n{2,}/)
+        .map((p) => p.trim())
+        .find((p) => p && !p.startsWith('#') && !p.startsWith('---')) ?? '';
+      const cleaned = stripMarkdown(firstPara);
+      const excerpt = cleaned.length > 320 ? cleaned.slice(0, 317) + '…' : cleaned;
+      hits.push({
+        slug: snippetSlug('prompt:cmd', name.replace(/\.md$/, '')),
+        title: `/${name.replace(/\.md$/, '')}`,
+        source_kind: 'slash_command',
+        source_path: relFromHome(full),
+        excerpt: excerpt || heading,
+      });
+    } catch {}
+  }
+  return hits;
+}
+
+interface GlossaryHit {
+  slug: string;
+  term: string;
+  definition: string;
+  raw: string;
+}
+
+function parseGlossary(rootDocs: string): GlossaryHit[] {
+  const path = join(rootDocs, 'GLOSSARY.md');
+  if (!existsSync(path)) return [];
+  let content: string;
+  try {
+    content = readFileSync(path, 'utf-8');
+  } catch {
+    return [];
+  }
+  const hits: GlossaryHit[] = [];
+  const lines = content.split('\n');
+  for (const line of lines) {
+    if (!line.startsWith('|')) continue;
+    if (/^\|\s*-+/.test(line)) continue; // table separator row
+    const cells = line.split('|').slice(1, -1).map((c) => c.trim());
+    if (cells.length < 2) continue;
+    const termRaw = cells[0];
+    const defRaw = cells[1];
+    if (!termRaw || !defRaw) continue;
+    if (/^term$/i.test(stripMarkdown(termRaw))) continue; // header row
+    const term = stripMarkdown(termRaw);
+    const definition = stripMarkdown(defRaw);
+    if (!term || !definition || definition.length < 10) continue;
+    hits.push({
+      slug: snippetSlug('glossary', term),
+      term,
+      definition: definition.length > 400 ? definition.slice(0, 397) + '…' : definition,
+      raw: defRaw,
+    });
+  }
+  return hits;
+}
+
 function buildThemeRows(
   servicesByApp: Map<string, Set<string>>,
   patternsByApp: Map<string, Set<string>>,
+  usageNotesByApp: Map<string, Map<string, string>>,
+  promptHits: PromptHit[],
+  glossaryHits: GlossaryHit[],
 ): Array<Record<string, unknown>> {
   const rows: Array<Record<string, unknown>> = [];
 
@@ -584,6 +884,13 @@ function buildThemeRows(
       .map(([slug]) => slug)
       .sort();
     if (apps.length === 0) continue;
+
+    const per_project_notes: Record<string, string> = {};
+    for (const slug of apps) {
+      const note = usageNotesByApp.get(slug)?.get(rule.id);
+      if (note) per_project_notes[slug] = note;
+    }
+
     rows.push({
       slug: `common-input-${rule.id}`,
       title: rule.title,
@@ -591,6 +898,13 @@ function buildThemeRows(
       description: rule.description,
       project_slugs: apps,
       auto_generated: true,
+      metadata: {
+        auth_method: rule.auth_method,
+        env_vars: rule.env_vars,
+        doc_url: rule.doc_url,
+        cost_tier: rule.cost_tier,
+        per_project_notes,
+      },
     });
   }
 
@@ -611,7 +925,42 @@ function buildThemeRows(
     });
   }
 
-  return rows;
+  // Common Prompts — one row per discovered prompt
+  for (const hit of promptHits) {
+    rows.push({
+      slug: hit.slug,
+      title: hit.title,
+      kind: 'common_prompt',
+      description: hit.excerpt,
+      project_slugs: hit.project_slug ? [hit.project_slug] : [],
+      auto_generated: true,
+      metadata: {
+        source_kind: hit.source_kind,
+        source_path: hit.source_path,
+        excerpt: hit.excerpt,
+      },
+    });
+  }
+
+  // Glossary — one row per parsed term
+  for (const hit of glossaryHits) {
+    rows.push({
+      slug: hit.slug,
+      title: hit.term,
+      kind: 'glossary_term',
+      description: hit.definition,
+      project_slugs: [],
+      auto_generated: true,
+      metadata: {
+        definition_md: hit.raw,
+      },
+    });
+  }
+
+  // Final guard: dedupe by slug (insert would fail on UNIQUE collision)
+  const bySlug = new Map<string, Record<string, unknown>>();
+  for (const r of rows) bySlug.set(r.slug as string, r);
+  return [...bySlug.values()];
 }
 
 function daysSince(dateStr: string | null): number | null {
@@ -650,6 +999,8 @@ async function main() {
   const slugsWithRoadmap = new Set<string>();
   const servicesByApp = new Map<string, Set<string>>();
   const patternsByApp = new Map<string, Set<string>>();
+  const usageNotesByApp = new Map<string, Map<string, string>>();
+  const promptHits: PromptHit[] = [];
   const errors: Record<string, string>[] = [];
 
   for (const name of entries) {
@@ -686,6 +1037,24 @@ async function main() {
       const patterns = detectPatterns(themeCtx);
       if (services.length > 0) servicesByApp.set(name, new Set(services));
       if (patterns.length > 0) patternsByApp.set(name, new Set(patterns));
+
+      if (services.length > 0) {
+        const noteMap = new Map<string, string>();
+        for (const id of services) {
+          const rule = SERVICE_RULES.find((r) => r.id === id);
+          if (!rule) continue;
+          const note = extractUsageContext(themeCtx.claudeMd, rule.keywords);
+          if (note) noteMap.set(id, note);
+        }
+        if (noteMap.size > 0) usageNotesByApp.set(name, noteMap);
+      }
+
+      try {
+        promptHits.push(...parsePromptsForProject(name, dir));
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`  [WARN] ${name}: prompt parse failed — ${msg}`);
+      }
 
       let changelogRows: Array<Record<string, unknown>> = [];
       try {
@@ -831,11 +1200,40 @@ async function main() {
     }
   }
 
+  // Global prompt sources (templates + slash commands) and glossary
+  const rootDocs = resolve(DEV_ROOT, '..', 'docs');
+  try {
+    promptHits.push(...parsePortfolioTemplates(rootDocs));
+  } catch (err) {
+    console.warn(`Templates parse failed: ${err instanceof Error ? err.message : err}`);
+  }
+  try {
+    promptHits.push(...parseSlashCommands());
+  } catch (err) {
+    console.warn(`Slash command parse failed: ${err instanceof Error ? err.message : err}`);
+  }
+
+  let glossaryHits: GlossaryHit[] = [];
+  try {
+    glossaryHits = parseGlossary(rootDocs);
+  } catch (err) {
+    console.warn(`Glossary parse failed: ${err instanceof Error ? err.message : err}`);
+  }
+
   // Sync auto-generated themes — delete all auto rows, insert fresh.
   // Manual rows (auto_generated = false, e.g. portfolio_thesis) are preserved.
-  const themeRows = buildThemeRows(servicesByApp, patternsByApp);
+  const themeRows = buildThemeRows(
+    servicesByApp,
+    patternsByApp,
+    usageNotesByApp,
+    promptHits,
+    glossaryHits,
+  );
   let themesUpdated = 0;
-  console.log(`\nSyncing ${themeRows.length} auto-generated themes…`);
+  console.log(
+    `\nSyncing ${themeRows.length} auto-generated themes ` +
+      `(${promptHits.length} prompts, ${glossaryHits.length} glossary terms)…`,
+  );
   const { error: tDelErr } = await supabase
     .from('themes')
     .delete()

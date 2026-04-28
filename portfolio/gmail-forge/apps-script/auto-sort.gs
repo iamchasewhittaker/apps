@@ -318,6 +318,7 @@ function normalizeLabel_(raw) {
 function shouldSkipArchive_(email, label) {
   if (NEVER_ARCHIVE_ADDRESSES.indexOf(email) !== -1) return true;
   if (label === 'Personal') return true;
+  if (label === 'Newsletter') return true;
   return false;
 }
 
@@ -420,9 +421,32 @@ function extractEmail_(fromHeader) {
   return match ? match[1].toLowerCase() : fromHeader.toLowerCase().trim();
 }
 
+// Known TLDs used to detect the boundary between domain and hash in iCloud relay addresses.
+var KNOWN_TLDS_ = ['com', 'co', 'io', 'net', 'org', 'ai', 'md', 'edu', 'gov', 'us', 'uk', 'app'];
+
 function extractDomain_(email) {
-  var parts = email.split('@');
-  return parts.length > 1 ? parts[1] : '';
+  var atIdx = email.indexOf('@');
+  if (atIdx === -1) return '';
+  var domain = email.substring(atIdx + 1);
+
+  // Decode iCloud Hide My Email relay pattern:
+  //   name_at_DOMAIN_TLD_hash1_hash2@icloud.com  →  DOMAIN.TLD
+  // e.g. simonowens_at_substack_com_abc123_456@icloud.com  →  substack.com
+  if (domain === 'icloud.com') {
+    var local = email.substring(0, atIdx);
+    var relayAt = local.indexOf('_at_');
+    if (relayAt !== -1) {
+      var segments = local.substring(relayAt + 4).split('_');
+      var domainParts = [];
+      for (var i = 0; i < segments.length && domainParts.length < 5; i++) {
+        domainParts.push(segments[i]);
+        if (KNOWN_TLDS_.indexOf(segments[i]) !== -1) break;
+      }
+      if (domainParts.length >= 2) return domainParts.join('.');
+    }
+  }
+
+  return domain;
 }
 
 // ---------------------------------------------------------------------------

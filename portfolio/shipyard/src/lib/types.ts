@@ -3,7 +3,43 @@ export type ProjectFamily = 'clarity' | 'standalone' | 'portfolio' | 'archived';
 export type ProjectStatus = 'active' | 'stalled' | 'frozen' | 'archived';
 export type ReviewKind = 'weekly' | 'monthly' | 'quarterly';
 export type LearningSource = 'manual' | 'auto:commit' | 'auto:changelog' | 'auto:todo' | 'auto:audit';
-export type ThemeKind = 'portfolio_thesis' | 'narrative_thread' | 'cross_app_pattern' | 'common_input';
+export type ThemeKind =
+  | 'portfolio_thesis'
+  | 'narrative_thread'
+  | 'cross_app_pattern'
+  | 'common_input'
+  | 'common_prompt'
+  | 'glossary_term';
+
+export type PromptSourceKind =
+  | 'system_prompt'
+  | 'session_template'
+  | 'slash_command'
+  | 'prompt_md';
+
+export interface CommonInputMetadata {
+  auth_method?: string;
+  env_vars?: string[];
+  doc_url?: string;
+  cost_tier?: string;
+  per_project_notes?: Record<string, string>;
+}
+
+export interface CommonPromptMetadata {
+  source_kind: PromptSourceKind;
+  source_path: string;
+  excerpt: string;
+}
+
+export interface GlossaryTermMetadata {
+  definition_md: string;
+}
+
+export type ThemeMetadata =
+  | CommonInputMetadata
+  | CommonPromptMetadata
+  | GlossaryTermMetadata
+  | Record<string, never>;
 
 export interface Compliance {
   has_readme: boolean;
@@ -155,6 +191,7 @@ export interface Theme {
   description: string;
   project_slugs: string[];
   auto_generated: boolean;
+  metadata?: ThemeMetadata;
   created_at: string;
   updated_at: string;
 }

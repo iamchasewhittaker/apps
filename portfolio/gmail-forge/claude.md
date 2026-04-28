@@ -20,6 +20,7 @@ A three-layer Gmail organization system: XML filters for instant sorting, an App
 - **Job search emails NEVER get archived** — Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn job alerts/InMail always stay in inbox
 - **Kassie's Gmail setup is paused** — Chase's inbox only
 - **Re-import XML only when filters change** — not daily
+- **Newsletters are labeled but NOT archived** — they stay in inbox (changed 2026-04-27)
 - Always check **"Also apply filter to matching conversations"** on import
 
 ---
@@ -129,7 +130,7 @@ When Chase identifies a new sender to filter:
 
 ## Current Filter Coverage (69 filters)
 
-**Last updated:** April 12, 2026
+**Last updated:** April 27, 2026
 
 | Category | Senders |
 |---|---|

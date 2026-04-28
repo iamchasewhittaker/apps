@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Forge — Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --blue: #4f8ef7;
+      --blue-dim: #1d3461;
+      --text: #e2e8f0;
+      --muted: #8892a4;
+      --accent: #4f8ef7;
+      --green: #34c98d;
+      --yellow: #f5a623;
+      --red: #f06464;
+      --radius: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 17, 23, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 52px;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 0.4px;
+      margin-right: 32px;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar { display: none; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      padding: 64px 24px 48px;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Content layout ───────────────────────────────────── */
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── Section ──────────────────────────────────────────── */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Cards ────────────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: border-color 0.15s;
+    }
+
+    .card:hover {
+      border-color: var(--blue);
+    }
+
+    .card-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Layer diagram ────────────────────────────────────── */
+    .layer-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .layer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .layer-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .layer-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .layer-subtitle {
+      font-size: 12px;
+      color: var(--blue);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .layer-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .layer-arrow {
+      text-align: center;
+      color: var(--border);
+      font-size: 18px;
+      margin: -4px 0;
+    }
+
+    /* ── Sort flow ────────────────────────────────────────── */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 36px;
+      bottom: -12px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .flow-step + .flow-step {
+      margin-top: 12px;
+    }
+
+    .flow-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .flow-content {
+      padding: 5px 0 16px;
+    }
+
+    .flow-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .flow-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Toolbar preview ──────────────────────────────────── */
+    .toolbar-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    }
+
+    .tb-tab {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: transparent;
+      color: #8892a4;
+      cursor: default;
+    }
+
+    .tb-tab.active {
+      background: #1d3461;
+      color: #4f8ef7;
+      font-weight: 600;
+    }
+
+    .tb-spacer { flex: 1; }
+
+    .tb-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: #3d1f1f;
+      color: #f28b82;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .tb-sort {
+      padding: 5px 11px;
+      border-radius: 4px;
+      background: #4f8ef7;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .tb-guide {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid #2e3250;
+      color: #8892a4;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toolbar-legend {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 8px 16px;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .toolbar-legend dt {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .toolbar-legend dd {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── Settings table ───────────────────────────────────── */
+    .settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .setting-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    @media (max-width: 560px) {
+      .setting-row { grid-template-columns: 1fr; }
+    }
+
+    .setting-key {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .setting-key code {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 12px;
+      background: var(--surface2);
+      color: var(--blue);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .setting-val {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .tag-required { background: #3d1a1a; color: #f28b82; }
+    .tag-optional { background: #1a2d1a; color: #34c98d; }
+
+    /* ── Label grid ───────────────────────────────────────── */
+    /* use card-grid */
+
+    /* ── Callout ──────────────────────────────────────────── */
+    .callout {
+      display: flex;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+
+    .callout.warn {
+      border-left-color: var(--yellow);
+    }
+
+    .callout-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Gmail Forge</span>
+  <div class="nav-links">
+    <a href="#toolbar">Toolbar</a>
+    <a href="#sort">Sort button</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#labels">Labels</a>
+    <a href="#settings">Settings</a>
+    <a href="#new-rules">Adding rules</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Chrome Extension + Apps Script</div>
+  <h1>Gmail Forge Guide</h1>
+  <p>Three-layer email classification — XML filters, Apps Script auto-sorter, and a Chrome extension with label tabs and AI-powered sorting.</p>
+</div>
+
+<div class="content">
+
+  <!-- ── TOOLBAR ──────────────────────────────────────────── -->
+  <section class="section" id="toolbar">
+    <div class="section-header">
+      <span class="section-icon">🗂️</span>
+      <div>
+        <div class="section-title">Toolbar</div>
+        <div class="section-desc">Injected above the Gmail banner on every page load.</div>
+      </div>
+    </div>
+
+    <div class="toolbar-preview">
+      <span class="tb-tab active">📬 Inbox</span>
+      <span class="tb-tab">💬 To Reply</span>
+      <span class="tb-tab">📰 Newsletter</span>
+      <span class="tb-tab">🧾 Receipt</span>
+      <span class="tb-tab">🔔 Notification</span>
+      <span class="tb-spacer"></span>
+      <span class="tb-badge">3 unsorted</span>
+      <span class="tb-sort">🏷️ Sort</span>
+      <span class="tb-guide">?</span>
+    </div>
+
+    <dl class="toolbar-legend">
+      <dt>Label tabs</dt>
+      <dd>Click to jump to that label's email view. Active tab is highlighted. Tab list is customisable in extension settings.</dd>
+      <dt>Unsorted badge</dt>
+      <dd>Count of inbox emails with no label. Updates every 60 seconds. Hidden when zero.</dd>
+      <dt>🏷️ Sort</dt>
+      <dd>Classify and label selected emails. Select emails first (tick checkboxes), then click.</dd>
+      <dt>? Guide</dt>
+      <dd>Opens this guide as an overlay inside Gmail. Click again or click outside to dismiss.</dd>
+    </dl>
+  </section>
+
+  <!-- ── SORT ─────────────────────────────────────────────── -->
+  <section class="section" id="sort">
+    <div class="section-header">
+      <span class="section-icon">🏷️</span>
+      <div>
+        <div class="section-title">Sort button — how it works</div>
+        <div class="section-desc">On-demand classification for selected emails.</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <div class="flow-title">Select emails</div>
+          <div class="flow-desc">Tick the checkboxes on any emails in the Gmail inbox.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <div class="flow-title">Click Sort</div>
+          <div class="flow-desc">The extension reads sender, subject, and snippet from each selected row.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <div class="flow-title">Classify</div>
+          <div class="flow-desc">Keyword rules run first. If no match and Gemini mode is on, Gemini 2.0 Flash picks a label. Results are returned to the extension.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <div class="flow-title">Apply labels via Apps Script</div>
+          <div class="flow-desc">The extension POSTs <code>{ token, applications: [{ messageId, label }] }</code> to the Apps Script web app. Apps Script uses the Gmail API to apply labels.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-content">
+          <div class="flow-title">Toast confirmation</div>
+          <div class="flow-desc">A toast shows "Labeled X email(s)". Labels appear on the emails immediately.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:20px">
+      <span class="callout-icon">⚠️</span>
+      <span>Sort applies labels only — it never archives. The Layer 2 auto-sorter handles archiving on its 5-minute sweep.</span>
+    </div>
+  </section>
+
+  <!-- ── ARCHITECTURE ─────────────────────────────────────── -->
+  <section class="section" id="architecture">
+    <div class="section-header">
+      <span class="section-icon">🏗️</span>
+      <div>
+        <div class="section-title">Three-layer architecture</div>
+        <div class="section-desc">Unknown senders fall through each layer in sequence.</div>
+      </div>
+    </div>
+
+    <div class="layer-stack">
+      <div class="layer">
+        <div class="layer-num">1</div>
+        <div>
+          <div class="layer-subtitle">Instant · Server-side</div>
+          <div class="layer-title">XML filters</div>
+          <div class="layer-desc">69 Gmail server-side rules. Known senders are labeled the moment mail arrives — no compute, no latency. Managed in <code>gmail-filters.xml</code>. Re-import into Gmail when rules change.</div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">↓</div>
+
+      <div class="layer">
+        <div class="layer-num">2</div>
+        <div>
+          <div class="layer-subtitle">Every 5 minutes · Apps Script</div>
+          <div class="layer-title">Auto-sorter</div>
+          <div class="layer-desc">Sweeps unlabeled inbox mail. Matches against the same 69 JS rules (in <code>rules.gs</code>). If no match and Gemini mode is on, calls Gemini 2.0 Flash. Applies label + archives. Logs unknown senders to the Review Queue sheet for manual triage.</div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">↓</div>
+
+      <div class="layer">
+        <div class="layer-num">3</div>
+        <div>
+          <div class="layer-subtitle">Manual · Chrome extension</div>
+          <div class="layer-title">Extension (this tool)</div>
+          <div class="layer-desc">Tab bar for quick label navigation. Sort button for on-demand classification of emails you select. Guide overlay for reference.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LABELS ────────────────────────────────────────────── -->
+  <section class="section" id="labels">
+    <div class="section-header">
+      <span class="section-icon">🔖</span>
+      <div>
+        <div class="section-title">Label guide</div>
+        <div class="section-desc">What each label means and when it's applied.</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📰</div>
+        <div class="card-title">Newsletter</div>
+        <div class="card-desc">Substack, blogs, digests, and recurring content emails. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔔</div>
+        <div class="card-title">Notification</div>
+        <div class="card-desc">App alerts, shipping updates, service messages. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧾</div>
+        <div class="card-title">Receipt</div>
+        <div class="card-desc">Purchases, payments, invoices, billing confirmations. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <div class="card-title">Calendar</div>
+        <div class="card-desc">Appointment reminders, event invitations, scheduling links. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📣</div>
+        <div class="card-title">Marketing</div>
+        <div class="card-desc">Promotions, sales, brand emails, product launches. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">❄️</div>
+        <div class="card-title">Cold Email</div>
+        <div class="card-desc">Unsolicited outreach, sales pitches from unknown senders. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">Security</div>
+        <div class="card-desc">Password resets, 2FA codes, account alerts. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <div class="card-title">Personal</div>
+        <div class="card-desc">Real person, personal conversation. <strong>Never archived</strong> — stays in inbox.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">ℹ️</div>
+        <div class="card-title">FYI</div>
+        <div class="card-desc">Info-only, no action needed, doesn't fit other categories. Archived.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <div class="card-title">To Reply</div>
+        <div class="card-desc">Manual label — requires your response. Stays in inbox.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔖</div>
+        <div class="card-title">Follow-up</div>
+        <div class="card-desc">Manual label — you need to follow up. Stays in inbox.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-title">Actioned</div>
+        <div class="card-desc">Manual label — task complete. Archive when done.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-icon">💼</span>
+      <span>Job search senders (Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn jobs) are <strong>whitelisted</strong> — the auto-sorter never touches them. They stay in inbox with no label.</span>
+    </div>
+  </section>
+
+  <!-- ── SETTINGS ──────────────────────────────────────────── -->
+  <section class="section" id="settings">
+    <div class="section-header">
+      <span class="section-icon">⚙️</span>
+      <div>
+        <div class="section-title">Extension settings</div>
+        <div class="section-desc">Click the Gmail Forge icon in Chrome's toolbar to open the popup.</div>
+      </div>
+    </div>
+
+    <div class="settings-list">
+      <div class="setting-row">
+        <div class="setting-key">Classifier Mode</div>
+        <div class="setting-val"><strong>Gemini</strong> — uses AI for unknown senders (Gemini 2.0 Flash). <strong>Rules Only</strong> — keyword regex only, zero API calls. Default: Gemini.</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-key">Gemini API Key<span class="tag tag-optional">optional</span></div>
+        <div class="setting-val">From <a href="https://aistudio.google.com" target="_blank" style="color:var(--blue)">aistudio.google.com</a>. Required only in Gemini mode. Stored locally in Chrome sync storage.</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-key">Web App URL<span class="tag tag-required">required for Sort</span></div>
+        <div class="setting-val">The Apps Script deployment URL. Get it from <em>script.google.com → Deploy → Manage deployments</em>. Without this, Sort classifies but can't apply labels.</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-key">Trigger Token<span class="tag tag-required">required for Sort</span></div>
+        <div class="setting-val">Must match the <code>TRIGGER_TOKEN</code> Script Property in Apps Script. Authorises label-apply requests from the extension.</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-key">Visible Tabs</div>
+        <div class="setting-val">Toggle which label tabs appear in the toolbar. Unchecked tabs are hidden but still work as Gmail label views.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEW RULES ─────────────────────────────────────────── -->
+  <section class="section" id="new-rules">
+    <div class="section-header">
+      <span class="section-icon">➕</span>
+      <div>
+        <div class="section-title">Adding new rules</div>
+        <div class="section-desc">When a new sender consistently needs a specific label.</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <div class="flow-title">Check the Review Queue</div>
+          <div class="flow-desc">Open the Google Sheet → Review Queue tab. Unknown senders logged by the auto-sorter appear here. Fill in "Assign Label" for any you want to lock in.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <div class="flow-title">Add to rules.gs</div>
+          <div class="flow-desc">Add the domain (preferred) or exact address to the correct label in <code>apps-script/rules.gs</code>. Domain-level matching catches all variants from a sender.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <div class="flow-title">Add to gmail-filters.xml</div>
+          <div class="flow-desc">Add a matching entry in <code>gmail-filters.xml</code> so the server-side Layer 1 filter also catches it instantly.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <div class="flow-title">Deploy</div>
+          <div class="flow-desc">Run <code>cd apps-script && npx clasp push --force</code> to push <code>rules.gs</code> to Apps Script.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-content">
+          <div class="flow-title">Re-import XML</div>
+          <div class="flow-desc">Gmail → Settings → Filters → Import filters → upload <code>gmail-filters.xml</code> → check "Also apply to matching conversations" → Create filters.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Gmail Forge · <a href="https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit" target="_blank">Apps Script editor</a> · <a href="https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit" target="_blank">Google Sheet</a>
+</footer>
+
+</body>
+</html>
