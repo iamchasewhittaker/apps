@@ -176,9 +176,7 @@ var RULES = {
 };
 
 /**
- * LinkedIn Messages: labeled Notification but NOT archived (stays in inbox).
- * This set controls which senders skip the archive step even when matched.
+ * Addresses that stay in inbox even when matched to an archive-able label.
+ * LinkedIn DMs moved to JobSearch (handled by label-level skip in shouldSkipArchive_).
  */
-var NEVER_ARCHIVE_ADDRESSES = [
-  'messages-noreply@linkedin.com',
-];
+var NEVER_ARCHIVE_ADDRESSES = [];

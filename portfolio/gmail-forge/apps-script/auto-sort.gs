@@ -24,7 +24,7 @@
 // ---------------------------------------------------------------------------
 
 var VALID_LABELS = [
-  'Newsletter', 'Notification', 'Receipt', 'Calendar',
+  'JobSearch', 'Newsletter', 'Notification', 'Receipt', 'Calendar',
   'Marketing', 'Cold Email', 'Security', 'Personal', 'FYI',
 ];
 
@@ -53,8 +53,6 @@ function autoSort() {
     var snippet = message.getPlainBody().substring(0, 300);
     var senderEmail = extractEmail_(from);
     var senderDomain = extractDomain_(senderEmail);
-
-    if (isJobSearchSender_(senderEmail, senderDomain)) continue;
 
     var result = matchRules_(senderEmail, senderDomain, to);
 
@@ -108,20 +106,6 @@ function findUnlabeledInboxThreads_() {
 
   var query = 'is:inbox ' + exclude + ' -label:Follow-up -label:To-Reply -label:Actioned';
   return GmailApp.search(query, 0, BATCH_SIZE);
-}
-
-// ---------------------------------------------------------------------------
-// Job Search whitelist — never touch these
-// ---------------------------------------------------------------------------
-
-function isJobSearchSender_(email, domain) {
-  for (var i = 0; i < JOB_SEARCH_DOMAINS.length; i++) {
-    if (domain.indexOf(JOB_SEARCH_DOMAINS[i]) !== -1) return true;
-  }
-  for (var i = 0; i < JOB_SEARCH_ADDRESSES.length; i++) {
-    if (email === JOB_SEARCH_ADDRESSES[i]) return true;
-  }
-  return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -214,7 +198,7 @@ function classifyWithGemini_(senderEmail, fromHeader, subject, snippet) {
 
   var systemPrompt =
     'You classify emails into exactly one Gmail label. ' +
-    'Valid labels: Newsletter, Notification, Receipt, Calendar, Marketing, Cold Email, Security, Personal, FYI. ' +
+    'Valid labels: JobSearch, Newsletter, Notification, Receipt, Calendar, Marketing, Cold Email, Security, Personal, FYI. ' +
     'Rules:\n' +
     '- Newsletter: blogs, digests, Substack, recurring content emails\n' +
     '- Notification: app alerts, service updates, shipping, automated messages\n' +
@@ -317,6 +301,7 @@ function normalizeLabel_(raw) {
 
 function shouldSkipArchive_(email, label) {
   if (NEVER_ARCHIVE_ADDRESSES.indexOf(email) !== -1) return true;
+  if (label === 'JobSearch') return true;
   if (label === 'Personal') return true;
   if (label === 'Newsletter') return true;
   return false;
