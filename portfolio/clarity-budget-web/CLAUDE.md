@@ -55,6 +55,8 @@ STS (Safe-to-Spend) dashboard backed by YNAB. Fetches month-level category aggre
 pnpm install
 pnpm dev
 ```
+For AI categorization locally, ensure `AI_GATEWAY_API_KEY` is set. If `vercel env pull` left it empty, run `pnpm run env:pull-local` (merges Production + Development pulls into `.env.local`).
+
 Supabase is optional. Without `NEXT_PUBLIC_SUPABASE_*` env vars, app runs fully local.
 
 ## Roadmap phases

@@ -1,5 +1,11 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-28 — AI Gateway on Preview + local `.env.local`
+
+**Preview had no `AI_GATEWAY_API_KEY`.** `vercel env ls` showed Production + Development only. That is why `/categorize` on preview builds returned the AI SDK "Unauthenticated" message. The Vercel CLI could not add Preview without `git_branch_required` (monorepo `portfolio/clarity-budget-web` root). **Fix:** `POST https://api.vercel.com/v10/projects/{projectId}/env?teamId=...&upsert=true` with `target: ["preview"]` and `type: "sensitive"`, using Bearer auth from the same session as `vercel login`.
+
+**`vercel env pull --environment=production` wrote `AI_GATEWAY_API_KEY=""` in `.env.local`.** Sensitive values are not always materialized in the pulled file. **Fix:** pull Development in a temp file and merge that line into `.env.local` after the Production pull (`scripts/merge-ai-gateway-from-dev.cjs`, `pnpm run env:pull-local`).
+
 ## 2026-04-28 — Step 6 `/review` UI + PATCH route
 
 **Schema values vs HANDOFF doc mismatch.** The HANDOFF said to use `status='accepted'/'rejected'`, but `supabase/migrations/0001_init.sql` has `check (status in ('pending', 'approved', 'dismissed'))`. The migration is authoritative — always check the SQL before using string literals from docs.

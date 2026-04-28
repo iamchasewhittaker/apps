@@ -5,16 +5,16 @@
 | Field | Value |
 |---|---|
 | Focus | **Step 7 — `/flags` UI** (weirdness flags inbox) |
-| Status | tsc ✅ · lint ✅ · build ✅ · commit `4383b7f` on `main`. Step 6 (`/review`) done. |
+| Status | tsc ✅ · lint ✅ · build ✅ · vitest 49/49 ✅ · commit `97e50a5` on `main`. `/categorize` AI auth: Preview env + `pnpm env:pull-local`. |
 | Last touch | 2026-04-28 |
-| URL | clarity-budget-web.vercel.app — Steps 1–6 committed. Auto-deploy via GitHub will pick up `4383b7f`. |
+| URL | clarity-budget-web.vercel.app |
 | Branch | `main` |
 | Steps 1–5 | ✅ DONE + deployed (commits `64467d8`, `8720ef8`) |
 | Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files |
 | Step 5 (cron + vercel.json) | ✅ DONE. `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` (daily `0 6 * * *` — Hobby plan limit; bump to `*/15 * * * *` on Pro). |
 | Step 6 (/review UI) | ✅ DONE. `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx`, `app/api/proposals/[id]/route.ts`. NavBar updated. |
 | Migration 0003 | ✅ Pushed 2026-04-28. `clarity_budget_categorization_suggestions` table exists. |
-| AI_GATEWAY_API_KEY | ✅ `.env.local` + Vercel production env. Preview env blocked by CLI 50.x — add via dashboard or upgrade CLI. |
+| AI_GATEWAY_API_KEY | ✅ Vercel Production, Development, Preview. Local: run `pnpm run env:pull-local` so `.env.local` has a non-empty gateway key (production-only `vercel env pull` omits it). |
 | Settings loop fix | ✅ Commit `7a461b6`. `MigrationBanner` no longer clears localStorage. `YnabConnectorCard` shows "Token stored ✓ [Replace]" when encrypted row exists. |
 | Smoke test needed | `/review` → sign in → see pending proposals (or empty state). Accept one → verify `clarity_budget_proposals.status='approved'` in Supabase. `/settings` + `/categorize` smoke still pending on production. |
 | Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
@@ -44,7 +44,7 @@ tsc ✅ · lint ✅ · build ✅ · `GET /review` → 307 `/login` (unauthentica
 
 ### Problems solved
 1. **`/categorize` schema cache error** — `Could not find the table 'public.clarity_budget_categorization_suggestions'`. Migration `0003` was written locally but never pushed. Fixed: `pnpm supabase migration repair --status reverted 20260426174142 20260426174204 && pnpm supabase db push`. Table now live in project `unqtnnxlltiadzbqpyhh`.
-2. **AI_GATEWAY_API_KEY missing** — `lib/ai/gateway.ts` reads this key for Vercel AI Gateway calls. Added to `.env.local` + Vercel production env. Preview env blocked by CLI 50.x bug; set via dashboard.
+2. **AI_GATEWAY_API_KEY** — Preview deployments had no key (only Production + Development). Fixed 2026-04-28: REST API created Preview env; `scripts/merge-ai-gateway-from-dev.cjs` + `pnpm run env:pull-local` fixes local `.env.local`.
 3. **Settings yellow banner loop** — `MigrationBanner` reappeared every time the user entered their YNAB token in `/settings`. Root cause: banner had no awareness of the Supabase encrypted row; clearing localStorage on migrate made `YnabConnectorCard` show an empty field; user re-entered; localStorage refilled; banner reappeared.
 
 ### Fix (commit `7a461b6`)
@@ -59,7 +59,6 @@ tsc ✅ · lint ✅ · vitest 49/49 ✅ · build ✅ · commit `7a461b6` on main
 ### What's still needed
 - Promote preview to production (or push a trivial commit to trigger GitHub auto-deploy)
 - Signed-in smoke test on production
-- Add `AI_GATEWAY_API_KEY` to Vercel preview env
 
 ---
 

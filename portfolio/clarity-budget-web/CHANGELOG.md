@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-04-28 — `/categorize` Unauthenticated (AI Gateway on Preview + local)
+
+- **Root cause:** `AI_GATEWAY_API_KEY` existed on Vercel Production and Development but not on **Preview**. Local `vercel env pull --environment=production` also wrote an empty `AI_GATEWAY_API_KEY` in `.env.local` (sensitive values omitted from the pull file).
+- **Vercel Preview:** Created `AI_GATEWAY_API_KEY` for Preview via Vercel REST API (`POST /v10/projects/.../env?upsert=true`), matching Development, because `vercel env add ... preview` blocked on `git_branch_required` for this monorepo-linked project.
+- **Local dev:** Added `scripts/merge-ai-gateway-from-dev.cjs` + `pnpm run env:pull-local` — pulls Production into `.env.local`, then replaces `AI_GATEWAY_API_KEY` with the value from the Development environment pull.
+- **Tooling:** Added `vercel@^52.0.0` as a devDependency so the team can use a current CLI for env operations when the global install lags.
+
 ### Fixed — 2026-04-28 — Settings token migration loop + server budget proxy (commit `7a461b6`)
 - `app/(app-shell)/settings/page.tsx` — converted to async server component; fetches `clarity_budget_credentials.ynab_token_ciphertext` presence, passes `hasEncryptedYnabToken: boolean` prop to `MigrationBanner` and `YnabConnectorCard`.
 - `components/settings/MigrationBanner.tsx` — accepts `hasEncryptedYnabToken` prop; hides immediately when prop is true; **removed `window.localStorage.removeItem(YNAB_TOKEN_KEY)` from success handler** (localStorage must stay for HomeDashboard's client-side YNAB calls).
