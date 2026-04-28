@@ -197,4 +197,19 @@ final class WellnessBlobTests: XCTestCase {
 
         XCTAssertNil(store.activeTimeSession, "Active session from a stale day must not surface today.")
     }
+
+    func testTasksBlob_legacyBlobHasNoTriageOrOneThing() {
+        var blob = WellnessBlob.emptyBlob()
+        blob["tasks"] = ["active": [["id": "x", "title": "t", "done": false, "createdAt": ""]]]
+        let tasks = blob["tasks"] as? [String: Any] ?? [:]
+        XCTAssertNil(tasks["triage"], "Legacy blob must not have triage key")
+        XCTAssertNil(tasks["oneThing"], "Legacy blob must not have oneThing key")
+    }
+
+    func testTriageDateKey_matchesToday() {
+        let today = WellnessBlob.jsToDateString()
+        let also = WellnessBlob.jsToDateString(Date())
+        XCTAssertEqual(today, also)
+        XCTAssertTrue(today.count > 8, "Date string should look like 'Mon Apr 28 2026'")
+    }
 }

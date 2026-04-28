@@ -8,9 +8,9 @@
 
 | Field | Value |
 |-------|--------|
-| **Focus** | Phase 2 #6 shipped 2026-04-28: live timer + active-session controls in Time tab (start/stop/swap, ticking HH:MM:SS, day-rollover + DST guards, scripture streak fires on stop). Tab now usable as a real-time tracker, not just retroactive log. Sync tab + retroactive `addTimeSession` API unchanged. |
-| **Last touch** | 2026-04-28 — Phase 2 #6 (live timer). |
-| **Next** | Phase 2 #5: Tasks top-3 triage + one-thing modes (mirror `portfolio/wellness-tracker/src/tabs/TasksTab.jsx` triage pattern). History/export still deferred per [ROADMAP.md](./ROADMAP.md). |
+| **Focus** | Phase 2 complete (6/6). Phase 2 #5 shipped 2026-04-28: top-3 triage (date-scoped, auto-replenishment), one-thing / paralysis mode, inline triage picker. Phase 2 #6 (live timer) shipped same day. |
+| **Last touch** | 2026-04-28 — Phase 2 #5 (Tasks triage + one-thing). |
+| **Next** | Phase 3: Budget + Wants, Growth logging. |
 
 ---
 

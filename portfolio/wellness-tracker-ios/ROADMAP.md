@@ -38,7 +38,7 @@ Deliver a high-quality native iOS Wellness Tracker experience in phased slices, 
 2. [x] Ship Tasks capture essentials
 3. [x] Ship Time tracking essentials (+ scripture streak update rule)
 4. [x] Ship quick capture for Win and Pulse
-5. [ ] Expand tasks flow to include top-3 triage + one-thing modes
+5. [x] Expand tasks flow to include top-3 triage + one-thing modes (2026-04-28)
 6. [x] Expand time flow to live timer and active-session controls (2026-04-28)
 
 ## Phase 3 — Medium parity

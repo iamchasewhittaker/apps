@@ -93,3 +93,19 @@ sudo hdiutil attach \
 ```
 
 The SDK plist patch (`iPhoneSimulator17.2.sdk SystemVersion.plist ProductBuildVersion = 21C62`) is **persistent** — no re-run after reboot. Only the DMG mount is needed each session. Full diagnostic trail: `portfolio/unnamed-ios/LEARNINGS.md` (2026-04-24 and 2026-04-25).
+
+---
+
+## 2026-04-28 — Phase 2 #5: triage blob fields inside tasks dict, not top-level
+
+When adding `triage` and `oneThing` to the tasks feature, they go inside `blob["tasks"]` (the existing sub-dict), not as new top-level blob keys. `WellnessBlob.normalizeBlob` does a shallow merge of top-level keys only — adding a top-level key would require updating `emptyBlob()`. Inner fields (`blob["tasks"]["triage"]`) are preserved as-is by the merge, so no migration needed.
+
+**Tags:** data-model, blob, triage
+
+---
+
+## 2026-04-28 — Simulator launchd_sim crash on this machine is intermittent
+
+`xcodebuild test` on the iPhone 15 simulator occasionally fails with `launchd failed to respond` / `Mach error -308`. The build itself compiles cleanly (`BUILD SUCCEEDED`). Root cause: launchd_sim on this 2017 MBP / Ventura 13.7.8 crashes under load. Retrying the test run sometimes works; otherwise, device install is the reliable verification path. Don't mistake this for a code error.
+
+**Tags:** simulator, infrastructure, gotcha

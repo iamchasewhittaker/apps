@@ -194,6 +194,45 @@ final class WellnessStore: ObservableObject {
         return tasks["active"] as? [[String: Any]] ?? []
     }
 
+    var tasksOneThing: String? {
+        let t = blob["tasks"] as? [String: Any] ?? [:]
+        return t["oneThing"] as? String
+    }
+
+    var tasksTodayTriage: (date: String, pinned: [String])? {
+        let t = blob["tasks"] as? [String: Any] ?? [:]
+        guard let tr = t["triage"] as? [String: Any],
+              let date = tr["date"] as? String,
+              let pinned = tr["pinned"] as? [String] else { return nil }
+        return (date, pinned)
+    }
+
+    var triageIsNeeded: Bool {
+        let undone = tasksActive.filter { !($0["done"] as? Bool ?? false) }
+        guard undone.count > 3 else { return false }
+        let today = WellnessBlob.jsToDateString()
+        if let t = tasksTodayTriage, t.date == today, !t.pinned.isEmpty { return false }
+        return true
+    }
+
+    var pinnedTasks: [[String: Any]] {
+        let undone = tasksActive.filter { !($0["done"] as? Bool ?? false) }
+        let today = WellnessBlob.jsToDateString()
+        if let t = tasksTodayTriage, t.date == today, !t.pinned.isEmpty {
+            return undone.filter { t.pinned.contains($0["id"] as? String ?? "") }
+        }
+        return Array(undone.prefix(3))
+    }
+
+    var waitingTasks: [[String: Any]] {
+        let undone = tasksActive.filter { !($0["done"] as? Bool ?? false) }
+        let today = WellnessBlob.jsToDateString()
+        if let t = tasksTodayTriage, t.date == today, !t.pinned.isEmpty {
+            return undone.filter { !t.pinned.contains($0["id"] as? String ?? "") }
+        }
+        return undone.count > 3 ? Array(undone.dropFirst(3)) : []
+    }
+
     var pulseChecks: [[String: Any]] {
         blob["pulseChecks"] as? [[String: Any]] ?? []
     }
@@ -314,6 +353,55 @@ final class WellnessStore: ObservableObject {
                 break
             }
             tasks["active"] = active
+            blob["tasks"] = tasks
+        }
+    }
+
+    func saveTriage(pinned: [String]) {
+        mutateBlob { blob in
+            var tasks = blob["tasks"] as? [String: Any] ?? [:]
+            tasks["triage"] = ["date": WellnessBlob.jsToDateString(), "pinned": pinned]
+            blob["tasks"] = tasks
+        }
+    }
+
+    /// Remove task from active list and auto-replenish triage if all pinned tasks are gone.
+    func completeTask(id: String) {
+        mutateBlob { blob in
+            var tasks = blob["tasks"] as? [String: Any] ?? [:]
+            var active = tasks["active"] as? [[String: Any]] ?? []
+            active.removeAll { ($0["id"] as? String) == id }
+            tasks["active"] = active
+
+            if var tr = tasks["triage"] as? [String: Any],
+               var pinned = tr["pinned"] as? [String] {
+                pinned.removeAll { $0 == id }
+                if pinned.isEmpty {
+                    let undoneIds = active
+                        .filter { !($0["done"] as? Bool ?? false) }
+                        .prefix(3)
+                        .compactMap { $0["id"] as? String }
+                    pinned = Array(undoneIds)
+                }
+                tr["pinned"] = pinned
+                tasks["triage"] = tr
+            }
+            blob["tasks"] = tasks
+        }
+    }
+
+    func setOneThing(_ text: String) {
+        mutateBlob { blob in
+            var tasks = blob["tasks"] as? [String: Any] ?? [:]
+            tasks["oneThing"] = text
+            blob["tasks"] = tasks
+        }
+    }
+
+    func clearOneThing() {
+        mutateBlob { blob in
+            var tasks = blob["tasks"] as? [String: Any] ?? [:]
+            tasks.removeValue(forKey: "oneThing")
             blob["tasks"] = tasks
         }
     }
