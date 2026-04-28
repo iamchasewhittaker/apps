@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased] — 2026-04-28 — Inbox setup polish + Gmail Forge end-to-end verified
+
+- **`src/components/InboxPanel.jsx`** — `SetupGuide()` callout updated: references `healthCheck_jobSearch` (no trailing underscore — renamed in Gmail Forge so it shows in the Apps Script Run dropdown). Manual filter steps stay in place for non-Forge users.
+- **Gmail Forge verified end-to-end:** trigger active, `JobSearch` label created, 3-pass `matchRules_()` deployed, LinkedIn social split confirmed. JSHQ InboxPanel will populate on next matching job email.
+- **Why:** JSHQ uses `labelIds=<JobSearch>` in Gmail API calls — the label must exist and be applied by Forge for emails to surface here.
+- **Companion changes in [gmail-forge/CHANGELOG.md](../gmail-forge/CHANGELOG.md)** — 3-pass match refactor, LinkedIn social → Notification split, `healthCheck_jobSearch` rename, label created, XML re-imported.
+
 ## [Unreleased] — 2026-04-28 — Inbox setup polish for Gmail Forge users
 
 - **`src/components/InboxPanel.jsx`** — `SetupGuide()` now opens with a green "Using Gmail Forge?" callout that tells the user the `JobSearch` label is created and applied automatically every 5 min and points them at `healthCheck_jobSearch_()` for verification. Manual filter steps stay in place for users without Gmail Forge. Build clean (+162 B gzipped).

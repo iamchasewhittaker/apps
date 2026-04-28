@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 live · **Apr 28**: Job Search HQ alignment shipped — subject-keyword matching for `JobSearch`, Gemini prompt now includes `JobSearch`, new `healthCheck_jobSearch_()` diagnostic, ashbyhq + full linkedin.com whitelist |
-| **Last touch** | Apr 28, 2026 — `rules.gs` `subjectPatterns` (interview/availability/phone screen/time to chat/schedule), `auto-sort.gs` `matchRules_()` accepts subject, Gemini prompt lists JobSearch, `healthCheck_jobSearch_()` added, 3 XML entries (ashbyhq.com, linkedin.com, e.linkedin.com), 70 → 73 filters |
-| **Next** | **Deploy** updated `auto-sort.gs` + `rules.gs` via `cd apps-script && npx clasp push --force` → run `healthCheck_jobSearch_()` in editor to confirm → re-import `gmail-filters.xml` (Settings → Filters → Import → "Also apply to matching conversations") · Then triage Review Queue items |
+| **Focus** | Phase 3 live · **Apr 28 (cont)**: 3-pass match logic + LinkedIn social split — `matchRules_()` refactored address-before-domain; `messages-noreply/invitations/updates-noreply@linkedin.com` → Notification; `healthCheck_jobSearch` renamed (trailing _ hides from dropdown); `JobSearch` label created in Gmail; XML re-imported. System fully verified. |
+| **Last touch** | Apr 28, 2026 — `auto-sort.gs` `matchRules_()` 3-pass refactor; `rules.gs` Notification gains 3 LinkedIn social addresses; `healthCheck_jobSearch_` → `healthCheck_jobSearch`; JobSearch label created; XML re-imported. Deployed via `clasp push --force`. |
+| **Next** | Monitor: next job email from ATS/LinkedIn should auto-tag `JobSearch` within 5 min and appear in JSHQ InboxPanel. Triage Review Queue items (Vercel, Tailscale, Chipotle, MACU not yet in rules.gs). Enable Gemini when budget allows. |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |
@@ -84,10 +84,10 @@ When a new sender appears in the Review Queue tab:
 ## Architecture
 
 ```
-Layer 1: Gmail XML filters (69 rules, server-side, instant)
+Layer 1: Gmail XML filters (73 rules, server-side, instant)
     ↓ unknown senders fall through
 Layer 2: Apps Script (every 5 min)
-    → Match against rules.gs (same 69 rules in JS)
+    → Match against rules.gs (73 rules in JS — 3-pass: address → domain → subject)
     → If match → label + archive
     → If no match (RULES_ONLY) → log to "Review Queue" sheet tab (deduplicated)
     → If no match (GEMINI) → Gemini classifies → label + archive → log to "New Senders" tab

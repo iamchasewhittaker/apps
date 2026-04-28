@@ -4,6 +4,39 @@
 
 ---
 
+## Apps Script: trailing underscore = private function, hidden from Run dropdown (Apr 28, 2026)
+
+**What happened:** `healthCheck_jobSearch_()` (trailing `_`) didn't appear in the Apps Script editor's function dropdown. Apps Script treats any function ending in `_` as "private" — it runs fine if called programmatically but is invisible to the UI picker.
+
+**Fix:** Rename to `healthCheck_jobSearch` (no trailing underscore) for any function you want to run manually from the editor. Reserve the `_` suffix for internal helpers that should never be run directly.
+
+---
+
+## broad domain + specific address = use 3-pass match logic (Apr 28, 2026)
+
+**Problem:** `linkedin.com` was added as a catch-all `JobSearch` domain so recruiter emails from any LinkedIn address get tagged. But `messages-noreply@linkedin.com` (connection suggestions) and `invitations@linkedin.com` (connection requests) are social noise — they shouldn't appear in JSHQ's InboxPanel.
+
+**Original single-pass logic:** for each label, check domains first, then addresses. Since JobSearch is listed first in `RULES` and `linkedin.com` is its domain, ALL linkedin.com addresses matched JobSearch — even those explicitly listed in Notification's `addresses` array (which was checked later, and in a different label's loop iteration, never reached).
+
+**Fix:** Refactored `matchRules_()` to 3 independent passes:
+1. Exact address + toAlias across ALL labels (highest specificity)
+2. Domain across ALL labels
+3. Subject patterns across ALL labels
+
+Now `messages-noreply@linkedin.com` in Notification's `addresses` wins in pass 1 before `linkedin.com` in JobSearch's `domains` fires in pass 2.
+
+**Rule:** Whenever you add a catch-all domain to a label, think about whether any specific addresses from that domain belong to a different label. If yes, add them to the override label's `addresses` — the 3-pass logic handles the rest.
+
+---
+
+## JobSearch Gmail label must exist before JSHQ can query it (Apr 28, 2026)
+
+**What happened:** `healthCheck_jobSearch` showed `JobSearch label exists: false` even though `getOrCreateLabel_()` auto-creates labels. The label is only created the first time a matching email is processed — if no matching job emails have arrived since deployment, the label never gets created.
+
+**Fix:** Create it manually in Gmail → Settings → Labels → Create new label → `JobSearch`. Takes 10 seconds and unblocks JSHQ immediately. The auto-sorter will populate it once job emails arrive.
+
+---
+
 ## Job Search HQ uses `labelIds=`, not sender search (Apr 28, 2026)
 
 **What:** JSHQ's InboxPanel calls Gmail API with `labelIds=<JobSearch label id>` ([gmailClient.js:43](../job-search-hq/src/inbox/gmailClient.js)), not a `q:` search. If an email isn't tagged `JobSearch`, JSHQ literally can't see it — no fallback, no sender match.

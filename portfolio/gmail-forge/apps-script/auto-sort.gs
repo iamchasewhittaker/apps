@@ -152,30 +152,43 @@ function getRulesForMatching_() {
 function matchRules_(email, domain, to, subject) {
   var rulesMap = getRulesForMatching_();
   var labels = Object.keys(rulesMap);
+
+  // Pass 1: exact address + toAlias — highest specificity, overrides domain.
+  // Allows e.g. messages-noreply@linkedin.com → Notification even though
+  // linkedin.com is a JobSearch domain.
   for (var i = 0; i < labels.length; i++) {
     var label = labels[i];
     var rule = rulesMap[label];
-
-    for (var d = 0; d < rule.domains.length; d++) {
-      if (domain.indexOf(rule.domains[d]) !== -1) return label;
-    }
-
     for (var a = 0; a < rule.addresses.length; a++) {
       if (email === rule.addresses[a]) return label;
     }
-
     if (to && rule.toAliases) {
       for (var t = 0; t < rule.toAliases.length; t++) {
         if (to.indexOf(rule.toAliases[t]) !== -1) return label;
       }
     }
+  }
 
+  // Pass 2: domain matching.
+  for (var i = 0; i < labels.length; i++) {
+    var label = labels[i];
+    var rule = rulesMap[label];
+    for (var d = 0; d < rule.domains.length; d++) {
+      if (domain.indexOf(rule.domains[d]) !== -1) return label;
+    }
+  }
+
+  // Pass 3: subject patterns (catch recruiter outreach from unknown domains).
+  for (var i = 0; i < labels.length; i++) {
+    var label = labels[i];
+    var rule = rulesMap[label];
     if (subject && rule.subjectPatterns && rule.subjectPatterns.length) {
       for (var s = 0; s < rule.subjectPatterns.length; s++) {
         if (rule.subjectPatterns[s].test(subject)) return label;
       }
     }
   }
+
   return null;
 }
 
@@ -539,7 +552,7 @@ function healthCheck() {
  * label exists, the trigger is running, and that recently-received recruiter
  * mail actually got tagged.
  */
-function healthCheck_jobSearch_() {
+function healthCheck_jobSearch() {
   var triggers = ScriptApp.getProjectTriggers().filter(function (t) {
     return t.getHandlerFunction() === 'autoSort';
   });

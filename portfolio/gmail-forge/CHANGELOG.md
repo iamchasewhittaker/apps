@@ -1,5 +1,17 @@
 # Gmail Forge — Changelog
 
+## [Apr 28, 2026] — matchRules_ 3-pass refactor + LinkedIn social split
+
+### What changed
+- **`apps-script/auto-sort.gs`** — `matchRules_()` refactored from single-pass to 3-pass: (1) exact address + toAlias across all labels, (2) domain across all labels, (3) subject patterns. Address specificity now overrides domain breadth — a sender explicitly listed in any label's `addresses` wins over a catch-all domain in another label.
+- **`apps-script/rules.gs`** — Added `messages-noreply@linkedin.com`, `invitations@linkedin.com`, `updates-noreply@linkedin.com` to Notification addresses. These social/connection notifications were matching the broad `linkedin.com` JobSearch domain and polluting JSHQ's InboxPanel. Job-search addresses (`jobs-listings@`, `inmail@`, `jobs-noreply@`) keep going to JobSearch via domain fallthrough.
+- **`healthCheck_jobSearch_()` renamed to `healthCheck_jobSearch()`** — Apps Script hides functions with a trailing underscore from the Run dropdown (private convention). Renamed so it's selectable in the editor.
+- **`JobSearch` Gmail label created manually** — Label didn't exist yet because no matching job email had triggered `getOrCreateLabel_()`. Created via Gmail Settings → Labels → Create new label. Required before JSHQ can query by `labelIds=`.
+- **`gmail-filters.xml` re-imported** — picked up the 3 new entries from the prior session (ashbyhq.com, linkedin.com, e.linkedin.com).
+
+### Why
+Broad domain rules (all of `linkedin.com` → JobSearch) captured connection suggestions and "add this person" recommendations, which aren't job search signals. 3-pass match logic allows precise address-level overrides without restructuring the rules object. JSHQ InboxPanel verified clean: trigger active, JobSearch label exists, label created, system ready for first real job email.
+
 ## [Apr 28, 2026] — Job Search HQ alignment
 
 ### What changed

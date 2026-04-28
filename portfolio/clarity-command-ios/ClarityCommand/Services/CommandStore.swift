@@ -32,7 +32,7 @@ final class CommandStore {
         case evening = "Evening"
     }
 
-    nonisolated init() {}
+    init() {}
 
     // MARK: - Load / Save
 

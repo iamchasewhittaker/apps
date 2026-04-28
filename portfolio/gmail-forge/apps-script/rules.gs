@@ -12,13 +12,15 @@
  *     subjectPatterns: [/regex/i, ...]   // optional — matched against the email subject
  *   }
  *
- * Match logic (in auto-sort.gs):
- *   1. Extract sender domain from the "From" header
- *   2. Check if domain appears in any label's `domains` array
- *   3. Check if full address appears in any label's `addresses` array
- *   4. Check if recipient matches any `toAliases` entry
- *   5. Check if subject matches any `subjectPatterns` regex
- *   6. If no match → fall through to AI classification
+ * Match logic (in auto-sort.gs) — three passes, highest specificity wins:
+ *   Pass 1 (exact): addresses + toAliases across all labels
+ *   Pass 2 (broad): domains across all labels
+ *   Pass 3 (content): subjectPatterns across all labels
+ *   No match → fall through to AI classification
+ *
+ * Address-before-domain ordering lets specific addresses override broad
+ * domain rules (e.g. messages-noreply@linkedin.com → Notification even
+ * though linkedin.com is a JobSearch domain).
  */
 
 var RULES = {
@@ -123,6 +125,10 @@ var RULES = {
       'no-reply@sunsama.com',
       'noreply@email.apple.com',
       'notify@me.sh',
+      // LinkedIn social — override the broad linkedin.com JobSearch domain match
+      'messages-noreply@linkedin.com',
+      'invitations@linkedin.com',
+      'updates-noreply@linkedin.com',
     ],
     toAliases: [],
   },
