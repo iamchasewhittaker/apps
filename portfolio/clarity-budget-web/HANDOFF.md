@@ -4,16 +4,16 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Unblock `/categorize` smoke test, commit 7 uncommitted files, then Step 5 (cron + vercel.json)** |
-| Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · dev-server unauth probes ✅. Signed-in smoke **blocked** — see "Blocker" below. 7 files uncommitted. |
+| Focus | **Step 5 cron endpoints + `vercel.json` ✅ DONE (uncommitted). Step 6 next — `/review` UI.** |
+| Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · `next build` ✅ — `/api/cron/sync` and `/api/cron/backfill` both `ƒ` dynamic. Live smoke against dev: unauth POST/GET → 401, valid `Bearer $CRON_SECRET` → `200 {ok:true, processed:0}` (no users have both tokens yet, expected). Credentials self-heal smoke verified earlier today via audit log. |
 | Last touch | 2026-04-27 |
-| URL | clarity-budget-web.vercel.app (Steps 1–2 deployed; AI categorize + credentials fix NOT deployed) |
+| URL | clarity-budget-web.vercel.app (Steps 1–2 deployed; credentials fix + Step 5 cron on disk + commit, NOT deployed; AI categorize NOT deployed) |
 | Branch | `main` (consolidated 2026-04-27) |
 | Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files already on disk |
-| Blocker | `/categorize` → "no YNAB budget selected": `clarity_budget_credentials.default_budget_id` is NULL and `user_data.data.ynabBudgetId` is also null. **Fix: go to `/settings` → YNAB card → re-enter PAT (token was cleared from localStorage by MigrationBanner) → pick budget → writes `default_budget_id` to Supabase directly.** See LEARNINGS.md 2026-04-27 for full diagnosis. |
-| Manual TODO (0 — do first) | `/settings` → YNAB card → enter token → pick budget → confirm `clarity_budget_credentials.default_budget_id` written in Supabase Studio. This unblocks the smoke. |
-| Manual TODO (smoke, after 0) | (a) `/categorize` → Run → expect success + `default_budget_id` populated. (b) `/` Dashboard → "Category roles" section, no token input. (c) Change budget in Settings → Supabase row updates. |
-| Manual TODO (categorize deploy) | (a) `supabase db push` → applies `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` + Vercel preview env. (c) Sign in → `/categorize` → Run → verify YNAB. (d) Re-run for idempotency. (e) Merge to main. |
+| Step 5 (cron + vercel.json) | ✅ DONE 2026-04-27 (uncommitted). New: `lib/reconcile/run.ts` (orchestrator), `app/api/cron/sync/route.ts` (Vercel cron POST/GET, validates `Authorization: Bearer $CRON_SECRET`, enumerates users with both tokens, calls pullCards + pullTransactions + runReconcileForUser per user), `app/api/cron/backfill/route.ts` (one-shot with optional `days_back`; user-session OR cron-secret + `?user_id=`), `vercel.json` (cron `*/15 * * * *`). Idempotent: proposals filter `existingProposalYnabIds`; flags filter on `(type, fingerprint)` dedup. |
+| Smoke test outcome (credentials, 2026-04-27) | ✅ Original blocker cleared. `clarity_budget_credentials.default_budget_id = ab0a40fe-…` for user `ffda23cc-…`; `user_data.data.ynabBudgetId` matches. `/categorize` no longer throws `default_budget_id not set` — now throws `Could not find the table 'public.clarity_budget_categorization_suggestions'` instead, which is a separate, expected gap (migration `0003` not yet applied). |
+| Manual TODO (Step 5 deploy) | (a) `git add app/api/cron lib/reconcile/run.ts vercel.json` + commit. (b) Confirm `CRON_SECRET` is set in Vercel env (production + preview). (c) Confirm `SUPABASE_SERVICE_ROLE_KEY` is in Vercel env. (d) `vercel --prod`. (e) Verify cron run at `vercel.com/<scope>/clarity-budget-web/settings/cron-jobs`. |
+| Manual TODO (categorize deploy — separate from Step 5) | (a) `supabase db push` → applies `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` + Vercel preview env. (c) Sign in → `/categorize` → Run → verify YNAB. (d) Re-run for idempotency. (e) Merge to main. |
 | Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
 
 ---
@@ -253,8 +253,8 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 | # | Step | Status | Key files |
 |---|---|---|---|
 | 4 | Reconcile logic + unit tests | ✅ DONE | `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + `__tests__/` |
-| 5 | Cron endpoints + `vercel.json` | ⬜ next | `app/api/cron/sync/route.ts`, `app/api/cron/backfill/route.ts`, `vercel.json` |
-| 6 | `/review` UI | ⬜ | `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx` |
+| 5 | Cron endpoints + `vercel.json` | ✅ DONE (uncommitted) | `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` |
+| 6 | `/review` UI | ⬜ next | `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx` |
 | 7 | `/flags` UI | ⬜ | `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
 | 8 | `/settings` Privacy connector + card mapping | ⬜ | `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` |
 | 9 | Split `HomeDashboard.tsx` | ⬜ | Extract `components/dashboard/{StsCard,ShortfallBanner,LastUpdated,EmptyState}.tsx` |
