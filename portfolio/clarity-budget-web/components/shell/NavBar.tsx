@@ -9,6 +9,7 @@ const LINKS: { href: string; label: string }[] = [
   { href: "/", label: "Dashboard" },
   { href: "/categorize", label: "Categorize" },
   { href: "/review", label: "Review" },
+  { href: "/flags", label: "Flags" },
   { href: "/settings", label: "Settings" },
 ];
 
