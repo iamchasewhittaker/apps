@@ -54,7 +54,7 @@ function autoSort() {
     var senderEmail = extractEmail_(from);
     var senderDomain = extractDomain_(senderEmail);
 
-    var result = matchRules_(senderEmail, senderDomain, to);
+    var result = matchRules_(senderEmail, senderDomain, to, subject);
 
     if (!result) {
       var classification = classifyUnknown_(senderEmail, from, subject, snippet);
@@ -143,12 +143,13 @@ function getRulesForMatching_() {
       domains: rule.domains,
       addresses: rule.addresses,
       toAliases: toAliases,
+      subjectPatterns: rule.subjectPatterns || [],
     };
   }
   return out;
 }
 
-function matchRules_(email, domain, to) {
+function matchRules_(email, domain, to, subject) {
   var rulesMap = getRulesForMatching_();
   var labels = Object.keys(rulesMap);
   for (var i = 0; i < labels.length; i++) {
@@ -166,6 +167,12 @@ function matchRules_(email, domain, to) {
     if (to && rule.toAliases) {
       for (var t = 0; t < rule.toAliases.length; t++) {
         if (to.indexOf(rule.toAliases[t]) !== -1) return label;
+      }
+    }
+
+    if (subject && rule.subjectPatterns && rule.subjectPatterns.length) {
+      for (var s = 0; s < rule.subjectPatterns.length; s++) {
+        if (rule.subjectPatterns[s].test(subject)) return label;
       }
     }
   }
@@ -200,12 +207,13 @@ function classifyWithGemini_(senderEmail, fromHeader, subject, snippet) {
     'You classify emails into exactly one Gmail label. ' +
     'Valid labels: JobSearch, Newsletter, Notification, Receipt, Calendar, Marketing, Cold Email, Security, Personal, FYI. ' +
     'Rules:\n' +
+    '- JobSearch: ATS platforms (Greenhouse, Lever, Workday, Ashby, etc.), recruiter outreach, interview invites, scheduling/availability requests for hiring conversations, LinkedIn job alerts/InMail\n' +
     '- Newsletter: blogs, digests, Substack, recurring content emails\n' +
     '- Notification: app alerts, service updates, shipping, automated messages\n' +
     '- Receipt: purchases, payments, invoices, billing, subscriptions\n' +
-    '- Calendar: appointment reminders, event invitations, scheduling\n' +
+    '- Calendar: appointment reminders, event invitations, scheduling (non-job)\n' +
     '- Marketing: promotions, sales, brand emails, product launches\n' +
-    '- Cold Email: unsolicited outreach, sales pitches from unknown senders\n' +
+    '- Cold Email: unsolicited outreach, sales pitches from unknown senders (non-recruiter)\n' +
     '- Security: password resets, 2FA codes, account alerts, verification emails\n' +
     '- Personal: from a real person, personal conversation\n' +
     '- FYI: informational, no action needed, doesn\'t fit other categories\n' +
@@ -281,6 +289,9 @@ function normalizeLabel_(raw) {
   var cleaned = raw.replace(/[^\w\s-]/g, '').trim();
   var lowered = cleaned.toLowerCase();
   var map = {
+    jobsearch: 'JobSearch',
+    'job search': 'JobSearch',
+    'job-search': 'JobSearch',
     newsletter: 'Newsletter',
     notification: 'Notification',
     receipt: 'Receipt',
@@ -516,6 +527,41 @@ function healthCheck() {
   }
 
   Logger.log('=== end healthCheck ===');
+}
+
+// ---------------------------------------------------------------------------
+// Job Search HQ integration health check
+// ---------------------------------------------------------------------------
+
+/**
+ * Diagnoses whether Job Search HQ's InboxPanel will see any emails.
+ * JSHQ queries Gmail by labelIds=<JobSearch label id>, so this verifies the
+ * label exists, the trigger is running, and that recently-received recruiter
+ * mail actually got tagged.
+ */
+function healthCheck_jobSearch_() {
+  var triggers = ScriptApp.getProjectTriggers().filter(function (t) {
+    return t.getHandlerFunction() === 'autoSort';
+  });
+  var label = GmailApp.getUserLabelByName('JobSearch');
+  var threadCount = label ? label.getThreads(0, 50).length : 0;
+  var unlabeled = GmailApp.search(
+    'is:inbox -label:JobSearch -label:Newsletter -label:Notification ' +
+    '-label:Receipt -label:Calendar -label:Marketing -label:"Cold-Email" ' +
+    '-label:Security -label:Personal -label:FYI ' +
+    '-label:Follow-up -label:To-Reply -label:Actioned',
+    0, 5);
+
+  Logger.log('=== Gmail Forge × Job Search HQ health check ===');
+  Logger.log('5-min autoSort trigger active: ' + (triggers.length > 0));
+  Logger.log('JobSearch label exists: ' + !!label);
+  Logger.log('JobSearch threads (up to 50): ' + threadCount);
+  Logger.log('Unlabeled inbox samples (up to 5): ' + unlabeled.length);
+  for (var i = 0; i < unlabeled.length; i++) {
+    var msg = unlabeled[i].getMessages()[0];
+    Logger.log('  - ' + msg.getFrom() + ' / ' + unlabeled[i].getFirstMessageSubject());
+  }
+  Logger.log('=== end JSHQ health check ===');
 }
 
 // ---------------------------------------------------------------------------

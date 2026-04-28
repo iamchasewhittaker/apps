@@ -4,15 +4,15 @@
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 fully live · Dashboard confirmed working (88 newsletters today, 83 in Review Queue) · **Next session: triage Review Queue → add rules for top senders** |
-| **Last touch** | Apr 20, 2026 — dashboard deployed + confirmed live; TRIGGER_TOKEN set; NEWSLETTER_TO_ALIASES fixed (ashen-35.packet + crowds.olives2z); Apps Script renamed "Gmail Forge"; added to CLAUDE.md + Shipyard |
-| **Next** | Triage 83 Review Queue items → add to `rules.gs` + `gmail-filters.xml` → clasp push → re-import XML · Subscriptions backfill (1-click) · Spend Radar prop rename · Gemini when budget allows |
+| **Focus** | Phase 3 live · **Apr 28**: Job Search HQ alignment shipped — subject-keyword matching for `JobSearch`, Gemini prompt now includes `JobSearch`, new `healthCheck_jobSearch_()` diagnostic, ashbyhq + full linkedin.com whitelist |
+| **Last touch** | Apr 28, 2026 — `rules.gs` `subjectPatterns` (interview/availability/phone screen/time to chat/schedule), `auto-sort.gs` `matchRules_()` accepts subject, Gemini prompt lists JobSearch, `healthCheck_jobSearch_()` added, 3 XML entries (ashbyhq.com, linkedin.com, e.linkedin.com), 70 → 73 filters |
+| **Next** | **Deploy** updated `auto-sort.gs` + `rules.gs` via `cd apps-script && npx clasp push --force` → run `healthCheck_jobSearch_()` in editor to confirm → re-import `gmail-filters.xml` (Settings → Filters → Import → "Also apply to matching conversations") · Then triage Review Queue items |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |
 | **Web App URL** | `https://script.google.com/macros/s/AKfycbyaWjWoL_5tHfsVpCqhRJamduer13-q_p57D6YT3XPUB7zmW0Rgef2EY4Ji243AUDqLRQ/exec` |
 | **Dashboard** | `https://script.google.com/macros/s/AKfycbyaWjWoL_5tHfsVpCqhRJamduer13-q_p57D6YT3XPUB7zmW0Rgef2EY4Ji243AUDqLRQ/exec?view=dashboard&token=<TRIGGER_TOKEN>` |
-| **Filter count** | 69 (XML) + 69 (JS rules mirroring XML) |
+| **Filter count** | 73 XML + 18 ATS/LinkedIn JS domains + 5 JobSearch subject regexes |
 | **File location** | `/Users/chase/Developer/chase/portfolio/gmail-forge/` |
 | **Classifier mode** | `RULES_ONLY` (Gemini free-tier quota exhausted; switch to `GEMINI` once billing enabled) |
 

@@ -212,6 +212,21 @@ export default function InboxPanel({ inbox, applications, handlers, showError })
 function SetupGuide() {
   return (
     <div style={s.inboxSetupGuide}>
+      <div
+        style={{
+          padding: 8,
+          borderRadius: 6,
+          background: "#ecfdf5",
+          border: "1px solid #a7f3d0",
+          marginBottom: 12,
+          fontSize: 13,
+          color: "#065f46",
+        }}
+      >
+        <strong>Using Gmail Forge?</strong> The <code>JobSearch</code> label is created
+        and applied automatically every 5 minutes — skip the steps below. Verify by running{" "}
+        <code>healthCheck_jobSearch_()</code> in the Apps Script editor.
+      </div>
       <div style={s.inboxSetupTitle}>One-time Gmail filters</div>
       <ol style={{ margin: 0, paddingLeft: 18 }}>
         <li>Gmail → Settings → <strong>Labels</strong> → create label <strong>JobSearch</strong>.</li>

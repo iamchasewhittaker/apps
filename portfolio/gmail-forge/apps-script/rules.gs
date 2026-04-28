@@ -1,18 +1,24 @@
 /**
  * Gmail Forge — Sender/Domain Rules
  *
- * Mirrors the 69 Gmail XML filters so Apps Script can match known senders
+ * Mirrors the Gmail XML filters so Apps Script can match known senders
  * without an AI call. Keep this in sync when you add new XML filters.
  *
  * Structure:
- *   RULES[label] = { domains: [...], addresses: [...], toAliases: [...] }
+ *   RULES[label] = {
+ *     domains: [...],
+ *     addresses: [...],
+ *     toAliases: [...],
+ *     subjectPatterns: [/regex/i, ...]   // optional — matched against the email subject
+ *   }
  *
  * Match logic (in auto-sort.gs):
  *   1. Extract sender domain from the "From" header
  *   2. Check if domain appears in any label's `domains` array
  *   3. Check if full address appears in any label's `addresses` array
  *   4. Check if recipient matches any `toAliases` entry
- *   5. If no match → fall through to AI classification
+ *   5. Check if subject matches any `subjectPatterns` regex
+ *   6. If no match → fall through to AI classification
  */
 
 var RULES = {
@@ -53,6 +59,17 @@ var RULES = {
       'notifications-noreply@linkedin.com',
     ],
     toAliases: [],
+    // Catches recruiter outreach from personal/unknown domains.
+    // Keep tight — broad words like "schedule" alone produce false positives
+    // (calendar invites, app notifications), so we anchor scheduling phrases
+    // to call/chat/interview/time.
+    subjectPatterns: [
+      /\binterview\b/i,
+      /\bavailability\b/i,
+      /\bphone screen\b/i,
+      /\btime to chat\b/i,
+      /\bschedule (a |an )?(call|chat|interview|time)\b/i,
+    ],
   },
 
   'Newsletter': {

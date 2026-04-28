@@ -5,19 +5,54 @@
 | Field | Value |
 |---|---|
 | Focus | **Step 7 — `/flags` UI** (weirdness flags inbox) |
-| Status | tsc ✅ · lint ✅ · build ✅ · vitest 49/49 ✅ · commit `97e50a5` on `main`. `/categorize` AI auth: Preview env + `pnpm env:pull-local`. |
+| Status | tsc ✅ · lint ✅ · build ✅ · vitest 49/49 ✅ · deployed `clarity-budget-web.vercel.app`. `/categorize` working — 27 fetched, 6 auto-applied, 21 queued. |
 | Last touch | 2026-04-28 |
 | URL | clarity-budget-web.vercel.app |
 | Branch | `main` |
-| Steps 1–5 | ✅ DONE + deployed (commits `64467d8`, `8720ef8`) |
-| Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files |
-| Step 5 (cron + vercel.json) | ✅ DONE. `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` (daily `0 6 * * *` — Hobby plan limit; bump to `*/15 * * * *` on Pro). |
-| Step 6 (/review UI) | ✅ DONE. `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx`, `app/api/proposals/[id]/route.ts`. NavBar updated. |
-| Migration 0003 | ✅ Pushed 2026-04-28. `clarity_budget_categorization_suggestions` table exists. |
-| AI_GATEWAY_API_KEY | ✅ Vercel Production, Development, Preview. Local: run `pnpm run env:pull-local` so `.env.local` has a non-empty gateway key (production-only `vercel env pull` omits it). |
-| Settings loop fix | ✅ Commit `7a461b6`. `MigrationBanner` no longer clears localStorage. `YnabConnectorCard` shows "Token stored ✓ [Replace]" when encrypted row exists. |
-| Smoke test needed | `/review` → sign in → see pending proposals (or empty state). Accept one → verify `clarity_budget_proposals.status='approved'` in Supabase. `/settings` + `/categorize` smoke still pending on production. |
+| Steps 1–6 | ✅ DONE + deployed |
+| Step 7 (/flags UI) | ⬜ next — `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
+| AI_GATEWAY_API_KEY | ✅ All 3 Vercel envs (Production, Development, Preview) + `.env.local`. Key rotated 2026-04-28 — if auth fails again, generate a new key at vercel.com/[team]/~/ai/api-keys. |
+| Billing | ✅ Credit card on file for Vercel AI Gateway free tier. |
+| Categorize schema | ✅ Fixed — `subtransactions` + inner `id` changed from `.optional()` to `.nullable()` for OpenAI strict mode compatibility. |
 | Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
+
+---
+
+## Fresh session prompt — Step 7: `/flags` UI
+
+```
+Read portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md first.
+Run checkpoint before touching anything.
+
+Continuing: clarity-budget-web, branch main
+Last deployed: clarity-budget-web.vercel.app (2026-04-28, schema fix for OpenAI strict mode)
+
+## State coming in (2026-04-28)
+
+Steps 1–6 all done and live. /categorize is working — 27 fetched, 6 auto-applied, 21 queued.
+No uncommitted changes. No smoke tests pending.
+
+## Step 7 — `/flags` UI (weirdness flags inbox)
+
+Build the flags review queue. Structure mirrors /review (Step 6).
+
+Files to create:
+- app/(app-shell)/flags/page.tsx — async server component; queries clarity_budget_flags
+  (status=open, user-scoped) via createRouteClient(); passes list to <FlagList>.
+- components/flags/FlagList.tsx — client component; owns flags state; removes items on resolve.
+- components/flags/FlagRow.tsx — shows flag type, description, amount/payee context,
+  Dismiss button → PATCH /api/flags/[id].
+- app/api/flags/[id]/route.ts — PATCH handler; validates auth + ownership; updates
+  status='dismissed', resolved_at; writes audit log.
+
+Schema reference: clarity_budget_flags columns in supabase/migrations/0001_init.sql.
+Flag types: see lib/reconcile/detect-weirdness.ts for the shape written to the DB.
+
+Also:
+- components/shell/NavBar.tsx — add "Flags" link (after Review, before Settings).
+
+Stop after Step 7 and show the diff.
+```
 
 ---
 

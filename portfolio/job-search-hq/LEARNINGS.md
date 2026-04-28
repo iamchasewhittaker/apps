@@ -18,6 +18,12 @@
 
 ## Entries
 
+### 2026-04-28 — Gmail Forge supplies the `JobSearch` label automatically — onboarding text was misleading
+**What happened:** `SetupGuide()` told users to set up Gmail filters by hand. Chase already runs Gmail Forge, which auto-applies the `JobSearch` label. Users following the manual steps would have a redundant filter in front of an automated one, and could be confused into thinking JSHQ requires the manual setup.
+**Root cause:** v8.18 was implemented before the cross-app Gmail Forge integration was nailed down. The setup guide reflected the lowest-common-denominator path (no Gmail Forge user) but didn't mention the existence of an automated path.
+**Fix / lesson:** `SetupGuide()` now opens with a "Using Gmail Forge?" callout. Manual steps stay in place as a fallback. Pair this with `healthCheck_jobSearch_()` in Gmail Forge's `auto-sort.gs` so users can verify the auto-path is healthy without leaving Apps Script. **Lesson:** when two apps in the portfolio integrate, document the integration in **both** apps' onboarding — not just the data flow doc.
+**Tags:** integration · onboarding · gmail-forge
+
 ### 2026-04-26 — Gmail OAuth in a browser SPA: keep `client_secret` server-side, fetch client-side
 **What happened:** Wiring Gmail OAuth into HQ for v8.18. First instinct was to do everything in the browser — load GIS, run popup, exchange code. Google's "Web application" OAuth client type still requires `client_secret` for the token POST, even with PKCE.
 **Root cause:** Two of Google's three SPA flows leak the secret into the bundle: (1) the `initTokenClient` implicit flow returns access tokens directly but no refresh token (re-consent every hour, useless for a daily workflow); (2) embedding `client_secret` in `REACT_APP_*` makes it world-readable on the deployed bundle. The third flow — popup auth code → server exchange — keeps the secret in env and gets a real refresh token.

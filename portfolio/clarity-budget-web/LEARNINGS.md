@@ -1,5 +1,15 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-28 — AI Gateway key rotation + OpenAI strict mode Zod schema
+
+**API keys expire/rotate.** The `AI_GATEWAY_API_KEY` was valid when set but was later revoked on Vercel's end. The SDK error "Unauthenticated" shows as the same user-facing message whether the key is missing OR invalid — check `apiKeyProvided` in the underlying `GatewayAuthenticationError` to distinguish. Fix: generate a new key at `vercel.com/[team]/~/ai/api-keys` and update all three environments.
+
+**Vercel AI Gateway requires a credit card on file.** Even the free tier needs billing info for identity/overage purposes. A valid API key still fails with a billing error until the card is added. This is a separate gate from auth.
+
+**OpenAI structured output strict mode requires ALL properties in `required`.** Zod's `.optional()` removes a field from the JSON schema `required` array. OpenAI strict mode (`response_format: json_schema`) rejects any schema where a property exists in `properties` but not in `required`. Use `.nullable()` instead — it keeps the field in `required` while allowing a null value. The error message: `'required' is required to be supplied and to be an array including every key in properties. Missing '<field>'.`
+
+**When changing optional → nullable in a Zod schema, propagate the type change.** `z.string().optional()` → `z.string().nullable()` means the inferred type changes from `string | undefined` to `string | null`. Any downstream TypeScript types (`types.ts`), callers, and API boundaries (`YNABUpdateSubTransaction.id?: string`) that expect `undefined` need `?? undefined` coercion at the boundary.
+
 ## 2026-04-28 — AI Gateway on Preview + local `.env.local`
 
 **Preview had no `AI_GATEWAY_API_KEY`.** `vercel env ls` showed Production + Development only. That is why `/categorize` on preview builds returned the AI SDK "Unauthenticated" message. The Vercel CLI could not add Preview without `git_branch_required` (monorepo `portfolio/clarity-budget-web` root). **Fix:** `POST https://api.vercel.com/v10/projects/{projectId}/env?teamId=...&upsert=true` with `target: ["preview"]` and `type: "sensitive"`, using Bearer auth from the same session as `vercel login`.

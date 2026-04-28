@@ -4,6 +4,26 @@
 
 ---
 
+## Job Search HQ uses `labelIds=`, not sender search (Apr 28, 2026)
+
+**What:** JSHQ's InboxPanel calls Gmail API with `labelIds=<JobSearch label id>` ([gmailClient.js:43](../job-search-hq/src/inbox/gmailClient.js)), not a `q:` search. If an email isn't tagged `JobSearch`, JSHQ literally can't see it — no fallback, no sender match.
+
+**Why this matters:** It's tempting to think "we whitelisted greenhouse.io, that's enough." It's not. The whitelist (`shouldNeverSpam=true` in XML) doesn't apply a label. The label only gets applied by `auto-sort.gs` matching the JobSearch rule in `rules.gs`. Both pieces must be in sync, or JSHQ's inbox feed shows zero emails.
+
+**Bonus gap:** Recruiters using personal Gmail (no ATS domain) match no rule. Subject-pattern matching (`subjectPatterns: [/\binterview\b/i, ...]`) added to `rules.gs` to catch them. The matcher was domain/address/toAlias only — extending the schema cost about 10 lines in `auto-sort.gs` `matchRules_()`.
+
+**Diagnose:** Run `healthCheck_jobSearch_()` in the Apps Script editor — logs trigger, label, JobSearch thread count, sample unlabeled inbox.
+
+---
+
+## Gemini prompt was missing `JobSearch` (Apr 28, 2026)
+
+**What:** `auto-sort.gs` `VALID_LABELS` listed `JobSearch` as label index 0, but the Gemini system prompt at the top of `classifyWithGemini_()` only listed 9 labels (no JobSearch). When an unknown sender sent an interview invite, AI classification couldn't return JobSearch even if it wanted to.
+
+**Fix:** Added `JobSearch` to the prompt with a description (ATS platforms, recruiter outreach, interview invites). Added `jobsearch`, `job search`, `job-search` aliases to `normalizeLabel_()` so any common AI variant maps back to the canonical `JobSearch` label name.
+
+---
+
 ## macOS case-insensitive filesystem: CLAUDE.md == claude.md
 
 **What happened:** Wrote CLAUDE.md via Bash heredoc while claude.md already existed. macOS treated them as the same file and overwrote the original handoff doc.

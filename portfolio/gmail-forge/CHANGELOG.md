@@ -1,5 +1,16 @@
 # Gmail Forge — Changelog
 
+## [Apr 28, 2026] — Job Search HQ alignment
+
+### What changed
+- **`apps-script/rules.gs`** — added `subjectPatterns` to the `JobSearch` rule (regex array). Catches recruiter outreach from non-ATS senders: `interview`, `availability`, `phone screen`, `time to chat`, `schedule a/an call|chat|interview|time`. Updated header comment to document the new optional field.
+- **`apps-script/auto-sort.gs`** — `matchRules_()` now accepts and matches `subject` against `rule.subjectPatterns` after the domain/address/toAlias checks. `getRulesForMatching_()` propagates the field. Gemini system prompt now lists `JobSearch` with a description (was missing — AI fallback couldn't pick it). Added `jobsearch` / `job search` / `job-search` aliases to `normalizeLabel_()`. New diagnostic `healthCheck_jobSearch_()` logs trigger status, label existence, JobSearch thread count, and a sample of unlabeled inbox threads.
+- **`gmail-filters.xml`** — added 3 entries: `ashbyhq.com`, `linkedin.com` (full domain), `e.linkedin.com`. All `shouldNeverSpam`-only (no label, parity with auto-sort).
+- **`claude.md`** — bumped filter count 70 → 73 (docs previously said 69 — stale); documented subject-keyword matching + Job Search HQ integration.
+
+### Why
+Job Search HQ's InboxPanel queries Gmail via `labelIds=<JobSearch>` (not sender search), so emails must carry that label to surface. Existing rules covered ATS domains but missed recruiters using personal email — those interview invites silently never reached JSHQ. Subject patterns plug that gap.
+
 ## [Apr 20, 2026] — Dashboard + go-live polish
 
 ### Dashboard view (new)

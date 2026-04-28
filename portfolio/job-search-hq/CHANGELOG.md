@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased] — 2026-04-28 — Inbox setup polish for Gmail Forge users
+
+- **`src/components/InboxPanel.jsx`** — `SetupGuide()` now opens with a green "Using Gmail Forge?" callout that tells the user the `JobSearch` label is created and applied automatically every 5 min and points them at `healthCheck_jobSearch_()` for verification. Manual filter steps stay in place for users without Gmail Forge. Build clean (+162 B gzipped).
+- **Why:** JSHQ uses `labelIds=<JobSearch>` in Gmail API calls, and Gmail Forge's `auto-sort.gs` already labels matching ATS / LinkedIn senders + (new this session) interview-keyword subjects. The pasted manual filter instructions implied users had to do this themselves — confusing for the primary user.
+- **Companion change in [gmail-forge/CHANGELOG.md](../gmail-forge/CHANGELOG.md)** — added `subjectPatterns` to the `JobSearch` rule, wired subject matching in `matchRules_()`, added `JobSearch` to the Gemini prompt, added a `healthCheck_jobSearch_()` diagnostic, and bumped XML filter count 70 → 73.
+
 ## [Unreleased] — 2026-04-26 — Gmail Inbox Feed (v8.18)
 
 Closes the deferred next-wave item "Email / LinkedIn notification feed." HQ now pulls a Gmail label, classifies recruiter pings / ATS updates / interview invites / LinkedIn notifications, and surfaces them as a triage queue on Focus tab. Read-only — replies still happen in Gmail. Token exchange runs server-side so `client_secret` never enters the browser.

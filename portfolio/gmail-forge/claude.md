@@ -128,19 +128,27 @@ When Chase identifies a new sender to filter:
 
 ---
 
-## Current Filter Coverage (69 filters)
+## Current Filter Coverage (73 filters)
 
-**Last updated:** April 27, 2026
+**Last updated:** April 28, 2026
 
 | Category | Senders |
 |---|---|
-| Job Search (whitelist) | greenhouse-mail.io, lever.co, myworkday.com, ziprecruiter.com, jobs-listings@linkedin.com, inmail@linkedin.com |
+| Job Search (whitelist) | greenhouse-mail.io, lever.co, myworkday.com, ziprecruiter.com, ashbyhq.com, linkedin.com (full domain), e.linkedin.com, jobs-listings@linkedin.com, inmail@linkedin.com |
 | Newsletter | Substack alias, substack.com, Readwise, The Marginalian, The Hustle, Polymarket, Product Hunt, TLDR, Word Smarts, The Athletic, The Masters, John Hilton III, Daily Crossword Links, Sporcle, The Twist, Farnam Street, Daily Stoic, Puzzmo, Superhuman, Church of Jesus Christ, Missionary.org, Natia Kurdadze |
 | Notification | Amazon, LinkedIn invitations/messages, USPS, ESPN Fantasy, Backblaze, Sunsama, iCloud, Mesh, Obsidian, Supabase |
 | Calendar | PEAK ENT (phreesia-mail.com), Kassi Hair Co. (squareup.com), Dental/Weave (getweave.com), Luma Events (luma-mail.com), Google Calendar (calendar-notification@google.com) |
 | Receipt | Venmo, Privacy.com, Anthropic, Citi, Safeco, Apple (no_reply@email.apple.com), PayPal, Costco, Target, Uber, DoorDash, Spotify, Google Play, Rocky Mountain Power, Chewy, Enbridge Gas, FASTEL, Nike |
 | Marketing | Buck Mason, We Are OLLIN, NOCD, Lakeview, Jack Carr |
 | Security | Google (accounts.google.com) |
+
+### Subject-keyword matching (JobSearch only)
+
+`apps-script/rules.gs` `JobSearch.subjectPatterns` catches recruiter outreach from senders that don't match an ATS domain (e.g., personal Gmail). Matched phrases (case-insensitive): `interview`, `availability`, `phone screen`, `time to chat`, `schedule a/an call|chat|interview|time`. Implemented in `auto-sort.gs` `matchRules_()` after the domain/address/toAlias checks.
+
+### Job Search HQ integration
+
+The `JobSearch` Gmail label is what powers the InboxPanel in [job-search-hq](../job-search-hq/) — JSHQ queries the Gmail API with `labelIds=` (not `from:`), so the label must be applied for emails to appear. Run `healthCheck_jobSearch_()` in the Apps Script editor to verify trigger + label + thread count.
 
 ---
 

@@ -49,6 +49,27 @@
     <apps:property name='shouldNeverSpam' value='true'/>
   </entry>
 
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - Ashby ATS</title>
+    <apps:property name='from' value='ashbyhq.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - LinkedIn (all domains)</title>
+    <apps:property name='from' value='linkedin.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
+  <entry>
+    <category term='filter'></category>
+    <title>Job Search - LinkedIn marketing relay</title>
+    <apps:property name='from' value='e.linkedin.com'/>
+    <apps:property name='shouldNeverSpam' value='true'/>
+  </entry>
+
   <!-- ═══════════════════════════════════════════
        NEWSLETTERS
        Action: Keep in Inbox + Apply label "Newsletter"

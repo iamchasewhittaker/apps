@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-04-28 — `/categorize` AI Gateway key rotation + Zod schema strict-mode
+
+- **Expired API key:** `AI_GATEWAY_API_KEY` in `.env.local` and Vercel env was expired/revoked. Generated a new key from Vercel dashboard, updated all three environments (Production, Development, Preview) and `.env.local`.
+- **Billing gate:** Vercel AI Gateway requires a credit card on file even for free tier. Added card to unlock free credits.
+- **Zod schema incompatible with OpenAI strict mode:** `SuggestionSchema.subtransactions` used `z.array(...).optional()` and the inner `id` field used `z.string().optional()`. OpenAI structured output strict mode requires every property in `properties` to also appear in `required` — `.optional()` removes a field from `required`, causing a 500. **Fix:** changed both to `.nullable()` so the fields are always present but can be null.
+- **Type propagation:** Updated `types.ts` `Suggestion.subtransactions.id` from `string | undefined` to `string | null`, and added `id: s.id ?? undefined` coercion in `app/api/categorize/apply/route.ts` where `YNABUpdateSubTransaction.id` expects `string | undefined`.
+- **Result:** categorization now runs — fetched 27, auto-applied 6, queued 21 for review.
+
 ### Fixed — 2026-04-28 — `/categorize` Unauthenticated (AI Gateway on Preview + local)
 
 - **Root cause:** `AI_GATEWAY_API_KEY` existed on Vercel Production and Development but not on **Preview**. Local `vercel env pull --environment=production` also wrote an empty `AI_GATEWAY_API_KEY` in `.env.local` (sensitive values omitted from the pull file).

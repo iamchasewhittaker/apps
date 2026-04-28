@@ -1,7 +1,7 @@
 # Gmail Forge — Roadmap
 
 > **Owner:** Chase Whittaker  
-> **Last updated:** April 13, 2026  
+> **Last updated:** April 28, 2026  
 > **Approach:** Free Gmail XML filter system + daily Claude review
 
 ---
@@ -19,7 +19,7 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 | Task | Status | Notes |
 |---|---|---|
 | Define Gmail label taxonomy | ✅ Done | 11 labels: Newsletter, Notification, Receipt, Calendar, Cold Email, FYI, Marketing, Follow-up, To Reply, Actioned, Personal |
-| Build gmail-filters.xml | ✅ Done | 69 filters as of Apr 12, 2026 |
+| Build gmail-filters.xml | ✅ Done | 73 filters as of Apr 28, 2026 (added ashbyhq.com + full linkedin.com whitelist) |
 | Import filters into Gmail | ✅ Done | Applied retroactively to existing emails |
 | Whitelist job search senders | ✅ Done | Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn |
 | Establish daily review workflow | ✅ Done | Morning email report prompt with Claude |
