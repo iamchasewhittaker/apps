@@ -5,15 +5,23 @@ import { YNAB_TOKEN_KEY, T } from "@/lib/constants";
 
 type State = "hidden" | "idle" | "migrating" | "error";
 
-export function MigrationBanner() {
+type Props = {
+  hasEncryptedYnabToken: boolean;
+};
+
+export function MigrationBanner({ hasEncryptedYnabToken }: Props) {
   const [state, setState] = useState<State>("hidden");
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (hasEncryptedYnabToken) {
+      setState("hidden");
+      return;
+    }
     const token = window.localStorage.getItem(YNAB_TOKEN_KEY);
     setState(token ? "idle" : "hidden");
-  }, []);
+  }, [hasEncryptedYnabToken]);
 
   async function handleMigrate() {
     if (typeof window === "undefined") return;
@@ -36,7 +44,6 @@ export function MigrationBanner() {
         setState("error");
         return;
       }
-      window.localStorage.removeItem(YNAB_TOKEN_KEY);
       setState("hidden");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
