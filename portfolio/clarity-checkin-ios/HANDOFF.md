@@ -28,7 +28,7 @@ Run on iPhone 16 simulator (⌘R) or tests (⌘U).
 
 ## Decisions made
 
-- `@Observable @MainActor` store, `nonisolated init()` to allow `@State` initialization in App
+- `@Observable @MainActor` store with plain `init()` — `@State private var store = Store()` in App works because App body is MainActor in iOS 17+ (removed `nonisolated` 2026-04-28)
 - `@Bindable var s = store` pattern in views for two-way binding into `@Observable` stores
 - `FlowLayout` in ClarityUI is `public` — import ClarityUI in any file that uses it
 - `@MainActor` annotation required on view structs / private methods that access store outside `body`
@@ -56,7 +56,7 @@ Run on iPhone 16 simulator (⌘R) or tests (⌘U).
 ## Learnings from this session
 
 - `XCLocalSwiftPackageReference.relativePath` is relative to the `.xcodeproj` directory's parent — `../clarity-ui`, not `../../clarity-ui`
-- `@Observable @MainActor` class requires `nonisolated init()` when used with `@State private var store = Store()` in SwiftUI App
+- `@Observable @MainActor` class does NOT need `nonisolated init()` — App body is MainActor in iOS 17+, so a plain `init()` works and avoids Swift 6 concurrency warnings
 - SwiftUI view computed properties outside `body` don't automatically inherit `@MainActor` in Swift 5.9+ strict mode — annotate them explicitly or annotate the struct
 - `swift test` on macOS can't run SwiftUI tests; use `xcodebuild test` with simulator destination
 - `FlowLayout` needs `public` on struct, `public init()`, and both protocol method signatures

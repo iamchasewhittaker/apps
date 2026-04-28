@@ -20,7 +20,7 @@ final class CheckinStore {
 
     // MARK: - Lifecycle
 
-    nonisolated init() {}
+    init() {}
 
     func load() {
         blob = StorageHelpers.load(CheckinBlob.self, key: CheckinConfig.storeKey) ?? .init()

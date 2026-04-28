@@ -17,7 +17,7 @@ final class TriageStore {
 
     // MARK: - Lifecycle
 
-    nonisolated init() {}
+    init() {}
 
     func load() {
         blob = StorageHelpers.load(TriageBlob.self, key: TriageConfig.storeKey) ?? .init()

@@ -8,7 +8,7 @@ final class GrowthStore {
 
     private(set) var blob: GrowthBlob = .init()
 
-    nonisolated init() {}
+    init() {}
 
     func load() {
         blob = StorageHelpers.load(GrowthBlob.self, key: GrowthConfig.storeKey) ?? .init()

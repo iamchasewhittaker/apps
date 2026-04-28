@@ -13,7 +13,7 @@ final class TimeStore {
 
     private var tickTask: Task<Void, Never>?
 
-    nonisolated init() {}
+    init() {}
 
     // MARK: - Lifecycle
 
