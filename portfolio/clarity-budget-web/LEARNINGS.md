@@ -1,5 +1,13 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-27 — Step 5: Vercel Hobby plan cron limitation + CLI deploy path
+
+**Hobby plan cron constraint.** Vercel Hobby only allows once-per-day cron jobs. `*/15 * * * *` (every 15 min) triggers the error "cron expression would run more than once per day." Changed schedule to `0 6 * * *` (6 AM UTC daily). When the account upgrades to Pro, update `vercel.json` schedule back to `*/15 * * * *` and redeploy. The backfill endpoint (`/api/cron/backfill`) covers manual runs in the meantime.
+
+**CLI deploy from app subdirectory fails in a monorepo.** Running `vercel --prod` from `portfolio/clarity-budget-web/` (where `.vercel/project.json` lives) throws: `The provided path ~/Developer/chase/portfolio/clarity-budget-web/portfolio/clarity-budget-web does not exist`. The Vercel project has `rootDirectory: "portfolio/clarity-budget-web"` set in cloud settings; the CLI resolves that as a subdirectory of cwd, doubling the path. Fix: write a temporary `.vercel/project.json` at the monorepo root (`~/Developer/chase/`), deploy from there with `--archive=tgz` (needed for the 22k+ file monorepo), then delete the temp file. Auto-deploy via GitHub push should handle future deploys without manual CLI.
+
+**GitHub auto-deploy delay.** After pushing to `origin/main`, the Vercel GitHub webhook may take several minutes to fire (or not fire at all if the push happens too quickly after a prior one). If polling the Vercel API shows no new deployment after 5+ minutes, use the manual CLI deploy from the monorepo root as above.
+
 ## 2026-04-27 — credentials.ts self-heal: fallback finds nothing when user_data was never synced
 
 **Symptom.** `/categorize` "Run categorization" kept throwing a "no default budget id" / "no YNAB budget selected" error even after `lib/categorize/credentials.ts` was added with a fallback to `user_data.data.ynabBudgetId`. The new loader reads `clarity_budget_credentials.default_budget_id` first; if null, it reads `user_data` where `app_key='clarity_budget'` and pulls `data.ynabBudgetId`. Both were null.

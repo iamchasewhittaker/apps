@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-27 — Step 5: cron sync + backfill + vercel.json (commits `64467d8`, `8720ef8`)
+- `lib/reconcile/run.ts` (new) — `runReconcileForUser(userId, daysBack)` orchestrator. Reads Privacy cards + transactions from DB, loads YNAB credentials via `loadYnabCredentials`, fetches YNAB transactions, runs `matchPrivacyToYnab` → write-back `matched_ynab_txn_id`, idempotent `insertProposals` (dedupes against existing `ynab_txn_id` set), idempotent `insertFlags` (dedupes on `(type, fingerprint)`), records `reconcile_succeeded` / `reconcile_failed` audit log. Returns `{ privacyTxnsConsidered, ynabTxnsConsidered, totalMatches, newMatches, newProposals, newFlags }`.
+- `app/api/cron/sync/route.ts` (new) — Vercel cron entrypoint (GET + POST). Validates `Authorization: Bearer $CRON_SECRET`, queries eligible users (non-null YNAB + Privacy tokens), runs reconcile per user with per-user error isolation, returns `{ ok, processed, succeeded, failed, results }`.
+- `app/api/cron/backfill/route.ts` (new) — one-shot backfill endpoint. Two auth modes: user session or `CRON_SECRET + ?user_id=`. Accepts `{ days_back?: number }` (default 365). Returns full result with counts.
+- `vercel.json` (new) — registers `/api/cron/sync` on `0 6 * * *` schedule (daily 6 AM UTC; Hobby plan limit — change to `*/15 * * * *` on Pro).
+
+**Deployed:** `clarity-budget-web.vercel.app` · 49/49 vitest · tsc clean · lint clean.
+
 ### Added — 2026-04-27 — credentials self-heal + YNAB connector moved to Settings (uncommitted, branch feat/job-search-v8.16)
 - `lib/categorize/credentials.ts` (new) — shared `loadYnabCredentials(supabase, userId)`. Reads encrypted token from `clarity_budget_credentials`; if `default_budget_id` is null, falls back to `user_data.data.ynabBudgetId` and self-heals by writing it back. Throws `"no YNAB budget selected — open Settings and pick one"` if neither source has a value.
 - `lib/categorize/run.ts` + `app/api/categorize/apply/route.ts` — removed local credential loaders; both now import the shared loader.

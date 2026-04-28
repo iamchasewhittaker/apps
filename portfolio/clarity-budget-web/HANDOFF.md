@@ -4,15 +4,15 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Step 5 cron endpoints + `vercel.json` ✅ DONE (uncommitted). Step 6 next — `/review` UI.** |
-| Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · `next build` ✅ — `/api/cron/sync` and `/api/cron/backfill` both `ƒ` dynamic. Live smoke against dev: unauth POST/GET → 401, valid `Bearer $CRON_SECRET` → `200 {ok:true, processed:0}` (no users have both tokens yet, expected). Credentials self-heal smoke verified earlier today via audit log. |
+| Focus | **Step 6 next — `/review` UI (proposals review queue).** |
+| Status | typecheck ✅ · lint ✅ · 49/49 vitest ✅ · `next build` ✅ · **deployed to production** (commit `8720ef8`). Cron registered at `0 6 * * *` (daily, 6 AM UTC) — Vercel Hobby plan limits cron to once/day; change to `*/15 * * * *` when Pro plan is active. |
 | Last touch | 2026-04-27 |
-| URL | clarity-budget-web.vercel.app (Steps 1–2 deployed; credentials fix + Step 5 cron on disk + commit, NOT deployed; AI categorize NOT deployed) |
+| URL | clarity-budget-web.vercel.app — Steps 1–5 live. Cron runs daily. AI categorize NOT deployed (needs migration 0003 + AI_GATEWAY_API_KEY). |
 | Branch | `main` (consolidated 2026-04-27) |
 | Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files already on disk |
-| Step 5 (cron + vercel.json) | ✅ DONE 2026-04-27 (uncommitted). New: `lib/reconcile/run.ts` (orchestrator), `app/api/cron/sync/route.ts` (Vercel cron POST/GET, validates `Authorization: Bearer $CRON_SECRET`, enumerates users with both tokens, calls pullCards + pullTransactions + runReconcileForUser per user), `app/api/cron/backfill/route.ts` (one-shot with optional `days_back`; user-session OR cron-secret + `?user_id=`), `vercel.json` (cron `*/15 * * * *`). Idempotent: proposals filter `existingProposalYnabIds`; flags filter on `(type, fingerprint)` dedup. |
+| Step 5 (cron + vercel.json) | ✅ DONE + committed (`64467d8`, `8720ef8`) + deployed 2026-04-27. `lib/reconcile/run.ts` (orchestrator), `app/api/cron/sync/route.ts` (POST/GET, `Bearer $CRON_SECRET`, per-user error isolation), `app/api/cron/backfill/route.ts` (one-shot; user-session OR cron-secret + `?user_id=`), `vercel.json` (daily `0 6 * * *` — Hobby plan limit; bump to `*/15 * * * *` on Pro). |
 | Smoke test outcome (credentials, 2026-04-27) | ✅ Original blocker cleared. `clarity_budget_credentials.default_budget_id = ab0a40fe-…` for user `ffda23cc-…`; `user_data.data.ynabBudgetId` matches. `/categorize` no longer throws `default_budget_id not set` — now throws `Could not find the table 'public.clarity_budget_categorization_suggestions'` instead, which is a separate, expected gap (migration `0003` not yet applied). |
-| Manual TODO (Step 5 deploy) | (a) `git add app/api/cron lib/reconcile/run.ts vercel.json` + commit. (b) Confirm `CRON_SECRET` is set in Vercel env (production + preview). (c) Confirm `SUPABASE_SERVICE_ROLE_KEY` is in Vercel env. (d) `vercel --prod`. (e) Verify cron run at `vercel.com/<scope>/clarity-budget-web/settings/cron-jobs`. |
+| Step 5 deploy notes | Vercel Hobby plan blocks cron schedules that run more than once/day — deploy failed with `*/15 * * * *`, fixed to `0 6 * * *`. CLI deploy from app subdirectory fails (`rootDirectory` resolution bug); must deploy from monorepo root with a temp `.vercel/project.json`. On Pro plan: update schedule + redeploy. |
 | Manual TODO (categorize deploy — separate from Step 5) | (a) `supabase db push` → applies `0003_categorization_suggestions.sql`. (b) Add `AI_GATEWAY_API_KEY=...` to `.env.local` + Vercel preview env. (c) Sign in → `/categorize` → Run → verify YNAB. (d) Re-run for idempotency. (e) Merge to main. |
 | Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
 
@@ -253,7 +253,7 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 | # | Step | Status | Key files |
 |---|---|---|---|
 | 4 | Reconcile logic + unit tests | ✅ DONE | `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + `__tests__/` |
-| 5 | Cron endpoints + `vercel.json` | ✅ DONE (uncommitted) | `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` |
+| 5 | Cron endpoints + `vercel.json` | ✅ DONE + deployed (`8720ef8`) | `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` |
 | 6 | `/review` UI | ⬜ next | `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx` |
 | 7 | `/flags` UI | ⬜ | `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
 | 8 | `/settings` Privacy connector + card mapping | ⬜ | `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` |
