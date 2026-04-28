@@ -125,7 +125,7 @@ export async function POST(req: Request) {
           id: row.ynab_txn_id,
           approved: true,
           subtransactions: subs.map((s) => ({
-            id: s.id,
+            id: s.id ?? undefined,
             amount: s.amount,
             category_id: s.categoryId,
           })),

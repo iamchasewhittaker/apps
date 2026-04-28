@@ -46,13 +46,13 @@ const SuggestionSchema = z.object({
   subtransactions: z
     .array(
       z.object({
-        id: z.string().optional(),
+        id: z.string().nullable(),
         amount: z.number(),
         categoryId: z.string().nullable(),
         categoryName: z.string().nullable(),
       })
     )
-    .optional(),
+    .nullable(),
 });
 
 const ResponseSchema = z.object({

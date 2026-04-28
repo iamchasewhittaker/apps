@@ -7,11 +7,11 @@ export type Suggestion = {
   reasoning: string;
   /** Populated only for split parents; one entry per existing subtransaction. */
   subtransactions?: Array<{
-    id?: string;
+    id: string | null;
     amount: number;
     categoryId: string | null;
     categoryName: string | null;
-  }>;
+  }> | null;
 };
 
 /** Result row written to clarity_budget_categorization_suggestions. */
