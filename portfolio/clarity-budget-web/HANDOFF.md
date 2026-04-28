@@ -4,20 +4,39 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Smoke test `/settings` + `/categorize` on production, then Step 6 (`/review` UI).** |
-| Status | tsc ✅ · lint ✅ · 49/49 vitest ✅ · `next build` ✅ · commit `7a461b6` on `main`. Preview deployment `clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app` returns 401 on `/api/ynab/budgets` (route works). Production not yet promoted — `/api/ynab/budgets` still 404 on prod domain. |
+| Focus | **Step 7 — `/flags` UI** (weirdness flags inbox) |
+| Status | tsc ✅ · lint ✅ · build ✅ · commit `4383b7f` on `main`. Step 6 (`/review`) done. |
 | Last touch | 2026-04-28 |
-| URL | clarity-budget-web.vercel.app — Steps 1–5 + categorize code live. Migration 0003 + AI key deployed. Settings loop fixed. |
+| URL | clarity-budget-web.vercel.app — Steps 1–6 committed. Auto-deploy via GitHub will pick up `4383b7f`. |
 | Branch | `main` |
 | Steps 1–5 | ✅ DONE + deployed (commits `64467d8`, `8720ef8`) |
 | Step 4 (reconcile) | ✅ DONE — `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + 4 vitest files |
 | Step 5 (cron + vercel.json) | ✅ DONE. `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` (daily `0 6 * * *` — Hobby plan limit; bump to `*/15 * * * *` on Pro). |
-| Migration 0003 | ✅ Pushed 2026-04-28. `clarity_budget_categorization_suggestions` table exists. Required `migration repair --status reverted 20260426174142 20260426174204` first. |
+| Step 6 (/review UI) | ✅ DONE. `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx`, `app/api/proposals/[id]/route.ts`. NavBar updated. |
+| Migration 0003 | ✅ Pushed 2026-04-28. `clarity_budget_categorization_suggestions` table exists. |
 | AI_GATEWAY_API_KEY | ✅ `.env.local` + Vercel production env. Preview env blocked by CLI 50.x — add via dashboard or upgrade CLI. |
-| Settings loop fix | ✅ Commit `7a461b6`. `MigrationBanner` no longer clears localStorage. `YnabConnectorCard` shows "Token stored ✓ [Replace]" when encrypted row exists. Budgets fetched via `/api/ynab/budgets` server proxy. |
-| Production promotion | ⬜ Promote preview `clarity-budget-nb9nu9ctb-iamchasewhittakers-projects.vercel.app` to production, or push any commit to trigger auto-deploy. |
-| Smoke test needed | `/settings` → "Token stored in Supabase ✓" (no yellow banner) + budget picker populated. `/categorize` → Run → no schema cache error. Dashboard `/` → STS metrics still load. |
+| Settings loop fix | ✅ Commit `7a461b6`. `MigrationBanner` no longer clears localStorage. `YnabConnectorCard` shows "Token stored ✓ [Replace]" when encrypted row exists. |
+| Smoke test needed | `/review` → sign in → see pending proposals (or empty state). Accept one → verify `clarity_budget_proposals.status='approved'` in Supabase. `/settings` + `/categorize` smoke still pending on production. |
 | Manual TODO (auth) | Supabase Dashboard: Site URL = `https://clarity-budget-web.vercel.app`; add `/auth/callback` + `localhost:3000/auth/callback` to Redirect URLs; remove `apps.chasewhittaker.com`. GitHub OAuth: enable provider + paste Client ID/Secret (callback = `https://unqtnnxlltiadzbqpyhh.supabase.co/auth/v1/callback`). |
+
+---
+
+## What was built — 2026-04-28: Step 6 — `/review` UI
+
+### New files
+- `app/(app-shell)/review/page.tsx` — async server component; queries `clarity_budget_proposals` (status=pending, user-scoped) via `createRouteClient()`; passes list to `<ProposalList>`.
+- `components/review/ProposalList.tsx` — client component; owns `proposals` state; removes items client-side on resolve (no page reload).
+- `components/review/ProposalRow.tsx` — client component; shows `current_payee_name → proposed_payee_name`, confidence chip (green ≥80%, gold <80%), reason; Approve/Dismiss buttons PATCH `/api/proposals/${id}`.
+- `app/api/proposals/[id]/route.ts` — PATCH handler; validates auth + ownership + pending status; updates `status/resolved_at/resolved_by_action`; on approve: looks up privacy transaction → card token → sets `clarity_budget_privacy_cards.linked_payee_id`; writes audit log.
+
+### Modified files
+- `components/shell/NavBar.tsx` — added "Review" link between Categorize and Settings.
+
+### Schema note
+DB constraint uses `'approved'/'dismissed'` (not 'accepted'/'rejected' as the HANDOFF previously said). Route uses schema values.
+
+### Verification
+tsc ✅ · lint ✅ · build ✅ · `GET /review` → 307 `/login` (unauthenticated) ✅
 
 ---
 
@@ -271,8 +290,8 @@ The OTP/magic-link flow was replaced with `signInWithPassword` (commit `72799f9`
 |---|---|---|---|
 | 4 | Reconcile logic + unit tests | ✅ DONE | `lib/reconcile/{fingerprint,match,propose-rename,detect-weirdness}.ts` + `__tests__/` |
 | 5 | Cron endpoints + `vercel.json` | ✅ DONE + deployed (`8720ef8`) | `lib/reconcile/run.ts`, `app/api/cron/{sync,backfill}/route.ts`, `vercel.json` |
-| 6 | `/review` UI | ⬜ next | `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx` |
-| 7 | `/flags` UI | ⬜ | `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
+| 6 | `/review` UI | ✅ DONE (`4383b7f`) | `app/(app-shell)/review/page.tsx`, `components/review/{ProposalList,ProposalRow}.tsx`, `app/api/proposals/[id]/route.ts` |
+| 7 | `/flags` UI | ⬜ next | `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
 | 8 | `/settings` Privacy connector + card mapping | ⬜ | `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` |
 | 9 | Split `HomeDashboard.tsx` | ⬜ | Extract `components/dashboard/{StsCard,ShortfallBanner,LastUpdated,EmptyState}.tsx` |
 | 10 | First-run + acceptance criteria | ⬜ | End-to-end on real data; all 11 criteria |

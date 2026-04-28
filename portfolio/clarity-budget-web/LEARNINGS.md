@@ -1,5 +1,13 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-28 — Step 6 `/review` UI + PATCH route
+
+**Schema values vs HANDOFF doc mismatch.** The HANDOFF said to use `status='accepted'/'rejected'`, but `supabase/migrations/0001_init.sql` has `check (status in ('pending', 'approved', 'dismissed'))`. The migration is authoritative — always check the SQL before using string literals from docs.
+
+**Running `next build` while `pnpm dev` is running corrupts the `.next` dir.** After `next build`, the dev server gets into a bad state (ENOENT storms on `_buildManifest.js.tmp.*`) and returns 500 for all new routes. Fix: `preview_stop` + `preview_start` to restart the dev server from a clean state.
+
+**`next build` doesn't run the dev server — run it after for verification.** The production build (turbopack) is the primary signal that a route is correct (tsc, types, tree-shaking). The dev server is for browser smoke tests only; don't rely on it to prove a route exists.
+
 ## 2026-04-28 — Settings token migration loop fix + server budget proxy
 
 **Root cause of the migration banner loop.** `MigrationBanner` showed whenever `localStorage[YNAB_TOKEN_KEY]` was set — with no awareness of whether the Supabase encrypted row already existed. After a successful migrate, the banner cleared localStorage. On the next Settings load, `YnabConnectorCard` saw an empty localStorage token and showed a blank password field. The user re-entered their token. `handleTokenChange` wrote it back to localStorage on every keystroke. The banner reappeared. Infinite loop.
