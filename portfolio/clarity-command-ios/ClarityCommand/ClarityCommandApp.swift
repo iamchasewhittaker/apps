@@ -16,6 +16,12 @@ struct ClarityCommandApp: App {
                         commandSync.schedulePush(from: store)
                     }
                 }
+                .task {
+                    await commandSync.bootstrapSession()
+                    if commandSync.sessionEmail != nil {
+                        await commandSync.pull(into: store)
+                    }
+                }
         }
     }
 }

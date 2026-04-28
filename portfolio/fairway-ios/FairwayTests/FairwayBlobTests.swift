@@ -138,6 +138,27 @@ final class FairwayBlobTests: XCTestCase {
         XCTAssertNil(decoded.property)
     }
 
+    func testV1BlobWithoutWeatherDecodesAsNil() throws {
+        // v2 (pre-Overview) blob: no `weather` key. Field must default to nil
+        // so the migration is non-destructive and existing user data loads cleanly.
+        let v1Json = """
+        {
+            "zones": [],
+            "fertilizerPlan": [],
+            "maintenanceTasks": [],
+            "mowLog": [],
+            "inventory": [],
+            "observations": [],
+            "waterRuns": [],
+            "fertApplications": [],
+            "seeded": true
+        }
+        """.data(using: .utf8)!
+        let decoded = try JSONDecoder().decode(FairwayBlob.self, from: v1Json)
+        XCTAssertTrue(decoded.seeded)
+        XCTAssertNil(decoded.weather)
+    }
+
     func testV2BlobRoundTripsWithNewFields() throws {
         var blob = FairwayBlob()
         blob.observations = [LawnObservation(text: "Dry patch near H2-3")]

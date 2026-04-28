@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Added (2026-04-27) — Phase 2 cross-app scoreboard
+- **Cross-app reads:** `CommandCloudSync.pull(into:)` now also fetches `job-search-daily` and `wellness-daily` rows from Supabase in parallel after the main `command` pull. New private `fetchAppData(appKey:token:)` helper + generic `decodedSummary` powering both reads.
+- **Models:** `JobSearchDaily` and `WellnessDaily` Codable structs (`Models/CrossAppDaily.swift`) — both use `decodeIfPresent` for forward compatibility.
+- **Store:** `CommandStore.jobSearchDaily` + `wellnessDaily` (Observable) + `applyJobSearchDaily/applyWellnessDaily` setters.
+- **UI:** new `LiveAppDataView` on Scoreboard tab — mirrors web `LiveAppData` panel; shows Job Search count + Wellness sun/moon/run icons; auto-hides when both summaries are nil. VoiceOver combines each row into a single announcement.
+- **Auto-pull:** `ClarityCommandApp` `.task` modifier bootstraps the session and fires `pull(into:)` on launch when signed in (previously only manual via Settings).
+
+### Changed
+- `pull(into:)` is now resilient: a failed `command` pull no longer blocks the cross-app summaries from being fetched.
+
+## [v0.2 sync slice]
+
 - **Supabase v0.2:** `CommandSupabaseConfig` + `CommandCloudSync` (OTP, pull, push, debounced push on `CommandStore.save`) — `app_key = command`, same project as web.
 - **UI:** `CommandSyncSection` in Settings; `ContentView` / `SettingsTabView` take `CommandCloudSync`.
 - **Blob parity:** `CommandBlob` encodes `syncAt` as `_syncAt` for JSON matching web `theme.js`.

@@ -20,6 +20,11 @@ final class FairwayStore {
     var propertyLocationIssue: String?
 
     private let rachioAPI = RachioAPI()
+    private let weatherAPI = WeatherAPI()
+
+    // MARK: - Weather observable state
+    var weatherFetching: Bool
+    var weatherLastError: String?
 
     init() {
         blob = FairwayBlob()
@@ -27,6 +32,8 @@ final class FairwayStore {
         rachioSyncing = false
         rachioLastError = nil
         propertyLocationIssue = nil
+        weatherFetching = false
+        weatherLastError = nil
     }
 
     func load() {
@@ -629,6 +636,41 @@ final class FairwayStore {
             RachioKeychain.deleteToken()
             // Keep the last-known snapshot so the UI can still render stale data
             // while telling the user to reconnect.
+        }
+    }
+
+    // MARK: - Weather
+
+    /// Property coords if valid, otherwise the Vineyard, UT centroid baked in
+    /// during the 2026-04-25 KML reimport (matches `applyPhase3PropertyCoordsMigrationIfNeeded`).
+    private var weatherCoordinates: (lat: Double, lon: Double) {
+        if let p = blob.property, p.hasValidCoordinates {
+            return (p.latitude, p.longitude)
+        }
+        return (40.3004, -111.7456)
+    }
+
+    /// Refresh the cached weather snapshot. Throttled to once every 30 minutes
+    /// unless `force` is true. On failure: keeps the last known snapshot so the
+    /// UI can render stale data and surfaces an error string.
+    func refreshWeather(force: Bool = false) async {
+        if !force, let last = blob.weather?.fetchedAt,
+           Date().timeIntervalSince(last) < 30 * 60 {
+            return
+        }
+        weatherFetching = true
+        defer { weatherFetching = false }
+        weatherLastError = nil
+
+        let coords = weatherCoordinates
+        do {
+            let snapshot = try await weatherAPI.fetch(latitude: coords.lat, longitude: coords.lon)
+            blob.weather = snapshot
+            save()
+        } catch let err as WeatherError {
+            weatherLastError = err.errorDescription
+        } catch {
+            weatherLastError = error.localizedDescription
         }
     }
 }

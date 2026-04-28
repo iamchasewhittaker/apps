@@ -20,12 +20,14 @@
 ## v0.2 — In progress
 - [ ] Physical device deploy + signing verification — see `docs/DEVICE_QA.md`
 - [x] Supabase sync — same `user_data` / `app_key = command` as web (`CommandCloudSync`, Settings UI, `_syncAt` on `CommandBlob`)
+- [x] **Cross-app reads** — `job-search-daily` + `wellness-daily` Supabase rows pulled in parallel, rendered in `LiveAppDataView` on Scoreboard tab; auto-pull on app launch
 - [ ] App icon: replace interim programmatic PNG with final command glyph (1024)
 - [ ] ~~CloudKit~~ — dropped in favor of Supabase (one sync story with web)
-- [ ] Today widget (WidgetKit) — morning/evening status + current streak
+- [ ] Today widget (WidgetKit) — morning/evening status + current streak (cross-app counts now feasible)
 - [ ] Push notification reminders (configurable morning + evening times)
 - [ ] Siri Shortcuts ("Start my morning commit", "Evening review")
 - [ ] Haptic feedback on target completion and daily score commit
+- [ ] Pull-to-refresh on Scoreboard tab for manual cross-app refresh
 
 ## v0.3 — Later
 - [ ] Trend charts — weekly/monthly score trends over time

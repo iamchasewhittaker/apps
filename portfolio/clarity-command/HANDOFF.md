@@ -6,20 +6,20 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Phase 1 complete — deployed live. Set Supabase env vars + layoff date to activate fully. |
-| **Next** | 1. App is local only (Vercel project removed 2026-04-20). 2. Set layoff date in Settings locally. 3. Phase 2: see `docs/CLARITY_COMMAND_PHASE2.md`. |
-| **Last touch** | 2026-04-20 — Vercel project removed; app runs locally via npm start |
-| **Status** | ✅ Live · localStorage-only mode (no Supabase env vars yet) |
+| **Focus** | Phase 2 cross-app reads — web fully wired (verified via Supabase); iOS twin shipped same day. |
+| **Next** | Verify on physical iPhone that the new `LIVE APP DATA` section on Scoreboard renders correctly when signed in. |
+| **Last touch** | 2026-04-27 — Local `.env` added; iOS Command now pulls + renders `job-search-daily` + `wellness-daily` |
+| **Status** | ✅ Live · cross-app pipeline active in production (Job Search HQ pushed `job-search-daily` 2026-04-27) |
 
 ## Phase Roadmap
 
 | Phase | Status | Description |
 |-------|--------|-------------|
 | 1 — Web app | ✅ Done | Morning mission + evening reflection + scoreboard + settings |
-| 2 — Job Search HQ integration | ⏳ Next | Add daily action counter to FocusTab, write summary to Supabase |
-| 3 — Wellness Tracker integration | ⏳ Pending | Morning/evening accountability prompts |
+| 2 — Job Search HQ integration | ✅ Done | Daily action counter + summary blob (`job-search-daily`) consumed by web Scoreboard `LiveAppData` and iOS `LiveAppDataView` |
+| 3 — Wellness Tracker integration | ⏳ Active | `wellness-daily` blob produced by Wellness Tracker; web + iOS render it. Awaiting first per-user push for verification on iOS. |
 | 4 — iOS app integrations | ⏳ Later | Clarity Time, Budget, Growth |
-| 5 — iOS native | ⏳ Later | Native Swift version of Command |
+| 5 — iOS native | ✅ Done | `portfolio/clarity-command-ios` ships v0.2 with cross-app reads |
 
 ## Deploy Checklist
 - [x] `npm install` — done
@@ -28,6 +28,7 @@
 - [x] Added to root CLAUDE.md portfolio table
 - [x] Added to CI workflow (`.github/workflows/portfolio-web-build.yml`)
 - [x] **Supabase env vars set** — `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` on Production. App redeployed with sync active.
+- [x] **Local `.env` files** — `clarity-command`, `job-search-hq`, `wellness-tracker` all have copies of `.env.supabase` (2026-04-27)
 - [ ] **Set layoff date** in Settings (local dev)
 
 ## Notes

@@ -50,6 +50,26 @@
 
 ---
 
+### 2026-04-27 — Cross-app Supabase reads use the same RLS row, no schema change
+**What happened:** Adding `LiveAppDataView` to show Job Search HQ + Wellness daily summaries on iOS.
+**Root cause:** Originally I assumed I'd need either a new table or a Supabase view to expose cross-app data. Investigation showed the existing `user_data` table's RLS policy is `auth.uid() = user_id` — user-scoped, NOT app-scoped — which means any signed-in user can already read every row they own across all `app_key` values.
+**Fix / lesson:** No SQL change needed. Just add a second/third REST GET with `app_key=eq.<other-app>` using the same anon key + bearer token. `CommandCloudSync.fetchAppData(appKey:token:)` is now the generic helper; `pullCrossAppSummaries` runs the two reads in parallel via `async let`. The same pattern works for any future cross-app read (Clarity Time, Budget, Growth).
+**Tags:** supabase, rls, cross-app, gotcha-avoided
+
+### 2026-04-27 — Web Phase 2 was fully coded but dormant
+**What happened:** I budgeted hours for "build the Job Search HQ → Command bridge" only to discover Job Search HQ already pushes `job-search-daily` (App.jsx:304-315) and Wellness pushes `wellness-daily` (App.jsx:325-345), and Command web already pulls and renders them.
+**Root cause:** A previous session shipped the writes + reads but the local `.env` files were never created, so dev sync never fired and the production deploy of Command was removed before anyone saw the live panel work.
+**Fix / lesson:** Always check Supabase directly (`SELECT app_key, updated_at FROM user_data WHERE app_key IN (...)`) before assuming a feature isn't built. Saved hours of rebuild work. The .env files are now in place for `clarity-command`, `job-search-hq`, `wellness-tracker`.
+**Tags:** verification, dont-rebuild
+
+### 2026-04-27 — Pull was never auto-triggered on app launch
+**What happened:** With cross-app reads added, I noticed Command iOS only pulled when the user manually tapped Settings → Pull from cloud, or right after OTP verification.
+**Root cause:** `CommandCloudSync.pull(into:)` was wired but never invoked at startup. `ClarityCommandApp.onAppear` only loaded local state.
+**Fix / lesson:** Added `.task { await commandSync.bootstrapSession(); if signedIn { await commandSync.pull(into: store) } }` to the root `WindowGroup` content. Cross-app data now refreshes on every cold launch without user action.
+**Tags:** lifecycle, sync, ux
+
+---
+
 ## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)
 
 **The iOS 17.2 simulator runtime DMG unmounts on every reboot.**

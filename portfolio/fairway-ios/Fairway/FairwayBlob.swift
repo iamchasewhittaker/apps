@@ -12,6 +12,7 @@ struct FairwayBlob: Codable {
     var fertApplications: [FertApplication] = []
     var property: PropertySettings? = nil
     var rachio: RachioState? = nil
+    var weather: WeatherSnapshot? = nil
     var _syncAt: Double? = nil
     var seeded: Bool = false
 }
@@ -30,6 +31,7 @@ extension FairwayBlob {
         fertApplications = try c.decodeIfPresent([FertApplication].self, forKey: .fertApplications) ?? []
         property = try c.decodeIfPresent(PropertySettings.self, forKey: .property)
         rachio = try c.decodeIfPresent(RachioState.self, forKey: .rachio)
+        weather = try c.decodeIfPresent(WeatherSnapshot.self, forKey: .weather)
         _syncAt = try c.decodeIfPresent(Double.self, forKey: ._syncAt)
         seeded = try c.decodeIfPresent(Bool.self, forKey: .seeded) ?? false
     }

@@ -39,6 +39,8 @@
 		CD010000000000000000021 /* CommandCloudSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD02000000000000000001F /* CommandCloudSync.swift */; };
 		CD010000000000000000022 /* CommandSyncSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD020000000000000000020 /* CommandSyncSection.swift */; };
 		CD010000000000000000023 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = CD0A2000000000000000001 /* Supabase */; };
+		CD010000000000000000024 /* CrossAppDaily.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD020000000000000000021 /* CrossAppDaily.swift */; };
+		CD010000000000000000025 /* LiveAppDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD020000000000000000022 /* LiveAppDataView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,8 @@
 		CD02000000000000000001E /* CommandSupabaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandSupabaseConfig.swift; sourceTree = "<group>"; };
 		CD02000000000000000001F /* CommandCloudSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCloudSync.swift; sourceTree = "<group>"; };
 		CD020000000000000000020 /* CommandSyncSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandSyncSection.swift; sourceTree = "<group>"; };
+		CD020000000000000000021 /* CrossAppDaily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossAppDaily.swift; sourceTree = "<group>"; };
+		CD020000000000000000022 /* LiveAppDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAppDataView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				CD020000000000000000002 /* CommandBlob.swift */,
+				CD020000000000000000021 /* CrossAppDaily.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 				CD020000000000000000013 /* WeekGridView.swift */,
 				CD020000000000000000014 /* AreaStreaksView.swift */,
 				CD020000000000000000015 /* MonthCalendarView.swift */,
+				CD020000000000000000022 /* LiveAppDataView.swift */,
 			);
 			path = Scoreboard;
 			sourceTree = "<group>";
@@ -367,6 +373,8 @@
 				CD010000000000000000020 /* CommandSupabaseConfig.swift in Sources */,
 				CD010000000000000000021 /* CommandCloudSync.swift in Sources */,
 				CD010000000000000000022 /* CommandSyncSection.swift in Sources */,
+				CD010000000000000000024 /* CrossAppDaily.swift in Sources */,
+				CD010000000000000000025 /* LiveAppDataView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

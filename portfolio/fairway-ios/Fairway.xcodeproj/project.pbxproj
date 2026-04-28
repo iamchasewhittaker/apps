@@ -67,6 +67,12 @@
 		FW01000000000000000003C /* RachioHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003C /* RachioHistoryView.swift */; };
 		FW01000000000000000003D /* RachioDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003D /* RachioDecodeTests.swift */; };
 		FW01000000000000000003E /* PreSeasonAuditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003E /* PreSeasonAuditView.swift */; };
+		FW01000000000000000003F /* WeatherSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW02000000000000000003F /* WeatherSnapshot.swift */; };
+		FW010000000000000000040 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000040 /* WeatherAPI.swift */; };
+		FW010000000000000000041 /* OverviewDerived.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000041 /* OverviewDerived.swift */; };
+		FW010000000000000000042 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000042 /* OverviewView.swift */; };
+		FW010000000000000000043 /* WeatherSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000043 /* WeatherSnapshotTests.swift */; };
+		FW010000000000000000044 /* OverviewDerivedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000044 /* OverviewDerivedTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +148,12 @@
 		FW02000000000000000003C /* RachioHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioHistoryView.swift; sourceTree = "<group>"; };
 		FW02000000000000000003D /* RachioDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RachioDecodeTests.swift; sourceTree = "<group>"; };
 		FW02000000000000000003E /* PreSeasonAuditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreSeasonAuditView.swift; sourceTree = "<group>"; };
+		FW02000000000000000003F /* WeatherSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSnapshot.swift; sourceTree = "<group>"; };
+		FW020000000000000000040 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
+		FW020000000000000000041 /* OverviewDerived.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewDerived.swift; sourceTree = "<group>"; };
+		FW020000000000000000042 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		FW020000000000000000043 /* WeatherSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSnapshotTests.swift; sourceTree = "<group>"; };
+		FW020000000000000000044 /* OverviewDerivedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewDerivedTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +227,8 @@
 				FW020000000000000000027 /* FertApplicationData.swift */,
 				FW020000000000000000028 /* PropertySettings.swift */,
 				FW02000000000000000003A /* RachioState.swift */,
+				FW02000000000000000003F /* WeatherSnapshot.swift */,
+				FW020000000000000000041 /* OverviewDerived.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -238,6 +252,7 @@
 				FW02000000000000000003B /* RachioSettingsView.swift */,
 				FW02000000000000000003C /* RachioHistoryView.swift */,
 				FW02000000000000000003E /* PreSeasonAuditView.swift */,
+				FW020000000000000000042 /* OverviewView.swift */,
 				FW020000000000000000010 /* ZoneListView.swift */,
 				FW020000000000000000011 /* ZoneDetailView.swift */,
 				FW020000000000000000012 /* HeadInventoryView.swift */,
@@ -262,6 +277,8 @@
 				FW020000000000000000029 /* MowDirectionTests.swift */,
 				FW02000000000000000002E /* PhotoStoreTests.swift */,
 				FW02000000000000000003D /* RachioDecodeTests.swift */,
+				FW020000000000000000043 /* WeatherSnapshotTests.swift */,
+				FW020000000000000000044 /* OverviewDerivedTests.swift */,
 			);
 			path = FairwayTests;
 			sourceTree = "<group>";
@@ -282,6 +299,7 @@
 				FW020000000000000000037 /* RachioKeychain.swift */,
 				FW020000000000000000038 /* RachioAPI.swift */,
 				FW020000000000000000039 /* RachioDTOs.swift */,
+				FW020000000000000000040 /* WeatherAPI.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -440,6 +458,10 @@
 				FW01000000000000000003B /* RachioSettingsView.swift in Sources */,
 				FW01000000000000000003C /* RachioHistoryView.swift in Sources */,
 				FW01000000000000000003E /* PreSeasonAuditView.swift in Sources */,
+				FW01000000000000000003F /* WeatherSnapshot.swift in Sources */,
+				FW010000000000000000040 /* WeatherAPI.swift in Sources */,
+				FW010000000000000000041 /* OverviewDerived.swift in Sources */,
+				FW010000000000000000042 /* OverviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +473,8 @@
 				FW010000000000000000029 /* MowDirectionTests.swift in Sources */,
 				FW01000000000000000002E /* PhotoStoreTests.swift in Sources */,
 				FW01000000000000000003D /* RachioDecodeTests.swift in Sources */,
+				FW010000000000000000043 /* WeatherSnapshotTests.swift in Sources */,
+				FW010000000000000000044 /* OverviewDerivedTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

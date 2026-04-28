@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added (2026-04-27) — Phase 2 verification + iOS parity
+- **Cross-app web pipeline verified:** confirmed via direct Supabase query that Job Search HQ writes `job-search-daily` rows in production (latest 2026-04-27). The `LiveAppData` panel in `ScoreboardTab.jsx` is fully wired to render this data.
+- **Local dev sync activated:** `.env` files added to `clarity-command`, `job-search-hq`, and `wellness-tracker` so the local web apps now participate in cross-app sync (root `.gitignore` already covers `.env`).
+- **iOS twin parity:** Clarity Command iOS now pulls and renders the same `job-search-daily` + `wellness-daily` summaries on its Scoreboard tab. See [`portfolio/clarity-command-ios/CHANGELOG.md`](../clarity-command-ios/CHANGELOG.md).
+
 ### Added (2026-04-14)
 - **Mission + Wellness:** when `wellness-daily` for today differs from `areas.wellness`, show **Apply Wellness to mission** banner (explicit merge only); re-fetch `wellness-daily` whenever the Mission tab is opened.
 - **Shared auth bootstrap:** added `src/shared/auth.js` — canonical-host redirect (`apps.chasewhittaker.com/command`), session key consolidation, OTP `emailRedirectTo`

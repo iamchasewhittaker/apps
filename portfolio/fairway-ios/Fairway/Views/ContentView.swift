@@ -15,6 +15,9 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             TabView {
+                NavigationStack { OverviewView() }
+                    .tabItem { Label("Overview", systemImage: "house.fill") }
+
                 NavigationStack { ZoneListView() }
                     .tabItem { Label("Zones", systemImage: "leaf.fill") }
 

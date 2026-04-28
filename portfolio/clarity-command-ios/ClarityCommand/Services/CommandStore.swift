@@ -12,6 +12,11 @@ final class CommandStore {
 
     private(set) var blob: CommandBlob = .init()
 
+    // MARK: - Cross-app daily summaries (from Supabase, not persisted locally)
+
+    var jobSearchDaily: JobSearchDaily?
+    var wellnessDaily: WellnessDaily?
+
     // MARK: - Form state
 
     var missionMode: MissionMode = .morning
@@ -50,6 +55,16 @@ final class CommandStore {
         blob = remote
         StorageHelpers.save(blob, key: CommandConfig.storeKey)
         missionMode = DateHelpers.isMorning ? .morning : .evening
+    }
+
+    // MARK: - Cross-app sync targets
+
+    func applyJobSearchDaily(_ summary: JobSearchDaily?) {
+        jobSearchDaily = summary
+    }
+
+    func applyWellnessDaily(_ summary: WellnessDaily?) {
+        wellnessDaily = summary
     }
 
     // MARK: - Today's log

@@ -9,6 +9,13 @@ struct ScoreboardTabView: View {
             VStack(spacing: 16) {
                 StatsRow()
 
+                if store.jobSearchDaily != nil || store.wellnessDaily != nil {
+                    ClaritySectionLabel("Live App Data")
+                        .padding(.horizontal)
+                    LiveAppDataView(jobSearch: store.jobSearchDaily, wellness: store.wellnessDaily)
+                        .padding(.horizontal)
+                }
+
                 ClaritySectionLabel( "This Week")
                     .padding(.horizontal)
                 WeekGridView()

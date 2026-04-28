@@ -1,10 +1,12 @@
 # Handoff — Clarity Command (iOS)
 
-## Current status: Phase 2 (sync + QA) in progress
+## Current status: Phase 2 cross-app scoreboard shipped
 
-- **Version:** v0.1 → v0.2 sync slice shipped in-repo
-- **Last session:** 2026-04-15 — Supabase `command` row (same as web), Settings sync UI, `_syncAt` Codable parity, device QA doc, programmatic AppIcon (`tools/generate_app_icon.py`)
-- **Build status:** `xcodebuild build` pass (simulator, `CODE_SIGNING_ALLOWED=NO`) after SPM Supabase add
+- **Version:** v0.2 → v0.3 (cross-app reads)
+- **Last session:** 2026-04-27 — Cross-app reads (`job-search-daily` + `wellness-daily`); new `LiveAppDataView` on Scoreboard tab; auto-pull on app launch
+- **Previous session:** 2026-04-15 — Supabase `command` row (same as web), Settings sync UI, `_syncAt` Codable parity, device QA doc, programmatic AppIcon (`tools/generate_app_icon.py`)
+- **Build status:** `xcodebuild build` clean for `generic/platform=iOS Simulator` (Debug)
+- **Next:** Install on physical iPhone 12 Pro Max (id `A0C65578-B1E0-4E96-A1EC-EEB8913BD11C`) and verify the LIVE APP DATA section appears on the Scoreboard tab when signed in.
 
 ## What's shipped
 
@@ -50,13 +52,16 @@ Run on iPhone 16 simulator (command+R) or tests (command+U).
 - [x] Scoreboard displays streaks and calendar (builds clean)
 - [x] Scripture card rotates daily (constants wired)
 - [x] Unit tests pass (CommandBlobTests)
+- [x] **Cross-app reads compile + auto-pull on launch** (2026-04-27)
 - [ ] End-to-end run on physical device — **next step**
+- [ ] Verify `LIVE APP DATA` section renders correctly with real Supabase data on device
 
 ## Next for this app (Phase 2 remainder)
 
 - [ ] Complete checklist in [`docs/DEVICE_QA.md`](docs/DEVICE_QA.md) on physical device (DEVELOPMENT_TEAM: `9XVT527KP3`)
+- [ ] Pull-to-refresh on Scoreboard tab to manually re-fetch cross-app summaries (currently only on launch + Settings button)
 - [ ] App icon: replace programmatic asset with final **chevron-in-shield** mark per [`docs/BRANDING.md`](docs/BRANDING.md) + [`docs/design/CLARITY_IOS_APP_ICON_SPEC.md`](../../../docs/design/CLARITY_IOS_APP_ICON_SPEC.md)
-- [ ] Today widget (WidgetKit) — morning/evening status + streak
+- [ ] Today widget (WidgetKit) — morning/evening status + streak (now possible to include cross-app counts)
 - [ ] Push notification reminders (morning commit, evening reflection)
 - [ ] Siri Shortcuts ("Start my morning" / "Evening review")
 
