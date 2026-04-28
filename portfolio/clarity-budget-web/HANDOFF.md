@@ -4,13 +4,13 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Step 7 — `/flags` UI** (weirdness flags inbox) |
-| Status | tsc ✅ · lint ✅ · build ✅ · vitest 49/49 ✅ · deployed `clarity-budget-web.vercel.app`. `/categorize` working — 27 fetched, 6 auto-applied, 21 queued. |
+| Focus | **Step 8 — `/settings` Privacy connector + card mapping** |
+| Status | tsc ✅ · lint ✅ · build ✅ · vitest 49/49 ✅ · deployed `clarity-budget-web.vercel.app` (commit `2861907`). Steps 1–7 all done + live. |
 | Last touch | 2026-04-28 |
 | URL | clarity-budget-web.vercel.app |
 | Branch | `main` |
-| Steps 1–6 | ✅ DONE + deployed |
-| Step 7 (/flags UI) | ⬜ next — `app/(app-shell)/flags/page.tsx`, `components/flags/{FlagList,FlagRow}.tsx` |
+| Steps 1–7 | ✅ DONE + deployed |
+| Step 8 (/settings Privacy connector) | ⬜ next — `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` |
 | AI_GATEWAY_API_KEY | ✅ All 3 Vercel envs (Production, Development, Preview) + `.env.local`. Key rotated 2026-04-28 — if auth fails again, generate a new key at vercel.com/[team]/~/ai/api-keys. |
 | Billing | ✅ Credit card on file for Vercel AI Gateway free tier. |
 | Categorize schema | ✅ Fixed — `subtransactions` + inner `id` changed from `.optional()` to `.nullable()` for OpenAI strict mode compatibility. |
@@ -18,41 +18,77 @@
 
 ---
 
-## Fresh session prompt — Step 7: `/flags` UI
+## Fresh session prompt — Step 8: `/settings` Privacy connector + card mapping
 
 ```
 Read portfolio/clarity-budget-web/CLAUDE.md and portfolio/clarity-budget-web/HANDOFF.md first.
 Run checkpoint before touching anything.
 
 Continuing: clarity-budget-web, branch main
-Last deployed: clarity-budget-web.vercel.app (2026-04-28, schema fix for OpenAI strict mode)
+Last deployed: clarity-budget-web.vercel.app (2026-04-28, Step 7 /flags UI, commit 2861907)
 
 ## State coming in (2026-04-28)
 
-Steps 1–6 all done and live. /categorize is working — 27 fetched, 6 auto-applied, 21 queued.
+Steps 1–7 all done and live.
+- /review: payee rename proposals queue (approve → links privacy card to YNAB payee)
+- /flags: weirdness flags inbox (dismiss → status='acknowledged')
+- /categorize: AI auto-categorization (27 fetched, 6 auto-applied, 21 queued on last run)
 No uncommitted changes. No smoke tests pending.
 
-## Step 7 — `/flags` UI (weirdness flags inbox)
+## Step 8 — `/settings` Privacy connector + card mapping
 
-Build the flags review queue. Structure mirrors /review (Step 6).
+Add Privacy.com token entry and the card→payee mapping table to /settings.
 
 Files to create:
-- app/(app-shell)/flags/page.tsx — async server component; queries clarity_budget_flags
-  (status=open, user-scoped) via createRouteClient(); passes list to <FlagList>.
-- components/flags/FlagList.tsx — client component; owns flags state; removes items on resolve.
-- components/flags/FlagRow.tsx — shows flag type, description, amount/payee context,
-  Dismiss button → PATCH /api/flags/[id].
-- app/api/flags/[id]/route.ts — PATCH handler; validates auth + ownership; updates
-  status='dismissed', resolved_at; writes audit log.
+- components/settings/PrivacyConnectorCard.tsx — client component; Privacy token input →
+  POST /api/credentials { privacy_token }; "stored ✓ / Replace" mode when token exists
+  (mirror YnabConnectorCard's stored/replacing pattern).
+- components/settings/CardMappingTable.tsx — client component; reads
+  clarity_budget_privacy_cards for user via GET /api/settings/cards; renders each card's
+  memo + state + linked_payee_id (editable dropdown of YNAB payees); on change →
+  PATCH /api/settings/cards/[token] { linked_payee_id }.
 
-Schema reference: clarity_budget_flags columns in supabase/migrations/0001_init.sql.
-Flag types: see lib/reconcile/detect-weirdness.ts for the shape written to the DB.
+Files to create (API):
+- app/api/settings/cards/route.ts — GET; returns clarity_budget_privacy_cards for user
+  (id, token, memo, state, linked_payee_id).
+- app/api/settings/cards/[token]/route.ts — PATCH { linked_payee_id }; validates auth +
+  ownership; updates clarity_budget_privacy_cards.linked_payee_id; writes audit log.
 
-Also:
-- components/shell/NavBar.tsx — add "Flags" link (after Review, before Settings).
+Files to modify:
+- app/(app-shell)/settings/page.tsx — add PrivacyConnectorCard below YnabConnectorCard;
+  add CardMappingTable below that (conditionally — only if hasPrivacyToken is true).
+  Query clarity_budget_credentials.privacy_token_ciphertext presence server-side (same
+  pattern as hasEncryptedYnabToken).
 
-Stop after Step 7 and show the diff.
+Schema reference:
+- clarity_budget_privacy_cards: token (PK), user_id, memo, state, type, linked_payee_id
+- clarity_budget_credentials: privacy_token_ciphertext/iv/tag (AES-256-GCM)
+- lib/crypto.ts: encrypt/decrypt — use same pattern as YNAB token
+
+Also: YNAB payees list for the dropdown — fetch via YNAB API /budgets/{id}/payees
+(add fetchPayees to lib/ynab.ts if not present).
+
+Stop after Step 8 and show the diff.
 ```
+
+---
+
+## What was built — 2026-04-28: Step 7 — `/flags` UI (commit `2861907`)
+
+### New files
+- `app/(app-shell)/flags/page.tsx` — async server component; queries `clarity_budget_flags` (status=open, user-scoped) via `createRouteClient()`; passes list to `<FlagList>`.
+- `components/flags/FlagList.tsx` — client component; owns `flags` state; optimistic removal on dismiss.
+- `components/flags/FlagRow.tsx` — per-type rendering (title + contextual subtitle from `details` JSON); severity chip (high→danger, medium→caution, low→muted); single Dismiss button → PATCH `/api/flags/${id}`.
+- `app/api/flags/[id]/route.ts` — PATCH; 401/404/403/409 gates; writes `status='acknowledged'` + `acknowledged_at`; audit log `action='flag_dismissed'` with `{type, severity}` payload.
+
+### Modified files
+- `components/shell/NavBar.tsx` — added Flags link between Review and Settings.
+
+### Schema note
+`clarity_budget_flags` columns: `type` (not `flag_type`), status enum `'open'|'acknowledged'` (not 'dismissed'), `acknowledged_at` (not `resolved_at`). DB CHECK constraint is authoritative. Button label stays "Dismiss"; body `{ action: "dismiss" }` maps to `status='acknowledged'` in the route.
+
+### Verification
+tsc ✅ · lint ✅ (touched files) · build ✅ · `GET /flags` unauth → 307 `/login` · `PATCH /api/flags/[fake-id]` unauth → 401 · deployed `clarity-budget-web.vercel.app` (`2861907`)
 
 ---
 

@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-28 — Step 7: `/flags` UI — weirdness flags inbox (commit `2861907`)
+- `app/(app-shell)/flags/page.tsx` — async server component; queries `clarity_budget_flags` (status=open, user-scoped via `createRouteClient()`) and passes list to `<FlagList>`.
+- `components/flags/FlagList.tsx` — client component; owns flags state; optimistic removal on dismiss (no page reload).
+- `components/flags/FlagRow.tsx` — per-type rendering: title + contextual subtitle from `details` (amount/dates for `duplicate_txn`; amount_cents/settled for `orphan_privacy_charge`; payee/date for `orphan_ynab_privacy_payee`). Severity chip (`high`→danger, `medium`→caution, `low`→muted). Single Dismiss button.
+- `app/api/flags/[id]/route.ts` — PATCH handler; 401/404/403/409 gates; writes `status='acknowledged'` + `acknowledged_at=now()` (schema-correct — CHECK rejects 'dismissed'); audit log `action='flag_dismissed'` with type + severity in payload.
+- `components/shell/NavBar.tsx` — added Flags link between Review and Settings.
+
+**Schema note:** HANDOFF prompt used `flag_type`, `status='dismissed'`, `resolved_at` — actual schema columns are `type`, `status='acknowledged'`, `acknowledged_at`. Migration is authoritative; same precedent as Step 6. Button label stays "Dismiss" (user-facing); DB write is schema-correct.
+
+**Verification:** tsc ✅ · lint ✅ (touched files) · build ✅ — `/flags` and `/api/flags/[id]` show as `ƒ` (dynamic) · `GET /flags` unauth → 307 `/login` · `PATCH /api/flags/[fake-id]` unauth → 401.
+
 ### Fixed — 2026-04-28 — `/categorize` AI Gateway key rotation + Zod schema strict-mode
 
 - **Expired API key:** `AI_GATEWAY_API_KEY` in `.env.local` and Vercel env was expired/revoked. Generated a new key from Vercel dashboard, updated all three environments (Production, Development, Preview) and `.env.local`.

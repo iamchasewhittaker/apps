@@ -1,5 +1,11 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-28 — Step 7 `/flags` UI: schema drift between HANDOFF and migration
+
+**HANDOFF prompt used three wrong field names.** The session prompt said `flag_type` (column is `type`), `status='dismissed'` (CHECK constraint allows only `'open' | 'acknowledged'`), and `resolved_at` (column is `acknowledged_at`). The SQL migration is always authoritative — check `supabase/migrations/0001_init.sql` before trusting any doc that names DB columns. Same pattern bit us in Step 6 (`'accepted'/'rejected'` vs `'approved'/'dismissed'`). The lesson: **schema first, doc second, every time.**
+
+**Resolution pattern.** Keep user-facing vocabulary from the prompt (button label "Dismiss", request body `{ action: "dismiss" }`), but write schema-correct values to the DB (`status='acknowledged'`, `acknowledged_at=now()`). This lets the UI stay readable without fighting the CHECK constraint.
+
 ## 2026-04-28 — AI Gateway key rotation + OpenAI strict mode Zod schema
 
 **API keys expire/rotate.** The `AI_GATEWAY_API_KEY` was valid when set but was later revoked on Vercel's end. The SDK error "Unauthenticated" shows as the same user-facing message whether the key is missing OR invalid — check `apiKeyProvided` in the underlying `GatewayAuthenticationError` to distinguish. Fix: generate a new key at `vercel.com/[team]/~/ai/api-keys` and update all three environments.
