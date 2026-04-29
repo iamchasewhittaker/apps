@@ -5,9 +5,9 @@
 | Field | Value |
 |-------|-------|
 | Version | v0.2 |
-| Status | 🟢 2026-04-27 Overview tab shipped. 58/58 tests passing on iPhone 15 sim. `** BUILD SUCCEEDED **` + `** TEST SUCCEEDED **`. Overview tab is tab #1 with Open-Meteo weather, alerts feed, pre-emergent soil-temp chart, audit-progress card, Rachio status, schedule sanity, mow streak, and quick-log row. |
-| Last session | 2026-04-27: built the full Overview tab (v0.2). 6 new files, 5 modified. 58 tests passing (up from 40). Test suite ran clean after CoreSimulator service restart (`killall -9 com.apple.CoreSimulator.CoreSimulatorService`). All Codable fields use `decodeIfPresent` in extension `init(from:)` per Rule #1. |
-| Focus | (a) Manual sim smoke test — open iPhone 15 sim in Xcode, run app, verify weather card populates (~3s), pre-emergent chart renders with 55°F line, audit card shows real counts. (b) Device install on iPhone 12 Pro Max (UDID A0C65578-B1E0-4E96-A1EC-EEB8913BD11C) via `devicectl`. (c) Real-world: Z4-S1 dig-out (highest priority field work). |
+| Status | 🟢 2026-04-28 Phase 2 (Z2 sub-zones) shipped. 60/60 tests. Device install ✅ on iPhone 12 Pro Max 2026-04-28 via signed build. Phase 1 Map bug fix was already in the code. |
+| Last session | 2026-04-28: Device install (signed build with DEVELOPMENT_TEAM=9XVT527KP3). Phase 1 confirmed already done. Phase 2: GrassSubZone model + ZoneData.subZones + safe decoder + Z2 seeded with Main grass (700 sq ft, 12 heads) + Park strip (328 sq ft, 6 heads) + sub-zone filter chips in ZoneDetailView + runtime card in ScheduleView. 60 tests (58 + 2 new). |
+| Focus | (a) Z4-S1 dig-out (highest real-world priority — buried head blocking full Zone 4 confidence). (b) Phase 3 (ET calculator + schedule hybrid override) or Phase 4 (problem auto-detection). |
 | Bundle ID | `com.chasewhittaker.Fairway` |
 | Storage key | `chase_fairway_ios_v1` |
 | PBX prefix | `FW` |
@@ -189,7 +189,7 @@ All 14 steps from companion plan executed. Changes in:
 
 ---
 
-### Phase 1 — Map bug fix (NEXT)
+### Phase 1 — Map bug fix ✅ DONE (already in code at time of v0.2 review)
 
 **Root cause:** `MapTabView` initializes `cameraPosition` once in `onAppear`. No validation on `(0,0)` coordinates → renders Atlantic Ocean when `PropertySettings.latitude == 0`.
 
@@ -210,7 +210,7 @@ All 14 steps from companion plan executed. Changes in:
 
 ---
 
-### Phase 2 — Zone 2 sub-zone concept
+### Phase 2 — Zone 2 sub-zone concept ✅ DONE (2026-04-28)
 
 **Goal:** Separate park strip from main grass within Z2's single valve. Sub-zones share the valve runtime but get their own precip rate, target minutes, heads, and problems.
 
@@ -241,7 +241,7 @@ enum Microclimate: String, Codable { case standard, parkStrip, slope, shade }
 
 ---
 
-### Phase 3 — Schedule: hybrid ET + manual override
+### Phase 3 — Schedule: hybrid ET + manual override (NEXT)
 
 **New service:** `Fairway/Services/ETCalculator.swift`
 - Requires WeatherKit capability + entitlement (`com.apple.developer.weatherkit`) in `Fairway.entitlements`

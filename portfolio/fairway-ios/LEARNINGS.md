@@ -1,5 +1,27 @@
 # Fairway iOS — Learnings
 
+## 2026-04-28 — Device builds need CODE_SIGN_STYLE=Automatic, not CODE_SIGNING_ALLOWED=NO
+
+Simulator builds use `CODE_SIGNING_ALLOWED=NO` and that's fine. But for device installs via `devicectl`, you need a real code signature — iOS rejects unsigned app bundles at the installer level.
+
+Build command for device:
+```bash
+xcodebuild build -project Fairway.xcodeproj -scheme Fairway \
+  -destination 'generic/platform=iOS' \
+  DEVELOPMENT_TEAM=9XVT527KP3 CODE_SIGN_STYLE=Automatic
+```
+The team ID `9XVT527KP3` is already in `project.pbxproj`. Signing identity: "Apple Development: Chase Whittaker (PXCS2W32PN)".
+
+## 2026-04-28 — Multi-statement -> some View functions need explicit return
+
+Swift infers the return value of a `-> some View` function from a single expression. Add local `let` bindings before the view and the compiler loses the single-expression context — it gives "function declares opaque return type but has no return statements." Fix: add `return` before the outermost view expression.
+
+## 2026-04-28 — Sim clone issue: use -parallel-testing-enabled NO
+
+After a device build (`generic/platform=iOS`), `DerivedData` may be in a Mac Catalyst state. The next `xcodebuild test` invocation tries to spawn a "Clone 1 of iPhone 15" and fails. Two fixes work together:
+1. `-derivedDataPath /tmp/fairway-test-dd` (or any clean path) for a fresh artifact tree
+2. `-parallel-testing-enabled NO` to avoid clone creation entirely
+
 ## 2026-04-27 — Open-Meteo beats WeatherKit for unsigned builds
 
 WeatherKit requires the `com.apple.developer.weatherkit` entitlement provisioned through the Apple Developer Portal. Any project building with `CODE_SIGNING_ALLOWED=NO` cannot use it — WeatherKit calls will be rejected at runtime regardless of the import statement.

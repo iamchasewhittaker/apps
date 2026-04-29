@@ -4,14 +4,20 @@ import SwiftUI
 struct HeadInventoryView: View {
     @Environment(FairwayStore.self) private var store
     let zoneID: UUID
+    var subZoneHeadIDs: Set<UUID>? = nil
     @State private var showAddHead = false
 
     private var zone: ZoneData? { store.zone(withID: zoneID) }
+    private func visibleHeads(in zone: ZoneData) -> [HeadData] {
+        guard let filter = subZoneHeadIDs else { return zone.heads }
+        return zone.heads.filter { filter.contains($0.id) }
+    }
 
     var body: some View {
         VStack(spacing: 10) {
             HStack {
-                Text("\(zone?.heads.count ?? 0) heads")
+                let count = zone.map { visibleHeads(in: $0).count } ?? 0
+                Text("\(count) heads")
                     .font(.caption)
                     .foregroundStyle(FairwayTheme.textSecondary)
                 Spacer()
@@ -24,13 +30,14 @@ struct HeadInventoryView: View {
                 }
             }
 
-            if let zone, zone.heads.isEmpty {
-                emptyState
-            } else if let zone {
-                if zone.number == 2 {
+            if let zone {
+                let visible = visibleHeads(in: zone)
+                if visible.isEmpty {
+                    emptyState
+                } else if zone.number == 2 && subZoneHeadIDs == nil {
                     z2GroupedList(zone: zone)
                 } else {
-                    flatList(zone: zone, heads: zone.heads)
+                    flatList(zone: zone, heads: visible)
                 }
             }
         }

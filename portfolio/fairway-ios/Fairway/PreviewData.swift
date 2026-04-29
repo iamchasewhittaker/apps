@@ -458,7 +458,16 @@ enum PreviewData {
             notes: "KBG front lawn, park strip included."
         )
 
-        zone.heads = phase0Z2Heads()
+        let z2Heads = phase0Z2Heads()
+        zone.heads = z2Heads
+
+        let parkStripLabels: Set<String> = ["Z2-S1","Z2-S2","Z2-S3","Z2-S4","Z2-S5","Z2-S6"]
+        let parkIDs = z2Heads.filter { parkStripLabels.contains($0.label) }.map(\.id)
+        let mainIDs  = z2Heads.filter { !parkStripLabels.contains($0.label) }.map(\.id)
+        zone.subZones = [
+            GrassSubZone(label: "Main grass",  squareFootage: 700, microclimate: .standard,  headIDs: mainIDs,  targetRunMinutes: 12, precipRateInPerHour: 0.40),
+            GrassSubZone(label: "Park strip",  squareFootage: 328, microclimate: .parkStrip, headIDs: parkIDs,  targetRunMinutes: 16, precipRateInPerHour: 0.65),
+        ]
 
         zone.problemAreas = [phase0Z2MixedPrecipProblem()]
 

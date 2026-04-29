@@ -567,6 +567,35 @@ final class FairwayBlobTests: XCTestCase {
 
         XCTAssertEqual(openActionsForZone(zone), ["A1", "A2", "B1", "B2"])
     }
+
+    // MARK: - Phase 2: GrassSubZone backward-compat
+
+    func testZoneDataMissingSubZonesDecodes() throws {
+        // Blobs from before Phase 2 have no "subZones" key — decoder must not crash.
+        let json = """
+        {"id":"\(UUID().uuidString)","number":2,"name":"Front Yard","type":"Cool Season Grass",
+         "squareFootage":1028,"headType":"Hunter Pro-Spray","notes":"","heads":[],"problemAreas":[]}
+        """
+        let decoded = try JSONDecoder().decode(ZoneData.self, from: Data(json.utf8))
+        XCTAssertEqual(decoded.subZones, [])
+    }
+
+    func testZone2HasTwoSubZones() {
+        let blob = PreviewData.seededBlob()
+        let zone2 = blob.zones.first(where: { $0.number == 2 })
+        XCTAssertNotNil(zone2)
+        guard let z2 = zone2 else { return }
+        XCTAssertEqual(z2.subZones.count, 2)
+        let labels = z2.subZones.map(\.label).sorted()
+        XCTAssertEqual(labels, ["Main grass", "Park strip"])
+        let parkStrip = z2.subZones.first(where: { $0.label == "Park strip" })
+        XCTAssertEqual(parkStrip?.microclimate, .parkStrip)
+        XCTAssertEqual(parkStrip?.squareFootage, 328)
+        XCTAssertEqual(parkStrip?.headIDs.count, 6)
+        let mainGrass = z2.subZones.first(where: { $0.label == "Main grass" })
+        XCTAssertEqual(mainGrass?.squareFootage, 700)
+        XCTAssertEqual(mainGrass?.headIDs.count, 12)
+    }
 }
 
 // Allow XCTAssertEqual on StockStatus

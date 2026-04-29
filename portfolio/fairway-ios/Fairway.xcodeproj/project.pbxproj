@@ -73,6 +73,7 @@
 		FW010000000000000000042 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000042 /* OverviewView.swift */; };
 		FW010000000000000000043 /* WeatherSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000043 /* WeatherSnapshotTests.swift */; };
 		FW010000000000000000044 /* OverviewDerivedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000044 /* OverviewDerivedTests.swift */; };
+		FW010000000000000000045 /* GrassSubZoneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FW020000000000000000045 /* GrassSubZoneData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +155,7 @@
 		FW020000000000000000042 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
 		FW020000000000000000043 /* WeatherSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherSnapshotTests.swift; sourceTree = "<group>"; };
 		FW020000000000000000044 /* OverviewDerivedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewDerivedTests.swift; sourceTree = "<group>"; };
+		FW020000000000000000045 /* GrassSubZoneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrassSubZoneData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +231,7 @@
 				FW02000000000000000003A /* RachioState.swift */,
 				FW02000000000000000003F /* WeatherSnapshot.swift */,
 				FW020000000000000000041 /* OverviewDerived.swift */,
+				FW020000000000000000045 /* GrassSubZoneData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 				FW010000000000000000040 /* WeatherAPI.swift in Sources */,
 				FW010000000000000000041 /* OverviewDerived.swift in Sources */,
 				FW010000000000000000042 /* OverviewView.swift in Sources */,
+				FW010000000000000000045 /* GrassSubZoneData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

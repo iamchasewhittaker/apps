@@ -18,6 +18,8 @@ struct ZoneData: Codable, Identifiable {
     var schedule: ScheduleData? = nil
     var shrubBeds: [ShrubBed] = []
 
+    var subZones: [GrassSubZone] = []
+
     var openProblemCount: Int { problemAreas.filter { !$0.isResolved }.count }
     var confirmedHeadCount: Int { heads.filter { $0.isConfirmed }.count }
     var preSeasonHeadCount: Int { heads.filter { !$0.isConfirmed }.count }
@@ -27,6 +29,24 @@ struct ZoneData: Codable, Identifiable {
         if criticalProblems > 0 { return "statusAction" }
         if openProblemCount > 0 { return "statusAttention" }
         return "statusHealthy"
+    }
+}
+
+extension ZoneData {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        number = try c.decode(Int.self, forKey: .number)
+        name = try c.decode(String.self, forKey: .name)
+        type = try c.decode(ZoneType.self, forKey: .type)
+        squareFootage = try c.decode(Int.self, forKey: .squareFootage)
+        headType = try c.decode(String.self, forKey: .headType)
+        notes = try c.decodeIfPresent(String.self, forKey: .notes) ?? ""
+        heads = try c.decodeIfPresent([HeadData].self, forKey: .heads) ?? []
+        problemAreas = try c.decodeIfPresent([ProblemData].self, forKey: .problemAreas) ?? []
+        schedule = try c.decodeIfPresent(ScheduleData.self, forKey: .schedule)
+        shrubBeds = try c.decodeIfPresent([ShrubBed].self, forKey: .shrubBeds) ?? []
+        subZones = try c.decodeIfPresent([GrassSubZone].self, forKey: .subZones) ?? []
     }
 }
 

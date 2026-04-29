@@ -21,6 +21,9 @@ struct ScheduleView: View {
                     editForm()
                 } else {
                     paramsCard(schedule: schedule)
+                    if let z = zone, !z.subZones.isEmpty {
+                        subZoneRuntimeCard(zone: z, schedule: schedule)
+                    }
                 }
             } else {
                 emptyState
@@ -259,6 +262,55 @@ struct ScheduleView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
+        }
+    }
+
+    private func subZoneRuntimeCard(zone: ZoneData, schedule: ScheduleData) -> some View {
+        let effectiveMinutes = zone.subZones.compactMap(\.targetRunMinutes).max() ?? schedule.totalRunMinutes
+        return FairwayCard {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Label("Sub-zone runtimes", systemImage: "square.split.2x1")
+                        .font(.caption.bold())
+                        .foregroundStyle(FairwayTheme.textSecondary)
+                        .textCase(.uppercase)
+                    Spacer()
+                    Text("Valve: \(effectiveMinutes) min total")
+                        .font(.caption2)
+                        .foregroundStyle(FairwayTheme.textSecondary)
+                }
+
+                ForEach(zone.subZones) { sub in
+                    let target = sub.targetRunMinutes ?? schedule.totalRunMinutes
+                    let isLimiting = target == effectiveMinutes
+                    let overWatered = sub.targetRunMinutes.map { $0 < effectiveMinutes } ?? false
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(sub.label)
+                                .font(.subheadline.bold())
+                                .foregroundStyle(FairwayTheme.textPrimary)
+                            Text("\(sub.squareFootage) sq ft · \(sub.microclimate.rawValue)")
+                                .font(.caption2)
+                                .foregroundStyle(FairwayTheme.textSecondary)
+                        }
+                        Spacer()
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text("\(target) min")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(isLimiting ? FairwayTheme.accentGold : FairwayTheme.textPrimary)
+                            if overWatered {
+                                Text("over-watered \(effectiveMinutes - target) min")
+                                    .font(.caption2.bold())
+                                    .foregroundStyle(FairwayTheme.sunAmber)
+                            }
+                        }
+                    }
+                }
+
+                Text("Valve runs the longest sub-zone. Shorter sub-zones receive extra water.")
+                    .font(.caption2)
+                    .foregroundStyle(FairwayTheme.textSecondary)
+            }
         }
     }
 

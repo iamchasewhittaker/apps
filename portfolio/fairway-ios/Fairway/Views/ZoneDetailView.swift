@@ -14,6 +14,7 @@ struct ZoneDetailView: View {
     let zoneID: UUID
     let initialTab: ZoneDetailTab
     @State private var selectedTab: ZoneDetailTab
+    @State private var selectedSubZoneID: UUID? = nil
 
     init(zoneID: UUID, initialTab: ZoneDetailTab = .heads) {
         self.zoneID = zoneID
@@ -47,6 +48,11 @@ struct ZoneDetailView: View {
                         .pickerStyle(.segmented)
                         .padding(.horizontal, 16)
 
+                        if !zone.subZones.isEmpty && (selectedTab == .heads || selectedTab == .problems) {
+                            subZoneFilterRow(zone: zone)
+                                .padding(.horizontal, 16)
+                        }
+
                         tabContent(for: zone)
                             .padding(.horizontal, 16)
                     }
@@ -64,6 +70,9 @@ struct ZoneDetailView: View {
                 selectedTab = availableTabs.first ?? .heads
                 _ = zone
             }
+        }
+        .onChange(of: selectedTab) { _, _ in
+            selectedSubZoneID = nil
         }
     }
 
@@ -104,7 +113,8 @@ struct ZoneDetailView: View {
     private func tabContent(for zone: ZoneData) -> some View {
         switch selectedTab {
         case .heads:
-            HeadInventoryView(zoneID: zone.id)
+            let filter = subZoneFilterIDs(zone: zone)
+            HeadInventoryView(zoneID: zone.id, subZoneHeadIDs: filter)
         case .problems:
             ProblemAreaView(zoneID: zone.id)
         case .schedule:
@@ -112,6 +122,41 @@ struct ZoneDetailView: View {
         case .beds:
             ShrubBedView(zoneID: zone.id)
         }
+    }
+
+    private func subZoneFilterIDs(zone: ZoneData) -> Set<UUID>? {
+        guard let id = selectedSubZoneID,
+              let sub = zone.subZones.first(where: { $0.id == id }) else { return nil }
+        return Set(sub.headIDs)
+    }
+
+    @MainActor @ViewBuilder
+    private func subZoneFilterRow(zone: ZoneData) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                chip(title: "All", selected: selectedSubZoneID == nil) {
+                    selectedSubZoneID = nil
+                }
+                ForEach(zone.subZones) { sub in
+                    chip(title: sub.label, selected: selectedSubZoneID == sub.id) {
+                        selectedSubZoneID = selectedSubZoneID == sub.id ? nil : sub.id
+                    }
+                }
+            }
+        }
+    }
+
+    private func chip(title: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(selected ? FairwayTheme.accentGreen : FairwayTheme.backgroundSurface)
+                .foregroundStyle(selected ? Color.black : FairwayTheme.textSecondary)
+                .clipShape(Capsule())
+        }
+        .accessibilityLabel("\(title) filter, \(selected ? "active" : "inactive")")
     }
 
     private func stat(label: String, value: String) -> some View {
