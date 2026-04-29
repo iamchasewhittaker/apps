@@ -57,3 +57,13 @@
 **Root cause:** The scaffold template defaults to SwiftData (newer, first-class in Xcode 15). But the portfolio pattern established by Unnamed, Fairway, and Ash Reader uses `@Observable @MainActor` + Codable + UserDefaults.
 **Fix / lesson:** Always verify the generated stack against the portfolio pattern. For this app family: `@Observable` store, single `Codable` blob, one UserDefaults key, `decodeIfPresent` for backward compat. Never SwiftData unless a feature explicitly requires relational queries.
 **Tags:** swift | architecture | gotcha
+
+---
+
+### 2026-04-29 — Device must be unlocked for xcodebuild install + test
+**What happened:** `xcodebuild test` on a real device stalls/fails at the install step if the iPhone is locked (screen off / passcode required).
+**Root cause:** iOS requires the device to be unlocked to allow an app install from a development machine. The `MICodeSigningVerifier` / install step silently hangs or errors out.
+**Fix / lesson:** Before running `xcodebuild test ... -destination 'platform=iOS,id=...'`, **unlock the iPhone first**. Keep it awake during the build. Once installed, the app persists and subsequent test runs don't require unlocking unless the device reboots.
+**Tags:** swift | device | gotcha
+
+> **Chase:** "I need to make sure my iPhone is unlocked"
