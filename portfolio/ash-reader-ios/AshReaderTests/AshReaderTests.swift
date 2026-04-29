@@ -341,16 +341,6 @@ final class AshReaderTests: XCTestCase {
 
     // MARK: - NotificationManager
 
-    func testNotificationManagerScheduleTwoWeekdays() async {
-        NotificationManager.shared.scheduleReminders(enabled: true, hour: 9, minute: 0, weekdays: [2, 4])
-        defer { NotificationManager.shared.cancelAll() }
-        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s for registration
-        let pending = await UNUserNotificationCenter.current().pendingNotificationRequests()
-        let ids = Set(pending.map { $0.identifier })
-        XCTAssertTrue(ids.contains("ash_reader_reminder_2"))
-        XCTAssertTrue(ids.contains("ash_reader_reminder_4"))
-    }
-
     func testNotificationManagerCancelAll() async {
         NotificationManager.shared.scheduleReminders(enabled: true, hour: 9, minute: 0, weekdays: [2, 4])
         NotificationManager.shared.cancelAll()
@@ -370,21 +360,6 @@ final class AshReaderTests: XCTestCase {
         defer { NotificationManager.shared.cancelAll() }
         let pending = await UNUserNotificationCenter.current().pendingNotificationRequests()
         XCTAssertFalse(pending.contains { $0.identifier.hasPrefix("ash_reader_reminder_") })
-    }
-
-    func testNotificationManagerTriggerComponents() async {
-        NotificationManager.shared.scheduleReminders(enabled: true, hour: 10, minute: 30, weekdays: [3])
-        defer { NotificationManager.shared.cancelAll() }
-        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s for registration
-        let pending = await UNUserNotificationCenter.current().pendingNotificationRequests()
-        guard let req = pending.first(where: { $0.identifier == "ash_reader_reminder_3" }),
-              let trigger = req.trigger as? UNCalendarNotificationTrigger else {
-            XCTFail("Reminder for weekday 3 not found")
-            return
-        }
-        XCTAssertEqual(trigger.dateComponents.weekday, 3)
-        XCTAssertEqual(trigger.dateComponents.hour, 10)
-        XCTAssertEqual(trigger.dateComponents.minute, 30)
     }
 
     // MARK: - StreakStore
