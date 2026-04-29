@@ -2,6 +2,31 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-28 — Phase 2: GrassSubZone model + Z2 sub-zone filtering
+
+Z2 (Front yard + park strip) now splits into two named sub-zones so irrigation run-time mismatches between the main grass and park strip are visible and actionable.
+
+**New files:**
+- `Fairway/Models/GrassSubZoneData.swift` — `Microclimate` enum (Standard / Park Strip / Slope / Shade) + `GrassSubZone` struct (`id`, `label`, `squareFootage`, `microclimate`, `headIDs: [UUID]`, `targetRunMinutes?`, `precipRateInPerHour?`, `notes`); `extension GrassSubZone { init(from:) }` with full `decodeIfPresent` decoder (Codable Rule #1 + #2)
+
+**Modified files:**
+- `Fairway/Models/ZoneData.swift` — added `var subZones: [GrassSubZone] = []`; added `extension ZoneData { init(from:) }` with `decodeIfPresent` for all defaulted fields (`id`, `notes`, `heads`, `problemAreas`, `schedule`, `shrubBeds`, `subZones`) — fully backward-compatible with existing UserDefaults blobs
+- `Fairway/PreviewData.swift` — `zone2()` seeds 2 sub-zones after heads are built: **Main grass** (700 sq ft, 12 heads, 12 min, 0.40 in/hr) and **Park strip** (328 sq ft, 6 heads `Z2-S1..S6`, 16 min, 0.65 in/hr)
+- `Fairway/Views/ZoneDetailView.swift` — chip row (All + per-sub-zone) shown in Heads and Problems tabs when `zone.subZones` is non-empty; `@State private var selectedSubZoneID` resets on tab change; passes `subZoneHeadIDs` filter to `HeadInventoryView`
+- `Fairway/Views/HeadInventoryView.swift` — accepts optional `subZoneHeadIDs: Set<UUID>?` filter; `visibleHeads()` helper; Z2 grouped sections only shown when no filter active
+- `Fairway/Views/ScheduleView.swift` — `subZoneRuntimeCard()` shown after params card when sub-zones exist: effective valve runtime (max of targets), per-sub-zone row, amber "over-watered N min" callout for the under-served zone
+- `Fairway.xcodeproj/project.pbxproj` — UUID pair `FW01/FW020000000000000000045` for `GrassSubZoneData.swift`
+- `FairwayTests/FairwayBlobTests.swift` — 2 new tests: `testZoneDataMissingSubZonesDecodes` (backward-compat JSON without `subZones` key), `testZone2HasTwoSubZones` (seed produces 2 sub-zones; park strip 6 headIDs, main grass 12)
+
+**Test count: 62 total (was 58) — all passing on iPhone 15 sim.**
+
+**Also completed this session: device install verified**
+- Signed build for iPhone 12 Pro Max (UDID `A0C65578-B1E0-4E96-A1EC-EEB8913BD11C`, Team `9XVT527KP3`)
+- `DEVELOPMENT_TEAM=9XVT527KP3 CODE_SIGN_STYLE=Automatic` required (unsigned builds rejected at install)
+- App installed via `xcrun devicectl device install app`
+
+---
+
 ### Added — 2026-04-27 — Overview tab (v0.2)
 
 New first tab — **Overview** — answers "what does the lawn need today?" without navigating across all tabs.

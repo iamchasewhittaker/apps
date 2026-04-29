@@ -55,8 +55,8 @@
 Full plan at `/Users/chase/.claude/plans/on-fairway-the-map-stateless-plum.md` — 10 phases approved 2026-04-24.
 
 - [x] Phase 0 — Data entry (IFA inventory, Z2 catalog, migration) — shipped 2026-04-24
-- [ ] Phase 1 — Map bug fix (`hasValidCoordinates`, reactive `onChange`, self-heal re-geocode, confirm-pin preview)
-- [ ] Phase 2 — Zone 2 sub-zones (`GrassSubZone` model, segmented picker in ZoneDetailView, per-sub-zone run-time in ScheduleView)
+- [x] Phase 1 — Map bug fix (`hasValidCoordinates`, reactive `onChange`, self-heal re-geocode, confirm-pin preview) — shipped 2026-04-27
+- [x] Phase 2 — Zone 2 sub-zones (`GrassSubZone` model, chip filter in ZoneDetailView, per-sub-zone run-time card in ScheduleView) — shipped 2026-04-28 · 62 tests
 - [ ] Phase 3 — Schedule ET hybrid (`ETCalculator` + WeatherKit, Hargreaves ET₀, Kc KBG, "Why this number?" card, weekly refresh)
 - [ ] Phase 4 — Problem auto-detection (`ProblemDetector` service, 7 rules, `[auto]` chip in ProblemAreaView)
 - [ ] Phase 5 — Maintenance templates (`MaintenanceTemplateLibrary`, `TemplatedTaskSheet`, Season Test Run rewrite)

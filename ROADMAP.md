@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-27 (Clarity Command — Phase 2 cross-app scoreboard shipped on iOS) | Maintained by Chase
+> Last updated: 2026-04-28 (Fairway iOS — Phase 2 GrassSubZone model + device install; 62 tests) | Maintained by Chase
 
 ---
 
@@ -31,7 +31,7 @@
 | Ash Reader | v1.0 | https://ash-reader.vercel.app | `ash_reader_` prefix | ✅ Active · Mobile chunker for Ash · [`portfolio/ash-reader`](portfolio/ash-reader) |
 | Ash Reader (iOS) | v0.3 | local Xcode | `ash_reader_ios_` prefix | 🟡 Local · [`portfolio/ash-reader-ios`](portfolio/ash-reader-ios) |
 | Clarity Budget (web) | v0.4 | local | `chase_budget_web_v1` + `chase_budget_web_tx_v1` | ✅ Active · Next.js STS + URL-filtered spending breakdown + sortable tx list · [`portfolio/clarity-budget-web`](portfolio/clarity-budget-web) |
-| Fairway (iOS) | v0.1 | local Xcode | `chase_fairway_ios_v1` | 🟡 Local · Lawn OS · [`portfolio/fairway-ios`](portfolio/fairway-ios) |
+| Fairway (iOS) | v0.2 | local Xcode | `chase_fairway_ios_v1` | 🟡 Local · Lawn OS · Overview tab + GrassSubZone model · 62 tests · [`portfolio/fairway-ios`](portfolio/fairway-ios) |
 | App Hub | — | local only | — | 🔧 Utility |
 | AI Dev Mastery | v1.0.1 | local (port 3004) | not yet deployed | ✅ Active · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
 | Shortcut Reference | v0.1.0 | local Xcode | — | ✅ Active · macOS Swift · [`portfolio/shortcut-reference`](portfolio/shortcut-reference) |
