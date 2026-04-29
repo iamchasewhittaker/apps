@@ -1,0 +1,551 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		KP010000000000000000001 /* KeepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000001 /* KeepApp.swift */; };
+		KP010000000000000000002 /* KeepBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000002 /* KeepBlob.swift */; };
+		KP010000000000000000003 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000003 /* Room.swift */; };
+		KP010000000000000000004 /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000004 /* Spot.swift */; };
+		KP010000000000000000005 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000005 /* Item.swift */; };
+		KP010000000000000000006 /* KeepStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000006 /* KeepStore.swift */; };
+		KP010000000000000000007 /* KeepConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000007 /* KeepConfig.swift */; };
+		KP010000000000000000008 /* PhotoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000008 /* PhotoStore.swift */; };
+		KP010000000000000000009 /* KeepTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000009 /* KeepTheme.swift */; };
+		KP01000000000000000000A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP02000000000000000000A /* ContentView.swift */; };
+		KP01000000000000000000B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP02000000000000000000B /* HomeView.swift */; };
+		KP01000000000000000000C /* RoomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP02000000000000000000C /* RoomDetailView.swift */; };
+		KP01000000000000000000D /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP02000000000000000000D /* AddItemView.swift */; };
+		KP01000000000000000000E /* TriageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP02000000000000000000E /* TriageView.swift */; };
+		KP01000000000000000000F /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP02000000000000000000F /* StatsView.swift */; };
+		KP010000000000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000010 /* Assets.xcassets */; };
+		KP010000000000000000011 /* KeepBlobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP020000000000000000011 /* KeepBlobTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		KP080000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = KP060000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = KP050000000000000000001;
+			remoteInfo = Keep;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		KP020000000000000000001 /* KeepApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepApp.swift; sourceTree = "<group>"; };
+		KP020000000000000000002 /* KeepBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepBlob.swift; sourceTree = "<group>"; };
+		KP020000000000000000003 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		KP020000000000000000004 /* Spot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
+		KP020000000000000000005 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		KP020000000000000000006 /* KeepStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepStore.swift; sourceTree = "<group>"; };
+		KP020000000000000000007 /* KeepConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepConfig.swift; sourceTree = "<group>"; };
+		KP020000000000000000008 /* PhotoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStore.swift; sourceTree = "<group>"; };
+		KP020000000000000000009 /* KeepTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepTheme.swift; sourceTree = "<group>"; };
+		KP02000000000000000000A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		KP02000000000000000000B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		KP02000000000000000000C /* RoomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailView.swift; sourceTree = "<group>"; };
+		KP02000000000000000000D /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
+		KP02000000000000000000E /* TriageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriageView.swift; sourceTree = "<group>"; };
+		KP02000000000000000000F /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		KP020000000000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		KP020000000000000000011 /* KeepBlobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepBlobTests.swift; sourceTree = "<group>"; };
+		KP020000000000000000012 /* Keep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keep.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		KP020000000000000000013 /* KeepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		KP030000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		KP030000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		KP040000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				KP040000000000000000002 /* Keep */,
+				KP040000000000000000008 /* KeepTests */,
+				KP040000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		KP040000000000000000002 /* Keep */ = {
+			isa = PBXGroup;
+			children = (
+				KP020000000000000000001 /* KeepApp.swift */,
+				KP040000000000000000004 /* Models */,
+				KP040000000000000000005 /* Services */,
+				KP040000000000000000006 /* Theme */,
+				KP040000000000000000007 /* Views */,
+				KP020000000000000000010 /* Assets.xcassets */,
+			);
+			path = Keep;
+			sourceTree = "<group>";
+		};
+		KP040000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				KP020000000000000000012 /* Keep.app */,
+				KP020000000000000000013 /* KeepTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		KP040000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				KP020000000000000000002 /* KeepBlob.swift */,
+				KP020000000000000000003 /* Room.swift */,
+				KP020000000000000000004 /* Spot.swift */,
+				KP020000000000000000005 /* Item.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		KP040000000000000000005 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				KP020000000000000000006 /* KeepStore.swift */,
+				KP020000000000000000007 /* KeepConfig.swift */,
+				KP020000000000000000008 /* PhotoStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		KP040000000000000000006 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				KP020000000000000000009 /* KeepTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		KP040000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				KP02000000000000000000A /* ContentView.swift */,
+				KP02000000000000000000B /* HomeView.swift */,
+				KP02000000000000000000C /* RoomDetailView.swift */,
+				KP02000000000000000000D /* AddItemView.swift */,
+				KP02000000000000000000E /* TriageView.swift */,
+				KP02000000000000000000F /* StatsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		KP040000000000000000008 /* KeepTests */ = {
+			isa = PBXGroup;
+			children = (
+				KP020000000000000000011 /* KeepBlobTests.swift */,
+			);
+			path = KeepTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		KP050000000000000000001 /* Keep */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = KP0E0000000000000000002 /* Build configuration list for PBXNativeTarget "Keep" */;
+			buildPhases = (
+				KP0B0000000000000000001 /* Sources */,
+				KP030000000000000000001 /* Frameworks */,
+				KP0C0000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Keep;
+			productName = Keep;
+			productReference = KP020000000000000000012 /* Keep.app */;
+			productType = "com.apple.product-type.application";
+		};
+		KP050000000000000000002 /* KeepTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = KP0E0000000000000000003 /* Build configuration list for PBXNativeTarget "KeepTests" */;
+			buildPhases = (
+				KP0B0000000000000000002 /* Sources */,
+				KP030000000000000000002 /* Frameworks */,
+				KP0C0000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				KP0D0000000000000000001 /* PBXTargetDependency */,
+			);
+			name = KeepTests;
+			productName = KeepTests;
+			productReference = KP020000000000000000013 /* KeepTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		KP060000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					KP050000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					KP050000000000000000002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = KP050000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = KP0E0000000000000000001 /* Build configuration list for PBXProject "Keep" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = KP040000000000000000001;
+			productRefGroup = KP040000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				KP050000000000000000001 /* Keep */,
+				KP050000000000000000002 /* KeepTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		KP0C0000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				KP010000000000000000010 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		KP0C0000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		KP0B0000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				KP010000000000000000001 /* KeepApp.swift in Sources */,
+				KP010000000000000000002 /* KeepBlob.swift in Sources */,
+				KP010000000000000000003 /* Room.swift in Sources */,
+				KP010000000000000000004 /* Spot.swift in Sources */,
+				KP010000000000000000005 /* Item.swift in Sources */,
+				KP010000000000000000006 /* KeepStore.swift in Sources */,
+				KP010000000000000000007 /* KeepConfig.swift in Sources */,
+				KP010000000000000000008 /* PhotoStore.swift in Sources */,
+				KP010000000000000000009 /* KeepTheme.swift in Sources */,
+				KP01000000000000000000A /* ContentView.swift in Sources */,
+				KP01000000000000000000B /* HomeView.swift in Sources */,
+				KP01000000000000000000C /* RoomDetailView.swift in Sources */,
+				KP01000000000000000000D /* AddItemView.swift in Sources */,
+				KP01000000000000000000E /* TriageView.swift in Sources */,
+				KP01000000000000000000F /* StatsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		KP0B0000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				KP010000000000000000011 /* KeepBlobTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		KP0D0000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = KP050000000000000000001 /* Keep */;
+			targetProxy = KP080000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		KP070000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		KP070000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		KP070000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Keep;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Keep uses the camera to photograph items for your home inventory.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.Keep;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		KP070000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Keep;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Keep uses the camera to photograph items for your home inventory.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.Keep;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		KP070000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.KeepTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Keep.app/Keep";
+			};
+			name = Debug;
+		};
+		KP070000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9XVT527KP3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chasewhittaker.KeepTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Keep.app/Keep";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		KP0E0000000000000000001 /* Build configuration list for PBXProject "Keep" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KP070000000000000000001 /* Debug */,
+				KP070000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		KP0E0000000000000000002 /* Build configuration list for PBXNativeTarget "Keep" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KP070000000000000000003 /* Debug */,
+				KP070000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		KP0E0000000000000000003 /* Build configuration list for PBXNativeTarget "KeepTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KP070000000000000000005 /* Debug */,
+				KP070000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = KP060000000000000000001 /* Project object */;
+}
