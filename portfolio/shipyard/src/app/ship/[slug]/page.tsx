@@ -7,7 +7,7 @@ import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
 import { EditableText, EditableStatus, EditableNumber, BlockerManager } from '@/components/EditableField';
 import { RetireButton } from './RetireButton';
 import { CopyDevCommand } from './CopyDevCommand';
-import type { Project, Blocker, Compliance, ChangelogEntry, RoadmapEntry } from '@/lib/types';
+import type { Project, Blocker, Compliance, ChangelogEntry, RoadmapEntry, LinearIssue } from '@/lib/types';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -22,6 +22,7 @@ export default async function ShipDetailPage({ params }: Props) {
     { data: blockers },
     { data: changelog },
     { data: roadmap },
+    { data: linearIssues },
   ] = await Promise.all([
     supabase.from('projects').select('*').eq('slug', slug).single(),
     supabase
@@ -40,6 +41,12 @@ export default async function ShipDetailPage({ params }: Props) {
       .select('*')
       .eq('project_slug', slug)
       .order('sort_index', { ascending: true }),
+    supabase
+      .from('linear_issues')
+      .select('*')
+      .eq('project_slug', slug)
+      .order('priority', { ascending: true })
+      .order('updated_at', { ascending: false }),
   ]);
 
   if (!project) notFound();
@@ -48,6 +55,7 @@ export default async function ShipDetailPage({ params }: Props) {
   const blockerList: Blocker[] = blockers ?? [];
   const changelogList: ChangelogEntry[] = changelog ?? [];
   const roadmapList: RoadmapEntry[] = roadmap ?? [];
+  const issueList: LinearIssue[] = (linearIssues ?? []) as LinearIssue[];
   const step = p.mvp_step_actual ?? p.mvp_step ?? 0;
 
   const changelogByVersion = new Map<string, ChangelogEntry[]>();
@@ -235,6 +243,64 @@ export default async function ShipDetailPage({ params }: Props) {
         </div>
       </Section>
 
+      {/* Linear Issues */}
+      {p.linear_project_url && (
+        <Section title="Linear Issues">
+          {issueList.length === 0 ? (
+            <p className="text-sm italic text-muted">
+              No issues synced yet. Pull issues from{' '}
+              <Link href="/linear" className="text-accent hover:underline">
+                Harbor Master
+              </Link>
+              .
+            </p>
+          ) : (
+            <table className="w-full text-left text-sm">
+              <tbody className="divide-y divide-border/50">
+                {issueList.map((issue) => (
+                  <tr key={issue.linear_id}>
+                    <td className="w-20 py-2 pr-2 font-mono text-xs text-muted">
+                      {issue.url ? (
+                        <a
+                          href={issue.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-accent transition-colors"
+                        >
+                          {issue.identifier}
+                        </a>
+                      ) : (
+                        issue.identifier
+                      )}
+                    </td>
+                    <td className="w-6 py-2">
+                      {issue.priority > 0 && issue.priority <= 4 && (
+                        <span
+                          className={`inline-block h-2 w-2 rounded-full ${ISSUE_PRIORITY_DOTS[issue.priority] ?? ''}`}
+                          title={`Priority ${issue.priority}`}
+                        />
+                      )}
+                    </td>
+                    <td className="py-2 text-sm text-foreground">
+                      {issue.title}
+                    </td>
+                    <td className="w-28 py-2 text-right text-xs">
+                      <span
+                        className={
+                          ISSUE_STATUS_COLORS[issue.status_type ?? ''] ?? 'text-muted'
+                        }
+                      >
+                        {issue.status_name ?? '—'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Section>
+      )}
+
       {/* Changelog */}
       <Section title="Changelog">
         {changelogList.length === 0 ? (
@@ -347,6 +413,20 @@ const COMPLIANCE_ITEMS = [
   { key: 'has_agents', label: 'Agents' },
   { key: 'has_project_instructions', label: 'Project Instructions' },
 ];
+
+const ISSUE_STATUS_COLORS: Record<string, string> = {
+  completed: 'text-green-400',
+  started: 'text-accent',
+  canceled: 'text-muted line-through',
+  duplicate: 'text-muted line-through',
+};
+
+const ISSUE_PRIORITY_DOTS: Record<number, string> = {
+  1: 'bg-red-400',
+  2: 'bg-orange-400',
+  3: 'bg-yellow-400',
+  4: 'bg-blue-400',
+};
 
 const STATUS_COLORS: Record<string, string> = {
   active: 'bg-steel/20 text-steel border-steel/30',

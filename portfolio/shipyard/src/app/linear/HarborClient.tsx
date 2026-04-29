@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createMissingAction, pushStatusesAction, pullUpdatesAction, type ActionResult } from './actions';
+import { createMissingAction, pushStatusesAction, pullUpdatesAction, pullIssuesAction, type ActionResult } from './actions';
 
 type CardState = {
   loading: boolean;
@@ -50,6 +50,7 @@ export default function HarborClient() {
   const [createState, setCreateState] = useState<CardState>({ loading: false, result: null });
   const [pushState, setPushState] = useState<CardState>({ loading: false, result: null });
   const [pullState, setPullState] = useState<CardState>({ loading: false, result: null });
+  const [issuesState, setIssuesState] = useState<CardState>({ loading: false, result: null });
 
   async function handleCreate() {
     setCreateState({ loading: true, result: null });
@@ -71,8 +72,15 @@ export default function HarborClient() {
     if (result.ok) window.location.reload();
   }
 
+  async function handlePullIssues() {
+    setIssuesState({ loading: true, result: null });
+    const result = await pullIssuesAction();
+    setIssuesState({ loading: false, result });
+    if (result.ok) window.location.reload();
+  }
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <ActionCard
         title="Create Missing in Linear"
         description="Scan fleet and create Linear projects for any unlinked ships."
@@ -90,6 +98,12 @@ export default function HarborClient() {
         description="Fetch latest Linear issue counts and sync back to Shipyard."
         onRun={handlePull}
         state={pullState}
+      />
+      <ActionCard
+        title="Pull Issues"
+        description="Fetch issue titles, statuses, and priorities from linked Linear projects."
+        onRun={handlePullIssues}
+        state={issuesState}
       />
     </div>
   );

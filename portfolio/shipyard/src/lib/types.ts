@@ -204,6 +204,20 @@ export interface WipDecision {
   decided_at: string;
 }
 
+export interface LinearIssue {
+  id: string;
+  project_slug: string;
+  linear_id: string;
+  identifier: string;
+  title: string;
+  status_name: string | null;
+  status_type: string | null;
+  priority: number;
+  url: string | null;
+  updated_at: string | null;
+  synced_at: string;
+}
+
 // Dashboard stats
 export interface FleetStats {
   total: number;

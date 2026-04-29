@@ -145,3 +145,50 @@ export async function pullProjectCounts(
   }
   return results;
 }
+
+export interface LinearIssueRow {
+  project_slug: string;
+  linear_id: string;
+  identifier: string;
+  title: string;
+  status_name: string | null;
+  status_type: string | null;
+  priority: number;
+  url: string;
+  updated_at: string;
+}
+
+export async function pullIssues(
+  ships: Array<{ slug: string; linear_project_url: string }>,
+): Promise<LinearIssueRow[]> {
+  const client = getClient();
+  if (!client) return [];
+
+  const allProjects = await client.projects();
+  const rows: LinearIssueRow[] = [];
+
+  for (const ship of ships) {
+    const urlSlug = ship.linear_project_url.split('/').pop() ?? '';
+    const match = allProjects.nodes.find(
+      (p) => p.url === ship.linear_project_url || p.url?.split('/').pop() === urlSlug,
+    );
+    if (!match) continue;
+
+    const issueConn = await match.issues();
+    for (const issue of issueConn.nodes) {
+      const state = await issue.state;
+      rows.push({
+        project_slug: ship.slug,
+        linear_id: issue.id,
+        identifier: issue.identifier,
+        title: issue.title,
+        status_name: state?.name ?? null,
+        status_type: state?.type ?? null,
+        priority: issue.priority,
+        url: issue.url,
+        updated_at: issue.updatedAt.toISOString(),
+      });
+    }
+  }
+  return rows;
+}
