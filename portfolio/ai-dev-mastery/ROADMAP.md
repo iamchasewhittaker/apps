@@ -6,18 +6,18 @@ Update this file whenever priorities shift or items get built.
 ---
 
 ## In Progress
-_Nothing currently in progress — add items here when you start a session._
+_Nothing currently in progress._
 
 ---
 
 ## Deployment & Portfolio Integration
-- [ ] Deploy to Vercel (not yet deployed — no Vercel project created)
-- [ ] Add logo per portfolio branding standard (`docs/templates/PORTFOLIO_APP_LOGO.md`)
-- [ ] Consider localStorage for quiz/study progress persistence (currently stateless between sessions)
+- [x] Deploy to Vercel — done: 2026-04-28
+- [x] Add logo per portfolio branding standard — done: 2026-04-28
+- [ ] Consider localStorage for quiz/study progress persistence (already has localStorage — this may be done; verify)
 
 ---
 
-> Last updated: 2026-03-25 (accessibility + learning overhaul complete)
+> Last updated: 2026-04-28 (branding + Git track + Vercel deploy)
 
 ---
 
@@ -79,6 +79,9 @@ _Nothing currently in progress — add items here when you start a session._
 
 ## Completed
 
+- [x] Git & Version Control track (5 modules: Fundamentals, Branching, PRs, Git+AI, Advanced Recovery) — done: 2026-04-28
+- [x] Portfolio branding (orange `#f97316` accent logo, favicon, PNGs, manifest, meta) — done: 2026-04-28
+- [x] Vercel production deploy — done: 2026-04-28
 - [x] Apple Shortcuts track (5 modules) added to curriculum — done: 2026-03-25
 - [x] Accessibility & learning overhaul: font scale, skip nav, aria attributes, reduced motion, localStorage persistence, streak tracking, quiz history, Exercise section, Dive Deeper section, themed study plan with daily sparks — done: 2026-03-25
 - [x] Claude Console track (5 modules) added to curriculum — done: 2026-03-25

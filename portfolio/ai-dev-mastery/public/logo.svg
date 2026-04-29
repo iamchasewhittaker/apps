@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f1117"/>
+  <text x="256" y="200" text-anchor="middle"
+        font-family="'DM Sans', system-ui, sans-serif" font-weight="600" font-size="52"
+        fill="#f97316" letter-spacing="14">AI DEV</text>
+  <text x="256" y="310" text-anchor="middle" dominant-baseline="central"
+        font-family="'DM Sans', system-ui, sans-serif" font-weight="800" font-size="95"
+        fill="#f3f4f6" letter-spacing="-4">MASTERY</text>
+</svg>

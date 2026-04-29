@@ -20,6 +20,8 @@ struct ChunkReaderView: View {
     @State private var copied = false
     @State private var showSettings = false
     @State private var selectedSize: Int = 4000
+    @State private var showShare = false
+    @State private var shareText = ""
 
     init(
         chunks: [Chunk],
@@ -130,6 +132,19 @@ struct ChunkReaderView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .buttonStyle(.plain)
 
+                                Button {
+                                    shareText = buildShareText(chunk: chunk)
+                                    showShare = true
+                                } label: {
+                                    Image(systemName: "square.and.arrow.up")
+                                        .font(.system(size: 16))
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 7)
+                                        .foregroundStyle(Color(hex: "#777777"))
+                                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(hex: "#2e2e2e"), lineWidth: 1))
+                                }
+                                .buttonStyle(.plain)
+
                                 Button(isSent ? "Sent ✓" : "Mark sent") {
                                     toggleSent()
                                 }
@@ -200,24 +215,31 @@ struct ChunkReaderView: View {
                 onRechunk?(size)
             }
         }
+        .sheet(isPresented: $showShare) {
+            ShareSheet(items: [shareText])
+                .presentationDetents([.medium, .large])
+        }
+    }
+
+    private func buildShareText(chunk: Chunk) -> String {
+        let body = stripMarkdown(chunk.text)
+        if let prefix = promptPrefix, !prefix.isEmpty {
+            return "\(prefix)\n\n\(body)"
+        }
+        return body
     }
 
     private func copyCurrent(chunk: Chunk) {
-        let body = stripMarkdown(chunk.text)
-        let text: String
-        if let prefix = promptPrefix, !prefix.isEmpty {
-            text = "\(prefix)\n\n\(body)"
-        } else {
-            text = body
-        }
-        UIPasteboard.general.string = text
+        UIPasteboard.general.string = buildShareText(chunk: chunk)
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         copied = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) { copied = false }
     }
 
     private func toggleSent() {
+        let wasAbsent = !store.sent.contains(currentIndex)
         store.toggle(currentIndex)
+        if wasAbsent { StreakStore.shared.recordActivity() }
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 }

@@ -37,6 +37,10 @@ import { applyFilters, useUrlFilterState } from "@/lib/filterState";
 import { TransactionFilters } from "./TransactionFilters";
 import { SpendingBreakdown } from "./SpendingBreakdown";
 import { TransactionList } from "./TransactionList";
+import { StsCard } from "./dashboard/StsCard";
+import { ShortfallBanner } from "./dashboard/ShortfallBanner";
+import { LastUpdated } from "./dashboard/LastUpdated";
+import { EmptyState } from "./dashboard/EmptyState";
 
 const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
   { value: "mortgage", label: "Mortgage / Housing" },
@@ -47,13 +51,6 @@ const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
 ];
 
 const TX_CACHE_MS = 15 * 60 * 1000;
-
-function fmt(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
-}
 
 /** Returns YYYY-MM-DD for 60 days ago */
 function txSinceDate(): string {
@@ -297,124 +294,14 @@ export function HomeDashboard() {
           </p>
         </header>
 
-        {/* STS skeleton */}
-        {loading && (
-          <div
-            className="rounded-2xl border p-6"
-            style={{ borderColor: T.border, background: T.surface }}
-            aria-busy="true"
-            aria-label="Loading YNAB"
-          >
-            <div className="h-4 w-40 animate-pulse rounded" style={{ background: T.border }} />
-            <div
-              className="mt-4 h-12 w-3/4 max-w-[220px] animate-pulse rounded-lg"
-              style={{ background: T.border }}
-            />
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <div className="h-24 animate-pulse rounded-xl" style={{ background: T.border }} />
-              <div className="h-24 animate-pulse rounded-xl" style={{ background: T.border }} />
-            </div>
-          </div>
-        )}
-
-        {/* STS cards */}
-        {hasMetrics && !loading && (
-          <div className="space-y-3">
-            <section
-              className="rounded-[20px] border p-5 shadow-[0_1px_0_rgba(255,255,255,0.04)_inset]"
-              style={{
-                borderColor: T.border,
-                background: `linear-gradient(145deg, ${T.surface} 0%, #121826 100%)`,
-              }}
-            >
-              <p
-                className="text-[11px] font-semibold uppercase tracking-wide"
-                style={{ color: T.muted }}
-              >
-                This month
-              </p>
-              <p className="mt-0.5 text-sm" style={{ color: T.muted }}>
-                Full pool
-              </p>
-              <p
-                className="mt-2 text-[2.5rem] font-bold leading-none tabular-nums tracking-tight"
-                style={{ color: T.safe, fontFeatureSettings: '"tnum" 1' }}
-              >
-                {fmt(safeM)}
-              </p>
-            </section>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div
-                className="rounded-2xl border p-4"
-                style={{ borderColor: T.border, background: T.surface }}
-              >
-                <p
-                  className="text-[10px] font-semibold uppercase tracking-wide"
-                  style={{ color: T.muted }}
-                >
-                  This week
-                </p>
-                <p className="mt-1 text-lg font-bold tabular-nums">
-                  {safeW != null ? fmt(safeW) : "—"}
-                </p>
-                <p className="mt-1 text-[11px] leading-snug" style={{ color: T.muted }}>
-                  ~7 days at today&apos;s pace
-                </p>
-              </div>
-              <div
-                className="rounded-2xl border p-4"
-                style={{ borderColor: T.border, background: T.surface }}
-              >
-                <p
-                  className="text-[10px] font-semibold uppercase tracking-wide"
-                  style={{ color: T.muted }}
-                >
-                  Today
-                </p>
-                <p className="mt-1 text-lg font-bold tabular-nums">
-                  {safeD != null ? fmt(safeD) : "—"}
-                </p>
-                <p className="mt-1 text-[11px] leading-snug" style={{ color: T.muted }}>
-                  Per day left in month
-                </p>
-              </div>
-            </div>
-
-            {shortfall != null && shortfall > 0.01 && (
-              <div
-                className="flex gap-3 rounded-[14px] border p-3.5"
-                style={{ borderColor: "rgba(232, 187, 50, 0.35)", background: T.surface }}
-              >
-                <svg
-                  className="mt-0.5 h-5 w-5 shrink-0"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  style={{ color: T.caution }}
-                  aria-hidden
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l6.517 11.59c.75 1.334-.213 2.98-1.742 2.98H3.482c-1.53 0-2.493-1.646-1.743-2.98l6.518-11.59zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V7a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <div>
-                  <p className="text-sm font-semibold">Obligations gap</p>
-                  <p className="mt-0.5 text-xs leading-relaxed" style={{ color: T.muted }}>
-                    About {fmt(shortfall)} still needed for mortgage, bills, and essentials this
-                    month. Fund those in YNAB first.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {updated && (
-              <p className="text-xs" style={{ color: T.muted }}>
-                Updated {updated.toLocaleString()}
-              </p>
-            )}
-          </div>
+        <StsCard safeM={safeM} safeW={safeW} safeD={safeD} loading={loading} />
+        <ShortfallBanner shortfall={shortfall} />
+        {(hasMetrics || loading) && (
+          <LastUpdated
+            updated={updated}
+            loading={loading}
+            onRefresh={() => void refreshMetrics(true)}
+          />
         )}
 
         {/* ── Filters + spending breakdown + list ── */}
@@ -440,21 +327,7 @@ export function HomeDashboard() {
           </div>
         )}
 
-        {showEmpty && !loading && (
-          <div
-            className="rounded-[18px] border p-5"
-            style={{ borderColor: T.border, background: T.surface }}
-          >
-            <p className="font-medium">Connect YNAB to see live safe-to-spend.</p>
-            <p className="mt-2 text-sm leading-relaxed" style={{ color: T.muted }}>
-              Add a personal access token and pick a budget in{" "}
-              <a href="/settings" className="underline" style={{ color: T.accent }}>
-                Settings
-              </a>
-              . Category roles map automatically once a budget loads.
-            </p>
-          </div>
-        )}
+        {showEmpty && !loading && <EmptyState />}
 
         {err && (
           <p
@@ -563,14 +436,6 @@ export function HomeDashboard() {
             </div>
           )}
 
-          <button
-            type="button"
-            className="w-full rounded-lg py-2 text-sm font-medium"
-            style={{ background: T.accent, color: "#fff" }}
-            onClick={() => void refreshMetrics(true)}
-          >
-            Refresh numbers
-          </button>
         </section>
         )}
       </div>

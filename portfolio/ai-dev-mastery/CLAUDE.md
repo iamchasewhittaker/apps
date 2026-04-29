@@ -46,7 +46,8 @@ content:
 | 11 | notebooklm | NotebookLM | #A8C8F8 |
 | 12 | career | Career & Job Search | #F4A9C0 |
 | 13 | apple-shortcuts | Apple Shortcuts | #5AC8FA |
-| 14 | gmat | GMAT Focus | #F4D06F |
+| 14 | git | Git & Version Control | #F97316 |
+| 15 | gmat | GMAT Focus | #F4D06F |
 
 - **Branding:** [`docs/BRANDING.md`](docs/BRANDING.md) — single source for icons/palette; do not restate full rules in session prompts.
 

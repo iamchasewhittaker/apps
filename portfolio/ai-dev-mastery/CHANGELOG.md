@@ -7,7 +7,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Git & Version Control track (track #14, 5 modules: Git Fundamentals, Branching & Merging, Collaborating with Pull Requests, Git with AI Tools, Advanced Git & Recovery) — inserted before GMAT track (2026-04-28)
+- Portfolio-standard branding: logo SVG (`AI DEV` / `MASTERY`, orange `#f97316` accent), favicon SVG, PNG assets (512, 192, apple-touch-icon) (2026-04-28)
+- Deployed to Vercel — first production deploy (2026-04-28)
+
 ### Changed
+- Updated `manifest.json`: name "AI Dev Mastery", short_name "Mastery", theme/bg colors to `#0f1117` (2026-04-28)
+- Updated `index.html`: title, description, theme-color, favicon.svg link, apple-touch-icon (2026-04-28)
+- Updated `docs/BRANDING.md`: app palette, logo spec, Web checklist marked complete, Git track color added (2026-04-28)
+- Updated CLAUDE.md track table with Git track (#14) (2026-04-28)
 - Promoted from `projects/` to `portfolio/` as active portfolio app (2026-04-14)
 - Added HANDOFF.md, LEARNINGS.md, docs/BRANDING.md (portfolio standard docs) (2026-04-14)
 - Fixed Cursor symlink depth for portfolio/ path (2026-04-14)

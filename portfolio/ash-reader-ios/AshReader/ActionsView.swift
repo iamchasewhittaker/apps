@@ -118,6 +118,10 @@ struct ActionsView: View {
             .toolbarColorScheme(.dark, for: .navigationBar)
         }
         .onAppear(perform: loadActions)
+        .onReceive(NotificationCenter.default.publisher(for: .iCloudSyncDidChange)) { _ in
+            loaded = false
+            loadActions()
+        }
     }
 
     private var headerBar: some View {
@@ -189,7 +193,7 @@ struct ActionsView: View {
         for section in sections {
             for (idx, _) in section.actions.enumerated() {
                 let key = userDefaultsKey(themeId: section.id, index: idx)
-                if UserDefaults.standard.string(forKey: key) == "1" {
+                if SyncedStore.shared.string(forKey: key) == "1" {
                     initial["\(section.id)_\(idx)"] = true
                 }
             }
@@ -202,9 +206,10 @@ struct ActionsView: View {
         doneStates[item.id] = next
         let key = userDefaultsKey(themeId: item.themeId, index: item.index)
         if next {
-            UserDefaults.standard.set("1", forKey: key)
+            SyncedStore.shared.setString("1", forKey: key)
+            StreakStore.shared.recordActivity()
         } else {
-            UserDefaults.standard.removeObject(forKey: key)
+            SyncedStore.shared.removeObject(forKey: key)
         }
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }

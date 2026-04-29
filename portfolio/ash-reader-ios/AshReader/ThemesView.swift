@@ -64,14 +64,15 @@ private struct ThemeAccordion: View {
     @State private var expanded = false
     @State private var themeChunks: [Chunk] = []
     @State private var chunkSize: Int = 4000
+    @State private var syncRevision = 0
 
     private var storageKey: String {
         "ash_reader_ios_theme_\(section.id)_sent"
     }
 
     private var sentCount: Int {
-        let saved = UserDefaults.standard.array(forKey: storageKey) as? [Int] ?? []
-        return saved.count
+        let _ = syncRevision
+        return SyncedStore.shared.intArray(forKey: storageKey).count
     }
 
     var body: some View {
@@ -123,6 +124,9 @@ private struct ThemeAccordion: View {
         }
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(hex: "#2e2e2e"), lineWidth: 1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .onReceive(NotificationCenter.default.publisher(for: .iCloudSyncDidChange)) { _ in
+            syncRevision += 1
+        }
     }
 
     private func toggle() {

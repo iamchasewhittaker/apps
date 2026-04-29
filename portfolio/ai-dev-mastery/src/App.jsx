@@ -1784,6 +1784,146 @@ variables and match the spacing of the EmptyState frame.'`,
     ],
   },
   {
+    id: "git",
+    title: "Git & Version Control",
+    icon: "⌥",
+    color: "#F97316",
+    accent: "#7C2D12",
+    tagline: "Your codebase. Under control.",
+    modules: [
+      {
+        title: "Git Fundamentals",
+        duration: "20 min",
+        type: "Concept",
+        content: {
+          summary: "Git is the version control system behind every modern software project. Understanding its mental model — the working tree, staging area, and commit history — is the foundation for everything else in this track.",
+          points: [
+            "**Repository (repo)**: a project folder tracked by Git — created with `git init` or cloned with `git clone`. Every repo has a hidden `.git/` directory that stores the full history.",
+            "**Staging area (index)**: the middle layer between your edits and a commit — `git add` moves changes here, giving you control over exactly what goes into each commit.",
+            "**Commits**: immutable snapshots of your staged changes — each commit has a unique SHA hash, a message, an author, and a pointer to its parent commit.",
+            "**`.gitignore`**: a file listing patterns Git should never track — node_modules, .env files, build artifacts, OS files (.DS_Store). Set this up first in every project.",
+            "**`git status` and `git log`**: your two most-used commands — status shows what's changed since the last commit, log shows the history of commits on the current branch."
+          ],
+          code: "# Start a new project\ngit init my-project\ncd my-project\n\n# Create a file, stage it, commit it\necho '# My Project' > README.md\ngit add README.md\ngit commit -m \"Initial commit\"\n\n# Check where you stand\ngit status\ngit log --oneline",
+          tip: "Run `git status` before every commit. It takes one second and prevents accidentally committing files you didn't intend to — .env files, build folders, temporary debug code.",
+          devTip: {
+            label: "Commit messages are documentation",
+            insight: "A good commit message answers WHY, not WHAT. 'Fix login bug' tells you nothing six months later. 'Fix session expiry check that rejected valid tokens after DST change' tells the whole story. The diff already shows what changed — the message explains the reasoning.",
+            antipattern: "Giant commits with messages like 'updates' or 'WIP' or 'fix stuff'. If your commit touches 15 files across 3 features, it's 3 commits pretending to be one. Each commit should be one logical change that could be reverted independently."
+          },
+          quiz: [
+            { q: "What does the staging area (index) allow you to do?", options: ["Automatically commit all changes", "Choose exactly which changes go into each commit", "Undo commits from the remote", "Run tests before pushing"], answer: 1 },
+            { q: "What does a .gitignore file do?", options: ["Deletes ignored files from your computer", "Prevents listed file patterns from being tracked by Git", "Hides files in your file explorer", "Encrypts sensitive files"], answer: 1 },
+          ],
+        },
+      },
+      {
+        title: "Branching & Merging",
+        duration: "20 min",
+        type: "Concept",
+        content: {
+          summary: "Branches let you work on features, fixes, and experiments without touching the main codebase. Understanding when to branch, how to merge, and the difference between merge and rebase is essential for any team workflow.",
+          points: [
+            "**Branches**: lightweight pointers to commits — `git branch feature-x` creates a new line of development. Switch to it with `git checkout feature-x` or the modern `git switch feature-x`.",
+            "**Merge**: combines two branches by creating a merge commit that ties their histories together — safe, preserves full context, and is the default strategy for pull requests.",
+            "**Rebase**: replays your branch's commits on top of another branch — produces a linear history but rewrites commit SHAs. Never rebase commits that others have already pulled.",
+            "**Trunk-based development**: a strategy where everyone works on short-lived branches off `main` and merges frequently — reduces merge conflicts and keeps the codebase in a shippable state.",
+            "**Merge conflicts**: occur when two branches edit the same lines — Git marks the conflicting sections with `<<<<<<<`, `=======`, `>>>>>>>` markers for you to resolve manually."
+          ],
+          code: "# Create and switch to a feature branch\ngit switch -c feature/add-search\n\n# Do your work, commit normally\ngit add src/search.js\ngit commit -m \"Add search bar component\"\n\n# Switch back to main and merge\ngit switch main\ngit merge feature/add-search\n\n# Delete the branch after merge\ngit branch -d feature/add-search",
+          tip: "Keep branches short-lived (hours to days, not weeks). The longer a branch lives, the more it diverges from main, and the harder the merge becomes. Merge early and often.",
+          devTip: {
+            label: "Merge vs. rebase is a team decision, not a personal one",
+            insight: "Rebase produces cleaner history, but it rewrites commits. If your team uses merge, don't rebase shared branches — you'll force everyone to re-sync. If your team uses rebase, rebase your feature branch onto main before opening a PR, then merge the PR itself. Consistency matters more than which strategy you pick.",
+            antipattern: "Rebasing a branch that's already been pushed and shared with teammates. This rewrites history that other people have based their work on, causing duplicate commits and painful conflicts. The rule: rebase local work, merge shared work."
+          },
+          quiz: [
+            { q: "What is the main risk of rebasing a shared branch?", options: ["It deletes the branch", "It rewrites commit history that others depend on", "It requires an internet connection", "It only works on the main branch"], answer: 1 },
+            { q: "In trunk-based development, how long should feature branches typically live?", options: ["Several months", "Exactly one sprint", "Hours to a few days", "Until the feature is 100% complete"], answer: 2 },
+          ],
+        },
+      },
+      {
+        title: "Collaborating with Pull Requests",
+        duration: "25 min",
+        type: "Hands-on",
+        content: {
+          summary: "Pull requests are the collaboration layer on top of Git — they turn branches into reviewable, discussable units of work. Understanding the PR workflow, code review, and GitHub CLI tools makes you effective on any team.",
+          points: [
+            "**Pull request (PR)**: a proposal to merge one branch into another — includes a title, description, diff, and conversation thread. PRs are where code review, CI checks, and approval happen.",
+            "**Code review**: reading someone else's PR (or having yours read) to catch bugs, share knowledge, and maintain quality — focus on logic, edge cases, and naming rather than style (let formatters handle that).",
+            "**Merge conflicts in PRs**: when your branch and the target branch edit the same lines — resolve locally by merging or rebasing the target branch into yours, then pushing the resolution.",
+            "**GitHub CLI (`gh`)**: a command-line tool for creating PRs, checking CI status, and reviewing code without leaving the terminal — `gh pr create`, `gh pr status`, `gh pr merge`.",
+            "**Draft PRs**: open a PR early as a draft to signal work-in-progress — gets early feedback, shows your approach before you've written too much code to change direction."
+          ],
+          code: "# Push your branch and create a PR\ngit push -u origin feature/add-search\ngh pr create --title \"Add search bar\" --body \"Adds keyword search across all modules\"\n\n# Check CI status on your PR\ngh pr status\n\n# View and review someone else's PR\ngh pr diff 42\ngh pr review 42 --approve\n\n# Merge when approved\ngh pr merge 42 --squash --delete-branch",
+          tip: "Write PR descriptions that explain WHY, not just WHAT. A reviewer looking at your diff can see what changed — they need context on the problem, the approach you chose, and how to test it.",
+          devTip: {
+            label: "Small PRs get reviewed fast; big PRs get rubber-stamped",
+            insight: "A 50-line PR gets careful, thoughtful review. A 500-line PR gets 'LGTM' after a skim. If you care about code quality, keep PRs focused on one thing. Stack PRs when a feature is large — PR 1 adds the data model, PR 2 adds the API, PR 3 adds the UI. Each is reviewable in isolation.",
+            antipattern: "Opening a single massive PR at the end of a week-long feature branch. Reviewers can't hold 40 files in their head. The review is superficial, bugs slip through, and nobody learns anything. Ship incrementally."
+          },
+          quiz: [
+            { q: "What is the main purpose of a draft pull request?", options: ["To bypass code review", "To signal work-in-progress and get early feedback", "To automatically merge when CI passes", "To prevent other developers from editing the branch"], answer: 1 },
+            { q: "Which command creates a pull request from the terminal?", options: ["git pr create", "git push --pr", "gh pr create", "github pr new"], answer: 2 },
+          ],
+        },
+      },
+      {
+        title: "Git with AI Tools",
+        duration: "20 min",
+        type: "Hands-on",
+        content: {
+          summary: "AI coding tools have transformed everyday Git workflows — from generating commit messages to resolving merge conflicts to reviewing diffs. This module covers how Claude Code, Cursor, and other AI tools integrate with Git.",
+          points: [
+            "**AI commit messages**: Claude Code's `/commit` command analyzes your staged diff and generates a descriptive commit message — saves time and produces more consistent, informative messages than most developers write manually.",
+            "**Conflict resolution**: paste merge conflict markers into an AI chat with context about both sides' intent — the AI can propose a resolution that preserves both changes rather than picking one side.",
+            "**Diff review**: ask AI to review a `git diff` or PR diff for bugs, security issues, or missed edge cases — it catches things human reviewers miss, especially in large diffs.",
+            "**Git archaeology**: use AI to help understand old commits — `git log --oneline`, `git blame`, and `git bisect` outputs can be fed to AI for explanation and root-cause analysis.",
+            "**Automated workflows**: Claude Code can run multi-step Git operations — create a branch, make changes across files, commit with a message, and open a PR, all from a single prompt."
+          ],
+          code: "# Claude Code: auto-generate commit message from diff\n/commit\n\n# Ask Claude to review your changes before committing\n# \"Review my staged changes for bugs or issues\"\ngit diff --staged | pbcopy\n\n# Use AI to understand a confusing blame\ngit blame src/auth.js -L 40,60\n# \"Why was this check added? What was the bug?\"\n\n# Let Claude Code handle the full PR workflow\n# \"Create a branch, commit these changes, and open a PR\"",
+          tip: "Use AI-generated commit messages as a starting point, not the final word. Review and edit them — the AI describes WHAT changed accurately, but you know WHY better than it does.",
+          devTip: {
+            label: "AI amplifies your Git habits, good or bad",
+            insight: "If you commit frequently and write clear messages, AI tools make you faster at it. If you batch everything into one giant commit, AI will generate a giant vague message. The discipline of small, atomic commits matters even more with AI — the tool works best when each diff is focused and coherent.",
+            antipattern: "Blindly accepting AI-generated commit messages without reading them. The AI doesn't know your team's conventions (Conventional Commits, ticket prefixes, scope tags). Always review, especially for messages that will appear in shared history."
+          },
+          quiz: [
+            { q: "What does Claude Code's /commit command do?", options: ["Pushes all changes to the remote", "Analyzes the staged diff and generates a commit message", "Reverts the last commit", "Opens a pull request automatically"], answer: 1 },
+            { q: "When using AI to resolve merge conflicts, what context should you provide?", options: ["Only the file name", "The conflict markers plus the intent behind both sides' changes", "Just the error message", "The full repository history"], answer: 1 },
+          ],
+        },
+      },
+      {
+        title: "Advanced Git & Recovery",
+        duration: "25 min",
+        type: "Advanced",
+        content: {
+          summary: "When things go wrong — and they will — advanced Git commands are your safety net. Interactive rebase, cherry-pick, bisect, reflog, and stash give you surgical control over your history and a way back from almost any mistake.",
+          points: [
+            "**Interactive rebase (`git rebase -i`)**: reorder, squash, edit, or drop commits before sharing them — lets you clean up a messy local history into logical, reviewable commits.",
+            "**Cherry-pick (`git cherry-pick <sha>`)**: copy a single commit from one branch to another without merging — useful for hotfixes or pulling a specific change into a release branch.",
+            "**Bisect (`git bisect`)**: binary search through commit history to find exactly which commit introduced a bug — start with `git bisect start`, mark good and bad commits, and Git narrows it down automatically.",
+            "**Reflog (`git reflog`)**: Git's safety net — records every HEAD movement (commits, checkouts, resets, rebases). Even if you accidentally delete a branch or reset too far, the commits are still in the reflog for ~90 days.",
+            "**Stash (`git stash`)**: temporarily shelve uncommitted changes to switch context — `git stash` saves them, `git stash pop` restores them. Use `git stash list` to see all stashes."
+          ],
+          code: "# Interactive rebase: clean up last 3 commits\ngit rebase -i HEAD~3\n# In the editor: pick, squash, reword, drop\n\n# Cherry-pick a hotfix into the release branch\ngit switch release/v2\ngit cherry-pick abc1234\n\n# Find which commit broke the tests\ngit bisect start\ngit bisect bad          # current commit is broken\ngit bisect good v1.0    # this tag was working\n# Git checks out middle commits; you test each one\n\n# Recover from a bad reset\ngit reflog\n# Find the SHA before the reset\ngit reset --hard abc1234\n\n# Stash work to switch branches\ngit stash\ngit switch main\n# ... do something ...\ngit switch feature-x\ngit stash pop",
+          tip: "Before any destructive Git operation (reset, rebase, force push), run `git reflog` and note the current HEAD SHA. If anything goes wrong, `git reset --hard <that-sha>` brings you right back.",
+          devTip: {
+            label: "Reflog is your undo button — learn it before you need it",
+            insight: "Most developers learn about reflog after losing work. By then they're panicking and Googling. Spend five minutes now: run `git reflog`, read the output, understand that every action you take is recorded. When the crisis comes — and it will — you'll calmly recover in seconds instead of losing hours.",
+            antipattern: "Using `git reset --hard` without first checking what you're about to lose. Hard reset is a sledgehammer — it discards all uncommitted changes AND moves your branch pointer. If you haven't committed your work, it's gone (except via reflog if the changes were previously staged)."
+          },
+          quiz: [
+            { q: "What does `git reflog` show you?", options: ["A list of remote branches", "Every movement of HEAD including commits, resets, and checkouts", "Files that have been deleted", "A list of merge conflicts"], answer: 1 },
+            { q: "What is `git bisect` used for?", options: ["Splitting a branch into two", "Binary searching through history to find which commit introduced a bug", "Comparing two files side by side", "Backing up the repository"], answer: 1 },
+          ],
+        },
+      },
+    ],
+  },
+  {
     id: "gmat",
     title: "GMAT Focus",
     icon: "∑",

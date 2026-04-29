@@ -28,6 +28,90 @@ Quick reference for terms that show up in docs, Vercel, Supabase, and Cursor. Fo
 | **Clarity iOS icon spec** | Shared geometry for Clarity suite launcher icons: [design/CLARITY_IOS_APP_ICON_SPEC.md](design/CLARITY_IOS_APP_ICON_SPEC.md). |
 | **`portfolio-web-build.yml`** | GitHub Actions workflow at **`.github/workflows/portfolio-web-build.yml`** — **`npm ci && npm run build`** on **Node 20** for the four CRA apps above. **`package-lock.json`** must match **`package.json`** (regenerate with **Node 20’s npm**, not only newer Node). See [templates/SESSION_START_FIX_CI_LOCKFILES.md](templates/SESSION_START_FIX_CI_LOCKFILES.md). |
 
+---
+
+## AI / Machine Learning
+
+| Term | Meaning |
+|------|--------|
+| **Token** | The smallest unit of text an LLM processes — roughly ¾ of a word. A 100K context window ≈ 75K words. Pricing is per-token. |
+| **Context window** | The total amount of text (input + output) an LLM can handle in one conversation. Claude's is 200K tokens. When you exceed it, older messages get dropped. |
+| **Prompt** | The text you send to an LLM. **System prompt** = instructions the model always follows. **User prompt** = the specific request. |
+| **System prompt** | Hidden instructions that shape the model's behavior (tone, rules, constraints). Lives in CLAUDE.md files in this repo. |
+| **Temperature** | Controls randomness: 0 = deterministic, 1 = creative. Code generation works best at 0–0.2. |
+| **Hallucination** | When an LLM generates confident-sounding but factually wrong output — fake function names, nonexistent APIs, made-up IDs. |
+| **Grounding** | Techniques to reduce hallucination by connecting LLM output to real data sources (RAG, tool use, allowlist filtering). |
+| **RAG** | Retrieval-Augmented Generation — feed relevant documents into the prompt so the LLM answers from real data, not training memory. |
+| **Embeddings** | Vector representations of text that capture semantic meaning. Used for similarity search ("find docs related to X"). |
+| **Fine-tuning** | Training an existing model on your specific data to specialize its behavior. Expensive; usually RAG is better for most use cases. |
+| **Few-shot** | Including 2–5 examples in the prompt to show the model the desired output format. More examples = more consistent format. |
+| **Chain-of-thought** | Asking the model to "think step by step" before answering. Improves reasoning accuracy at the cost of more tokens. |
+| **Tool use / Function calling** | LLM outputs structured JSON requesting a tool call (API, database, file read). The system executes it and feeds results back. |
+| **MCP** | Model Context Protocol — Anthropic's open standard for connecting LLMs to external tools and data sources. Used by Claude Code for Supabase, Linear, Gmail, etc. |
+| **Agent** | An LLM that can take actions (not just generate text): read files, run commands, make API calls, decide next steps. Claude Code is an agent. |
+| **Prompt engineering** | The practice of crafting prompts to get better LLM output — structure, examples, constraints, role-setting. |
+| **Structured output** | Forcing LLM to return JSON matching a schema (via Zod, JSON Schema). Prevents freeform text when you need data. |
+
+---
+
+## Development Architecture
+
+| Term | Meaning |
+|------|--------|
+| **ADR** | Architecture Decision Record — a short document capturing what was decided, why, and what alternatives were considered. This repo uses a lightweight version in `DECISIONS.md`. |
+| **Middleware** | Code that sits between a request and the final handler — authentication checks, logging, rate limiting. In Next.js: `middleware.ts` at the app root. |
+| **Edge function** | Server code that runs at the CDN edge (closest to the user), not a central server. Vercel Edge Functions and Supabase Edge Functions use Deno. |
+| **SSR** | Server-Side Rendering — HTML generated on the server per request. Good for SEO and dynamic content. Next.js App Router does this by default. |
+| **SSG** | Static Site Generation — HTML generated at build time. Fastest possible load. Good for content that rarely changes. |
+| **ISR** | Incremental Static Regeneration — SSG that can revalidate individual pages after deploy. Next.js-specific. |
+| **Hydration** | The process of making server-rendered HTML interactive by attaching JavaScript event handlers on the client. "Hydration mismatch" = server and client HTML differ. |
+| **ORM** | Object-Relational Mapping — a library that lets you query databases using code objects instead of raw SQL (Prisma, Drizzle). Supabase uses its own client SDK instead. |
+| **Migration** | A versioned SQL file that changes the database schema. Supabase migrations live in `supabase/migrations/`. Applied via `supabase db push`. |
+| **Webhook** | A URL that receives HTTP POST requests when an event happens in another system (e.g., Stripe sends a webhook when a payment succeeds). |
+| **Monorepo** | One git repository holding many apps — this repo (`~/Developer/chase`) is a monorepo with 40+ apps in `portfolio/`. |
+| **DDD** | Domain-Driven Design — structuring code around business domains (e.g., `billing/`, `auth/`, `inventory/`) rather than technical layers. |
+| **CQRS** | Command Query Responsibility Segregation — separate models for reading data vs. writing data. Useful at scale; overkill for most apps. |
+| **Event sourcing** | Storing every state change as an immutable event instead of just the current state. Powerful for audit trails; complex to implement. |
+| **Idempotency** | An operation that produces the same result no matter how many times you run it. Critical for payment processing, cron jobs, and data migrations. This repo's migration guards use `isEmpty` checks for idempotency. |
+| **DTO** | Data Transfer Object — a structure that maps to an external API's wire format, separate from your internal models. Isolates your code from API changes. See `RachioDTOs.swift` pattern. |
+
+---
+
+## DevOps / CI
+
+| Term | Meaning |
+|------|--------|
+| **CI/CD** | Continuous Integration / Continuous Deployment — automated build + test + deploy on every push. This repo uses GitHub Actions (`.github/workflows/portfolio-web-build.yml`). |
+| **GitHub Actions** | GitHub's CI/CD system. Workflows are YAML files in `.github/workflows/`. Each push triggers a build/test pipeline. |
+| **Artifact** | A file produced by a CI build — compiled code, test reports, build logs. Not the same as a git artifact. |
+| **Deploy preview** | A temporary URL for every pull request showing the changes before merging to production. Vercel creates these automatically. |
+| **Environment variables** | Configuration values set outside the code (API keys, database URLs). `.env` files locally; Vercel dashboard for production. Never commit `.env` files. |
+| **Secrets** | Sensitive environment variables (API keys, tokens, passwords). Stored encrypted in CI/CD systems. This repo uses `scripts/vercel-add-env` to manage them. |
+| **Rollback** | Reverting a deployment to a previous version. Vercel supports instant rollback to any prior deployment. |
+| **Blue-green deploy** | Running two identical environments (blue = current, green = new). Switch traffic when green is verified. Zero-downtime deploys. |
+| **Canary deploy** | Rolling out a new version to a small percentage of users first, then gradually increasing. Catches issues before full rollout. |
+
+---
+
+## PM / Agile
+
+| Term | Meaning |
+|------|--------|
+| **Sprint** | A fixed time period (usually 1-2 weeks) for completing a set of work. This repo uses informal sprints tracked in `ROADMAP.md`. |
+| **Epic** | A large feature broken into smaller stories/tasks. In Linear, epics group related issues. |
+| **Story points** | A relative estimate of effort (not time). Common scales: 1/2/3/5/8/13. Higher = more uncertainty. |
+| **Velocity** | How many story points a team completes per sprint. Used to predict future capacity. |
+| **Standup** | A brief daily meeting: what I did yesterday, what I'm doing today, any blockers. Solo version: HANDOFF.md updates. |
+| **Retro** | Retrospective — end-of-sprint reflection: what went well, what didn't, what to change. Solo version: LEARNINGS.md entries. |
+| **Backlog grooming** | Reviewing and prioritizing upcoming work items. Solo version: reviewing ROADMAP.md and deciding what's next. |
+| **Acceptance criteria** | Specific conditions that must be true for a story to be considered "done." Prevents scope creep and ambiguity. |
+| **Definition of Done** | Team-wide checklist for what "done" means: code reviewed, tests pass, deployed, docs updated. This repo's version is in ROADMAP.md per app. |
+| **MVP** | Minimum Viable Product — the smallest version that delivers value. This repo's `PRODUCT_BUILD_FRAMEWORK.md` enforces MVP thinking. |
+| **PRD** | Product Requirements Document — what the feature does, who it's for, and what's in/out of scope. This repo uses `docs/PRD.md` per app. |
+| **Scope creep** | When features grow beyond the original plan. Anti-feature declarations in CLAUDE.md help prevent this. |
+
+---
+
 ## Related files
 
 - [LEGACY_LOCAL_MIRRORS.md](LEGACY_LOCAL_MIRRORS.md) — gitignored **`from-documents-20260404/`** bundle

@@ -38,6 +38,7 @@ Every app in this portfolio uses the same text-based logo format. When creating 
 | Clarity Budget | Teal | `#34d399` |
 | Clarity Growth | Green | `#4ade80` |
 | Wellness Tracker | Blue Horizon | `#4f92f2` |
+| AI Dev Mastery | Orange | `#f97316` |
 
 When adding a new app, pick an accent color that's visually distinct from existing ones.
 

@@ -23,6 +23,10 @@
 		A1000012 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* SummaryView.swift */; };
 		A1000013 /* ActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013 /* ActionsView.swift */; };
 		A1000014 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* SettingsView.swift */; };
+		A1000015 /* SyncedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000015 /* SyncedStore.swift */; };
+		A1000016 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000016 /* NotificationManager.swift */; };
+		A1000017 /* StreakStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000017 /* StreakStore.swift */; };
+		A1000018 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000018 /* ShareSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +46,10 @@
 		A2000012 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		A2000013 /* ActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsView.swift; sourceTree = "<group>"; };
 		A2000014 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A2000015 /* SyncedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncedStore.swift; sourceTree = "<group>"; };
+		A2000016 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A2000017 /* StreakStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakStore.swift; sourceTree = "<group>"; };
+		A2000018 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		A3000001 /* AshReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AshReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3000002 /* AshReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AshReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -70,6 +78,10 @@
 				A2000012 /* SummaryView.swift */,
 				A2000013 /* ActionsView.swift */,
 				A2000014 /* SettingsView.swift */,
+				A2000015 /* SyncedStore.swift */,
+				A2000016 /* NotificationManager.swift */,
+				A2000017 /* StreakStore.swift */,
+				A2000018 /* ShareSheet.swift */,
 				A2000009 /* doc.txt */,
 				A200000B /* themes.md */,
 				A200000C /* summary.json */,
@@ -186,6 +198,10 @@
 				A1000012 /* SummaryView.swift in Sources */,
 				A1000013 /* ActionsView.swift in Sources */,
 				A1000014 /* SettingsView.swift in Sources */,
+				A1000015 /* SyncedStore.swift in Sources */,
+				A1000016 /* NotificationManager.swift in Sources */,
+				A1000017 /* StreakStore.swift in Sources */,
+				A1000018 /* ShareSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

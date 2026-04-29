@@ -4,6 +4,31 @@
     "appName": "App  AI Dev Mastery",
     "colors": [
       {
+        "hex": "#0f1117",
+        "name": "Background",
+        "usage": "Page background, logo canvas"
+      },
+      {
+        "hex": "#1a1d24",
+        "name": "Surface",
+        "usage": "Cards, sidebar"
+      },
+      {
+        "hex": "#f97316",
+        "name": "Accent",
+        "usage": "Logo label, active states, highlights"
+      },
+      {
+        "hex": "#f3f4f6",
+        "name": "Text primary",
+        "usage": "Headings, logo main text"
+      },
+      {
+        "hex": "#9ca3af",
+        "name": "Text secondary",
+        "usage": "Body text, descriptions"
+      },
+      {
         "hex": "#e8a87c",
         "name": "Claude Code"
       },
@@ -57,6 +82,9 @@
       }
     ],
     "fonts": [
+      {
+        "family": "DM Sans"
+      },
       {
         "family": "System (SF)",
         "role": "UI"

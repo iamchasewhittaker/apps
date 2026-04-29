@@ -10,11 +10,9 @@
 |-------|-------|
 | **App** | AI Dev Mastery |
 | **Path** | `portfolio/ai-dev-mastery/` |
-| **Version** | v1.0.1 |
+| **Version** | v1.1.0 |
 | **Branch** | `main` |
-| **Focus** | Promoted to portfolio/ as active app (2026-04-14). Feature-complete course viewer — 13 tracks, 68+ modules. |
-| **Next** | 1. Deploy to Vercel. 2. Add branding/logo per portfolio standard. 3. Consider localStorage persistence for quiz progress. |
+| **Focus** | 15 tracks, 73+ modules. Deployed to Vercel with portfolio-standard branding. |
+| **Next** | 1. Content: MCP Servers Deep Dive, Claude in Chrome, Figma Make modules. 2. Features: dark/light toggle, search bar. 3. Verify localStorage persistence covers all state. |
 | **Blockers** | None |
-| **Last touch** | 2026-04-14 — moved from `projects/` to `portfolio/`; cursor symlink updated; HANDOFF + LEARNINGS + BRANDING created |
-
-Archived 2026-04-15. See /Users/chase/Developer/audits/2026-04-15-retros/ai-dev-mastery-retro.md
+| **Last touch** | 2026-04-28 — branding (orange `#f97316` logo), Git & Version Control track (5 modules), Vercel deploy |

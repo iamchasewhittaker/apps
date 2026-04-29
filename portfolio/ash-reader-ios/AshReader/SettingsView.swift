@@ -10,12 +10,37 @@ private let USER_DEFAULTS_PREFIX = "ash_reader_ios_"
 struct SettingsView: View {
     @AppStorage("ash_reader_ios_prompt_prefix") private var promptPrefix: String = ""
     @AppStorage("ash_reader_ios_prompt_prefix_on") private var promptPrefixOn: String = ""
+    @AppStorage("ash_reader_ios_notif_enabled") private var notifEnabled: Bool = false
+    @AppStorage("ash_reader_ios_notif_hour") private var notifHour: Int = 9
+    @AppStorage("ash_reader_ios_notif_minute") private var notifMinute: Int = 0
+    @AppStorage("ash_reader_ios_notif_weekdays") private var notifWeekdaysRaw: String = "2,3,4,5,6"
+    @ObservedObject private var streak = StreakStore.shared
 
     @State private var showResetAlert = false
     @State private var showImporter = false
     @State private var exportURL: URL?
     @State private var showExporter = false
     @State private var importResult: String?
+
+    private var notifWeekdays: Set<Int> {
+        Set(notifWeekdaysRaw.split(separator: ",").compactMap { Int($0) })
+    }
+
+    private func toggleWeekday(_ d: Int) {
+        var s = notifWeekdays
+        if s.contains(d) { s.remove(d) } else { s.insert(d) }
+        notifWeekdaysRaw = s.sorted().map(String.init).joined(separator: ",")
+        reschedule()
+    }
+
+    private func reschedule() {
+        NotificationManager.shared.scheduleReminders(
+            enabled: notifEnabled,
+            hour: notifHour,
+            minute: notifMinute,
+            weekdays: notifWeekdays
+        )
+    }
 
     private var prefixEnabled: Binding<Bool> {
         Binding(
@@ -87,6 +112,93 @@ struct SettingsView: View {
                     Text("Progress")
                 } footer: {
                     Text("Export sent chunks, action completion, and prefix settings as JSON.")
+                }
+
+                Section {
+                    Toggle(isOn: Binding(
+                        get: { notifEnabled },
+                        set: { v in
+                            if v {
+                                Task {
+                                    let granted = await NotificationManager.shared.requestPermission()
+                                    notifEnabled = granted
+                                    if granted { reschedule() }
+                                }
+                            } else {
+                                notifEnabled = false
+                                NotificationManager.shared.cancelAll()
+                            }
+                        }
+                    )) {
+                        Text("Daily Reading Reminders")
+                            .font(.system(size: 15))
+                    }
+                    .tint(ACCENT)
+
+                    if notifEnabled {
+                        DatePicker(
+                            "Time",
+                            selection: Binding(
+                                get: {
+                                    var comps = DateComponents()
+                                    comps.hour = notifHour
+                                    comps.minute = notifMinute
+                                    return Calendar.current.date(from: comps) ?? Date()
+                                },
+                                set: { date in
+                                    let comps = Calendar.current.dateComponents([.hour, .minute], from: date)
+                                    notifHour = comps.hour ?? 9
+                                    notifMinute = comps.minute ?? 0
+                                    reschedule()
+                                }
+                            ),
+                            displayedComponents: .hourAndMinute
+                        )
+
+                        HStack(spacing: 8) {
+                            let labels = ["S", "M", "T", "W", "T", "F", "S"]
+                            ForEach(1...7, id: \.self) { d in
+                                let selected = notifWeekdays.contains(d)
+                                Button {
+                                    toggleWeekday(d)
+                                } label: {
+                                    Text(labels[d - 1])
+                                        .font(.system(size: 13, weight: .semibold))
+                                        .frame(width: 32, height: 32)
+                                        .background(selected ? ACCENT : Color(hex: "#1e1e1e"))
+                                        .foregroundStyle(selected ? ACCENT_INK : Color(hex: "#b0b0b0"))
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(selected ? ACCENT : Color(hex: "#2e2e2e"), lineWidth: 1))
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                } header: {
+                    Text("Reminders")
+                } footer: {
+                    Text("Sends a local notification on selected days at the chosen time.")
+                }
+
+                Section {
+                    HStack {
+                        Label("Current streak", systemImage: "flame")
+                        Spacer()
+                        Text(streak.currentStreak == 1 ? "1 day" : "\(streak.currentStreak) days")
+                            .foregroundStyle(ACCENT)
+                            .fontWeight(.semibold)
+                    }
+                    HStack {
+                        Label("Longest streak", systemImage: "trophy")
+                        Spacer()
+                        Text(streak.longestStreak == 1 ? "1 day" : "\(streak.longestStreak) days")
+                            .foregroundStyle(Color(hex: "#b0b0b0"))
+                    }
+                } header: {
+                    Text("Reading Streak")
+                } footer: {
+                    Text("A day counts when you mark at least one chunk sent or complete one action.")
                 }
 
                 Section {
@@ -176,7 +288,13 @@ struct SettingsView: View {
                 }
                 var count = 0
                 for (k, v) in parsed where k.hasPrefix(USER_DEFAULTS_PREFIX) {
-                    UserDefaults.standard.set(v, forKey: k)
+                    if let arr = v as? [Int] {
+                        SyncedStore.shared.setIntArray(arr, forKey: k)
+                    } else if let str = v as? String {
+                        SyncedStore.shared.setString(str, forKey: k)
+                    } else {
+                        UserDefaults.standard.set(v, forKey: k)
+                    }
                     count += 1
                 }
                 importResult = "Imported \(count) keys. Restart the app to see changes."
@@ -187,20 +305,14 @@ struct SettingsView: View {
     }
 
     private func resetAll() {
-        let defaults = UserDefaults.standard
-        for key in defaults.dictionaryRepresentation().keys where key.hasPrefix(USER_DEFAULTS_PREFIX) {
-            defaults.removeObject(forKey: key)
+        for key in SyncedStore.shared.allKeys(withPrefix: USER_DEFAULTS_PREFIX) where key != "ash_reader_ios_migrated" {
+            SyncedStore.shared.removeObject(forKey: key)
+        }
+        // Also clear any UserDefaults-only keys (Bool/Int settings not routed through SyncedStore)
+        for key in UserDefaults.standard.dictionaryRepresentation().keys where key.hasPrefix(USER_DEFAULTS_PREFIX) && key != "ash_reader_ios_migrated" {
+            UserDefaults.standard.removeObject(forKey: key)
         }
         importResult = "All progress cleared. Restart the app to see changes."
     }
 }
 
-private struct ShareSheet: UIViewControllerRepresentable {
-    let items: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
