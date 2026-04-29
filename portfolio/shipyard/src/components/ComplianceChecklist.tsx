@@ -12,6 +12,8 @@ const ITEMS: { key: keyof Compliance; label: string }[] = [
   { key: 'has_handoff', label: 'Handoff' },
   { key: 'has_agents', label: 'Agents' },
   { key: 'has_project_instructions', label: 'Project Instructions' },
+  { key: 'has_decisions', label: 'Decisions' },
+  { key: 'has_learnings', label: 'Learnings' },
 ];
 
 export default function ComplianceChecklist({ compliance }: Props) {

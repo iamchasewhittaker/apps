@@ -51,7 +51,7 @@ export default function ShipCard({ project }: Props) {
       </div>
 
       {/* Meta row */}
-      <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono-label text-[10px] text-dim">
+      <div className="mb-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono-label text-[10px] text-dim">
         {/* Days since commit */}
         <span>
           {project.days_since_commit != null
@@ -84,6 +84,24 @@ export default function ShipCard({ project }: Props) {
           </span>
         )}
       </div>
+
+      {/* Opened / build indicator */}
+      {project.days_since_opened != null &&
+        project.days_since_opened !== project.days_since_commit && (
+          <div className="mb-3 flex items-center gap-x-2 font-mono-label text-[10px] text-dim/60">
+            <span>
+              {project.type === 'ios' ? 'built' : 'deployed'}:{' '}
+              {project.days_since_opened === 0
+                ? 'today'
+                : `${project.days_since_opened}d ago`}
+            </span>
+            {project.type === 'ios' && project.last_device_deploy_at && (
+              <span className="text-purple-400" title="Device build">
+                &#9679;
+              </span>
+            )}
+          </div>
+        )}
 
       {/* Compliance bar */}
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-dimmer/60">

@@ -289,28 +289,46 @@ function ShipCard({ project }: { project: Project }) {
         </span>
       </div>
 
-      <div className="mt-auto flex items-center justify-between text-sm text-muted">
-        <span>
-          Compliance:{' '}
-          <span
-            className={
-              project.compliance_score >= 80
-                ? 'text-success'
-                : project.compliance_score >= 50
-                  ? 'text-warning'
-                  : 'text-danger'
-            }
-          >
-            {Math.round(project.compliance_score)}%
-          </span>
-        </span>
-        {project.days_since_commit !== null && (
+      <div className="mt-auto space-y-1.5">
+        <div className="flex items-center justify-between text-sm text-muted">
           <span>
-            {project.days_since_commit === 0
-              ? 'Today'
-              : `${project.days_since_commit}d ago`}
+            Compliance:{' '}
+            <span
+              className={
+                project.compliance_score >= 80
+                  ? 'text-success'
+                  : project.compliance_score >= 50
+                    ? 'text-warning'
+                    : 'text-danger'
+              }
+            >
+              {Math.round(project.compliance_score)}%
+            </span>
           </span>
-        )}
+          {project.days_since_commit !== null && (
+            <span>
+              {project.days_since_commit === 0
+                ? 'Today'
+                : `${project.days_since_commit}d ago`}
+            </span>
+          )}
+        </div>
+        {project.days_since_opened !== null &&
+          project.days_since_opened !== project.days_since_commit && (
+            <div className="flex items-center justify-between text-[10px] font-mono text-muted/70">
+              <span>
+                {project.type === 'ios' ? 'built' : 'deployed'}:{' '}
+                {project.days_since_opened === 0
+                  ? 'today'
+                  : `${project.days_since_opened}d ago`}
+              </span>
+              {project.type === 'ios' && project.last_device_deploy_at && (
+                <span className="text-purple-400" title="Device build">
+                  &#9679;
+                </span>
+              )}
+            </div>
+          )}
       </div>
     </Link>
   );

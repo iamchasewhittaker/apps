@@ -578,6 +578,13 @@
     "notes": "Augusta green — deep, precise, turf-management aesthetic. Not playful; professional.",
     "sourceFile": "portfolio/fairway-ios/docs/BRANDING.md"
   },
+  "fresh-track": {
+    "slug": "fresh-track",
+    "colors": [],
+    "fonts": [],
+    "sourceFile": "missing",
+    "missing": true
+  },
   "funded-ios": {
     "slug": "funded-ios",
     "appName": "App  Funded iOS",

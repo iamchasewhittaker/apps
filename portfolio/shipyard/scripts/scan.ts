@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
-import { resolve, join } from 'path';
+import { resolve, join, basename } from 'path';
 import { execSync } from 'child_process';
 import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
@@ -104,6 +104,8 @@ function checkCompliance(dir: string): Compliance {
     has_handoff: existsSync(join(dir, 'HANDOFF.md')),
     has_agents: existsSync(join(dir, 'AGENTS.md')),
     has_project_instructions: existsSync(join(dir, '.claude', 'instructions.md')),
+    has_decisions: existsSync(join(dir, 'DECISIONS.md')),
+    has_learnings: existsSync(join(dir, 'LEARNINGS.md')),
   };
 }
 
@@ -384,6 +386,44 @@ function parseLearnings(dir: string, slug: string): Array<Record<string, unknown
       tags: ['auto:scan'],
       source: 'auto:audit',
       reviewed: false,
+      raw_source_ref: rawRef,
+    };
+  });
+}
+
+function parseDecisions(dir: string, slug: string): Array<Record<string, unknown>> {
+  const decisionsPath = join(dir, 'DECISIONS.md');
+  if (!existsSync(decisionsPath)) return [];
+
+  let content: string;
+  try {
+    content = readFileSync(decisionsPath, 'utf-8');
+  } catch {
+    return [];
+  }
+
+  const sections = content.split(/\n(?=## \d{4}-\d{2}-\d{2})/g).filter((s) =>
+    s.trim().startsWith('## ')
+  );
+
+  return sections.map((section) => {
+    const lines = section.split('\n');
+    const heading = lines[0].replace(/^##\s*/, '').trim();
+    const body = lines.slice(1).join('\n').trim();
+
+    const dateMatch = heading.match(/^(\d{4}-\d{2}-\d{2})\s*[—–-]\s*(.*)/);
+    const decisionDate = dateMatch ? dateMatch[1] : null;
+    const title = dateMatch ? dateMatch[2].trim() : heading;
+
+    const hasReflection = />\s*\*\*Chase:\*\*/.test(body) && !/>\s*\*\*Chase:\*\*\s*—?\s*$/.test(body);
+    const rawRef = createHash('md5').update(`${slug}::${heading}`).digest('hex').slice(0, 16);
+
+    return {
+      project_slug: slug,
+      decision_date: decisionDate,
+      title,
+      body_md: body,
+      has_reflection: hasReflection,
       raw_source_ref: rawRef,
     };
   });
@@ -970,6 +1010,80 @@ function daysSince(dateStr: string | null): number | null {
   return Math.floor((Date.now() - d.getTime()) / 86_400_000);
 }
 
+interface BuildInfo {
+  lastBuilt: string | null;
+  lastDeviceDeploy: string | null;
+}
+
+function buildDerivedDataMap(): Map<string, BuildInfo> {
+  const ddRoot = join(HOME, 'Library/Developer/Xcode/DerivedData');
+  const map = new Map<string, BuildInfo>();
+  if (!existsSync(ddRoot)) return map;
+
+  const entries = readdirSync(ddRoot).filter(
+    (e) => !e.endsWith('.noindex') && !e.startsWith('.'),
+  );
+
+  for (const entry of entries) {
+    const plistPath = join(ddRoot, entry, 'info.plist');
+    if (!existsSync(plistPath)) continue;
+
+    try {
+      // plutil path is fully controlled — no user input
+      const output = execSafe(`plutil -p "${plistPath}"`, ddRoot);
+      if (!output) continue;
+
+      const wsMatch = output.match(/WorkspacePath.*?=>\s*"([^"]+)"/);
+      if (!wsMatch) continue;
+      const workspacePath = wsMatch[1];
+
+      if (!workspacePath.includes('/portfolio/')) continue;
+
+      const portfolioMatch = workspacePath.match(/\/portfolio\/([^/]+)\//);
+      if (!portfolioMatch) continue;
+      const slug = portfolioMatch[1];
+
+      const dateMatch = output.match(
+        /LastAccessedDate.*?=>\s*"?(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+[^\s"]+)"?/,
+      );
+      const lastBuilt = dateMatch ? new Date(dateMatch[1]).toISOString() : null;
+
+      let lastDeviceDeploy: string | null = null;
+      const iphoneosPath = join(ddRoot, entry, 'Build', 'Products', 'Debug-iphoneos');
+      if (existsSync(iphoneosPath)) {
+        try {
+          lastDeviceDeploy = statSync(iphoneosPath).mtime.toISOString();
+        } catch {}
+      }
+
+      const existing = map.get(slug);
+      if (existing) {
+        if (lastBuilt && (!existing.lastBuilt || lastBuilt > existing.lastBuilt)) {
+          existing.lastBuilt = lastBuilt;
+        }
+        if (lastDeviceDeploy && (!existing.lastDeviceDeploy || lastDeviceDeploy > existing.lastDeviceDeploy)) {
+          existing.lastDeviceDeploy = lastDeviceDeploy;
+        }
+      } else {
+        map.set(slug, { lastBuilt, lastDeviceDeploy });
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return map;
+}
+
+function computeLastOpened(...dates: (string | null)[]): string | null {
+  const valid = dates
+    .filter((d): d is string => d !== null)
+    .map((d) => new Date(d))
+    .filter((d) => !isNaN(d.getTime()));
+  if (valid.length === 0) return null;
+  return new Date(Math.max(...valid.map((d) => d.getTime()))).toISOString();
+}
+
 async function main() {
   const startedAt = new Date().toISOString();
   console.log(`Scanning ${DEV_ROOT}...`);
@@ -991,12 +1105,18 @@ async function main() {
 
   console.log(`Found ${entries.length} directories\n`);
 
+  console.log('Building DerivedData map...');
+  const ddMap = buildDerivedDataMap();
+  console.log(`  Found build info for ${ddMap.size} iOS projects\n`);
+
   const projects: Record<string, unknown>[] = [];
   const allLearnings: Record<string, unknown>[] = [];
   const allChangelog: Record<string, unknown>[] = [];
   const allRoadmap: Record<string, unknown>[] = [];
+  const allDecisions: Record<string, unknown>[] = [];
   const slugsWithChangelog = new Set<string>();
   const slugsWithRoadmap = new Set<string>();
+  const slugsWithDecisions = new Set<string>();
   const servicesByApp = new Map<string, Set<string>>();
   const patternsByApp = new Map<string, Set<string>>();
   const usageNotesByApp = new Map<string, Map<string, string>>();
@@ -1031,6 +1151,7 @@ async function main() {
       const relPath = `portfolio/${name}`;
 
       const learningRows = parseLearnings(dir, name);
+      const decisionRows = parseDecisions(dir, name);
 
       const themeCtx = buildThemeCtx(name, dir, type, pkg, claudeData);
       const services = detectServices(themeCtx);
@@ -1086,6 +1207,7 @@ async function main() {
         last_commit_date: lastCommit,
         days_since_commit: dsc,
         loc_count: loc,
+        decisions_count: decisionRows.length,
         compliance,
         compliance_score: complianceScore(compliance),
         live_url: claudeData.live_url,
@@ -1101,6 +1223,21 @@ async function main() {
           : null,
         external_apis: [],
         secrets_p0_count: 0,
+        last_deployed_at: type === 'web' && claudeData.live_url ? lastCommit : null,
+        last_built_at: type === 'ios' ? (ddMap.get(name)?.lastBuilt ?? null) : null,
+        last_device_deploy_at: type === 'ios' ? (ddMap.get(name)?.lastDeviceDeploy ?? null) : null,
+        last_opened_at: computeLastOpened(
+          lastCommit,
+          type === 'web' && claudeData.live_url ? lastCommit : null,
+          type === 'ios' ? (ddMap.get(name)?.lastBuilt ?? null) : null,
+        ),
+        days_since_opened: daysSince(
+          computeLastOpened(
+            lastCommit,
+            type === 'web' && claudeData.live_url ? lastCommit : null,
+            type === 'ios' ? (ddMap.get(name)?.lastBuilt ?? null) : null,
+          ),
+        ),
       });
 
       if (learningRows.length > 0) {
@@ -1115,9 +1252,14 @@ async function main() {
         allRoadmap.push(...roadmapRows);
         slugsWithRoadmap.add(name);
       }
+      if (decisionRows.length > 0) {
+        allDecisions.push(...decisionRows);
+        slugsWithDecisions.add(name);
+      }
 
       const tags = [
         learningRows.length ? `${learningRows.length} learnings` : null,
+        decisionRows.length ? `${decisionRows.length} decisions` : null,
         changelogRows.length ? `${changelogRows.length} changelog` : null,
         roadmapRows.length ? `${roadmapRows.length} roadmap` : null,
       ].filter(Boolean);
@@ -1196,6 +1338,28 @@ async function main() {
         console.error('Roadmap insert error:', insErr.message);
       } else {
         console.log(`Inserted ${allRoadmap.length} roadmap entries`);
+      }
+    }
+  }
+
+  // Sync decisions — delete then insert per project
+  if (slugsWithDecisions.size > 0) {
+    console.log(`\nSyncing decisions for ${slugsWithDecisions.size} projects…`);
+    const slugList = Array.from(slugsWithDecisions);
+    const { error: delErr } = await supabase
+      .from('decisions')
+      .delete()
+      .in('project_slug', slugList);
+    if (delErr) {
+      console.error('Decisions delete error:', delErr.message);
+    } else {
+      const { error: insErr } = await supabase
+        .from('decisions')
+        .insert(allDecisions);
+      if (insErr) {
+        console.error('Decisions insert error:', insErr.message);
+      } else {
+        console.log(`Inserted ${allDecisions.length} decisions`);
       }
     }
   }

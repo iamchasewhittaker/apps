@@ -7,7 +7,8 @@ import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
 import { EditableText, EditableStatus, EditableNumber, BlockerManager } from '@/components/EditableField';
 import { RetireButton } from './RetireButton';
 import { CopyDevCommand } from './CopyDevCommand';
-import type { Project, Blocker, Compliance, ChangelogEntry, RoadmapEntry, LinearIssue } from '@/lib/types';
+import { MarkOpenedButton } from './MarkOpenedButton';
+import type { Project, Blocker, Compliance, ChangelogEntry, RoadmapEntry, LinearIssue, Decision } from '@/lib/types';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -23,6 +24,7 @@ export default async function ShipDetailPage({ params }: Props) {
     { data: changelog },
     { data: roadmap },
     { data: linearIssues },
+    { data: decisions },
   ] = await Promise.all([
     supabase.from('projects').select('*').eq('slug', slug).single(),
     supabase
@@ -47,6 +49,11 @@ export default async function ShipDetailPage({ params }: Props) {
       .eq('project_slug', slug)
       .order('priority', { ascending: true })
       .order('updated_at', { ascending: false }),
+    supabase
+      .from('decisions')
+      .select('*')
+      .eq('project_slug', slug)
+      .order('decision_date', { ascending: false }),
   ]);
 
   if (!project) notFound();
@@ -56,6 +63,7 @@ export default async function ShipDetailPage({ params }: Props) {
   const changelogList: ChangelogEntry[] = changelog ?? [];
   const roadmapList: RoadmapEntry[] = roadmap ?? [];
   const issueList: LinearIssue[] = (linearIssues ?? []) as LinearIssue[];
+  const decisionList: Decision[] = (decisions ?? []) as Decision[];
   const step = p.mvp_step_actual ?? p.mvp_step ?? 0;
 
   const changelogByVersion = new Map<string, ChangelogEntry[]>();
@@ -114,6 +122,46 @@ export default async function ShipDetailPage({ params }: Props) {
           </div>
         )}
       </header>
+
+      {/* Activity */}
+      <Section title="Activity">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <ActivityCard
+            label="Last Commit"
+            value={p.last_commit_date}
+            daysAgo={p.days_since_commit}
+          />
+          {p.type === 'web' && p.has_live_url && (
+            <ActivityCard
+              label="Last Deploy"
+              value={p.last_deployed_at}
+              daysAgo={daysSinceDate(p.last_deployed_at)}
+            />
+          )}
+          {p.type === 'ios' && (
+            <ActivityCard
+              label="Last Build"
+              value={p.last_built_at}
+              daysAgo={daysSinceDate(p.last_built_at)}
+            />
+          )}
+          {p.type === 'ios' && (
+            <ActivityCard
+              label="Device Deploy"
+              value={p.last_device_deploy_at}
+              daysAgo={daysSinceDate(p.last_device_deploy_at)}
+              highlight={!!p.last_device_deploy_at}
+            />
+          )}
+          <ActivityCard
+            label="Last Opened"
+            value={p.last_opened_at}
+            daysAgo={p.days_since_opened}
+            primary
+          />
+        </div>
+        <MarkOpenedButton slug={p.slug} />
+      </Section>
 
       {/* Next Action */}
       <Section title="Next Action">
@@ -381,6 +429,36 @@ export default async function ShipDetailPage({ params }: Props) {
         )}
       </Section>
 
+      {/* Decisions */}
+      {decisionList.length > 0 && (
+        <Section title="Decisions">
+          <div className="space-y-4">
+            {decisionList.map((d) => (
+              <div key={d.id} className="rounded-lg border border-border bg-card p-4 space-y-2">
+                <div className="flex items-baseline justify-between gap-2">
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {d.title}
+                  </h3>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {d.has_reflection && (
+                      <span className="rounded-full bg-gold/20 px-2 py-0.5 text-[10px] font-medium text-gold">
+                        Reflected
+                      </span>
+                    )}
+                    {d.decision_date && (
+                      <span className="text-[10px] text-muted">{d.decision_date}</span>
+                    )}
+                  </div>
+                </div>
+                <p className="text-xs text-muted whitespace-pre-wrap line-clamp-4">
+                  {d.body_md.slice(0, 300)}{d.body_md.length > 300 ? '...' : ''}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
       {/* Danger zone — only shown for non-archived projects */}
       {p.status !== 'archived' && (
         <section className="space-y-3">
@@ -442,6 +520,54 @@ const TYPE_COLORS: Record<string, string> = {
   cli: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
   desktop: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
 };
+
+function daysSinceDate(dateStr: string | null): number | null {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return null;
+  return Math.floor((Date.now() - d.getTime()) / 86_400_000);
+}
+
+function ActivityCard({
+  label,
+  value,
+  daysAgo,
+  primary,
+  highlight,
+}: {
+  label: string;
+  value: string | null;
+  daysAgo: number | null;
+  primary?: boolean;
+  highlight?: boolean;
+}) {
+  const colorClass =
+    highlight ? 'text-purple-400' :
+    daysAgo !== null && daysAgo <= 7 ? 'text-success' :
+    daysAgo !== null && daysAgo <= 30 ? 'text-foreground' :
+    'text-muted';
+
+  return (
+    <div
+      className={`rounded-md border px-3 py-2 ${
+        primary
+          ? 'border-accent/30 bg-accent/5'
+          : 'border-border bg-card/50'
+      }`}
+    >
+      <p className="text-[10px] font-medium uppercase tracking-wider text-muted">
+        {label}
+      </p>
+      <p className={`text-sm font-medium ${colorClass}`}>
+        {daysAgo !== null
+          ? daysAgo === 0
+            ? 'Today'
+            : `${daysAgo}d ago`
+          : 'Never'}
+      </p>
+    </div>
+  );
+}
 
 function Section({
   title,

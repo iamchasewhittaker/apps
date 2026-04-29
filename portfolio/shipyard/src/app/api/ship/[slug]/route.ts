@@ -48,6 +48,24 @@ export async function PATCH(
     }
   }
 
+  if ('last_opened_at' in body) {
+    const v = body.last_opened_at;
+    if (v === null) {
+      updates.last_opened_at = null;
+      updates.days_since_opened = null;
+    } else if (v === 'now') {
+      updates.last_opened_at = new Date().toISOString();
+      updates.days_since_opened = 0;
+    } else {
+      const d = new Date(v);
+      if (isNaN(d.getTime())) {
+        return NextResponse.json({ error: 'Invalid date for last_opened_at' }, { status: 400 });
+      }
+      updates.last_opened_at = d.toISOString();
+      updates.days_since_opened = Math.floor((Date.now() - d.getTime()) / 86_400_000);
+    }
+  }
+
   if (!Object.keys(updates).length) {
     return NextResponse.json({ error: 'No valid fields' }, { status: 400 });
   }

@@ -48,6 +48,11 @@ const SECTION_META: Record<
     description:
       'Terms used across docs, Vercel, Supabase, and Cursor. Auto-pulled from docs/GLOSSARY.md.',
   },
+  mastery_tip: {
+    title: 'Mastery Tips',
+    description:
+      'AI workflow tips and Claude mastery patterns discovered across sessions.',
+  },
 };
 
 const KIND_ORDER: ThemeKind[] = [
@@ -57,6 +62,7 @@ const KIND_ORDER: ThemeKind[] = [
   'common_input',
   'common_prompt',
   'glossary_term',
+  'mastery_tip',
 ];
 
 const PROMPT_KIND_LABEL: Record<PromptSourceKind, string> = {

@@ -9,7 +9,8 @@ export type ThemeKind =
   | 'cross_app_pattern'
   | 'common_input'
   | 'common_prompt'
-  | 'glossary_term';
+  | 'glossary_term'
+  | 'mastery_tip';
 
 export type PromptSourceKind =
   | 'system_prompt'
@@ -49,6 +50,8 @@ export interface Compliance {
   has_handoff: boolean;
   has_agents: boolean;
   has_project_instructions: boolean;
+  has_decisions: boolean;
+  has_learnings: boolean;
 }
 
 export interface Project {
@@ -65,6 +68,11 @@ export interface Project {
   mvp_step_actual: number | null;
   last_commit_date: string | null;
   days_since_commit: number | null;
+  last_deployed_at: string | null;
+  last_built_at: string | null;
+  last_device_deploy_at: string | null;
+  last_opened_at: string | null;
+  days_since_opened: number | null;
   feature_count: number | null;
   loc_count: number | null;
   disk_size_mb: number | null;
@@ -91,6 +99,7 @@ export interface Project {
   secrets_p0_count: number;
   breaking_change_risk: string | null;
   features_list: string | null;
+  decisions_count: number;
   linear_issue_count: number | null;
   retired_at: string | null;
   retire_reason: string | null;
@@ -216,6 +225,17 @@ export interface LinearIssue {
   url: string | null;
   updated_at: string | null;
   synced_at: string;
+}
+
+export interface Decision {
+  id: string;
+  project_slug: string;
+  decision_date: string | null;
+  title: string;
+  body_md: string;
+  has_reflection: boolean;
+  raw_source_ref: string | null;
+  scanned_at: string;
 }
 
 // Dashboard stats
