@@ -39,6 +39,24 @@
 **Tags:** data-loss, xcode, git
 
 
+### 2026-04-28 — SwiftData additive migrations don't need `VersionedSchema`
+**What happened:** Added `SubtaskItem` (`@Model`) + `@Relationship` on `ChecklistTaskItem` + `sortOrder: Int = 0` field — three schema changes in one session. Feared needing `VersionedSchema` and a migration plan.
+**Root cause:** SwiftData auto-migrates when all changes are additive (new model class, new relationship with a default, new property with a default). No data loss occurs — existing rows get default values for new properties. `VersionedSchema` is only needed for destructive changes (deletes, renames, type changes).
+**Fix / lesson:** New `@Model` class + new `@Relationship(inverse:)` + new property with `= default` → just add to `Schema([...])` array in `ModelContainer` init. That's it. Build, run, data survives.
+**Tags:** swift, swiftdata, migration
+
+### 2026-04-28 — `ForEach` over SwiftData relationship arrays: use `id: \.id`
+**What happened:** Used `ForEach(task.subtasks.sorted { ... })` without an `id` parameter. Swift inferred `Identifiable` from `SubtaskItem` via `persistentModelID`, which works but can be fragile across schema changes.
+**Root cause:** `@Model` types get an implicit `persistentModelID` conformance, but explicitly naming `ForEach(sorted, id: \.id)` using the `UUID` `id` property makes the identity more predictable.
+**Fix / lesson:** Always use `ForEach(items, id: \.id)` when iterating SwiftData `@Model` objects in relationship arrays. It's explicit, stable, and avoids surprises with `Identifiable`.
+**Tags:** swift, swiftdata, gotcha
+
+### 2026-04-28 — Xcode project.pbxproj must be updated manually when files are created outside Xcode
+**What happened:** Created 4 new Swift files (`SubtaskItem.swift`, `TemplateLibrary.swift`, `TemplatesView.swift`, `ParkStreaks.swift`) via the `Write` tool. Build failed with "cannot find X in scope" for all new types.
+**Root cause:** Xcode's `project.pbxproj` tracks every source file with `PBXBuildFile`, `PBXFileReference`, group membership, and Sources build phase entries. Files created outside Xcode are invisible to the build system until all 4 spots are updated.
+**Fix / lesson:** When adding files outside Xcode, edit `project.pbxproj` to add: (1) `PBXBuildFile` entry, (2) `PBXFileReference` entry, (3) file ref in the correct `PBXGroup`, (4) build file in the `PBXSourcesBuildPhase`. Use a consistent UUID scheme (e.g. `B30101...NN` / `B30201...NN` pairs).
+**Tags:** xcode, gotcha, pbxproj
+
 ---
 
 ## 2026-04-25 — iOS 17.2 runtime DMG (shared across all iOS apps)

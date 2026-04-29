@@ -32,7 +32,7 @@ struct ContentView: View {
     }
 
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \ChecklistTaskItem.createdAt, order: .reverse) private var tasks: [ChecklistTaskItem]
+    @Query(sort: [SortDescriptor(\ChecklistTaskItem.sortOrder), SortDescriptor(\ChecklistTaskItem.createdAt, order: .reverse)]) private var tasks: [ChecklistTaskItem]
     @Query(sort: \ProfitLedgerEntry.createdAt, order: .reverse) private var ledger: [ProfitLedgerEntry]
 
     @AppStorage("chase_roller_task_tycoon_ios_cash") private var parkCash = 1000

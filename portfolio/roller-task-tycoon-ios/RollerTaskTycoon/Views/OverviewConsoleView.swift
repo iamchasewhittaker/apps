@@ -95,6 +95,8 @@ struct OverviewConsoleView: View {
             Text(value)
                 .foregroundStyle(ParkTheme.ink)
                 .monospacedDigit()
+                .contentTransition(.numericText())
+                .animation(.spring(duration: 0.5), value: value)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -109,6 +111,8 @@ struct OverviewConsoleView: View {
             Text("Park rating: \(ratingPct)%")
                 .font(ParkTheme.bodyFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
+                .contentTransition(.numericText())
+                .animation(.spring(duration: 0.5), value: ratingPct)
             HStack {
                 statPill("Open", tasks.filter { $0.status == .open }.count)
                 statPill("Testing", tasks.filter { $0.status == .testing }.count)
@@ -117,9 +121,15 @@ struct OverviewConsoleView: View {
             Text("Closed today: \(GameFlavor.closedTodayCount(tasks: tasks))")
                 .font(ParkTheme.bodyFont(readable: readableFonts))
                 .foregroundStyle(ParkTheme.ink)
-            Text("Active (Open + Testing): \(tasks.filter(\.isActive).count)")
-                .font(ParkTheme.captionFont(readable: readableFonts))
-                .foregroundStyle(ParkTheme.ink.opacity(0.8))
+            HStack(spacing: 12) {
+                Text("Active: \(tasks.filter(\.isActive).count)")
+                if ParkStreaks.count > 0 {
+                    Text("🔥 \(ParkStreaks.count)-day streak")
+                        .foregroundStyle(ParkTheme.gold)
+                }
+            }
+            .font(ParkTheme.captionFont(readable: readableFonts))
+            .foregroundStyle(ParkTheme.ink.opacity(0.8))
         }
         .parkPanel(readable: readableFonts)
     }

@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added (2026-04-28) — V2 Game Feel
+
+- **Subtasks** — `SubtaskItem` SwiftData `@Model`; cascade-delete relationship on `ChecklistTaskItem.subtasks`; UI in `AttractionDetailView`: checkbox list + inline "Add subtask" field + delete per row; **auto-advance**: all subtasks done on an `.open` attraction → advances to `.testing` with haptic + toast "🎢 Ride entering Testing — all checks passed!"
+- **Templates** — `TemplateLibrary` (24 pre-built templates across 6 zones) + `TemplatesView` sheet (grouped list, tap to instantiate); `doc.badge.plus` toolbar button on Attractions tab
+- **Haptic feedback** — `.medium` impact on every status transition; `.success` notification on attraction close — wired in `ParkStatusTransitions.apply`
+- **Coin burst animation** — `💰 +$N` overlay springs up and fades out when an attraction is closed; `.contentTransition(.numericText())` on Overview rating/profit/guest/alert chips
+- **Smarter park rating** — zone-balance bonus (+5% if all 6 zones have active attractions) + streak bonus (up to +10%, 1pt/day)
+- **Streak tracking** — `ParkStreaks` (UserDefaults) records consecutive close days; streak badge (`🔥 N-day streak`) displayed in Overview park status card
+- **Drag-to-reorder** — `sortOrder: Int` field on `ChecklistTaskItem`; `EditButton()` in Attractions toolbar (list mode only); `.onMove` per section with `sortOrder` write-back; delete circles suppressed via `.deleteDisabled(true)`
+
+### Changed (2026-04-28)
+
+- **Backup schema v3** — `BackupTaskRow` gains optional `subtasks: [BackupSubtaskRow]?`; `schemaVersion` bumped to 3; importer accepts v2 and v3 (backward compatible)
+- **Attraction card** — shows subtask progress badge `✓ done/total` in caption row (green when all done)
+- **Overview park status card** — "Active (Open + Testing)" line now includes streak display when streak > 0
+- **Tests** — added `testDecodeValidEmptyV3` and `testV3TaskWithSubtasks`; fixed `testDecodeValidEmptyV2` to assert `env.schemaVersion == 2` (not current schema constant)
+
 ### Changed (2026-04-14)
 - **App icon:** Portfolio-standard text logo (ROLLER amber / TASK white bold on dark) — generated 1024×1024 PNG from `logo.svg` via `qlmanage`; replaced Clarity-family ring icon; installed on physical iPhone 12 Pro Max via `xcrun devicectl`
 - **Branding:** Added [`docs/BRANDING.md`](docs/BRANDING.md) — visual system, asset paths, web companion icons; `CLAUDE.md` branding link added

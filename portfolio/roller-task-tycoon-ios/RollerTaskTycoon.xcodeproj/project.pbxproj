@@ -28,6 +28,10 @@
 		B3010100000000000000000D /* PreferencesMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000F /* PreferencesMigration.swift */; };
 		B3010100000000000000000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000B /* Assets.xcassets */; };
 		B3010100000000000000000C /* BackupImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3020100000000000000000E /* BackupImporterTests.swift */; };
+		B30101000000000000000101 /* SubtaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000101 /* SubtaskItem.swift */; };
+		B30101000000000000000102 /* TemplateLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000102 /* TemplateLibrary.swift */; };
+		B30101000000000000000103 /* TemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000103 /* TemplatesView.swift */; };
+		B30101000000000000000104 /* ParkStreaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30201000000000000000104 /* ParkStreaks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +58,10 @@
 		B3020100000000000000000C /* RollerTaskTycoon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RollerTaskTycoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3020100000000000000000D /* RollerTaskTycoonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RollerTaskTycoonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3020100000000000000000E /* BackupImporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupImporterTests.swift; sourceTree = "<group>"; };
+		B30201000000000000000101 /* SubtaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtaskItem.swift; sourceTree = "<group>"; };
+		B30201000000000000000102 /* TemplateLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateLibrary.swift; sourceTree = "<group>"; };
+		B30201000000000000000103 /* TemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatesView.swift; sourceTree = "<group>"; };
+		B30201000000000000000104 /* ParkStreaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkStreaks.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +127,7 @@
 			children = (
 				B30201000000000000000006 /* ChecklistTaskItem.swift */,
 				B30201000000000000000026 /* ProfitLedgerEntry.swift */,
+				B30201000000000000000101 /* SubtaskItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -133,6 +142,7 @@
 				B30201000000000000000029 /* AttractionDetailView.swift */,
 				B3020100000000000000002A /* AttractionEditorView.swift */,
 				B3020100000000000000002C /* FinancesView.swift */,
+				B30201000000000000000103 /* TemplatesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -155,6 +165,8 @@
 				B30201000000000000000022 /* ParkStatusTransitions.swift */,
 				B30201000000000000000023 /* ParkFinance.swift */,
 				B30201000000000000000024 /* ParkDataImport.swift */,
+				B30201000000000000000102 /* TemplateLibrary.swift */,
+				B30201000000000000000104 /* ParkStreaks.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -288,6 +300,10 @@
 				B30101000000000000000029 /* AttractionDetailView.swift in Sources */,
 				B3010100000000000000002A /* AttractionEditorView.swift in Sources */,
 				B3010100000000000000002C /* FinancesView.swift in Sources */,
+				B30101000000000000000101 /* SubtaskItem.swift in Sources */,
+				B30101000000000000000102 /* TemplateLibrary.swift in Sources */,
+				B30101000000000000000103 /* TemplatesView.swift in Sources */,
+				B30101000000000000000104 /* ParkStreaks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

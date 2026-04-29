@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import UIKit
 
 enum ParkStatusTransitions {
     /// Applies a new status, adjusts parkCash, and writes ledger entry on close.
@@ -17,6 +18,10 @@ enum ParkStatusTransitions {
             parkCash += reward
             context.insert(ProfitLedgerEntry(amount: reward, taskId: item.id, note: "Close attraction"))
             item.closedAt = Date()
+            ParkStreaks.recordClose()
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        } else {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
 
         if old == .closed, newStatus != .closed {

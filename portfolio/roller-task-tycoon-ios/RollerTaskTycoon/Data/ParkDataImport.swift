@@ -45,6 +45,15 @@ enum ParkDataImport {
                 closedAt: closedAt
             )
             modelContext.insert(item)
+
+            for srow in row.subtasks ?? [] {
+                let sub = SubtaskItem(text: srow.text, sortOrder: srow.sortOrder)
+                sub.isDone = srow.isDone
+                if let sid = UUID(uuidString: srow.id) { sub.id = sid }
+                if let sd = iso.date(from: srow.createdAt) { sub.createdAt = sd }
+                sub.task = item
+                modelContext.insert(sub)
+            }
         }
 
         if let rows = envelope.ledger {

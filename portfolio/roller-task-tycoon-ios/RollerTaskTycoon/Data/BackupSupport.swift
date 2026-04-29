@@ -5,7 +5,7 @@ import UIKit
 
 /// Current backup JSON `schemaVersion`.
 enum BackupFormat {
-    static let schemaVersion = 2
+    static let schemaVersion = 3
 }
 
 struct BackupEnvelope: Codable {
@@ -14,6 +14,14 @@ struct BackupEnvelope: Codable {
     let cash: Int
     let tasks: [BackupTaskRow]
     let ledger: [BackupLedgerRow]?
+}
+
+struct BackupSubtaskRow: Codable {
+    let id: String
+    let text: String
+    let isDone: Bool
+    let sortOrder: Int
+    let createdAt: String
 }
 
 struct BackupTaskRow: Codable {
@@ -28,6 +36,7 @@ struct BackupTaskRow: Codable {
     let dueDate: String?
     let details: String?
     let closedAt: String?
+    let subtasks: [BackupSubtaskRow]?
 }
 
 struct BackupLedgerRow: Codable {
@@ -81,7 +90,7 @@ enum BackupImporter {
         } catch {
             throw BackupImportError.invalidJSON
         }
-        guard envelope.schemaVersion == BackupFormat.schemaVersion else {
+        guard envelope.schemaVersion == 2 || envelope.schemaVersion == BackupFormat.schemaVersion else {
             throw BackupImportError.unsupportedSchema(envelope.schemaVersion)
         }
         for row in envelope.tasks {
@@ -128,7 +137,18 @@ enum BackupExporter {
         let iso = ISO8601DateFormatter()
         iso.formatOptions = [.withInternetDateTime]
         let rows = items.map { item in
-            BackupTaskRow(
+            let subtaskRows = item.subtasks
+                .sorted { $0.sortOrder < $1.sortOrder }
+                .map { s in
+                    BackupSubtaskRow(
+                        id: s.id.uuidString,
+                        text: s.text,
+                        isDone: s.isDone,
+                        sortOrder: s.sortOrder,
+                        createdAt: iso.string(from: s.createdAt)
+                    )
+                }
+            return BackupTaskRow(
                 id: item.id.uuidString,
                 text: item.text,
                 createdAt: iso.string(from: item.createdAt),
@@ -139,7 +159,8 @@ enum BackupExporter {
                 rewardDollars: item.rewardDollars,
                 dueDate: item.dueDate.map { iso.string(from: $0) },
                 details: item.details,
-                closedAt: item.closedAt.map { iso.string(from: $0) }
+                closedAt: item.closedAt.map { iso.string(from: $0) },
+                subtasks: subtaskRows.isEmpty ? nil : subtaskRows
             )
         }
         let led = ledger.map { e in

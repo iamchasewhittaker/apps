@@ -42,12 +42,22 @@ enum GameFlavor {
 
     // MARK: - Park Operations Console
 
-    /// 0...100 score from completion, broken rides, and overdue work.
+    /// 0...100 score: completion base + zone-balance bonus + streak bonus − broken penalty − overdue penalty.
     static func parkRatingPercent(tasks: [ChecklistTaskItem], calendar: Calendar = .current, now: Date = Date()) -> Int {
         if tasks.isEmpty { return 72 }
         let total = tasks.count
         let closed = tasks.filter { $0.status == .closed }.count
         var score = Int(round(Double(closed) / Double(total) * 78))
+
+        // Zone balance: +5% if every zone has at least 1 active (Open or Testing) attraction.
+        let activeZones = Set(tasks.filter(\.isActive).map(\.zone))
+        if activeZones.count == ParkZone.allCases.count {
+            score += 5
+        }
+
+        // Streak: consecutive days closing at least one attraction, capped at +10%.
+        score += ParkStreaks.ratingBonus
+
         let broken = tasks.filter { $0.status == .brokenDown }.count
         score -= min(24, broken * 4)
         let overdue = tasks.filter { $0.isOverdue(now: now, calendar: calendar) }.count

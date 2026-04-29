@@ -14,16 +14,16 @@
 - **Product docs**: [`docs/PRD.md`](docs/PRD.md) + [`docs/APP_FLOW.md`](docs/APP_FLOW.md)
 - **Rebrand** to RollerTask Tycoon; bundle id `com.chasewhittaker.ParkChecklist` unchanged
 
-## V2 — Game Feel
+## V2 — Game Feel ✅ Shipped 2026-04-28
 
-- **Subtasks** — checklist items within an attraction
-- **Templates** — pre-built attractions for common task types
-- **Drag-to-reorder** on board columns
-- **Haptic feedback** on status change (completion, close)
-- **Animations** — subtle coin / rating tick on attraction close
-- **Smarter park rating** — streak bonus (no broken for 3+ days), zone balance bonus
-- **Streaks** — track days with no broken attractions
-- **Import merge mode** (by task `id`) — optional; replace-all is current default
+- ✅ **Subtasks** — `SubtaskItem` SwiftData model; checkbox list in detail view; auto-advance Open→Testing when all done
+- ✅ **Templates** — 24 pre-built templates across 6 zones; `TemplatesView` sheet; `doc.badge.plus` toolbar button
+- ✅ **Drag-to-reorder** — `sortOrder` field; `EditButton` + `.onMove` in list mode; delete circles suppressed
+- ✅ **Haptic feedback** — `.medium` on any transition; `.success` on close
+- ✅ **Animations** — coin burst overlay on close; `.contentTransition(.numericText())` on all metrics
+- ✅ **Smarter park rating** — zone-balance bonus (+5%) + streak bonus (+1%/day, cap +10%)
+- ✅ **Streaks** — `ParkStreaks` UserDefaults tracker; 🔥 badge in Overview
+- ⬜ **Import merge mode** (by task `id`) — still replace-all; deferred to V3
 
 ## V3 — Ecosystem
 

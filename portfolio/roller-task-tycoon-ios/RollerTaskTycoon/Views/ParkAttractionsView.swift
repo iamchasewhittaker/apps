@@ -13,6 +13,7 @@ struct ParkAttractionsView: View {
     @Environment(\.modelContext) private var modelContext
 
     @State private var staffFilter: StaffRole?
+    @State private var showTemplates = false
 
     private var visible: [ChecklistTaskItem] {
         tasks.filter { item in
@@ -56,6 +57,27 @@ struct ParkAttractionsView: View {
             .toolbarBackground(ParkTheme.woodLight.opacity(0.95), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.light, for: .navigationBar)
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    if !useBoard {
+                        EditButton()
+                            .tint(ParkTheme.gold)
+                    }
+                    Button {
+                        showTemplates = true
+                    } label: {
+                        Image(systemName: "doc.badge.plus")
+                    }
+                    .tint(ParkTheme.gold)
+                }
+            }
+            .sheet(isPresented: $showTemplates) {
+                TemplatesView(readableFonts: readableFonts) { newItem in
+                    modelContext.insert(newItem)
+                    try? modelContext.save()
+                    onToast("🎢 Attraction added from template!")
+                }
+            }
             .navigationDestination(for: UUID.self) { id in
                 if let t = tasks.first(where: { $0.id == id }) {
                     AttractionDetailView(task: t, parkCash: $parkCash, readableFonts: readableFonts, onToast: onToast)
@@ -168,6 +190,10 @@ struct ParkAttractionsView: View {
                             NavigationLink(value: item.id) {
                                 AttractionCardView(item: item, readableFonts: readableFonts, compact: true)
                             }
+                            .deleteDisabled(true)
+                        }
+                        .onMove { source, destination in
+                            moveItems(in: col, from: source, to: destination)
                         }
                     }
                 }
@@ -175,6 +201,15 @@ struct ParkAttractionsView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+    }
+
+    private func moveItems(in section: [ChecklistTaskItem], from source: IndexSet, to destination: Int) {
+        var ordered = section
+        ordered.move(fromOffsets: source, toOffset: destination)
+        for (index, item) in ordered.enumerated() {
+            item.sortOrder = index
+        }
+        try? modelContext.save()
     }
 }
 
@@ -199,6 +234,11 @@ struct AttractionCardView: View {
             HStack {
                 Text("Priority: \(item.priority.displayTitle)")
                     .foregroundStyle(ParkTheme.ink.opacity(0.8))
+                if !item.subtasks.isEmpty {
+                    let done = item.subtasks.filter(\.isDone).count
+                    Text("· ✓ \(done)/\(item.subtasks.count)")
+                        .foregroundStyle(done == item.subtasks.count ? ParkTheme.grassTop : ParkTheme.ink.opacity(0.6))
+                }
                 Spacer()
                 Text("Due: \(item.dueDateLabel())")
                     .foregroundStyle(item.isOverdue() ? ParkTheme.alertRed : ParkTheme.ink.opacity(0.8))

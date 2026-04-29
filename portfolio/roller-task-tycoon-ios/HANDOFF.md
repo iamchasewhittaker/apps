@@ -9,12 +9,12 @@
 | Field | Value |
 |-------|-------|
 | **Path** | `portfolio/roller-task-tycoon-ios/` |
-| **Version** | v1.0 |
+| **Version** | v2.0 |
 | **Platform** | Native iOS — SwiftUI + SwiftData |
 | **Bundle ID** | `com.chasewhittaker.ParkChecklist` |
-| **Focus** | V1 stable. Branding complete. Phase 2 (Supabase sync) planned. |
-| **Last touch** | 2026-04-14 — ROLLER/TASK text logo installed on iPhone 12 Pro Max; `docs/BRANDING.md` + `docs/SYNC_PHASE2.md` added; quick-start prompts in HANDOFF |
-| **Next** | 1. **Phase 2 — Supabase sync** (see `docs/SYNC_PHASE2.md`) · 2. **V2 — Game Feel** (subtasks, templates, haptics, drag-to-reorder) |
+| **Focus** | V2 Game Feel shipped. Install on iPhone 12 Pro Max to test subtasks + templates + haptics. |
+| **Last touch** | 2026-04-28 — V2 shipped: subtasks (schema v3), templates (24 pre-built), haptics, coin burst animation, smarter park rating (zone balance + streak), drag-to-reorder |
+| **Next** | 1. **Install on iPhone 12 Pro Max** (see CLI steps below) and walk the golden path · 2. **V3 — Ecosystem** (recurring attractions, widgets, import merge mode) · 3. **Supabase sync** (see `docs/SYNC_PHASE2.md`) |
 
 ---
 
@@ -29,7 +29,7 @@
 
 - **State:** SwiftData (tasks/attractions) + `@AppStorage` (park cash, display prefs)
 - **Tabs:** Overview · Attractions · Finances
-- **Backup:** Share sheet JSON export/import — schema v2 (tasks + subtasks + ledger); v1 import still supported
+- **Backup:** Share sheet JSON export/import — schema v3 (tasks + subtasks + ledger); v2 import still supported (subtasks field is optional)
 - **No cloud sync** — local-first only
 
 ## V1 scope (shipped)

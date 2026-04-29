@@ -16,6 +16,11 @@ final class ChecklistTaskItem {
     var details: String = ""
     var closedAt: Date?
 
+    var sortOrder: Int = 0
+
+    @Relationship(deleteRule: .cascade, inverse: \SubtaskItem.task)
+    var subtasks: [SubtaskItem] = []
+
     init(text: String) {
         self.id = UUID()
         self.text = text
