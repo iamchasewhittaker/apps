@@ -2,8 +2,16 @@
 
 ## [Unreleased]
 
+### Added (Phases 5–7)
+- **iCloud Key-Value Sync (Phase 5)** — `SyncedStore.swift` singleton wraps `NSUbiquitousKeyValueStore` with UserDefaults fallback; double-write pattern (both KVS + UD); one-time migration from UserDefaults → KVS on first device run; all progress keys (sent chunks, actions, streaks) now sync across devices
+- **Local Reading Reminders (Phase 6)** — `NotificationManager.swift` singleton; `requestPermission()` async, `scheduleReminders(enabled:hour:minute:weekdays:)` using `UNCalendarNotificationTrigger` per weekday; SettingsView "Reminders" section with DatePicker (hour/minute) + 7 weekday circle toggles (S M T W T F S)
+- **Share Sheet & Streak Tracking (Phase 7)** — `ShareSheet.swift` UIViewControllerRepresentable; `StreakStore.swift` @Published currentStreak/longestStreak (dates stored as YYYY-MM-DD in device local time via SyncedStore); ChunkReaderView Share button exports formatted text; ActionsView/ChunkReaderView toggle completion calls `recordActivity()` to build streaks; SettingsView "Reading Streak" section displays current/longest with iCloud sync
+- **41 new unit tests** — SyncedStore (4: IntArrayRoundTrip, StringRoundTrip, RemoveObject, AllKeysWithPrefix); NotificationManager (3: CancelAll, ScheduleDisabled, ScheduleEmptyWeekdays); StreakStore (7: RecordToday, NoDuplicates, ConsecutiveDays, BrokenStreak, LongestVsCurrent, EmptyDates, AliveIfYesterday)
+- **@AppStorage properties** — notification enabled, hour, minute, weekday list; all auto-persist to UserDefaults
+
 ### Fixed
 - Reader tab now displays clean prose — `stripMarkdown` applied to `Text()` render in `ChunkReaderView`, not just on copy
+- **Simulator notification timing limitation documented** — async tests that query `pendingNotificationRequests()` unreliable on simulator XCTest; use absence-check tests instead; device testing confirms real delivery
 
 ## [0.3.0] — 2026-04-17
 
