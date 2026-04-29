@@ -1,5 +1,5 @@
 # App Portfolio — Management Roadmap
-> Last updated: 2026-04-28 (Fairway iOS — Phase 2 GrassSubZone model + device install; 62 tests) | Maintained by Chase
+> Last updated: 2026-04-29 (Learning documentation system — PATTERNS.md + AI_PLAYBOOK.md + GLOSSARY expansion + 5× DECISIONS.md + CLAUDE.md step 6b) | Maintained by Chase
 
 ---
 
@@ -65,6 +65,7 @@
 | 16 | 🟢 Low | Wellness | Sleep correlation chart — Oura readiness/sleep/HRV vs mood vs productivity over time | 💡 Idea |
 | 17 | 🟢 Low | Job Search | Auto-draft follow-up email when application ages past 7 days | 💡 Idea |
 | 18 | 🟢 Low | All | PWA push notifications — wellness streak nudges, job search follow-up reminders | 💡 Idea |
+| 19 | 🟢 Low | Portfolio-wide | **Full DECISIONS.md audit trail** — create `DECISIONS.md` for all 40+ apps with meaningful architecture history (backfill from LEARNINGS.md). Phase 1 done (5 active apps). See `docs/DECISIONS_HIGHLIGHTS.md` for curated entries. | 💡 Future |
 
 ---
 
@@ -245,6 +246,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-29 | Portfolio-wide | — | **Learning documentation system.** Added `PATTERNS.md` (root, 20 seeded recipes), `AI_PLAYBOOK.md` (root, prompting strategies), `docs/GLOSSARY.md` expanded (AI/ML + Dev Architecture + DevOps + PM vocab), `docs/templates/DECISIONS_TEMPLATE.md`, `docs/DECISIONS_HIGHLIGHTS.md` (15-entry interview greatest hits). `DECISIONS.md` backfilled for 5 apps (fairway-ios, clarity-budget-web, job-search-hq, unnamed-ios, clarity-command). `CLAUDE.md` session-end ritual gains step 6b (decisions/patterns/vocabulary + reflection question). `scripts/new-app` scaffolds `DECISIONS.md` for new apps. Future: full audit trail across all 40+ apps (see ROADMAP later). | `PATTERNS.md` · `AI_PLAYBOOK.md` · `docs/GLOSSARY.md` · 5× `DECISIONS.md` · `CLAUDE.md` step 6b · `scripts/new-app` |
 | 2026-04-28 | Clarity Budget (web) | v0.4 | **Step 8 — `/settings` Privacy connector + card mapping (local).** New `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` (mirrors YnabConnectorCard's stored/replacing/new modes; card row with payee `<select>` + optimistic update / rollback). New `app/api/settings/cards/{route,[token]/route}.ts` (GET user's cards + PATCH `linked_payee_id` with audit log `card_payee_linked`). New `app/api/ynab/payees/route.ts` (server proxy via `loadYnabCredentials` + new `fetchPayees` in `lib/ynab.ts`). `settings/page.tsx` probes both `ynab_token_ciphertext` + `privacy_token_ciphertext`; conditional `<CardMappingTable />`. tsc ✅ · lint ✅ (touched files) · vitest 49/49 ✅ · build ✅ (3 new `ƒ` routes) · unauth probes 401/401/401/307 ✅. **No new migration** — `linked_payee_id` column + `privacy_token` API support already shipped in Step 1. | `portfolio/clarity-budget-web/` · CHANGELOG + ROADMAP + HANDOFF + LEARNINGS updated · Step 9 next: split `HomeDashboard.tsx` |
 | 2026-04-28 | Clarity Budget (web) | v0.4 | **Step 7 — `/flags` UI shipped.** Weirdness flags inbox: `app/(app-shell)/flags/page.tsx` (server component, queries `clarity_budget_flags` status=open), `components/flags/{FlagList,FlagRow}.tsx` (client list + per-type row with severity chip + contextual details), `app/api/flags/[id]/route.ts` (PATCH; writes `status='acknowledged'`, `acknowledged_at`, audit log `flag_dismissed`). Flags nav link added to NavBar. tsc ✅ · lint ✅ · build ✅ · unauth 307/401 ✅ · commit `2861907` deployed. | `portfolio/clarity-budget-web/` · CHANGELOG + ROADMAP + HANDOFF + LEARNINGS updated · Step 8 next: Privacy connector + card mapping |
 | 2026-04-28 | Gmail Forge × Job Search HQ | v0.3 / v8.18 | **3-pass match refactor + LinkedIn social split + end-to-end verify.** `matchRules_()` refactored to address-before-domain (3 passes: exact address/toAlias → domain → subject patterns). LinkedIn social addresses (`messages-noreply`, `invitations`, `updates-noreply`) moved to Notification so connection suggestions don't pollute JSHQ's InboxPanel. `healthCheck_jobSearch_` renamed to `healthCheck_jobSearch` (trailing `_` hides function from Apps Script Run dropdown). `JobSearch` label created in Gmail. XML re-imported. JSHQ end-to-end verified: trigger active, label exists, system ready for first real job email. | `portfolio/gmail-forge/` + `portfolio/job-search-hq/` · CHANGELOG/HANDOFF/LEARNINGS updated for both |

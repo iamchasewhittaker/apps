@@ -407,6 +407,14 @@ When you **ship or materially extend** an app in this portfolio, **use Linear** 
 > 4. Update `/ROADMAP.md` (repo root) Change Log table with a new row
 > 5. Update `HANDOFF.md` State table — Focus, Next, Last touch
 > 6. Update that app's `LEARNINGS.md` — **always** append at least one line: what changed, why, and any surprises. This is mandatory, not conditional.
+> 6b. **Capture decisions, patterns, and vocabulary** — If an architectural or design choice was made (chose between alternatives, picked a technology, designed a data model), append to that app's `DECISIONS.md` (create from `docs/templates/DECISIONS_TEMPLATE.md` if it doesn't exist). If a reusable code recipe was discovered, append to root `PATTERNS.md`. If an AI technique was notably effective or ineffective, append to root `AI_PLAYBOOK.md`. If a new technical term was used that Chase might benefit from defining, append to `docs/GLOSSARY.md`. **Skip any that don't apply.** Then ask Chase one reflection question (rotate from the bank below) and append his answer as the `> **Chase:**` line in the relevant entry. If Chase says "skip" — accept it, append "—", and move on.
+>
+> **Reflection question bank** (pick one based on what happened this session):
+> - *Decisions:* "What would make you revisit this decision?" / "If you explained this to an interviewer in 15 seconds, what would you say?"
+> - *Patterns:* "Where else in the portfolio could this save time?" / "When would this pattern break?"
+> - *AI techniques:* "What made this approach click vs. times it didn't?"
+> - *General:* "What's the one thing from this session you want to remember in 6 months?"
+>
 > 7. **New app or first-time branding:** ensure `**docs/BRANDING.md`** exists (copy from `[docs/templates/PORTFOLIO_APP_BRANDING.md](docs/templates/PORTFOLIO_APP_BRANDING.md)`) and is linked from that app's `CLAUDE.md`
 > 8. **Update Linear (heartbeat)** — for the modified app's Linear project (from the portfolio metadata table), post a brief activity comment summarizing what shipped and move any now-complete issues to Done. If the app has no Linear project yet, create one under team **Whittaker**. This is the lightweight per-session heartbeat, not the full `"update linear"` audit below.
 > 9. **Update Shipyard** — run the Shipyard sync so [portfolio/shipyard](portfolio/shipyard) reflects any portfolio-metadata-table changes in this file (`cd portfolio/shipyard && npm run sync:projects`). Flag any app missing from the Shipyard UI after the sync.

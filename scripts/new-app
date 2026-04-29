@@ -255,6 +255,8 @@ cat > "$APP_DIR/LEARNINGS.md" << LRNEOF
 > Mistakes, fixes, and "aha" moments captured from real sessions.
 > **AI tools:** read this at session start alongside CLAUDE.md for project-specific gotchas.
 > **Chase:** append an entry any time something goes wrong or clicks.
+>
+> See also: \`DECISIONS.md\` (architecture choices) in this app, \`/PATTERNS.md\` (reusable recipes) at repo root.
 
 ---
 
@@ -272,6 +274,21 @@ cat > "$APP_DIR/LEARNINGS.md" << LRNEOF
 
 *(No entries yet — add the first one after something surprising happens.)*
 LRNEOF
+
+# --- DECISIONS.md ---
+cat > "$APP_DIR/DECISIONS.md" << DECEOF
+# Decisions — $TITLE
+
+> Architecture and design decisions for this app.
+> Each entry records what was decided, why, and what was considered.
+> Read alongside LEARNINGS.md (what went wrong) and CHANGELOG.md (what shipped).
+>
+> See also: \`/PATTERNS.md\` (reusable code recipes) at repo root.
+
+---
+
+*(No decisions yet. The first entry will be added when an architectural choice is made.)*
+DECEOF
 
 # --- Cursor symlink ---
 ln -s ../../../../.cursor/rules/session-handoff.mdc "$APP_DIR/.cursor/rules/session-handoff.mdc"
