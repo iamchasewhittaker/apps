@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type Props = {
@@ -15,10 +16,14 @@ async function postCredentials(payload: { privacy_token: string }) {
 }
 
 export function PrivacyConnectorCard({ hasEncryptedPrivacyToken }: Props) {
+  const router = useRouter();
   const [replacing, setReplacing] = useState(false);
   const [savingToken, setSavingToken] = useState(false);
   const [tokenError, setTokenError] = useState("");
   const [storedJustNow, setStoredJustNow] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<string | null>(null);
+  const [syncError, setSyncError] = useState<string | null>(null);
 
   const stored = (hasEncryptedPrivacyToken || storedJustNow) && !replacing;
 
@@ -41,30 +46,41 @@ export function PrivacyConnectorCard({ hasEncryptedPrivacyToken }: Props) {
     }
   }
 
+  async function handleSyncNow() {
+    setSyncing(true);
+    setSyncResult(null);
+    setSyncError(null);
+    try {
+      const res = await fetch("/api/privacy/sync", { method: "POST" });
+      const body = (await res.json().catch(() => ({}))) as { cards?: number; transactions?: number; error?: string };
+      if (!res.ok) {
+        setSyncError(body.error ?? `Sync failed (HTTP ${res.status})`);
+        return;
+      }
+      setSyncResult(`Synced ${body.cards ?? 0} cards, ${body.transactions ?? 0} transactions`);
+      router.refresh();
+    } catch (e) {
+      setSyncError(e instanceof Error ? e.message : "Sync failed");
+    } finally {
+      setSyncing(false);
+    }
+  }
+
   return (
     <section className="mb-5 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5">
-      <h2 className="text-base font-semibold text-white">
-        Privacy.com
-      </h2>
+      <h2 className="text-base font-semibold text-white">Privacy.com</h2>
       <p className="mt-1 mb-4 text-sm text-muted">
         API token for card + transaction sync. Encrypted before storage.
       </p>
 
       <div className="mb-2">
-        <div className="mb-1.5 text-xs text-muted">
-          API token
-        </div>
+        <div className="mb-1.5 text-xs text-muted">API token</div>
         {stored ? (
           <div className="flex items-center justify-between gap-3 rounded-lg border border-dimmer bg-bg px-3 py-2.5">
-            <span className="text-sm text-white">
-              Token stored in Supabase ✓
-            </span>
+            <span className="text-sm text-white">Token stored in Supabase ✓</span>
             <button
               type="button"
-              onClick={() => {
-                setReplacing(true);
-                setTokenError("");
-              }}
+              onClick={() => { setReplacing(true); setTokenError(""); }}
               className="rounded-md border border-dimmer bg-transparent px-3 py-1.5 text-sm text-white cursor-pointer"
             >
               Replace
@@ -75,18 +91,26 @@ export function PrivacyConnectorCard({ hasEncryptedPrivacyToken }: Props) {
             saving={savingToken}
             error={tokenError}
             showCancel={replacing}
-            onCancel={() => {
-              setReplacing(false);
-              setTokenError("");
-            }}
+            onCancel={() => { setReplacing(false); setTokenError(""); }}
             onSubmit={handleSubmit}
           />
         )}
       </div>
 
-      <p className="mt-2.5 text-xs text-muted">
-        After saving, the daily cron will pull your cards and transactions on its next run.
-      </p>
+      {stored && (
+        <div className="mt-3 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => void handleSyncNow()}
+            disabled={syncing}
+            className={`rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-bg ${syncing ? "opacity-60 cursor-wait" : "cursor-pointer"}`}
+          >
+            {syncing ? "Syncing…" : "Sync now"}
+          </button>
+          {syncResult && <span className="text-xs text-accent">{syncResult}</span>}
+          {syncError && <span className="text-xs text-danger">{syncError}</span>}
+        </div>
+      )}
     </section>
   );
 }

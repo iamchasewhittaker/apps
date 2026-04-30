@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Changed — 2026-04-30 — Server-side YNAB auth + Privacy Sync Now
+- **All YNAB API calls moved server-side.** Token no longer sits in localStorage or makes client-to-YNAB requests. Three new routes handle decryption and proxying: `app/api/ynab/month/route.ts`, `app/api/ynab/transactions/route.ts`, `app/api/ynab/categories/route.ts` — all use `loadYnabCredentials()` and follow the `/api/ynab/budgets` pattern.
+- **`components/HomeDashboard.tsx`**: removed `ynabToken` state and `localStorage.getItem(YNAB_TOKEN_KEY)` read. `refreshMetrics` and `refreshTransactions` now call `/api/ynab/*` routes. `ynabReady` simplified to `blob.ynabCategoryMappings.length > 0`. `showEmpty` simplified to `!loading && !hasMetrics`.
+- **`components/settings/YnabConnectorCard.tsx`**: full rewrite. Accepts `defaultBudgetId: string | null` prop (read from server). Token input POSTs to `/api/credentials` and calls `router.refresh()` — no localStorage write. Budget selector reads server prop; changes POST `default_budget_id` to `/api/credentials`. Removed the three-effect budget-fetch branching and all BudgetBlob budget writes.
+- **`app/(app-shell)/settings/page.tsx`**: removed `<MigrationBanner />`. Now fetches `default_budget_id` from credentials row and passes to `YnabConnectorCard`.
+- **`components/settings/PrivacyConnectorCard.tsx`**: added "Sync now" button (visible when token is stored). Calls `POST /api/privacy/sync`, shows card + transaction counts on success, calls `router.refresh()` so `CardMappingTable` re-renders.
+- **`app/api/privacy/sync/route.ts`**: new POST route (auth required). Calls `pullCards(userId)` then `pullTransactions(userId)`. Returns `{ cards, transactions }`.
+- **Deleted**: `components/settings/MigrationBanner.tsx`. `YNAB_TOKEN_KEY` constant removed from `lib/constants.ts`.
+- **`lib/categorize/credentials.ts`**: removed `user_data` fallback and `backfillDefaultBudgetId`. `loadYnabCredentials` now throws immediately if `default_budget_id` is null — settings page writes it directly.
+
+**Verification:** tsc ✅ · vitest 49/49 ✅ · build ✅ — `/api/ynab/month`, `/api/ynab/transactions`, `/api/ynab/categories`, `/api/privacy/sync` all emit as `ƒ` dynamic. Unauth probes: all 4 → 401 ✓. No YNAB token visible in browser network tab after this change.
+
 ### Added — 2026-04-28 — Step 8: `/settings` Privacy connector + card mapping
 - `components/settings/PrivacyConnectorCard.tsx` — client; mirrors `YnabConnectorCard`'s stored / replacing / new modes. POST `/api/credentials { privacy_token }`. Hint line below: "After saving, the daily cron will pull your cards and transactions on its next run."
 - `components/settings/CardMappingTable.tsx` — client; loads `clarity_budget_privacy_cards` via `GET /api/settings/cards` and YNAB payees via `GET /api/ynab/payees`; renders one row per card with a payee dropdown bound to `linked_payee_id`; optimistic update + rollback on error; PATCH `/api/settings/cards/[token]`. Empty state copy: "No cards synced yet — they'll appear after the next sync runs."

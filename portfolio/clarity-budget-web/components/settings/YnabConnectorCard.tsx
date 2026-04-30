@@ -1,19 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  defaultBlob,
-  loadLocalBlob,
-  saveLocalBlob,
-  type BudgetBlob,
-} from "@/lib/blob";
-import { YNAB_TOKEN_KEY } from "@/lib/constants";
-import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
-import { pushBlob } from "@/lib/sync";
-import { fetchBudgets } from "@/lib/ynab";
+import { useRouter } from "next/navigation";
 
 type Props = {
   hasEncryptedYnabToken: boolean;
+  defaultBudgetId: string | null;
 };
 
 type Budget = { id: string; name: string };
@@ -29,175 +21,65 @@ async function postCredentials(payload: {
   });
 }
 
-async function pushIfSignedIn(b: BudgetBlob) {
-  const sb = getSupabaseBrowserClient();
-  const {
-    data: { session },
-  } = await sb.auth.getSession();
-  if (!session?.user) return;
-  await pushBlob(sb, b, session.user.id);
-}
-
-async function fetchBudgetsViaServer(): Promise<Budget[]> {
-  const res = await fetch("/api/ynab/budgets", { cache: "no-store" });
-  if (!res.ok) {
-    const body = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(body.error ?? `HTTP ${res.status}`);
-  }
-  const json = (await res.json()) as { budgets: Budget[] };
-  return json.budgets;
-}
-
-export function YnabConnectorCard({ hasEncryptedYnabToken }: Props) {
-  const [token, setToken] = useState("");
-  const [blob, setBlob] = useState<BudgetBlob>(defaultBlob());
+export function YnabConnectorCard({ hasEncryptedYnabToken, defaultBudgetId }: Props) {
+  const router = useRouter();
+  const [replacing, setReplacing] = useState(false);
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [loadingBudgets, setLoadingBudgets] = useState(false);
-  const [replacing, setReplacing] = useState(false);
-  const [savingToken, setSavingToken] = useState(false);
-  const [tokenError, setTokenError] = useState("");
-
-  useEffect(() => {
-    setBlob(loadLocalBlob());
-    setToken(window.localStorage.getItem(YNAB_TOKEN_KEY) ?? "");
-  }, []);
+  const [selectedBudget, setSelectedBudget] = useState(defaultBudgetId ?? "");
 
   const stored = hasEncryptedYnabToken && !replacing;
 
   useEffect(() => {
-    let cancelled = false;
-    if (stored) {
-      setLoadingBudgets(true);
-      void (async () => {
-        try {
-          const list = await fetchBudgetsViaServer();
-          if (!cancelled) setBudgets(list);
-        } catch {
-          if (!cancelled) setBudgets([]);
-        } finally {
-          if (!cancelled) setLoadingBudgets(false);
-        }
-      })();
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const t = token.trim();
-    if (!t) {
+    if (!stored) {
       setBudgets([]);
       return;
     }
+    let cancelled = false;
     setLoadingBudgets(true);
-    void (async () => {
-      try {
-        const list = await fetchBudgets(t);
-        if (!cancelled) setBudgets(list);
-      } catch {
-        if (!cancelled) setBudgets([]);
-      } finally {
-        if (!cancelled) setLoadingBudgets(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [stored, token]);
+    void fetch("/api/ynab/budgets", { cache: "no-store" })
+      .then((r) => r.ok ? r.json() : Promise.reject(r.status))
+      .then((json: { budgets: Budget[] }) => { if (!cancelled) setBudgets(json.budgets); })
+      .catch(() => { if (!cancelled) setBudgets([]); })
+      .finally(() => { if (!cancelled) setLoadingBudgets(false); });
+    return () => { cancelled = true; };
+  }, [stored]);
 
-  function handleTokenChange(next: string) {
-    setToken(next);
-    if (next.trim()) {
-      window.localStorage.setItem(YNAB_TOKEN_KEY, next);
-      void postCredentials({ ynab_token: next.trim() });
-    } else {
-      window.localStorage.removeItem(YNAB_TOKEN_KEY);
-    }
+  async function handleBudgetChange(id: string) {
+    setSelectedBudget(id);
+    if (!id) return;
+    await postCredentials({ default_budget_id: id });
+    router.refresh();
   }
-
-  async function handleReplaceSubmit(next: string) {
-    const trimmed = next.trim();
-    if (!trimmed) return;
-    setSavingToken(true);
-    setTokenError("");
-    try {
-      const res = await postCredentials({ ynab_token: trimmed });
-      if (!res.ok) {
-        const body = (await res.json().catch(() => ({}))) as { error?: string };
-        setTokenError(body.error ?? `Save failed (HTTP ${res.status})`);
-        return;
-      }
-      window.localStorage.setItem(YNAB_TOKEN_KEY, trimmed);
-      setReplacing(false);
-      setToken(trimmed);
-    } finally {
-      setSavingToken(false);
-    }
-  }
-
-  function handleBudgetChange(id: string) {
-    const next: BudgetBlob = {
-      ...blob,
-      ynabBudgetId: id || null,
-      ynabCategoryMappings: id ? blob.ynabCategoryMappings : [],
-      ynabAutoSuggestGroupIds: id ? (blob.ynabAutoSuggestGroupIds ?? []) : [],
-    };
-    const saved = saveLocalBlob(next);
-    setBlob(saved);
-    void pushIfSignedIn(saved);
-    if (id) void postCredentials({ default_budget_id: id });
-  }
-
-  const budgetDisabled =
-    (stored ? loadingBudgets : !token.trim() || loadingBudgets);
 
   return (
     <section className="mb-5 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5">
-      <h2 className="text-base font-semibold text-white">
-        YNAB
-      </h2>
+      <h2 className="text-base font-semibold text-white">YNAB</h2>
       <p className="mt-1 mb-4 text-sm text-muted">
         Personal access token and active budget. Encrypted before sync.
       </p>
 
       <div className="mb-3.5">
-        <div className="mb-1.5 text-xs text-muted">
-          Personal access token
-        </div>
+        <div className="mb-1.5 text-xs text-muted">Personal access token</div>
         {stored ? (
           <div className="flex items-center justify-between gap-3 rounded-lg border border-dimmer bg-bg px-3 py-2.5">
-            <span className="text-sm text-white">
-              Token stored in Supabase ✓
-            </span>
+            <span className="text-sm text-white">Token stored in Supabase ✓</span>
             <button
               type="button"
-              onClick={() => {
-                setReplacing(true);
-                setToken("");
-                setTokenError("");
-              }}
+              onClick={() => { setReplacing(true); }}
               className="rounded-md border border-dimmer bg-transparent px-3 py-1.5 text-sm text-white cursor-pointer"
             >
               Replace
             </button>
           </div>
-        ) : replacing ? (
-          <ReplaceTokenInput
-            saving={savingToken}
-            error={tokenError}
-            onCancel={() => {
-              setReplacing(false);
-              setTokenError("");
-            }}
-            onSubmit={handleReplaceSubmit}
-          />
         ) : (
-          <input
-            type="password"
-            autoComplete="off"
-            value={token}
-            onChange={(e) => handleTokenChange(e.target.value)}
-            placeholder="ynab_..."
-            className="block w-full rounded-lg border border-dimmer bg-bg px-3 py-2 text-sm text-white"
+          <ReplaceTokenInput
+            onCancel={hasEncryptedYnabToken ? () => setReplacing(false) : undefined}
+            onSubmit={async (next) => {
+              await postCredentials({ ynab_token: next });
+              setReplacing(false);
+              router.refresh();
+            }}
           />
         )}
       </div>
@@ -205,16 +87,16 @@ export function YnabConnectorCard({ hasEncryptedYnabToken }: Props) {
       <label className="block text-xs text-muted">
         Budget
         <select
-          value={blob.ynabBudgetId ?? ""}
-          onChange={(e) => handleBudgetChange(e.target.value)}
-          disabled={budgetDisabled}
+          value={selectedBudget}
+          onChange={(e) => void handleBudgetChange(e.target.value)}
+          disabled={!stored || loadingBudgets}
           className="mt-1.5 block w-full rounded-lg border border-dimmer bg-bg px-3 py-2 text-sm text-white"
         >
           <option value="">
-            {loadingBudgets
-              ? "Loading…"
-              : !stored && !token.trim()
+            {!stored
               ? "Add a token first"
+              : loadingBudgets
+              ? "Loading…"
               : budgets.length === 0
               ? "No budgets found"
               : "— Select —"}
@@ -231,17 +113,30 @@ export function YnabConnectorCard({ hasEncryptedYnabToken }: Props) {
 }
 
 function ReplaceTokenInput({
-  saving,
-  error,
   onCancel,
   onSubmit,
 }: {
-  saving: boolean;
-  error: string;
-  onCancel: () => void;
-  onSubmit: (next: string) => void;
+  onCancel?: () => void;
+  onSubmit: (next: string) => Promise<void>;
 }) {
   const [value, setValue] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit() {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    setSaving(true);
+    setError("");
+    try {
+      await onSubmit(trimmed);
+    } catch {
+      setError("Save failed. Check the token and try again.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <div>
       <input
@@ -255,7 +150,7 @@ function ReplaceTokenInput({
       <div className="mt-2 flex gap-2">
         <button
           type="button"
-          onClick={() => onSubmit(value)}
+          onClick={() => void handleSubmit()}
           disabled={saving || !value.trim()}
           className={`rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-bg ${
             saving || !value.trim() ? "opacity-60 cursor-wait" : "cursor-pointer"
@@ -263,18 +158,18 @@ function ReplaceTokenInput({
         >
           {saving ? "Saving…" : "Save"}
         </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={saving}
-          className="rounded-md border border-dimmer bg-transparent px-3 py-1.5 text-sm text-white cursor-pointer"
-        >
-          Cancel
-        </button>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={saving}
+            className="rounded-md border border-dimmer bg-transparent px-3 py-1.5 text-sm text-white cursor-pointer"
+          >
+            Cancel
+          </button>
+        )}
       </div>
-      {error && (
-        <div className="mt-2 text-sm text-danger">{error}</div>
-      )}
+      {error && <div className="mt-2 text-sm text-danger">{error}</div>}
     </div>
   );
 }

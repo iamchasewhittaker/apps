@@ -10,7 +10,6 @@ import {
 } from "@/lib/blob";
 import {
   STORE_KEY,
-  YNAB_TOKEN_KEY,
   YNAB_TX_KEY,
 } from "@/lib/constants";
 import {
@@ -25,11 +24,10 @@ import { pullBlob, pushBlob } from "@/lib/sync";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
 import { suggestRole, type RoleRaw } from "@/lib/suggestRole";
 import { groupMappingsForDisplay, mergeCategoryMappingsFromGroups } from "@/lib/ynabCategoryMerge";
-import {
-  fetchCategories,
-  fetchMonth,
-  fetchTransactions,
-  type YNABTransaction,
+import type {
+  YNABCategoryGroupDTO,
+  YNABMonth,
+  YNABTransaction,
 } from "@/lib/ynab";
 import { flattenSpendLines } from "@/lib/aggregations";
 import { applyFilters, useUrlFilterState } from "@/lib/filterState";
@@ -79,7 +77,6 @@ function saveTxCache(data: YNABTransaction[]) {
 
 export function HomeDashboard() {
   const [blob, setBlob] = useState<BudgetBlob>(defaultBlob());
-  const [ynabToken, setYnabToken] = useState("");
 
   const [safeM, setSafeM] = useState<number | null>(null);
   const [safeD, setSafeD] = useState<number | null>(null);
@@ -97,7 +94,6 @@ export function HomeDashboard() {
   useEffect(() => {
     const b = loadLocalBlob();
     setBlob(b);
-    setYnabToken(localStorage.getItem(YNAB_TOKEN_KEY) || "");
     const cache = loadTxCache();
     if (cache?.data?.length) setTransactions(cache.data);
   }, []);
@@ -144,60 +140,67 @@ export function HomeDashboard() {
 
   const refreshTransactions = useCallback(
     async (force = false) => {
-      const t = ynabToken.trim();
-      const budgetId = (blob.ynabBudgetId ?? "").trim();
-      if (!t || !budgetId) return;
-
       const cache = loadTxCache();
       if (!force && cache && Date.now() - cache.ts < TX_CACHE_MS) return;
 
       setTxLoading(true);
       setTxErr(null);
       try {
-        const txns = await fetchTransactions(t, budgetId, txSinceDate());
-        saveTxCache(txns);
-        setTransactions(txns);
+        const res = await fetch(`/api/ynab/transactions?since=${txSinceDate()}`);
+        if (!res.ok) {
+          if (res.status === 400) return;
+          throw new Error(`HTTP ${res.status}`);
+        }
+        const json = (await res.json()) as { transactions: YNABTransaction[] };
+        saveTxCache(json.transactions);
+        setTransactions(json.transactions);
       } catch (e) {
         setTxErr(e instanceof Error ? e.message : "Could not load transactions");
       } finally {
         setTxLoading(false);
       }
     },
-    [blob.ynabBudgetId, ynabToken]
+    []
   );
 
   const refreshMetrics = useCallback(
     async (force = false) => {
       setErr(null);
-      const t = ynabToken.trim();
-      const budgetId = (blob.ynabBudgetId ?? "").trim();
-      if (!t || !budgetId) {
-        setSafeM(null);
-        setSafeD(null);
-        setSafeW(null);
-        setShortfall(null);
-        return;
-      }
       setLoading(true);
       try {
         const base = loadLocalBlob();
         let mappings = base.ynabCategoryMappings;
         try {
-          const groups = await fetchCategories(t, budgetId);
-          const merged = mergeCategoryMappingsFromGroups(base, groups);
-          mappings = merged;
-          persistBlob({ ...base, ynabCategoryMappings: merged });
-          setCategorySyncErr(null);
+          const catRes = await fetch("/api/ynab/categories");
+          if (catRes.ok) {
+            const catJson = (await catRes.json()) as { groups: YNABCategoryGroupDTO[] };
+            const merged = mergeCategoryMappingsFromGroups(base, catJson.groups);
+            mappings = merged;
+            persistBlob({ ...base, ynabCategoryMappings: merged });
+            setCategorySyncErr(null);
+          } else if (catRes.status === 400) {
+            setLoading(false);
+            return;
+          }
         } catch (e) {
           setCategorySyncErr(
             e instanceof Error ? e.message : "Could not load YNAB categories."
           );
         }
         if (!mappings.length) {
-          setErr("Pick a budget and wait for categories to load, or map roles below.");
+          setLoading(false);
           return;
         }
-        const month = await fetchMonth(t, budgetId, new Date());
+        const monthRes = await fetch("/api/ynab/month");
+        if (!monthRes.ok) {
+          if (monthRes.status !== 400) {
+            const body = (await monthRes.json().catch(() => ({}))) as { error?: string };
+            setErr(body.error ?? `HTTP ${monthRes.status}`);
+          }
+          return;
+        }
+        const monthJson = (await monthRes.json()) as { month: YNABMonth };
+        const month = monthJson.month;
         const tbb = (month.to_be_budgeted ?? 0) / 1000;
         const balances = buildBalances(month.categories, mappings);
         const sts = safeToSpend(balances, tbb);
@@ -214,7 +217,7 @@ export function HomeDashboard() {
         setLoading(false);
       }
     },
-    [blob.ynabBudgetId, ynabToken, persistBlob, refreshTransactions]
+    [persistBlob, refreshTransactions]
   );
 
   useEffect(() => {
@@ -261,13 +264,9 @@ export function HomeDashboard() {
   );
 
   const categoryRoleGroups = groupMappingsForDisplay(blob.ynabCategoryMappings);
-  const ynabReady =
-    ynabToken.trim().length > 0 && (blob.ynabBudgetId ?? "").trim().length > 0;
+  const ynabReady = blob.ynabCategoryMappings.length > 0;
   const hasMetrics = safeM != null;
-  const showEmpty =
-    !loading &&
-    !hasMetrics &&
-    (!ynabToken.trim() || !blob.ynabBudgetId || !blob.ynabCategoryMappings.length);
+  const showEmpty = !loading && !hasMetrics;
   const hasSpending = spendLines.length > 0;
 
   return (

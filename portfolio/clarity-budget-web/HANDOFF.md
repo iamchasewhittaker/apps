@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Step 9 — split `HomeDashboard.tsx`** (Step 8 implementation done; commit + deploy pending) |
-| Status | tsc ✅ · lint ✅ (touched files) · vitest 49/49 ✅ · build ✅ · all 3 new routes emit as `ƒ` dynamic. Unauth probes pass (401/401/401/307). Deploy pending push to `main`. |
-| Last touch | 2026-04-28 |
+| Focus | **Step 10 — smoke test on production** (server-side auth simplification done 2026-04-30) |
+| Status | tsc ✅ · vitest 49/49 ✅ · build ✅ · all new routes `ƒ` dynamic · unauth 401s confirmed. Push to `main` + deploy pending. |
+| Last touch | 2026-04-30 |
 | URL | clarity-budget-web.vercel.app |
 | Branch | `main` |
 | Steps 1–7 | ✅ DONE + deployed |

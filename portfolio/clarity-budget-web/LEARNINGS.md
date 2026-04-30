@@ -1,5 +1,13 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-30 — Server-side auth simplification
+
+**Self-healing fallbacks are a symptom, not a fix.** `loadYnabCredentials` had a `readBudgetIdFromUserData` fallback because the same data lived in both `clarity_budget_credentials.default_budget_id` and `user_data.data.ynabBudgetId`. Two sources of truth required a reconciliation function. The fix was to delete one of the sources (the `user_data` path), not improve the reconciliation.
+
+**Moving API calls server-side is straightforward when the pattern already exists.** The `fetchMonth`, `fetchTransactions`, and `fetchCategories` functions in `lib/ynab.ts` didn't change at all — three new route files each just wired `loadYnabCredentials()` to one of them. The client swap in `HomeDashboard` was also mechanical: replace `fetchX(token, budgetId, ...)` with `fetch('/api/ynab/x?...')`. No new logic anywhere.
+
+**`useCallback` deps clarify when a refactor is complete.** Before: `refreshMetrics` depended on `[blob.ynabBudgetId, ynabToken, persistBlob, refreshTransactions]`. After: `[persistBlob, refreshTransactions]`. Dropping two values from the dep array was the signal that the token and budget ID were truly gone from the client.
+
 ## 2026-04-28 — Step 8 `/settings` Privacy connector + card mapping
 
 **`/api/credentials` already accepted `privacy_token` from Step 1.** No backend change needed for the connector — Step 8 was almost entirely UI plus one PATCH route + one read route. Worth checking the existing API surface before drafting new endpoints; saves a migration and a route that don't need to exist.
