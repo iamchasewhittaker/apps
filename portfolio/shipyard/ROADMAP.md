@@ -31,6 +31,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-30 | Sailboat logo on gold background + full page consistency pass (glass-card tokens across all 25 files, ModeHeading for Settings + Linear, display-font heading on ship detail) |
 | 2026-04-26 | Analytics & Themes: heading fixed (mode-aware via `analyticsHeading` label), plain mode is now the default, scanner auto-populates Common Inputs + Cross-App Patterns (15 rows on first run), Portfolio Thesis inline editor |
 | 2026-04-21 | Decommission Ship workflow + editable detail fields + clipboard dev link (replaces dead localhost link from 04-20) |
 | 2026-04-20 | Local dev + Vercel access links — `local_port` column, scanner auto-detect, Ship detail header + Links section *(localhost link superseded 2026-04-21 — every CRA/Next app defaults to port 3000 so the link never reached the intended project; replaced by clipboard-copy button)* |

@@ -4,9 +4,9 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Readability redesign shipped — Trustworthy Blue layout, 3-mode theme (Regular/Nautical/RCT), ActiveShipPanel, ReviewsDuePanel, simplified nav/cards/filter |
-| Next       | **Force push pending user auth** (`git push --force origin main` to unblock Vercel) · Rotate Linear API key (was briefly in commit history; now REDACTED) · Investigate Ash Reader 401 Unauthorized · Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Wire Sort dropdown (currently visual-only) |
-| Last touch | 2026-04-29                                                            |
+| Focus      | Sailboat logo on gold background + full page consistency pass — all pages now match homepage glass-card design language; zero old tokens remaining |
+| Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Wire Sort dropdown (currently visual-only) · Linear Harbor Master sync |
+| Last touch | 2026-04-30                                                            |
 
 ## Production URL
 

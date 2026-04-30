@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipyard Logo Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=DM+Mono:wght@400&family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A1128;
+    --surface: #0F1A3E;
+    --gold: #FFD700;
+    --steel: #A0AABF;
+    --dimmer: #1A2A50;
+    --white: #F2EEE6;
+    --dim: #A0AABF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Instrument Sans', sans-serif;
+    padding: 48px;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 48px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    position: relative;
+    display: inline-block;
+  }
+  h1::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 100%; height: 2px;
+    background: var(--gold);
+  }
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+    margin-bottom: 48px;
+  }
+
+  .variant-section {
+    margin-bottom: 64px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--dimmer);
+  }
+  .variant-section:last-child { border-bottom: none; }
+
+  .variant-name {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .variant-desc {
+    font-size: 14px;
+    color: var(--steel);
+    margin-bottom: 32px;
+  }
+
+  .row { display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
+
+  /* Size strip */
+  .sizes { display: flex; gap: 24px; align-items: flex-end; }
+  .size-item { text-align: center; }
+  .size-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin-top: 8px;
+  }
+
+  /* Sidebar simulation */
+  .sidebar-sim {
+    background: rgba(15, 26, 62, 0.8);
+    border: 1px solid var(--dimmer);
+    border-radius: 12px;
+    padding: 20px 16px;
+    width: 220px;
+    backdrop-filter: blur(8px);
+  }
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .sidebar-text-title {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .sidebar-text-sub {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    color: var(--steel);
+    text-transform: capitalize;
+    margin-top: 2px;
+  }
+  .sidebar-group-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(160, 170, 191, 0.6);
+    padding: 0 8px;
+    margin-bottom: 6px;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--steel);
+    min-height: 40px;
+  }
+  .sidebar-item.active {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .sidebar-item-icon { width: 18px; text-align: center; flex-shrink: 0; }
+
+  /* Lockup */
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .lockup-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .lockup-title {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    position: relative;
+    display: inline-block;
+  }
+  .lockup-title::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -3px;
+    width: 100%; height: 2px;
+    background: var(--gold);
+  }
+  .lockup-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+    margin-top: 10px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Logo Options</h1>
+<p class="subtitle">Shipyard &mdash; Fleet Command &bull; Pick your mark</p>
+
+<!-- ============ OPTION 1: ANCHOR ============ -->
+<div class="variant-section">
+  <div class="variant-name">1. Anchor</div>
+  <p class="variant-desc">Classic ship anchor. Shank, stock, curved flukes, ring at top. The one from the screenshot.</p>
+  <div class="row">
+    <div>
+      <div class="section-label">Sizes</div>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Ring at top -->
+              <circle cx="512" cy="210" r="65"/>
+              <!-- Shank -->
+              <line x1="512" y1="275" x2="512" y2="780"/>
+              <!-- Stock / crossbar -->
+              <line x1="310" y1="380" x2="714" y2="380"/>
+              <!-- Left fluke -->
+              <path d="M512 780 Q360 780 280 660" fill="none"/>
+              <!-- Right fluke -->
+              <path d="M512 780 Q664 780 744 660" fill="none"/>
+            </g>
+            <!-- Small horizontal bar at bottom of shank -->
+            <line x1="440" y1="780" x2="584" y2="780" stroke="#0A1128" stroke-width="56" stroke-linecap="round"/>
+          </svg>
+          <div class="size-label">96px &middot; Lockup</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="210" r="65"/>
+              <line x1="512" y1="275" x2="512" y2="780"/>
+              <line x1="310" y1="380" x2="714" y2="380"/>
+              <path d="M512 780 Q360 780 280 660" fill="none"/>
+              <path d="M512 780 Q664 780 744 660" fill="none"/>
+            </g>
+            <line x1="440" y1="780" x2="584" y2="780" stroke="#0A1128" stroke-width="56" stroke-linecap="round"/>
+          </svg>
+          <div class="size-label">56px &middot; Card</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="210" r="65"/>
+              <line x1="512" y1="275" x2="512" y2="780"/>
+              <line x1="310" y1="380" x2="714" y2="380"/>
+              <path d="M512 780 Q360 780 280 660" fill="none"/>
+              <path d="M512 780 Q664 780 744 660" fill="none"/>
+            </g>
+            <line x1="440" y1="780" x2="584" y2="780" stroke="#0A1128" stroke-width="56" stroke-linecap="round"/>
+          </svg>
+          <div class="size-label">36px &middot; Sidebar</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="72" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="230" r="60"/>
+              <line x1="512" y1="290" x2="512" y2="770"/>
+              <line x1="320" y1="390" x2="704" y2="390"/>
+              <path d="M512 770 Q370 770 290 660" fill="none"/>
+              <path d="M512 770 Q654 770 734 660" fill="none"/>
+            </g>
+          </svg>
+          <div class="size-label">24px &middot; Favicon</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Sidebar context</div>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="210" r="65"/>
+              <line x1="512" y1="275" x2="512" y2="780"/>
+              <line x1="310" y1="380" x2="714" y2="380"/>
+              <path d="M512 780 Q360 780 280 660"/>
+              <path d="M512 780 Q664 780 744 660"/>
+            </g>
+            <line x1="440" y1="780" x2="584" y2="780" stroke="#0A1128" stroke-width="56" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div class="sidebar-text-title">Shipyard</div>
+            <div class="sidebar-text-sub">Fleet Command</div>
+          </div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Portfolio</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Horizontal lockup</div>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="64" height="64">
+          <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+          <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="512" cy="210" r="65"/>
+            <line x1="512" y1="275" x2="512" y2="780"/>
+            <line x1="310" y1="380" x2="714" y2="380"/>
+            <path d="M512 780 Q360 780 280 660"/>
+            <path d="M512 780 Q664 780 744 660"/>
+          </g>
+          <line x1="440" y1="780" x2="584" y2="780" stroke="#0A1128" stroke-width="56" stroke-linecap="round"/>
+        </svg>
+        <div class="lockup-text">
+          <span class="lockup-title">SHIPYARD</span>
+          <span class="lockup-sub">Fleet Command</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OPTION 2: HELM ============ -->
+<div class="variant-section">
+  <div class="variant-name">2. Helm</div>
+  <p class="variant-desc">Simplified ship's wheel. Outer ring, 8 spokes, handle pegs at cardinal points. Evolution of the current logo.</p>
+  <div class="row">
+    <div>
+      <div class="section-label">Sizes</div>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="48" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Outer wheel -->
+              <circle cx="512" cy="512" r="300"/>
+              <!-- Inner hub -->
+              <circle cx="512" cy="512" r="90"/>
+              <!-- 8 spokes -->
+              <line x1="512" y1="422" x2="512" y2="212"/>
+              <line x1="512" y1="602" x2="512" y2="812"/>
+              <line x1="422" y1="512" x2="212" y2="512"/>
+              <line x1="602" y1="512" x2="812" y2="512"/>
+              <line x1="448" y1="448" x2="299" y2="299"/>
+              <line x1="576" y1="448" x2="725" y2="299"/>
+              <line x1="448" y1="576" x2="299" y2="725"/>
+              <line x1="576" y1="576" x2="725" y2="725"/>
+            </g>
+            <!-- Handle pegs (cardinal) -->
+            <circle cx="512" cy="170" r="36" fill="#0A1128"/>
+            <circle cx="512" cy="854" r="36" fill="#0A1128"/>
+            <circle cx="170" cy="512" r="36" fill="#0A1128"/>
+            <circle cx="854" cy="512" r="36" fill="#0A1128"/>
+            <!-- Center dot -->
+            <circle cx="512" cy="512" r="24" fill="#0A1128"/>
+          </svg>
+          <div class="size-label">96px &middot; Lockup</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="48" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="512" r="300"/>
+              <circle cx="512" cy="512" r="90"/>
+              <line x1="512" y1="422" x2="512" y2="212"/>
+              <line x1="512" y1="602" x2="512" y2="812"/>
+              <line x1="422" y1="512" x2="212" y2="512"/>
+              <line x1="602" y1="512" x2="812" y2="512"/>
+              <line x1="448" y1="448" x2="299" y2="299"/>
+              <line x1="576" y1="448" x2="725" y2="299"/>
+              <line x1="448" y1="576" x2="299" y2="725"/>
+              <line x1="576" y1="576" x2="725" y2="725"/>
+            </g>
+            <circle cx="512" cy="170" r="36" fill="#0A1128"/>
+            <circle cx="512" cy="854" r="36" fill="#0A1128"/>
+            <circle cx="170" cy="512" r="36" fill="#0A1128"/>
+            <circle cx="854" cy="512" r="36" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="24" fill="#0A1128"/>
+          </svg>
+          <div class="size-label">56px &middot; Card</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="512" r="300"/>
+              <circle cx="512" cy="512" r="90"/>
+              <line x1="512" y1="422" x2="512" y2="212"/>
+              <line x1="512" y1="602" x2="512" y2="812"/>
+              <line x1="422" y1="512" x2="212" y2="512"/>
+              <line x1="602" y1="512" x2="812" y2="512"/>
+              <line x1="448" y1="448" x2="299" y2="299"/>
+              <line x1="576" y1="448" x2="725" y2="299"/>
+              <line x1="448" y1="576" x2="299" y2="725"/>
+              <line x1="576" y1="576" x2="725" y2="725"/>
+            </g>
+            <circle cx="512" cy="170" r="40" fill="#0A1128"/>
+            <circle cx="512" cy="854" r="40" fill="#0A1128"/>
+            <circle cx="170" cy="512" r="40" fill="#0A1128"/>
+            <circle cx="854" cy="512" r="40" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="28" fill="#0A1128"/>
+          </svg>
+          <div class="size-label">36px &middot; Sidebar</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="72" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="512" r="290"/>
+              <line x1="512" y1="222" x2="512" y2="802"/>
+              <line x1="222" y1="512" x2="802" y2="512"/>
+            </g>
+            <circle cx="512" cy="170" r="50" fill="#0A1128"/>
+            <circle cx="512" cy="854" r="50" fill="#0A1128"/>
+            <circle cx="170" cy="512" r="50" fill="#0A1128"/>
+            <circle cx="854" cy="512" r="50" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="36" fill="#0A1128"/>
+          </svg>
+          <div class="size-label">24px &middot; Favicon</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Sidebar context</div>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="512" r="300"/>
+              <circle cx="512" cy="512" r="90"/>
+              <line x1="512" y1="422" x2="512" y2="212"/>
+              <line x1="512" y1="602" x2="512" y2="812"/>
+              <line x1="422" y1="512" x2="212" y2="512"/>
+              <line x1="602" y1="512" x2="812" y2="512"/>
+              <line x1="448" y1="448" x2="299" y2="299"/>
+              <line x1="576" y1="448" x2="725" y2="299"/>
+              <line x1="448" y1="576" x2="299" y2="725"/>
+              <line x1="576" y1="576" x2="725" y2="725"/>
+            </g>
+            <circle cx="512" cy="170" r="40" fill="#0A1128"/>
+            <circle cx="512" cy="854" r="40" fill="#0A1128"/>
+            <circle cx="170" cy="512" r="40" fill="#0A1128"/>
+            <circle cx="854" cy="512" r="40" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="28" fill="#0A1128"/>
+          </svg>
+          <div>
+            <div class="sidebar-text-title">Shipyard</div>
+            <div class="sidebar-text-sub">Fleet Command</div>
+          </div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Portfolio</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Horizontal lockup</div>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="64" height="64">
+          <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+          <g fill="none" stroke="#0A1128" stroke-width="48" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="512" cy="512" r="300"/>
+            <circle cx="512" cy="512" r="90"/>
+            <line x1="512" y1="422" x2="512" y2="212"/>
+            <line x1="512" y1="602" x2="512" y2="812"/>
+            <line x1="422" y1="512" x2="212" y2="512"/>
+            <line x1="602" y1="512" x2="812" y2="512"/>
+            <line x1="448" y1="448" x2="299" y2="299"/>
+            <line x1="576" y1="448" x2="725" y2="299"/>
+            <line x1="448" y1="576" x2="299" y2="725"/>
+            <line x1="576" y1="576" x2="725" y2="725"/>
+          </g>
+          <circle cx="512" cy="170" r="36" fill="#0A1128"/>
+          <circle cx="512" cy="854" r="36" fill="#0A1128"/>
+          <circle cx="170" cy="512" r="36" fill="#0A1128"/>
+          <circle cx="854" cy="512" r="36" fill="#0A1128"/>
+          <circle cx="512" cy="512" r="24" fill="#0A1128"/>
+        </svg>
+        <div class="lockup-text">
+          <span class="lockup-title">SHIPYARD</span>
+          <span class="lockup-sub">Fleet Command</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OPTION 3: COMPASS ROSE ============ -->
+<div class="variant-section">
+  <div class="variant-name">3. Compass Rose</div>
+  <p class="variant-desc">Four-point star with elongated north pointer. Geometric and bold. Reads well at every size.</p>
+  <div class="row">
+    <div>
+      <div class="section-label">Sizes</div>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <!-- 4-point star: N is taller -->
+            <polygon points="512,140 570,440 512,480 454,440" fill="#0A1128"/>
+            <polygon points="512,880 570,584 512,544 454,584" fill="#0A1128"/>
+            <polygon points="140,512 440,454 480,512 440,570" fill="#0A1128"/>
+            <polygon points="884,512 584,454 544,512 584,570" fill="#0A1128"/>
+            <!-- Diagonal minor points -->
+            <polygon points="280,280 440,440 410,470 250,310" fill="#0A1128" opacity="0.4"/>
+            <polygon points="744,280 584,440 614,470 774,310" fill="#0A1128" opacity="0.4"/>
+            <polygon points="280,744 440,584 410,554 250,714" fill="#0A1128" opacity="0.4"/>
+            <polygon points="744,744 584,584 614,554 774,714" fill="#0A1128" opacity="0.4"/>
+            <!-- Center circle -->
+            <circle cx="512" cy="512" r="40" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="18" fill="#FFD700"/>
+          </svg>
+          <div class="size-label">96px &middot; Lockup</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <polygon points="512,140 570,440 512,480 454,440" fill="#0A1128"/>
+            <polygon points="512,880 570,584 512,544 454,584" fill="#0A1128"/>
+            <polygon points="140,512 440,454 480,512 440,570" fill="#0A1128"/>
+            <polygon points="884,512 584,454 544,512 584,570" fill="#0A1128"/>
+            <polygon points="280,280 440,440 410,470 250,310" fill="#0A1128" opacity="0.4"/>
+            <polygon points="744,280 584,440 614,470 774,310" fill="#0A1128" opacity="0.4"/>
+            <polygon points="280,744 440,584 410,554 250,714" fill="#0A1128" opacity="0.4"/>
+            <polygon points="744,744 584,584 614,554 774,714" fill="#0A1128" opacity="0.4"/>
+            <circle cx="512" cy="512" r="40" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="18" fill="#FFD700"/>
+          </svg>
+          <div class="size-label">56px &middot; Card</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <polygon points="512,160 565,440 512,475 459,440" fill="#0A1128"/>
+            <polygon points="512,864 565,584 512,549 459,584" fill="#0A1128"/>
+            <polygon points="160,512 440,459 475,512 440,565" fill="#0A1128"/>
+            <polygon points="864,512 584,459 549,512 584,565" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="44" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="20" fill="#FFD700"/>
+          </svg>
+          <div class="size-label">36px &middot; Sidebar</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <polygon points="512,160 575,430 512,470 449,430" fill="#0A1128"/>
+            <polygon points="512,864 575,594 512,554 449,594" fill="#0A1128"/>
+            <polygon points="160,512 430,449 470,512 430,575" fill="#0A1128"/>
+            <polygon points="864,512 594,449 554,512 594,575" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="50" fill="#0A1128"/>
+          </svg>
+          <div class="size-label">24px &middot; Favicon</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Sidebar context</div>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <polygon points="512,160 565,440 512,475 459,440" fill="#0A1128"/>
+            <polygon points="512,864 565,584 512,549 459,584" fill="#0A1128"/>
+            <polygon points="160,512 440,459 475,512 440,565" fill="#0A1128"/>
+            <polygon points="864,512 584,459 549,512 584,565" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="44" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="20" fill="#FFD700"/>
+          </svg>
+          <div>
+            <div class="sidebar-text-title">Shipyard</div>
+            <div class="sidebar-text-sub">Fleet Command</div>
+          </div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Portfolio</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Horizontal lockup</div>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="64" height="64">
+          <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+          <polygon points="512,140 570,440 512,480 454,440" fill="#0A1128"/>
+          <polygon points="512,880 570,584 512,544 454,584" fill="#0A1128"/>
+          <polygon points="140,512 440,454 480,512 440,570" fill="#0A1128"/>
+          <polygon points="884,512 584,454 544,512 584,570" fill="#0A1128"/>
+          <polygon points="280,280 440,440 410,470 250,310" fill="#0A1128" opacity="0.4"/>
+          <polygon points="744,280 584,440 614,470 774,310" fill="#0A1128" opacity="0.4"/>
+          <polygon points="280,744 440,584 410,554 250,714" fill="#0A1128" opacity="0.4"/>
+          <polygon points="744,744 584,584 614,554 774,714" fill="#0A1128" opacity="0.4"/>
+          <circle cx="512" cy="512" r="40" fill="#0A1128"/>
+          <circle cx="512" cy="512" r="18" fill="#FFD700"/>
+        </svg>
+        <div class="lockup-text">
+          <span class="lockup-title">SHIPYARD</span>
+          <span class="lockup-sub">Fleet Command</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OPTION 4: LIGHTHOUSE ============ -->
+<div class="variant-section">
+  <div class="variant-name">4. Lighthouse</div>
+  <p class="variant-desc">Beacon tower with lantern room and light rays. Symbolizes guidance and command.</p>
+  <div class="row">
+    <div>
+      <div class="section-label">Sizes</div>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128" stroke="none">
+              <!-- Tower body (trapezoid) -->
+              <polygon points="410,850 614,850 580,380 444,380"/>
+              <!-- Horizontal stripes (cutouts) -->
+              <rect x="430" y="480" width="164" height="24" rx="4" fill="#FFD700"/>
+              <rect x="438" y="580" width="148" height="24" rx="4" fill="#FFD700"/>
+              <rect x="446" y="680" width="132" height="24" rx="4" fill="#FFD700"/>
+              <!-- Lantern room -->
+              <rect x="430" y="300" width="164" height="80" rx="8"/>
+              <!-- Lantern dome -->
+              <path d="M430,300 Q430,240 512,220 Q594,240 594,300 Z"/>
+              <!-- Base platform -->
+              <rect x="390" y="850" width="244" height="30" rx="6"/>
+              <!-- Gallery rail -->
+              <rect x="420" y="372" width="184" height="12" rx="3"/>
+            </g>
+            <!-- Light rays -->
+            <g stroke="#0A1128" stroke-width="28" stroke-linecap="round" opacity="0.6">
+              <line x1="620" y1="310" x2="820" y2="240"/>
+              <line x1="620" y1="340" x2="840" y2="340"/>
+              <line x1="404" y1="310" x2="204" y2="240"/>
+              <line x1="404" y1="340" x2="184" y2="340"/>
+            </g>
+          </svg>
+          <div class="size-label">96px &middot; Lockup</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128" stroke="none">
+              <polygon points="410,850 614,850 580,380 444,380"/>
+              <rect x="430" y="480" width="164" height="24" rx="4" fill="#FFD700"/>
+              <rect x="438" y="580" width="148" height="24" rx="4" fill="#FFD700"/>
+              <rect x="446" y="680" width="132" height="24" rx="4" fill="#FFD700"/>
+              <rect x="430" y="300" width="164" height="80" rx="8"/>
+              <path d="M430,300 Q430,240 512,220 Q594,240 594,300 Z"/>
+              <rect x="390" y="850" width="244" height="30" rx="6"/>
+              <rect x="420" y="372" width="184" height="12" rx="3"/>
+            </g>
+            <g stroke="#0A1128" stroke-width="28" stroke-linecap="round" opacity="0.6">
+              <line x1="620" y1="310" x2="820" y2="240"/>
+              <line x1="620" y1="340" x2="840" y2="340"/>
+              <line x1="404" y1="310" x2="204" y2="240"/>
+              <line x1="404" y1="340" x2="184" y2="340"/>
+            </g>
+          </svg>
+          <div class="size-label">56px &middot; Card</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128" stroke="none">
+              <polygon points="410,850 614,850 580,380 444,380"/>
+              <rect x="430" y="300" width="164" height="80" rx="8"/>
+              <path d="M430,300 Q430,240 512,220 Q594,240 594,300 Z"/>
+              <rect x="390" y="850" width="244" height="30" rx="6"/>
+              <rect x="420" y="372" width="184" height="12" rx="3"/>
+            </g>
+            <g stroke="#0A1128" stroke-width="32" stroke-linecap="round" opacity="0.6">
+              <line x1="620" y1="320" x2="800" y2="260"/>
+              <line x1="404" y1="320" x2="224" y2="260"/>
+            </g>
+          </svg>
+          <div class="size-label">36px &middot; Sidebar</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128" stroke="none">
+              <polygon points="400,860 624,860 584,370 440,370"/>
+              <rect x="420" y="280" width="184" height="90" rx="10"/>
+              <path d="M420,280 Q420,210 512,190 Q604,210 604,280 Z"/>
+              <rect x="380" y="860" width="264" height="34" rx="8"/>
+            </g>
+            <g stroke="#0A1128" stroke-width="40" stroke-linecap="round" opacity="0.5">
+              <line x1="630" y1="310" x2="800" y2="250"/>
+              <line x1="394" y1="310" x2="224" y2="250"/>
+            </g>
+          </svg>
+          <div class="size-label">24px &middot; Favicon</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Sidebar context</div>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128" stroke="none">
+              <polygon points="410,850 614,850 580,380 444,380"/>
+              <rect x="430" y="300" width="164" height="80" rx="8"/>
+              <path d="M430,300 Q430,240 512,220 Q594,240 594,300 Z"/>
+              <rect x="390" y="850" width="244" height="30" rx="6"/>
+              <rect x="420" y="372" width="184" height="12" rx="3"/>
+            </g>
+            <g stroke="#0A1128" stroke-width="32" stroke-linecap="round" opacity="0.6">
+              <line x1="620" y1="320" x2="800" y2="260"/>
+              <line x1="404" y1="320" x2="224" y2="260"/>
+            </g>
+          </svg>
+          <div>
+            <div class="sidebar-text-title">Shipyard</div>
+            <div class="sidebar-text-sub">Fleet Command</div>
+          </div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Portfolio</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Horizontal lockup</div>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="64" height="64">
+          <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+          <g fill="#0A1128" stroke="none">
+            <polygon points="410,850 614,850 580,380 444,380"/>
+            <rect x="430" y="480" width="164" height="24" rx="4" fill="#FFD700"/>
+            <rect x="438" y="580" width="148" height="24" rx="4" fill="#FFD700"/>
+            <rect x="446" y="680" width="132" height="24" rx="4" fill="#FFD700"/>
+            <rect x="430" y="300" width="164" height="80" rx="8"/>
+            <path d="M430,300 Q430,240 512,220 Q594,240 594,300 Z"/>
+            <rect x="390" y="850" width="244" height="30" rx="6"/>
+            <rect x="420" y="372" width="184" height="12" rx="3"/>
+          </g>
+          <g stroke="#0A1128" stroke-width="28" stroke-linecap="round" opacity="0.6">
+            <line x1="620" y1="310" x2="820" y2="240"/>
+            <line x1="620" y1="340" x2="840" y2="340"/>
+            <line x1="404" y1="310" x2="204" y2="240"/>
+            <line x1="404" y1="340" x2="184" y2="340"/>
+          </g>
+        </svg>
+        <div class="lockup-text">
+          <span class="lockup-title">SHIPYARD</span>
+          <span class="lockup-sub">Fleet Command</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OPTION 5: SIGNAL FLAG ============ -->
+<div class="variant-section">
+  <div class="variant-name">5. Signal Flag</div>
+  <p class="variant-desc">Maritime signal pennant on a flagpole. Bold geometric shape with diagonal stripe. Calls to action and communication.</p>
+  <div class="row">
+    <div>
+      <div class="section-label">Sizes</div>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <!-- Flagpole -->
+            <line x1="300" y1="160" x2="300" y2="864" stroke="#0A1128" stroke-width="40" stroke-linecap="round"/>
+            <!-- Pole top ball -->
+            <circle cx="300" cy="160" r="32" fill="#0A1128"/>
+            <!-- Flag body (rectangle pennant) -->
+            <polygon points="320,210 780,210 780,560 320,560" fill="#0A1128"/>
+            <!-- Diagonal stripe cutout -->
+            <polygon points="320,210 780,420 780,560 320,350" fill="#FFD700"/>
+            <!-- Inner stripe -->
+            <polygon points="320,290 780,500 780,420 320,210" fill="#0A1128" opacity="0.5"/>
+          </svg>
+          <div class="size-label">96px &middot; Lockup</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <line x1="300" y1="160" x2="300" y2="864" stroke="#0A1128" stroke-width="40" stroke-linecap="round"/>
+            <circle cx="300" cy="160" r="32" fill="#0A1128"/>
+            <polygon points="320,210 780,210 780,560 320,560" fill="#0A1128"/>
+            <polygon points="320,210 780,420 780,560 320,350" fill="#FFD700"/>
+            <polygon points="320,290 780,500 780,420 320,210" fill="#0A1128" opacity="0.5"/>
+          </svg>
+          <div class="size-label">56px &middot; Card</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <line x1="300" y1="160" x2="300" y2="864" stroke="#0A1128" stroke-width="48" stroke-linecap="round"/>
+            <circle cx="300" cy="160" r="36" fill="#0A1128"/>
+            <polygon points="324,210 780,210 780,560 324,560" fill="#0A1128"/>
+            <polygon points="324,210 780,420 780,560 324,350" fill="#FFD700"/>
+            <polygon points="324,290 780,500 780,420 324,210" fill="#0A1128" opacity="0.5"/>
+          </svg>
+          <div class="size-label">36px &middot; Sidebar</div>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <line x1="290" y1="160" x2="290" y2="864" stroke="#0A1128" stroke-width="56" stroke-linecap="round"/>
+            <polygon points="318,200 800,200 800,580 318,580" fill="#0A1128"/>
+            <polygon points="318,200 800,430 800,580 318,350" fill="#FFD700"/>
+          </svg>
+          <div class="size-label">24px &middot; Favicon</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Sidebar context</div>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <line x1="300" y1="160" x2="300" y2="864" stroke="#0A1128" stroke-width="48" stroke-linecap="round"/>
+            <circle cx="300" cy="160" r="36" fill="#0A1128"/>
+            <polygon points="324,210 780,210 780,560 324,560" fill="#0A1128"/>
+            <polygon points="324,210 780,420 780,560 324,350" fill="#FFD700"/>
+            <polygon points="324,290 780,500 780,420 324,210" fill="#0A1128" opacity="0.5"/>
+          </svg>
+          <div>
+            <div class="sidebar-text-title">Shipyard</div>
+            <div class="sidebar-text-sub">Fleet Command</div>
+          </div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Portfolio</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Horizontal lockup</div>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="64" height="64">
+          <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+          <line x1="300" y1="160" x2="300" y2="864" stroke="#0A1128" stroke-width="40" stroke-linecap="round"/>
+          <circle cx="300" cy="160" r="32" fill="#0A1128"/>
+          <polygon points="320,210 780,210 780,560 320,560" fill="#0A1128"/>
+          <polygon points="320,210 780,420 780,560 320,350" fill="#FFD700"/>
+          <polygon points="320,290 780,500 780,420 320,210" fill="#0A1128" opacity="0.5"/>
+        </svg>
+        <div class="lockup-text">
+          <span class="lockup-title">SHIPYARD</span>
+          <span class="lockup-sub">Fleet Command</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

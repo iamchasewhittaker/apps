@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Changed — 2026-04-30 (Sailboat logo + full page consistency pass)
+
+- **Sailboat logo on gold background.** `src/components/LogoIcon.tsx` redesigned: gold rounded-rect (`rx="220"`) with dark navy sailboat icon (mast, mainsail, headsail, hull, keel, waterline wave). Replaces the original helm SVG. `src/app/icon.tsx` favicon updated to match at 32×32.
+- **Full page consistency pass.** All pages now use the same glass-card design language as the homepage: `bg-surface/80 backdrop-blur-sm border border-dimmer rounded-2xl`. Covered ~25 files across pages and shared components.
+- **`ModeHeading` for Settings + Linear pages.** Both pages had raw `<h1>` tags; now use the `ModeHeading` component (display font + gold-rule underline) to match every other page.
+- **Ship detail heading upgraded.** Raw `text-2xl` heading replaced with `font-display font-bold text-4xl text-white gold-rule inline-block` to match the display-font style used on named pages.
+- **`harborHeading` label key added.** `src/lib/labels.ts` now has `harborHeading` (`"Linear Sync"` / `"Harbor Master"` / `"Linear Sync"`) so the Linear page heading respects the theme toggle.
+- **Settings section headings upgraded.** `text-[11px]` (below typography floor) → `font-mono-label text-xs text-gold uppercase tracking-wider`.
+- **Token sweep across all files.** Eliminated all remaining `text-accent`, `border-border`, `bg-card`, `text-foreground`, `text-muted`, `hover:border-accent`, `focus:border-accent` references from `EditableField.tsx`, `ProjectPickerControls.tsx`, `RetireButton.tsx`, `CopyDevCommand.tsx`, `ThesisEditor.tsx`, `bridge/page.tsx`, `manifest/page.tsx`, `login/page.tsx`, and `portfolio/ShowcaseCard.tsx`.
+
 ### Added — 2026-04-29 (Readability redesign + three-mode theme system)
 
 - **Three-mode theme system.** `ThemeMode` extended to `'regular' | 'nautical' | 'rct'`. Regular is now the primary mode; Nautical is secondary; Roller Coaster Tycoon (RCT) is the third. `src/lib/theme-mode.ts` validates all three via `VALID_MODES`. Settings page (`ThemeModeToggle`) shows 3 cards (Regular first). Each mode has full label coverage for every key.

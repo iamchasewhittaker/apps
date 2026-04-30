@@ -1,5 +1,17 @@
 # Learnings — Shipyard
 
+## 2026-04-30 (Sailboat logo + page consistency pass)
+
+**Design token migrations catch stragglers in components, not pages.** The bulk `sed` pass replaced tokens in every `app/**/*.tsx` file cleanly. The misses were in `components/` — `EditableField.tsx`, `ProjectPickerControls.tsx`, `RetireButton.tsx`. Rule: after any design-system token rename, always grep `components/` explicitly as a second pass.
+
+**Typography floor enforcement matters.** Settings page had `text-[11px]` section headings — below the explicit `text-xs` (12px) floor documented in CLAUDE.md for dark navy backgrounds. The fix (`font-mono-label text-xs text-gold uppercase tracking-wider`) also added visual hierarchy that was missing.
+
+**`ModeHeading` can't be used for data-driven headings.** It's a client component (needs `useLabel` hook). Ship detail page headings come from the database, so `ModeHeading` can't be used — apply the same CSS classes (`font-display font-bold text-4xl text-white gold-rule inline-block`) directly for visual parity.
+
+**Logo iteration is faster with an in-repo HTML preview file.** `public/logo-options.html` with all variants at 4 sizes (96/56/36/24px) + sidebar mockup context let Chase evaluate and pick in one message. No round-trips to Figma, no uploading to external tools.
+
+> **Chase:** —
+
 ## 2026-04-29 (Readability redesign + three-mode theme)
 
 **A mockup rejection mid-plan is faster than a plan rejection post-implementation.**

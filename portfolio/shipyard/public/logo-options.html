@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipyard Logo Options — v3.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=DM+Mono:wght@400&family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A1128;
+    --surface: #0F1A3E;
+    --gold: #FFD700;
+    --steel: #A0AABF;
+    --dimmer: #1A2A50;
+    --white: #F2EEE6;
+    --dim: #A0AABF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--white); font-family: 'Instrument Sans', sans-serif; padding: 48px; }
+  h1 { font-family: 'Big Shoulders Display', sans-serif; font-size: 48px; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 8px; position: relative; display: inline-block; }
+  h1::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 2px; background: var(--gold); }
+  .subtitle { font-family: 'DM Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--steel); margin-bottom: 48px; }
+  .variant-section { margin-bottom: 64px; padding-bottom: 64px; border-bottom: 1px solid var(--dimmer); }
+  .variant-section:last-child { border-bottom: none; }
+  .variant-name { font-family: 'Big Shoulders Display', sans-serif; font-size: 28px; text-transform: uppercase; letter-spacing: 0.02em; color: var(--gold); margin-bottom: 4px; }
+  .variant-desc { font-size: 14px; color: var(--steel); margin-bottom: 32px; max-width: 640px; }
+  .row { display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
+  .sizes { display: flex; gap: 24px; align-items: flex-end; }
+  .size-item { text-align: center; }
+  .size-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-top: 8px; }
+  .sidebar-sim { background: rgba(15, 26, 62, 0.8); border: 1px solid var(--dimmer); border-radius: 12px; padding: 20px 16px; width: 220px; backdrop-filter: blur(8px); }
+  .sidebar-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .sidebar-text-title { font-family: 'Instrument Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.1; }
+  .sidebar-text-sub { font-family: 'Instrument Sans', sans-serif; font-size: 11px; color: var(--steel); text-transform: capitalize; margin-top: 2px; }
+  .sidebar-group-label { font-family: 'Instrument Sans', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(160, 170, 191, 0.6); padding: 0 8px; margin-bottom: 6px; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 8px; font-size: 14px; color: var(--steel); min-height: 40px; }
+  .sidebar-item.active { background: rgba(255, 215, 0, 0.1); color: var(--gold); font-weight: 600; }
+  .sidebar-item-icon { width: 18px; text-align: center; flex-shrink: 0; }
+  .lockup { display: flex; align-items: center; gap: 16px; }
+  .lockup-text { display: flex; flex-direction: column; line-height: 1; }
+  .lockup-title { font-family: 'Big Shoulders Display', sans-serif; font-size: 32px; text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); position: relative; display: inline-block; }
+  .lockup-title::after { content: ''; position: absolute; left: 0; bottom: -3px; width: 100%; height: 2px; background: var(--gold); }
+  .lockup-sub { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-top: 10px; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin-bottom: 12px; }
+  .intro { background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; padding: 16px 20px; margin-bottom: 48px; max-width: 720px; }
+  .intro p { font-size: 14px; color: var(--white); line-height: 1.6; }
+  .intro strong { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<h1>Logo Options</h1>
+<p class="subtitle">Shipyard — Fleet Command &bull; v3.1 — Maxed out, 9 options</p>
+
+<div class="intro">
+  <p><strong>v3.1: Even bigger icons, 3 new options.</strong> Every mark pushes to the edges of the gold background. 9 distinct directions to choose from.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 1 — ANCHOR -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">1. Anchor</h2>
+  <p class="variant-desc">Classic nautical anchor. Curved flukes, thick shank, stock crossbar, ring at top. The most literal "shipyard" mark.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="148" r="76" stroke-width="58"/>
+              <line x1="512" y1="224" x2="512" y2="820" stroke-width="72"/>
+              <line x1="270" y1="350" x2="754" y2="350" stroke-width="58"/>
+              <path d="M512 820 Q512 910 400 930 Q210 950 150 720" stroke-width="66"/>
+              <path d="M512 820 Q512 910 624 930 Q814 950 874 720" stroke-width="66"/>
+              <path d="M150 720 L190 640" stroke-width="54"/>
+              <path d="M874 720 L834 640" stroke-width="54"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="148" r="76" stroke-width="58"/><line x1="512" y1="224" x2="512" y2="820" stroke-width="72"/><line x1="270" y1="350" x2="754" y2="350" stroke-width="58"/><path d="M512 820 Q512 910 400 930 Q210 950 150 720" stroke-width="66"/><path d="M512 820 Q512 910 624 930 Q814 950 874 720" stroke-width="66"/><path d="M150 720 L190 640" stroke-width="54"/><path d="M874 720 L834 640" stroke-width="54"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="148" r="76" stroke-width="58"/><line x1="512" y1="224" x2="512" y2="820" stroke-width="72"/><line x1="270" y1="350" x2="754" y2="350" stroke-width="58"/><path d="M512 820 Q512 910 400 930 Q210 950 150 720" stroke-width="66"/><path d="M512 820 Q512 910 624 930 Q814 950 874 720" stroke-width="66"/><path d="M150 720 L190 640" stroke-width="54"/><path d="M874 720 L834 640" stroke-width="54"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="148" r="76" stroke-width="58"/><line x1="512" y1="224" x2="512" y2="820" stroke-width="72"/><line x1="270" y1="350" x2="754" y2="350" stroke-width="58"/><path d="M512 820 Q512 910 400 930 Q210 950 150 720" stroke-width="66"/><path d="M512 820 Q512 910 624 930 Q814 950 874 720" stroke-width="66"/><path d="M150 720 L190 640" stroke-width="54"/><path d="M874 720 L834 640" stroke-width="54"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="148" r="76" stroke-width="58"/><line x1="512" y1="224" x2="512" y2="820" stroke-width="72"/><line x1="270" y1="350" x2="754" y2="350" stroke-width="58"/><path d="M512 820 Q512 910 400 930 Q210 950 150 720" stroke-width="66"/><path d="M512 820 Q512 910 624 930 Q814 950 874 720" stroke-width="66"/><path d="M150 720 L190 640" stroke-width="54"/><path d="M874 720 L834 640" stroke-width="54"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="148" r="76" stroke-width="58"/><line x1="512" y1="224" x2="512" y2="820" stroke-width="72"/><line x1="270" y1="350" x2="754" y2="350" stroke-width="58"/><path d="M512 820 Q512 910 400 930 Q210 950 150 720" stroke-width="66"/><path d="M512 820 Q512 910 624 930 Q814 950 874 720" stroke-width="66"/><path d="M150 720 L190 640" stroke-width="54"/><path d="M874 720 L834 640" stroke-width="54"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 2 — SHIP'S WHEEL -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">2. Ship's Wheel</h2>
+  <p class="variant-desc">Full helm filling the frame. Thick outer ring, 8 spokes, 8 handle pegs extending past the rim, center hub.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="512" cy="512" r="320" stroke-width="62"/>
+              <circle cx="512" cy="512" r="100" stroke-width="50"/>
+              <line x1="512" y1="412" x2="512" y2="130" stroke-width="46"/>
+              <line x1="512" y1="612" x2="512" y2="894" stroke-width="46"/>
+              <line x1="412" y1="512" x2="130" y2="512" stroke-width="46"/>
+              <line x1="612" y1="512" x2="894" y2="512" stroke-width="46"/>
+              <line x1="441" y1="441" x2="242" y2="242" stroke-width="40"/>
+              <line x1="583" y1="441" x2="782" y2="242" stroke-width="40"/>
+              <line x1="441" y1="583" x2="242" y2="782" stroke-width="40"/>
+              <line x1="583" y1="583" x2="782" y2="782" stroke-width="40"/>
+            </g>
+            <circle cx="512" cy="100" r="42" fill="#0A1128"/>
+            <circle cx="512" cy="924" r="42" fill="#0A1128"/>
+            <circle cx="100" cy="512" r="42" fill="#0A1128"/>
+            <circle cx="924" cy="512" r="42" fill="#0A1128"/>
+            <circle cx="220" cy="220" r="36" fill="#0A1128"/>
+            <circle cx="804" cy="220" r="36" fill="#0A1128"/>
+            <circle cx="220" cy="804" r="36" fill="#0A1128"/>
+            <circle cx="804" cy="804" r="36" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="28" fill="#0A1128"/>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="512" r="320" stroke-width="62"/><circle cx="512" cy="512" r="100" stroke-width="50"/><line x1="512" y1="412" x2="512" y2="130" stroke-width="46"/><line x1="512" y1="612" x2="512" y2="894" stroke-width="46"/><line x1="412" y1="512" x2="130" y2="512" stroke-width="46"/><line x1="612" y1="512" x2="894" y2="512" stroke-width="46"/><line x1="441" y1="441" x2="242" y2="242" stroke-width="40"/><line x1="583" y1="441" x2="782" y2="242" stroke-width="40"/><line x1="441" y1="583" x2="242" y2="782" stroke-width="40"/><line x1="583" y1="583" x2="782" y2="782" stroke-width="40"/></g><circle cx="512" cy="100" r="42" fill="#0A1128"/><circle cx="512" cy="924" r="42" fill="#0A1128"/><circle cx="100" cy="512" r="42" fill="#0A1128"/><circle cx="924" cy="512" r="42" fill="#0A1128"/><circle cx="220" cy="220" r="36" fill="#0A1128"/><circle cx="804" cy="220" r="36" fill="#0A1128"/><circle cx="220" cy="804" r="36" fill="#0A1128"/><circle cx="804" cy="804" r="36" fill="#0A1128"/><circle cx="512" cy="512" r="28" fill="#0A1128"/></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="512" r="320" stroke-width="62"/><circle cx="512" cy="512" r="100" stroke-width="50"/><line x1="512" y1="412" x2="512" y2="130" stroke-width="46"/><line x1="512" y1="612" x2="512" y2="894" stroke-width="46"/><line x1="412" y1="512" x2="130" y2="512" stroke-width="46"/><line x1="612" y1="512" x2="894" y2="512" stroke-width="46"/><line x1="441" y1="441" x2="242" y2="242" stroke-width="40"/><line x1="583" y1="441" x2="782" y2="242" stroke-width="40"/><line x1="441" y1="583" x2="242" y2="782" stroke-width="40"/><line x1="583" y1="583" x2="782" y2="782" stroke-width="40"/></g><circle cx="512" cy="100" r="42" fill="#0A1128"/><circle cx="512" cy="924" r="42" fill="#0A1128"/><circle cx="100" cy="512" r="42" fill="#0A1128"/><circle cx="924" cy="512" r="42" fill="#0A1128"/><circle cx="220" cy="220" r="36" fill="#0A1128"/><circle cx="804" cy="220" r="36" fill="#0A1128"/><circle cx="220" cy="804" r="36" fill="#0A1128"/><circle cx="804" cy="804" r="36" fill="#0A1128"/><circle cx="512" cy="512" r="28" fill="#0A1128"/></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="512" r="320" stroke-width="62"/><circle cx="512" cy="512" r="100" stroke-width="50"/><line x1="512" y1="412" x2="512" y2="130" stroke-width="46"/><line x1="512" y1="612" x2="512" y2="894" stroke-width="46"/><line x1="412" y1="512" x2="130" y2="512" stroke-width="46"/><line x1="612" y1="512" x2="894" y2="512" stroke-width="46"/><line x1="441" y1="441" x2="242" y2="242" stroke-width="40"/><line x1="583" y1="441" x2="782" y2="242" stroke-width="40"/><line x1="441" y1="583" x2="242" y2="782" stroke-width="40"/><line x1="583" y1="583" x2="782" y2="782" stroke-width="40"/></g><circle cx="512" cy="100" r="42" fill="#0A1128"/><circle cx="512" cy="924" r="42" fill="#0A1128"/><circle cx="100" cy="512" r="42" fill="#0A1128"/><circle cx="924" cy="512" r="42" fill="#0A1128"/><circle cx="220" cy="220" r="36" fill="#0A1128"/><circle cx="804" cy="220" r="36" fill="#0A1128"/><circle cx="220" cy="804" r="36" fill="#0A1128"/><circle cx="804" cy="804" r="36" fill="#0A1128"/><circle cx="512" cy="512" r="28" fill="#0A1128"/></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="512" r="320" stroke-width="62"/><circle cx="512" cy="512" r="100" stroke-width="50"/><line x1="512" y1="412" x2="512" y2="130" stroke-width="46"/><line x1="512" y1="612" x2="512" y2="894" stroke-width="46"/><line x1="412" y1="512" x2="130" y2="512" stroke-width="46"/><line x1="612" y1="512" x2="894" y2="512" stroke-width="46"/><line x1="441" y1="441" x2="242" y2="242" stroke-width="40"/><line x1="583" y1="441" x2="782" y2="242" stroke-width="40"/><line x1="441" y1="583" x2="242" y2="782" stroke-width="40"/><line x1="583" y1="583" x2="782" y2="782" stroke-width="40"/></g><circle cx="512" cy="100" r="42" fill="#0A1128"/><circle cx="512" cy="924" r="42" fill="#0A1128"/><circle cx="100" cy="512" r="42" fill="#0A1128"/><circle cx="924" cy="512" r="42" fill="#0A1128"/><circle cx="220" cy="220" r="36" fill="#0A1128"/><circle cx="804" cy="220" r="36" fill="#0A1128"/><circle cx="220" cy="804" r="36" fill="#0A1128"/><circle cx="804" cy="804" r="36" fill="#0A1128"/><circle cx="512" cy="512" r="28" fill="#0A1128"/></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><circle cx="512" cy="512" r="320" stroke-width="62"/><circle cx="512" cy="512" r="100" stroke-width="50"/><line x1="512" y1="412" x2="512" y2="130" stroke-width="46"/><line x1="512" y1="612" x2="512" y2="894" stroke-width="46"/><line x1="412" y1="512" x2="130" y2="512" stroke-width="46"/><line x1="612" y1="512" x2="894" y2="512" stroke-width="46"/><line x1="441" y1="441" x2="242" y2="242" stroke-width="40"/><line x1="583" y1="441" x2="782" y2="242" stroke-width="40"/><line x1="441" y1="583" x2="242" y2="782" stroke-width="40"/><line x1="583" y1="583" x2="782" y2="782" stroke-width="40"/></g><circle cx="512" cy="100" r="42" fill="#0A1128"/><circle cx="512" cy="924" r="42" fill="#0A1128"/><circle cx="100" cy="512" r="42" fill="#0A1128"/><circle cx="924" cy="512" r="42" fill="#0A1128"/><circle cx="220" cy="220" r="36" fill="#0A1128"/><circle cx="804" cy="220" r="36" fill="#0A1128"/><circle cx="220" cy="804" r="36" fill="#0A1128"/><circle cx="804" cy="804" r="36" fill="#0A1128"/><circle cx="512" cy="512" r="28" fill="#0A1128"/></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 3 — LIGHTHOUSE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">3. Lighthouse</h2>
+  <p class="variant-desc">Tall lighthouse with striped tower, lantern room, dome, and diagonal light beams. Fills top to bottom.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128">
+              <rect x="220" y="850" width="584" height="60" rx="14"/>
+              <polygon points="350,850 674,850 610,340 414,340"/>
+              <rect x="380" y="450" width="264" height="32" rx="4" fill="#FFD700"/>
+              <rect x="368" y="540" width="288" height="32" rx="4" fill="#FFD700"/>
+              <rect x="360" y="630" width="304" height="32" rx="4" fill="#FFD700"/>
+              <rect x="352" y="720" width="320" height="32" rx="4" fill="#FFD700"/>
+              <rect x="390" y="256" width="244" height="84" rx="10"/>
+              <rect x="366" y="244" width="292" height="20" rx="6"/>
+              <path d="M420 256 Q512 120 604 256" fill="#0A1128"/>
+              <circle cx="512" cy="298" r="28" fill="#FFD700"/>
+              <polygon points="390,276 140,140 140,210 390,330" fill="#0A1128" opacity="0.45"/>
+              <polygon points="634,276 884,140 884,210 634,330" fill="#0A1128" opacity="0.45"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="220" y="850" width="584" height="60" rx="14"/><polygon points="350,850 674,850 610,340 414,340"/><rect x="380" y="450" width="264" height="32" rx="4" fill="#FFD700"/><rect x="368" y="540" width="288" height="32" rx="4" fill="#FFD700"/><rect x="360" y="630" width="304" height="32" rx="4" fill="#FFD700"/><rect x="352" y="720" width="320" height="32" rx="4" fill="#FFD700"/><rect x="390" y="256" width="244" height="84" rx="10"/><rect x="366" y="244" width="292" height="20" rx="6"/><path d="M420 256 Q512 120 604 256" fill="#0A1128"/><circle cx="512" cy="298" r="28" fill="#FFD700"/><polygon points="390,276 140,140 140,210 390,330" fill="#0A1128" opacity="0.45"/><polygon points="634,276 884,140 884,210 634,330" fill="#0A1128" opacity="0.45"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="220" y="850" width="584" height="60" rx="14"/><polygon points="350,850 674,850 610,340 414,340"/><rect x="380" y="450" width="264" height="32" rx="4" fill="#FFD700"/><rect x="368" y="540" width="288" height="32" rx="4" fill="#FFD700"/><rect x="360" y="630" width="304" height="32" rx="4" fill="#FFD700"/><rect x="352" y="720" width="320" height="32" rx="4" fill="#FFD700"/><rect x="390" y="256" width="244" height="84" rx="10"/><rect x="366" y="244" width="292" height="20" rx="6"/><path d="M420 256 Q512 120 604 256" fill="#0A1128"/><circle cx="512" cy="298" r="28" fill="#FFD700"/><polygon points="390,276 140,140 140,210 390,330" fill="#0A1128" opacity="0.45"/><polygon points="634,276 884,140 884,210 634,330" fill="#0A1128" opacity="0.45"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="220" y="850" width="584" height="60" rx="14"/><polygon points="350,850 674,850 610,340 414,340"/><rect x="380" y="450" width="264" height="32" rx="4" fill="#FFD700"/><rect x="368" y="540" width="288" height="32" rx="4" fill="#FFD700"/><rect x="360" y="630" width="304" height="32" rx="4" fill="#FFD700"/><rect x="352" y="720" width="320" height="32" rx="4" fill="#FFD700"/><rect x="390" y="256" width="244" height="84" rx="10"/><rect x="366" y="244" width="292" height="20" rx="6"/><path d="M420 256 Q512 120 604 256" fill="#0A1128"/><circle cx="512" cy="298" r="28" fill="#FFD700"/><polygon points="390,276 140,140 140,210 390,330" fill="#0A1128" opacity="0.45"/><polygon points="634,276 884,140 884,210 634,330" fill="#0A1128" opacity="0.45"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="220" y="850" width="584" height="60" rx="14"/><polygon points="350,850 674,850 610,340 414,340"/><rect x="380" y="450" width="264" height="32" rx="4" fill="#FFD700"/><rect x="368" y="540" width="288" height="32" rx="4" fill="#FFD700"/><rect x="360" y="630" width="304" height="32" rx="4" fill="#FFD700"/><rect x="352" y="720" width="320" height="32" rx="4" fill="#FFD700"/><rect x="390" y="256" width="244" height="84" rx="10"/><rect x="366" y="244" width="292" height="20" rx="6"/><path d="M420 256 Q512 120 604 256" fill="#0A1128"/><circle cx="512" cy="298" r="28" fill="#FFD700"/><polygon points="390,276 140,140 140,210 390,330" fill="#0A1128" opacity="0.45"/><polygon points="634,276 884,140 884,210 634,330" fill="#0A1128" opacity="0.45"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="220" y="850" width="584" height="60" rx="14"/><polygon points="350,850 674,850 610,340 414,340"/><rect x="380" y="450" width="264" height="32" rx="4" fill="#FFD700"/><rect x="368" y="540" width="288" height="32" rx="4" fill="#FFD700"/><rect x="360" y="630" width="304" height="32" rx="4" fill="#FFD700"/><rect x="352" y="720" width="320" height="32" rx="4" fill="#FFD700"/><rect x="390" y="256" width="244" height="84" rx="10"/><rect x="366" y="244" width="292" height="20" rx="6"/><path d="M420 256 Q512 120 604 256" fill="#0A1128"/><circle cx="512" cy="298" r="28" fill="#FFD700"/><polygon points="390,276 140,140 140,210 390,330" fill="#0A1128" opacity="0.45"/><polygon points="634,276 884,140 884,210 634,330" fill="#0A1128" opacity="0.45"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 4 — COMPASS ROSE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">4. Compass Rose</h2>
+  <p class="variant-desc">Full compass rose. 4 large cardinal points (N elongated), 4 ordinal points, double ring, center pivot, "N" marker.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <circle cx="512" cy="512" r="420" fill="none" stroke="#0A1128" stroke-width="28"/>
+            <circle cx="512" cy="512" r="386" fill="none" stroke="#0A1128" stroke-width="10"/>
+            <g stroke="#0A1128" stroke-width="14"><line x1="512" y1="96" x2="512" y2="132"/><line x1="512" y1="892" x2="512" y2="928"/><line x1="96" y1="512" x2="132" y2="512"/><line x1="892" y1="512" x2="928" y2="512"/></g>
+            <polygon points="512,110 462,430 512,480 562,430" fill="#0A1128"/>
+            <polygon points="512,914 462,594 512,544 562,594" fill="#0A1128"/>
+            <polygon points="914,512 594,462 544,512 594,562" fill="#0A1128"/>
+            <polygon points="110,512 430,462 480,512 430,562" fill="#0A1128"/>
+            <polygon points="800,224 585,456 560,432 776,200" fill="#0A1128"/>
+            <polygon points="800,800 585,568 560,592 776,824" fill="#0A1128"/>
+            <polygon points="224,800 439,568 464,592 248,824" fill="#0A1128"/>
+            <polygon points="224,224 439,456 464,432 248,200" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="50" fill="#0A1128"/>
+            <circle cx="512" cy="512" r="22" fill="#FFD700"/>
+            <text x="512" y="105" text-anchor="middle" fill="#0A1128" font-family="'Big Shoulders Display', sans-serif" font-size="72" font-weight="700">N</text>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><circle cx="512" cy="512" r="420" fill="none" stroke="#0A1128" stroke-width="28"/><circle cx="512" cy="512" r="386" fill="none" stroke="#0A1128" stroke-width="10"/><polygon points="512,110 462,430 512,480 562,430" fill="#0A1128"/><polygon points="512,914 462,594 512,544 562,594" fill="#0A1128"/><polygon points="914,512 594,462 544,512 594,562" fill="#0A1128"/><polygon points="110,512 430,462 480,512 430,562" fill="#0A1128"/><polygon points="800,224 585,456 560,432 776,200" fill="#0A1128"/><polygon points="800,800 585,568 560,592 776,824" fill="#0A1128"/><polygon points="224,800 439,568 464,592 248,824" fill="#0A1128"/><polygon points="224,224 439,456 464,432 248,200" fill="#0A1128"/><circle cx="512" cy="512" r="50" fill="#0A1128"/><circle cx="512" cy="512" r="22" fill="#FFD700"/></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><circle cx="512" cy="512" r="420" fill="none" stroke="#0A1128" stroke-width="28"/><polygon points="512,110 462,430 512,480 562,430" fill="#0A1128"/><polygon points="512,914 462,594 512,544 562,594" fill="#0A1128"/><polygon points="914,512 594,462 544,512 594,562" fill="#0A1128"/><polygon points="110,512 430,462 480,512 430,562" fill="#0A1128"/><polygon points="800,224 585,456 560,432 776,200" fill="#0A1128"/><polygon points="800,800 585,568 560,592 776,824" fill="#0A1128"/><polygon points="224,800 439,568 464,592 248,824" fill="#0A1128"/><polygon points="224,224 439,456 464,432 248,200" fill="#0A1128"/><circle cx="512" cy="512" r="50" fill="#0A1128"/><circle cx="512" cy="512" r="22" fill="#FFD700"/></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><circle cx="512" cy="512" r="420" fill="none" stroke="#0A1128" stroke-width="28"/><polygon points="512,110 462,430 512,480 562,430" fill="#0A1128"/><polygon points="512,914 462,594 512,544 562,594" fill="#0A1128"/><polygon points="914,512 594,462 544,512 594,562" fill="#0A1128"/><polygon points="110,512 430,462 480,512 430,562" fill="#0A1128"/><polygon points="800,224 585,456 560,432 776,200" fill="#0A1128"/><polygon points="800,800 585,568 560,592 776,824" fill="#0A1128"/><polygon points="224,800 439,568 464,592 248,824" fill="#0A1128"/><polygon points="224,224 439,456 464,432 248,200" fill="#0A1128"/><circle cx="512" cy="512" r="50" fill="#0A1128"/><circle cx="512" cy="512" r="22" fill="#FFD700"/></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><circle cx="512" cy="512" r="420" fill="none" stroke="#0A1128" stroke-width="28"/><polygon points="512,110 462,430 512,480 562,430" fill="#0A1128"/><polygon points="512,914 462,594 512,544 562,594" fill="#0A1128"/><polygon points="914,512 594,462 544,512 594,562" fill="#0A1128"/><polygon points="110,512 430,462 480,512 430,562" fill="#0A1128"/><polygon points="800,224 585,456 560,432 776,200" fill="#0A1128"/><polygon points="800,800 585,568 560,592 776,824" fill="#0A1128"/><polygon points="224,800 439,568 464,592 248,824" fill="#0A1128"/><polygon points="224,224 439,456 464,432 248,200" fill="#0A1128"/><circle cx="512" cy="512" r="50" fill="#0A1128"/><circle cx="512" cy="512" r="22" fill="#FFD700"/></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><circle cx="512" cy="512" r="420" fill="none" stroke="#0A1128" stroke-width="28"/><polygon points="512,110 462,430 512,480 562,430" fill="#0A1128"/><polygon points="512,914 462,594 512,544 562,594" fill="#0A1128"/><polygon points="914,512 594,462 544,512 594,562" fill="#0A1128"/><polygon points="110,512 430,462 480,512 430,562" fill="#0A1128"/><polygon points="800,224 585,456 560,432 776,200" fill="#0A1128"/><polygon points="800,800 585,568 560,592 776,824" fill="#0A1128"/><polygon points="224,800 439,568 464,592 248,824" fill="#0A1128"/><polygon points="224,224 439,456 464,432 248,200" fill="#0A1128"/><circle cx="512" cy="512" r="50" fill="#0A1128"/><circle cx="512" cy="512" r="22" fill="#FFD700"/></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 5 — SAILBOAT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">5. Sailboat</h2>
+  <p class="variant-desc">Full sailboat in profile. Tall mainsail, jib sail, thick mast, curved hull with keel, wave line. Fills the frame diagonally.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128">
+              <rect x="440" y="90" width="40" height="590" rx="10"/>
+              <polygon points="480,110 480,670 870,670"/>
+              <polygon points="440,140 440,610 170,610"/>
+              <path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z"/>
+              <path d="M420 900 L465 950 L559 950 L604 900"/>
+              <path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="#FFD700"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="440" y="90" width="40" height="590" rx="10"/><polygon points="480,110 480,670 870,670"/><polygon points="440,140 440,610 170,610"/><path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z"/><path d="M420 900 L465 950 L559 950 L604 900"/><path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="#FFD700"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="440" y="90" width="40" height="590" rx="10"/><polygon points="480,110 480,670 870,670"/><polygon points="440,140 440,610 170,610"/><path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z"/><path d="M420 900 L465 950 L559 950 L604 900"/><path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="#FFD700"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="440" y="90" width="40" height="590" rx="10"/><polygon points="480,110 480,670 870,670"/><polygon points="440,140 440,610 170,610"/><path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z"/><path d="M420 900 L465 950 L559 950 L604 900"/><path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="#FFD700"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="440" y="90" width="40" height="590" rx="10"/><polygon points="480,110 480,670 870,670"/><polygon points="440,140 440,610 170,610"/><path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z"/><path d="M420 900 L465 950 L559 950 L604 900"/><path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="#FFD700"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="440" y="90" width="40" height="590" rx="10"/><polygon points="480,110 480,670 870,670"/><polygon points="440,140 440,610 170,610"/><path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z"/><path d="M420 900 L465 950 L559 950 L604 900"/><path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="#FFD700"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 6 — SHIPYARD CRANE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">6. Shipyard Crane</h2>
+  <p class="variant-desc">Gantry crane with lattice tower, boom arm, hook and cable. Industrial dock feel. The most literal "shipyard" icon.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="240" y1="900" x2="310" y2="260" stroke-width="54"/>
+              <line x1="470" y1="900" x2="400" y2="260" stroke-width="54"/>
+              <line x1="268" y1="700" x2="438" y2="700" stroke-width="28"/>
+              <line x1="278" y1="540" x2="428" y2="540" stroke-width="28"/>
+              <line x1="288" y1="400" x2="418" y2="400" stroke-width="28"/>
+              <line x1="272" y1="700" x2="424" y2="540" stroke-width="18"/>
+              <line x1="434" y1="700" x2="282" y2="540" stroke-width="18"/>
+              <line x1="282" y1="540" x2="414" y2="400" stroke-width="18"/>
+              <line x1="424" y1="540" x2="292" y2="400" stroke-width="18"/>
+              <rect x="270" y="234" width="170" height="40" rx="8" fill="#0A1128" stroke="none"/>
+              <line x1="355" y1="248" x2="890" y2="170" stroke-width="42"/>
+              <line x1="355" y1="248" x2="680" y2="110" stroke-width="24"/>
+              <line x1="680" y1="110" x2="890" y2="170" stroke-width="24"/>
+              <line x1="820" y1="182" x2="820" y2="560" stroke-width="18"/>
+              <path d="M796 560 L844 560 L856 596 Q856 650 820 650 Q784 650 784 596 L796 560" stroke-width="16" fill="#0A1128"/>
+              <line x1="130" y1="900" x2="900" y2="900" stroke-width="36"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><line x1="240" y1="900" x2="310" y2="260" stroke-width="54"/><line x1="470" y1="900" x2="400" y2="260" stroke-width="54"/><line x1="268" y1="700" x2="438" y2="700" stroke-width="28"/><line x1="278" y1="540" x2="428" y2="540" stroke-width="28"/><line x1="288" y1="400" x2="418" y2="400" stroke-width="28"/><line x1="272" y1="700" x2="424" y2="540" stroke-width="18"/><line x1="434" y1="700" x2="282" y2="540" stroke-width="18"/><line x1="282" y1="540" x2="414" y2="400" stroke-width="18"/><line x1="424" y1="540" x2="292" y2="400" stroke-width="18"/><rect x="270" y="234" width="170" height="40" rx="8" fill="#0A1128" stroke="none"/><line x1="355" y1="248" x2="890" y2="170" stroke-width="42"/><line x1="355" y1="248" x2="680" y2="110" stroke-width="24"/><line x1="680" y1="110" x2="890" y2="170" stroke-width="24"/><line x1="820" y1="182" x2="820" y2="560" stroke-width="18"/><path d="M796 560 L844 560 L856 596 Q856 650 820 650 Q784 650 784 596 L796 560" stroke-width="16" fill="#0A1128"/><line x1="130" y1="900" x2="900" y2="900" stroke-width="36"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><line x1="240" y1="900" x2="310" y2="260" stroke-width="54"/><line x1="470" y1="900" x2="400" y2="260" stroke-width="54"/><line x1="268" y1="700" x2="438" y2="700" stroke-width="28"/><line x1="278" y1="540" x2="428" y2="540" stroke-width="28"/><line x1="288" y1="400" x2="418" y2="400" stroke-width="28"/><rect x="270" y="234" width="170" height="40" rx="8" fill="#0A1128" stroke="none"/><line x1="355" y1="248" x2="890" y2="170" stroke-width="42"/><line x1="355" y1="248" x2="680" y2="110" stroke-width="24"/><line x1="680" y1="110" x2="890" y2="170" stroke-width="24"/><line x1="820" y1="182" x2="820" y2="560" stroke-width="18"/><path d="M796 560 L844 560 L856 596 Q856 650 820 650 Q784 650 784 596 L796 560" stroke-width="16" fill="#0A1128"/><line x1="130" y1="900" x2="900" y2="900" stroke-width="36"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><line x1="240" y1="900" x2="310" y2="260" stroke-width="54"/><line x1="470" y1="900" x2="400" y2="260" stroke-width="54"/><line x1="268" y1="700" x2="438" y2="700" stroke-width="28"/><line x1="278" y1="540" x2="428" y2="540" stroke-width="28"/><rect x="270" y="234" width="170" height="40" rx="8" fill="#0A1128" stroke="none"/><line x1="355" y1="248" x2="890" y2="170" stroke-width="42"/><line x1="355" y1="248" x2="680" y2="110" stroke-width="24"/><line x1="680" y1="110" x2="890" y2="170" stroke-width="24"/><line x1="820" y1="182" x2="820" y2="560" stroke-width="18"/><path d="M796 560 L844 560 L856 596 Q856 650 820 650 Q784 650 784 596 L796 560" stroke-width="16" fill="#0A1128"/><line x1="130" y1="900" x2="900" y2="900" stroke-width="36"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><line x1="240" y1="900" x2="310" y2="260" stroke-width="54"/><line x1="470" y1="900" x2="400" y2="260" stroke-width="54"/><line x1="268" y1="700" x2="438" y2="700" stroke-width="28"/><line x1="278" y1="540" x2="428" y2="540" stroke-width="28"/><line x1="288" y1="400" x2="418" y2="400" stroke-width="28"/><rect x="270" y="234" width="170" height="40" rx="8" fill="#0A1128" stroke="none"/><line x1="355" y1="248" x2="890" y2="170" stroke-width="42"/><line x1="355" y1="248" x2="680" y2="110" stroke-width="24"/><line x1="680" y1="110" x2="890" y2="170" stroke-width="24"/><line x1="820" y1="182" x2="820" y2="560" stroke-width="18"/><path d="M796 560 L844 560 L856 596 Q856 650 820 650 Q784 650 784 596 L796 560" stroke-width="16" fill="#0A1128"/><line x1="130" y1="900" x2="900" y2="900" stroke-width="36"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><line x1="240" y1="900" x2="310" y2="260" stroke-width="54"/><line x1="470" y1="900" x2="400" y2="260" stroke-width="54"/><line x1="268" y1="700" x2="438" y2="700" stroke-width="28"/><line x1="278" y1="540" x2="428" y2="540" stroke-width="28"/><line x1="288" y1="400" x2="418" y2="400" stroke-width="28"/><line x1="272" y1="700" x2="424" y2="540" stroke-width="18"/><line x1="434" y1="700" x2="282" y2="540" stroke-width="18"/><rect x="270" y="234" width="170" height="40" rx="8" fill="#0A1128" stroke="none"/><line x1="355" y1="248" x2="890" y2="170" stroke-width="42"/><line x1="355" y1="248" x2="680" y2="110" stroke-width="24"/><line x1="680" y1="110" x2="890" y2="170" stroke-width="24"/><line x1="820" y1="182" x2="820" y2="560" stroke-width="18"/><path d="M796 560 L844 560 L856 596 Q856 650 820 650 Q784 650 784 596 L796 560" stroke-width="16" fill="#0A1128"/><line x1="130" y1="900" x2="900" y2="900" stroke-width="36"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 7 — TRIDENT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">7. Trident</h2>
+  <p class="variant-desc">Poseidon's trident. Three-pronged spear with barbed tips, thick central shaft, decorative crossguard. Power and authority on the sea.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128">
+              <!-- Central shaft -->
+              <rect x="484" y="160" width="56" height="740" rx="12"/>
+              <!-- Center prong tip -->
+              <polygon points="512,80 474,200 550,200"/>
+              <!-- Left prong -->
+              <path d="M484 340 Q484 280 380 220 L380 100 L340 100 L340 240 Q340 300 420 340 L484 360" fill="#0A1128"/>
+              <!-- Left barb -->
+              <polygon points="360,120 320,170 340,100"/>
+              <!-- Right prong -->
+              <path d="M540 340 Q540 280 644 220 L644 100 L684 100 L684 240 Q684 300 604 340 L540 360" fill="#0A1128"/>
+              <!-- Right barb -->
+              <polygon points="664,120 704,170 684,100"/>
+              <!-- Crossguard -->
+              <rect x="320" y="400" width="384" height="44" rx="10"/>
+              <!-- Crossguard ornaments -->
+              <circle cx="320" cy="422" r="26" fill="#0A1128"/>
+              <circle cx="704" cy="422" r="26" fill="#0A1128"/>
+              <!-- Shaft grip wraps -->
+              <rect x="490" y="520" width="44" height="16" rx="3" fill="#FFD700"/>
+              <rect x="490" y="550" width="44" height="16" rx="3" fill="#FFD700"/>
+              <rect x="490" y="580" width="44" height="16" rx="3" fill="#FFD700"/>
+              <!-- Pommel -->
+              <ellipse cx="512" cy="910" rx="44" ry="24"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="484" y="160" width="56" height="740" rx="12"/><polygon points="512,80 474,200 550,200"/><path d="M484 340 Q484 280 380 220 L380 100 L340 100 L340 240 Q340 300 420 340 L484 360"/><polygon points="360,120 320,170 340,100"/><path d="M540 340 Q540 280 644 220 L644 100 L684 100 L684 240 Q684 300 604 340 L540 360"/><polygon points="664,120 704,170 684,100"/><rect x="320" y="400" width="384" height="44" rx="10"/><circle cx="320" cy="422" r="26"/><circle cx="704" cy="422" r="26"/><rect x="490" y="520" width="44" height="16" rx="3" fill="#FFD700"/><rect x="490" y="550" width="44" height="16" rx="3" fill="#FFD700"/><rect x="490" y="580" width="44" height="16" rx="3" fill="#FFD700"/><ellipse cx="512" cy="910" rx="44" ry="24"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="484" y="160" width="56" height="740" rx="12"/><polygon points="512,80 474,200 550,200"/><path d="M484 340 Q484 280 380 220 L380 100 L340 100 L340 240 Q340 300 420 340 L484 360"/><polygon points="360,120 320,170 340,100"/><path d="M540 340 Q540 280 644 220 L644 100 L684 100 L684 240 Q684 300 604 340 L540 360"/><polygon points="664,120 704,170 684,100"/><rect x="320" y="400" width="384" height="44" rx="10"/><circle cx="320" cy="422" r="26"/><circle cx="704" cy="422" r="26"/><rect x="490" y="520" width="44" height="16" rx="3" fill="#FFD700"/><rect x="490" y="550" width="44" height="16" rx="3" fill="#FFD700"/><rect x="490" y="580" width="44" height="16" rx="3" fill="#FFD700"/><ellipse cx="512" cy="910" rx="44" ry="24"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="484" y="160" width="56" height="740" rx="12"/><polygon points="512,80 474,200 550,200"/><path d="M484 340 Q484 280 380 220 L380 100 L340 100 L340 240 Q340 300 420 340 L484 360"/><polygon points="360,120 320,170 340,100"/><path d="M540 340 Q540 280 644 220 L644 100 L684 100 L684 240 Q684 300 604 340 L540 360"/><polygon points="664,120 704,170 684,100"/><rect x="320" y="400" width="384" height="44" rx="10"/><circle cx="320" cy="422" r="26"/><circle cx="704" cy="422" r="26"/><ellipse cx="512" cy="910" rx="44" ry="24"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="484" y="160" width="56" height="740" rx="12"/><polygon points="512,80 474,200 550,200"/><path d="M484 340 Q484 280 380 220 L380 100 L340 100 L340 240 Q340 300 420 340 L484 360"/><polygon points="360,120 320,170 340,100"/><path d="M540 340 Q540 280 644 220 L644 100 L684 100 L684 240 Q684 300 604 340 L540 360"/><polygon points="664,120 704,170 684,100"/><rect x="320" y="400" width="384" height="44" rx="10"/><circle cx="320" cy="422" r="26"/><circle cx="704" cy="422" r="26"/><ellipse cx="512" cy="910" rx="44" ry="24"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><rect x="484" y="160" width="56" height="740" rx="12"/><polygon points="512,80 474,200 550,200"/><path d="M484 340 Q484 280 380 220 L380 100 L340 100 L340 240 Q340 300 420 340 L484 360"/><polygon points="360,120 320,170 340,100"/><path d="M540 340 Q540 280 644 220 L644 100 L684 100 L684 240 Q684 300 604 340 L540 360"/><polygon points="664,120 704,170 684,100"/><rect x="320" y="400" width="384" height="44" rx="10"/><circle cx="320" cy="422" r="26"/><circle cx="704" cy="422" r="26"/><ellipse cx="512" cy="910" rx="44" ry="24"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 8 — SHIP'S BELL -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">8. Ship's Bell</h2>
+  <p class="variant-desc">Traditional ship's bell. Flared bell body, yoke mount, clapper, and decorative band. Signals time at sea. Wide, sturdy silhouette.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="#0A1128">
+              <!-- Yoke/mount bracket -->
+              <path d="M380 180 Q380 120 512 120 Q644 120 644 180 L644 220 L380 220 Z"/>
+              <!-- Yoke bolts -->
+              <circle cx="400" cy="200" r="18"/>
+              <circle cx="624" cy="200" r="18"/>
+              <!-- Crown/top of bell -->
+              <path d="M410 220 Q410 260 400 280 L400 300 L624 300 L624 280 Q614 260 614 220 Z"/>
+              <!-- Bell body (flared shape) -->
+              <path d="M400 300 Q340 420 280 600 Q240 720 220 780 L804 780 Q784 720 744 600 Q684 420 624 300 Z"/>
+              <!-- Decorative band -->
+              <rect x="300" y="580" width="424" height="36" rx="6" fill="#FFD700"/>
+              <!-- Lip/rim -->
+              <rect x="194" y="770" width="636" height="56" rx="16"/>
+              <!-- Clapper -->
+              <line x1="512" y1="440" x2="512" y2="820" stroke="#FFD700" stroke-width="24" stroke-linecap="round"/>
+              <circle cx="512" cy="830" r="36" fill="#FFD700"/>
+              <!-- Mount bar on top -->
+              <rect x="340" y="140" width="344" height="28" rx="8"/>
+              <!-- Hanging ring -->
+              <circle cx="512" cy="110" r="32" fill="none" stroke="#0A1128" stroke-width="20"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><path d="M380 180 Q380 120 512 120 Q644 120 644 180 L644 220 L380 220 Z"/><circle cx="400" cy="200" r="18"/><circle cx="624" cy="200" r="18"/><path d="M410 220 Q410 260 400 280 L400 300 L624 300 L624 280 Q614 260 614 220 Z"/><path d="M400 300 Q340 420 280 600 Q240 720 220 780 L804 780 Q784 720 744 600 Q684 420 624 300 Z"/><rect x="300" y="580" width="424" height="36" rx="6" fill="#FFD700"/><rect x="194" y="770" width="636" height="56" rx="16"/><line x1="512" y1="440" x2="512" y2="820" stroke="#FFD700" stroke-width="24" stroke-linecap="round"/><circle cx="512" cy="830" r="36" fill="#FFD700"/><rect x="340" y="140" width="344" height="28" rx="8"/><circle cx="512" cy="110" r="32" fill="none" stroke="#0A1128" stroke-width="20"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><path d="M380 180 Q380 120 512 120 Q644 120 644 180 L644 220 L380 220 Z"/><path d="M410 220 Q410 260 400 280 L400 300 L624 300 L624 280 Q614 260 614 220 Z"/><path d="M400 300 Q340 420 280 600 Q240 720 220 780 L804 780 Q784 720 744 600 Q684 420 624 300 Z"/><rect x="300" y="580" width="424" height="36" rx="6" fill="#FFD700"/><rect x="194" y="770" width="636" height="56" rx="16"/><line x1="512" y1="440" x2="512" y2="820" stroke="#FFD700" stroke-width="24" stroke-linecap="round"/><circle cx="512" cy="830" r="36" fill="#FFD700"/><rect x="340" y="140" width="344" height="28" rx="8"/><circle cx="512" cy="110" r="32" fill="none" stroke="#0A1128" stroke-width="20"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><path d="M380 180 Q380 120 512 120 Q644 120 644 180 L644 220 L380 220 Z"/><path d="M410 220 Q410 260 400 280 L400 300 L624 300 L624 280 Q614 260 614 220 Z"/><path d="M400 300 Q340 420 280 600 Q240 720 220 780 L804 780 Q784 720 744 600 Q684 420 624 300 Z"/><rect x="300" y="580" width="424" height="36" rx="6" fill="#FFD700"/><rect x="194" y="770" width="636" height="56" rx="16"/><line x1="512" y1="440" x2="512" y2="820" stroke="#FFD700" stroke-width="24" stroke-linecap="round"/><circle cx="512" cy="830" r="36" fill="#FFD700"/><rect x="340" y="140" width="344" height="28" rx="8"/><circle cx="512" cy="110" r="32" fill="none" stroke="#0A1128" stroke-width="20"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><path d="M380 180 Q380 120 512 120 Q644 120 644 180 L644 220 L380 220 Z"/><path d="M410 220 Q410 260 400 280 L400 300 L624 300 L624 280 Q614 260 614 220 Z"/><path d="M400 300 Q340 420 280 600 Q240 720 220 780 L804 780 Q784 720 744 600 Q684 420 624 300 Z"/><rect x="300" y="580" width="424" height="36" rx="6" fill="#FFD700"/><rect x="194" y="770" width="636" height="56" rx="16"/><line x1="512" y1="440" x2="512" y2="820" stroke="#FFD700" stroke-width="24" stroke-linecap="round"/><circle cx="512" cy="830" r="36" fill="#FFD700"/><rect x="340" y="140" width="344" height="28" rx="8"/><circle cx="512" cy="110" r="32" fill="none" stroke="#0A1128" stroke-width="20"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="#0A1128"><path d="M380 180 Q380 120 512 120 Q644 120 644 180 L644 220 L380 220 Z"/><path d="M410 220 Q410 260 400 280 L400 300 L624 300 L624 280 Q614 260 614 220 Z"/><path d="M400 300 Q340 420 280 600 Q240 720 220 780 L804 780 Q784 720 744 600 Q684 420 624 300 Z"/><rect x="300" y="580" width="424" height="36" rx="6" fill="#FFD700"/><rect x="194" y="770" width="636" height="56" rx="16"/><line x1="512" y1="440" x2="512" y2="820" stroke="#FFD700" stroke-width="24" stroke-linecap="round"/><circle cx="512" cy="830" r="36" fill="#FFD700"/><rect x="340" y="140" width="344" height="28" rx="8"/><circle cx="512" cy="110" r="32" fill="none" stroke="#0A1128" stroke-width="20"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 9 — SEXTANT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="variant-section">
+  <h2 class="variant-name">9. Sextant</h2>
+  <p class="variant-desc">Navigation sextant. Arc frame with degree markings, index arm, telescope, and handle. Precision and exploration.</p>
+  <div class="row">
+    <div>
+      <p class="section-label">Sizes</p>
+      <div class="sizes">
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="#FFD700"/>
+            <g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Arc frame (60-degree arc at bottom) -->
+              <path d="M160 780 A 440 440 0 0 1 864 780" stroke-width="48"/>
+              <!-- Degree tick marks along arc -->
+              <line x1="196" y1="640" x2="230" y2="670" stroke-width="16"/>
+              <line x1="290" y1="520" x2="318" y2="554" stroke-width="16"/>
+              <line x1="420" y1="430" x2="440" y2="468" stroke-width="16"/>
+              <line x1="570" y1="400" x2="580" y2="440" stroke-width="16"/>
+              <line x1="710" y1="430" x2="692" y2="468" stroke-width="16"/>
+              <line x1="820" y1="520" x2="794" y2="554" stroke-width="16"/>
+              <line x1="870" y1="640" x2="838" y2="670" stroke-width="16"/>
+              <!-- Left frame leg -->
+              <line x1="200" y1="760" x2="512" y2="240" stroke-width="40"/>
+              <!-- Right frame leg -->
+              <line x1="824" y1="760" x2="512" y2="240" stroke-width="40"/>
+              <!-- Index arm (pivots from top vertex) -->
+              <line x1="512" y1="240" x2="340" y2="770" stroke-width="32"/>
+              <!-- Telescope (at top) -->
+              <line x1="512" y1="240" x2="680" y2="120" stroke-width="28"/>
+              <rect x="670" y="94" width="100" height="36" rx="8" fill="#0A1128" stroke="none" transform="rotate(-34 720 112)"/>
+              <!-- Eyepiece -->
+              <circle cx="512" cy="240" r="30" fill="#0A1128"/>
+              <!-- Handle (bottom center) -->
+              <line x1="512" y1="780" x2="512" y2="920" stroke-width="36"/>
+              <ellipse cx="512" cy="930" rx="50" ry="24" fill="#0A1128" stroke="none"/>
+            </g>
+          </svg>
+          <p class="size-label">96px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><path d="M160 780 A 440 440 0 0 1 864 780" stroke-width="48"/><line x1="196" y1="640" x2="230" y2="670" stroke-width="16"/><line x1="290" y1="520" x2="318" y2="554" stroke-width="16"/><line x1="420" y1="430" x2="440" y2="468" stroke-width="16"/><line x1="570" y1="400" x2="580" y2="440" stroke-width="16"/><line x1="710" y1="430" x2="692" y2="468" stroke-width="16"/><line x1="820" y1="520" x2="794" y2="554" stroke-width="16"/><line x1="870" y1="640" x2="838" y2="670" stroke-width="16"/><line x1="200" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="824" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="512" y1="240" x2="340" y2="770" stroke-width="32"/><line x1="512" y1="240" x2="680" y2="120" stroke-width="28"/><rect x="670" y="94" width="100" height="36" rx="8" fill="#0A1128" stroke="none" transform="rotate(-34 720 112)"/><circle cx="512" cy="240" r="30" fill="#0A1128"/><line x1="512" y1="780" x2="512" y2="920" stroke-width="36"/><ellipse cx="512" cy="930" rx="50" ry="24" fill="#0A1128" stroke="none"/></g></svg>
+          <p class="size-label">56px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><path d="M160 780 A 440 440 0 0 1 864 780" stroke-width="48"/><line x1="200" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="824" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="512" y1="240" x2="340" y2="770" stroke-width="32"/><line x1="512" y1="240" x2="680" y2="120" stroke-width="28"/><rect x="670" y="94" width="100" height="36" rx="8" fill="#0A1128" stroke="none" transform="rotate(-34 720 112)"/><circle cx="512" cy="240" r="30" fill="#0A1128"/><line x1="512" y1="780" x2="512" y2="920" stroke-width="36"/><ellipse cx="512" cy="930" rx="50" ry="24" fill="#0A1128" stroke="none"/></g></svg>
+          <p class="size-label">36px</p>
+        </div>
+        <div class="size-item">
+          <svg viewBox="0 0 1024 1024" width="24" height="24"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><path d="M160 780 A 440 440 0 0 1 864 780" stroke-width="48"/><line x1="200" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="824" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="512" y1="240" x2="340" y2="770" stroke-width="32"/><line x1="512" y1="240" x2="680" y2="120" stroke-width="28"/><circle cx="512" cy="240" r="30" fill="#0A1128"/><line x1="512" y1="780" x2="512" y2="920" stroke-width="36"/><ellipse cx="512" cy="930" rx="50" ry="24" fill="#0A1128" stroke="none"/></g></svg>
+          <p class="size-label">24px</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Sidebar</p>
+      <div class="sidebar-sim">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 1024 1024" width="36" height="36"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><path d="M160 780 A 440 440 0 0 1 864 780" stroke-width="48"/><line x1="200" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="824" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="512" y1="240" x2="340" y2="770" stroke-width="32"/><line x1="512" y1="240" x2="680" y2="120" stroke-width="28"/><circle cx="512" cy="240" r="30" fill="#0A1128"/><line x1="512" y1="780" x2="512" y2="920" stroke-width="36"/><ellipse cx="512" cy="930" rx="50" ry="24" fill="#0A1128" stroke="none"/></g></svg>
+          <div><div class="sidebar-text-title">Shipyard</div><div class="sidebar-text-sub">Fleet Command</div></div>
+        </div>
+        <div class="sidebar-group-label">Fleet</div>
+        <div class="sidebar-item active"><span class="sidebar-item-icon">&#9724;</span> Ships</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9654;</span> Drydock</div>
+        <div class="sidebar-item"><span class="sidebar-item-icon">&#9733;</span> Showcase</div>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Lockup</p>
+      <div class="lockup">
+        <svg viewBox="0 0 1024 1024" width="56" height="56"><rect width="1024" height="1024" rx="220" fill="#FFD700"/><g fill="none" stroke="#0A1128" stroke-linecap="round" stroke-linejoin="round"><path d="M160 780 A 440 440 0 0 1 864 780" stroke-width="48"/><line x1="200" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="824" y1="760" x2="512" y2="240" stroke-width="40"/><line x1="512" y1="240" x2="340" y2="770" stroke-width="32"/><line x1="512" y1="240" x2="680" y2="120" stroke-width="28"/><rect x="670" y="94" width="100" height="36" rx="8" fill="#0A1128" stroke="none" transform="rotate(-34 720 112)"/><circle cx="512" cy="240" r="30" fill="#0A1128"/><line x1="512" y1="780" x2="512" y2="920" stroke-width="36"/><ellipse cx="512" cy="930" rx="50" ry="24" fill="#0A1128" stroke="none"/></g></svg>
+        <div class="lockup-text"><span class="lockup-title">SHIPYARD</span><span class="lockup-sub">Fleet Command</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
