@@ -19,23 +19,23 @@ function SalesNavGuide() {
   }
 
   return (
-    <div style={{ background: "#161b27", border: "1px solid #1f2937", borderRadius: 12, marginBottom: 16, overflow: "hidden" }}>
+    <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12, marginBottom: 16, overflow: "hidden" }}>
       <button
         onClick={() => setOpen(o => !o)}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#f3f4f6", textAlign: "left" }}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "none", border: "none", cursor: "pointer", color: "#FFFFFF", textAlign: "left" }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 14, fontWeight: 600 }}>Sales Navigator Setup</span>
-          <span style={{ fontSize: 11, background: "#1e3a5f", color: "#60a5fa", borderRadius: 10, padding: "2px 8px" }}>Bookmarklet</span>
+          <span style={{ fontSize: 11, background: "rgba(59,130,246,0.15)", color: "#60a5fa", borderRadius: 10, padding: "2px 8px" }}>Bookmarklet</span>
         </div>
-        <span style={{ color: "#6b7280", fontSize: 13 }}>{open ? "▲ Hide" : "▼ Show"}</span>
+        <span style={{ color: "#A0AABF", fontSize: 14 }}>{open ? "▲ Hide" : "▼ Show"}</span>
       </button>
 
       {open && (
-        <div style={{ padding: "0 16px 16px", borderTop: "1px solid #1f2937" }}>
+        <div style={{ padding: "0 16px 16px", borderTop: "1px solid rgba(59,130,246,0.12)" }}>
 
           {/* How it works */}
-          <div style={{ fontSize: 14, color: "#d1d5db", marginTop: 14, marginBottom: 12, lineHeight: 1.7 }}>
+          <div style={{ fontSize: 14, color: "#FFFFFF", marginTop: 14, marginBottom: 12, lineHeight: 1.7 }}>
             The bookmarklet runs in your browser while you're viewing a Sales Navigator profile. One click — it grabs their name, title, company, industry, and size, then opens this app with everything pre-filled in a new contact form.
           </div>
 
@@ -50,29 +50,29 @@ function SalesNavGuide() {
               ["6", "Open a Sales Navigator profile, click the bookmark — done"],
             ].map(([num, text]) => (
               <div key={num} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <div style={{ background: "#1e3a5f", color: "#93c5fd", borderRadius: "50%", width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>{num}</div>
-                <div style={{ fontSize: 14, color: "#f3f4f6", lineHeight: 1.6 }}>{text}</div>
+                <div style={{ background: "rgba(59,130,246,0.15)", color: "#93c5fd", borderRadius: "50%", width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, flexShrink: 0, marginTop: 1 }}>{num}</div>
+                <div style={{ fontSize: 14, color: "#FFFFFF", lineHeight: 1.6 }}>{text}</div>
               </div>
             ))}
           </div>
 
           {/* Bookmarklet code */}
-          <div style={{ background: "#0f1117", border: "1px solid #4b5563", borderRadius: 8, overflow: "hidden" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #4b5563" }}>
-              <span style={{ fontSize: 13, color: "#d1d5db", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Bookmarklet code</span>
-              <button onClick={copyBookmarklet} style={{ background: copied ? "#14532d" : "#374151", border: "none", color: copied ? "#6ee7b7" : "#f3f4f6", borderRadius: 6, padding: "5px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, overflow: "hidden" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid rgba(59,130,246,0.2)" }}>
+              <span style={{ fontSize: 14, color: "#FFFFFF", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Bookmarklet code</span>
+              <button onClick={copyBookmarklet} style={{ background: copied ? "rgba(52,211,153,0.2)" : "rgba(59,130,246,0.2)", border: "none", color: copied ? "#6ee7b7" : "#FFFFFF", borderRadius: 6, padding: "5px 14px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
                 {copied ? "✓ Copied!" : "Copy"}
               </button>
             </div>
-            <div style={{ padding: "12px 14px", fontSize: 12, color: "#9ca3af", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.6, maxHeight: 80, overflowY: "auto" }}>
+            <div style={{ padding: "12px 14px", fontSize: 14, color: "#A0AABF", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.6, maxHeight: 80, overflowY: "auto" }}>
               {BOOKMARKLET}
             </div>
           </div>
 
           {/* Tips */}
-          <div style={{ marginTop: 14, background: "#1f2937", border: "1px solid #4b5563", borderRadius: 8, padding: "12px 16px" }}>
-            <div style={{ fontSize: 14, color: "#f3f4f6", fontWeight: 700, marginBottom: 8 }}>Tips</div>
-            <div style={{ fontSize: 14, color: "#e5e7eb", lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ marginTop: 14, background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, padding: "12px 16px" }}>
+            <div style={{ fontSize: 14, color: "#FFFFFF", fontWeight: 700, marginBottom: 8 }}>Tips</div>
+            <div style={{ fontSize: 14, color: "#FFFFFF", lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 6 }}>
               <div>• The bookmarklet opens the app in a new tab — log in if prompted, the form will still appear.</div>
               <div>• Sales Navigator's layout changes occasionally. If data doesn't fill in, edit the contact manually after import.</div>
               <div>• The "Hiring" flag is detected from keywords on the page — not always accurate. Verify before reaching out.</div>
@@ -221,7 +221,7 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
               <div style={s.statLabel}>Outreach sent</div>
             </div>
             <div style={s.statBox}>
-              <div style={{ ...s.statNum, color: stats.responseRate > 0 ? "#10b981" : "#f3f4f6" }}>
+              <div style={{ ...s.statNum, color: stats.responseRate > 0 ? "#34D399" : "#FFFFFF" }}>
                 {stats.responseRate}%
               </div>
               <div style={s.statLabel}>Response rate</div>
@@ -231,7 +231,7 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
               <div style={s.statLabel}>Active (7 days)</div>
             </div>
             <div style={s.statBox}>
-              <div style={{ ...s.statNum, color: stats.meetings > 0 ? "#8b5cf6" : "#f3f4f6" }}>
+              <div style={{ ...s.statNum, color: stats.meetings > 0 ? "#8b5cf6" : "#FFFFFF" }}>
                 {stats.meetings}
               </div>
               <div style={s.statLabel}>Meetings</div>
@@ -316,13 +316,13 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
               group.isMissingContact ? (
                 // Ghost row — active application with zero contacts
                 <div key={group.key} style={s.ciGhostRow}>
-                  <span>0 contacts at <strong style={{ color: "#9ca3af" }}>{group.name}</strong></span>
+                  <span>0 contacts at <strong style={{ color: "#A0AABF" }}>{group.name}</strong></span>
                   <button
                     onClick={() => window.open(`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(group.name)}`, "_blank")}
                     style={{ background: "none", border: "none", color: "#3b82f6", cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "inherit" }}
                   >find someone ↗</button>
                   {group.apps.map(a => (
-                    <span key={a.id} style={{ ...s.ciStagePill, background: (STAGE_COLORS[a.stage] || "#6b7280") + "22", color: STAGE_COLORS[a.stage] || "#6b7280" }}>
+                    <span key={a.id} style={{ ...s.ciStagePill, background: (STAGE_COLORS[a.stage] || "#A0AABF") + "22", color: STAGE_COLORS[a.stage] || "#A0AABF" }}>
                       {a.stage}
                     </span>
                   ))}
@@ -334,7 +334,7 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
                     <div style={{ minWidth: 0 }}>
                       <div style={s.ciCompanyName}>
                         {group.name}
-                        <span style={{ fontSize: 13, fontWeight: 400, color: "#6b7280", marginLeft: 8 }}>
+                        <span style={{ fontSize: 14, fontWeight: 400, color: "#A0AABF", marginLeft: 8 }}>
                           {openCompanies.has(group.key) ? "▲" : "▼"}
                         </span>
                       </div>
@@ -351,7 +351,7 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
                     </div>
                     <div style={{ display: "flex", gap: 6, alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
                       {group.apps.map(a => (
-                        <span key={a.id} style={{ ...s.ciStagePill, background: (STAGE_COLORS[a.stage] || "#6b7280") + "22", color: STAGE_COLORS[a.stage] || "#6b7280" }}>
+                        <span key={a.id} style={{ ...s.ciStagePill, background: (STAGE_COLORS[a.stage] || "#A0AABF") + "22", color: STAGE_COLORS[a.stage] || "#A0AABF" }}>
                           {a.stage}
                         </span>
                       ))}

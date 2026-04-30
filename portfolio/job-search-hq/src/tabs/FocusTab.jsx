@@ -33,12 +33,12 @@ function UrgencyHeader() {
   const day = daysSinceLayoff();
   return (
     <div style={{
-      background: "#0a0d14", border: "1px solid #1f2937", borderRadius: 10,
+      background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10,
       padding: "8px 14px", marginBottom: 12, display: "flex",
-      justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "#6b7280",
+      justifyContent: "space-between", alignItems: "center", fontSize: 14, color: "#A0AABF",
     }}>
       <span>
-        <strong style={{ color: "#f3f4f6" }}>Day {day}</strong> since Visa (2025-02-15)
+        <strong style={{ color: "#FFFFFF" }}>Day {day}</strong> since Visa (2025-02-15)
       </span>
       <span style={{ fontSize: 11 }}>For Reese. For Buzz. Forward.</span>
     </div>
@@ -62,8 +62,8 @@ function DailyMinimums({ dailyActions }) {
   ];
 
   const floorMet = rows.every(r => (r.sundayOnly ? isSunday : r.have >= r.need));
-  const headerColor = floorMet ? "#c8a84b" : "#ef4444";
-  const headerBg = floorMet ? "#1a1608" : "#1a0a0a";
+  const headerColor = floorMet ? "#c8a84b" : "#F87171";
+  const headerBg = floorMet ? "#1a1608" : "rgba(248,113,113,0.08)";
   const headerBorder = floorMet ? "#c8a84b55" : "#7f1d1d";
 
   return (
@@ -78,7 +78,7 @@ function DailyMinimums({ dailyActions }) {
             <div style={{ fontSize: 14, fontWeight: 700, color: headerColor }}>
               Daily floor {floorMet ? "— met" : "— not yet"}
             </div>
-            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+            <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 1 }}>
               {isSunday
                 ? "Sunday: rest day. Read scripture, be with Reese and Buzz."
                 : `${DAILY_MINIMUMS.applications} applications + ${DAILY_MINIMUMS.outreach} outreach. Non-negotiable.`}
@@ -94,17 +94,17 @@ function DailyMinimums({ dailyActions }) {
         return (
           <div key={row.key} style={{ marginBottom: 8 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
-              <span style={{ color: hit ? "#10b981" : "#d1d5db" }}>
+              <span style={{ color: hit ? "#34D399" : "#FFFFFF" }}>
                 {hit ? "✓" : "○"} {row.label}
               </span>
-              <span style={{ color: hit ? "#10b981" : "#9ca3af", fontVariantNumeric: "tabular-nums" }}>
+              <span style={{ color: hit ? "#34D399" : "#A0AABF", fontVariantNumeric: "tabular-nums" }}>
                 {row.have}/{row.need}
               </span>
             </div>
-            <div style={{ height: 6, borderRadius: 3, background: "#0f1117" }}>
+            <div style={{ height: 6, borderRadius: 3, background: "rgba(255,255,255,0.03)" }}>
               <div style={{
                 height: "100%", borderRadius: 3, width: `${pct}%`,
-                background: hit ? "#10b981" : "#ef4444", transition: "width 0.3s",
+                background: hit ? "#34D399" : "#F87171", transition: "width 0.3s",
               }} />
             </div>
           </div>
@@ -166,7 +166,7 @@ function KassieCard() {
           >{open ? "hide" : "more"}</button>
           <button
             onClick={dismiss}
-            style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: 11 }}
+            style={{ background: "none", border: "none", color: "#A0AABF", cursor: "pointer", fontSize: 11 }}
           >dismiss</button>
         </div>
       </div>
@@ -180,18 +180,18 @@ function DirectionSplit({ applications }) {
   const totalApps = DIRECTION_TRACKS.reduce((sum, t) => sum + split[t.value].count, 0);
 
   return (
-    <div style={{ background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+    <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>🧭</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>Direction split</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>Direction split</span>
         </div>
-        <span style={{ fontSize: 11, color: "#6b7280" }}>
+        <span style={{ fontSize: 14, color: "#A0AABF" }}>
           {totalApps} {totalApps === 1 ? "application" : "applications"} total
         </span>
       </div>
       {totalApps === 0 ? (
-        <div style={{ fontSize: 12, color: "#6b7280" }}>
+        <div style={{ fontSize: 14, color: "#A0AABF" }}>
           Log your first IC / SE / AE application to see the split.
         </div>
       ) : (
@@ -201,12 +201,12 @@ function DirectionSplit({ applications }) {
             if (!row.count) return null;
             const pct = totalApps ? Math.round((row.count / totalApps) * 100) : 0;
             return (
-              <div key={t.value} style={{ display: "flex", gap: 10, alignItems: "center", fontSize: 12 }}>
+              <div key={t.value} style={{ display: "flex", gap: 10, alignItems: "center", fontSize: 14 }}>
                 <span style={{ minWidth: 48, color: t.color, fontWeight: 600 }}>{t.value}</span>
-                <div style={{ flex: 1, height: 8, borderRadius: 4, background: "#1f2937", overflow: "hidden" }}>
+                <div style={{ flex: 1, height: 8, borderRadius: 4, background: "rgba(59,130,246,0.12)", overflow: "hidden" }}>
                   <div style={{ height: "100%", background: t.color, width: `${pct}%` }} />
                 </div>
-                <span style={{ color: "#9ca3af", minWidth: 80, textAlign: "right" }}>
+                <span style={{ color: "#A0AABF", minWidth: 80, textAlign: "right" }}>
                   {row.count} · {row.responseRate}% response
                 </span>
               </div>
@@ -233,15 +233,15 @@ function WinsLog({ wins, addWin, removeWin }) {
   }
 
   return (
-    <div style={{ background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+    <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>🏆</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>Wins log</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>Wins log</span>
         </div>
         <button
           onClick={() => setAdding(a => !a)}
-          style={{ fontSize: 12, background: "#1e3a5f", border: "none", color: "#60a5fa", padding: "4px 10px", borderRadius: 6, cursor: "pointer" }}
+          style={{ fontSize: 14, background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", padding: "4px 10px", borderRadius: 6, cursor: "pointer" }}
         >
           {adding ? "✕ cancel" : "+ Log a win"}
         </button>
@@ -255,14 +255,14 @@ function WinsLog({ wins, addWin, removeWin }) {
             onChange={e => setTitleInput(e.target.value)}
             onKeyDown={e => { if (e.key === "Enter") submit(); if (e.key === "Escape") { setAdding(false); setTitleInput(""); } }}
             placeholder="One line — what happened?"
-            style={{ flex: 1, padding: "7px 10px", borderRadius: 6, fontSize: 13, fontFamily: "inherit", background: "#0a0d14", border: "1.5px solid #1f2937", color: "#f3f4f6", outline: "none" }}
+            style={{ flex: 1, padding: "7px 10px", borderRadius: 6, fontSize: 14, fontFamily: "inherit", background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", color: "#FFFFFF", outline: "none" }}
           />
-          <button onClick={submit} style={{ padding: "7px 14px", borderRadius: 6, fontSize: 13, background: "#3b82f6", border: "none", color: "#fff", fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Add</button>
+          <button onClick={submit} style={{ padding: "7px 14px", borderRadius: 6, fontSize: 14, background: "#3b82f6", border: "none", color: "#fff", fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Add</button>
         </div>
       )}
 
       {sorted.length === 0 ? (
-        <div style={{ fontSize: 12, color: "#6b7280" }}>
+        <div style={{ fontSize: 14, color: "#A0AABF" }}>
           No wins logged yet. Stage moves and replies log automatically. Add manual wins for anything else.
         </div>
       ) : (
@@ -270,18 +270,18 @@ function WinsLog({ wins, addWin, removeWin }) {
           {sorted.map(w => {
             const type = WIN_TYPES.find(t => t.value === w.type) || WIN_TYPES[3];
             return (
-              <div key={w.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", background: "#0a0d14", borderRadius: 6, fontSize: 12 }}>
-                <span style={{ fontSize: 10, color: type.color, background: type.color + "22", padding: "2px 6px", borderRadius: 4, fontWeight: 600, minWidth: 68, textAlign: "center" }}>
+              <div key={w.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", background: "rgba(255,255,255,0.03)", borderRadius: 6, fontSize: 14 }}>
+                <span style={{ fontSize: 11, color: type.color, background: type.color + "22", padding: "2px 6px", borderRadius: 4, fontWeight: 600, minWidth: 68, textAlign: "center" }}>
                   {type.label}
                 </span>
-                <span style={{ color: "#6b7280", flex: "0 0 auto", fontSize: 11 }}>{w.date}</span>
-                <span style={{ color: "#d1d5db", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span style={{ color: "#A0AABF", flex: "0 0 auto", fontSize: 14 }}>{w.date}</span>
+                <span style={{ color: "#FFFFFF", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {w.title}
-                  {w.autoLogged && <span style={{ color: "#4b5563", marginLeft: 6, fontSize: 10 }}>auto</span>}
+                  {w.autoLogged && <span style={{ color: "rgba(59,130,246,0.2)", marginLeft: 6, fontSize: 11 }}>auto</span>}
                 </span>
                 <button
                   onClick={() => removeWin(w.id)}
-                  style={{ background: "none", border: "none", color: "#4b5563", cursor: "pointer", fontSize: 11, padding: "0 2px" }}
+                  style={{ background: "none", border: "none", color: "rgba(59,130,246,0.2)", cursor: "pointer", fontSize: 14, padding: "0 2px" }}
                 >✕</button>
               </div>
             );
@@ -327,8 +327,8 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
 
   return (
     <div style={{
-      background: met ? "#1a1608" : "#0f1117",
-      border: `1.5px solid ${met ? "#c8a84b55" : "#1f2937"}`,
+      background: met ? "#1a1608" : "rgba(255,255,255,0.03)",
+      border: `1.5px solid ${met ? "#c8a84b55" : "rgba(59,130,246,0.12)"}`,
       borderRadius: 12, padding: "16px 18px", marginBottom: 16,
     }}>
       {/* Header row */}
@@ -336,12 +336,12 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontSize: 18 }}>🎯</span>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: met ? "#c8a84b" : "#f3f4f6" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: met ? "#c8a84b" : "#FFFFFF" }}>
               Today's Job Actions: {count}/{target}
               {met && <span style={{ marginLeft: 8, fontSize: 12, color: "#c8a84b" }}>✓ Target met</span>}
             </div>
             {streak > 0 && (
-              <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+              <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 1 }}>
                 🔥 {streak}-day streak — No Zero Days
               </div>
             )}
@@ -349,14 +349,14 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
         </div>
         <button
           onClick={() => setExpanded(e => !e)}
-          style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: 12, padding: "2px 6px" }}
+          style={{ background: "none", border: "none", color: "#A0AABF", cursor: "pointer", fontSize: 14, padding: "2px 6px" }}
         >
           {expanded ? "▲ hide" : "▼ log"}
         </button>
       </div>
 
       {/* Progress bar */}
-      <div style={{ height: 6, borderRadius: 3, background: "#1f2937", marginBottom: expanded ? 14 : 0 }}>
+      <div style={{ height: 6, borderRadius: 3, background: "rgba(59,130,246,0.12)", marginBottom: expanded ? 14 : 0 }}>
         <div style={{ height: "100%", borderRadius: 3, background: barColor, width: `${barPct}%`, transition: "width 0.3s" }} />
       </div>
 
@@ -372,11 +372,11 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
                   else { setPendingType(t.value); setNoteInput(""); }
                 }}
                 style={{
-                  padding: "5px 10px", borderRadius: 6, fontSize: 12, fontFamily: "inherit",
+                  padding: "5px 10px", borderRadius: 6, fontSize: 14, fontFamily: "inherit",
                   cursor: "pointer", fontWeight: 600,
-                  background: pendingType === t.value ? "#1e3a5f" : "#161b27",
-                  border: `1.5px solid ${pendingType === t.value ? "#3b82f6" : "#1f2937"}`,
-                  color: pendingType === t.value ? "#3b82f6" : "#9ca3af",
+                  background: pendingType === t.value ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.05)",
+                  border: `1.5px solid ${pendingType === t.value ? "#3b82f6" : "rgba(59,130,246,0.12)"}`,
+                  color: pendingType === t.value ? "#3b82f6" : "#A0AABF",
                 }}
               >
                 {t.icon} {t.label}
@@ -394,17 +394,17 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
                 onKeyDown={e => { if (e.key === "Enter") confirmAdd(); if (e.key === "Escape") { setPendingType(null); setNoteInput(""); } }}
                 placeholder={`Note for ${JOB_ACTION_TYPES.find(t => t.value === pendingType)?.label || "action"} (optional)`}
                 style={{
-                  flex: 1, padding: "7px 10px", borderRadius: 6, fontSize: 13, fontFamily: "inherit",
-                  background: "#0f1117", border: "1.5px solid #1f2937", color: "#f3f4f6", outline: "none",
+                  flex: 1, padding: "7px 10px", borderRadius: 6, fontSize: 14, fontFamily: "inherit",
+                  background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", color: "#FFFFFF", outline: "none",
                 }}
               />
               <button onClick={confirmAdd} style={{
-                padding: "7px 14px", borderRadius: 6, fontSize: 13, fontFamily: "inherit",
+                padding: "7px 14px", borderRadius: 6, fontSize: 14, fontFamily: "inherit",
                 background: "#3b82f6", border: "none", color: "#fff", fontWeight: 700, cursor: "pointer",
               }}>Add</button>
               <button onClick={() => { setPendingType(null); setNoteInput(""); }} style={{
-                padding: "7px 10px", borderRadius: 6, fontSize: 13, fontFamily: "inherit",
-                background: "#161b27", border: "1.5px solid #1f2937", color: "#6b7280", cursor: "pointer",
+                padding: "7px 10px", borderRadius: 6, fontSize: 14, fontFamily: "inherit",
+                background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(59,130,246,0.12)", color: "#A0AABF", cursor: "pointer",
               }}>✕</button>
             </div>
           )}
@@ -417,22 +417,22 @@ function DailyActionCounter({ dailyActions, addDailyAction, removeDailyAction })
                 return (
                   <div key={a.id} style={{
                     display: "flex", alignItems: "center", gap: 8, padding: "5px 8px",
-                    background: "#0a0d14", borderRadius: 6, fontSize: 12,
+                    background: "rgba(255,255,255,0.03)", borderRadius: 6, fontSize: 14,
                   }}>
                     <span>{t.icon}</span>
-                    <span style={{ color: "#9ca3af", flex: "0 0 auto" }}>{a.time}</span>
-                    <span style={{ color: "#d1d5db", fontWeight: 600, flex: "0 0 auto" }}>{t.label}</span>
-                    {a.note && <span style={{ color: "#6b7280", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{a.note}</span>}
+                    <span style={{ color: "#A0AABF", flex: "0 0 auto" }}>{a.time}</span>
+                    <span style={{ color: "#FFFFFF", fontWeight: 600, flex: "0 0 auto" }}>{t.label}</span>
+                    {a.note && <span style={{ color: "#A0AABF", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{a.note}</span>}
                     <button
                       onClick={() => removeDailyAction(a.id)}
-                      style={{ background: "none", border: "none", color: "#4b5563", cursor: "pointer", fontSize: 11, padding: "0 2px", lineHeight: 1 }}
+                      style={{ background: "none", border: "none", color: "rgba(59,130,246,0.2)", cursor: "pointer", fontSize: 14, padding: "0 2px", lineHeight: 1 }}
                     >✕</button>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div style={{ fontSize: 12, color: "#4b5563", textAlign: "center", padding: "6px 0" }}>
+            <div style={{ fontSize: 14, color: "#A0AABF", textAlign: "center", padding: "6px 0" }}>
               No actions logged yet today. Pick a type above to start.
             </div>
           )}
@@ -491,11 +491,11 @@ function DiscoverySprint({ setAppModal }) {
         <div style={s.discoveryTitle}>
           <span>🔎</span>
           <span>Discovery sprint</span>
-          <span style={{ fontSize: 10, fontWeight: 500, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <span style={{ fontSize: 11, fontWeight: 500, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             15 min
           </span>
         </div>
-        <span style={{ fontSize: 11, color: "#6b7280" }}>
+        <span style={{ fontSize: 14, color: "#A0AABF" }}>
           query {queries.todayIdx + 1} of {queries.total}
         </span>
       </div>
@@ -601,19 +601,19 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
 
   return (
     <div style={{
-      background: headerDone ? "#0d1a0d" : "#0f1117",
-      border: `1.5px solid ${headerDone ? "#166534" : "#1f2937"}`,
+      background: headerDone ? "#0d1a0d" : "rgba(255,255,255,0.03)",
+      border: `1.5px solid ${headerDone ? "#166534" : "rgba(59,130,246,0.12)"}`,
       borderRadius: 12, padding: "14px 16px", marginBottom: 16,
     }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>📋</span>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: headerDone ? "#4ade80" : "#f3f4f6" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: headerDone ? "#4ade80" : "#FFFFFF" }}>
               Today's applications — {todayApps}/{target}
               {headerDone && <span style={{ marginLeft: 8, fontSize: 12, color: "#4ade80" }}>✓ Done</span>}
             </div>
-            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+            <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 1 }}>
               {headerDone
                 ? "Daily target met — nice work."
                 : remaining === target
@@ -624,15 +624,15 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
         </div>
         <button
           onClick={() => setAppModal({ mode: "new", app: { ...blankApp(), stage: "Interested" } })}
-          style={{ fontSize: 12, background: "#1e3a5f", border: "none", color: "#60a5fa", padding: "4px 10px", borderRadius: 6, cursor: "pointer" }}
+          style={{ fontSize: 14, background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", padding: "4px 10px", borderRadius: 6, cursor: "pointer" }}
         >
           + Add job
         </button>
       </div>
 
       {queue.length === 0 ? (
-        <div style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>
-          No jobs queued in <strong style={{ color: "#9ca3af" }}>Interested</strong> stage yet.
+        <div style={{ fontSize: 14, color: "#A0AABF", lineHeight: 1.6 }}>
+          No jobs queued in <strong style={{ color: "#FFFFFF" }}>Interested</strong> stage yet.
           {" "}<button onClick={() => setTab("ai")} style={{ background: "none", border: "none", color: "#60a5fa", cursor: "pointer", fontSize: 12, padding: 0 }}>Find Jobs →</button>
         </div>
       ) : (
@@ -640,25 +640,25 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
           {queue.map((app, idx) => (
             <div key={app.id} style={{
               display: "flex", alignItems: "center", gap: 8,
-              background: "#0a0d14", borderRadius: 8, padding: "8px 10px",
-              border: "1px solid #1f2937",
+              background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "8px 10px",
+              border: "1px solid rgba(59,130,246,0.12)",
             }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: "#4b5563", minWidth: 16 }}>{idx + 1}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#A0AABF", minWidth: 16 }}>{idx + 1}</span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#FFFFFF", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {app.company || "Unnamed"}
                 </div>
-                <div style={{ fontSize: 11, color: "#6b7280", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div style={{ fontSize: 14, color: "#A0AABF", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {app.title || "—"}
-                  {app.jobDescription && <span style={{ color: "#10b981", marginLeft: 6 }}>JD ✓</span>}
+                  {app.jobDescription && <span style={{ color: "#34D399", marginLeft: 6 }}>JD ✓</span>}
                 </div>
               </div>
               <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
                 <button
                   onClick={() => handleStartApply(app)}
                   style={{
-                    fontSize: 11, padding: "4px 8px", borderRadius: 5, border: "none",
-                    background: "#1e3a5f",
+                    fontSize: 14, padding: "4px 8px", borderRadius: 5, border: "none",
+                    background: "rgba(59,130,246,0.15)",
                     color: "#60a5fa",
                     cursor: "pointer", fontWeight: 600
                   }}
@@ -669,8 +669,8 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
                 <button
                   onClick={() => handleMarkApplied(app)}
                   style={{
-                    fontSize: 11, padding: "4px 8px", borderRadius: 5, border: "none",
-                    background: "#14532d", color: "#4ade80",
+                    fontSize: 14, padding: "4px 8px", borderRadius: 5, border: "none",
+                    background: "rgba(52,211,153,0.2)", color: "#4ade80",
                     cursor: "pointer", fontWeight: 600
                   }}
                   title="Mark as Applied and advance stage"
@@ -681,7 +681,7 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
             </div>
           ))}
           {interestedCount > 5 && (
-            <div style={{ fontSize: 11, color: "#4b5563", textAlign: "center", paddingTop: 2 }}>
+            <div style={{ fontSize: 14, color: "#A0AABF", textAlign: "center", paddingTop: 2 }}>
               +{interestedCount - 5} more in queue — finish these first.
             </div>
           )}
@@ -705,30 +705,30 @@ function TargetCompanyBoard({ applications, contacts, setAppModal, setContactMod
   }
 
   function statusBadge({ app, contact }) {
-    if (app && contact)  return { label: "Covered",                    color: "#4ade80", bg: "#052e16" };
-    if (app && !contact) return { label: app.stage,                    color: "#fbbf24", bg: "#1c0a00" };
-    if (!app && contact) return { label: contact.name || "Contacted",  color: "#60a5fa", bg: "#0c1a3a" };
-    return                      { label: "Untouched",                  color: "#ef4444", bg: "#1a0606" };
+    if (app && contact)  return { label: "Covered",                    color: "#4ade80", bg: "rgba(52,211,153,0.08)" };
+    if (app && !contact) return { label: app.stage,                    color: "#FBBF24", bg: "rgba(251,191,36,0.08)" };
+    if (!app && contact) return { label: contact.name || "Contacted",  color: "#60a5fa", bg: "rgba(59,130,246,0.15)" };
+    return                      { label: "Untouched",                  color: "#F87171", bg: "rgba(248,113,113,0.08)" };
   }
 
   return (
     <div style={{
-      background: "#0f1117", border: "1.5px solid #1f2937",
+      background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)",
       borderRadius: 12, padding: "14px 16px", marginBottom: 16,
     }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: collapsed ? 0 : 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>🎯</span>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#f3f4f6" }}>Target Companies</div>
-            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>Target Companies</div>
+            <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 1 }}>
               {covered}/{board.length} covered — applied or contacted
             </div>
           </div>
         </div>
         <button
           onClick={() => setCollapsed(c => !c)}
-          style={{ fontSize: 12, background: "none", border: "none", color: "#4b5563", cursor: "pointer", padding: "2px 6px" }}
+          style={{ fontSize: 14, background: "none", border: "none", color: "#A0AABF", cursor: "pointer", padding: "2px 6px" }}
         >
           {collapsed ? "▼" : "▲"}
         </button>
@@ -741,15 +741,15 @@ function TargetCompanyBoard({ applications, contacts, setAppModal, setContactMod
             return (
               <div key={row.company} style={{
                 display: "flex", alignItems: "center", gap: 8,
-                background: "#0a0d14", borderRadius: 8, padding: "7px 10px",
-                border: "1px solid #1f2937",
+                background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "7px 10px",
+                border: "1px solid rgba(59,130,246,0.12)",
               }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: "#FFFFFF", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {row.company}
                   </div>
                   {row.contact && (
-                    <div style={{ fontSize: 11, color: "#6b7280", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                       {row.contact.name || "Contact"}{row.contact.role ? ` · ${row.contact.role}` : ""}
                     </div>
                   )}
@@ -764,7 +764,7 @@ function TargetCompanyBoard({ applications, contacts, setAppModal, setContactMod
                   {!row.app && (
                     <button
                       onClick={() => setAppModal({ mode: "new", app: { ...blankApp(), company: row.company, stage: "Interested" } })}
-                      style={{ fontSize: 11, padding: "3px 7px", borderRadius: 5, border: "none", background: "#1e3a5f", color: "#60a5fa", cursor: "pointer", fontWeight: 600 }}
+                      style={{ fontSize: 14, padding: "3px 7px", borderRadius: 5, border: "none", background: "rgba(59,130,246,0.15)", color: "#60a5fa", cursor: "pointer", fontWeight: 600 }}
                     >
                       + Apply
                     </button>
@@ -772,7 +772,7 @@ function TargetCompanyBoard({ applications, contacts, setAppModal, setContactMod
                   {!row.contact && (
                     <button
                       onClick={() => setContactModal({ mode: "new", contact: { ...blankContact(), company: row.company } })}
-                      style={{ fontSize: 11, padding: "3px 7px", borderRadius: 5, border: "none", background: "#1e3a5f", color: "#60a5fa", cursor: "pointer", fontWeight: 600 }}
+                      style={{ fontSize: 14, padding: "3px 7px", borderRadius: 5, border: "none", background: "rgba(59,130,246,0.15)", color: "#60a5fa", cursor: "pointer", fontWeight: 600 }}
                     >
                       + Contact
                     </button>
@@ -781,7 +781,7 @@ function TargetCompanyBoard({ applications, contacts, setAppModal, setContactMod
                     href={linkedInSearchUrl(row.company)}
                     target="_blank"
                     rel="noreferrer"
-                    style={{ fontSize: 11, padding: "3px 7px", borderRadius: 5, background: "#161b27", color: "#9ca3af", textDecoration: "none", fontWeight: 600, lineHeight: "18px", display: "inline-block" }}
+                    style={{ fontSize: 14, padding: "3px 7px", borderRadius: 5, background: "rgba(255,255,255,0.05)", color: "#A0AABF", textDecoration: "none", fontWeight: 600, lineHeight: "18px", display: "inline-block" }}
                   >
                     LI ↗
                   </a>
@@ -843,27 +843,27 @@ function OutreachDiscovery({ applications, contacts, setContactModal }) {
 
   return (
     <div style={{ marginTop: 12 }}>
-      <div style={{ fontSize: 11, fontWeight: 600, color: "#4b5563", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+      <div style={{ fontSize: 12, fontWeight: 600, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
         🧭 Find someone at a target company
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
         {targets.map(company => (
           <div key={company} style={{
             display: "flex", alignItems: "center", gap: 8,
-            background: "#0a0d14", borderRadius: 7, padding: "7px 10px",
-            border: "1px solid #1a2030",
+            background: "rgba(255,255,255,0.03)", borderRadius: 7, padding: "7px 10px",
+            border: "1px solid rgba(59,130,246,0.12)",
           }}>
             <div style={{ flex: 1 }}>
-              <span style={{ fontSize: 13, color: "#d1d5db", fontWeight: 600 }}>{company}</span>
-              <span style={{ fontSize: 11, color: "#4b5563", marginLeft: 8 }}>no contacts yet</span>
+              <span style={{ fontSize: 14, color: "#FFFFFF", fontWeight: 600 }}>{company}</span>
+              <span style={{ fontSize: 14, color: "#A0AABF", marginLeft: 8 }}>no contacts yet</span>
             </div>
             <a
               href={linkedInSearchUrl(company)}
               target="_blank"
               rel="noreferrer"
               style={{
-                fontSize: 11, padding: "3px 8px", borderRadius: 5,
-                background: "#0a192f", color: "#60a5fa",
+                fontSize: 14, padding: "3px 8px", borderRadius: 5,
+                background: "rgba(59,130,246,0.15)", color: "#60a5fa",
                 textDecoration: "none", fontWeight: 600, flexShrink: 0,
               }}
             >
@@ -872,8 +872,8 @@ function OutreachDiscovery({ applications, contacts, setContactModal }) {
             <button
               onClick={() => handleQuickAdd(company)}
               style={{
-                fontSize: 11, padding: "3px 8px", borderRadius: 5, border: "none",
-                background: "#161b27", color: "#9ca3af",
+                fontSize: 14, padding: "3px 8px", borderRadius: 5, border: "none",
+                background: "rgba(255,255,255,0.05)", color: "#A0AABF",
                 cursor: "pointer", fontWeight: 600, flexShrink: 0,
               }}
             >
@@ -902,12 +902,12 @@ function buildQueue(applications, contacts) {
 
   // Active interview stages with no prep notes
   applications.filter(a => ["Phone Screen", "Interview", "Final Round"].includes(a.stage) && !prepSectionsHasContent(a.prepSections, a.prepNotes)).forEach(app => {
-    items.push({ type: "prep", urgency: { label: app.stage, color: "#f59e0b", bg: "#451a03" }, app, title: `Prep needed — ${app.company}`, sub: `${app.stage} · no prep notes yet`, actionLabel: "Prep" });
+    items.push({ type: "prep", urgency: { label: app.stage, color: "#FBBF24", bg: "rgba(251,191,36,0.08)" }, app, title: `Prep needed — ${app.company}`, sub: `${app.stage} · no prep notes yet`, actionLabel: "Prep" });
   });
 
   // Contacts who replied — respond now
   contacts.filter(c => c.outreachStatus === "replied").forEach(contact => {
-    items.push({ type: "contact_replied", urgency: { label: "Replied", color: "#3b82f6", bg: "#1e3a5f" }, contact, title: `${contact.name} responded`, sub: `${contact.role} at ${contact.company} — schedule a call`, actionLabel: "View" });
+    items.push({ type: "contact_replied", urgency: { label: "Replied", color: "#3b82f6", bg: "rgba(59,130,246,0.15)" }, contact, title: `${contact.name} responded`, sub: `${contact.role} at ${contact.company} — schedule a call`, actionLabel: "View" });
   });
 
   // Sent outreach with no reply in 5+ days
@@ -915,7 +915,7 @@ function buildQueue(applications, contacts) {
     const sent = new Date(contact.outreachDate + "T00:00:00");
     const days = Math.round((today - sent) / 86400000);
     if (days >= 5) {
-      items.push({ type: "contact_followup", urgency: { label: `${days}d no reply`, color: days >= 10 ? "#ef4444" : "#f59e0b", bg: days >= 10 ? "#450a0a" : "#451a03" }, contact, title: `Follow up with ${contact.name}`, sub: `${contact.role} at ${contact.company}`, actionLabel: "Follow Up" });
+      items.push({ type: "contact_followup", urgency: { label: `${days}d no reply`, color: days >= 10 ? "#F87171" : "#FBBF24", bg: days >= 10 ? "rgba(248,113,113,0.08)" : "rgba(251,191,36,0.08)" }, contact, title: `Follow up with ${contact.name}`, sub: `${contact.role} at ${contact.company}`, actionLabel: "Follow Up" });
     }
   });
 
@@ -924,7 +924,7 @@ function buildQueue(applications, contacts) {
     const applied = new Date(app.appliedDate + "T00:00:00");
     const days = Math.round((today - applied) / 86400000);
     if (days >= 14) {
-      items.push({ type: "stale", urgency: { label: `${days}d no reply`, color: "#6b7280", bg: "#1f2937" }, app, title: `${app.company} — no response`, sub: `Applied ${days} days ago — follow up or find a contact`, actionLabel: "Open" });
+      items.push({ type: "stale", urgency: { label: `${days}d no reply`, color: "#A0AABF", bg: "rgba(59,130,246,0.12)" }, app, title: `${app.company} — no response`, sub: `Applied ${days} days ago — follow up or find a contact`, actionLabel: "Open" });
     }
   });
 
@@ -948,16 +948,16 @@ function VelocityDashboard({ applications, profile, saveProfile }) {
   }
 
   return (
-    <div style={{ background: "#0f1117", border: "1.5px solid #1f2937", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+    <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>📈</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>Weekly Pace</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>Weekly Pace</span>
         </div>
-        <div style={{ display: "flex", gap: 12, fontSize: 11, color: "#6b7280" }}>
-          <span>This wk: <strong style={{ color: thisWeek >= target ? "#10b981" : "#f3f4f6" }}>{thisWeek}/{target}</strong></span>
-          <span>4-wk avg: <strong style={{ color: "#9ca3af" }}>{fourWkAvg}</strong></span>
-          <span>Best: <strong style={{ color: "#9ca3af" }}>{bestWeek}</strong></span>
+        <div style={{ display: "flex", gap: 12, fontSize: 14, color: "#A0AABF" }}>
+          <span>This wk: <strong style={{ color: thisWeek >= target ? "#34D399" : "#FFFFFF" }}>{thisWeek}/{target}</strong></span>
+          <span>4-wk avg: <strong style={{ color: "#A0AABF" }}>{fourWkAvg}</strong></span>
+          <span>Best: <strong style={{ color: "#A0AABF" }}>{bestWeek}</strong></span>
           {editingTarget ? (
             <span style={{ display: "flex", gap: 4, alignItems: "center" }}>
               Target:
@@ -967,12 +967,12 @@ function VelocityDashboard({ applications, profile, saveProfile }) {
                 value={targetInput}
                 onChange={e => setTargetInput(e.target.value)}
                 onKeyDown={e => { if (e.key === "Enter") saveTarget(); if (e.key === "Escape") setEditingTarget(false); }}
-                style={{ width: 36, padding: "1px 4px", fontSize: 11, background: "#161b27", border: "1px solid #3b82f6", borderRadius: 4, color: "#f3f4f6", fontFamily: "inherit" }}
+                style={{ width: 36, padding: "1px 4px", fontSize: 14, background: "rgba(255,255,255,0.05)", border: "1px solid #3b82f6", borderRadius: 4, color: "#FFFFFF", fontFamily: "inherit" }}
               />
               <button onClick={saveTarget} style={{ fontSize: 11, padding: "1px 6px", borderRadius: 4, background: "#3b82f6", border: "none", color: "#fff", cursor: "pointer", fontFamily: "inherit" }}>✓</button>
             </span>
           ) : (
-            <button onClick={() => { setEditingTarget(true); setTargetInput(String(target)); }} style={{ fontSize: 11, color: "#4b5563", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <button onClick={() => { setEditingTarget(true); setTargetInput(String(target)); }} style={{ fontSize: 14, color: "#A0AABF", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
               Edit target
             </button>
           )}
@@ -988,17 +988,17 @@ function VelocityDashboard({ applications, profile, saveProfile }) {
           return (
             <div key={w.weekStart} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 2, position: "relative" }}>
               {/* Target line marker */}
-              <div style={{ position: "absolute", bottom: targetH + 14, left: 0, right: 0, borderTop: "1px dashed #1f2937" }} />
+              <div style={{ position: "absolute", bottom: targetH + 14, left: 0, right: 0, borderTop: "1px dashed rgba(59,130,246,0.12)" }} />
               <div style={{
                 width: "100%", borderRadius: "3px 3px 0 0",
                 height: Math.max(barH, w.count > 0 ? 4 : 0),
                 background: w.isCurrent
-                  ? (atTarget ? "#10b981" : "#3b82f6")
-                  : (atTarget ? "#10b98155" : "#1e3a5f"),
+                  ? (atTarget ? "#34D399" : "#3b82f6")
+                  : (atTarget ? "#34D39955" : "rgba(59,130,246,0.15)"),
                 transition: "height 0.2s",
                 marginTop: "auto",
               }} />
-              <div style={{ fontSize: 9, color: w.isCurrent ? "#9ca3af" : "#374151", whiteSpace: "nowrap", lineHeight: 1 }}>
+              <div style={{ fontSize: 9, color: w.isCurrent ? "#A0AABF" : "rgba(59,130,246,0.2)", whiteSpace: "nowrap", lineHeight: 1 }}>
                 {w.isCurrent ? "now" : w.label.replace(/\w+ /, "")}
               </div>
             </div>
@@ -1058,7 +1058,7 @@ function OutreachSprint({ contacts, applications, addDailyAction, setContactModa
 
   if (list.length === 0) {
     return (
-      <div style={{ padding: "10px 14px", fontSize: 12, color: "#6b7280", lineHeight: 1.55 }}>
+      <div style={{ padding: "10px 14px", fontSize: 14, color: "#A0AABF", lineHeight: 1.55 }}>
         No priority outreach yet — add contacts in the Contacts tab or use the discovery targets below.
       </div>
     );
@@ -1165,7 +1165,7 @@ function MorningLaunchpad({
           <div style={s.launchpadTitle}>
             <span>🚀</span>
             <span>Morning Launchpad</span>
-            <span style={{ fontSize: 11, fontWeight: 500, color: "#6b7280", letterSpacing: "0.05em" }}>
+            <span style={{ fontSize: 14, fontWeight: 500, color: "#A0AABF", letterSpacing: "0.05em" }}>
               ~{progress.totalMinutes} min
             </span>
           </div>
@@ -1218,7 +1218,7 @@ function MorningLaunchpad({
                   </div>
                 </div>
               </div>
-              <span style={{ color: "#6b7280", fontSize: 12 }}>{isActive ? "▲" : "▼"}</span>
+              <span style={{ color: "#A0AABF", fontSize: 14 }}>{isActive ? "▲" : "▼"}</span>
             </div>
             {isActive && (
               <div style={s.launchpadStageBody}>
@@ -1444,7 +1444,7 @@ export default function FocusTab({
                   </div>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <span style={{ ...s.focusTag, background: block.tagColor + "22", color: block.tagColor }}>{block.tag}</span>
-                    <span style={{ color: "#6b7280", fontSize: 12 }}>{isOpen ? "▲" : "▼"}</span>
+                    <span style={{ color: "#A0AABF", fontSize: 14 }}>{isOpen ? "▲" : "▼"}</span>
                   </div>
                 </div>
                 {isOpen && (
@@ -1461,7 +1461,7 @@ export default function FocusTab({
                       <span style={{ color: "#f59e0b" }}>⚡ ADHD tip:</span> {block.adhd}
                     </div>
                     <button
-                      style={{ ...s.btnPrimary, ...(isDone ? { background: "#14532d" } : {}), marginTop: 12 }}
+                      style={{ ...s.btnPrimary, ...(isDone ? { background: "rgba(52,211,153,0.2)" } : {}), marginTop: 12 }}
                       onClick={() => {
                         setCompletedBlocks(prev => ({ ...prev, [block.id]: !isDone }));
                         if (!isDone) setExpandedBlock(null);

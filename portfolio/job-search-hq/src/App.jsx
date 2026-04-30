@@ -19,12 +19,7 @@ import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
 import AITab from "./tabs/AITab";
 import ResourcesTab from "./tabs/ResourcesTab";
-import { AppNav, resolveAppUrl } from "./shared/ui";
-
-const APP_NAV_LINKS = [
-  { key: "wellness", label: "Wellness", url: resolveAppUrl("/wellness", "https://wellness-tracker-kappa.vercel.app") },
-  { key: "clarity-hub", label: "Clarity Hub", url: resolveAppUrl("/hub", "https://clarity-hub-lilac.vercel.app") },
-];
+// AppNav removed — sidebar navigation replaces cross-app nav bar
 
 const AUTH_DEBUG = ["1", "true", "yes"].includes(String(process.env.REACT_APP_AUTH_DEBUG || "").toLowerCase());
 function logAuth(message, payload) {
@@ -39,15 +34,15 @@ function logAuth(message, payload) {
 // ── AUTH SCREENS ──────────────────────────────────────────────────────────
 
 const authInputStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid #374151",
-  background: "#0f1117", color: "#f3f4f6", fontSize: 16, fontFamily: "inherit", marginBottom: 16,
+  width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid rgba(59,130,246,0.2)",
+  background: "rgba(255,255,255,0.03)", color: "#FFFFFF", fontSize: 16, fontFamily: "inherit", marginBottom: 16,
   outline: "none", boxSizing: "border-box",
 };
 
 const authBtnStyle = {
   width: "100%", padding: "12px", borderRadius: 8, border: "none",
   background: "#3b82f6", color: "#fff", fontSize: 14, fontWeight: 700,
-  fontFamily: "inherit", cursor: "pointer",
+  fontFamily: "inherit", cursor: "pointer", minHeight: 44,
 };
 
 function LoginScreen() {
@@ -88,19 +83,19 @@ function LoginScreen() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0f1117", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div style={{ maxWidth: 360, width: "100%", background: "#161b27", borderRadius: 16, padding: 32, border: "1px solid #1f2937" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div style={{ maxWidth: 360, width: "100%", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: "1px solid rgba(59,130,246,0.12)" }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🎯</div>
-        <div style={{ fontSize: 20, fontWeight: 700, color: "#f3f4f6", textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
-        <div style={{ fontSize: 13, color: "#6b7280", textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#FFFFFF", textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
+        <div style={{ fontSize: 13, color: "#A0AABF", textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
         {resetSent ? (
-          <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, textAlign: "center" }}>
-            Password reset email sent to <strong style={{ color: "#f3f4f6" }}>{email}</strong>.
+          <div style={{ fontSize: 13, color: "#A0AABF", lineHeight: 1.6, textAlign: "center" }}>
+            Password reset email sent to <strong style={{ color: "#FFFFFF" }}>{email}</strong>.
             Check your inbox and click the link to set a new password.
           </div>
         ) : (
           <form onSubmit={handleLogin}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email</label>
+            <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email</label>
             <input
               type="email"
               value={email}
@@ -109,7 +104,7 @@ function LoginScreen() {
               required
               style={authInputStyle}
             />
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
+            <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
             <input
               type="password"
               value={password}
@@ -165,13 +160,13 @@ function SetPasswordScreen({ onDone }) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0f1117", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div style={{ maxWidth: 360, width: "100%", background: "#161b27", borderRadius: 16, padding: 32, border: "1px solid #1f2937" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div style={{ maxWidth: 360, width: "100%", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: "1px solid rgba(59,130,246,0.12)" }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🔐</div>
-        <div style={{ fontSize: 20, fontWeight: 700, color: "#f3f4f6", textAlign: "center", marginBottom: 4 }}>Set new password</div>
-        <div style={{ fontSize: 13, color: "#6b7280", textAlign: "center", marginBottom: 28 }}>Choose a password for your account</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#FFFFFF", textAlign: "center", marginBottom: 4 }}>Set new password</div>
+        <div style={{ fontSize: 13, color: "#A0AABF", textAlign: "center", marginBottom: 28 }}>Choose a password for your account</div>
         <form onSubmit={handleSet}>
-          <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>New password</label>
+          <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>New password</label>
           <input
             type="password"
             value={password}
@@ -180,7 +175,7 @@ function SetPasswordScreen({ onDone }) {
             required
             style={authInputStyle}
           />
-          <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Confirm password</label>
+          <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Confirm password</label>
           <input
             type="password"
             value={confirm}
@@ -201,6 +196,83 @@ function SetPasswordScreen({ onDone }) {
     </div>
   );
 }
+
+const PAGE_TITLES = {
+  focus: "Daily Focus",
+  pipeline: "Pipeline",
+  contacts: "Contacts",
+  ai: "Apply Tools",
+  resources: "Resources",
+};
+
+const NAV_ITEMS = [
+  { section: "DAILY", items: [
+    { key: "focus", icon: "🎯", label: "Focus" },
+    { key: "pipeline", icon: "📋", label: "Pipeline" },
+    { key: "contacts", icon: "👥", label: "Contacts" },
+  ]},
+  { section: "TOOLS", items: [
+    { key: "ai", icon: "✨", label: "Apply Tools" },
+    { key: "resources", icon: "📚", label: "Resources" },
+  ]},
+];
+
+const sidebarStyles = {
+  layout: { display: "flex", minHeight: "100vh" },
+  sidebar: {
+    width: 240, minWidth: 240, background: "rgba(255,255,255,0.05)",
+    backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+    borderRight: "1px solid rgba(59,130,246,0.12)",
+    padding: "28px 16px", display: "flex", flexDirection: "column",
+    position: "sticky", top: 0, height: "100vh", overflowY: "auto",
+  },
+  sidebarLogo: {
+    display: "flex", alignItems: "center", gap: 12,
+    padding: "0 8px", marginBottom: 36,
+  },
+  logoMark: {
+    width: 38, height: 38, background: "#3b82f6", borderRadius: 10,
+    display: "flex", alignItems: "center", justifyContent: "center",
+    boxShadow: "0 0 16px rgba(59,130,246,0.25)", flexShrink: 0,
+  },
+  logoText: { fontWeight: 700, fontSize: 18, color: "#FFFFFF" },
+  logoSub: { fontSize: 14, color: "#A0AABF" },
+  navSection: { marginBottom: 8 },
+  navLabel: {
+    fontSize: 11, fontWeight: 600, color: "#A0AABF",
+    textTransform: "uppercase", letterSpacing: "0.08em",
+    padding: "0 12px", marginBottom: 6,
+  },
+  navItem: {
+    display: "flex", alignItems: "center", gap: 12,
+    padding: "12px 14px", borderRadius: 10, fontSize: 15, fontWeight: 500,
+    color: "#A0AABF", background: "transparent", border: "none",
+    cursor: "pointer", width: "100%", textAlign: "left",
+    fontFamily: "inherit", minHeight: 44, transition: "all 0.15s",
+  },
+  navItemActive: {
+    background: "rgba(59,130,246,0.12)", color: "#3b82f6", fontWeight: 600,
+  },
+  navIcon: { fontSize: 17, width: 22, textAlign: "center", flexShrink: 0 },
+  mainContent: { flex: 1, padding: "40px 48px", overflowX: "hidden", overflowY: "auto" },
+  pageHeader: {
+    display: "flex", alignItems: "flex-start", justifyContent: "space-between",
+    marginBottom: 28, gap: 12, flexWrap: "wrap",
+  },
+  pageTitle: { fontSize: 32, fontWeight: 700, color: "#FFFFFF", margin: 0 },
+  pageSub: { fontSize: 16, color: "#A0AABF", marginTop: 4 },
+  sidebarBottom: { marginTop: "auto", paddingTop: 16 },
+  mobileTabBar: {
+    display: "none", gap: 4, padding: "8px 16px", borderBottom: "1px solid rgba(59,130,246,0.12)",
+    flexWrap: "wrap", background: "rgba(255,255,255,0.03)",
+  },
+  mobileTabBtn: {
+    padding: "8px 14px", borderRadius: 8, border: "none", background: "transparent",
+    color: "#A0AABF", cursor: "pointer", fontSize: 13, fontWeight: 500, minHeight: 44,
+    fontFamily: "inherit",
+  },
+  mobileTabBtnActive: { background: "rgba(59,130,246,0.12)", color: "#3b82f6", fontWeight: 600 },
+};
 
 export default function JobSearchTracker() {
   const [data, setData] = useState(defaultData);
@@ -675,7 +747,7 @@ export default function JobSearchTracker() {
 
   // Auth gate — session=null means still checking, session=false means not logged in
   if (session === null) {
-    return <div style={{ minHeight: "100vh", background: "#0f1117", display: "flex", alignItems: "center", justifyContent: "center", color: "#6b7280", fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
+    return <div style={{ minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A0AABF", fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
   }
   if (recoveryMode) {
     return <SetPasswordScreen onDone={() => { setRecoveryMode(false); auth.getSession().then(({ data: d }) => setSession(d.session || false)); }} />;
@@ -696,84 +768,134 @@ export default function JobSearchTracker() {
         </div>
       )}
 
-      {/* Header */}
-      <div style={s.header}>
-        <div>
-          <div style={s.headerTitle}>Job Search HQ</div>
-          <div style={s.headerSub}>{activeApps.length} active · {data.contacts.length} contacts · {todayDone} done today</div>
-        </div>
-        <div style={s.headerActions}>
-          {!profileComplete && (
-            <button style={s.btnWarn} onClick={() => setProfileModal(true)}>⚠️ Setup Profile</button>
+      <div style={sidebarStyles.layout}>
+        {/* Sidebar */}
+        <aside style={sidebarStyles.sidebar} className="jshq-sidebar">
+          {/* Logo lockup */}
+          <div style={sidebarStyles.sidebarLogo}>
+            <div style={sidebarStyles.logoMark}>
+              <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+                <text x="24" y="36" textAnchor="middle" fontFamily="DM Sans, sans-serif" fontWeight="800" fontSize="38" fill="white">HQ</text>
+              </svg>
+            </div>
+            <div>
+              <div style={sidebarStyles.logoText}>Job Search HQ</div>
+              <div style={sidebarStyles.logoSub}>Command Center</div>
+            </div>
+          </div>
+
+          {/* Nav sections */}
+          {NAV_ITEMS.map(group => (
+            <div key={group.section} style={sidebarStyles.navSection}>
+              <div style={sidebarStyles.navLabel}>{group.section}</div>
+              {group.items.map(item => (
+                <button
+                  key={item.key}
+                  style={{ ...sidebarStyles.navItem, ...(tab === item.key ? sidebarStyles.navItemActive : {}) }}
+                  onClick={() => setTab(item.key)}
+                >
+                  <span style={sidebarStyles.navIcon}>{item.icon}</span>
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          ))}
+
+          {/* Profile button at bottom */}
+          <div style={sidebarStyles.sidebarBottom}>
+            {!profileComplete ? (
+              <button
+                style={{ ...sidebarStyles.navItem, color: "#fbbf24" }}
+                onClick={() => setProfileModal(true)}
+              >
+                <span style={sidebarStyles.navIcon}>⚠️</span>
+                Setup Profile
+              </button>
+            ) : (
+              <button
+                style={sidebarStyles.navItem}
+                onClick={() => setProfileModal(true)}
+              >
+                <span style={sidebarStyles.navIcon}>👤</span>
+                Profile
+              </button>
+            )}
+          </div>
+        </aside>
+
+        {/* Main content */}
+        <main style={sidebarStyles.mainContent} className="jshq-main">
+          {/* Mobile tab bar (hidden on desktop via CSS) */}
+          <div style={sidebarStyles.mobileTabBar} className="jshq-mobile-tabs">
+            {[["focus","🎯 Focus"],["pipeline","📋 Pipeline"],["contacts","👥 Contacts"],["ai","✨ Tools"],["resources","📚 Resources"]].map(([key, label]) => (
+              <button key={key} style={{ ...sidebarStyles.mobileTabBtn, ...(tab === key ? sidebarStyles.mobileTabBtnActive : {}) }} onClick={() => setTab(key)}>{label}</button>
+            ))}
+          </div>
+
+          {/* Page header */}
+          <div style={sidebarStyles.pageHeader}>
+            <div>
+              <h1 style={sidebarStyles.pageTitle}>{PAGE_TITLES[tab]}</h1>
+              <p style={sidebarStyles.pageSub}>{activeApps.length} active · {data.contacts.length} contacts</p>
+            </div>
+            <div style={s.headerActions}>
+              {tab === "pipeline" && <button style={s.btnPrimary} onClick={() => setAppModal({ mode: "new", app: blankApp() })}>+ Application</button>}
+              {tab === "contacts" && <button style={s.btnPrimary} onClick={() => setContactModal({ mode: "new", contact: blankContact() })}>+ Contact</button>}
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          {tab === "focus" && (
+            <FocusTab
+              expandedBlock={expandedBlock} setExpandedBlock={setExpandedBlock}
+              completedBlocks={completedBlocks} setCompletedBlocks={setCompletedBlocks}
+              todayDone={todayDone}
+              applications={data.applications} contacts={data.contacts}
+              dailyActions={data.dailyActions || []}
+              addDailyAction={addDailyAction} removeDailyAction={removeDailyAction}
+              setAppModal={setAppModal} setPrepModal={setPrepModal}
+              setContactModal={setContactModal} setTab={setTab} showError={showError}
+              profile={data.profile} saveProfile={saveProfile}
+              wins={data.wins || []} addWin={addWin} removeWin={removeWin}
+              setKitApp={setKitApp} setResumeTab={setResumeTab} saveApp={saveApp}
+              setApplyWizard={setApplyWizard}
+              inbox={data.inbox || []} inboxHandlers={inboxHandlers}
+            />
           )}
-          {profileComplete && (
-            <button style={s.btnSecondary} onClick={() => setProfileModal(true)}>👤 Profile</button>
+          {tab === "pipeline" && (
+            <PipelineTab
+              activeApps={activeApps} archivedApps={archivedApps}
+              contacts={data.contacts} saveApp={saveApp}
+              setAppModal={setAppModal} setPrepModal={setPrepModal} setDebriefModal={setDebriefModal}
+              setOfferModal={setOfferModal}
+              setKitApp={setKitApp} setKitResumeResult={setKitResumeResult} setKitCoverResult={setKitCoverResult}
+              setTab={setTab} setResumeTab={setResumeTab}
+            />
           )}
-          {tab === "pipeline" && <button style={s.btnPrimary} onClick={() => setAppModal({ mode: "new", app: blankApp() })}>+ Application</button>}
-          {tab === "contacts" && <button style={s.btnPrimary} onClick={() => setContactModal({ mode: "new", contact: blankContact() })}>+ Contact</button>}
-        </div>
+          {tab === "contacts" && (
+            <ContactsTab
+              contacts={data.contacts} applications={data.applications}
+              setContactModal={setContactModal} deleteContact={deleteContact}
+              saveContact={saveContact} setTab={setTab}
+              setAppModal={setAppModal}
+              showError={showError}
+              onDraftMessage={(c) => { setDraftContact(c); setTab("ai"); }}
+            />
+          )}
+          {tab === "ai" && (
+            <AITab
+              data={data} profileComplete={profileComplete}
+              kitApp={kitApp} setKitApp={setKitApp}
+              resumeTab={resumeTab} setResumeTab={setResumeTab}
+              draftContact={draftContact} clearDraftContact={() => setDraftContact(null)}
+              saveStarStories={saveStarStories} setTab={setTab}
+              setAppModal={setAppModal} setContactModal={setContactModal}
+              showError={showError} setProfileModal={setProfileModal}
+            />
+          )}
+          {tab === "resources" && <ResourcesTab />}
+        </main>
       </div>
-
-      {/* Cross-app nav */}
-      <AppNav currentApp="job-search" links={APP_NAV_LINKS} />
-
-      {/* Nav Tabs */}
-      <div style={s.tabs}>
-        {[["focus","🎯 Daily Focus"],["pipeline","📋 Pipeline"],["contacts","👥 Contacts"],["ai","✨ Apply Tools"],["resources","📚 Resources"]].map(([key, label]) => (
-          <button key={key} style={{ ...s.tabBtn, ...(tab === key ? s.tabBtnActive : {}) }} onClick={() => setTab(key)}>{label}</button>
-        ))}
-      </div>
-
-      {/* Tab Content */}
-      {tab === "focus" && (
-        <FocusTab
-          expandedBlock={expandedBlock} setExpandedBlock={setExpandedBlock}
-          completedBlocks={completedBlocks} setCompletedBlocks={setCompletedBlocks}
-          todayDone={todayDone}
-          applications={data.applications} contacts={data.contacts}
-          dailyActions={data.dailyActions || []}
-          addDailyAction={addDailyAction} removeDailyAction={removeDailyAction}
-          setAppModal={setAppModal} setPrepModal={setPrepModal}
-          setContactModal={setContactModal} setTab={setTab} showError={showError}
-          profile={data.profile} saveProfile={saveProfile}
-          wins={data.wins || []} addWin={addWin} removeWin={removeWin}
-          setKitApp={setKitApp} setResumeTab={setResumeTab} saveApp={saveApp}
-          setApplyWizard={setApplyWizard}
-          inbox={data.inbox || []} inboxHandlers={inboxHandlers}
-        />
-      )}
-      {tab === "pipeline" && (
-        <PipelineTab
-          activeApps={activeApps} archivedApps={archivedApps}
-          contacts={data.contacts} saveApp={saveApp}
-          setAppModal={setAppModal} setPrepModal={setPrepModal} setDebriefModal={setDebriefModal}
-          setOfferModal={setOfferModal}
-          setKitApp={setKitApp} setKitResumeResult={setKitResumeResult} setKitCoverResult={setKitCoverResult}
-          setTab={setTab} setResumeTab={setResumeTab}
-        />
-      )}
-      {tab === "contacts" && (
-        <ContactsTab
-          contacts={data.contacts} applications={data.applications}
-          setContactModal={setContactModal} deleteContact={deleteContact}
-          saveContact={saveContact} setTab={setTab}
-          setAppModal={setAppModal}
-          showError={showError}
-          onDraftMessage={(c) => { setDraftContact(c); setTab("ai"); }}
-        />
-      )}
-      {tab === "ai" && (
-        <AITab
-          data={data} profileComplete={profileComplete}
-          kitApp={kitApp} setKitApp={setKitApp}
-          resumeTab={resumeTab} setResumeTab={setResumeTab}
-          draftContact={draftContact} clearDraftContact={() => setDraftContact(null)}
-          saveStarStories={saveStarStories} setTab={setTab}
-          setAppModal={setAppModal} setContactModal={setContactModal}
-          showError={showError} setProfileModal={setProfileModal}
-        />
-      )}
-      {tab === "resources" && <ResourcesTab />}
 
       {/* Modals */}
       {appModal && (

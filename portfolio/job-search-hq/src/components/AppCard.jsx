@@ -11,7 +11,7 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
     <div style={{ ...s.card, opacity: archived ? 0.7 : 1 }} className="card-hover">
       <div style={s.cardTop}>
         <div>
-          <div style={s.cardCompany}>{app.company || <span style={{ color: "#4b5563" }}>Untitled</span>}</div>
+          <div style={s.cardCompany}>{app.company || <span style={{ color: "#A0AABF" }}>Untitled</span>}</div>
           <div style={s.cardTitle}>{app.title}</div>
         </div>
         <div style={{ ...s.stageBadge, background: STAGE_COLORS[app.stage] + "22", color: STAGE_COLORS[app.stage] }}>
@@ -29,7 +29,7 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
         <div style={s.cardContacts}>{linked.map(c => <span key={c.id} style={s.contactChip}>{c.name}</span>)}</div>
       )}
       {prepSectionsHasContent(app.prepSections, app.prepNotes) && (
-        <div style={{ fontSize: 11, color: "#10b981", marginTop: 2 }}>✓ Interview prep saved</div>
+        <div style={{ fontSize: 14, color: "#34D399", marginTop: 2 }}>✓ Interview prep saved</div>
       )}
       <div style={s.cardActions}>
         <select style={s.stageSelect} value={app.stage} onChange={e => onStageChange(e.target.value)}>

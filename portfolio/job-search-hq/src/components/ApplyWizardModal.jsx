@@ -116,7 +116,7 @@ export default function ApplyWizardModal({
         <div style={s.modalHeader}>
           <div>
             <div>🚀 Apply Wizard</div>
-            <div style={{ fontSize: 12, color: "#9ca3af", fontWeight: 400, marginTop: 2 }}>
+            <div style={{ fontSize: 12, color: "#A0AABF", fontWeight: 400, marginTop: 2 }}>
               {app.company || "(no company)"} · {app.title || "(no title)"}
             </div>
           </div>
@@ -134,15 +134,15 @@ export default function ApplyWizardModal({
           {step === 1 && (
             <>
               <div style={s.wizPrompt}>
-                Walking <strong style={{ color: "#f3f4f6" }}>{app.company || "this app"}</strong> from
+                Walking <strong style={{ color: "#FFFFFF" }}>{app.company || "this app"}</strong> from
                 Interested to Applied. Should take 8–12 minutes if you have the JD ready.
               </div>
-              <div style={{ background: "#0a0d14", border: "1px solid #1f2937", borderRadius: 8, padding: 12, fontSize: 13, color: "#d1d5db", lineHeight: 1.6 }}>
-                <div><strong style={{ color: "#f3f4f6" }}>Company:</strong> {app.company || "—"}</div>
-                <div><strong style={{ color: "#f3f4f6" }}>Title:</strong> {app.title || "—"}</div>
+              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: 12, fontSize: 13, color: "#FFFFFF", lineHeight: 1.6 }}>
+                <div><strong style={{ color: "#FFFFFF" }}>Company:</strong> {app.company || "—"}</div>
+                <div><strong style={{ color: "#FFFFFF" }}>Title:</strong> {app.title || "—"}</div>
                 {app.url && (
                   <div style={{ marginTop: 4 }}>
-                    <strong style={{ color: "#f3f4f6" }}>URL:</strong>{" "}
+                    <strong style={{ color: "#FFFFFF" }}>URL:</strong>{" "}
                     <a href={app.url} target="_blank" rel="noopener noreferrer" style={s.link}>{app.url}</a>
                   </div>
                 )}
@@ -177,8 +177,8 @@ export default function ApplyWizardModal({
               >
                 {tailorCopied ? "✓ Copied — paste into ChatGPT or Claude" : "📋 Copy tailor-resume prompt"}
               </button>
-              <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.5 }}>
-                Resume type: <strong style={{ color: "#9ca3af" }}>{resumeType}</strong> (primary).
+              <div style={{ fontSize: 11, color: "#A0AABF", lineHeight: 1.5 }}>
+                Resume type: <strong style={{ color: "#A0AABF" }}>{resumeType}</strong> (primary).
                 Edit the type later from Apply Tools if you need AE or PM framing.
               </div>
             </>
@@ -195,7 +195,7 @@ export default function ApplyWizardModal({
               >
                 {coverCopied ? "✓ Copied — paste into ChatGPT or Claude" : "📋 Copy cover-letter prompt"}
               </button>
-              <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.5 }}>
+              <div style={{ fontSize: 11, color: "#A0AABF", lineHeight: 1.5 }}>
                 The prompt enforces 3 paragraphs, plain language, Authorize.Net leading.
               </div>
             </>
@@ -240,11 +240,11 @@ export default function ApplyWizardModal({
               {nextQueue.length > 0 ? (
                 <>
                   <div style={s.wizPrompt}>
-                    Next in queue: <strong style={{ color: "#f3f4f6" }}>{nextQueue[0].company}</strong>
+                    Next in queue: <strong style={{ color: "#FFFFFF" }}>{nextQueue[0].company}</strong>
                     {" — "}{nextQueue[0].title || "(no title)"}.
                     {nextQueue[0].jobDescription
                       ? <span style={{ color: "#10b981" }}> JD ready ✓</span>
-                      : <span style={{ color: "#6b7280" }}> No JD yet</span>}
+                      : <span style={{ color: "#A0AABF" }}> No JD yet</span>}
                   </div>
                   <button onClick={pickNext} style={s.wizCta}>
                     → Apply to {nextQueue[0].company}

@@ -20,14 +20,14 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
 
   const panelHeader = {
     display: "flex", justifyContent: "space-between", alignItems: "center",
-    background: "#161b27", border: "1px solid #1f2937", borderRadius: 10,
-    padding: "10px 14px", cursor: "pointer", fontSize: 13, fontWeight: 600,
-    color: "#d1d5db",
+    background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10,
+    padding: "10px 14px", cursor: "pointer", fontSize: 14, fontWeight: 600,
+    color: "#FFFFFF",
   };
   const panelBody = {
-    background: "#111827", border: "1px solid #1f2937", borderTop: "none",
-    borderRadius: "0 0 10px 10px", padding: "12px 14px", fontSize: 12,
-    color: "#9ca3af", lineHeight: 1.5,
+    background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderTop: "none",
+    borderRadius: "0 0 10px 10px", padding: "12px 14px", fontSize: 14,
+    color: "#A0AABF", lineHeight: 1.5,
   };
   return (
     <div style={s.overlay} onClick={onClose}>
@@ -37,7 +37,7 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
           <button style={s.closeBtn} onClick={onClose}>✕</button>
         </div>
         <div style={s.modalBody}>
-          <p style={{ color: "#6b7280", fontSize: 12 }}>This profile is the AI's foundation for every tailored resume, cover letter, and Apply Kit.</p>
+          <p style={{ color: "#A0AABF", fontSize: 12 }}>This profile is the AI's foundation for every tailored resume, cover letter, and Apply Kit.</p>
           <div style={s.profileSectionLabel}>Personal Info</div>
           <div style={s.formRow}>
             <Field label="Full Name" value={p.name} onChange={v => set("name", v)} placeholder="Chase Whittaker" />
@@ -58,7 +58,7 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
           <Field label="Top 3–5 Career Achievements (AI uses these in cover letters)" type="textarea" rows={4} value={p.topAchievements} onChange={v => set("topAchievements", v)} placeholder={"• Guided 100s of merchants from application to live transactions at Authorize.Net\n• 98% integration issue resolution rate\n• Exceeded KPI targets 10–15% consistently\n• Built onboarding materials adopted by full team"} />
           <Field label="Additional context for AI (strengths, background, tone)" type="textarea" rows={3} value={p.notes} onChange={v => set("notes", v)} placeholder="Implementation and payments background. Strongest at merchant onboarding, integration troubleshooting, SOPs. Remote only. Targeting Implementation Consultant / Sales Engineer OR Account Executive at payments-adjacent companies (equal lanes)." />
           <div style={s.profileSectionLabel}>Base Resume</div>
-          <p style={{ color: "#6b7280", fontSize: 12, marginBottom: 8 }}>AI tailors every document from this. Edit directly or load a fresh template below.</p>
+          <p style={{ color: "#A0AABF", fontSize: 12, marginBottom: 8 }}>AI tailors every document from this. Edit directly or load a fresh template below.</p>
           <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
             <button
               style={{ ...s.btnSecondary, fontSize: 12, padding: "5px 12px" }}
@@ -82,8 +82,8 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
           <textarea style={{ ...s.textarea, minHeight: 260, fontFamily: "monospace", fontSize: 11 }} value={resume} onChange={e => setResume(e.target.value)} />
 
           <div style={s.profileSectionLabel}>Direction, Strengths & Feedback</div>
-          <p style={{ color: "#6b7280", fontSize: 12, marginBottom: 8 }}>
-            Read-only reference. Source of truth: <code style={{ color: "#9ca3af" }}>chase/identity/</code>.
+          <p style={{ color: "#A0AABF", fontSize: 12, marginBottom: 8 }}>
+            Read-only reference. Source of truth: <code style={{ color: "#A0AABF" }}>chase/identity/</code>.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -91,27 +91,27 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
             <div>
               <div style={panelHeader} onClick={() => togglePanel("direction")}>
                 <span>🧭 Direction — Implementation Consultant / SE (payments-adjacent)</span>
-                <span style={{ color: "#6b7280" }}>{openPanel === "direction" ? "−" : "+"}</span>
+                <span style={{ color: "#A0AABF" }}>{openPanel === "direction" ? "−" : "+"}</span>
               </div>
               {openPanel === "direction" && (
                 <div style={panelBody}>
                   <div style={{ marginBottom: 8 }}>
-                    <strong style={{ color: "#d1d5db" }}>Primary role:</strong> {DIRECTION.primaryRole}
+                    <strong style={{ color: "#FFFFFF" }}>Primary role:</strong> {DIRECTION.primaryRole}
                   </div>
                   <div style={{ marginBottom: 8 }}>
-                    <strong style={{ color: "#d1d5db" }}>Primary companies:</strong>{" "}
+                    <strong style={{ color: "#FFFFFF" }}>Primary companies:</strong>{" "}
                     {DIRECTION.primaryCompanies.slice(0, 8).join(", ")}
                     {DIRECTION.primaryCompanies.length > 8 && ` + ${DIRECTION.primaryCompanies.length - 8} more`}
                   </div>
                   <div style={{ marginBottom: 8 }}>
-                    <strong style={{ color: "#d1d5db" }}>Secondary (dev-tools):</strong>{" "}
+                    <strong style={{ color: "#FFFFFF" }}>Secondary (dev-tools):</strong>{" "}
                     {DIRECTION.secondaryCompanies.slice(0, 6).join(", ")}
                     {DIRECTION.secondaryCompanies.length > 6 && ` + ${DIRECTION.secondaryCompanies.length - 6} more`}
                   </div>
                   <div style={{ marginBottom: 8 }}>
-                    <strong style={{ color: "#d1d5db" }}>Backup path:</strong> {DIRECTION.backupRole}
+                    <strong style={{ color: "#FFFFFF" }}>Backup path:</strong> {DIRECTION.backupRole}
                   </div>
-                  <div style={{ fontSize: 11, color: "#6b7280" }}>
+                  <div style={{ fontSize: 11, color: "#A0AABF" }}>
                     Committed {DIRECTION.committedDate} · Review week 4: {DIRECTION.reassessWeek4} · Review week 10: {DIRECTION.reassessWeek10}
                   </div>
                 </div>
@@ -122,20 +122,20 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
             <div>
               <div style={panelHeader} onClick={() => togglePanel("strengths")}>
                 <span>💪 Strengths — CliftonStrengths Top 5</span>
-                <span style={{ color: "#6b7280" }}>{openPanel === "strengths" ? "−" : "+"}</span>
+                <span style={{ color: "#A0AABF" }}>{openPanel === "strengths" ? "−" : "+"}</span>
               </div>
               {openPanel === "strengths" && (
                 <div style={panelBody}>
                   {STRENGTHS_SUMMARY.map(theme => (
                     <div key={theme.name} style={{ marginBottom: 10 }}>
-                      <div style={{ color: "#f3f4f6", fontWeight: 600, marginBottom: 2 }}>
+                      <div style={{ color: "#FFFFFF", fontWeight: 600, marginBottom: 2 }}>
                         {theme.name}{" "}
-                        <span style={{ fontWeight: 400, color: "#6b7280", fontSize: 11 }}>
+                        <span style={{ fontWeight: 400, color: "#A0AABF", fontSize: 11 }}>
                           — {theme.descriptors.join(" · ")}
                         </span>
                       </div>
-                      <div style={{ color: "#9ca3af", marginBottom: 3 }}>{theme.workExample}</div>
-                      <div style={{ color: "#6b7280", fontSize: 11, fontStyle: "italic" }}>
+                      <div style={{ color: "#A0AABF", marginBottom: 3 }}>{theme.workExample}</div>
+                      <div style={{ color: "#A0AABF", fontSize: 11, fontStyle: "italic" }}>
                         Leverage: {theme.jobSearchLeverage}
                       </div>
                     </div>
@@ -148,21 +148,21 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
             <div>
               <div style={panelHeader} onClick={() => togglePanel("friends")}>
                 <span>👥 Friend Feedback — consensus & quotes</span>
-                <span style={{ color: "#6b7280" }}>{openPanel === "friends" ? "−" : "+"}</span>
+                <span style={{ color: "#A0AABF" }}>{openPanel === "friends" ? "−" : "+"}</span>
               </div>
               {openPanel === "friends" && (
                 <div style={panelBody}>
-                  <div style={{ color: "#d1d5db", marginBottom: 10 }}>
-                    <strong style={{ color: "#f3f4f6" }}>Consensus:</strong>{" "}
+                  <div style={{ color: "#FFFFFF", marginBottom: 10 }}>
+                    <strong style={{ color: "#FFFFFF" }}>Consensus:</strong>{" "}
                     {FRIEND_FEEDBACK_CONSENSUS.join(" · ")}
                   </div>
                   {FRIEND_FEEDBACK.map(f => (
-                    <div key={f.name} style={{ marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid #1f2937" }}>
-                      <div style={{ color: "#f3f4f6", fontWeight: 600 }}>
+                    <div key={f.name} style={{ marginBottom: 10, paddingBottom: 8, borderBottom: "1px solid rgba(59,130,246,0.12)" }}>
+                      <div style={{ color: "#FFFFFF", fontWeight: 600 }}>
                         {f.name}{" "}
-                        <span style={{ fontWeight: 400, color: "#6b7280", fontSize: 11 }}>— {f.relation}</span>
+                        <span style={{ fontWeight: 400, color: "#A0AABF", fontSize: 11 }}>— {f.relation}</span>
                       </div>
-                      <div style={{ color: "#9ca3af", marginTop: 3, fontStyle: "italic" }}>
+                      <div style={{ color: "#A0AABF", marginTop: 3, fontStyle: "italic" }}>
                         "{f.quotes[0]}"
                       </div>
                     </div>

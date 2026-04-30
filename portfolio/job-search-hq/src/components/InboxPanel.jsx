@@ -197,7 +197,7 @@ export default function InboxPanel({ inbox, applications, handlers, showError })
             );
           })}
           {overflow > 0 && (
-            <div style={{ fontSize: 12, color: "#6b7280", textAlign: "center", marginTop: 4 }}>
+            <div style={{ fontSize: 12, color: "#A0AABF", textAlign: "center", marginTop: 4 }}>
               +{overflow} more pending — triage these {visible.length} first
             </div>
           )}

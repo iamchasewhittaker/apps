@@ -65,7 +65,7 @@ export default function PrepModal({ app, data, onSave, onClose, showError }) {
         <div style={s.modalHeader}>
           <div>
             <span>🎯 Interview Prep</span>
-            <div style={{ fontSize: 12, color: "#6b7280", fontWeight: 400, marginTop: 2 }}>
+            <div style={{ fontSize: 14, color: "#A0AABF", fontWeight: 400, marginTop: 2 }}>
               {app.company} — {app.title} · {app.stage}
             </div>
           </div>
@@ -77,7 +77,7 @@ export default function PrepModal({ app, data, onSave, onClose, showError }) {
           )}
           <div style={s.tipBox}>
             <p><strong>No in-app AI.</strong> Use stage templates below, edit in place, and/or copy an external brief for ChatGPT or Claude in another tab.</p>
-            {app.jobDescription && <p style={{ color: "#10b981", marginTop: 4 }}>✓ JD is saved — prompts include it.</p>}
+            {app.jobDescription && <p style={{ color: "#34D399", marginTop: 4 }}>✓ JD is saved — prompts include it.</p>}
           </div>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", marginBottom: 10 }}>

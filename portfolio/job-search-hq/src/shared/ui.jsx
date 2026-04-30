@@ -23,8 +23,8 @@ import React from "react";
 const DEFAULTS = {
   surface: "#1c1c24",
   border: "#2d2d3d",
-  text: "#e5e7eb",
-  muted: "#9ca3af",
+  text: "#FFFFFF",
+  muted: "#A0AABF",
   accent: "#3d9970",
 };
 

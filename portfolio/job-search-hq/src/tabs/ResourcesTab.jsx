@@ -25,10 +25,10 @@ export default function ResourcesTab() {
           </div>
         ))}
 
-        <div style={{ marginBottom: 24, padding: "14px 16px", background: "#161b27", border: "1px solid #1f2937", borderRadius: 12 }}>
+        <div style={{ marginBottom: 24, padding: "14px 16px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12 }}>
           <div style={{ ...s.sectionLabel, color: "#60a5fa", marginBottom: 8 }}>Chrome extension (MVP)</div>
-          <div style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.55, marginBottom: 10 }}>
-            Load the unpacked extension from the repo folder <code style={{ fontSize: 11, color: "#93c5fd" }}>extension/</code> — capture LinkedIn profiles and job postings into this app, and show an Action Queue badge while Job Search HQ is open. Full steps: see <code style={{ fontSize: 11, color: "#93c5fd" }}>extension/README.md</code> in the project (clone / monorepo).
+          <div style={{ fontSize: 14, color: "#FFFFFF", lineHeight: 1.55, marginBottom: 10 }}>
+            Load the unpacked extension from the repo folder <code style={{ fontSize: 14, color: "#93c5fd" }}>extension/</code> — capture LinkedIn profiles and job postings into this app, and show an Action Queue badge while Job Search HQ is open. Full steps: see <code style={{ fontSize: 14, color: "#93c5fd" }}>extension/README.md</code> in the project (clone / monorepo).
           </div>
         </div>
 
@@ -49,9 +49,9 @@ export default function ResourcesTab() {
           ))}
         </div>
 
-        <div style={{ marginTop: 8, padding: "16px 18px", background: "#16161c", border: "1px solid #2a2a35", borderRadius: 12 }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: "#e07040", marginBottom: 4 }}>💾 Data Backup</div>
-          <div style={{ fontSize: 11, color: "#6b6a72", marginBottom: 12, lineHeight: 1.5 }}>
+        <div style={{ marginTop: 8, padding: "16px 18px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#e07040", marginBottom: 4 }}>💾 Data Backup</div>
+          <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 12, lineHeight: 1.5 }}>
             Saves your full pipeline, contacts, and profile to a dated JSON file. First tap picks a folder (e.g. "Job Search Backups" in iCloud) — after that it saves there automatically.
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -64,19 +64,19 @@ export default function ResourcesTab() {
             </button>
             <button onClick={restoreData} style={{
               flex: 1, padding: 11, borderRadius: 8,
-              background: "#1f2937", color: "#d1d5db", border: "1px solid #374151",
-              fontSize: 13, fontWeight: 700, fontFamily: "inherit", cursor: "pointer",
+              background: "rgba(59,130,246,0.12)", color: "#FFFFFF", border: "1px solid rgba(59,130,246,0.2)",
+              fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer",
             }}>
               📂 Restore from Backup
             </button>
           </div>
-          <div style={{ fontSize: 10, color: "#6b6a72", marginTop: 8, textAlign: "center" }}>
+          <div style={{ fontSize: 12, color: "#A0AABF", marginTop: 8, textAlign: "center" }}>
             Saved as <em>job-search-backup-YYYY-MM-DD.json</em> · Each backup is a separate dated file.
           </div>
           <div style={{ textAlign: "center", marginTop: 6 }}>
             <button onClick={() => { localStorage.removeItem(BACKUP_FOLDER_KEY); alert("Folder cleared — next backup will ask you to choose a new folder."); }} style={{
-              background: "none", border: "none", color: "#6b6a72",
-              fontSize: 10, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline",
+              background: "none", border: "none", color: "#A0AABF",
+              fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline",
             }}>
               Change backup folder
             </button>

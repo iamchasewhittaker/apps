@@ -223,7 +223,7 @@ export default function AITab({
                 {data.applications.filter(a => a.jobDescription).map(a => (
                   <button key={a.id} style={s.appToggleChip} onClick={() => setJd(a.jobDescription)}>{a.company} — {a.title}</button>
                 ))}
-                {data.applications.filter(a => a.jobDescription).length === 0 && <span style={{ color: "#4b5563", fontSize: 12 }}>No saved JDs yet — paste them when adding applications.</span>}
+                {data.applications.filter(a => a.jobDescription).length === 0 && <span style={{ color: "#A0AABF", fontSize: 14 }}>No saved JDs yet — paste them when adding applications.</span>}
               </div>
               <div style={{ marginTop: 16 }}>
                 <div style={s.sectionLabel}>PM vs AE prompts</div>
@@ -289,14 +289,14 @@ export default function AITab({
                 </button>
               ))}
               {data.applications.filter(a => a.jobDescription).length === 0 && (
-                <span style={{ color: "#4b5563", fontSize: 12 }}>No applications with saved JDs yet. Add them in the pipeline.</span>
+                <span style={{ color: "#A0AABF", fontSize: 14 }}>No applications with saved JDs yet. Add them in the pipeline.</span>
               )}
             </div>
             {kitApp && (
               <div style={s.kitContext}>
                 <div>
                   <strong>{kitApp.company}</strong> — {kitApp.title}
-                  <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>Stage: {kitApp.stage} · Resume type: {resumeType}</div>
+                  <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>Stage: {kitApp.stage} · Resume type: {resumeType}</div>
                 </div>
                 <button
                   style={{ ...s.btnPrimary, opacity: !data.baseResume ? 0.5 : 1 }}
@@ -435,7 +435,7 @@ export default function AITab({
                     <div style={s.kitContext}>
                       <div>
                         <strong>{connectContact.name}</strong> · {connectContact.role}
-                        <div style={{ fontSize: 12, color: "#6b7280" }}>{connectContact.company}</div>
+                        <div style={{ fontSize: 12, color: "#A0AABF" }}>{connectContact.company}</div>
                       </div>
                     </div>
                   )}
@@ -485,7 +485,7 @@ export default function AITab({
                     <div style={s.kitContext}>
                       <div>
                         <strong>{followupContact.name}</strong> · {followupContact.role}
-                        <div style={{ fontSize: 12, color: "#6b7280" }}>{followupContact.company}</div>
+                        <div style={{ fontSize: 12, color: "#A0AABF" }}>{followupContact.company}</div>
                       </div>
                     </div>
                   )}
@@ -577,7 +577,7 @@ export default function AITab({
                   <div key={story.id} style={{ ...s.card, padding: 12 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start" }}>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>{story.title || "Untitled STAR story"}</div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>{story.title || "Untitled STAR story"}</div>
                         {story.competency && <div style={{ fontSize: 11, color: "#60a5fa", marginTop: 2 }}>{story.competency}</div>}
                       </div>
                       <div style={{ display: "flex", gap: 6 }}>
@@ -664,7 +664,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
     <div style={s.aiLayout}>
       <div style={s.card}>
         <div style={{ fontWeight: 700, marginBottom: 8 }}>Paste recruiter email</div>
-        <div style={{ fontSize: 13, color: "#94a3b8", marginBottom: 10 }}>
+        <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 10 }}>
           Paste the full email (headers + body). The parser extracts contact info and job details instantly — no AI call needed.
         </div>
         <textarea
@@ -684,7 +684,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
           <div style={{ fontWeight: 700, marginBottom: 12 }}>Extracted fields — review &amp; edit</div>
           {fields.map(({ key, label }) => (
             <div key={key} style={{ marginBottom: 10 }}>
-              <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 3 }}>{label}</div>
               <input
                 style={{ ...s.input, width: "100%", boxSizing: "border-box" }}
                 value={emailParsed[key] || ""}
@@ -701,7 +701,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
               📋 Add Application
             </button>
           </div>
-          <div style={{ fontSize: 12, color: "#64748b", marginTop: 8 }}>
+          <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 8 }}>
             You can save both — each button opens the edit modal so you can review before saving.
           </div>
         </div>
@@ -738,10 +738,10 @@ function WeeklyReviewPanel({ data, showError }) {
   }
 
   const statCard = (label, value, sub) => (
-    <div style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 10, padding: "12px 16px", flex: "1 1 120px", minWidth: 100 }}>
-      <div style={{ fontSize: 24, fontWeight: 800, color: "#f3f4f6" }}>{value}</div>
-      <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>{label}</div>
-      {sub && <div style={{ fontSize: 11, color: "#4b5563", marginTop: 2 }}>{sub}</div>}
+    <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "12px 16px", flex: "1 1 120px", minWidth: 100 }}>
+      <div style={{ fontSize: 24, fontWeight: 800, color: "#FFFFFF" }}>{value}</div>
+      <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>{label}</div>
+      {sub && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>{sub}</div>}
     </div>
   );
 
@@ -761,9 +761,9 @@ function WeeklyReviewPanel({ data, showError }) {
           {Object.entries(stageCount).length === 0
             ? <div style={s.empty}>No applications yet.</div>
             : Object.entries(stageCount).map(([stage, n]) => (
-              <div key={stage} style={{ display: "flex", justifyContent: "space-between", background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 8, padding: "8px 12px" }}>
-                <span style={{ fontSize: 13, color: "#d1d5db" }}>{stage}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>{n}</span>
+              <div key={stage} style={{ display: "flex", justifyContent: "space-between", background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "8px 12px" }}>
+                <span style={{ fontSize: 13, color: "#FFFFFF" }}>{stage}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>{n}</span>
               </div>
             ))}
         </div>
@@ -782,10 +782,10 @@ function WeeklyReviewPanel({ data, showError }) {
             <div style={s.sectionLabel}>Active roles ({activeApps.length})</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
               {activeApps.map(a => (
-                <div key={a.id} style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 8, padding: "10px 12px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#f3f4f6" }}>{a.company}</div>
-                  <div style={{ fontSize: 12, color: "#6b7280" }}>{a.title} · {a.stage}</div>
-                  {a.nextStep && <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>→ {a.nextStep}</div>}
+                <div key={a.id} style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "10px 12px" }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>{a.company}</div>
+                  <div style={{ fontSize: 12, color: "#A0AABF" }}>{a.title} · {a.stage}</div>
+                  {a.nextStep && <div style={{ fontSize: 11, color: "#A0AABF", marginTop: 4 }}>→ {a.nextStep}</div>}
                 </div>
               ))}
             </div>
@@ -796,12 +796,12 @@ function WeeklyReviewPanel({ data, showError }) {
             <div style={s.sectionLabel}>Debriefs this week ({interviewsThisWeek.length})</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {interviewsThisWeek.map((e, i) => {
-                const impColors = { positive: "#10b981", neutral: "#f59e0b", negative: "#ef4444" };
-                const col = impColors[e.impression] || "#6b7280";
+                const impColors = { positive: "#34D399", neutral: "#FBBF24", negative: "#F87171" };
+                const col = impColors[e.impression] || "#A0AABF";
                 return (
-                  <div key={i} style={{ background: "#0a0d14", border: `1.5px solid ${col}33`, borderRadius: 8, padding: "8px 12px" }}>
+                  <div key={i} style={{ background: "rgba(255,255,255,0.03)", border: `1.5px solid ${col}33`, borderRadius: 8, padding: "8px 12px" }}>
                     <div style={{ fontSize: 12, color: col, fontWeight: 700 }}>{e.roundType} · {e.impression} · {e.confidence}/5</div>
-                    {e.gaps && <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>△ {e.gaps.slice(0, 80)}{e.gaps.length > 80 ? "…" : ""}</div>}
+                    {e.gaps && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>△ {e.gaps.slice(0, 80)}{e.gaps.length > 80 ? "…" : ""}</div>}
                   </div>
                 );
               })}
@@ -866,19 +866,19 @@ function MockInterviewPanel({ showError }) {
               style={{
                 padding: "6px 12px", borderRadius: 6, fontSize: 12, fontWeight: 600,
                 cursor: "pointer", fontFamily: "inherit",
-                background: scenarioKey === sc.key ? "#1e3a5f" : "#161b27",
-                border: `1.5px solid ${scenarioKey === sc.key ? "#3b82f6" : "#1f2937"}`,
-                color: scenarioKey === sc.key ? "#3b82f6" : "#6b7280",
+                background: scenarioKey === sc.key ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.05)",
+                border: `1.5px solid ${scenarioKey === sc.key ? "#3b82f6" : "rgba(59,130,246,0.12)"}`,
+                color: scenarioKey === sc.key ? "#3b82f6" : "#A0AABF",
               }}
             >{sc.label}</button>
           ))}
         </div>
 
-        <div style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
-          <div style={{ fontSize: 11, color: "#4b5563", marginBottom: 6 }}>
+        <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
+          <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 6 }}>
             Question {qIndex + 1} of {scenario.questions.length}
           </div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: "#f3f4f6", lineHeight: 1.5 }}>{question}</div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: "#FFFFFF", lineHeight: 1.5 }}>{question}</div>
         </div>
 
         <div style={s.sectionLabel}>Your answer</div>
@@ -911,14 +911,14 @@ function MockInterviewPanel({ showError }) {
       <div style={s.aiRight}>
         <div style={s.sectionLabel}>Session log ({sessionLog.length})</div>
         {sessionLog.length === 0 ? (
-          <div style={{ fontSize: 12, color: "#4b5563" }}>Complete a question to see it here. Resets on reload.</div>
+          <div style={{ fontSize: 12, color: "#A0AABF" }}>Complete a question to see it here. Resets on reload.</div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {sessionLog.map((entry, i) => (
-              <div key={i} style={{ background: "#0a0d14", border: "1.5px solid #1f2937", borderRadius: 8, padding: "10px 12px" }}>
-                <div style={{ fontSize: 11, color: "#4b5563", marginBottom: 4 }}>{entry.scenario} · Q{i + 1}</div>
-                <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6, fontStyle: "italic" }}>"{entry.question}"</div>
-                <div style={{ fontSize: 12, color: "#d1d5db" }}>{entry.answer}</div>
+              <div key={i} style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "10px 12px" }}>
+                <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 4 }}>{entry.scenario} · Q{i + 1}</div>
+                <div style={{ fontSize: 12, color: "#A0AABF", marginBottom: 6, fontStyle: "italic" }}>"{entry.question}"</div>
+                <div style={{ fontSize: 12, color: "#FFFFFF" }}>{entry.answer}</div>
               </div>
             ))}
           </div>

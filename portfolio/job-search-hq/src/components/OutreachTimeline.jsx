@@ -11,19 +11,19 @@ function methodLabel(method) {
   return (OUTREACH_METHODS.find(m => m.value === method) || {}).label || method || "";
 }
 
-const wrap = { marginTop: 8, padding: "8px 10px", background: "#0f1117", border: "1px solid #1f2937", borderRadius: 8 };
+const wrap = { marginTop: 8, padding: "8px 10px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 8 };
 const header = { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 };
-const headerLabel = { fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: "#6b7280", fontWeight: 600 };
+const headerLabel = { fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: "#A0AABF", fontWeight: 600 };
 const toggleBtn = { background: "none", border: "none", color: "#60a5fa", cursor: "pointer", fontSize: 11, padding: 0, fontFamily: "inherit" };
 const row = { display: "flex", gap: 8, alignItems: "flex-start", padding: "3px 0" };
 const dot = (color) => ({ width: 8, height: 8, borderRadius: "50%", background: color, marginTop: 6, flexShrink: 0 });
 const body = { flex: 1, minWidth: 0 };
 const topLine = { display: "flex", gap: 6, alignItems: "baseline", flexWrap: "wrap" };
-const date = { fontSize: 11, color: "#9ca3af", fontVariantNumeric: "tabular-nums" };
+const date = { fontSize: 11, color: "#A0AABF", fontVariantNumeric: "tabular-nums" };
 const typeText = (color) => ({ fontSize: 12, color, fontWeight: 600 });
-const method = { fontSize: 11, color: "#6b7280" };
-const notes = { fontSize: 12, color: "#d1d5db", marginTop: 1, lineHeight: 1.4, wordBreak: "break-word" };
-const empty = { fontSize: 12, color: "#6b7280", fontStyle: "italic" };
+const method = { fontSize: 11, color: "#A0AABF" };
+const notes = { fontSize: 12, color: "#FFFFFF", marginTop: 1, lineHeight: 1.4, wordBreak: "break-word" };
+const empty = { fontSize: 12, color: "#A0AABF", fontStyle: "italic" };
 
 export default function OutreachTimeline({ log = [] }) {
   const [expanded, setExpanded] = useState(false);
