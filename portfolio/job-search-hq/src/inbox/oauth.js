@@ -132,13 +132,14 @@ export async function connectGmail() {
     headers: { "Content-Type": "application/json", ...headers },
     body: JSON.stringify({
       code,
-      codeVerifier: "unused-popup-flow",
       redirectUri: "postmessage",
     }),
   });
   const json = await res.json();
   if (!res.ok || !json.access_token) {
-    throw new Error(json.error || `exchange_failed (${res.status})`);
+    const detail = json.detail?.error || json.detail?.error_description || "";
+    const msg = json.error || `exchange_failed (${res.status})`;
+    throw new Error(detail ? `${msg} — ${detail}` : msg);
   }
   setConnection({
     access_token: json.access_token,

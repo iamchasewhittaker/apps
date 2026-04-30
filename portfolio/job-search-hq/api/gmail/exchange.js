@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
   try {
     const user = await getUserFromAuthHeader(req);
     const { code, codeVerifier, redirectUri } = await readJson(req);
-    if (!code || !codeVerifier || !redirectUri) {
+    if (!code || !redirectUri) {
       res.status(400).json({ error: "missing_fields" });
       return;
     }
@@ -44,7 +44,7 @@ module.exports = async function handler(req, res) {
 
     const params = new URLSearchParams();
     params.set("code", code);
-    params.set("code_verifier", codeVerifier);
+    if (codeVerifier) params.set("code_verifier", codeVerifier);
     params.set("client_id", clientId);
     params.set("client_secret", clientSecret);
     params.set("redirect_uri", redirectUri);
