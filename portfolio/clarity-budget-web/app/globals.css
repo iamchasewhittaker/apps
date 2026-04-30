@@ -16,6 +16,7 @@
   --card: var(--surface);
   --border: var(--dimmer);
   --accent: var(--green);
+  --accent-hover: var(--green-hover);
   --muted: var(--dim);
   --success: #34D399;
   --warning: #FBBF24;
@@ -29,6 +30,7 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-muted: var(--muted);
   --color-steel: var(--steel);
   --color-green: var(--green);

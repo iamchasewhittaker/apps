@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/constants";
 import { FlagRow, type Flag } from "./FlagRow";
 
 type Props = {
@@ -17,7 +16,7 @@ export function FlagList({ initialFlags }: Props) {
 
   if (flags.length === 0) {
     return (
-      <p style={{ color: T.muted, fontSize: 14 }}>
+      <p className="text-sm text-muted">
         No open flags. Anomalies show up here after the reconcile cron runs.
       </p>
     );

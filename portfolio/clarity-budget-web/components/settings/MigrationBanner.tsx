@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { YNAB_TOKEN_KEY, T } from "@/lib/constants";
+import { YNAB_TOKEN_KEY } from "@/lib/constants";
 
 type State = "hidden" | "idle" | "migrating" | "error";
 
@@ -54,18 +54,9 @@ export function MigrationBanner({ hasEncryptedYnabToken }: Props) {
   if (state === "hidden") return null;
 
   return (
-    <div
-      style={{
-        background: "#3a2f10",
-        border: `1px solid ${T.caution}`,
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 20,
-        color: T.text,
-      }}
-    >
-      <div style={{ fontWeight: 600, marginBottom: 4 }}>Move your YNAB token to encrypted storage</div>
-      <div style={{ color: T.muted, fontSize: 13, lineHeight: 1.5, marginBottom: 12 }}>
+    <div className="mb-5 rounded-lg border border-warning bg-[#3a2f10] p-4 text-white">
+      <div className="mb-1 font-semibold">Move your YNAB token to encrypted storage</div>
+      <div className="mb-3 text-sm leading-relaxed text-muted">
         Your YNAB token is currently in this browser&apos;s localStorage. Migrate it to encrypted
         Supabase storage so it works across devices and is never exposed in local JS state.
       </div>
@@ -73,21 +64,14 @@ export function MigrationBanner({ hasEncryptedYnabToken }: Props) {
         type="button"
         onClick={handleMigrate}
         disabled={state === "migrating"}
-        style={{
-          padding: "8px 14px",
-          borderRadius: 6,
-          border: "none",
-          background: T.caution,
-          color: "#1a1306",
-          fontWeight: 600,
-          fontSize: 13,
-          cursor: state === "migrating" ? "wait" : "pointer",
-        }}
+        className={`rounded-md bg-warning px-3.5 py-2 text-sm font-semibold text-[#1a1306] ${
+          state === "migrating" ? "cursor-wait" : "cursor-pointer"
+        }`}
       >
         {state === "migrating" ? "Migrating…" : "Migrate token"}
       </button>
       {state === "error" && error && (
-        <div style={{ marginTop: 10, color: T.danger, fontSize: 13 }}>{error}</div>
+        <div className="mt-2.5 text-sm text-danger">{error}</div>
       )}
     </div>
   );

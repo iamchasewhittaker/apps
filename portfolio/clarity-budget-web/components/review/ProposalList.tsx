@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/constants";
 import { ProposalRow, type Proposal } from "./ProposalRow";
 
 type Props = {
@@ -17,7 +16,7 @@ export function ProposalList({ initialProposals }: Props) {
 
   if (proposals.length === 0) {
     return (
-      <p style={{ color: T.muted, fontSize: 14 }}>
+      <p className="text-sm text-muted">
         No pending proposals. Run categorization to generate new ones.
       </p>
     );

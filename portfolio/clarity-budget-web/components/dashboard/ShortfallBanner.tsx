@@ -1,5 +1,3 @@
-import { T } from "@/lib/constants";
-
 function fmt(n: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -15,15 +13,11 @@ export function ShortfallBanner({ shortfall }: ShortfallBannerProps) {
   if (shortfall == null || shortfall <= 0.01) return null;
 
   return (
-    <div
-      className="flex gap-3 rounded-[14px] border p-3.5"
-      style={{ borderColor: "rgba(232, 187, 50, 0.35)", background: T.surface }}
-    >
+    <div className="flex gap-3 rounded-[14px] border border-warning/35 bg-surface/80 backdrop-blur-sm p-3.5">
       <svg
-        className="mt-0.5 h-5 w-5 shrink-0"
+        className="mt-0.5 h-5 w-5 shrink-0 text-warning"
         viewBox="0 0 20 20"
         fill="currentColor"
-        style={{ color: T.caution }}
         aria-hidden
       >
         <path
@@ -34,7 +28,7 @@ export function ShortfallBanner({ shortfall }: ShortfallBannerProps) {
       </svg>
       <div>
         <p className="text-sm font-semibold">Obligations gap</p>
-        <p className="mt-0.5 text-xs leading-relaxed" style={{ color: T.muted }}>
+        <p className="mt-0.5 text-xs leading-relaxed text-muted">
           About {fmt(shortfall)} still needed for mortgage, bills, and essentials this
           month. Fund those in YNAB first.
         </p>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { T } from "@/lib/constants";
 
 type Card = {
   token: string;
@@ -108,21 +107,15 @@ export function CardMappingTable() {
     }
   }
 
-  const sectionStyle: React.CSSProperties = {
-    background: T.surface,
-    border: `1px solid ${T.border}`,
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-  };
+  const sectionClass = "mb-5 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5";
 
   if (cardsState === "loading" || payeesState === "loading") {
     return (
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: T.text }}>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold text-white">
           Card → payee mapping
         </h2>
-        <p style={{ margin: "10px 0 0", fontSize: 13, color: T.muted }}>
+        <p className="mt-2.5 text-sm text-muted">
           Loading…
         </p>
       </section>
@@ -131,17 +124,17 @@ export function CardMappingTable() {
 
   if (cardsState === "error" || payeesState === "error") {
     return (
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: T.text }}>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold text-white">
           Card → payee mapping
         </h2>
         {cardsError && (
-          <p style={{ margin: "10px 0 0", fontSize: 13, color: T.danger }}>
+          <p className="mt-2.5 text-sm text-danger">
             Cards: {cardsError}
           </p>
         )}
         {payeesError && (
-          <p style={{ margin: "6px 0 0", fontSize: 13, color: T.danger }}>
+          <p className="mt-1.5 text-sm text-danger">
             Payees: {payeesError}
           </p>
         )}
@@ -151,16 +144,7 @@ export function CardMappingTable() {
             void loadCards();
             void loadPayees();
           }}
-          style={{
-            marginTop: 12,
-            padding: "6px 12px",
-            borderRadius: 6,
-            border: `1px solid ${T.border}`,
-            background: "transparent",
-            color: T.text,
-            fontSize: 13,
-            cursor: "pointer",
-          }}
+          className="mt-3 rounded-md border border-dimmer bg-transparent px-3 py-1.5 text-sm text-white cursor-pointer"
         >
           Retry
         </button>
@@ -169,60 +153,35 @@ export function CardMappingTable() {
   }
 
   return (
-    <section style={sectionStyle}>
-      <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: T.text }}>
+    <section className={sectionClass}>
+      <h2 className="text-base font-semibold text-white">
         Card → payee mapping
       </h2>
-      <p style={{ margin: "4px 0 16px", fontSize: 13, color: T.muted }}>
+      <p className="mt-1 mb-4 text-sm text-muted">
         Link each Privacy.com card to its corresponding YNAB payee so reconcile
         can match transactions automatically.
       </p>
 
       {cards.length === 0 ? (
-        <p style={{ margin: 0, fontSize: 13, color: T.muted }}>
+        <p className="text-sm text-muted">
           No cards synced yet — they&apos;ll appear after the next sync runs.
         </p>
       ) : (
-        <ul
-          style={{
-            listStyle: "none",
-            padding: 0,
-            margin: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-          }}
-        >
+        <ul className="flex flex-col gap-2.5">
           {cards.map((card) => {
             const err = rowError[card.token];
             const saving = savingToken === card.token;
             return (
               <li
                 key={card.token}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 6,
-                  padding: "10px 12px",
-                  borderRadius: 8,
-                  border: `1px solid ${T.border}`,
-                  background: T.bg,
-                }}
+                className="flex flex-col gap-1.5 rounded-lg border border-dimmer bg-bg p-3"
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                    <span style={{ fontSize: 14, color: T.text, fontWeight: 500 }}>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-sm font-medium text-white">
                       {card.memo ?? "Unnamed card"}
                     </span>
-                    <span style={{ fontSize: 12, color: T.muted }}>
+                    <span className="text-xs text-muted">
                       {[card.state, card.type].filter(Boolean).join(" · ") || "—"}
                     </span>
                   </div>
@@ -230,16 +189,9 @@ export function CardMappingTable() {
                     value={card.linked_payee_id ?? ""}
                     onChange={(e) => void handleChange(card.token, e.target.value)}
                     disabled={saving}
-                    style={{
-                      minWidth: 220,
-                      padding: "6px 10px",
-                      borderRadius: 6,
-                      border: `1px solid ${T.border}`,
-                      background: T.surface,
-                      color: T.text,
-                      fontSize: 13,
-                      cursor: saving ? "wait" : "pointer",
-                    }}
+                    className={`min-w-[220px] rounded-md border border-dimmer bg-surface px-2.5 py-1.5 text-sm text-white ${
+                      saving ? "cursor-wait" : "cursor-pointer"
+                    }`}
                   >
                     <option value="">— unlinked —</option>
                     {payees.map((p) => (
@@ -250,7 +202,7 @@ export function CardMappingTable() {
                   </select>
                 </div>
                 {err && (
-                  <span style={{ fontSize: 12, color: T.danger }}>{err}</span>
+                  <span className="text-xs text-danger">{err}</span>
                 )}
               </li>
             );

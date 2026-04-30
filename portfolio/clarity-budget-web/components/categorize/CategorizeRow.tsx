@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { T } from "@/lib/constants";
 import type { Suggestion } from "@/lib/categorize/types";
 
 type Row = {
@@ -32,9 +31,9 @@ function confidencePct(c: number): string {
 }
 
 function confidenceColor(c: number): string {
-  if (c >= 0.75) return T.safe;
-  if (c >= 0.5) return T.caution;
-  return T.danger;
+  if (c >= 0.75) return "text-accent";
+  if (c >= 0.5) return "text-warning";
+  return "text-danger";
 }
 
 export function CategorizeRow({ row }: { row: Row }) {
@@ -74,64 +73,27 @@ export function CategorizeRow({ row }: { row: Row }) {
       : row.category_id !== null;
 
   return (
-    <div
-      style={{
-        border: `1px solid ${T.border}`,
-        borderRadius: 8,
-        background: T.surface,
-        padding: 14,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 12,
-        }}
-      >
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
-            <span style={{ fontSize: 14, fontWeight: 500 }}>
+    <div className="rounded-lg border border-dimmer bg-surface/80 backdrop-blur-sm p-3.5">
+      <div className="flex items-start gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="text-sm font-medium">
               {snap.payee_name ?? "(no payee)"}
             </span>
-            <span style={{ fontSize: 13, color: T.muted }}>
+            <span className="text-sm text-muted">
               {formatAmount(snap.amount)}
             </span>
-            <span style={{ fontSize: 12, color: T.muted }}>{snap.date}</span>
+            <span className="text-xs text-muted">{snap.date}</span>
             {snap.is_split ? (
-              <span
-                style={{
-                  fontSize: 11,
-                  padding: "2px 6px",
-                  borderRadius: 4,
-                  background: T.bg,
-                  color: T.muted,
-                  border: `1px solid ${T.border}`,
-                }}
-              >
+              <span className="rounded border border-dimmer bg-bg px-1.5 py-0.5 text-[11px] text-muted">
                 split
               </span>
             ) : null}
           </div>
 
-          <div
-            style={{
-              marginTop: 6,
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="mt-1.5 flex flex-wrap items-center gap-2">
             {snap.is_split ? (
-              <div style={{ fontSize: 12, color: T.muted }}>
+              <div className="text-xs text-muted">
                 {row.subtransactions?.length ?? 0} subtransaction
                 {row.subtransactions?.length === 1 ? "" : "s"} —{" "}
                 {row.subtransactions?.every((s) => s.categoryId !== null)
@@ -140,45 +102,26 @@ export function CategorizeRow({ row }: { row: Row }) {
               </div>
             ) : (
               <span
-                style={{
-                  fontSize: 12,
-                  padding: "3px 8px",
-                  borderRadius: 4,
-                  background: T.bg,
-                  border: `1px solid ${T.border}`,
-                  color: row.category_name ? T.text : T.muted,
-                }}
+                className={`rounded border border-dimmer bg-bg px-2 py-0.5 text-xs ${
+                  row.category_name ? "text-white" : "text-muted"
+                }`}
               >
                 {row.category_name ?? "(no suggestion)"}
               </span>
             )}
-            <span
-              style={{
-                fontSize: 11,
-                color: confidenceColor(row.confidence),
-                fontWeight: 500,
-              }}
-            >
+            <span className={`text-[11px] font-medium ${confidenceColor(row.confidence)}`}>
               {confidencePct(row.confidence)} confidence
             </span>
           </div>
 
           {row.reasoning ? (
-            <div style={{ marginTop: 8, fontSize: 12, color: T.muted }}>
+            <div className="mt-2 text-xs text-muted">
               {row.reasoning}
             </div>
           ) : null}
 
           {snap.is_split && row.subtransactions ? (
-            <ul
-              style={{
-                marginTop: 8,
-                paddingLeft: 16,
-                fontSize: 12,
-                color: T.muted,
-                listStyle: "disc",
-              }}
-            >
+            <ul className="mt-2 list-disc pl-4 text-xs text-muted">
               {row.subtransactions.map((s, i) => (
                 <li key={s.id ?? i}>
                   {formatAmount(s.amount)} → {s.categoryName ?? "(unassigned)"}
@@ -188,21 +131,16 @@ export function CategorizeRow({ row }: { row: Row }) {
           ) : null}
         </div>
 
-        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+        <div className="flex shrink-0 gap-1.5">
           <button
             type="button"
             disabled={!canApply || busy !== null}
             onClick={() => send("apply")}
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              fontSize: 12,
-              border: `1px solid ${canApply ? T.safe : T.border}`,
-              background: canApply ? T.safe : "transparent",
-              color: canApply ? "#0b1f15" : T.muted,
-              fontWeight: 500,
-              cursor: canApply && busy === null ? "pointer" : "not-allowed",
-            }}
+            className={`rounded-md border px-3 py-1.5 text-xs font-medium ${
+              canApply
+                ? "border-accent bg-accent text-bg"
+                : "border-dimmer bg-transparent text-muted"
+            } ${canApply && busy === null ? "cursor-pointer" : "cursor-not-allowed"}`}
           >
             {busy === "apply" ? "Applying…" : "Apply"}
           </button>
@@ -210,15 +148,9 @@ export function CategorizeRow({ row }: { row: Row }) {
             type="button"
             disabled={busy !== null}
             onClick={() => send("dismiss")}
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              fontSize: 12,
-              border: `1px solid ${T.border}`,
-              background: "transparent",
-              color: T.muted,
-              cursor: busy === null ? "pointer" : "not-allowed",
-            }}
+            className={`rounded-md border border-dimmer bg-transparent px-3 py-1.5 text-xs text-muted ${
+              busy === null ? "cursor-pointer" : "cursor-not-allowed"
+            }`}
           >
             {busy === "dismiss" ? "…" : "Dismiss"}
           </button>
@@ -226,13 +158,7 @@ export function CategorizeRow({ row }: { row: Row }) {
       </div>
 
       {error ? (
-        <div
-          style={{
-            marginTop: 8,
-            fontSize: 12,
-            color: T.danger,
-          }}
-        >
+        <div className="mt-2 text-xs text-danger">
           {error}
         </div>
       ) : null}

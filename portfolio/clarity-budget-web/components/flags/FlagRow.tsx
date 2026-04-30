@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { T } from "@/lib/constants";
 
 export type Flag = {
   id: string;
@@ -21,10 +20,10 @@ type Props = {
   onResolved: (id: string) => void;
 };
 
-function severityColor(severity: Flag["severity"]): string {
-  if (severity === "high") return T.danger;
-  if (severity === "medium") return T.caution;
-  return T.muted;
+function severityClasses(severity: Flag["severity"]): { text: string; badge: string } {
+  if (severity === "high") return { text: "text-danger", badge: "bg-danger/15 border-danger/30" };
+  if (severity === "medium") return { text: "text-warning", badge: "bg-warning/15 border-warning/30" };
+  return { text: "text-muted", badge: "bg-muted/15 border-muted/30" };
 }
 
 function renderContext(flag: Flag): { title: string; subtitle: string } {
@@ -78,65 +77,39 @@ export function FlagRow({ flag, onResolved }: Props) {
   }
 
   const { title, subtitle } = renderContext(flag);
-  const sevColor = severityColor(flag.severity);
+  const sev = severityClasses(flag.severity);
   const sevLabel = flag.severity ?? "unknown";
 
   return (
-    <div
-      style={{
-        background: T.surface,
-        border: `1px solid ${T.border}`,
-        borderRadius: 12,
-        padding: 20,
-        marginBottom: 12,
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-        <span style={{ color: T.text, fontWeight: 500, fontSize: 14 }}>{title}</span>
+    <div className="mb-3 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5">
+      <div className="mb-2 flex items-center gap-2.5">
+        <span className="text-sm font-medium text-white">{title}</span>
         <span
-          style={{
-            marginLeft: "auto",
-            fontSize: 11,
-            fontWeight: 600,
-            color: sevColor,
-            background: `${sevColor}22`,
-            border: `1px solid ${sevColor}44`,
-            borderRadius: 4,
-            padding: "2px 6px",
-            textTransform: "uppercase",
-            letterSpacing: 0.4,
-          }}
+          className={`ml-auto rounded border px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider ${sev.text} ${sev.badge}`}
         >
           {sevLabel}
         </span>
       </div>
 
-      <p style={{ margin: "0 0 12px", fontSize: 12, color: T.muted, lineHeight: 1.5 }}>
+      <p className="mb-3 text-xs leading-relaxed text-muted">
         {subtitle}
       </p>
 
-      <div style={{ display: "flex", gap: 8 }}>
+      <div className="flex gap-2">
         <button
           type="button"
           onClick={handle}
           disabled={loading}
-          style={{
-            padding: "7px 14px",
-            borderRadius: 6,
-            border: `1px solid ${T.border}`,
-            background: "transparent",
-            color: loading ? T.muted : T.text,
-            fontWeight: 500,
-            fontSize: 13,
-            cursor: loading ? "wait" : "pointer",
-          }}
+          className={`rounded-lg border border-dimmer bg-transparent px-3.5 py-1.5 text-sm font-medium ${
+            loading ? "text-muted cursor-wait" : "text-white cursor-pointer"
+          }`}
         >
           Dismiss
         </button>
       </div>
 
       {error && (
-        <p style={{ margin: "8px 0 0", fontSize: 12, color: T.danger }}>{error}</p>
+        <p className="mt-2 text-xs text-danger">{error}</p>
       )}
     </div>
   );

@@ -1,15 +1,10 @@
-import { T } from "@/lib/constants";
-
 export function EmptyState() {
   return (
-    <div
-      className="rounded-[18px] border p-5"
-      style={{ borderColor: T.border, background: T.surface }}
-    >
+    <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5">
       <p className="font-medium">Connect YNAB to see live safe-to-spend.</p>
-      <p className="mt-2 text-sm leading-relaxed" style={{ color: T.muted }}>
+      <p className="mt-2 text-sm leading-relaxed text-muted">
         Add a personal access token and pick a budget in{" "}
-        <a href="/settings" className="underline" style={{ color: T.accent }}>
+        <a href="/settings" className="underline text-accent">
           Settings
         </a>
         . Category roles map automatically once a budget loads.

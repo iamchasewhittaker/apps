@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { T } from "@/lib/constants";
 import { roleColor, type SpendLine } from "@/lib/aggregations";
 
 type SortKey = "date-desc" | "date-asc" | "amount-desc" | "amount-asc" | "payee-asc";
@@ -64,30 +63,20 @@ export function TransactionList({ lines }: Props) {
   return (
     <section className="space-y-3">
       <div className="flex items-center justify-between">
-        <p
-          className="text-xs font-semibold uppercase tracking-wider"
-          style={{ color: T.muted }}
-        >
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted">
           Transactions
         </p>
-        <span className="text-xs" style={{ color: T.muted }}>
+        <span className="text-xs text-muted">
           {sorted.length} {sorted.length === 1 ? "item" : "items"}
         </span>
       </div>
 
-      <div
-        className="rounded-[18px] border"
-        style={{ borderColor: T.border, background: T.surface }}
-      >
-        <div
-          className="flex items-center justify-between border-b px-4 py-2"
-          style={{ borderColor: T.border }}
-        >
-          <label className="text-xs" style={{ color: T.muted }}>
+      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm">
+        <div className="flex items-center justify-between border-b border-dimmer px-4 py-2">
+          <label className="text-xs text-muted">
             Sort
             <select
-              className="ml-2 rounded-md border px-2 py-1 text-xs text-neutral-100"
-              style={{ borderColor: T.border, background: T.bg }}
+              className="ml-2 rounded-md border border-dimmer bg-bg px-2 py-1 text-xs text-neutral-100"
               value={sort}
               onChange={(e) => setSort(e.target.value as SortKey)}
             >
@@ -101,11 +90,11 @@ export function TransactionList({ lines }: Props) {
         </div>
 
         {visible.length === 0 ? (
-          <p className="px-4 py-6 text-center text-xs" style={{ color: T.muted }}>
+          <p className="px-4 py-6 text-center text-xs text-muted">
             No transactions match these filters.
           </p>
         ) : (
-          <ul className="divide-y" style={{ borderColor: T.border }}>
+          <ul className="divide-y divide-dimmer">
             {visible.map((l) => {
               const role = roleColor(l.role);
               const inflow = l.amountDollars < 0;
@@ -114,13 +103,12 @@ export function TransactionList({ lines }: Props) {
                 <li
                   key={key}
                   className="grid grid-cols-[1fr_auto] gap-3 px-4 py-3"
-                  style={{ borderColor: T.border }}
                 >
                   <div className="min-w-0">
-                    <p className="truncate text-sm" style={{ color: T.text }}>
+                    <p className="truncate text-sm text-white">
                       {l.payeeName || "(no payee)"}
                     </p>
-                    <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px]" style={{ color: T.muted }}>
+                    <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted">
                       <span className="truncate" title={l.categoryName}>
                         {l.categoryName}
                       </span>
@@ -139,13 +127,12 @@ export function TransactionList({ lines }: Props) {
                   </div>
                   <div className="flex flex-col items-end">
                     <p
-                      className="tabular-nums text-sm font-semibold"
-                      style={{ color: inflow ? T.safe : T.text }}
+                      className={`tabular-nums text-sm font-semibold ${inflow ? "text-accent" : "text-white"}`}
                     >
                       {inflow ? "+" : ""}
                       {fmt(Math.abs(l.amountDollars))}
                     </p>
-                    <p className="text-[11px]" style={{ color: T.muted }}>
+                    <p className="text-[11px] text-muted">
                       {shortDate(l.date)}
                     </p>
                   </div>
@@ -156,11 +143,10 @@ export function TransactionList({ lines }: Props) {
         )}
 
         {hasMore && (
-          <div className="border-t px-4 py-3" style={{ borderColor: T.border }}>
+          <div className="border-t border-dimmer px-4 py-3">
             <button
               type="button"
-              className="w-full rounded-md py-1.5 text-xs font-medium"
-              style={{ background: T.bg, color: T.text, border: `1px solid ${T.border}` }}
+              className="w-full rounded-md border border-dimmer bg-bg py-1.5 text-xs font-medium text-white"
               onClick={() => setLimit((n) => n + PAGE_SIZE)}
             >
               Show more ({sorted.length - limit} remaining)

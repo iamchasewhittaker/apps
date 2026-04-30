@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { T } from "@/lib/constants";
 import type { SpendLine } from "@/lib/aggregations";
 import {
   activeFilterCount,
@@ -25,12 +24,10 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
   const [open, setOpen] = useState(false);
   const [payeeInput, setPayeeInput] = useState(filters.payeeQuery ?? "");
 
-  // Keep local state in sync when URL changes (e.g. user hits back)
   useEffect(() => {
     setPayeeInput(filters.payeeQuery ?? "");
   }, [filters.payeeQuery]);
 
-  // Debounce payee text → filter state
   useEffect(() => {
     const current = filters.payeeQuery ?? "";
     if (payeeInput === current) return;
@@ -83,10 +80,7 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
   };
 
   return (
-    <section
-      className="rounded-[18px] border"
-      style={{ borderColor: T.border, background: T.surface }}
-    >
+    <section className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm">
       <button
         type="button"
         className="flex w-full items-center justify-between px-4 py-3"
@@ -94,17 +88,11 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
         aria-expanded={open}
       >
         <span className="flex items-center gap-2">
-          <span
-            className="text-[11px] font-semibold uppercase tracking-wider"
-            style={{ color: T.muted }}
-          >
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted">
             Filters
           </span>
           {count > 0 && (
-            <span
-              className="rounded-full px-1.5 text-[11px] font-semibold leading-5"
-              style={{ background: T.accent, color: "#fff" }}
-            >
+            <span className="rounded-full bg-accent px-1.5 text-[11px] font-semibold leading-5 text-white">
               {count}
             </span>
           )}
@@ -114,8 +102,7 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
             <span
               role="button"
               tabIndex={0}
-              className="text-xs underline"
-              style={{ color: T.muted }}
+              className="text-xs text-muted underline"
               onClick={(e) => {
                 e.stopPropagation();
                 onChange(emptyFilters());
@@ -132,10 +119,9 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
             </span>
           )}
           <svg
-            className="h-4 w-4 transition-transform"
+            className={`h-4 w-4 text-muted transition-transform ${open ? "rotate-180" : ""}`}
             viewBox="0 0 20 20"
             fill="currentColor"
-            style={{ color: T.muted, transform: open ? "rotate(180deg)" : undefined }}
             aria-hidden
           >
             <path
@@ -148,35 +134,26 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
       </button>
 
       {open && (
-        <div
-          className="space-y-4 border-t px-4 py-4"
-          style={{ borderColor: T.border }}
-        >
-          {/* Date range */}
+        <div className="space-y-4 border-t border-dimmer px-4 py-4">
           <div>
-            <p
-              className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide"
-              style={{ color: T.muted }}
-            >
+            <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted">
               Date range
             </p>
             <div className="grid grid-cols-2 gap-2">
-              <label className="block text-xs" style={{ color: T.muted }}>
+              <label className="block text-xs text-muted">
                 From
                 <input
                   type="date"
-                  className="mt-1 w-full rounded-md border px-2 py-1.5 text-sm text-neutral-100"
-                  style={{ borderColor: T.border, background: T.bg }}
+                  className="mt-1 w-full rounded-md border border-dimmer bg-bg px-2 py-1.5 text-sm text-neutral-100"
                   value={filters.from ?? ""}
                   onChange={(e) => patch({ from: e.target.value || undefined })}
                 />
               </label>
-              <label className="block text-xs" style={{ color: T.muted }}>
+              <label className="block text-xs text-muted">
                 To
                 <input
                   type="date"
-                  className="mt-1 w-full rounded-md border px-2 py-1.5 text-sm text-neutral-100"
-                  style={{ borderColor: T.border, background: T.bg }}
+                  className="mt-1 w-full rounded-md border border-dimmer bg-bg px-2 py-1.5 text-sm text-neutral-100"
                   value={filters.to ?? ""}
                   onChange={(e) => patch({ to: e.target.value || undefined })}
                 />
@@ -184,48 +161,40 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
             </div>
           </div>
 
-          {/* Payee */}
-          <label className="block text-xs" style={{ color: T.muted }}>
+          <label className="block text-xs text-muted">
             Payee
             <input
               type="search"
               placeholder="Search payee…"
-              className="mt-1 w-full rounded-md border px-2 py-1.5 text-sm text-neutral-100"
-              style={{ borderColor: T.border, background: T.bg }}
+              className="mt-1 w-full rounded-md border border-dimmer bg-bg px-2 py-1.5 text-sm text-neutral-100"
               value={payeeInput}
               onChange={(e) => setPayeeInput(e.target.value)}
             />
           </label>
 
-          {/* Amount */}
           <div>
-            <p
-              className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide"
-              style={{ color: T.muted }}
-            >
+            <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted">
               Amount ($)
             </p>
             <div className="grid grid-cols-2 gap-2">
-              <label className="block text-xs" style={{ color: T.muted }}>
+              <label className="block text-xs text-muted">
                 Min
                 <input
                   type="number"
                   inputMode="decimal"
                   min={0}
-                  className="mt-1 w-full rounded-md border px-2 py-1.5 text-sm text-neutral-100"
-                  style={{ borderColor: T.border, background: T.bg }}
+                  className="mt-1 w-full rounded-md border border-dimmer bg-bg px-2 py-1.5 text-sm text-neutral-100"
                   value={filters.amountMin ?? ""}
                   onChange={(e) => patch({ amountMin: numOrUndef(e.target.value) })}
                 />
               </label>
-              <label className="block text-xs" style={{ color: T.muted }}>
+              <label className="block text-xs text-muted">
                 Max
                 <input
                   type="number"
                   inputMode="decimal"
                   min={0}
-                  className="mt-1 w-full rounded-md border px-2 py-1.5 text-sm text-neutral-100"
-                  style={{ borderColor: T.border, background: T.bg }}
+                  className="mt-1 w-full rounded-md border border-dimmer bg-bg px-2 py-1.5 text-sm text-neutral-100"
                   value={filters.amountMax ?? ""}
                   onChange={(e) => patch({ amountMax: numOrUndef(e.target.value) })}
                 />
@@ -233,27 +202,20 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
             </div>
           </div>
 
-          {/* Categories */}
           {categoryOptions.length > 0 && (
-            <details
-              className="rounded-md border"
-              style={{ borderColor: T.border }}
-            >
+            <details className="rounded-md border border-dimmer">
               <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-2 text-xs [&::-webkit-details-marker]:hidden">
-                <span style={{ color: T.muted }}>
+                <span className="text-muted">
                   Categories{" "}
                   {filters.categoryNames?.length
                     ? `(${filters.categoryNames.length})`
                     : ""}
                 </span>
-                <span className="text-[11px]" style={{ color: T.muted }}>
+                <span className="text-[11px] text-muted">
                   {categoryOptions.length} available
                 </span>
               </summary>
-              <ul
-                className="max-h-56 space-y-1 overflow-y-auto border-t px-3 py-2 text-sm"
-                style={{ borderColor: T.border }}
-              >
+              <ul className="max-h-56 space-y-1 overflow-y-auto border-t border-dimmer px-3 py-2 text-sm">
                 {categoryOptions.map((name) => (
                   <li key={name}>
                     <label className="flex items-center gap-2 py-0.5">
@@ -270,27 +232,20 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
             </details>
           )}
 
-          {/* Accounts */}
           {accountOptions.length > 0 && (
-            <details
-              className="rounded-md border"
-              style={{ borderColor: T.border }}
-            >
+            <details className="rounded-md border border-dimmer">
               <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-2 text-xs [&::-webkit-details-marker]:hidden">
-                <span style={{ color: T.muted }}>
+                <span className="text-muted">
                   Accounts{" "}
                   {filters.accountIds?.length
                     ? `(${filters.accountIds.length})`
                     : ""}
                 </span>
-                <span className="text-[11px]" style={{ color: T.muted }}>
+                <span className="text-[11px] text-muted">
                   {accountOptions.length} available
                 </span>
               </summary>
-              <ul
-                className="max-h-56 space-y-1 overflow-y-auto border-t px-3 py-2 text-sm"
-                style={{ borderColor: T.border }}
-              >
+              <ul className="max-h-56 space-y-1 overflow-y-auto border-t border-dimmer px-3 py-2 text-sm">
                 {accountOptions.map((a) => (
                   <li key={a.id}>
                     <label className="flex items-center gap-2 py-0.5">

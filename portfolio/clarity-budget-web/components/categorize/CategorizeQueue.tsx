@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { T } from "@/lib/constants";
 import type { Suggestion } from "@/lib/categorize/types";
 import { CategorizeRow } from "./CategorizeRow";
 
@@ -79,30 +78,19 @@ export function CategorizeQueue({
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          padding: 16,
-          border: `1px solid ${T.border}`,
-          borderRadius: 8,
-          background: T.surface,
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 14, fontWeight: 500 }}>
+      <div className="mb-4 flex items-center gap-3 rounded-lg border border-dimmer bg-surface/80 backdrop-blur-sm p-4">
+        <div className="flex-1">
+          <div className="text-sm font-medium">
             {rows.length === 0
               ? "No suggestions waiting"
               : `${rows.length} suggestion${rows.length === 1 ? "" : "s"} waiting for review`}
           </div>
-          <div style={{ fontSize: 12, color: T.muted, marginTop: 2 }}>
+          <div className="mt-0.5 text-xs text-muted">
             {syncState?.last_success_at
               ? `Last run: ${new Date(syncState.last_success_at).toLocaleString()}`
               : "Never run"}
             {syncState?.last_error ? (
-              <span style={{ color: T.danger, marginLeft: 8 }}>
+              <span className="ml-2 text-danger">
                 · last error: {syncState.last_error}
               </span>
             ) : null}
@@ -112,51 +100,27 @@ export function CategorizeQueue({
           type="button"
           onClick={runNow}
           disabled={running}
-          style={{
-            padding: "8px 14px",
-            borderRadius: 6,
-            border: `1px solid ${T.accent}`,
-            background: running ? T.surface : T.accent,
-            color: running ? T.muted : "#fff",
-            fontSize: 13,
-            fontWeight: 500,
-            cursor: running ? "not-allowed" : "pointer",
-          }}
+          className={`rounded-lg px-3.5 py-2 text-sm font-medium ${
+            running
+              ? "border border-dimmer bg-surface text-muted cursor-not-allowed"
+              : "bg-accent text-white cursor-pointer"
+          }`}
         >
           {running ? "Running…" : "Run categorization"}
         </button>
       </div>
 
       {error ? (
-        <div
-          style={{
-            padding: 12,
-            border: `1px solid ${T.danger}`,
-            borderRadius: 6,
-            color: T.danger,
-            fontSize: 13,
-            marginBottom: 16,
-          }}
-        >
+        <div className="mb-4 rounded-md border border-danger p-3 text-sm text-danger">
           {error}
         </div>
       ) : null}
 
       {lastRun ? (
-        <div
-          style={{
-            padding: 12,
-            border: `1px solid ${T.border}`,
-            borderRadius: 6,
-            color: T.muted,
-            fontSize: 13,
-            marginBottom: 16,
-            background: T.surface,
-          }}
-        >
+        <div className="mb-4 rounded-md border border-dimmer bg-surface/80 backdrop-blur-sm p-3 text-sm text-muted">
           Run complete · fetched {lastRun.fetched} · auto-applied{" "}
-          <span style={{ color: T.safe }}>{lastRun.autoApplied}</span> · queued{" "}
-          <span style={{ color: T.text }}>{lastRun.queued}</span>
+          <span className="text-accent">{lastRun.autoApplied}</span> · queued{" "}
+          <span className="text-white">{lastRun.queued}</span>
           {lastRun.invalid > 0
             ? ` · invalid ${lastRun.invalid}`
             : ""}
@@ -165,21 +129,12 @@ export function CategorizeQueue({
       ) : null}
 
       {rows.length === 0 ? (
-        <div
-          style={{
-            padding: 32,
-            border: `1px dashed ${T.border}`,
-            borderRadius: 8,
-            color: T.muted,
-            fontSize: 13,
-            textAlign: "center",
-          }}
-        >
+        <div className="rounded-lg border border-dashed border-dimmer p-8 text-center text-sm text-muted">
           You&rsquo;re all caught up. Click &ldquo;Run categorization&rdquo; to
           check for new uncategorized transactions.
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div className="flex flex-col gap-2">
           {rows.map((r) => (
             <CategorizeRow key={r.id} row={r} />
           ))}

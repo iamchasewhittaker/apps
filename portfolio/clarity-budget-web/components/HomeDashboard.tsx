@@ -12,7 +12,6 @@ import {
   STORE_KEY,
   YNAB_TOKEN_KEY,
   YNAB_TX_KEY,
-  T,
 } from "@/lib/constants";
 import {
   buildBalances,
@@ -53,7 +52,6 @@ const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
 
 const TX_CACHE_MS = 15 * 60 * 1000;
 
-/** Returns YYYY-MM-DD for 60 days ago */
 function txSinceDate(): string {
   const d = new Date();
   d.setDate(d.getDate() - 60);
@@ -92,7 +90,6 @@ export function HomeDashboard() {
   const [loading, setLoading] = useState(false);
   const [categorySyncErr, setCategorySyncErr] = useState<string | null>(null);
 
-  // Transactions — stored separately from blob (never synced to Supabase)
   const [transactions, setTransactions] = useState<YNABTransaction[]>([]);
   const [txLoading, setTxLoading] = useState(false);
   const [txErr, setTxErr] = useState<string | null>(null);
@@ -101,7 +98,6 @@ export function HomeDashboard() {
     const b = loadLocalBlob();
     setBlob(b);
     setYnabToken(localStorage.getItem(YNAB_TOKEN_KEY) || "");
-    // Hydrate from cache immediately so breakdown renders on load
     const cache = loadTxCache();
     if (cache?.data?.length) setTransactions(cache.data);
   }, []);
@@ -253,8 +249,6 @@ export function HomeDashboard() {
     void refreshMetrics();
   };
 
-  // ── Spending analytics — flatten once, then filter ───────────────────────
-
   const spendLines = useMemo(
     () => flattenSpendLines(transactions, blob.ynabCategoryMappings),
     [transactions, blob.ynabCategoryMappings]
@@ -265,8 +259,6 @@ export function HomeDashboard() {
     () => applyFilters(spendLines, filters),
     [spendLines, filters]
   );
-
-  // ─────────────────────────────────────────────────────────────────────────
 
   const categoryRoleGroups = groupMappingsForDisplay(blob.ynabCategoryMappings);
   const ynabReady =
@@ -292,7 +284,6 @@ export function HomeDashboard() {
           />
         )}
 
-        {/* ── Filters + spending breakdown + list ── */}
         {hasSpending && (
           <div className="space-y-4">
             <TransactionFilters
@@ -301,12 +292,12 @@ export function HomeDashboard() {
               lines={spendLines}
             />
             {txLoading && (
-              <p className="animate-pulse text-xs" style={{ color: T.muted }}>
+              <p className="animate-pulse text-xs text-muted">
                 Refreshing transactions…
               </p>
             )}
             {txErr && (
-              <p className="text-xs" style={{ color: T.danger }}>
+              <p className="text-xs text-danger">
                 {txErr}
               </p>
             )}
@@ -318,43 +309,36 @@ export function HomeDashboard() {
         {showEmpty && !loading && <EmptyState />}
 
         {err && (
-          <p
-            className="rounded-lg border px-3 py-2 text-sm"
-            style={{ borderColor: T.danger, color: T.danger }}
-          >
+          <p className="rounded-lg border border-danger px-3 py-2 text-sm text-danger">
             {err}
           </p>
         )}
 
-        {/* Category roles */}
         {ynabReady && (
-        <section
-          className="space-y-3 rounded-xl border p-4"
-          style={{ borderColor: T.border, background: T.surface }}
-        >
+        <section className="space-y-3 rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4">
           <h2 className="text-sm font-semibold">Category roles</h2>
-          <p className="text-[11px]" style={{ color: T.muted }}>
+          <p className="text-[11px] text-muted">
             Token and budget live in{" "}
-            <a href="/settings" className="underline" style={{ color: T.accent }}>
+            <a href="/settings" className="underline text-accent">
               Settings
             </a>
             .
           </p>
 
           {categorySyncErr && (
-            <p className="text-xs" style={{ color: T.danger }}>
+            <p className="text-xs text-danger">
               {categorySyncErr}
             </p>
           )}
           {!categorySyncErr && blob.ynabCategoryMappings.length === 0 && (
-            <p className="text-xs" style={{ color: T.muted }}>
+            <p className="text-xs text-muted">
               Loading categories…
             </p>
           )}
 
           {blob.ynabCategoryMappings.length > 0 && (
-            <div className="space-y-3 border-t pt-3" style={{ borderColor: T.border }}>
-              <p className="text-[11px] leading-relaxed" style={{ color: T.muted }}>
+            <div className="space-y-3 border-t border-dimmer pt-3">
+              <p className="text-[11px] leading-relaxed text-muted">
                 Grouped like YNAB.{" "}
                 <strong className="text-neutral-300">Auto from names</strong> re-applies
                 suggestions whenever categories refresh.
@@ -362,20 +346,16 @@ export function HomeDashboard() {
               {categoryRoleGroups.map((g) => (
                 <details
                   key={g.groupId || g.groupName}
-                  className="rounded-lg border"
-                  style={{ borderColor: T.border }}
+                  className="rounded-lg border border-dimmer"
                 >
                   <summary className="cursor-pointer list-none px-3 py-2 [&::-webkit-details-marker]:hidden">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">{g.groupName}</span>
-                      <span className="text-xs" style={{ color: T.muted }}>
+                      <span className="text-xs text-muted">
                         ({g.rows.length})
                       </span>
                       {g.groupId ? (
-                        <label
-                          className="ml-auto flex items-center gap-1.5 text-[11px]"
-                          style={{ color: T.muted }}
-                        >
+                        <label className="ml-auto flex items-center gap-1.5 text-[11px] text-muted">
                           <input
                             type="checkbox"
                             checked={(blob.ynabAutoSuggestGroupIds ?? []).includes(g.groupId)}
@@ -390,10 +370,7 @@ export function HomeDashboard() {
                       ) : null}
                     </div>
                   </summary>
-                  <ul
-                    className="space-y-2 border-t px-3 py-2"
-                    style={{ borderColor: T.border }}
-                  >
+                  <ul className="space-y-2 border-t border-dimmer px-3 py-2">
                     {g.rows.map((m) => (
                       <li
                         key={m.ynabCategoryID}
@@ -403,8 +380,7 @@ export function HomeDashboard() {
                           {m.ynabCategoryName}
                         </span>
                         <select
-                          className="rounded-md border px-2 py-1.5 text-sm text-neutral-100"
-                          style={{ borderColor: T.border, background: T.bg }}
+                          className="rounded-md border border-dimmer bg-bg px-2 py-1.5 text-sm text-neutral-100"
                           value={m.roleRaw as RoleRaw}
                           onChange={(e) =>
                             updateMappingRole(m.ynabCategoryID, e.target.value as RoleRaw)

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { T } from "@/lib/constants";
 import {
   dateRangeLabel,
   groupByCategory,
@@ -53,39 +52,27 @@ export function SpendingBreakdown({ lines }: Props) {
   return (
     <section className="space-y-3">
       <div className="flex items-center justify-between">
-        <p
-          className="text-xs font-semibold uppercase tracking-wider"
-          style={{ color: T.muted }}
-        >
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted">
           Where your money went
         </p>
         {range && (
-          <span className="text-xs" style={{ color: T.muted }}>
+          <span className="text-xs text-muted">
             {range}
           </span>
         )}
       </div>
 
-      <div
-        className="rounded-[20px] border p-5"
-        style={{ borderColor: T.border, background: T.surface }}
-      >
+      <div className="rounded-[20px] border border-dimmer bg-surface/80 backdrop-blur-sm p-5">
         <div className="flex items-baseline justify-between">
           <div>
-            <p
-              className="text-[11px] font-semibold uppercase tracking-wide"
-              style={{ color: T.muted }}
-            >
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">
               Total spent
             </p>
-            <p
-              className="mt-1 text-[2rem] font-bold leading-none tabular-nums"
-              style={{ color: T.text }}
-            >
+            <p className="mt-1 text-[2rem] font-bold leading-none tabular-nums text-white">
               {fmt(total)}
             </p>
           </div>
-          <span className="text-xs" style={{ color: T.muted }}>
+          <span className="text-xs text-muted">
             {count} {count === 1 ? "transaction" : "transactions"}
           </span>
         </div>
@@ -93,8 +80,7 @@ export function SpendingBreakdown({ lines }: Props) {
         <div
           role="tablist"
           aria-label="Breakdown"
-          className="mt-4 flex gap-1 rounded-lg p-1"
-          style={{ background: T.bg }}
+          className="mt-4 flex gap-1 rounded-lg bg-bg p-1"
         >
           {TABS.map((t) => {
             const active = tab === t.key;
@@ -104,12 +90,11 @@ export function SpendingBreakdown({ lines }: Props) {
                 type="button"
                 role="tab"
                 aria-selected={active}
-                className="flex-1 rounded-md py-1.5 text-xs font-medium transition-colors"
-                style={{
-                  background: active ? T.surface : "transparent",
-                  color: active ? T.text : T.muted,
-                  border: active ? `1px solid ${T.border}` : "1px solid transparent",
-                }}
+                className={`flex-1 rounded-md border py-1.5 text-xs font-medium transition-colors ${
+                  active
+                    ? "border-dimmer bg-surface text-white"
+                    : "border-transparent bg-transparent text-muted"
+                }`}
                 onClick={() => setTab(t.key)}
               >
                 {t.label}
@@ -124,25 +109,20 @@ export function SpendingBreakdown({ lines }: Props) {
               <div key={b.key}>
                 <div className="mb-1 flex items-center justify-between">
                   <span
-                    className="truncate pr-3 text-xs"
-                    style={{ color: T.text, maxWidth: "72%" }}
+                    className="max-w-[72%] truncate pr-3 text-xs text-white"
                     title={b.label}
                   >
                     {b.label}
                   </span>
-                  <span className="shrink-0 tabular-nums text-xs" style={{ color: T.muted }}>
+                  <span className="shrink-0 tabular-nums text-xs text-muted">
                     {fmt(b.amount)}
                   </span>
                 </div>
-                <div
-                  className="h-1.5 overflow-hidden rounded-full"
-                  style={{ background: T.border }}
-                >
+                <div className="h-1.5 overflow-hidden rounded-full bg-dimmer">
                   <div
-                    className="h-full rounded-full"
+                    className="h-full rounded-full bg-accent"
                     style={{
                       width: `${(b.amount / max) * 100}%`,
-                      background: T.accent,
                       opacity: Math.max(0.35, 1 - i * 0.09),
                     }}
                   />
@@ -151,7 +131,7 @@ export function SpendingBreakdown({ lines }: Props) {
             ))}
           </div>
         ) : (
-          <p className="mt-4 text-xs" style={{ color: T.muted }}>
+          <p className="mt-4 text-xs text-muted">
             No outflows in this view.
           </p>
         )}
