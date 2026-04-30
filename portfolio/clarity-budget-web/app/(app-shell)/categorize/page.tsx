@@ -1,6 +1,6 @@
 import { createRouteClient } from "@/lib/supabase-server";
 import { CategorizeQueue } from "@/components/categorize/CategorizeQueue";
-import { T } from "@/lib/constants";
+import { PageHeader } from "@/components/shell/PageHeader";
 import type { Suggestion } from "@/lib/categorize/types";
 
 export const dynamic = "force-dynamic";
@@ -51,27 +51,8 @@ export default async function CategorizePage() {
   ]);
 
   return (
-    <div
-      style={{
-        maxWidth: 880,
-        margin: "0 auto",
-        padding: "32px 20px",
-        color: T.text,
-      }}
-    >
-      <h1 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>Categorize</h1>
-      <p
-        style={{
-          color: T.muted,
-          marginTop: 4,
-          marginBottom: 24,
-          fontSize: 14,
-        }}
-      >
-        AI suggestions for your uncategorized YNAB transactions. High-confidence
-        ones are auto-applied; the rest land here for one-click review.
-      </p>
-
+    <div className="max-w-[880px] mx-auto">
+      <PageHeader title="Categorize" subtitle="AI SUGGESTIONS · YNAB" />
       <CategorizeQueue
         rows={(pending ?? []) as SuggestionRow[]}
         syncState={syncState ?? null}

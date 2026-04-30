@@ -4,13 +4,13 @@ export const YNAB_TX_KEY = "chase_budget_web_tx_v1";
 export const SUPABASE_APP_KEY = "clarity_budget";
 
 export const T = {
-  bg: "#0f1117",
-  surface: "#161b27",
-  border: "#1f2937",
-  text: "#f3f4f6",
-  muted: "#6b7280",
-  accent: "#4f92f2",
+  bg: "#0A1128",
+  surface: "#0F1A3E",
+  border: "#1A2A50",
+  text: "#FFFFFF",
+  muted: "#A0AABF",
+  accent: "#3db77a",
   safe: "#3db77a",
-  danger: "#e05050",
-  caution: "#e8bb32",
+  danger: "#F87171",
+  caution: "#FBBF24",
 } as const;

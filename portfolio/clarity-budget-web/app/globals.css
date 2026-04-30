@@ -1,12 +1,78 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f1117;
-  --foreground: #f3f4f6;
+  --bg: #0A1128;
+  --surface: #0F1A3E;
+  --white: #FFFFFF;
+  --steel: #A0AABF;
+  --green: #3db77a;
+  --green-hover: #4dd98e;
+  --dim: #A0AABF;
+  --dimmer: #1A2A50;
+  --ghost: #0C1630;
+
+  --background: var(--bg);
+  --foreground: var(--white);
+  --card: var(--surface);
+  --border: var(--dimmer);
+  --accent: var(--green);
+  --muted: var(--dim);
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-steel: var(--steel);
+  --color-green: var(--green);
+  --color-green-hover: var(--green-hover);
+  --color-dim: var(--dim);
+  --color-dimmer: var(--dimmer);
+  --color-ghost: var(--ghost);
+  --color-bg: var(--bg);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-instrument-sans);
+  --font-mono: var(--font-dm-mono);
+  --font-display: var(--font-big-shoulders);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-instrument-sans), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-big-shoulders), system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.font-mono-label {
+  font-family: var(--font-dm-mono), ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Green rule — single underline accent (mirrors Shipyard's gold-rule) */
+.green-rule {
+  position: relative;
+}
+.green-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--green);
 }

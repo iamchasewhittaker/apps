@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarity Budget — Redesign Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=DM+Mono:wght@400&family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A1128;
+    --surface: #0F1A3E;
+    --white: #FFFFFF;
+    --steel: #A0AABF;
+    --green: #3db77a;
+    --green-hover: #4dd98e;
+    --green-dim: rgba(61, 183, 122, 0.12);
+    --green-glow: rgba(61, 183, 122, 0.25);
+    --dimmer: #1A2A50;
+    --ghost: #0C1630;
+    --danger: #F87171;
+    --warning: #FBBF24;
+    --success: #34D399;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  .font-display {
+    font-family: 'Big Shoulders Display', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .font-mono-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: rgba(15, 26, 62, 0.8);
+    backdrop-filter: blur(8px);
+    border-right: 1px solid var(--dimmer);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  .logo-lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px 24px;
+    border-bottom: 1px solid var(--dimmer);
+    margin-bottom: 24px;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .logo-title {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    position: relative;
+    padding-bottom: 6px;
+  }
+
+  .logo-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--green);
+  }
+
+  .logo-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+    margin-top: 8px;
+  }
+
+  .nav-section {
+    margin-bottom: 24px;
+  }
+
+  .nav-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+    padding: 0 8px;
+    margin-bottom: 8px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--steel);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .nav-link:hover {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-link.active {
+    color: var(--green);
+    background: rgba(61, 183, 122, 0.1);
+    font-weight: 600;
+  }
+
+  .nav-icon {
+    width: 18px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--dimmer);
+  }
+
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .user-email {
+    font-size: 12px;
+    color: var(--steel);
+  }
+
+  /* ─── Main content ─── */
+  .main {
+    margin-left: 240px;
+    flex: 1;
+    padding: 40px;
+    max-width: 900px;
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+  }
+
+  .page-title {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--white);
+  }
+
+  .page-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+    margin-top: 4px;
+  }
+
+  /* ─── STS Card ─── */
+  .sts-card {
+    background: linear-gradient(145deg, var(--surface) 0%, #0B1530 100%);
+    border: 1px solid var(--dimmer);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  }
+
+  .sts-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green) 0%, transparent 100%);
+  }
+
+  .sts-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+    margin-bottom: 8px;
+  }
+
+  .sts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    align-items: end;
+  }
+
+  .sts-primary .sts-amount {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .sts-secondary .sts-amount {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .sts-period {
+    font-size: 12px;
+    color: var(--steel);
+    margin-top: 4px;
+  }
+
+  .sts-budget-name {
+    font-size: 11px;
+    color: var(--steel);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--dimmer);
+  }
+
+  /* ─── Stat pills ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--dimmer);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-value.income { color: var(--success); }
+  .stat-value.spent { color: var(--danger); }
+  .stat-value.bills { color: var(--warning); }
+  .stat-value.flex { color: var(--green); }
+
+  /* ─── Spending breakdown ─── */
+  .breakdown-card {
+    background: rgba(15, 26, 62, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--dimmer);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .breakdown-title {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--white);
+  }
+
+  .breakdown-range {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--steel);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    background: var(--ghost);
+    border-radius: 8px;
+    padding: 3px;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--steel);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+  }
+
+  .tab.active {
+    background: var(--surface);
+    color: var(--white);
+    border: 1px solid var(--dimmer);
+  }
+
+  .category-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(26, 42, 80, 0.5);
+  }
+
+  .category-row:last-child { border-bottom: none; }
+
+  .category-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--white);
+  }
+
+  .category-amount {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--white);
+    min-width: 70px;
+    text-align: right;
+  }
+
+  .category-bar-wrap {
+    width: 120px;
+    height: 6px;
+    background: var(--ghost);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .category-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--green);
+    transition: width 0.3s;
+  }
+
+  /* ─── Transaction list ─── */
+  .tx-card {
+    background: rgba(15, 26, 62, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--dimmer);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .tx-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(26, 42, 80, 0.5);
+    align-items: center;
+  }
+
+  .tx-row:last-child { border-bottom: none; }
+
+  .tx-payee {
+    font-size: 13px;
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .tx-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 3px;
+  }
+
+  .tx-category {
+    font-size: 11px;
+    color: var(--steel);
+  }
+
+  .tx-role-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .role-essential {
+    background: rgba(61, 183, 122, 0.15);
+    color: var(--green);
+  }
+
+  .role-bill {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--warning);
+  }
+
+  .role-flex {
+    background: rgba(79, 146, 242, 0.15);
+    color: #4f92f2;
+  }
+
+  .tx-amount {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .tx-date {
+    font-size: 10px;
+    color: var(--steel);
+    text-align: right;
+    margin-top: 2px;
+  }
+
+  .amount-out { color: var(--white); }
+  .amount-in { color: var(--success); }
+
+  /* ─── Logo SVG styles ─── */
+  .logo-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--dimmer);
+  }
+
+  .logo-showcase {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .logo-variant {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-variant-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--steel);
+  }
+
+  /* ─── Color palette ─── */
+  .palette-section {
+    margin-top: 48px;
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--dimmer);
+  }
+
+  .swatch-color {
+    height: 60px;
+  }
+
+  .swatch-info {
+    padding: 10px 12px;
+    background: var(--surface);
+  }
+
+  .swatch-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+
+  .swatch-hex {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--steel);
+  }
+
+  /* ─── Page selector ─── */
+  .page-selector {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+
+  .page-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--dimmer);
+    background: var(--surface);
+    color: var(--steel);
+    transition: all 0.15s;
+  }
+
+  .page-btn.active {
+    background: var(--green);
+    color: var(--bg);
+    border-color: var(--green);
+  }
+
+  .page-btn:hover:not(.active) {
+    color: var(--white);
+    border-color: var(--green);
+  }
+
+  .mockup-page { display: none; }
+  .mockup-page.active { display: flex; min-height: 100vh; }
+
+  /* Green rule variant */
+  .green-rule {
+    position: relative;
+    padding-bottom: 6px;
+  }
+  .green-rule::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--green);
+  }
+</style>
+</head>
+<body>
+
+<!-- Page selector -->
+<div class="page-selector">
+  <button class="page-btn active" onclick="showPage('dashboard')">Dashboard</button>
+  <button class="page-btn" onclick="showPage('logo')">Logo & Brand</button>
+  <button class="page-btn" onclick="showPage('logos')">Logo Gallery</button>
+  <button class="page-btn" onclick="showPage('login')">Login</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PAGE 1: Dashboard                       -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-dashboard" class="mockup-page active">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo-lockup">
+      <!-- Dollar Shield Logo -->
+      <svg viewBox="0 0 1024 1024" width="36" height="36" style="flex-shrink:0">
+        <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+        <!-- Shield outline -->
+        <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+              fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+        <!-- Inner shield line -->
+        <path d="M512 240 C512 240, 740 320, 740 480 C740 680, 512 800, 512 800 C512 800, 284 680, 284 480 C284 320, 512 240, 512 240Z"
+              fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+        <!-- Dollar sign -->
+        <text x="512" y="560" text-anchor="middle" font-family="Big Shoulders Display, sans-serif"
+              font-size="340" font-weight="700" fill="var(--white)">$</text>
+        <!-- Crosshair ticks (Shipyard-style) -->
+        <line x1="512" y1="130" x2="512" y2="180" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+        <line x1="160" y1="480" x2="210" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+        <line x1="814" y1="480" x2="864" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+        <!-- Corner dots -->
+        <circle cx="512" cy="155" r="12" fill="var(--steel)"/>
+        <circle cx="185" cy="480" r="12" fill="var(--steel)"/>
+        <circle cx="839" cy="480" r="12" fill="var(--steel)"/>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-title">CLARITY BUDGET</span>
+        <span class="logo-subtitle">MONEY COMMAND</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Finance</div>
+      <a class="nav-link active"><span class="nav-icon">◉</span> Dashboard</a>
+      <a class="nav-link"><span class="nav-icon">⟳</span> Categorize</a>
+      <a class="nav-link"><span class="nav-icon">☰</span> Review</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">System</div>
+      <a class="nav-link"><span class="nav-icon">⚑</span> Flags</a>
+      <a class="nav-link"><span class="nav-icon">⚙</span> Settings</a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="user-avatar">CW</div>
+        <div class="user-email">chase@...</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="page-header">
+      <div class="page-title green-rule" style="display:inline-block">Dashboard</div>
+      <div class="page-subtitle">APR 2026 · YNAB SYNC</div>
+    </div>
+
+    <!-- STS Card -->
+    <div class="sts-card">
+      <div class="sts-label">Safe to Spend</div>
+      <div class="sts-grid">
+        <div class="sts-primary">
+          <div class="sts-amount">$1,247</div>
+          <div class="sts-period">This month</div>
+        </div>
+        <div class="sts-secondary">
+          <div class="sts-amount">$312</div>
+          <div class="sts-period">This week</div>
+        </div>
+        <div class="sts-secondary">
+          <div class="sts-amount">$44</div>
+          <div class="sts-period">Today</div>
+        </div>
+      </div>
+      <div class="sts-budget-name">Budget: Family Budget 2026</div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-pill">
+        <div class="stat-label">Income</div>
+        <div class="stat-value income">$6,200</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-label">Spent</div>
+        <div class="stat-value spent">$3,841</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-label">Bills</div>
+        <div class="stat-value bills">$2,100</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-label">Flex Left</div>
+        <div class="stat-value flex">$1,247</div>
+      </div>
+    </div>
+
+    <!-- Spending Breakdown -->
+    <div class="breakdown-card">
+      <div class="breakdown-header">
+        <div class="breakdown-title">Where Your Money Went</div>
+        <div class="breakdown-range">Mar 01 — Apr 29</div>
+      </div>
+      <div class="tabs">
+        <button class="tab active">Category</button>
+        <button class="tab">Payee</button>
+        <button class="tab">Week</button>
+      </div>
+      <div>
+        <div class="category-row">
+          <div class="category-name">Groceries</div>
+          <div class="category-bar-wrap"><div class="category-bar" style="width:85%"></div></div>
+          <div class="category-amount">$842</div>
+        </div>
+        <div class="category-row">
+          <div class="category-name">Dining Out</div>
+          <div class="category-bar-wrap"><div class="category-bar" style="width:55%; opacity:0.8"></div></div>
+          <div class="category-amount">$534</div>
+        </div>
+        <div class="category-row">
+          <div class="category-name">Auto & Transport</div>
+          <div class="category-bar-wrap"><div class="category-bar" style="width:42%; opacity:0.65"></div></div>
+          <div class="category-amount">$412</div>
+        </div>
+        <div class="category-row">
+          <div class="category-name">Shopping</div>
+          <div class="category-bar-wrap"><div class="category-bar" style="width:30%; opacity:0.5"></div></div>
+          <div class="category-amount">$298</div>
+        </div>
+        <div class="category-row">
+          <div class="category-name">Entertainment</div>
+          <div class="category-bar-wrap"><div class="category-bar" style="width:18%; opacity:0.4"></div></div>
+          <div class="category-amount">$175</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions -->
+    <div class="tx-card">
+      <div class="breakdown-header">
+        <div class="breakdown-title">Recent Transactions</div>
+        <div class="breakdown-range">Last 60 Days</div>
+      </div>
+      <div>
+        <div class="tx-row">
+          <div>
+            <div class="tx-payee">Costco Wholesale</div>
+            <div class="tx-meta">
+              <span class="tx-category">Groceries</span>
+              <span class="tx-role-badge role-essential">Essential</span>
+            </div>
+          </div>
+          <div>
+            <div class="tx-amount amount-out">-$187.42</div>
+            <div class="tx-date">Apr 28</div>
+          </div>
+        </div>
+        <div class="tx-row">
+          <div>
+            <div class="tx-payee">Chevron</div>
+            <div class="tx-meta">
+              <span class="tx-category">Auto & Transport</span>
+              <span class="tx-role-badge role-bill">Bill</span>
+            </div>
+          </div>
+          <div>
+            <div class="tx-amount amount-out">-$62.18</div>
+            <div class="tx-date">Apr 27</div>
+          </div>
+        </div>
+        <div class="tx-row">
+          <div>
+            <div class="tx-payee">Netflix</div>
+            <div class="tx-meta">
+              <span class="tx-category">Entertainment</span>
+              <span class="tx-role-badge role-flex">Flex</span>
+            </div>
+          </div>
+          <div>
+            <div class="tx-amount amount-out">-$15.49</div>
+            <div class="tx-date">Apr 25</div>
+          </div>
+        </div>
+        <div class="tx-row">
+          <div>
+            <div class="tx-payee">Payroll — Acme Corp</div>
+            <div class="tx-meta">
+              <span class="tx-category">Income</span>
+            </div>
+          </div>
+          <div>
+            <div class="tx-amount amount-in">+$3,100.00</div>
+            <div class="tx-date">Apr 15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PAGE 2: Logo & Brand                    -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-logo" class="mockup-page">
+  <aside class="sidebar" style="opacity:0.3; pointer-events:none"></aside>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-title green-rule" style="display:inline-block">Brand Identity</div>
+      <div class="page-subtitle">Clarity Budget · Money Command</div>
+    </div>
+
+    <!-- Logo showcase -->
+    <div style="margin-bottom:48px">
+      <div class="breakdown-title" style="margin-bottom:24px">Logo Variants</div>
+      <div class="logo-showcase">
+        <!-- Large stacked -->
+        <div class="logo-variant">
+          <svg viewBox="0 0 1024 1024" width="96" height="96">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+                  fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <path d="M512 240 C512 240, 740 320, 740 480 C740 680, 512 800, 512 800 C512 800, 284 680, 284 480 C284 320, 512 240, 512 240Z"
+                  fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+            <text x="512" y="560" text-anchor="middle" font-family="Big Shoulders Display, sans-serif"
+                  font-size="340" font-weight="700" fill="var(--white)">$</text>
+            <line x1="512" y1="130" x2="512" y2="180" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="160" y1="480" x2="210" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="814" y1="480" x2="864" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="512" cy="155" r="12" fill="var(--steel)"/>
+            <circle cx="185" cy="480" r="12" fill="var(--steel)"/>
+            <circle cx="839" cy="480" r="12" fill="var(--steel)"/>
+          </svg>
+          <div style="text-align:center; margin-top:8px">
+            <div class="font-display" style="font-size:24px; color:var(--white); position:relative; display:inline-block; padding-bottom:6px">
+              CLARITY BUDGET
+              <span style="position:absolute; bottom:0; left:0; width:100%; height:2px; background:var(--green)"></span>
+            </div>
+            <div class="font-mono-label" style="font-size:10px; color:var(--steel); margin-top:8px">MONEY COMMAND</div>
+          </div>
+          <div class="logo-variant-label" style="margin-top:12px">Stacked</div>
+        </div>
+
+        <!-- Horizontal lockup -->
+        <div class="logo-variant">
+          <div style="display:flex; align-items:center; gap:14px">
+            <svg viewBox="0 0 1024 1024" width="48" height="48">
+              <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+              <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+                    fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+              <path d="M512 240 C512 240, 740 320, 740 480 C740 680, 512 800, 512 800 C512 800, 284 680, 284 480 C284 320, 512 240, 512 240Z"
+                    fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+              <text x="512" y="560" text-anchor="middle" font-family="Big Shoulders Display, sans-serif"
+                    font-size="340" font-weight="700" fill="var(--white)">$</text>
+              <line x1="512" y1="130" x2="512" y2="180" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+              <line x1="160" y1="480" x2="210" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+              <line x1="814" y1="480" x2="864" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+              <circle cx="512" cy="155" r="12" fill="var(--steel)"/>
+              <circle cx="185" cy="480" r="12" fill="var(--steel)"/>
+              <circle cx="839" cy="480" r="12" fill="var(--steel)"/>
+            </svg>
+            <div style="line-height:1">
+              <div class="font-display" style="font-size:22px; color:var(--white); position:relative; display:inline-block; padding-bottom:6px">
+                CLARITY BUDGET
+                <span style="position:absolute; bottom:0; left:0; width:100%; height:2px; background:var(--green)"></span>
+              </div>
+              <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-top:8px">MONEY COMMAND</div>
+            </div>
+          </div>
+          <div class="logo-variant-label" style="margin-top:16px">Horizontal</div>
+        </div>
+
+        <!-- Icon only -->
+        <div class="logo-variant">
+          <svg viewBox="0 0 1024 1024" width="64" height="64">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+                  fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <path d="M512 240 C512 240, 740 320, 740 480 C740 680, 512 800, 512 800 C512 800, 284 680, 284 480 C284 320, 512 240, 512 240Z"
+                  fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+            <text x="512" y="560" text-anchor="middle" font-family="Big Shoulders Display, sans-serif"
+                  font-size="340" font-weight="700" fill="var(--white)">$</text>
+            <line x1="512" y1="130" x2="512" y2="180" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="160" y1="480" x2="210" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="814" y1="480" x2="864" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <circle cx="512" cy="155" r="12" fill="var(--steel)"/>
+            <circle cx="185" cy="480" r="12" fill="var(--steel)"/>
+            <circle cx="839" cy="480" r="12" fill="var(--steel)"/>
+          </svg>
+          <div class="logo-variant-label" style="margin-top:8px">Icon Only</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color palette -->
+    <div class="palette-section">
+      <div class="breakdown-title" style="margin-bottom:4px">Color Palette</div>
+      <div class="page-subtitle" style="margin-bottom:16px">Navy + Money Green — Shipyard Sibling</div>
+      <div class="palette-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0A1128"></div>
+          <div class="swatch-info"><div class="swatch-name">Background</div><div class="swatch-hex">#0A1128</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0F1A3E"></div>
+          <div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-hex">#0F1A3E</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#3db77a"></div>
+          <div class="swatch-info"><div class="swatch-name">Green (Primary)</div><div class="swatch-hex">#3db77a</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#A0AABF"></div>
+          <div class="swatch-info"><div class="swatch-name">Steel</div><div class="swatch-hex">#A0AABF</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1A2A50"></div>
+          <div class="swatch-info"><div class="swatch-name">Dimmer</div><div class="swatch-hex">#1A2A50</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F87171"></div>
+          <div class="swatch-info"><div class="swatch-name">Danger</div><div class="swatch-hex">#F87171</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FBBF24"></div>
+          <div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#FBBF24</div></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#34D399"></div>
+          <div class="swatch-info"><div class="swatch-name">Success</div><div class="swatch-hex">#34D399</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div style="margin-top:48px">
+      <div class="breakdown-title" style="margin-bottom:16px">Typography</div>
+      <div style="display:flex; flex-direction:column; gap:20px">
+        <div style="padding:20px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-bottom:8px">Display — Big Shoulders</div>
+          <div class="font-display" style="font-size:32px; color:var(--white)">CLARITY BUDGET</div>
+        </div>
+        <div style="padding:20px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-bottom:8px">Labels — DM Mono</div>
+          <div class="font-mono-label" style="font-size:14px; color:var(--white)">MONEY COMMAND · APR 2026 · $1,247.00</div>
+        </div>
+        <div style="padding:20px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-bottom:8px">Body — Instrument Sans</div>
+          <div style="font-size:14px; color:var(--white)">Your safe-to-spend for this month is calculated from YNAB category balances minus upcoming bills and essentials.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PAGE 2.5: Logo Gallery                  -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-logos" class="mockup-page">
+  <aside class="sidebar" style="opacity:0.3; pointer-events:none"></aside>
+  <main class="main" style="max-width:1100px">
+    <div class="page-header">
+      <div class="page-title green-rule" style="display:inline-block">Logo Concepts</div>
+      <div class="page-subtitle">10 Variants · Pick Your Favorite</div>
+    </div>
+
+    <style>
+      .logo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+      .logo-card {
+        background: var(--surface);
+        border: 1px solid var(--dimmer);
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.15s;
+        cursor: pointer;
+      }
+      .logo-card:hover {
+        border-color: var(--green);
+        transform: translateY(-2px);
+      }
+      .logo-card-num {
+        font-family: 'DM Mono', monospace;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--steel);
+      }
+      .logo-card-name {
+        font-family: 'Big Shoulders Display', sans-serif;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--white);
+        text-align: center;
+      }
+      .logo-card-desc {
+        font-size: 11px;
+        color: var(--steel);
+        text-align: center;
+        line-height: 1.4;
+      }
+      .style-section {
+        margin-bottom: 40px;
+      }
+      .style-section-title {
+        font-family: 'Big Shoulders Display', sans-serif;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: var(--white);
+        margin-bottom: 8px;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 6px;
+      }
+      .style-section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--green);
+      }
+      .style-section-desc {
+        font-size: 12px;
+        color: var(--steel);
+        margin-bottom: 16px;
+      }
+    </style>
+
+    <!-- ─── Group 1: Shield variants ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Shield Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Protection, security, custody — these communicate "your money, defended"</div>
+
+      <div class="logo-grid">
+        <!-- 01: Original Dollar Shield -->
+        <div class="logo-card">
+          <div class="logo-card-num">01</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+                  fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <path d="M512 240 C512 240, 740 320, 740 480 C740 680, 512 800, 512 800 C512 800, 284 680, 284 480 C284 320, 512 240, 512 240Z"
+                  fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+            <text x="512" y="560" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="340" font-weight="700" fill="var(--white)">$</text>
+            <line x1="512" y1="130" x2="512" y2="180" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="160" y1="480" x2="210" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="814" y1="480" x2="864" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">Dollar Shield (Original)</div>
+          <div class="logo-card-desc">Classic shield with $ + crosshair ticks. Direct sibling to Shipyard's helm.</div>
+        </div>
+
+        <!-- 02: Green-glow shield -->
+        <div class="logo-card">
+          <div class="logo-card-num">02</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <defs>
+              <radialGradient id="glow02" cx="50%" cy="60%" r="40%">
+                <stop offset="0%" stop-color="var(--green)" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="var(--green)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="512" cy="600" r="280" fill="url(#glow02)"/>
+            <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+                  fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <text x="512" y="610" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="380" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Green Beacon Shield</div>
+          <div class="logo-card-desc">Green $ glowing inside the shield. Bolder, more on-brand.</div>
+        </div>
+
+        <!-- 03: Hexagonal shield -->
+        <div class="logo-card">
+          <div class="logo-card-num">03</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <polygon points="512,160 824,340 824,684 512,864 200,684 200,340"
+                     fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <polygon points="512,240 752,378 752,646 512,784 272,646 272,378"
+                     fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+            <text x="512" y="600" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="380" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div class="logo-card-name">Hex Vault</div>
+          <div class="logo-card-desc">Hexagonal frame. Modern, fintech-coded, less knight-y.</div>
+        </div>
+
+        <!-- 04: Shield with green underline -->
+        <div class="logo-card">
+          <div class="logo-card-num">04</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+                  fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <text x="512" y="580" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="360" font-weight="700" fill="var(--white)">$</text>
+            <rect x="380" y="660" width="264" height="14" rx="7" fill="var(--green)"/>
+          </svg>
+          <div class="logo-card-name">Shield + Green Bar</div>
+          <div class="logo-card-desc">Dollar with the green-rule accent baked in. Echoes "STS line."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 2: Compass / Helm variants ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Compass / Helm Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Direct sibling to Shipyard's helm — emphasizes navigation and command</div>
+
+      <div class="logo-grid">
+        <!-- 05: Compass with $ center -->
+        <div class="logo-card">
+          <div class="logo-card-num">05</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="288" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <line x1="512" y1="220" x2="512" y2="804" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="220" y1="512" x2="804" y2="512" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="305" y1="305" x2="719" y2="719" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="305" y1="719" x2="719" y2="305" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <circle cx="512" cy="512" r="120" fill="var(--bg)"/>
+            <text x="512" y="585" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="220" font-weight="700" fill="var(--green)">$</text>
+            <circle cx="512" cy="296" r="22" fill="var(--steel)"/>
+            <circle cx="512" cy="728" r="22" fill="var(--steel)"/>
+            <circle cx="296" cy="512" r="22" fill="var(--steel)"/>
+            <circle cx="728" cy="512" r="22" fill="var(--steel)"/>
+          </svg>
+          <div class="logo-card-name">Compass + $</div>
+          <div class="logo-card-desc">Shipyard's helm with green $ at center. Most literal sibling — same DNA, money mark.</div>
+        </div>
+
+        <!-- 06: Cardinal arrows -->
+        <div class="logo-card">
+          <div class="logo-card-num">06</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="288" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.3"/>
+            <!-- N arrow up (income) -->
+            <polygon points="512,200 470,310 554,310" fill="var(--success)"/>
+            <!-- S arrow down (spent) -->
+            <polygon points="512,824 470,714 554,714" fill="var(--danger)"/>
+            <!-- center $ -->
+            <text x="512" y="585" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="280" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div class="logo-card-name">Cash Compass</div>
+          <div class="logo-card-desc">Up = income, down = spent, $ at center. Tells the story instantly.</div>
+        </div>
+
+        <!-- 07: Sextant / divider -->
+        <div class="logo-card">
+          <div class="logo-card-num">07</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <path d="M200 800 L512 200 L824 800 Z" fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+            <path d="M280 720 A 320 320 0 0 1 744 720" fill="none" stroke="var(--steel)" stroke-width="20" opacity="0.5"/>
+            <text x="512" y="640" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="240" font-weight="700" fill="var(--green)">$</text>
+            <circle cx="512" cy="200" r="16" fill="var(--white)"/>
+          </svg>
+          <div class="logo-card-name">Sextant</div>
+          <div class="logo-card-desc">Triangle + arc. Navigation + measurement. Distinct from Shipyard's circle.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 3: Mark / Letter variants ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Lettermark Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Pure typography. Cleaner, faster to recognize, easier to scale</div>
+
+      <div class="logo-grid">
+        <!-- 08: CB monogram -->
+        <div class="logo-card">
+          <div class="logo-card-num">08</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="280" y="700" font-family="Big Shoulders Display, sans-serif" font-size="700" font-weight="700" fill="var(--white)">C</text>
+            <text x="540" y="700" font-family="Big Shoulders Display, sans-serif" font-size="700" font-weight="700" fill="var(--green)">B</text>
+            <line x1="160" y1="780" x2="864" y2="780" stroke="var(--green)" stroke-width="20"/>
+          </svg>
+          <div class="logo-card-name">CB Monogram</div>
+          <div class="logo-card-desc">"C" white, "B" green, green underline rule. Most brandable.</div>
+        </div>
+
+        <!-- 09: $ in circle (minimal) -->
+        <div class="logo-card">
+          <div class="logo-card-num">09</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="320" fill="none" stroke="var(--green)" stroke-width="40"/>
+            <text x="512" y="640" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="500" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div class="logo-card-name">Dollar Coin</div>
+          <div class="logo-card-desc">Minimal: green ring, white $. Cleanest silhouette at small sizes.</div>
+        </div>
+
+        <!-- 10: Slashed dollar (clarity) -->
+        <div class="logo-card">
+          <div class="logo-card-num">10</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="512" y="700" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="640" font-weight="700" fill="var(--white)">$</text>
+            <line x1="180" y1="180" x2="844" y2="844" stroke="var(--green)" stroke-width="48" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">$ + Diagonal</div>
+          <div class="logo-card-desc">Bold $ with green diagonal. Could read as "pay slip" or motion.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 4: Conceptual / Abstract ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Conceptual Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Tells the budget story visually — bars, arcs, runway</div>
+
+      <div class="logo-grid">
+        <!-- 11: Runway bars -->
+        <div class="logo-card">
+          <div class="logo-card-num">11</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <rect x="220" y="600" width="120" height="240" rx="20" fill="var(--steel)" opacity="0.5"/>
+            <rect x="380" y="480" width="120" height="360" rx="20" fill="var(--steel)" opacity="0.7"/>
+            <rect x="540" y="320" width="120" height="520" rx="20" fill="var(--white)"/>
+            <rect x="700" y="180" width="120" height="660" rx="20" fill="var(--green)"/>
+            <line x1="160" y1="180" x2="220" y2="180" stroke="var(--green)" stroke-width="12" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">STS Bars</div>
+          <div class="logo-card-desc">Rising bars in green. "Safe to spend" visualized. Less wordmark friendly.</div>
+        </div>
+
+        <!-- 12: Arc gauge -->
+        <div class="logo-card">
+          <div class="logo-card-num">12</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <path d="M 200 700 A 312 312 0 0 1 824 700" fill="none" stroke="var(--steel)" stroke-width="40" opacity="0.3" stroke-linecap="round"/>
+            <path d="M 200 700 A 312 312 0 0 1 600 360" fill="none" stroke="var(--green)" stroke-width="40" stroke-linecap="round"/>
+            <text x="512" y="780" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="220" font-weight="700" fill="var(--white)">$</text>
+            <circle cx="600" cy="360" r="24" fill="var(--green)"/>
+          </svg>
+          <div class="logo-card-name">Spending Gauge</div>
+          <div class="logo-card-desc">Arc gauge filled to ~70%. Says "you've got room left."</div>
+        </div>
+
+        <!-- 13: Stacked coins -->
+        <div class="logo-card">
+          <div class="logo-card-num">13</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <ellipse cx="512" cy="780" rx="280" ry="40" fill="none" stroke="var(--white)" stroke-width="24"/>
+            <ellipse cx="512" cy="640" rx="280" ry="40" fill="none" stroke="var(--white)" stroke-width="24"/>
+            <ellipse cx="512" cy="500" rx="280" ry="40" fill="none" stroke="var(--white)" stroke-width="24"/>
+            <ellipse cx="512" cy="360" rx="280" ry="40" fill="var(--bg)" stroke="var(--green)" stroke-width="24"/>
+            <text x="512" y="385" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="80" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Coin Stack</div>
+          <div class="logo-card-desc">Top coin in green with $. Literal "money" visual. More illustrative.</div>
+        </div>
+
+        <!-- 14: Concentric (clarity = focus) -->
+        <div class="logo-card">
+          <div class="logo-card-num">14</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="320" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.3"/>
+            <circle cx="512" cy="512" r="240" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.5"/>
+            <circle cx="512" cy="512" r="160" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.7"/>
+            <circle cx="512" cy="512" r="80" fill="var(--green)"/>
+            <text x="512" y="555" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="120" font-weight="700" fill="var(--bg)">$</text>
+          </svg>
+          <div class="logo-card-name">Bullseye</div>
+          <div class="logo-card-desc">Concentric rings → green target with $. "Focus on what's safe."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 5: Nautical / Sibling ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Nautical Sibling Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Shares Shipyard's maritime language — anchor, lighthouse, porthole</div>
+
+      <div class="logo-grid">
+        <!-- 15: Anchor + $ -->
+        <div class="logo-card">
+          <div class="logo-card-num">15</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Anchor ring -->
+            <circle cx="512" cy="280" r="80" fill="none" stroke="var(--white)" stroke-width="30"/>
+            <!-- Vertical shaft -->
+            <line x1="512" y1="360" x2="512" y2="800" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <!-- Crossbar -->
+            <line x1="340" y1="520" x2="684" y2="520" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <!-- Flukes (curved arms) -->
+            <path d="M260 800 Q260 640, 512 640" fill="none" stroke="var(--green)" stroke-width="30" stroke-linecap="round"/>
+            <path d="M764 800 Q764 640, 512 640" fill="none" stroke="var(--green)" stroke-width="30" stroke-linecap="round"/>
+            <!-- $ inside ring -->
+            <text x="512" y="310" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="120" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Money Anchor</div>
+          <div class="logo-card-desc">Stability + nautical DNA. Green flukes, green $ in the ring. "Anchored spending."</div>
+        </div>
+
+        <!-- 16: Lighthouse -->
+        <div class="logo-card">
+          <div class="logo-card-num">16</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Lighthouse body -->
+            <path d="M440 380 L400 840 L624 840 L584 380 Z" fill="none" stroke="var(--white)" stroke-width="26" stroke-linejoin="round"/>
+            <!-- Lamp house -->
+            <rect x="420" y="280" width="184" height="100" rx="10" fill="none" stroke="var(--white)" stroke-width="26"/>
+            <!-- Light cap -->
+            <path d="M460 280 L512 200 L564 280" fill="none" stroke="var(--white)" stroke-width="22" stroke-linejoin="round"/>
+            <!-- Beacon rays -->
+            <line x1="240" y1="280" x2="380" y2="320" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="220" y1="340" x2="380" y2="340" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="240" y1="400" x2="380" y2="360" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="644" y1="320" x2="784" y2="280" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="644" y1="340" x2="804" y2="340" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <line x1="644" y1="360" x2="784" y2="400" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+            <!-- $ inside lamp -->
+            <text x="512" y="365" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="100" font-weight="700" fill="var(--green)">$</text>
+            <!-- Base stripe -->
+            <line x1="390" y1="840" x2="634" y2="840" stroke="var(--steel)" stroke-width="20" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">Lighthouse</div>
+          <div class="logo-card-desc">Green beacon guiding your money. Most thematic Shipyard sibling.</div>
+        </div>
+
+        <!-- 17: Porthole -->
+        <div class="logo-card">
+          <div class="logo-card-num">17</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Outer ring (porthole frame) -->
+            <circle cx="512" cy="512" r="300" fill="none" stroke="var(--white)" stroke-width="50"/>
+            <!-- Rivets/bolts -->
+            <circle cx="512" cy="180" r="20" fill="var(--steel)"/>
+            <circle cx="512" cy="844" r="20" fill="var(--steel)"/>
+            <circle cx="180" cy="512" r="20" fill="var(--steel)"/>
+            <circle cx="844" cy="512" r="20" fill="var(--steel)"/>
+            <circle cx="277" cy="277" r="18" fill="var(--steel)"/>
+            <circle cx="747" cy="277" r="18" fill="var(--steel)"/>
+            <circle cx="277" cy="747" r="18" fill="var(--steel)"/>
+            <circle cx="747" cy="747" r="18" fill="var(--steel)"/>
+            <!-- Inner glass -->
+            <circle cx="512" cy="512" r="220" fill="none" stroke="var(--dimmer)" stroke-width="12"/>
+            <!-- $ seen through porthole -->
+            <text x="512" y="590" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="340" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Porthole</div>
+          <div class="logo-card-desc">"Window into your money." Bolted porthole with green $. Pure naval.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 6: Playful / Character ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Playful / Character Family</div>
+      <div class="style-section-desc" style="margin-top:10px">More personality, less corporate. Friendlier for a personal finance app</div>
+
+      <div class="logo-grid">
+        <!-- 18: Piggy bank -->
+        <div class="logo-card">
+          <div class="logo-card-num">18</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Body -->
+            <ellipse cx="490" cy="560" rx="280" ry="220" fill="none" stroke="var(--white)" stroke-width="30"/>
+            <!-- Head bump -->
+            <circle cx="240" cy="440" r="100" fill="none" stroke="var(--white)" stroke-width="30"/>
+            <!-- Snout -->
+            <ellipse cx="170" cy="500" rx="50" ry="35" fill="none" stroke="var(--white)" stroke-width="22"/>
+            <!-- Nostrils -->
+            <circle cx="155" cy="495" r="8" fill="var(--steel)"/>
+            <circle cx="185" cy="495" r="8" fill="var(--steel)"/>
+            <!-- Eye -->
+            <circle cx="260" cy="410" r="14" fill="var(--green)"/>
+            <!-- Ear -->
+            <path d="M280 360 L310 290 L340 370" fill="none" stroke="var(--white)" stroke-width="22" stroke-linejoin="round"/>
+            <!-- Coin slot -->
+            <rect x="430" y="310" width="100" height="16" rx="8" fill="var(--green)"/>
+            <!-- Legs -->
+            <line x1="340" y1="740" x2="340" y2="810" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="460" y1="755" x2="460" y2="820" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="600" y1="755" x2="600" y2="820" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="700" y1="720" x2="700" y2="790" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <!-- Tail curl -->
+            <path d="M770 460 Q840 400, 820 500 Q800 560, 780 520" fill="none" stroke="var(--green)" stroke-width="18" stroke-linecap="round"/>
+            <!-- $ on belly -->
+            <text x="510" y="610" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="180" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Piggy Bank</div>
+          <div class="logo-card-desc">Classic savings icon with green coin slot + tail. Fun, recognizable, personal.</div>
+        </div>
+
+        <!-- 19: Piggy bank (simplified geometric) -->
+        <div class="logo-card">
+          <div class="logo-card-num">19</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Simplified piggy silhouette -->
+            <circle cx="512" cy="520" r="240" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <!-- Ear triangles -->
+            <path d="M380 320 L420 220 L480 320" fill="none" stroke="var(--white)" stroke-width="26" stroke-linejoin="round"/>
+            <path d="M544 320 L604 220 L644 320" fill="none" stroke="var(--white)" stroke-width="26" stroke-linejoin="round"/>
+            <!-- Coin slot -->
+            <rect x="462" y="275" width="100" height="14" rx="7" fill="var(--green)"/>
+            <!-- Snout circle -->
+            <circle cx="512" cy="600" r="60" fill="none" stroke="var(--steel)" stroke-width="20"/>
+            <!-- Nostrils -->
+            <circle cx="492" cy="600" r="12" fill="var(--steel)"/>
+            <circle cx="532" cy="600" r="12" fill="var(--steel)"/>
+            <!-- Eyes -->
+            <circle cx="440" cy="480" r="16" fill="var(--green)"/>
+            <circle cx="584" cy="480" r="16" fill="var(--green)"/>
+            <!-- $ above snout -->
+            <text x="512" y="540" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="100" font-weight="700" fill="var(--white)" opacity="0.4">$</text>
+          </svg>
+          <div class="logo-card-name">Piggy (Geometric)</div>
+          <div class="logo-card-desc">Simplified front-facing piggy. Bolder geometry, reads better at small sizes.</div>
+        </div>
+
+        <!-- 20: Piggy bank (minimal outline) -->
+        <div class="logo-card">
+          <div class="logo-card-num">20</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Pig body (side view, heavy simplification) -->
+            <path d="M220 500 Q220 300, 440 280 L440 240 L520 300 Q720 300, 780 440 Q840 560, 780 640 Q720 740, 520 740 L320 740 Q220 700, 220 500Z"
+                  fill="none" stroke="var(--white)" stroke-width="30" stroke-linejoin="round"/>
+            <!-- Coin slot -->
+            <rect x="440" y="240" width="80" height="14" rx="7" fill="var(--green)"/>
+            <!-- Eye -->
+            <circle cx="360" cy="440" r="18" fill="var(--green)"/>
+            <!-- Snout -->
+            <circle cx="260" cy="520" r="40" fill="none" stroke="var(--steel)" stroke-width="16"/>
+            <circle cx="248" cy="515" r="8" fill="var(--steel)"/>
+            <circle cx="272" cy="515" r="8" fill="var(--steel)"/>
+            <!-- Legs -->
+            <line x1="400" y1="740" x2="400" y2="820" stroke="var(--white)" stroke-width="26" stroke-linecap="round"/>
+            <line x1="620" y1="740" x2="620" y2="820" stroke="var(--white)" stroke-width="26" stroke-linecap="round"/>
+            <!-- Tail -->
+            <path d="M780 440 Q860 380, 840 480" fill="none" stroke="var(--green)" stroke-width="16" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">Piggy (Side Profile)</div>
+          <div class="logo-card-desc">Side-view profile, clean outline. Green accents: coin slot, eye, tail.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 7: Vault / Security ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Vault / Security Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Bank vault, safe, lock — money is protected and controlled</div>
+
+      <div class="logo-grid">
+        <!-- 21: Vault dial -->
+        <div class="logo-card">
+          <div class="logo-card-num">21</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Outer vault ring -->
+            <circle cx="512" cy="512" r="320" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <!-- Dial notches (every 30 degrees) -->
+            <line x1="512" y1="160" x2="512" y2="220" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="688" y1="210" x2="658" y2="260" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="814" y1="336" x2="764" y2="366" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="864" y1="512" x2="804" y2="512" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="814" y1="688" x2="764" y2="658" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="688" y1="814" x2="658" y2="764" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="512" y1="864" x2="512" y2="804" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="336" y1="814" x2="366" y2="764" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="210" y1="688" x2="260" y2="658" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="160" y1="512" x2="220" y2="512" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="210" y1="336" x2="260" y2="366" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <line x1="336" y1="210" x2="366" y2="260" stroke="var(--steel)" stroke-width="12" stroke-linecap="round"/>
+            <!-- Inner dial -->
+            <circle cx="512" cy="512" r="180" fill="none" stroke="var(--green)" stroke-width="20"/>
+            <!-- Center $ -->
+            <text x="512" y="580" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="240" font-weight="700" fill="var(--white)">$</text>
+            <!-- Pointer -->
+            <line x1="512" y1="332" x2="512" y2="220" stroke="var(--green)" stroke-width="20" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">Vault Dial</div>
+          <div class="logo-card-desc">Safe combination dial with green inner ring. Security + control.</div>
+        </div>
+
+        <!-- 22: Keyhole -->
+        <div class="logo-card">
+          <div class="logo-card-num">22</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Outer circle -->
+            <circle cx="512" cy="512" r="320" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <!-- Keyhole shape (circle + trapezoid) -->
+            <circle cx="512" cy="420" r="110" fill="var(--bg)" stroke="var(--green)" stroke-width="28"/>
+            <path d="M460 480 L440 720 L584 720 L564 480" fill="var(--bg)" stroke="var(--green)" stroke-width="28" stroke-linejoin="round"/>
+            <!-- $ inside keyhole -->
+            <text x="512" y="466" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="140" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div class="logo-card-name">Money Keyhole</div>
+          <div class="logo-card-desc">Access control. Green keyhole with $ inside. "Your key to clarity."</div>
+        </div>
+
+        <!-- 23: Lock + $ -->
+        <div class="logo-card">
+          <div class="logo-card-num">23</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Lock shackle -->
+            <path d="M360 440 L360 320 Q360 180, 512 180 Q664 180, 664 320 L664 440"
+                  fill="none" stroke="var(--white)" stroke-width="34" stroke-linecap="round"/>
+            <!-- Lock body -->
+            <rect x="280" y="440" width="464" height="380" rx="40" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <!-- $ -->
+            <text x="512" y="710" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="280" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Padlock</div>
+          <div class="logo-card-desc">Locked safe with green $. Simple, universal "secured money" symbol.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 8: Abstract / Geometric ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Abstract / Geometric Family</div>
+      <div class="style-section-desc" style="margin-top:10px">Modern, clean, tech-forward. No literal metaphor — pure form</div>
+
+      <div class="logo-grid">
+        <!-- 24: Split circle (income vs spend) -->
+        <div class="logo-card">
+          <div class="logo-card-num">24</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Left half (green = safe) -->
+            <path d="M512 192 A320 320 0 0 0 512 832" fill="none" stroke="var(--green)" stroke-width="40" stroke-linecap="round"/>
+            <!-- Right half (steel = spent) -->
+            <path d="M512 832 A320 320 0 0 0 512 192" fill="none" stroke="var(--steel)" stroke-width="40" stroke-linecap="round" opacity="0.5"/>
+            <!-- Center $ -->
+            <text x="512" y="590" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="340" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div class="logo-card-name">Split Ring</div>
+          <div class="logo-card-desc">Green = safe, steel = spent. Two halves of your budget in one circle.</div>
+        </div>
+
+        <!-- 25: Diamond / Gem -->
+        <div class="logo-card">
+          <div class="logo-card-num">25</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Diamond top -->
+            <polygon points="512,160 800,400 512,860 224,400" fill="none" stroke="var(--white)" stroke-width="30" stroke-linejoin="round"/>
+            <!-- Crown line -->
+            <line x1="224" y1="400" x2="800" y2="400" stroke="var(--steel)" stroke-width="20"/>
+            <!-- Crown facets -->
+            <line x1="380" y1="160" x2="340" y2="400" stroke="var(--steel)" stroke-width="14"/>
+            <line x1="644" y1="160" x2="684" y2="400" stroke="var(--steel)" stroke-width="14"/>
+            <line x1="512" y1="160" x2="512" y2="400" stroke="var(--steel)" stroke-width="14"/>
+            <!-- $ inside -->
+            <text x="512" y="650" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="240" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Gem</div>
+          <div class="logo-card-desc">Diamond facets with $. "Your money is precious." Jewel-cut geometry.</div>
+        </div>
+
+        <!-- 26: Rounded square with notch -->
+        <div class="logo-card">
+          <div class="logo-card-num">26</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Rounded square -->
+            <rect x="200" y="200" width="624" height="624" rx="80" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <!-- Top notch (card chip) -->
+            <rect x="320" y="320" width="160" height="120" rx="20" fill="none" stroke="var(--green)" stroke-width="20"/>
+            <!-- Chip lines -->
+            <line x1="320" y1="380" x2="480" y2="380" stroke="var(--green)" stroke-width="8"/>
+            <line x1="400" y1="320" x2="400" y2="440" stroke="var(--green)" stroke-width="8"/>
+            <!-- $ -->
+            <text x="512" y="680" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="260" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div class="logo-card-name">Card Chip</div>
+          <div class="logo-card-desc">Credit card EMV chip in a rounded square. Modern payment icon.</div>
+        </div>
+
+        <!-- 27: Stacked layers -->
+        <div class="logo-card">
+          <div class="logo-card-num">27</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Layer 3 (bottom) -->
+            <path d="M512 700 L200 560 L512 420 L824 560 Z" fill="none" stroke="var(--steel)" stroke-width="20" opacity="0.4"/>
+            <!-- Layer 2 (middle) -->
+            <path d="M512 580 L200 440 L512 300 L824 440 Z" fill="none" stroke="var(--white)" stroke-width="24" opacity="0.7"/>
+            <!-- Layer 1 (top) -->
+            <path d="M512 460 L200 320 L512 180 L824 320 Z" fill="none" stroke="var(--green)" stroke-width="28"/>
+            <!-- $ on top layer -->
+            <text x="512" y="370" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="160" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div class="logo-card-name">Stack</div>
+          <div class="logo-card-desc">Layered isometric planes. Top layer is green with $. "Budget layers."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 9: CB Monogram (big letters, HQ-style) ─── -->
+    <div class="style-section">
+      <div class="style-section-title">CB Monogram — Big Letters (HQ Style)</div>
+      <div class="style-section-desc" style="margin-top:10px">Letters pushed to the edges of the icon, like Job Search HQ's bold "HQ" mark</div>
+
+      <div class="logo-grid">
+        <!-- CB-A: White C + Green B, tight, filled -->
+        <div class="logo-card">
+          <div class="logo-card-num">CB-A</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="512" y="730" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="660" font-weight="700"
+                  letter-spacing="-40"
+                  fill="var(--white)">C</text>
+            <text x="512" y="730" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="660" font-weight="700"
+                  letter-spacing="-40"
+                  fill="var(--green)" dx="330">B</text>
+          </svg>
+          <div class="logo-card-name">CB — White + Green</div>
+          <div class="logo-card-desc">Massive fill. C in white, B in green. Maximum presence.</div>
+        </div>
+
+        <!-- CB-B: Both letters white, green underline bar inside icon -->
+        <div class="logo-card">
+          <div class="logo-card-num">CB-B</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="512" y="700" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="620" font-weight="700"
+                  letter-spacing="-30"
+                  fill="var(--white)">CB</text>
+            <rect x="180" y="780" width="664" height="20" rx="10" fill="var(--green)"/>
+          </svg>
+          <div class="logo-card-name">CB — White + Rule</div>
+          <div class="logo-card-desc">Both white, green underline baked into icon. Echoes the logo lockup rule.</div>
+        </div>
+
+        <!-- CB-C: Outline / stroke style, like HQ outline variant -->
+        <div class="logo-card">
+          <div class="logo-card-num">CB-C</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="512" y="700" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="620" font-weight="700"
+                  letter-spacing="-30"
+                  fill="none" stroke="var(--white)" stroke-width="18">CB</text>
+          </svg>
+          <div class="logo-card-name">CB — Outline</div>
+          <div class="logo-card-desc">Stroke-only, no fill. Lightweight and precise. Like the original HQ logo.svg.</div>
+        </div>
+
+        <!-- CB-D: Stacked C / B -->
+        <div class="logo-card">
+          <div class="logo-card-num">CB-D</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="512" y="480" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="540" font-weight="700"
+                  fill="var(--white)">C</text>
+            <text x="512" y="930" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="540" font-weight="700"
+                  fill="var(--green)">B</text>
+          </svg>
+          <div class="logo-card-name">CB — Stacked</div>
+          <div class="logo-card-desc">C over B, white / green split. Unique silhouette.</div>
+        </div>
+
+        <!-- CB-E: Green square badge, white letters (inverted) -->
+        <div class="logo-card">
+          <div class="logo-card-num">CB-E</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--green)"/>
+            <text x="512" y="700" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="620" font-weight="700"
+                  letter-spacing="-30"
+                  fill="var(--bg)">CB</text>
+          </svg>
+          <div class="logo-card-name">CB — Inverted (Green BG)</div>
+          <div class="logo-card-desc">Green background, dark letters. Punchy, high contrast. Good as an app icon.</div>
+        </div>
+
+        <!-- CB-F: Navy bg, C+B separated by thin green bar -->
+        <div class="logo-card">
+          <div class="logo-card-num">CB-F</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="340" y="700" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="580" font-weight="700"
+                  fill="var(--white)">C</text>
+            <rect x="490" y="180" width="16" height="660" rx="8" fill="var(--green)"/>
+            <text x="684" y="700" text-anchor="middle"
+                  font-family="Big Shoulders Display, sans-serif"
+                  font-size="580" font-weight="700"
+                  fill="var(--white)">B</text>
+          </svg>
+          <div class="logo-card-name">CB — Divided</div>
+          <div class="logo-card-desc">C and B separated by a vertical green rule. Clean two-part mark.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Group 10: Piggy Bank — Solid Green Fill ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Piggy Bank — Solid Green Fill</div>
+      <div class="style-section-desc" style="margin-top:10px">Green-body piggies with white details on top</div>
+
+      <div class="logo-grid">
+        <!-- PIG-A: Side profile, solid green body, white outline details -->
+        <div class="logo-card">
+          <div class="logo-card-num">PIG-A</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Body filled green -->
+            <ellipse cx="490" cy="560" rx="280" ry="220" fill="var(--green)"/>
+            <!-- Head filled green -->
+            <circle cx="238" cy="440" r="100" fill="var(--green)"/>
+            <!-- Snout -->
+            <ellipse cx="165" cy="500" rx="52" ry="36" fill="var(--bg)" opacity="0.3"/>
+            <!-- Nostrils -->
+            <circle cx="150" cy="495" r="10" fill="var(--bg)" opacity="0.5"/>
+            <circle cx="180" cy="495" r="10" fill="var(--bg)" opacity="0.5"/>
+            <!-- Eye (white) -->
+            <circle cx="258" cy="408" r="16" fill="var(--white)"/>
+            <circle cx="262" cy="411" r="7" fill="var(--bg)"/>
+            <!-- Ear -->
+            <path d="M278 360 L308 285 L342 368" fill="var(--green)" stroke="var(--white)" stroke-width="18" stroke-linejoin="round"/>
+            <!-- Coin slot (white rect) -->
+            <rect x="420" y="304" width="110" height="16" rx="8" fill="var(--white)"/>
+            <!-- Legs -->
+            <rect x="320" y="748" width="50" height="80" rx="20" fill="var(--green)" stroke="var(--white)" stroke-width="10"/>
+            <rect x="440" y="752" width="50" height="84" rx="20" fill="var(--green)" stroke="var(--white)" stroke-width="10"/>
+            <rect x="580" y="752" width="50" height="84" rx="20" fill="var(--green)" stroke="var(--white)" stroke-width="10"/>
+            <rect x="685" y="728" width="50" height="72" rx="20" fill="var(--green)" stroke="var(--white)" stroke-width="10"/>
+            <!-- Tail curl -->
+            <path d="M770 470 Q845 395, 820 505 Q800 568, 782 525" fill="none" stroke="var(--white)" stroke-width="16" stroke-linecap="round"/>
+            <!-- $ on belly (dark) -->
+            <text x="515" y="610" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="180" font-weight="700" fill="var(--bg)" opacity="0.25">$</text>
+          </svg>
+          <div class="logo-card-name">Piggy — Solid Green (Side)</div>
+          <div class="logo-card-desc">Full green body, white eye + coin slot + tail. Friendly and recognizable.</div>
+        </div>
+
+        <!-- PIG-B: Front-facing, solid green circles, white details -->
+        <div class="logo-card">
+          <div class="logo-card-num">PIG-B</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Body -->
+            <circle cx="512" cy="540" r="240" fill="var(--green)"/>
+            <!-- Ears -->
+            <path d="M380 330 L415 225 L480 330" fill="var(--green)" stroke="var(--white)" stroke-width="20" stroke-linejoin="round"/>
+            <path d="M544 330 L609 225 L644 330" fill="var(--green)" stroke="var(--white)" stroke-width="20" stroke-linejoin="round"/>
+            <!-- Coin slot -->
+            <rect x="460" y="292" width="104" height="16" rx="8" fill="var(--white)"/>
+            <!-- Snout -->
+            <ellipse cx="512" cy="630" rx="70" ry="50" fill="var(--bg)" opacity="0.2"/>
+            <!-- Nostrils -->
+            <circle cx="490" cy="628" r="14" fill="var(--bg)" opacity="0.4"/>
+            <circle cx="534" cy="628" r="14" fill="var(--bg)" opacity="0.4"/>
+            <!-- Eyes -->
+            <circle cx="432" cy="480" r="22" fill="var(--white)"/>
+            <circle cx="437" cy="484" r="10" fill="var(--bg)"/>
+            <circle cx="592" cy="480" r="22" fill="var(--white)"/>
+            <circle cx="597" cy="484" r="10" fill="var(--bg)"/>
+          </svg>
+          <div class="logo-card-name">Piggy — Solid Green (Front)</div>
+          <div class="logo-card-desc">Front-facing, flat-style. Green fill, white eyes and coin slot. Reads at 36px.</div>
+        </div>
+
+        <!-- PIG-C: Minimal green blob silhouette + white highlights -->
+        <div class="logo-card">
+          <div class="logo-card-num">PIG-C</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Rounded piggy silhouette - a blob with bumps -->
+            <path d="M220 520 Q200 300, 420 260 L420 210 L500 280 Q700 260, 790 420 Q850 540, 790 650 Q730 760, 530 770 L330 770 Q200 740, 220 520Z"
+                  fill="var(--green)"/>
+            <!-- Coin slot (white bar on top) -->
+            <rect x="430" y="208" width="70" height="14" rx="7" fill="var(--white)"/>
+            <!-- Eye -->
+            <circle cx="360" cy="440" r="20" fill="var(--white)"/>
+            <circle cx="364" cy="444" r="9" fill="var(--bg)"/>
+            <!-- Snout -->
+            <ellipse cx="254" cy="535" rx="46" ry="32" fill="var(--bg)" opacity="0.3"/>
+            <circle cx="241" cy="530" r="9" fill="var(--bg)" opacity="0.5"/>
+            <circle cx="267" cy="530" r="9" fill="var(--bg)" opacity="0.5"/>
+            <!-- Tiny curly tail -->
+            <path d="M790 445 Q860 385, 840 480" fill="none" stroke="var(--white)" stroke-width="14" stroke-linecap="round"/>
+            <!-- Legs -->
+            <rect x="348" y="752" width="44" height="68" rx="22" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+            <rect x="465" y="760" width="44" height="70" rx="22" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+            <rect x="590" y="758" width="44" height="68" rx="22" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+          </svg>
+          <div class="logo-card-name">Piggy — Minimal Blob</div>
+          <div class="logo-card-desc">Simplified silhouette, no unnecessary strokes. Works at very small sizes.</div>
+        </div>
+
+        <!-- PIG-D: Green coin badge (circle) with white piggy cutout -->
+        <div class="logo-card">
+          <div class="logo-card-num">PIG-D</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Green circle background -->
+            <circle cx="512" cy="512" r="360" fill="var(--green)"/>
+            <!-- White piggy head silhouette -->
+            <circle cx="512" cy="440" r="160" fill="var(--white)"/>
+            <!-- White ears -->
+            <path d="M400 330 L430 240 L480 330" fill="var(--white)"/>
+            <path d="M544 330 L594 240 L624 330" fill="var(--white)"/>
+            <!-- Green coin slot on pig -->
+            <rect x="460" y="274" width="104" height="14" rx="7" fill="var(--green)"/>
+            <!-- Pig face details in green -->
+            <circle cx="469" cy="430" r="14" fill="var(--green)"/>
+            <circle cx="555" cy="430" r="14" fill="var(--green)"/>
+            <ellipse cx="512" cy="508" rx="52" ry="36" fill="var(--green)" opacity="0.4"/>
+          </svg>
+          <div class="logo-card-name">Piggy — Green Coin Badge</div>
+          <div class="logo-card-desc">Green circle with white pig face cutout. Reads like a coin with a pig on it.</div>
+        </div>
+
+        <!-- PIG-E: Piggy bank filled green, navy background, side view, very clean -->
+        <div class="logo-card">
+          <div class="logo-card-num">PIG-E</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--surface)"/>
+            <!-- Main body — large rounded rectangle piggy -->
+            <rect x="240" y="340" width="540" height="400" rx="200" fill="var(--green)"/>
+            <!-- Head bump -->
+            <circle cx="265" cy="400" r="130" fill="var(--green)"/>
+            <!-- Snout (dark circle) -->
+            <circle cx="178" cy="450" r="55" fill="var(--bg)" opacity="0.4"/>
+            <circle cx="163" cy="443" r="12" fill="var(--bg)" opacity="0.6"/>
+            <circle cx="193" cy="443" r="12" fill="var(--bg)" opacity="0.6"/>
+            <!-- Eye -->
+            <circle cx="288" cy="345" r="18" fill="var(--white)"/>
+            <circle cx="293" cy="349" r="8" fill="var(--bg)"/>
+            <!-- Ear -->
+            <path d="M310 300 L336 225 L372 305" fill="var(--green)" stroke="var(--white)" stroke-width="14" stroke-linejoin="round"/>
+            <!-- Coin slot -->
+            <rect x="446" y="332" width="100" height="14" rx="7" fill="var(--white)"/>
+            <!-- Legs (4 short rounded) -->
+            <rect x="300" y="720" width="48" height="70" rx="24" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+            <rect x="400" y="726" width="48" height="74" rx="24" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+            <rect x="540" y="726" width="48" height="74" rx="24" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+            <rect x="640" y="714" width="48" height="66" rx="24" fill="var(--green)" stroke="var(--white)" stroke-width="8"/>
+            <!-- Tail -->
+            <path d="M780 440 Q850 374, 830 475" fill="none" stroke="var(--white)" stroke-width="14" stroke-linecap="round"/>
+          </svg>
+          <div class="logo-card-name">Piggy — Rounded Body</div>
+          <div class="logo-card-desc">Chunky geometric piggy. Body is a rounded rectangle + head circle. Very legible.</div>
+        </div>
+
+        <!-- PIG-F: Just the pig head as icon (tight crop, very scalable) -->
+        <div class="logo-card">
+          <div class="logo-card-num">PIG-F</div>
+          <svg viewBox="0 0 1024 1024" width="100" height="100">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <!-- Face circle, big, fills the icon -->
+            <circle cx="512" cy="540" r="360" fill="var(--green)"/>
+            <!-- Ears -->
+            <path d="M290 240 L340 120 L420 260" fill="var(--green)" stroke="var(--white)" stroke-width="24" stroke-linejoin="round"/>
+            <path d="M604 260 L684 120 L734 240" fill="var(--green)" stroke="var(--white)" stroke-width="24" stroke-linejoin="round"/>
+            <!-- Coin slot at top -->
+            <rect x="450" y="178" width="124" height="18" rx="9" fill="var(--white)"/>
+            <!-- Snout -->
+            <ellipse cx="512" cy="660" rx="100" ry="72" fill="var(--bg)" opacity="0.25"/>
+            <!-- Nostrils -->
+            <circle cx="479" cy="655" r="18" fill="var(--bg)" opacity="0.45"/>
+            <circle cx="545" cy="655" r="18" fill="var(--bg)" opacity="0.45"/>
+            <!-- Eyes -->
+            <circle cx="405" cy="490" r="32" fill="var(--white)"/>
+            <circle cx="412" cy="496" r="14" fill="var(--bg)"/>
+            <circle cx="619" cy="490" r="32" fill="var(--white)"/>
+            <circle cx="626" cy="496" r="14" fill="var(--bg)"/>
+          </svg>
+          <div class="logo-card-name">Piggy — Head Only (Green)</div>
+          <div class="logo-card-desc">Just the face, full bleed green. Boldest silhouette. Best recognizability at small size.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Lockup test row (favorites with wordmark) ─── -->
+    <div class="style-section">
+      <div class="style-section-title">Lockup Test (Top Picks)</div>
+      <div class="style-section-desc" style="margin-top:10px">See the icon next to the wordmark at sidebar size (36px)</div>
+
+      <div style="display:flex; flex-direction:column; gap:16px; margin-top:24px">
+        <!-- Test: Compass + $ (#5) -->
+        <div style="display:flex; align-items:center; gap:14px; padding:16px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <svg viewBox="0 0 1024 1024" width="36" height="36" style="flex-shrink:0">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="288" fill="none" stroke="var(--white)" stroke-width="34"/>
+            <line x1="512" y1="220" x2="512" y2="804" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="220" y1="512" x2="804" y2="512" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="305" y1="305" x2="719" y2="719" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <line x1="305" y1="719" x2="719" y2="305" stroke="var(--white)" stroke-width="30" stroke-linecap="round"/>
+            <circle cx="512" cy="512" r="120" fill="var(--bg)"/>
+            <text x="512" y="585" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="220" font-weight="700" fill="var(--green)">$</text>
+          </svg>
+          <div style="line-height:1">
+            <div class="font-display green-rule" style="font-size:20px; color:var(--white); display:inline-block; padding-bottom:5px">CLARITY BUDGET</div>
+            <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-top:7px">MONEY COMMAND</div>
+          </div>
+          <div style="margin-left:auto" class="logo-card-num">#05 — Compass + $</div>
+        </div>
+
+        <!-- Test: Dollar Coin (#9) -->
+        <div style="display:flex; align-items:center; gap:14px; padding:16px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <svg viewBox="0 0 1024 1024" width="36" height="36" style="flex-shrink:0">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="320" fill="none" stroke="var(--green)" stroke-width="40"/>
+            <text x="512" y="640" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="500" font-weight="700" fill="var(--white)">$</text>
+          </svg>
+          <div style="line-height:1">
+            <div class="font-display green-rule" style="font-size:20px; color:var(--white); display:inline-block; padding-bottom:5px">CLARITY BUDGET</div>
+            <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-top:7px">MONEY COMMAND</div>
+          </div>
+          <div style="margin-left:auto" class="logo-card-num">#09 — Dollar Coin</div>
+        </div>
+
+        <!-- Test: CB Monogram (#8) -->
+        <div style="display:flex; align-items:center; gap:14px; padding:16px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <svg viewBox="0 0 1024 1024" width="36" height="36" style="flex-shrink:0">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <text x="280" y="700" font-family="Big Shoulders Display, sans-serif" font-size="700" font-weight="700" fill="var(--white)">C</text>
+            <text x="540" y="700" font-family="Big Shoulders Display, sans-serif" font-size="700" font-weight="700" fill="var(--green)">B</text>
+            <line x1="160" y1="780" x2="864" y2="780" stroke="var(--green)" stroke-width="20"/>
+          </svg>
+          <div style="line-height:1">
+            <div class="font-display green-rule" style="font-size:20px; color:var(--white); display:inline-block; padding-bottom:5px">CLARITY BUDGET</div>
+            <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-top:7px">MONEY COMMAND</div>
+          </div>
+          <div style="margin-left:auto" class="logo-card-num">#08 — CB Monogram</div>
+        </div>
+
+        <!-- Test: Bullseye (#14) -->
+        <div style="display:flex; align-items:center; gap:14px; padding:16px; background:var(--surface); border:1px solid var(--dimmer); border-radius:12px">
+          <svg viewBox="0 0 1024 1024" width="36" height="36" style="flex-shrink:0">
+            <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+            <circle cx="512" cy="512" r="320" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.3"/>
+            <circle cx="512" cy="512" r="240" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.5"/>
+            <circle cx="512" cy="512" r="160" fill="none" stroke="var(--white)" stroke-width="20" opacity="0.7"/>
+            <circle cx="512" cy="512" r="80" fill="var(--green)"/>
+            <text x="512" y="555" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="120" font-weight="700" fill="var(--bg)">$</text>
+          </svg>
+          <div style="line-height:1">
+            <div class="font-display green-rule" style="font-size:20px; color:var(--white); display:inline-block; padding-bottom:5px">CLARITY BUDGET</div>
+            <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-top:7px">MONEY COMMAND</div>
+          </div>
+          <div style="margin-left:auto" class="logo-card-num">#14 — Bullseye</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PAGE 3: Login                           -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-login" class="mockup-page" style="justify-content:center; align-items:center; min-height:100vh">
+  <div style="text-align:center; max-width:400px; width:100%">
+    <!-- Logo stacked -->
+    <div style="margin-bottom:32px">
+      <svg viewBox="0 0 1024 1024" width="72" height="72" style="margin:0 auto 16px">
+        <rect width="1024" height="1024" rx="220" fill="var(--bg)"/>
+        <path d="M512 160 C512 160, 820 260, 820 460 C820 720, 512 880, 512 880 C512 880, 204 720, 204 460 C204 260, 512 160, 512 160Z"
+              fill="none" stroke="var(--white)" stroke-width="34" stroke-linejoin="round"/>
+        <path d="M512 240 C512 240, 740 320, 740 480 C740 680, 512 800, 512 800 C512 800, 284 680, 284 480 C284 320, 512 240, 512 240Z"
+              fill="none" stroke="var(--steel)" stroke-width="12" stroke-linejoin="round" opacity="0.4"/>
+        <text x="512" y="560" text-anchor="middle" font-family="Big Shoulders Display, sans-serif"
+              font-size="340" font-weight="700" fill="var(--white)">$</text>
+        <line x1="512" y1="130" x2="512" y2="180" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+        <line x1="160" y1="480" x2="210" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+        <line x1="814" y1="480" x2="864" y2="480" stroke="var(--steel)" stroke-width="16" stroke-linecap="round"/>
+        <circle cx="512" cy="155" r="12" fill="var(--steel)"/>
+        <circle cx="185" cy="480" r="12" fill="var(--steel)"/>
+        <circle cx="839" cy="480" r="12" fill="var(--steel)"/>
+      </svg>
+      <div class="font-display" style="font-size:28px; color:var(--white); position:relative; display:inline-block; padding-bottom:8px">
+        CLARITY BUDGET
+        <span style="position:absolute; bottom:0; left:0; width:100%; height:2px; background:var(--green)"></span>
+      </div>
+      <div class="font-mono-label" style="font-size:10px; color:var(--steel); margin-top:10px">MONEY COMMAND</div>
+    </div>
+
+    <!-- Login card -->
+    <div style="background:var(--surface); border:1px solid var(--dimmer); border-radius:16px; padding:32px; text-align:left">
+      <div style="font-size:16px; font-weight:600; color:var(--white); margin-bottom:4px">Sign in</div>
+      <div style="font-size:13px; color:var(--steel); margin-bottom:24px">Safe to spend, from YNAB.</div>
+
+      <button style="width:100%; padding:12px; background:var(--bg); border:1px solid var(--dimmer); border-radius:8px; color:var(--white); font-size:14px; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:16px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        Continue with GitHub
+      </button>
+
+      <div style="text-align:center; font-size:12px; color:var(--steel); margin-bottom:16px">or</div>
+
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px; color:var(--steel); display:block; margin-bottom:6px">Email</label>
+        <input type="email" placeholder="you@example.com" style="width:100%; padding:10px 12px; background:var(--bg); border:1px solid var(--dimmer); border-radius:6px; color:var(--white); font-size:14px; outline:none">
+      </div>
+
+      <button style="width:100%; padding:12px; background:var(--green); border:none; border-radius:8px; color:var(--bg); font-size:14px; font-weight:600; cursor:pointer">
+        Send Magic Link
+      </button>
+    </div>
+
+    <div class="font-mono-label" style="font-size:9px; color:var(--steel); margin-top:24px; opacity:0.5">
+      Backed by YNAB · Encrypted · Private
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.mockup-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createRouteClient } from "@/lib/supabase-server";
-import { NavBar } from "@/components/shell/NavBar";
-import { T } from "@/lib/constants";
+import { Sidebar } from "@/components/shell/Sidebar";
 
 export default async function AppShellLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createRouteClient();
@@ -11,9 +10,11 @@ export default async function AppShellLayout({ children }: { children: React.Rea
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, color: T.text }}>
-      <NavBar email={data.user.email ?? ""} />
-      <main>{children}</main>
+    <div className="min-h-screen flex">
+      <Sidebar email={data.user.email ?? ""} />
+      <main className="ml-[240px] flex-1 p-10 overflow-y-auto min-h-screen">
+        {children}
+      </main>
     </div>
   );
 }

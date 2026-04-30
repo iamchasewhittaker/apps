@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarity Budget — Alternative Concept Directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Big+Shoulders+Display:wght@700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0d0d0d;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ─── Concept picker ─── */
+.picker {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 100;
+}
+.picker-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  margin-right: 4px;
+}
+.pick-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  background: transparent;
+  color: #888;
+  transition: all 0.15s;
+}
+.pick-btn:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+.pick-btn.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.3); }
+
+.concept { display: none; padding-top: 68px; min-height: 100vh; }
+.concept.active { display: block; }
+
+/* ─── Shared layout ─── */
+.concept-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.concept-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.concept-meta h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+}
+.concept-meta .tagline {
+  font-size: 15px;
+  margin-top: 8px;
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+/* ─── Logo showcase ─── */
+.logo-row {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+.logo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.logo-box-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+
+/* ─── Palette ─── */
+.palette {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.swatch {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  min-width: 120px;
+}
+.swatch-color { height: 56px; }
+.swatch-info {
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.05);
+}
+.swatch-name { font-size: 12px; font-weight: 600; }
+.swatch-hex { font-family: 'DM Mono', monospace; font-size: 10px; opacity: 0.5; margin-top: 2px; }
+
+/* ─── Dashboard preview ─── */
+.dashboard-preview {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.preview-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  margin-bottom: 12px;
+}
+
+/* ───────────────────────────────────────────── */
+/* CONCEPT 1: BudgetFlow — Trust Blue            */
+/* ───────────────────────────────────────────── */
+#concept1 { background: #F5F7FA; color: #103766; }
+#concept1 .concept-meta h1 { color: #103766; }
+#concept1 .concept-meta .tagline { color: #103766; }
+#concept1 .logo-box-label { color: #103766; }
+#concept1 .preview-label { color: #103766; }
+
+.bf-nav {
+  background: #ffffff;
+  border-bottom: 1px solid #E5E7EB;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.bf-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bf-nav-brand span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #103766;
+  letter-spacing: -0.02em;
+}
+.bf-nav-links {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.bf-nav-link {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  text-decoration: none;
+}
+.bf-nav-link.active {
+  background: #EBF4FF;
+  color: #288CFA;
+  font-weight: 600;
+}
+.bf-body {
+  padding: 32px;
+  max-width: 900px;
+}
+.bf-page-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #103766;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.bf-page-sub {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 28px;
+}
+.bf-sts-card {
+  background: #288CFA;
+  border-radius: 20px;
+  padding: 28px 32px;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.bf-sts-card::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+.bf-sts-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 8px;
+}
+.bf-sts-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.bf-sts-amount-big { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.bf-sts-amount { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.bf-sts-period { font-size: 12px; opacity: 0.65; margin-top: 4px; }
+.bf-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+.bf-stat {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 16px;
+}
+.bf-stat-label { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.bf-stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.bf-breakdown {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 24px;
+}
+.bf-breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.bf-breakdown-title { font-size: 15px; font-weight: 700; color: #103766; }
+.bf-breakdown-range { font-size: 11px; color: #999; }
+.bf-cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid #F5F5F5;
+}
+.bf-cat-row:last-child { border-bottom: none; }
+.bf-cat-name { font-size: 13px; color: #333; flex: 1; font-weight: 500; }
+.bf-bar-wrap { width: 100px; height: 6px; background: #F0F0F0; border-radius: 3px; overflow: hidden; }
+.bf-bar { height: 100%; border-radius: 3px; background: #288CFA; }
+.bf-cat-amt { font-size: 13px; font-weight: 600; color: #103766; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ───────────────────────────────────────────── */
+/* CONCEPT 2: GrowStack — Growth Green           */
+/* ───────────────────────────────────────────── */
+#concept2 { background: #F8FAFC; color: #1a2e22; }
+
+.gs-nav {
+  background: #fff;
+  border-bottom: 1px solid #E8F5EE;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.gs-nav-brand { display: flex; align-items: center; gap: 10px; }
+.gs-nav-brand span { font-size: 16px; font-weight: 700; color: #2E865F; letter-spacing: -0.02em; }
+.gs-nav-links { display: flex; gap: 4px; flex: 1; }
+.gs-nav-link { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #888; }
+.gs-nav-link.active { background: #ECFDF5; color: #2E865F; font-weight: 600; }
+
+.gs-body { padding: 32px; max-width: 900px; }
+.gs-page-title { font-size: 24px; font-weight: 800; color: #1a2e22; letter-spacing: -0.02em; margin-bottom: 4px; }
+.gs-page-sub { font-size: 12px; color: #999; margin-bottom: 28px; }
+
+.gs-sts-card {
+  background: linear-gradient(135deg, #2E865F 0%, #1d5c41 100%);
+  border-radius: 20px;
+  padding: 28px 32px;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.gs-sts-card::before {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: 20px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 40px solid rgba(255,255,255,0.06);
+}
+
+.gs-sts-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
+.gs-sts-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.gs-sts-amount-big { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.gs-sts-amount { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.gs-sts-period { font-size: 12px; opacity: 0.65; margin-top: 4px; }
+.gs-progress { margin-bottom: 20px; }
+.gs-progress-card {
+  background: #fff;
+  border: 1px solid #E0F2EA;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.gs-progress-label { font-size: 12px; font-weight: 600; color: #2E865F; margin-bottom: 8px; }
+.gs-progress-bar-wrap { flex: 1; height: 10px; background: #C6F4D6; border-radius: 5px; overflow: hidden; }
+.gs-progress-bar { height: 100%; background: #2E865F; border-radius: 5px; }
+.gs-progress-pct { font-size: 14px; font-weight: 700; color: #2E865F; min-width: 40px; text-align: right; }
+.gs-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+.gs-stat { background: #fff; border: 1px solid #E0F2EA; border-radius: 14px; padding: 16px; }
+.gs-stat-label { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.gs-stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #1a2e22; }
+.gs-cta {
+  background: #F97316;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-block;
+}
+.gs-breakdown {
+  background: #fff;
+  border: 1px solid #E0F2EA;
+  border-radius: 16px;
+  padding: 24px;
+}
+.gs-breakdown-title { font-size: 15px; font-weight: 700; color: #1a2e22; margin-bottom: 16px; }
+.gs-cat-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #F0FAF4; }
+.gs-cat-row:last-child { border-bottom: none; }
+.gs-cat-name { font-size: 13px; color: #333; flex: 1; font-weight: 500; }
+.gs-bar-wrap { width: 100px; height: 6px; background: #C6F4D6; border-radius: 3px; overflow: hidden; }
+.gs-bar { height: 100%; border-radius: 3px; background: #2E865F; }
+.gs-cat-amt { font-size: 13px; font-weight: 600; color: #1a2e22; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ───────────────────────────────────────────── */
+/* CONCEPT 3: Vault+ — Dark Fintech              */
+/* ───────────────────────────────────────────── */
+#concept3 { background: #0F172A; color: #E2E8F0; }
+
+.vp-nav {
+  background: #1E293B;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.vp-nav-brand { display: flex; align-items: center; gap: 10px; }
+.vp-nav-brand span { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 0.04em; text-transform: uppercase; }
+.vp-nav-brand sup { font-size: 11px; color: #a78bfa; font-weight: 700; vertical-align: super; margin-left: 1px; }
+.vp-nav-links { display: flex; gap: 4px; flex: 1; }
+.vp-nav-link { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #64748B; }
+.vp-nav-link.active { background: rgba(91,33,182,0.2); color: #a78bfa; font-weight: 600; }
+
+.vp-body { padding: 32px; max-width: 900px; }
+.vp-page-title { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -0.01em; margin-bottom: 4px; }
+.vp-page-sub { font-size: 12px; color: #475569; margin-bottom: 28px; }
+
+.vp-sts-card {
+  background: linear-gradient(135deg, #5B21B6 0%, #3b0d99 100%);
+  border-radius: 20px;
+  padding: 28px 32px;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(167,139,250,0.2);
+}
+.vp-sts-card::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.vp-sts-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a78bfa 0%, transparent 60%);
+}
+.vp-sts-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; margin-bottom: 8px; }
+.vp-sts-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.vp-sts-amount-big { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.vp-sts-amount { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.vp-sts-period { font-size: 12px; opacity: 0.6; margin-top: 4px; }
+.vp-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+.vp-stat { background: #1E293B; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 16px; }
+.vp-stat-label { font-size: 11px; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.vp-stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #E2E8F0; }
+.vp-breakdown { background: #1E293B; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 24px; }
+.vp-breakdown-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.vp-breakdown-title { font-size: 15px; font-weight: 700; color: #fff; }
+.vp-breakdown-range { font-size: 11px; color: #475569; }
+.vp-cat-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.vp-cat-row:last-child { border-bottom: none; }
+.vp-cat-name { font-size: 13px; color: #94A3B8; flex: 1; font-weight: 500; }
+.vp-bar-wrap { width: 100px; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.vp-bar { height: 100%; border-radius: 3px; background: #7C3AED; }
+.vp-cat-amt { font-size: 13px; font-weight: 600; color: #E2E8F0; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+.vp-alert { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 12px 16px; display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
+.vp-alert-dot { width: 8px; height: 8px; border-radius: 50%; background: #F59E0B; flex-shrink: 0; }
+.vp-alert-text { font-size: 13px; color: #FCD34D; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+</style>
+</head>
+<body>
+
+<!-- Concept picker -->
+<div class="picker">
+  <span class="picker-label">Concept</span>
+  <button class="pick-btn active" onclick="show(1, this)">1 · BudgetFlow</button>
+  <button class="pick-btn" onclick="show(2, this)">2 · GrowStack</button>
+  <button class="pick-btn" onclick="show(3, this)">3 · Vault+</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CONCEPT 1: BudgetFlow — Trust Blue          -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="concept1" class="concept active">
+  <div class="concept-inner">
+
+    <!-- Header row -->
+    <div class="concept-title-row">
+      <div class="concept-meta">
+        <h1>BudgetFlow</h1>
+        <div class="tagline">Trust-blue · Dashboard-centric · Data-heavy</div>
+      </div>
+    </div>
+
+    <!-- Logos -->
+    <div class="section-label" style="color:#103766">Logo Concepts</div>
+    <div class="logo-row" style="margin-bottom:32px">
+
+      <!-- Icon: circle + two-bar arrow -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="100" height="100">
+          <circle cx="50" cy="50" r="46" fill="#288CFA"/>
+          <!-- Two stacked bars forming arrow base -->
+          <rect x="26" y="62" width="22" height="12" rx="4" fill="#fff" opacity="0.6"/>
+          <rect x="52" y="50" width="22" height="12" rx="4" fill="#fff" opacity="0.85"/>
+          <!-- Arrow head pointing up-right -->
+          <polyline points="60,30 74,30 74,44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="52" y1="50" x2="74" y2="30" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-box-label" style="color:#103766">Icon · 100px</div>
+      </div>
+
+      <!-- Smaller icon (sidebar size) -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="36" height="36">
+          <circle cx="50" cy="50" r="46" fill="#288CFA"/>
+          <rect x="26" y="62" width="22" height="12" rx="4" fill="#fff" opacity="0.6"/>
+          <rect x="52" y="50" width="22" height="12" rx="4" fill="#fff" opacity="0.85"/>
+          <polyline points="60,30 74,30 74,44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="52" y1="50" x2="74" y2="30" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-box-label" style="color:#103766">Sidebar · 36px</div>
+      </div>
+
+      <!-- Horizontal lockup -->
+      <div class="logo-box">
+        <div style="display:flex; align-items:center; gap:12px; background:#fff; padding:16px 20px; border-radius:12px; border:1px solid #E5E7EB">
+          <svg viewBox="0 0 100 100" width="36" height="36">
+            <circle cx="50" cy="50" r="46" fill="#288CFA"/>
+            <rect x="26" y="62" width="22" height="12" rx="4" fill="#fff" opacity="0.6"/>
+            <rect x="52" y="50" width="22" height="12" rx="4" fill="#fff" opacity="0.85"/>
+            <polyline points="60,30 74,30 74,44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="52" y1="50" x2="74" y2="30" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div style="font-size:18px; font-weight:800; color:#103766; letter-spacing:-0.02em; line-height:1">BudgetFlow</div>
+            <div style="font-size:10px; color:#999; margin-top:2px">Safe to spend, from YNAB</div>
+          </div>
+        </div>
+        <div class="logo-box-label" style="color:#103766">Horizontal lockup</div>
+      </div>
+
+      <!-- Dark bg version -->
+      <div class="logo-box">
+        <div style="display:flex; align-items:center; gap:12px; background:#103766; padding:16px 20px; border-radius:12px">
+          <svg viewBox="0 0 100 100" width="36" height="36">
+            <circle cx="50" cy="50" r="46" fill="#288CFA"/>
+            <rect x="26" y="62" width="22" height="12" rx="4" fill="#fff" opacity="0.6"/>
+            <rect x="52" y="50" width="22" height="12" rx="4" fill="#fff" opacity="0.85"/>
+            <polyline points="60,30 74,30 74,44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="52" y1="50" x2="74" y2="30" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <div style="font-size:18px; font-weight:800; color:#fff; letter-spacing:-0.02em; line-height:1">BudgetFlow</div>
+            <div style="font-size:10px; color:rgba(255,255,255,0.45); margin-top:2px">Safe to spend, from YNAB</div>
+          </div>
+        </div>
+        <div class="logo-box-label" style="color:#103766">Dark bg</div>
+      </div>
+    </div>
+
+    <!-- Palette -->
+    <div class="section-label" style="color:#103766">Color Palette</div>
+    <div class="palette" style="margin-bottom:36px">
+      <div class="swatch"><div class="swatch-color" style="background:#288CFA"></div><div class="swatch-info"><div class="swatch-name" style="color:#103766">Trust Blue</div><div class="swatch-hex">#288CFA</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#103766"></div><div class="swatch-info"><div class="swatch-name" style="color:#103766">Dark Navy</div><div class="swatch-hex">#103766</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#22C55E"></div><div class="swatch-info"><div class="swatch-name" style="color:#103766">Growth Green</div><div class="swatch-hex">#22C55E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F5F7FA"></div><div class="swatch-info"><div class="swatch-name" style="color:#103766">Surface</div><div class="swatch-hex">#F5F7FA</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#666666"></div><div class="swatch-info"><div class="swatch-name" style="color:#103766">Text Muted</div><div class="swatch-hex">#666666</div></div></div>
+    </div>
+
+    <!-- Dashboard preview -->
+    <div class="section-label" style="color:#103766">Dashboard Preview</div>
+    <div class="dashboard-preview" style="border-color:#E5E7EB">
+      <div class="bf-nav">
+        <div class="bf-nav-brand">
+          <svg viewBox="0 0 100 100" width="28" height="28">
+            <circle cx="50" cy="50" r="46" fill="#288CFA"/>
+            <rect x="26" y="62" width="22" height="12" rx="4" fill="#fff" opacity="0.6"/>
+            <rect x="52" y="50" width="22" height="12" rx="4" fill="#fff" opacity="0.85"/>
+            <polyline points="60,30 74,30 74,44" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="52" y1="50" x2="74" y2="30" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <span>BudgetFlow</span>
+        </div>
+        <div class="bf-nav-links">
+          <a class="bf-nav-link active">Dashboard</a>
+          <a class="bf-nav-link">Categorize</a>
+          <a class="bf-nav-link">Review</a>
+          <a class="bf-nav-link">Flags</a>
+          <a class="bf-nav-link">Settings</a>
+        </div>
+        <div style="font-size:12px; color:#999">chase@...</div>
+      </div>
+      <div class="bf-body" style="background:#F5F7FA">
+        <div class="bf-page-title">Dashboard</div>
+        <div class="bf-page-sub">April 2026 · YNAB sync</div>
+        <div class="bf-sts-card">
+          <div class="bf-sts-label">Safe to Spend</div>
+          <div class="bf-sts-grid">
+            <div><div class="bf-sts-amount-big">$1,247</div><div class="bf-sts-period">This month</div></div>
+            <div><div class="bf-sts-amount">$312</div><div class="bf-sts-period">This week</div></div>
+            <div><div class="bf-sts-amount">$44</div><div class="bf-sts-period">Today</div></div>
+          </div>
+        </div>
+        <div class="bf-stats">
+          <div class="bf-stat"><div class="bf-stat-label">Income</div><div class="bf-stat-val" style="color:#22C55E">$6,200</div></div>
+          <div class="bf-stat"><div class="bf-stat-label">Spent</div><div class="bf-stat-val" style="color:#EF4444">$3,841</div></div>
+          <div class="bf-stat"><div class="bf-stat-label">Bills</div><div class="bf-stat-val" style="color:#F59E0B">$2,100</div></div>
+          <div class="bf-stat"><div class="bf-stat-label">Flex Left</div><div class="bf-stat-val" style="color:#288CFA">$1,247</div></div>
+        </div>
+        <div class="bf-breakdown">
+          <div class="bf-breakdown-header">
+            <div class="bf-breakdown-title">Where Your Money Went</div>
+            <div class="bf-breakdown-range">Mar 01 — Apr 29</div>
+          </div>
+          <div class="bf-cat-row"><div class="bf-cat-name">Groceries</div><div class="bf-bar-wrap"><div class="bf-bar" style="width:85%"></div></div><div class="bf-cat-amt">$842</div></div>
+          <div class="bf-cat-row"><div class="bf-cat-name">Dining Out</div><div class="bf-bar-wrap"><div class="bf-bar" style="width:55%"></div></div><div class="bf-cat-amt">$534</div></div>
+          <div class="bf-cat-row"><div class="bf-cat-name">Auto & Transport</div><div class="bf-bar-wrap"><div class="bf-bar" style="width:42%"></div></div><div class="bf-cat-amt">$412</div></div>
+          <div class="bf-cat-row"><div class="bf-cat-name">Shopping</div><div class="bf-bar-wrap"><div class="bf-bar" style="width:30%"></div></div><div class="bf-cat-amt">$298</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CONCEPT 2: GrowStack — Growth Green         -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="concept2" class="concept">
+  <div class="concept-inner">
+
+    <div class="concept-title-row">
+      <div class="concept-meta">
+        <h1 style="color:#2E865F">GrowStack</h1>
+        <div class="tagline" style="color:#2E865F">Growth-green · Savings-focused · Friendly</div>
+      </div>
+    </div>
+
+    <!-- Logos -->
+    <div class="section-label" style="color:#2E865F">Logo Concepts</div>
+    <div class="logo-row" style="margin-bottom:32px">
+
+      <!-- Icon: ascending bars + curve arrow -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="100" height="100">
+          <rect width="100" height="100" rx="22" fill="#F0FAF4"/>
+          <!-- 4 ascending bars -->
+          <rect x="14" y="70" width="14" height="18" rx="3" fill="#C6F4D6"/>
+          <rect x="32" y="58" width="14" height="30" rx="3" fill="#6EE7A0"/>
+          <rect x="50" y="44" width="14" height="44" rx="3" fill="#2E865F"/>
+          <rect x="68" y="28" width="14" height="60" rx="3" fill="#2E865F"/>
+          <!-- Curve arrow on top-right of last bar -->
+          <path d="M72 20 Q82 14, 86 22" fill="none" stroke="#2E865F" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="86,17 86,27 92,22" fill="#2E865F"/>
+        </svg>
+        <div class="logo-box-label" style="color:#2E865F">Icon · 100px</div>
+      </div>
+
+      <!-- Small -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="36" height="36">
+          <rect width="100" height="100" rx="22" fill="#F0FAF4"/>
+          <rect x="14" y="70" width="14" height="18" rx="3" fill="#C6F4D6"/>
+          <rect x="32" y="58" width="14" height="30" rx="3" fill="#6EE7A0"/>
+          <rect x="50" y="44" width="14" height="44" rx="3" fill="#2E865F"/>
+          <rect x="68" y="28" width="14" height="60" rx="3" fill="#2E865F"/>
+          <path d="M72 20 Q82 14, 86 22" fill="none" stroke="#2E865F" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="86,17 86,27 92,22" fill="#2E865F"/>
+        </svg>
+        <div class="logo-box-label" style="color:#2E865F">Sidebar · 36px</div>
+      </div>
+
+      <!-- Lockup light -->
+      <div class="logo-box">
+        <div style="display:flex; align-items:center; gap:12px; background:#fff; padding:16px 20px; border-radius:12px; border:1px solid #E0F2EA">
+          <svg viewBox="0 0 100 100" width="36" height="36">
+            <rect width="100" height="100" rx="22" fill="#F0FAF4"/>
+            <rect x="14" y="70" width="14" height="18" rx="3" fill="#C6F4D6"/>
+            <rect x="32" y="58" width="14" height="30" rx="3" fill="#6EE7A0"/>
+            <rect x="50" y="44" width="14" height="44" rx="3" fill="#2E865F"/>
+            <rect x="68" y="28" width="14" height="60" rx="3" fill="#2E865F"/>
+            <path d="M72 20 Q82 14, 86 22" fill="none" stroke="#2E865F" stroke-width="3.5" stroke-linecap="round"/>
+            <polygon points="86,17 86,27 92,22" fill="#2E865F"/>
+          </svg>
+          <div>
+            <div style="font-size:18px; font-weight:700; color:#1a2e22; letter-spacing:-0.01em; line-height:1">GrowStack</div>
+            <div style="font-size:10px; color:#999; margin-top:2px">Safe to spend, from YNAB</div>
+          </div>
+        </div>
+        <div class="logo-box-label" style="color:#2E865F">Horizontal lockup</div>
+      </div>
+
+      <!-- Solid green bg version -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="100" height="100">
+          <rect width="100" height="100" rx="22" fill="#2E865F"/>
+          <rect x="14" y="70" width="14" height="18" rx="3" fill="rgba(255,255,255,0.3)"/>
+          <rect x="32" y="58" width="14" height="30" rx="3" fill="rgba(255,255,255,0.55)"/>
+          <rect x="50" y="44" width="14" height="44" rx="3" fill="#fff"/>
+          <rect x="68" y="28" width="14" height="60" rx="3" fill="#fff"/>
+          <path d="M72 20 Q82 14, 86 22" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="86,17 86,27 92,22" fill="#fff"/>
+        </svg>
+        <div class="logo-box-label" style="color:#2E865F">Solid green bg</div>
+      </div>
+    </div>
+
+    <!-- Palette -->
+    <div class="section-label" style="color:#2E865F">Color Palette</div>
+    <div class="palette" style="margin-bottom:36px">
+      <div class="swatch"><div class="swatch-color" style="background:#2E865F"></div><div class="swatch-info"><div class="swatch-name" style="color:#1a2e22">Deep Green</div><div class="swatch-hex">#2E865F</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C6F4D6"></div><div class="swatch-info"><div class="swatch-name" style="color:#1a2e22">Soft Mint</div><div class="swatch-hex">#C6F4D6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F97316"></div><div class="swatch-info"><div class="swatch-name" style="color:#1a2e22">Warm Orange</div><div class="swatch-hex">#F97316</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F8FAFC"></div><div class="swatch-info"><div class="swatch-name" style="color:#1a2e22">Surface</div><div class="swatch-hex">#F8FAFC</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#333333"></div><div class="swatch-info"><div class="swatch-name" style="color:#1a2e22">Text Dark</div><div class="swatch-hex">#333333</div></div></div>
+    </div>
+
+    <!-- Dashboard preview -->
+    <div class="section-label" style="color:#2E865F">Dashboard Preview</div>
+    <div class="dashboard-preview" style="border-color:#E0F2EA">
+      <div class="gs-nav">
+        <div class="gs-nav-brand">
+          <svg viewBox="0 0 100 100" width="28" height="28">
+            <rect width="100" height="100" rx="22" fill="#F0FAF4"/>
+            <rect x="14" y="70" width="14" height="18" rx="3" fill="#C6F4D6"/>
+            <rect x="32" y="58" width="14" height="30" rx="3" fill="#6EE7A0"/>
+            <rect x="50" y="44" width="14" height="44" rx="3" fill="#2E865F"/>
+            <rect x="68" y="28" width="14" height="60" rx="3" fill="#2E865F"/>
+            <path d="M72 20 Q82 14, 86 22" fill="none" stroke="#2E865F" stroke-width="3.5" stroke-linecap="round"/>
+            <polygon points="86,17 86,27 92,22" fill="#2E865F"/>
+          </svg>
+          <span>GrowStack</span>
+        </div>
+        <div class="gs-nav-links">
+          <a class="gs-nav-link active">Dashboard</a>
+          <a class="gs-nav-link">Categorize</a>
+          <a class="gs-nav-link">Review</a>
+          <a class="gs-nav-link">Flags</a>
+          <a class="gs-nav-link">Settings</a>
+        </div>
+        <button class="gs-cta" style="padding:8px 16px; font-size:12px">Save Now</button>
+      </div>
+      <div class="gs-body" style="background:#F8FAFC">
+        <div class="gs-page-title">Dashboard</div>
+        <div class="gs-page-sub">April 2026 · YNAB sync</div>
+        <div class="gs-sts-card">
+          <div class="gs-sts-label">Safe to Spend</div>
+          <div class="gs-sts-grid">
+            <div><div class="gs-sts-amount-big">$1,247</div><div class="gs-sts-period">This month</div></div>
+            <div><div class="gs-sts-amount">$312</div><div class="gs-sts-period">This week</div></div>
+            <div><div class="gs-sts-amount">$44</div><div class="gs-sts-period">Today</div></div>
+          </div>
+        </div>
+        <div class="gs-progress" style="display:flex; flex-direction:column; gap:10px">
+          <div class="gs-progress-card">
+            <div style="min-width:120px"><div class="gs-progress-label">Monthly Budget</div></div>
+            <div class="gs-progress-bar-wrap"><div class="gs-progress-bar" style="width:62%"></div></div>
+            <div class="gs-progress-pct">62%</div>
+          </div>
+          <div class="gs-progress-card">
+            <div style="min-width:120px"><div class="gs-progress-label" style="color:#F97316">Dining Budget</div></div>
+            <div class="gs-progress-bar-wrap"><div class="gs-progress-bar" style="width:89%; background:#F97316"></div></div>
+            <div class="gs-progress-pct" style="color:#F97316">89%</div>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+        <div class="gs-breakdown">
+          <div class="gs-breakdown-title">Where Your Money Went</div>
+          <div class="gs-cat-row"><div class="gs-cat-name">Groceries</div><div class="gs-bar-wrap"><div class="gs-bar" style="width:85%"></div></div><div class="gs-cat-amt" style="color:#2E865F">$842</div></div>
+          <div class="gs-cat-row"><div class="gs-cat-name">Dining Out</div><div class="gs-bar-wrap"><div class="gs-bar" style="width:55%; background:#F97316"></div></div><div class="gs-cat-amt" style="color:#F97316">$534</div></div>
+          <div class="gs-cat-row"><div class="gs-cat-name">Auto & Transport</div><div class="gs-bar-wrap"><div class="gs-bar" style="width:42%"></div></div><div class="gs-cat-amt" style="color:#2E865F">$412</div></div>
+          <div class="gs-cat-row"><div class="gs-cat-name">Shopping</div><div class="gs-bar-wrap"><div class="gs-bar" style="width:30%"></div></div><div class="gs-cat-amt" style="color:#2E865F">$298</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CONCEPT 3: Vault+ — Dark Fintech            -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="concept3" class="concept">
+  <div class="concept-inner">
+
+    <div class="concept-title-row">
+      <div class="concept-meta">
+        <h1>Vault<sup style="color:#a78bfa; font-size:22px; font-weight:800">+</sup></h1>
+        <div class="tagline" style="color:#64748B">Premium dark fintech · Neobank-style · Purple gradient</div>
+      </div>
+    </div>
+
+    <!-- Logos -->
+    <div class="section-label">Logo Concepts</div>
+    <div class="logo-row" style="margin-bottom:32px">
+
+      <!-- Shield + plus, gradient fill -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="100" height="100">
+          <rect width="100" height="100" rx="20" fill="#0F172A"/>
+          <defs>
+            <linearGradient id="vg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7C3AED"/>
+              <stop offset="100%" stop-color="#4C1D95"/>
+            </linearGradient>
+          </defs>
+          <!-- Shield -->
+          <path d="M50 14 C50 14, 82 24, 82 44 C82 68, 50 86, 50 86 C50 86, 18 68, 18 44 C18 24, 50 14, 50 14Z"
+                fill="url(#vg1)"/>
+          <!-- + sign -->
+          <line x1="50" y1="38" x2="50" y2="62" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+          <line x1="38" y1="50" x2="62" y2="50" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-box-label">Icon · 100px</div>
+      </div>
+
+      <!-- Small -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="36" height="36">
+          <rect width="100" height="100" rx="20" fill="#0F172A"/>
+          <defs>
+            <linearGradient id="vg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7C3AED"/>
+              <stop offset="100%" stop-color="#4C1D95"/>
+            </linearGradient>
+          </defs>
+          <path d="M50 14 C50 14, 82 24, 82 44 C82 68, 50 86, 50 86 C50 86, 18 68, 18 44 C18 24, 50 14, 50 14Z"
+                fill="url(#vg2)"/>
+          <line x1="50" y1="38" x2="50" y2="62" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+          <line x1="38" y1="50" x2="62" y2="50" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-box-label">Sidebar · 36px</div>
+      </div>
+
+      <!-- "VAULT+" all-caps lockup -->
+      <div class="logo-box">
+        <div style="display:flex; align-items:center; gap:14px; background:#1E293B; padding:16px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.06)">
+          <svg viewBox="0 0 100 100" width="36" height="36">
+            <rect width="100" height="100" rx="20" fill="#0F172A"/>
+            <defs>
+              <linearGradient id="vg3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#4C1D95"/>
+              </linearGradient>
+            </defs>
+            <path d="M50 14 C50 14, 82 24, 82 44 C82 68, 50 86, 50 86 C50 86, 18 68, 18 44 C18 24, 50 14, 50 14Z"
+                  fill="url(#vg3)"/>
+            <line x1="50" y1="38" x2="50" y2="62" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+            <line x1="38" y1="50" x2="62" y2="50" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+          <div style="line-height:1">
+            <div style="font-size:20px; font-weight:800; color:#fff; letter-spacing:0.06em; text-transform:uppercase">VAULT<sup style="color:#a78bfa; font-size:13px; vertical-align:super">+</sup></div>
+            <div style="font-size:10px; color:#475569; margin-top:4px">Safe to spend, from YNAB</div>
+          </div>
+        </div>
+        <div class="logo-box-label">All-caps lockup</div>
+      </div>
+
+      <!-- Gradient bg badge variant -->
+      <div class="logo-box">
+        <svg viewBox="0 0 100 100" width="100" height="100">
+          <defs>
+            <linearGradient id="vg4" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7C3AED"/>
+              <stop offset="100%" stop-color="#4C1D95"/>
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="20" fill="url(#vg4)"/>
+          <!-- Shield outline, white -->
+          <path d="M50 14 C50 14, 82 24, 82 44 C82 68, 50 86, 50 86 C50 86, 18 68, 18 44 C18 24, 50 14, 50 14Z"
+                fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5"/>
+          <!-- + sign -->
+          <line x1="50" y1="36" x2="50" y2="64" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+          <line x1="36" y1="50" x2="64" y2="50" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-box-label">Gradient bg</div>
+      </div>
+    </div>
+
+    <!-- Palette -->
+    <div class="section-label">Color Palette</div>
+    <div class="palette" style="margin-bottom:36px">
+      <div class="swatch"><div class="swatch-color" style="background:#5B21B6"></div><div class="swatch-info"><div class="swatch-name">Rich Purple</div><div class="swatch-hex">#5B21B6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#0F172A"></div><div class="swatch-info"><div class="swatch-name">Dark Navy</div><div class="swatch-hex">#0F172A</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F59E0B"></div><div class="swatch-info"><div class="swatch-name">Amber Alert</div><div class="swatch-hex">#F59E0B</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1E293B"></div><div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-hex">#1E293B</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E2E8F0"></div><div class="swatch-info"><div class="swatch-name">Text Light</div><div class="swatch-hex">#E2E8F0</div></div></div>
+    </div>
+
+    <!-- Dashboard preview -->
+    <div class="section-label">Dashboard Preview</div>
+    <div class="dashboard-preview">
+      <div class="vp-nav">
+        <div class="vp-nav-brand">
+          <svg viewBox="0 0 100 100" width="28" height="28">
+            <rect width="100" height="100" rx="20" fill="#0F172A"/>
+            <defs>
+              <linearGradient id="vg5" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#4C1D95"/>
+              </linearGradient>
+            </defs>
+            <path d="M50 14 C50 14, 82 24, 82 44 C82 68, 50 86, 50 86 C50 86, 18 68, 18 44 C18 24, 50 14, 50 14Z"
+                  fill="url(#vg5)"/>
+            <line x1="50" y1="38" x2="50" y2="62" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+            <line x1="38" y1="50" x2="62" y2="50" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+          <span>VAULT<sup>+</sup></span>
+        </div>
+        <div class="vp-nav-links">
+          <a class="vp-nav-link active">Dashboard</a>
+          <a class="vp-nav-link">Categorize</a>
+          <a class="vp-nav-link">Review</a>
+          <a class="vp-nav-link">Flags</a>
+          <a class="vp-nav-link">Settings</a>
+        </div>
+        <div style="font-size:12px; color:#475569">chase@...</div>
+      </div>
+      <div class="vp-body" style="background:#0F172A">
+        <div class="vp-page-title">Dashboard</div>
+        <div class="vp-page-sub">April 2026 · YNAB sync</div>
+        <div class="vp-alert">
+          <div class="vp-alert-dot"></div>
+          <div class="vp-alert-text">Dining Out is at 89% of budget — 2 days left this month.</div>
+        </div>
+        <div class="vp-sts-card">
+          <div class="vp-sts-label">Safe to Spend</div>
+          <div class="vp-sts-grid">
+            <div><div class="vp-sts-amount-big">$1,247</div><div class="vp-sts-period">This month</div></div>
+            <div><div class="vp-sts-amount">$312</div><div class="vp-sts-period">This week</div></div>
+            <div><div class="vp-sts-amount">$44</div><div class="vp-sts-period">Today</div></div>
+          </div>
+        </div>
+        <div class="vp-stats">
+          <div class="vp-stat"><div class="vp-stat-label">Income</div><div class="vp-stat-val" style="color:#22C55E">$6,200</div></div>
+          <div class="vp-stat"><div class="vp-stat-label">Spent</div><div class="vp-stat-val" style="color:#F87171">$3,841</div></div>
+          <div class="vp-stat"><div class="vp-stat-label">Bills</div><div class="vp-stat-val" style="color:#F59E0B">$2,100</div></div>
+          <div class="vp-stat"><div class="vp-stat-label">Flex Left</div><div class="vp-stat-val" style="color:#a78bfa">$1,247</div></div>
+        </div>
+        <div class="vp-breakdown">
+          <div class="vp-breakdown-header">
+            <div class="vp-breakdown-title">Where Your Money Went</div>
+            <div class="vp-breakdown-range">Mar 01 — Apr 29</div>
+          </div>
+          <div class="vp-cat-row"><div class="vp-cat-name">Groceries</div><div class="vp-bar-wrap"><div class="vp-bar" style="width:85%"></div></div><div class="vp-cat-amt">$842</div></div>
+          <div class="vp-cat-row"><div class="vp-cat-name">Dining Out</div><div class="vp-bar-wrap"><div class="vp-bar" style="width:55%; background:#F59E0B"></div></div><div class="vp-cat-amt" style="color:#F59E0B">$534</div></div>
+          <div class="vp-cat-row"><div class="vp-cat-name">Auto & Transport</div><div class="vp-bar-wrap"><div class="vp-bar" style="width:42%"></div></div><div class="vp-cat-amt">$412</div></div>
+          <div class="vp-cat-row"><div class="vp-cat-name">Shopping</div><div class="vp-bar-wrap"><div class="vp-bar" style="width:30%"></div></div><div class="vp-cat-amt">$298</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(n, btn) {
+  document.querySelectorAll('.concept').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.pick-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('concept' + n).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
-import { T } from "@/lib/constants";
 import { createRouteClient } from "@/lib/supabase-server";
 import { ProposalList } from "@/components/review/ProposalList";
+import { PageHeader } from "@/components/shell/PageHeader";
 import type { Proposal } from "@/components/review/ProposalRow";
 
 export default async function ReviewPage() {
@@ -21,11 +21,8 @@ export default async function ReviewPage() {
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px", color: T.text }}>
-      <h1 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>Review Proposals</h1>
-      <p style={{ color: T.muted, marginTop: 4, marginBottom: 24, fontSize: 14 }}>
-        Approve or dismiss payee rename suggestions generated from your Privacy.com transactions.
-      </p>
+    <div className="max-w-[720px] mx-auto">
+      <PageHeader title="Review" subtitle="PAYEE RENAME PROPOSALS" />
       <ProposalList initialProposals={proposals} />
     </div>
   );

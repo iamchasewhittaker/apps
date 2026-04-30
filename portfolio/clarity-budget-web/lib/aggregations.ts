@@ -1,7 +1,6 @@
 import type { YNABTransaction } from "./ynab";
 import type { YNABCategoryMapping } from "./blob";
 import type { RoleRaw } from "./suggestRole";
-import { T } from "./constants";
 
 /** One spendable line — a plain tx or a single subtransaction from a split parent. */
 export interface SpendLine {
@@ -178,17 +177,17 @@ export function dateRangeLabel(lines: SpendLine[]): string {
   return `${fmt(from)} – ${fmt(to)}`;
 }
 
-/** Subtle role chip colors built from the existing theme. */
+/** Subtle role chip colors — literal hexes so colors stay distinct after accent flip. */
 export function roleColor(role?: RoleRaw): { bg: string; fg: string; label: string } | null {
   switch (role) {
     case "mortgage":
-      return { bg: "rgba(79,146,242,0.15)", fg: T.accent, label: "Housing" };
+      return { bg: "rgba(79,146,242,0.15)", fg: "#4f92f2", label: "Housing" };
     case "bill":
-      return { bg: "rgba(232,187,50,0.18)", fg: T.caution, label: "Bill" };
+      return { bg: "rgba(251,191,36,0.18)", fg: "#FBBF24", label: "Bill" };
     case "essential":
-      return { bg: "rgba(61,183,122,0.18)", fg: T.safe, label: "Essential" };
+      return { bg: "rgba(61,183,122,0.18)", fg: "#3db77a", label: "Essential" };
     case "flexible":
-      return { bg: "rgba(79,146,242,0.15)", fg: T.accent, label: "Flex" };
+      return { bg: "rgba(79,146,242,0.15)", fg: "#4f92f2", label: "Flex" };
     case "ignore":
       return null;
     default:

@@ -41,6 +41,7 @@ import { StsCard } from "./dashboard/StsCard";
 import { ShortfallBanner } from "./dashboard/ShortfallBanner";
 import { LastUpdated } from "./dashboard/LastUpdated";
 import { EmptyState } from "./dashboard/EmptyState";
+import { PageHeader } from "./shell/PageHeader";
 
 const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
   { value: "mortgage", label: "Mortgage / Housing" },
@@ -278,21 +279,8 @@ export function HomeDashboard() {
   const hasSpending = spendLines.length > 0;
 
   return (
-    <div className="min-h-screen px-5 py-10" style={{ background: T.bg, color: T.text }}>
-      <div className="mx-auto max-w-lg space-y-7">
-        <header className="space-y-1.5">
-          <p
-            className="text-xs font-medium uppercase tracking-wider"
-            style={{ color: T.muted }}
-          >
-            Clarity Budget
-          </p>
-          <h1 className="text-2xl font-semibold tracking-tight">Safe to spend</h1>
-          <p className="text-sm leading-relaxed" style={{ color: T.muted }}>
-            From your YNAB categories and Ready to Assign, after bills and essentials — same
-            math as the iOS app.
-          </p>
-        </header>
+    <div className="mx-auto max-w-lg space-y-7">
+      <PageHeader title="Dashboard" subtitle="SAFE TO SPEND · YNAB" />
 
         <StsCard safeM={safeM} safeW={safeW} safeD={safeD} loading={loading} />
         <ShortfallBanner shortfall={shortfall} />
@@ -438,7 +426,6 @@ export function HomeDashboard() {
 
         </section>
         )}
-      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import { T } from "@/lib/constants";
 import { createRouteClient } from "@/lib/supabase-server";
 import { FlagList } from "@/components/flags/FlagList";
+import { PageHeader } from "@/components/shell/PageHeader";
 import type { Flag } from "@/components/flags/FlagRow";
 
 export default async function FlagsPage() {
@@ -21,11 +21,8 @@ export default async function FlagsPage() {
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px", color: T.text }}>
-      <h1 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>Flags</h1>
-      <p style={{ color: T.muted, marginTop: 4, marginBottom: 24, fontSize: 14 }}>
-        Anomalies your reconcile job found in the last sync.
-      </p>
+    <div className="max-w-[720px] mx-auto">
+      <PageHeader title="Flags" subtitle="RECONCILE ANOMALIES" />
       <FlagList initialFlags={flags} />
     </div>
   );

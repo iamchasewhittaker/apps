@@ -2,7 +2,7 @@ import { CardMappingTable } from "@/components/settings/CardMappingTable";
 import { MigrationBanner } from "@/components/settings/MigrationBanner";
 import { PrivacyConnectorCard } from "@/components/settings/PrivacyConnectorCard";
 import { YnabConnectorCard } from "@/components/settings/YnabConnectorCard";
-import { T } from "@/lib/constants";
+import { PageHeader } from "@/components/shell/PageHeader";
 import { createRouteClient } from "@/lib/supabase-server";
 
 export default async function SettingsPage() {
@@ -23,11 +23,8 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px", color: T.text }}>
-      <h1 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>Settings</h1>
-      <p style={{ color: T.muted, marginTop: 4, marginBottom: 24, fontSize: 14 }}>
-        Manage your connectors and credentials.
-      </p>
+    <div className="max-w-[720px] mx-auto">
+      <PageHeader title="Settings" subtitle="CONNECTORS & CREDENTIALS" />
       <MigrationBanner hasEncryptedYnabToken={hasEncryptedYnabToken} />
       <YnabConnectorCard hasEncryptedYnabToken={hasEncryptedYnabToken} />
       <PrivacyConnectorCard hasEncryptedPrivacyToken={hasEncryptedPrivacyToken} />
