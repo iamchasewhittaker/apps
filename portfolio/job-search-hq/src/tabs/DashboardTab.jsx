@@ -3,7 +3,7 @@ import { T } from "../tokens";
 import {
   s, today, daysSinceLayoff, DAILY_MINIMUMS, STAGES, STAGE_COLORS,
   KASSIE_EXCERPTS, getLaunchpadProgress, buildCompanyBoard,
-  isInboxPending, nextStepUrgency, prepSectionsHasContent, WIN_TYPES,
+  isInboxPending, prepSectionsHasContent, WIN_TYPES,
 } from "../constants";
 
 const KASSIE_DISMISS_KEY = "chase_js_kassie_dismiss_v1";
@@ -167,7 +167,6 @@ function KassieCard() {
 function CompanyCoverage({ applications, contacts, setTab }) {
   const board = useMemo(() => buildCompanyBoard(applications, contacts), [applications, contacts]);
   const covered = board.filter(r => r.app && r.contact).length;
-  const partial = board.filter(r => (r.app || r.contact) && !(r.app && r.contact)).length;
 
   return (
     <div style={s.dashLowerCard}>
