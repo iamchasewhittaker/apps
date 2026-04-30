@@ -4,8 +4,8 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Daily page links fixed (GMAT Mastery 200 OK); Ash Reader 401 auth issue deferred |
-| Next       | Investigate Ash Reader 401 Unauthorized · Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Narrative Threads (manual or structured CLAUDE.md format) · Linear Harbor Master sync |
+| Focus      | Readability redesign shipped — Trustworthy Blue layout, 3-mode theme (Regular/Nautical/RCT), ActiveShipPanel, ReviewsDuePanel, simplified nav/cards/filter |
+| Next       | **Force push pending user auth** (`git push --force origin main` to unblock Vercel) · Rotate Linear API key (was briefly in commit history; now REDACTED) · Investigate Ash Reader 401 Unauthorized · Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Wire Sort dropdown (currently visual-only) |
 | Last touch | 2026-04-29                                                            |
 
 ## Production URL

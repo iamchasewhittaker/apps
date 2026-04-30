@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+### Added — 2026-04-29 (Readability redesign + three-mode theme system)
+
+- **Three-mode theme system.** `ThemeMode` extended to `'regular' | 'nautical' | 'rct'`. Regular is now the primary mode; Nautical is secondary; Roller Coaster Tycoon (RCT) is the third. `src/lib/theme-mode.ts` validates all three via `VALID_MODES`. Settings page (`ThemeModeToggle`) shows 3 cards (Regular first). Each mode has full label coverage for every key.
+- **New label keys.** `ships`, `shipsTitle`, `ship`, `shipTitle`, `activeShip`, `reviewsDue`, `launched`, `inProgressLabel`, `totalShips`, `openShip`, `fleetDashboard` — all theme-aware, used throughout the redesigned dashboard.
+- **`DashboardHeading` component.** Replaces the old display-font eyebrow + `ModeHeading` pattern with a plain `h1` + subtitle showing `{total} {ships_noun} · last synced {relative}`. Fully theme-aware.
+- **`ActiveShipPanel` component.** Fetches `wip_decisions` latest row, looks up the active project, renders a gold-accented featured card (pulsing green dot, compliance bar, meta line, CTA button). Shows empty state with `/wip` link when no pick exists.
+- **`ReviewsDuePanel` component.** Shows top 4 active projects sorted by staleness (`days_since_commit` desc). Severity: ≥14d → Overdue (red), 7–13d → Due soon (amber), <7d → OK (green). Proxy until per-ship review tracking is built; documented in code.
+- **Simplified sidebar nav.** Two grouped sections — FLEET (Dashboard / In Progress / Portfolio) + WORK (Review / Activity / Analytics) — with icons and section labels. Settings pinned to bottom. `NavItem` accepts an optional `icon` prop.
+- **Simplified `StatsBar`.** 4-column grid: Total Ships / Launched / In Progress / Reviews Due. All labels theme-aware via `useLabel`. Removed: Under Construction, In Drydock, Compliance Avg cards.
+- **Simplified filter bar.** Type-only chips with per-type counts and a Sort dropdown on the right. Removed family/status/Live-URL filters.
+- **Simplified `ShipCard`.** Name + type pill + step line + status dot (Live/Local/No URL) + days-since-commit + compliance bar. Removed status badge, family chip, build/deploy line.
+- **Trustworthy Blue + glassmorphism.** `bg-surface/80 backdrop-blur-sm` glass cards, gold accent border on active ship panel, gold gradient top bar.
+
+### Removed — 2026-04-29
+- `src/components/ShipCard.tsx` — orphaned; replaced by inline version in `page.tsx`
+- `src/components/FilterBar.tsx` — orphaned; replaced by inline version in `page.tsx`
+- `src/components/WipBanner.tsx` — replaced by `ActiveShipPanel`
+
 ### Added — 2026-04-26 (Analytics & Themes — heading fix + plain default + auto-populate + thesis editor)
 
 - **`analyticsHeading` label key.** New entry in `src/lib/labels.ts` with plain `"Analytics & Themes"` and nautical `"Charts & Constellations"`. The old page heading was a hardcoded string; now driven by `ModeHeading` so the toggle actually works on this page.

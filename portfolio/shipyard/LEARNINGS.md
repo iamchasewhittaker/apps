@@ -1,5 +1,24 @@
 # Learnings — Shipyard
 
+## 2026-04-29 (Readability redesign + three-mode theme)
+
+**A mockup rejection mid-plan is faster than a plan rejection post-implementation.**
+First plan proposed token tweaks and font-size changes. Screenshot comparison showed the mockup was a full structural redesign (sidebar nav, hero panels, simplified cards). Catching the mismatch during plan review (before any code changed) cost 10 minutes; catching it after coding would have cost 3× more. Rule: always screenshot-compare the mockup against a live preview before exiting plan mode on visual tasks.
+
+**`'use client'` boundary must be explicit when a Server Component child uses a hook.**
+`StatsBar` was a Server Component but gained `useLabel()` (a context hook). Next.js threw a cryptic "hooks can only be called inside function components" error until `'use client'` was added. Pattern: any component that reads from React context (including ModeProvider) must be a client component, even if the data it shows comes from server props.
+
+**Per-ship review tracking doesn't exist — `days_since_commit` is a pragmatic proxy.**
+`review_cadence` is global (3 rows: weekly/monthly/quarterly) and tells you nothing about individual ship staleness. The ReviewsDuePanel needed per-ship signal; used `days_since_commit` sorted descending. This is documented in code. When real per-ship review tracking is built, the panel data source can be swapped without touching the component interface.
+
+**GitHub push protection scans ALL commits in the push batch, not just HEAD.**
+A raw Linear API key in an old checkpoint commit (`1c4400c`) blocked the entire push, even though that commit wasn't from the current session and the current commits contained no secrets. Fix: non-interactive rebase via `GIT_SEQUENCE_EDITOR` env var — set it to a script that edits the rebase todo list without opening a terminal. Then amend, continue, and force-push. The `GIT_SEQUENCE_EDITOR` trick also works in non-interactive contexts like Bash tool calls.
+
+**Rotate any key that appears in a rebase-edited commit.**
+Even after rewriting history to `REDACTED`, the original value may be in GitHub's secret-scanning cache or in any local clones. Rotate the key at the provider (Linear) immediately after a push-protection-triggered rewrite.
+
+> **Chase:** *(clarifying question below)*
+
 ## 2026-04-29 (Daily links — Vercel rootDirectory monorepo fix)
 
 **Monorepo CRA/Next.js apps on Vercel need an explicit redeploy from the subdirectory to fix rootDirectory.**
