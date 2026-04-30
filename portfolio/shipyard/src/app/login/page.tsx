@@ -27,13 +27,13 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center space-y-1">
-          <h1 className="text-2xl font-bold text-foreground">Shipyard</h1>
-          <p className="text-sm text-muted">Fleet command — captains only</p>
+          <h1 className="text-2xl font-bold text-white">Shipyard</h1>
+          <p className="text-sm text-steel">Fleet command — captains only</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-xs font-medium text-muted uppercase tracking-wider">
+            <label htmlFor="email" className="text-xs font-medium text-steel uppercase tracking-wider">
               Email
             </label>
             <input
@@ -44,12 +44,12 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+              className="w-full rounded-md border border-dimmer bg-surface/80 px-3 py-2 text-sm text-white placeholder:text-steel focus:border-gold focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-xs font-medium text-muted uppercase tracking-wider">
+            <label htmlFor="password" className="text-xs font-medium text-steel uppercase tracking-wider">
               Password
             </label>
             <input
@@ -59,7 +59,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+              className="w-full rounded-md border border-dimmer bg-surface/80 px-3 py-2 text-sm text-white placeholder:text-steel focus:border-gold focus:outline-none"
             />
           </div>
 

@@ -2,13 +2,14 @@ export const dynamic = 'force-dynamic';
 
 import { createServerClient } from '@/lib/supabase';
 import type { Project, LinearIssue } from '@/lib/types';
+import { ModeHeading } from '@/components/ModeHeading';
 import HarborClient from './HarborClient';
 
 const STATUS_COLORS: Record<string, string> = {
   completed: 'text-green-400',
-  started: 'text-accent',
-  canceled: 'text-muted line-through',
-  duplicate: 'text-muted line-through',
+  started: 'text-gold',
+  canceled: 'text-steel line-through',
+  duplicate: 'text-steel line-through',
 };
 
 const PRIORITY_DOTS: Record<number, string> = {
@@ -55,27 +56,25 @@ export default async function LinearPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-accent">Harbor Master</h1>
-        <p className="text-sm text-muted">
-          Sync your fleet with Linear. Each ship gets a matching Linear project.
-        </p>
-      </div>
+      <ModeHeading
+        labelKey="harborHeading"
+        subtitle="Sync your fleet with Linear. Each ship gets a matching Linear project."
+      />
 
       {/* Stats row */}
       <div className="flex gap-6 text-sm">
-        <span className="text-foreground">
-          <span className="font-semibold text-accent">{linked}</span>{' '}
-          <span className="text-muted">linked</span>
+        <span className="text-white">
+          <span className="font-semibold text-gold">{linked}</span>{' '}
+          <span className="text-steel">linked</span>
         </span>
-        <span className="text-foreground">
-          <span className="font-semibold text-foreground">{unlinked}</span>{' '}
-          <span className="text-muted">unlinked</span>
+        <span className="text-white">
+          <span className="font-semibold text-white">{unlinked}</span>{' '}
+          <span className="text-steel">unlinked</span>
         </span>
         {issues.length > 0 && (
-          <span className="text-foreground">
-            <span className="font-semibold text-foreground">{issues.length}</span>{' '}
-            <span className="text-muted">issues synced</span>
+          <span className="text-white">
+            <span className="font-semibold text-white">{issues.length}</span>{' '}
+            <span className="text-steel">issues synced</span>
           </span>
         )}
       </div>
@@ -84,43 +83,43 @@ export default async function LinearPage() {
 
       {/* Sync overview table */}
       <div className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">Sync Overview</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-steel">Sync Overview</h2>
 
         {projects.length === 0 ? (
-          <div className="rounded-lg border border-border bg-card p-8 text-center">
-            <p className="text-sm text-muted">No projects found.</p>
+          <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-8 text-center">
+            <p className="text-sm text-steel">No projects found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-border">
+          <div className="overflow-x-auto rounded-2xl border border-dimmer">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border bg-card text-xs uppercase tracking-wider text-muted">
+                <tr className="border-b border-dimmer bg-surface/80 backdrop-blur-sm text-xs uppercase tracking-wider text-steel">
                   <th className="px-4 py-2.5 font-medium">Ship</th>
                   <th className="px-4 py-2.5 font-medium">Status</th>
                   <th className="px-4 py-2.5 font-medium">Linear</th>
                   <th className="px-4 py-2.5 font-medium text-right">Issues</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-dimmer">
                 {projects.map((p) => (
-                  <tr key={p.slug} className="bg-card/50">
-                    <td className="px-4 py-2.5 font-medium text-foreground">{p.name}</td>
-                    <td className="px-4 py-2.5 text-muted">{p.status}</td>
+                  <tr key={p.slug} className="bg-surface/50 backdrop-blur-sm">
+                    <td className="px-4 py-2.5 font-medium text-white">{p.name}</td>
+                    <td className="px-4 py-2.5 text-steel">{p.status}</td>
                     <td className="px-4 py-2.5">
                       {p.linear_project_url ? (
                         <a
                           href={p.linear_project_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-accent hover:text-accent-hover underline underline-offset-2 transition-colors"
+                          className="text-gold hover:text-white underline underline-offset-2 transition-colors"
                         >
                           Linked
                         </a>
                       ) : (
-                        <span className="text-muted/60">—</span>
+                        <span className="text-steel/60">—</span>
                       )}
                     </td>
-                    <td className="px-4 py-2.5 text-right text-muted">
+                    <td className="px-4 py-2.5 text-right text-steel">
                       {p.linear_issue_count != null ? p.linear_issue_count : '—'}
                     </td>
                   </tr>
@@ -134,7 +133,7 @@ export default async function LinearPage() {
       {/* Issue Snapshots */}
       {issuesByProject.size > 0 && (
         <div className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-steel">
             Issue Snapshots
           </h2>
 
@@ -142,24 +141,24 @@ export default async function LinearPage() {
             {Array.from(issuesByProject.entries()).map(([slug, projectIssues]) => (
               <details
                 key={slug}
-                className="rounded-lg border border-border bg-card/50"
+                className="rounded-2xl border border-dimmer bg-surface/50 backdrop-blur-sm"
               >
-                <summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-medium text-foreground hover:bg-card transition-colors">
+                <summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-medium text-white hover:bg-surface/80 backdrop-blur-sm transition-colors">
                   <span>{projectNameBySlug.get(slug) ?? slug}</span>
-                  <span className="text-xs text-muted">{projectIssues.length} issues</span>
+                  <span className="text-xs text-steel">{projectIssues.length} issues</span>
                 </summary>
-                <div className="border-t border-border">
+                <div className="border-t border-dimmer">
                   <table className="w-full text-left text-sm">
-                    <tbody className="divide-y divide-border/50">
+                    <tbody className="divide-y divide-dimmer">
                       {projectIssues.map((issue) => (
                         <tr key={issue.linear_id} className="group">
-                          <td className="w-20 px-4 py-2 font-mono text-xs text-muted">
+                          <td className="w-20 px-4 py-2 font-mono text-xs text-steel">
                             {issue.url ? (
                               <a
                                 href={issue.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-accent transition-colors"
+                                className="hover:text-gold transition-colors"
                               >
                                 {issue.identifier}
                               </a>
@@ -175,13 +174,13 @@ export default async function LinearPage() {
                               />
                             )}
                           </td>
-                          <td className="px-2 py-2 text-sm text-foreground">
+                          <td className="px-2 py-2 text-sm text-white">
                             {issue.title}
                           </td>
                           <td className="w-28 px-4 py-2 text-right text-xs">
                             <span
                               className={
-                                STATUS_COLORS[issue.status_type ?? ''] ?? 'text-muted'
+                                STATUS_COLORS[issue.status_type ?? ''] ?? 'text-steel'
                               }
                             >
                               {issue.status_name ?? '—'}

@@ -11,32 +11,20 @@ export default function Icon() {
           width: 32,
           height: 32,
           borderRadius: 7,
-          background: "#07101E",
+          background: "#FFD700",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
         <svg viewBox="0 0 1024 1024" width={28} height={28}>
-          <g
-            fill="none"
-            stroke="#F2EEE6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="512" cy="512" r="288" strokeWidth="70" />
-            <g strokeWidth="62">
-              <line x1="512" y1="220" x2="512" y2="804" />
-              <line x1="220" y1="512" x2="804" y2="512" />
-              <line x1="305" y1="305" x2="719" y2="719" />
-              <line x1="305" y1="719" x2="719" y2="305" />
-            </g>
+          <g fill="#0A1128">
+            <rect x="440" y="90" width="40" height="590" rx="10" />
+            <polygon points="480,110 480,670 870,670" />
+            <polygon points="440,140 440,610 170,610" />
+            <path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z" />
+            <path d="M420 900 L465 950 L559 950 L604 900" />
           </g>
-          <circle cx="512" cy="512" r="60" fill="#F2EEE6" />
-          <circle cx="512" cy="296" r="40" fill="#4A90DE" />
-          <circle cx="512" cy="728" r="40" fill="#4A90DE" />
-          <circle cx="296" cy="512" r="40" fill="#4A90DE" />
-          <circle cx="728" cy="512" r="40" fill="#4A90DE" />
         </svg>
       </div>
     ),

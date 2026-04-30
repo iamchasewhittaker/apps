@@ -28,6 +28,7 @@ export const LABELS = {
 
   // Page headings (longer than the nav label)
   analyticsHeading:  { regular: 'Analytics & Themes', nautical: 'Charts & Constellations', rct: 'Park Stats & Theme Areas' },
+  harborHeading:     { regular: 'Linear Sync',        nautical: 'Harbor Master',            rct: 'Linear Sync' },
 
   // Nouns used throughout the UI
   ships:        { regular: 'projects',    nautical: 'ships',        rct: 'rides' },

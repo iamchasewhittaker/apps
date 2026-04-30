@@ -36,8 +36,8 @@ export default async function WipPage() {
       />
 
       {ships.length === 0 ? (
-        <div className="rounded-lg border border-border bg-card p-8 text-center">
-          <p className="text-sm text-muted">
+        <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-8 text-center">
+          <p className="text-sm text-steel">
             No active ships. Run a scan to populate the fleet.
           </p>
         </div>
@@ -47,32 +47,32 @@ export default async function WipPage() {
 
       {decisions.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-steel">
             Past Decisions
           </h2>
-          <div className="overflow-x-auto rounded-lg border border-border">
+          <div className="overflow-x-auto rounded-2xl border border-dimmer">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-border bg-card text-sm uppercase tracking-wider text-muted">
+                <tr className="border-b border-dimmer bg-surface/80 backdrop-blur-sm text-sm uppercase tracking-wider text-steel">
                   <th className="px-4 py-2.5 font-medium">Date</th>
                   <th className="px-4 py-2.5 font-medium">Active Ship</th>
                   <th className="px-4 py-2.5 font-medium">Moved to Drydock</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-dimmer">
                 {decisions.map((d) => (
-                  <tr key={d.id} className="bg-card/50">
-                    <td className="whitespace-nowrap px-4 py-2.5 text-muted">
+                  <tr key={d.id} className="bg-surface/50 backdrop-blur-sm">
+                    <td className="whitespace-nowrap px-4 py-2.5 text-steel">
                       {new Date(d.decided_at).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
                       })}
                     </td>
-                    <td className="px-4 py-2.5 font-medium text-accent">
+                    <td className="px-4 py-2.5 font-medium text-gold">
                       {d.active_slug}
                     </td>
-                    <td className="px-4 py-2.5 text-muted">
+                    <td className="px-4 py-2.5 text-steel">
                       {d.stalled_slugs.length > 0
                         ? d.stalled_slugs.join(', ')
                         : '\u2014'}

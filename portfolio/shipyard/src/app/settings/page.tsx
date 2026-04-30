@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { createServerClient } from '@/lib/supabase';
 import { ProjectPickerControls } from '@/components/ProjectPickerControls';
 import type { PickerProject } from '@/components/ProjectPickerModal';
+import { ModeHeading } from '@/components/ModeHeading';
 import { ThemeModeToggle } from './ThemeModeToggle';
 
 export default async function SettingsPage() {
@@ -15,19 +16,17 @@ export default async function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-10">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-accent">Settings</h1>
-        <p className="text-sm text-muted">
-          Personal preferences, persisted in this browser.
-        </p>
-      </div>
+      <ModeHeading
+        labelKey="settings"
+        subtitle="Personal preferences, persisted in this browser."
+      />
 
       <section className="space-y-4">
         <div className="space-y-1">
-          <h2 className="font-mono-label text-[11px] text-muted">Visible projects</h2>
-          <p className="text-sm text-foreground">
+          <h2 className="font-mono-label text-xs text-gold uppercase tracking-wider">Visible projects</h2>
+          <p className="text-sm text-white">
             Pick which projects appear on Fleet, WIP, Captain&rsquo;s Log, Charts, and Showcase.
-            Direct links to <code className="text-accent">/ship/&lt;slug&gt;</code> still work for everything.
+            Direct links to <code className="text-gold">/ship/&lt;slug&gt;</code> still work for everything.
           </p>
         </div>
         <ProjectPickerControls projects={projects} />
@@ -35,8 +34,8 @@ export default async function SettingsPage() {
 
       <section className="space-y-4">
         <div className="space-y-1">
-          <h2 className="font-mono-label text-[11px] text-muted">Theme mode</h2>
-          <p className="text-sm text-foreground">
+          <h2 className="font-mono-label text-xs text-gold uppercase tracking-wider">Theme mode</h2>
+          <p className="text-sm text-white">
             Switch between nautical vocabulary and plain project names. Colors and layout stay the same.
           </p>
         </div>

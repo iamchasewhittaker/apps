@@ -7,7 +7,7 @@ function typeBadge(type: string): { label: string; className: string } {
   const base = 'rounded-full px-2 py-0.5 text-[10px] font-medium';
   switch (type) {
     case 'web':
-      return { label: 'web', className: `${base} border border-accent/40 bg-accent/10 text-accent` };
+      return { label: 'web', className: `${base} border border-gold/40 bg-gold/10 text-gold` };
     case 'ios':
       return { label: 'iOS', className: `${base} border border-gold/40 bg-gold/10 text-gold` };
     case 'library':
@@ -17,7 +17,7 @@ function typeBadge(type: string): { label: string; className: string } {
     case 'desktop':
       return { label: 'desktop', className: `${base} border border-success/40 bg-success/10 text-success` };
     default:
-      return { label: type, className: `${base} border border-border bg-card text-muted` };
+      return { label: type, className: `${base} border border-dimmer bg-surface/80 backdrop-blur-sm text-steel` };
   }
 }
 
@@ -29,15 +29,15 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
   return (
     <Link
       href={`/portfolio/${ship.slug}`}
-      className="group flex flex-col gap-4 rounded-lg border border-border bg-card p-5 transition-colors hover:border-accent/40"
+      className="group flex flex-col gap-4 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 transition-colors hover:border-gold/30"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          <h3 className="truncate text-sm font-semibold text-foreground group-hover:text-accent">
+          <h3 className="truncate text-sm font-semibold text-white group-hover:text-gold">
             {ship.name}
           </h3>
           {ship.tagline && (
-            <p className="text-xs text-muted leading-relaxed line-clamp-2">
+            <p className="text-xs text-steel leading-relaxed line-clamp-2">
               {ship.tagline}
             </p>
           )}
@@ -45,7 +45,7 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
         <div className="flex shrink-0 flex-col items-end gap-1">
           <span className={t.className}>{t.label}</span>
           {ship.category && (
-            <span className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] text-muted">
+            <span className="rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-0.5 text-[10px] text-steel">
               {ship.category}
             </span>
           )}
@@ -53,7 +53,7 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
       </div>
 
       {ship.jtbd_primary && (
-        <p className="text-xs text-muted/80 leading-relaxed line-clamp-2">
+        <p className="text-xs text-steel/80 leading-relaxed line-clamp-2">
           {ship.jtbd_primary}
         </p>
       )}
@@ -68,7 +68,7 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
             .map((tech) => (
               <span
                 key={tech}
-                className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-medium text-muted"
+                className="rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-0.5 text-[10px] font-medium text-steel"
               >
                 {tech}
               </span>
@@ -112,8 +112,8 @@ function LinkChip({
     tone === 'success'
       ? 'border-success/40 bg-success/10 text-success hover:bg-success/20'
       : tone === 'accent'
-        ? 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20'
-        : 'border-border bg-card text-muted hover:border-accent/40 hover:text-foreground';
+        ? 'border-gold/40 bg-gold/10 text-gold hover:bg-gold/20'
+        : 'border-dimmer bg-surface/80 backdrop-blur-sm text-steel hover:border-gold/30 hover:text-white';
   return (
     <a
       href={href}

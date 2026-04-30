@@ -167,7 +167,7 @@ export function QueueList({ ships: initialShips }: Props) {
     <div className="space-y-4">
       {activeShip && (
         <div className="space-y-2">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">
             Active Focus
           </h2>
           <QueueRow ship={activeShip} isActive={true} draggable={false} />
@@ -175,18 +175,18 @@ export function QueueList({ ships: initialShips }: Props) {
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">
           Queue ({queue.length})
         </h2>
         <div className="flex items-center gap-2 text-xs">
-          <label htmlFor="sort-mode" className="text-muted">
+          <label htmlFor="sort-mode" className="text-steel">
             Sort by
           </label>
           <select
             id="sort-mode"
             value={sortMode}
             onChange={(e) => handleSortChange(e.target.value as SortMode)}
-            className="rounded-md border border-border bg-card px-2 py-1 text-xs text-foreground focus:border-accent focus:outline-none"
+            className="rounded-md border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-1 text-xs text-white focus:border-gold focus:outline-none"
           >
             <option value="priority">Priority</option>
             <option value="last_updated">Last Updated</option>
@@ -217,8 +217,8 @@ export function QueueList({ ships: initialShips }: Props) {
       )}
 
       {sortedQueue.length === 0 ? (
-        <div className="rounded-lg border border-border bg-card p-8 text-center">
-          <p className="text-sm text-muted">No ships in the queue.</p>
+        <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-8 text-center">
+          <p className="text-sm text-steel">No ships in the queue.</p>
         </div>
       ) : sortMode === 'priority' ? (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

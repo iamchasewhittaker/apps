@@ -47,25 +47,25 @@ export function ThesisEditor({ initialText }: Props) {
           }}
           rows={3}
           placeholder="One sentence. The north star that ties every app together."
-          className="w-full rounded-md border border-accent/50 bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-accent resize-none"
+          className="w-full rounded-md border border-gold/50 bg-surface/80 px-3 py-2 text-sm text-white placeholder:text-steel focus:outline-none focus:border-gold resize-none"
         />
         <div className="flex items-center gap-2">
           <button
             onClick={save}
             disabled={isPending}
-            className="rounded-md border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+            className="rounded-md border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-gold hover:bg-gold/20 transition-colors disabled:opacity-50"
           >
             {isPending ? 'Saving…' : 'Save'}
           </button>
           <button
             onClick={cancel}
             disabled={isPending}
-            className="rounded-md border border-border px-3 py-1 text-xs font-medium text-muted hover:text-foreground transition-colors"
+            className="rounded-md border border-dimmer px-3 py-1 text-xs font-medium text-steel hover:text-white transition-colors"
           >
             Cancel
           </button>
           {error && <span className="text-xs text-danger">{error}</span>}
-          <span className="ml-auto text-[10px] text-muted">⌘+Enter to save · Esc to cancel</span>
+          <span className="ml-auto text-[10px] text-steel">⌘+Enter to save · Esc to cancel</span>
         </div>
       </div>
     );
@@ -77,15 +77,15 @@ export function ThesisEditor({ initialText }: Props) {
       className="w-full text-left group"
     >
       {text ? (
-        <p className="text-sm text-foreground leading-relaxed group-hover:text-accent transition-colors">
+        <p className="text-sm text-white leading-relaxed group-hover:text-gold transition-colors">
           {text}
         </p>
       ) : (
-        <p className="text-sm italic text-muted group-hover:text-accent/60 transition-colors">
+        <p className="text-sm italic text-steel group-hover:text-gold/60 transition-colors">
           No thesis set yet. Click to define your north star.
         </p>
       )}
-      <span className="mt-2 inline-block text-[10px] uppercase tracking-wider text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="mt-2 inline-block text-[10px] uppercase tracking-wider text-steel opacity-0 group-hover:opacity-100 transition-opacity">
         edit
       </span>
     </button>

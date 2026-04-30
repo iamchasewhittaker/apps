@@ -93,7 +93,7 @@ export default async function ManifestPage({ searchParams }: Props) {
 
       {/* Timeframe filter */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs uppercase tracking-wider text-muted">
+        <span className="text-xs uppercase tracking-wider text-steel">
           Timeframe
         </span>
         {TIMEFRAMES.map((t) => (
@@ -102,8 +102,8 @@ export default async function ManifestPage({ searchParams }: Props) {
             href={t.key === '30d' ? '/manifest' : `/manifest?timeframe=${t.key}`}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
               timeframe.key === t.key
-                ? 'border-accent bg-accent/20 text-accent'
-                : 'border-border text-muted hover:border-accent/40 hover:text-foreground'
+                ? 'border-gold bg-gold/20 text-gold'
+                : 'border-dimmer text-steel hover:border-gold/30 hover:text-white'
             }`}
           >
             {t.label}
@@ -113,15 +113,15 @@ export default async function ManifestPage({ searchParams }: Props) {
 
       {/* Recent shipments */}
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-accent">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-gold">
           Recent shipments
         </h2>
         {recentChangelog.length === 0 ? (
-          <div className="rounded-lg border border-border bg-card p-8 text-center">
-            <p className="text-sm text-muted">
+          <div className="rounded-2xl border border-dimmer bg-surface/80 p-8 text-center">
+            <p className="text-sm text-steel">
               No changelog entries in this timeframe.
             </p>
-            <p className="mt-1 text-xs text-muted/70">
+            <p className="mt-1 text-xs text-steel/70">
               Try a wider timeframe, or run{' '}
               <code className="text-xs">npx tsx scripts/scan.ts</code>.
             </p>
@@ -141,13 +141,13 @@ export default async function ManifestPage({ searchParams }: Props) {
 
       {/* On the horizon */}
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-accent">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-gold">
           On the horizon
         </h2>
         {sortedRoadmapSlugs.length === 0 ? (
-          <div className="rounded-lg border border-border bg-card p-8 text-center">
-            <p className="text-sm text-muted">No open roadmap items across the fleet.</p>
-            <p className="mt-1 text-xs text-muted/70">
+          <div className="rounded-2xl border border-dimmer bg-surface/80 p-8 text-center">
+            <p className="text-sm text-steel">No open roadmap items across the fleet.</p>
+            <p className="mt-1 text-xs text-steel/70">
               Add <code className="text-xs">- [ ]</code> items to any{' '}
               <code className="text-xs">ROADMAP.md</code> and re-scan.
             </p>
@@ -178,28 +178,28 @@ function ChangelogRow({
     .map((l) => l.replace(/^\s*-\s+/, '').replace(/\*\*/g, '').trim());
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 space-y-2">
+    <div className="rounded-2xl border border-dimmer bg-surface/80 p-4 space-y-2">
       <div className="flex flex-wrap items-baseline gap-2">
         <Link
           href={`/ship/${entry.project_slug}`}
-          className="text-sm font-semibold text-accent hover:underline"
+          className="text-sm font-semibold text-gold hover:underline"
         >
           {projectName}
         </Link>
         {entry.entry_date && (
-          <span className="text-[10px] text-muted">{entry.entry_date}</span>
+          <span className="text-[10px] text-steel">{entry.entry_date}</span>
         )}
         {entry.version && (
-          <span className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] text-muted">
+          <span className="rounded-full border border-dimmer bg-surface/80 px-2 py-0.5 text-[10px] text-steel">
             {entry.version.length > 50 ? entry.version.slice(0, 50) + '…' : entry.version}
           </span>
         )}
       </div>
-      <p className="text-sm text-foreground">
+      <p className="text-sm text-white">
         {entry.heading.replace(/\*\*/g, '')}
       </p>
       {bullets.length > 0 && (
-        <ul className="list-disc space-y-1 pl-5 text-xs text-muted">
+        <ul className="list-disc space-y-1 pl-5 text-xs text-steel">
           {bullets.map((b, i) => (
             <li key={i}>{b.length > 200 ? b.slice(0, 200) + '…' : b}</li>
           ))}
@@ -230,7 +230,7 @@ function HorizonList({
       ))}
       {slugs.length > HORIZON_LIMIT_BEFORE_TOGGLE && (
         <details className="space-y-4">
-          <summary className="cursor-pointer rounded-md border border-border bg-card px-3 py-2 text-sm text-muted transition-colors hover:border-accent/40 hover:text-foreground">
+          <summary className="cursor-pointer rounded-md border border-dimmer bg-surface/80 px-3 py-2 text-sm text-steel transition-colors hover:border-gold/30 hover:text-white">
             Show {slugs.length - HORIZON_LIMIT_BEFORE_TOGGLE} more ships
           </summary>
           <div className="space-y-4 pt-2">
@@ -265,10 +265,10 @@ function HorizonShipBlock({
     phases.set(i.phase_name, arr);
   }
   return (
-    <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+    <div className="rounded-2xl border border-dimmer bg-surface/80 p-4 space-y-3">
       <Link
         href={`/ship/${slug}`}
-        className="text-sm font-semibold text-accent hover:underline"
+        className="text-sm font-semibold text-gold hover:underline"
       >
         {name}
       </Link>
@@ -282,7 +282,7 @@ function HorizonShipBlock({
               {phaseItems.map((item) => (
                 <li
                   key={item.id}
-                  className="flex items-start gap-2 text-xs text-foreground"
+                  className="flex items-start gap-2 text-xs text-white"
                 >
                   <span className="mt-0.5 shrink-0 font-mono">☐</span>
                   <span className="flex-1">

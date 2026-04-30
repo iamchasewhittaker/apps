@@ -59,15 +59,15 @@ export default async function ReviewPage({ searchParams }: Props) {
       <ModeHeading labelKey="review" />
 
       {/* Tab selector */}
-      <div className="flex gap-1 rounded-lg border border-border bg-card p-1">
+      <div className="flex gap-1 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-1">
         {KINDS.map((k) => (
           <Link
             key={k}
             href={`/review?kind=${k}`}
             className={`flex-1 rounded-md px-4 py-2 text-center text-sm font-medium capitalize transition-colors ${
               activeKind === k
-                ? 'bg-accent/20 text-accent border border-accent/40'
-                : 'text-muted hover:text-foreground border border-transparent'
+                ? 'bg-gold/20 text-gold border border-gold/40'
+                : 'text-steel hover:text-white border border-transparent'
             }`}
           >
             {k}
@@ -76,31 +76,31 @@ export default async function ReviewPage({ searchParams }: Props) {
       </div>
 
       {/* Auto-collected stats placeholder */}
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted">
+      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6">
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-steel">
           Auto-collected Stats
         </h2>
-        <p className="text-base text-muted">
-          Stats for <span className="text-accent capitalize">{activeKind}</span>{' '}
+        <p className="text-base text-steel">
+          Stats for <span className="text-gold capitalize">{activeKind}</span>{' '}
           reviews will be computed from scan data.
         </p>
       </div>
 
       {/* Reflection prompt form */}
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">
+      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-steel">
           Reflection Prompts
         </h2>
         <ReviewForm kind={activeKind} />
       </div>
 
       {/* History table */}
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">
+      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-steel">
           Past Reviews
         </h2>
         {reviews.length === 0 ? (
-          <p className="text-base text-muted">
+          <p className="text-base text-steel">
             No {activeKind} reviews yet.
           </p>
         ) : (
@@ -119,38 +119,38 @@ export default async function ReviewPage({ searchParams }: Props) {
               return (
                 <details
                   key={review.id}
-                  className="group rounded-md border border-border"
+                  className="group rounded-md border border-dimmer"
                 >
                   <summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm">
                     <div className="flex items-center gap-3">
-                      <span className="capitalize text-accent font-medium">
+                      <span className="capitalize text-gold font-medium">
                         {review.kind}
                       </span>
-                      <span className="text-muted">{formatted}</span>
+                      <span className="text-steel">{formatted}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       {review.kind === 'quarterly' && review.csv_blob && (
                         <a
                           href={`data:text/csv;charset=utf-8,${encodeURIComponent(review.csv_blob)}`}
                           download={`review-${review.kind}-${formatted}.csv`}
-                          className="rounded border border-border px-2 py-0.5 text-xs text-muted hover:border-accent/40 hover:text-accent transition-colors"
+                          className="rounded border border-dimmer px-2 py-0.5 text-xs text-steel hover:border-gold/30 hover:text-gold transition-colors"
                           onClick={(e) => e.stopPropagation()}
                         >
                           Download CSV
                         </a>
                       )}
-                      <span className="text-xs text-muted group-open:rotate-90 transition-transform">
+                      <span className="text-xs text-steel group-open:rotate-90 transition-transform">
                         &#9654;
                       </span>
                     </div>
                   </summary>
-                  <div className="border-t border-border px-4 py-3">
+                  <div className="border-t border-dimmer px-4 py-3">
                     {learning ? (
-                      <div className="prose prose-sm prose-invert max-w-none whitespace-pre-wrap text-sm text-foreground/80">
+                      <div className="prose prose-sm prose-invert max-w-none whitespace-pre-wrap text-sm text-white/80">
                         {learning.text}
                       </div>
                     ) : (
-                      <p className="text-sm text-muted italic">
+                      <p className="text-sm text-steel italic">
                         No reflection recorded.
                       </p>
                     )}
@@ -163,14 +163,14 @@ export default async function ReviewPage({ searchParams }: Props) {
       </div>
 
       {/* Cadence settings */}
-      <div className="rounded-lg border border-border bg-card p-6">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">
+      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-steel">
           Cadence Settings
         </h2>
         {activeCadence ? (
           <CadenceEditor kind={activeKind} cadenceDays={activeCadence.cadence_days} />
         ) : (
-          <p className="text-base text-muted">
+          <p className="text-base text-steel">
             No cadence configuration found for {activeKind}.
           </p>
         )}
@@ -202,7 +202,7 @@ function CadenceEditor({
 
   return (
     <form action={updateCadence} className="flex items-center gap-3">
-      <label className="text-sm text-muted">
+      <label className="text-sm text-steel">
         <span className="capitalize">{kind}</span> every
       </label>
       <input
@@ -210,12 +210,12 @@ function CadenceEditor({
         type="number"
         min={1}
         defaultValue={cadenceDays}
-        className="w-20 rounded border border-border bg-background px-2 py-1 text-sm text-foreground focus:border-accent focus:outline-none"
+        className="w-20 rounded border border-dimmer bg-surface/50 px-2 py-1 text-sm text-white focus:border-gold focus:outline-none"
       />
-      <span className="text-sm text-muted">days</span>
+      <span className="text-sm text-steel">days</span>
       <button
         type="submit"
-        className="rounded border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-colors"
+        className="rounded border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-gold hover:bg-gold/20 transition-colors"
       >
         Save
       </button>

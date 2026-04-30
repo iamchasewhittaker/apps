@@ -72,7 +72,7 @@ export default function ReviewForm({ kind }: { kind: ReviewKind }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {PROMPTS.map(({ key, label, placeholder }) => (
         <div key={key}>
-          <label className="mb-1 block text-sm font-medium text-foreground">
+          <label className="mb-1 block text-sm font-medium text-white">
             {label}
           </label>
           <textarea
@@ -80,7 +80,7 @@ export default function ReviewForm({ kind }: { kind: ReviewKind }) {
             onChange={(e) => update(key, e.target.value)}
             placeholder={placeholder}
             rows={3}
-            className="w-full rounded border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none resize-y"
+            className="w-full rounded border border-dimmer bg-surface/50 px-3 py-2 text-sm text-white placeholder:text-steel/60 focus:border-gold focus:outline-none resize-y"
           />
         </div>
       ))}
@@ -100,7 +100,7 @@ export default function ReviewForm({ kind }: { kind: ReviewKind }) {
       <button
         type="submit"
         disabled={loading}
-        className="rounded border border-accent bg-accent/20 px-5 py-2 text-sm font-medium text-accent hover:bg-accent/30 disabled:opacity-50 transition-colors"
+        className="rounded border border-gold bg-gold/20 px-5 py-2 text-sm font-medium text-gold hover:bg-gold/30 disabled:opacity-50 transition-colors"
       >
         {loading ? 'Saving...' : `Complete ${kind} review`}
       </button>

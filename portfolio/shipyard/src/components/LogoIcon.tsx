@@ -13,28 +13,15 @@ export function LogoIcon({ size = 36, className = "" }: LogoIconProps) {
       role="img"
       aria-label="Shipyard"
     >
-      <rect width="1024" height="1024" rx="220" fill="var(--bg)" />
-      <g fill="none" stroke="var(--white)" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="512" cy="512" r="288" strokeWidth="34" />
-        <g strokeWidth="30">
-          <line x1="512" y1="220" x2="512" y2="804" />
-          <line x1="220" y1="512" x2="804" y2="512" />
-          <line x1="305" y1="305" x2="719" y2="719" />
-          <line x1="305" y1="719" x2="719" y2="305" />
-        </g>
-        <g strokeWidth="30">
-          <line x1="512" y1="170" x2="512" y2="252" />
-          <line x1="512" y1="772" x2="512" y2="854" />
-          <line x1="170" y1="512" x2="252" y2="512" />
-          <line x1="772" y1="512" x2="854" y2="512" />
-        </g>
+      <rect width="1024" height="1024" rx="220" fill="var(--gold)" />
+      <g fill="var(--bg)">
+        <rect x="440" y="90" width="40" height="590" rx="10" />
+        <polygon points="480,110 480,670 870,670" />
+        <polygon points="440,140 440,610 170,610" />
+        <path d="M140 690 Q165 670 250 670 L774 670 Q860 670 884 690 L810 850 Q740 900 512 900 Q284 900 214 850 Z" />
+        <path d="M420 900 L465 950 L559 950 L604 900" />
+        <path d="M160 730 Q280 706 400 730 Q520 754 640 730 Q760 706 870 730 L870 754 Q760 730 640 754 Q520 778 400 754 Q280 730 160 754 Z" fill="var(--gold)" />
       </g>
-      <circle cx="512" cy="512" r="58" fill="none" stroke="var(--white)" strokeWidth="22" />
-      <circle cx="512" cy="512" r="10" fill="var(--white)" />
-      <circle cx="512" cy="296" r="22" fill="var(--steel)" />
-      <circle cx="512" cy="728" r="22" fill="var(--steel)" />
-      <circle cx="296" cy="512" r="22" fill="var(--steel)" />
-      <circle cx="728" cy="512" r="22" fill="var(--steel)" />
     </svg>
   );
 }

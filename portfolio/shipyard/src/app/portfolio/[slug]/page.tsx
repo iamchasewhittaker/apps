@@ -56,14 +56,14 @@ export default async function ProjectDetailPage({
       <div className="flex items-center justify-between gap-4">
         <Link
           href="/portfolio"
-          className="text-xs text-muted hover:text-accent"
+          className="text-xs text-steel hover:text-gold"
         >
           ← Back to Fleet Showcase
         </Link>
         <div className="flex items-center gap-2">
           <StatusPill status={project.status} />
           {project.category && (
-            <span className="rounded-full border border-border bg-card px-2.5 py-0.5 text-[11px] text-muted">
+            <span className="rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2.5 py-0.5 text-[11px] text-steel">
               {project.category}
             </span>
           )}
@@ -77,23 +77,23 @@ export default async function ProjectDetailPage({
             alt={`${project.name} icon`}
             width={96}
             height={96}
-            className="rounded-2xl border border-border"
+            className="rounded-2xl border border-dimmer"
             unoptimized
           />
         ) : (
-          <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-border bg-card text-2xl font-bold text-muted">
+          <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm text-2xl font-bold text-steel">
             {project.name.charAt(0)}
           </div>
         )}
         <div className="min-w-0 flex-1 space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight text-accent">
+          <h1 className="text-2xl font-bold tracking-tight text-gold">
             {project.name}
           </h1>
           {project.tagline && (
-            <p className="text-sm text-foreground">{project.tagline}</p>
+            <p className="text-sm text-white">{project.tagline}</p>
           )}
           {project.jtbd_primary && (
-            <p className="text-xs text-muted">{project.jtbd_primary}</p>
+            <p className="text-xs text-steel">{project.jtbd_primary}</p>
           )}
           <div className="flex flex-wrap gap-2 pt-1">
             {project.live_url && (
@@ -113,32 +113,32 @@ export default async function ProjectDetailPage({
         </div>
       </div>
 
-      <section className="rounded-lg border border-border bg-card p-5 space-y-3">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+      <section className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 space-y-3">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">
           About
         </h2>
         {project.summary ? (
-          <p className="text-sm leading-relaxed text-foreground">
+          <p className="text-sm leading-relaxed text-white">
             {project.summary}
           </p>
         ) : (
-          <p className="text-xs text-muted/70">
-            No summary yet. Add a <code className="text-accent">## What This App Is</code> section to{' '}
-            <code className="text-accent">portfolio/{slug}/CLAUDE.md</code>, then run{' '}
-            <code className="text-accent">npm run sync:projects</code>.
+          <p className="text-xs text-steel/70">
+            No summary yet. Add a <code className="text-gold">## What This App Is</code> section to{' '}
+            <code className="text-gold">portfolio/{slug}/CLAUDE.md</code>, then run{' '}
+            <code className="text-gold">npm run sync:projects</code>.
           </p>
         )}
       </section>
 
       {brand && !brand.missing && (brand.colors.length > 0 || brand.fonts.length > 0) ? (
-        <section className="rounded-lg border border-border bg-card p-5 space-y-5">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+        <section className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 space-y-5">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">
             Design System
           </h2>
 
           {brand.colors.length > 0 && (
             <div className="space-y-2">
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted/80">
+              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-steel/80">
                 Palette
               </h3>
               <div className="grid grid-cols-4 gap-3 md:grid-cols-8">
@@ -151,17 +151,17 @@ export default async function ProjectDetailPage({
 
           {brand.fonts.length > 0 && (
             <div className="space-y-2">
-              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted/80">
+              <h3 className="text-[11px] font-semibold uppercase tracking-wider text-steel/80">
                 Typography
               </h3>
               <div className="flex flex-wrap gap-3">
                 {brand.fonts.map((f) => (
                   <div
                     key={f.family}
-                    className="rounded-md border border-border bg-background px-3 py-2"
+                    className="rounded-md border border-dimmer bg-surface/50 px-3 py-2"
                   >
-                    <div className="text-sm text-foreground">{f.family}</div>
-                    {f.role && <div className="text-[11px] text-muted">{f.role}</div>}
+                    <div className="text-sm text-white">{f.family}</div>
+                    {f.role && <div className="text-[11px] text-steel">{f.role}</div>}
                   </div>
                 ))}
               </div>
@@ -169,32 +169,32 @@ export default async function ProjectDetailPage({
           )}
 
           {brand.notes && (
-            <p className="text-xs text-muted/80 leading-relaxed italic">
+            <p className="text-xs text-steel/80 leading-relaxed italic">
               {brand.notes}
             </p>
           )}
 
-          <div className="text-[10px] text-muted/60">
+          <div className="text-[10px] text-steel/60">
             Source:{' '}
-            <code className="text-muted">
+            <code className="text-steel">
               {brand.sourceFile}
             </code>
           </div>
         </section>
       ) : (
-        <section className="rounded-lg border border-dashed border-border bg-card/50 p-5">
-          <p className="text-xs text-muted/70">
+        <section className="rounded-2xl border border-dashed border-dimmer bg-surface/50 backdrop-blur-sm p-5">
+          <p className="text-xs text-steel/70">
             No brand data yet. Add{' '}
-            <code className="text-accent">portfolio/{slug}/docs/BRANDING.md</code>{' '}
+            <code className="text-gold">portfolio/{slug}/docs/BRANDING.md</code>{' '}
             (copy from{' '}
-            <code className="text-accent">docs/templates/PORTFOLIO_APP_BRANDING.md</code>
-            ), then run <code className="text-accent">npm run build:branding</code>.
+            <code className="text-gold">docs/templates/PORTFOLIO_APP_BRANDING.md</code>
+            ), then run <code className="text-gold">npm run build:branding</code>.
           </p>
         </section>
       )}
 
-      <section className="rounded-lg border border-border bg-card p-5 space-y-3">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+      <section className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 space-y-3">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">
           Tech Details
         </h2>
         <div className="grid grid-cols-1 gap-3 text-xs md:grid-cols-2">
@@ -255,7 +255,7 @@ function StatusPill({ status }: { status: string }) {
         ? 'border-warning/40 bg-warning/10 text-warning'
         : status === 'frozen'
           ? 'border-steel/40 bg-steel/10 text-steel'
-          : 'border-border bg-card text-muted';
+          : 'border-dimmer bg-surface/80 backdrop-blur-sm text-steel';
   return (
     <span
       className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${tone}`}
@@ -269,16 +269,16 @@ function ColorSwatch({ color }: { color: ColorEntry }) {
   return (
     <div className="space-y-1">
       <div
-        className="aspect-square w-full rounded-md border border-border"
+        className="aspect-square w-full rounded-md border border-dimmer"
         style={{ backgroundColor: color.hex }}
         title={color.name ? `${color.name} — ${color.hex}` : color.hex}
       />
       <div className="min-w-0">
-        <div className="truncate text-[10px] font-mono uppercase text-muted">
+        <div className="truncate text-[10px] font-mono uppercase text-steel">
           {color.hex}
         </div>
         {color.name && (
-          <div className="truncate text-[10px] text-muted/70">{color.name}</div>
+          <div className="truncate text-[10px] text-steel/70">{color.name}</div>
         )}
       </div>
     </div>
@@ -298,8 +298,8 @@ function LinkChip({
     tone === 'success'
       ? 'border-success/40 bg-success/10 text-success hover:bg-success/20'
       : tone === 'accent'
-        ? 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20'
-        : 'border-border bg-card text-muted hover:border-accent/40 hover:text-foreground';
+        ? 'border-gold/40 bg-gold/10 text-gold hover:bg-gold/20'
+        : 'border-dimmer bg-surface/80 backdrop-blur-sm text-steel hover:border-gold/30 hover:text-white';
   return (
     <a
       href={href}
@@ -314,11 +314,11 @@ function LinkChip({
 
 function DetailRow({ label, value }: { label: string; value: string | null }) {
   return (
-    <div className="rounded-md border border-border bg-background px-3 py-2">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-muted">
+    <div className="rounded-md border border-dimmer bg-surface/50 px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-steel">
         {label}
       </div>
-      <div className="text-sm text-foreground">{value ?? '—'}</div>
+      <div className="text-sm text-white">{value ?? '—'}</div>
     </div>
   );
 }

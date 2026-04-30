@@ -39,19 +39,19 @@ export function EditableText({ slug, field, value, placeholder = 'Click to add�
             if (e.key === 'Escape') { setCurrent(value ?? ''); setEditing(false); }
           }}
           rows={3}
-          className="w-full rounded-md border border-accent/50 bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:border-accent resize-none"
+          className="w-full rounded-md border border-gold/50 bg-surface/80 px-3 py-2 text-sm text-white focus:outline-none focus:border-gold resize-none"
         />
         <div className="flex gap-2">
           <button
             onClick={save}
             disabled={saving}
-            className="rounded-md border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+            className="rounded-md border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium text-gold hover:bg-gold/20 transition-colors disabled:opacity-50"
           >
             {saving ? 'Saving…' : 'Save'}
           </button>
           <button
             onClick={() => { setCurrent(value ?? ''); setEditing(false); }}
-            className="rounded-md border border-border px-3 py-1 text-xs font-medium text-muted hover:text-foreground transition-colors"
+            className="rounded-md border border-dimmer px-3 py-1 text-xs font-medium text-steel hover:text-white transition-colors"
           >
             Cancel
           </button>
@@ -66,15 +66,15 @@ export function EditableText({ slug, field, value, placeholder = 'Click to add�
       className="w-full text-left text-sm group"
     >
       {current ? (
-        <span className="text-foreground group-hover:text-accent transition-colors">
+        <span className="text-white group-hover:text-gold transition-colors">
           {current}
         </span>
       ) : (
-        <span className="italic text-muted group-hover:text-accent/60 transition-colors">
+        <span className="italic text-steel group-hover:text-gold/60 transition-colors">
           {placeholder}
         </span>
       )}
-      <span className="ml-1.5 text-[10px] text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1.5 text-[10px] text-steel opacity-0 group-hover:opacity-100 transition-opacity">
         edit
       </span>
     </button>
@@ -109,7 +109,7 @@ export function EditableStatus({ slug, value }: EditableStatusProps) {
       value={current}
       onChange={handleChange}
       disabled={saving}
-      className="rounded-md border border-border bg-card px-2 py-1 text-xs font-medium text-foreground focus:border-accent focus:outline-none disabled:opacity-50 cursor-pointer"
+      className="rounded-md border border-dimmer bg-surface/80 px-2 py-1 text-xs font-medium text-white focus:border-gold focus:outline-none disabled:opacity-50 cursor-pointer"
     >
       {STATUS_OPTIONS.map((s) => (
         <option key={s} value={s}>{s}</option>
@@ -177,12 +177,12 @@ export function EditableNumber({
               setEditing(false);
             }
           }}
-          className="w-28 rounded-md border border-accent/50 bg-card px-2 py-1 text-sm text-foreground focus:outline-none focus:border-accent"
+          className="w-28 rounded-md border border-gold/50 bg-surface/80 px-2 py-1 text-sm text-white focus:outline-none focus:border-gold"
         />
         <button
           onClick={save}
           disabled={saving}
-          className="rounded-md border border-accent/40 bg-accent/10 px-2 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+          className="rounded-md border border-gold/40 bg-gold/10 px-2 py-1 text-xs font-medium text-gold hover:bg-gold/20 transition-colors disabled:opacity-50"
         >
           {saving ? 'Saving…' : 'Save'}
         </button>
@@ -191,7 +191,7 @@ export function EditableNumber({
             setCurrent(value === null ? '' : String(value));
             setEditing(false);
           }}
-          className="rounded-md border border-border px-2 py-1 text-xs font-medium text-muted hover:text-foreground transition-colors"
+          className="rounded-md border border-dimmer px-2 py-1 text-xs font-medium text-steel hover:text-white transition-colors"
         >
           Cancel
         </button>
@@ -205,17 +205,17 @@ export function EditableNumber({
       className="text-left text-sm group"
     >
       {value === null ? (
-        <span className="italic text-muted group-hover:text-accent/60 transition-colors">
+        <span className="italic text-steel group-hover:text-gold/60 transition-colors">
           {placeholder}
         </span>
       ) : (
-        <span className="text-foreground group-hover:text-accent transition-colors">
+        <span className="text-white group-hover:text-gold transition-colors">
           {prefix ?? ''}
           {value}
           {suffix ?? ''}
         </span>
       )}
-      <span className="ml-1.5 text-[10px] text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1.5 text-[10px] text-steel opacity-0 group-hover:opacity-100 transition-opacity">
         edit
       </span>
     </button>
@@ -256,7 +256,7 @@ export function BlockerManager({ slug, initialBlockers }: BlockerManagerProps) {
   return (
     <div className="space-y-3">
       {blockers.length === 0 ? (
-        <p className="text-sm italic text-muted">No blockers recorded.</p>
+        <p className="text-sm italic text-steel">No blockers recorded.</p>
       ) : (
         <ul className="space-y-2">
           {blockers.map((b) => (
@@ -264,8 +264,8 @@ export function BlockerManager({ slug, initialBlockers }: BlockerManagerProps) {
               key={b.id}
               className={`flex items-start gap-2 rounded-md border px-3 py-2 text-sm ${
                 b.resolved_at
-                  ? 'border-border bg-card/50 text-muted line-through'
-                  : 'border-danger/30 bg-danger/5 text-foreground'
+                  ? 'border-dimmer bg-surface/80/50 text-steel line-through'
+                  : 'border-danger/30 bg-danger/5 text-white'
               }`}
             >
               <span className="mt-0.5 shrink-0">{b.resolved_at ? '✓' : '●'}</span>
@@ -273,7 +273,7 @@ export function BlockerManager({ slug, initialBlockers }: BlockerManagerProps) {
               {!b.resolved_at && (
                 <button
                   onClick={() => resolveBlocker(b.id)}
-                  className="shrink-0 text-[10px] text-muted hover:text-success transition-colors"
+                  className="shrink-0 text-[10px] text-steel hover:text-success transition-colors"
                 >
                   resolve
                 </button>
@@ -290,7 +290,7 @@ export function BlockerManager({ slug, initialBlockers }: BlockerManagerProps) {
           onChange={(e) => setNewText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addBlocker()}
           placeholder="Add a blocker…"
-          className="flex-1 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none"
+          className="flex-1 rounded-md border border-dimmer bg-surface/80 px-3 py-1.5 text-sm text-white placeholder:text-steel focus:border-gold focus:outline-none"
         />
         <button
           onClick={addBlocker}

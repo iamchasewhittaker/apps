@@ -46,16 +46,16 @@ export function ProjectPickerControls({ projects }: Props) {
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-foreground">
+      <p className="text-sm text-white">
         {hydrated ? (
           selected === null ? (
             <>
-              Showing <span className="text-accent font-semibold">all {total}</span>{' '}
+              Showing <span className="text-gold font-semibold">all {total}</span>{' '}
               projects (no selection saved).
             </>
           ) : (
             <>
-              Showing <span className="text-accent font-semibold">{count}</span>{' '}
+              Showing <span className="text-gold font-semibold">{count}</span>{' '}
               of {total} projects.
             </>
           )
@@ -68,7 +68,7 @@ export function ProjectPickerControls({ projects }: Props) {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="rounded-md border border-accent bg-accent/10 px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/20 transition-colors"
+          className="rounded-md border border-gold bg-gold/10 px-4 py-2 text-sm font-semibold text-gold hover:bg-gold/20 transition-colors"
         >
           Edit visible projects
         </button>
@@ -76,7 +76,7 @@ export function ProjectPickerControls({ projects }: Props) {
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-md border border-border px-4 py-2 text-sm text-muted hover:border-accent/40 hover:text-foreground transition-colors"
+            className="rounded-md border border-dimmer px-4 py-2 text-sm text-steel hover:border-gold/40 hover:text-white transition-colors"
           >
             Show all projects
           </button>

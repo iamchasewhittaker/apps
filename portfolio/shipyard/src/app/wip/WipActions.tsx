@@ -39,7 +39,7 @@ export default function WipActions({ slug, isActive }: Props) {
 
   if (isActive) {
     return (
-      <span className="shrink-0 text-xs text-accent font-medium">
+      <span className="shrink-0 text-xs text-gold font-medium">
         Current focus
       </span>
     );

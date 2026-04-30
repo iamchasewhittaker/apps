@@ -56,14 +56,14 @@ function SiteCard({ site }: { site: DailySite }) {
       href={site.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-gold"
+      className="group flex items-center gap-3 rounded-2xl border border-dimmer bg-surface/80 p-4 transition-colors hover:border-gold"
     >
       <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md bg-ghost">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={favicon} alt="" width={20} height={20} className="h-5 w-5" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-semibold text-foreground group-hover:text-gold">
+        <span className="block truncate text-sm font-semibold text-white group-hover:text-gold">
           {site.name}
         </span>
         {site.note && (

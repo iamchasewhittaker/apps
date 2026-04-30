@@ -20,9 +20,9 @@ function ActionCard({
   state: CardState;
 }) {
   return (
-    <div className="flex flex-col rounded-lg border border-border bg-card p-5 space-y-3">
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-      <p className="flex-1 text-xs text-muted leading-relaxed">{description}</p>
+    <div className="flex flex-col rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 space-y-3">
+      <h3 className="text-sm font-semibold text-white">{title}</h3>
+      <p className="flex-1 text-xs text-steel leading-relaxed">{description}</p>
       {state.result && (
         <p className={`text-xs font-medium ${state.result.ok ? 'text-green-400' : 'text-red-400'}`}>
           {state.result.message}
@@ -31,11 +31,11 @@ function ActionCard({
       <button
         onClick={onRun}
         disabled={state.loading}
-        className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-accent/50 hover:text-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center gap-2 rounded-md border border-dimmer bg-surface/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-white hover:border-gold/30 hover:text-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {state.loading ? (
           <>
-            <span className="h-3.5 w-3.5 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+            <span className="h-3.5 w-3.5 rounded-full border-2 border-gold border-t-transparent animate-spin" />
             Running…
           </>
         ) : (

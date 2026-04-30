@@ -26,7 +26,7 @@ export function MarkOpenedButton({ slug }: { slug: string }) {
     <button
       onClick={markOpened}
       disabled={marking}
-      className="mt-3 rounded-md border border-accent/40 bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+      className="mt-3 rounded-md border border-gold/40 bg-gold/10 px-3 py-1.5 text-xs font-medium text-gold hover:bg-gold/20 transition-colors disabled:opacity-50"
     >
       {markedAt ? `Marked at ${markedAt}` : marking ? 'Marking...' : 'Mark as opened now'}
     </button>

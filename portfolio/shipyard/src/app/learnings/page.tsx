@@ -11,7 +11,7 @@ interface Props {
 }
 
 const SOURCE_COLORS: Record<string, string> = {
-  manual: 'bg-accent/20 text-accent border-accent/30',
+  manual: 'bg-gold/20 text-gold border-gold/30',
   'auto:commit': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   'auto:changelog': 'bg-teal-500/20 text-teal-400 border-teal-500/30',
   'auto:todo': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
@@ -66,8 +66,8 @@ export default async function LearningsPage({ searchParams }: Props) {
             href={t.key === 'all' ? '/learnings' : `/learnings?tab=${t.key}`}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
               tab === t.key
-                ? 'border-accent bg-accent/20 text-accent'
-                : 'border-border text-muted hover:border-accent/40 hover:text-foreground'
+                ? 'border-gold bg-gold/20 text-gold'
+                : 'border-dimmer text-steel hover:border-gold/30 hover:text-white'
             }`}
           >
             {t.label}
@@ -77,8 +77,8 @@ export default async function LearningsPage({ searchParams }: Props) {
 
       {/* Learning cards */}
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-border bg-card p-8 text-center">
-          <p className="text-base text-muted">
+        <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-8 text-center">
+          <p className="text-base text-steel">
             {tab === 'review'
               ? 'All learnings have been reviewed.'
               : 'No learnings captured yet.'}
@@ -93,8 +93,8 @@ export default async function LearningsPage({ searchParams }: Props) {
       )}
 
       {/* Coming soon note */}
-      <div className="rounded-lg border border-border bg-card/50 p-4 text-center">
-        <p className="text-xs text-muted">
+      <div className="rounded-2xl border border-dimmer bg-surface/50 backdrop-blur-sm p-4 text-center">
+        <p className="text-xs text-steel">
           Add form and tag cloud coming in Phase 2.
         </p>
       </div>
@@ -104,8 +104,8 @@ export default async function LearningsPage({ searchParams }: Props) {
 
 function LearningCard({ learning }: { learning: Learning }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-      <p className="text-base text-foreground leading-relaxed">
+    <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4 space-y-3">
+      <p className="text-base text-white leading-relaxed">
         {learning.text}
       </p>
 
@@ -113,7 +113,7 @@ function LearningCard({ learning }: { learning: Learning }) {
         {/* Source badge */}
         <span
           className={`rounded-full border px-2 py-0.5 text-xs font-medium ${
-            SOURCE_COLORS[learning.source] ?? 'bg-card text-muted border-border'
+            SOURCE_COLORS[learning.source] ?? 'bg-surface/80 backdrop-blur-sm text-steel border-dimmer'
           }`}
         >
           {learning.source}
@@ -130,7 +130,7 @@ function LearningCard({ learning }: { learning: Learning }) {
         {learning.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-border bg-card px-2 py-0.5 text-xs font-medium text-muted"
+            className="rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-0.5 text-xs font-medium text-steel"
           >
             {tag}
           </span>
@@ -138,7 +138,7 @@ function LearningCard({ learning }: { learning: Learning }) {
 
         {/* Scripture ref */}
         {learning.scripture_ref && (
-          <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+          <span className="rounded-full border border-gold/30 bg-gold/10 px-2 py-0.5 text-xs font-medium text-gold">
             {learning.scripture_ref}
           </span>
         )}
@@ -154,7 +154,7 @@ function LearningCard({ learning }: { learning: Learning }) {
         )}
       </div>
 
-      <p className="text-xs text-muted">
+      <p className="text-xs text-steel">
         {new Date(learning.created_at).toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',

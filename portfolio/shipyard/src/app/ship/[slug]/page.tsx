@@ -86,20 +86,20 @@ export default async function ShipDetailPage({ params }: Props) {
       {/* Back link */}
       <Link
         href="/"
-        className="inline-flex items-center text-sm text-muted hover:text-accent transition-colors"
+        className="inline-flex items-center text-sm text-steel hover:text-gold transition-colors"
       >
         &larr; Back to fleet
       </Link>
 
       {/* Header */}
       <header className="space-y-3">
-        <h1 className="text-2xl font-bold text-foreground">{p.name}</h1>
+        <h1 className="font-display font-bold text-4xl text-white gold-rule inline-block">{p.name}</h1>
 
         <div className="flex flex-wrap gap-2">
           <Badge color={TYPE_COLORS[p.type]}>{p.type}</Badge>
-          <Badge color="border-border text-muted">{p.family}</Badge>
+          <Badge color="border-dimmer text-steel">{p.family}</Badge>
           <EditableStatus slug={p.slug} value={p.status} />
-          <Badge color="border-accent/30 bg-accent/10 text-accent">
+          <Badge color="border-gold/30 bg-gold/10 text-gold">
             Step {step}: {STEP_LABELS[step] ?? '?'} &middot;{' '}
             {STEP_NAUTICAL[step] ?? ''}
           </Badge>
@@ -172,7 +172,7 @@ export default async function ShipDetailPage({ params }: Props) {
       <Section title="Money">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <p className="mb-1 text-xs font-medium text-muted">Revenue potential (1–5)</p>
+            <p className="mb-1 text-xs font-medium text-steel">Revenue potential (1–5)</p>
             <EditableNumber
               slug={p.slug}
               field="revenue_potential"
@@ -184,7 +184,7 @@ export default async function ShipDetailPage({ params }: Props) {
             />
           </div>
           <div>
-            <p className="mb-1 text-xs font-medium text-muted">Monthly revenue (USD)</p>
+            <p className="mb-1 text-xs font-medium text-steel">Monthly revenue (USD)</p>
             <EditableNumber
               slug={p.slug}
               field="monthly_revenue_usd"
@@ -215,7 +215,7 @@ export default async function ShipDetailPage({ params }: Props) {
                 className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs ${
                   met
                     ? 'border-success/30 bg-success/10 text-success'
-                    : 'border-border bg-card text-muted'
+                    : 'border-dimmer bg-surface/80 backdrop-blur-sm text-steel'
                 }`}
               >
                 <span>{met ? '\u2713' : '\u2717'}</span>
@@ -224,7 +224,7 @@ export default async function ShipDetailPage({ params }: Props) {
             );
           })}
         </div>
-        <p className="mt-2 text-xs text-muted">
+        <p className="mt-2 text-xs text-steel">
           Score:{' '}
           <span
             className={
@@ -255,7 +255,7 @@ export default async function ShipDetailPage({ params }: Props) {
           {p.localstorage_keys.length === 0 &&
             p.supabase_tables.length === 0 &&
             p.external_apis.length === 0 && (
-              <p className="text-sm italic text-muted">
+              <p className="text-sm italic text-steel">
                 No integrations recorded.
               </p>
             )}
@@ -286,7 +286,7 @@ export default async function ShipDetailPage({ params }: Props) {
             p.type !== 'web' &&
             !p.linear_project_url &&
             !p.live_url && (
-              <p className="text-sm italic text-muted">No links available.</p>
+              <p className="text-sm italic text-steel">No links available.</p>
             )}
         </div>
       </Section>
@@ -295,25 +295,25 @@ export default async function ShipDetailPage({ params }: Props) {
       {p.linear_project_url && (
         <Section title="Linear Issues">
           {issueList.length === 0 ? (
-            <p className="text-sm italic text-muted">
+            <p className="text-sm italic text-steel">
               No issues synced yet. Pull issues from{' '}
-              <Link href="/linear" className="text-accent hover:underline">
+              <Link href="/linear" className="text-gold hover:underline">
                 Harbor Master
               </Link>
               .
             </p>
           ) : (
             <table className="w-full text-left text-sm">
-              <tbody className="divide-y divide-border/50">
+              <tbody className="divide-y divide-dimmer">
                 {issueList.map((issue) => (
                   <tr key={issue.linear_id}>
-                    <td className="w-20 py-2 pr-2 font-mono text-xs text-muted">
+                    <td className="w-20 py-2 pr-2 font-mono text-xs text-steel">
                       {issue.url ? (
                         <a
                           href={issue.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="hover:text-accent transition-colors"
+                          className="hover:text-gold transition-colors"
                         >
                           {issue.identifier}
                         </a>
@@ -329,13 +329,13 @@ export default async function ShipDetailPage({ params }: Props) {
                         />
                       )}
                     </td>
-                    <td className="py-2 text-sm text-foreground">
+                    <td className="py-2 text-sm text-white">
                       {issue.title}
                     </td>
                     <td className="w-28 py-2 text-right text-xs">
                       <span
                         className={
-                          ISSUE_STATUS_COLORS[issue.status_type ?? ''] ?? 'text-muted'
+                          ISSUE_STATUS_COLORS[issue.status_type ?? ''] ?? 'text-steel'
                         }
                       >
                         {issue.status_name ?? '—'}
@@ -352,7 +352,7 @@ export default async function ShipDetailPage({ params }: Props) {
       {/* Changelog */}
       <Section title="Changelog">
         {changelogList.length === 0 ? (
-          <p className="text-sm italic text-muted">
+          <p className="text-sm italic text-steel">
             No changelog parsed. Add a <code className="text-xs">CHANGELOG.md</code> in the app and run{' '}
             <code className="text-xs">npx tsx scripts/scan.ts</code>.
           </p>
@@ -377,7 +377,7 @@ export default async function ShipDetailPage({ params }: Props) {
       {/* Roadmap */}
       <Section title="Roadmap">
         {roadmapList.length === 0 ? (
-          <p className="text-sm italic text-muted">
+          <p className="text-sm italic text-steel">
             No roadmap parsed. Add a <code className="text-xs">ROADMAP.md</code> with{' '}
             <code className="text-xs">## Phase</code> sections and{' '}
             <code className="text-xs">- [ ]</code> items, then run the scanner.
@@ -394,11 +394,11 @@ export default async function ShipDetailPage({ params }: Props) {
                       {phase}
                     </h3>
                     {status && (
-                      <span className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-medium text-muted">
+                      <span className="rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-0.5 text-[10px] font-medium text-steel">
                         {status}
                       </span>
                     )}
-                    <span className="text-[10px] text-muted">
+                    <span className="text-[10px] text-steel">
                       {done}/{items.length} done
                     </span>
                   </div>
@@ -407,7 +407,7 @@ export default async function ShipDetailPage({ params }: Props) {
                       <li
                         key={item.id}
                         className={`flex items-start gap-2 text-sm ${
-                          item.item_done ? 'text-muted line-through' : 'text-foreground'
+                          item.item_done ? 'text-steel line-through' : 'text-white'
                         }`}
                       >
                         <span className="mt-0.5 shrink-0 font-mono text-xs">
@@ -415,7 +415,7 @@ export default async function ShipDetailPage({ params }: Props) {
                         </span>
                         <span className="flex-1">{stripBoldMarkers(item.item_text)}</span>
                         {item.item_date && (
-                          <span className="shrink-0 text-[10px] text-muted">
+                          <span className="shrink-0 text-[10px] text-steel">
                             {item.item_date}
                           </span>
                         )}
@@ -434,9 +434,9 @@ export default async function ShipDetailPage({ params }: Props) {
         <Section title="Decisions">
           <div className="space-y-4">
             {decisionList.map((d) => (
-              <div key={d.id} className="rounded-lg border border-border bg-card p-4 space-y-2">
+              <div key={d.id} className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4 space-y-2">
                 <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="text-sm font-semibold text-foreground">
+                  <h3 className="text-sm font-semibold text-white">
                     {d.title}
                   </h3>
                   <div className="flex items-center gap-2 shrink-0">
@@ -446,11 +446,11 @@ export default async function ShipDetailPage({ params }: Props) {
                       </span>
                     )}
                     {d.decision_date && (
-                      <span className="text-[10px] text-muted">{d.decision_date}</span>
+                      <span className="text-[10px] text-steel">{d.decision_date}</span>
                     )}
                   </div>
                 </div>
-                <p className="text-xs text-muted whitespace-pre-wrap line-clamp-4">
+                <p className="text-xs text-steel whitespace-pre-wrap line-clamp-4">
                   {d.body_md.slice(0, 300)}{d.body_md.length > 300 ? '...' : ''}
                 </p>
               </div>
@@ -465,10 +465,10 @@ export default async function ShipDetailPage({ params }: Props) {
           <h2 className="text-sm font-semibold uppercase tracking-wider text-danger/70">
             Danger Zone
           </h2>
-          <div className="rounded-lg border border-danger/20 bg-danger/5 p-4 flex items-center justify-between gap-4">
+          <div className="rounded-2xl border border-danger/20 bg-danger/5 p-4 flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-foreground">Decommission this ship</p>
-              <p className="text-xs text-muted mt-0.5">
+              <p className="text-sm font-medium text-white">Decommission this ship</p>
+              <p className="text-xs text-steel mt-0.5">
                 Archives in Supabase, cancels Linear project, shows manual steps for git + docs.
               </p>
             </div>
@@ -494,9 +494,9 @@ const COMPLIANCE_ITEMS = [
 
 const ISSUE_STATUS_COLORS: Record<string, string> = {
   completed: 'text-green-400',
-  started: 'text-accent',
-  canceled: 'text-muted line-through',
-  duplicate: 'text-muted line-through',
+  started: 'text-gold',
+  canceled: 'text-steel line-through',
+  duplicate: 'text-steel line-through',
 };
 
 const ISSUE_PRIORITY_DOTS: Record<number, string> = {
@@ -544,18 +544,18 @@ function ActivityCard({
   const colorClass =
     highlight ? 'text-purple-400' :
     daysAgo !== null && daysAgo <= 7 ? 'text-success' :
-    daysAgo !== null && daysAgo <= 30 ? 'text-foreground' :
-    'text-muted';
+    daysAgo !== null && daysAgo <= 30 ? 'text-white' :
+    'text-steel';
 
   return (
     <div
       className={`rounded-md border px-3 py-2 ${
         primary
-          ? 'border-accent/30 bg-accent/5'
-          : 'border-border bg-card/50'
+          ? 'border-gold/30 bg-gold/5'
+          : 'border-dimmer bg-surface/50 backdrop-blur-sm'
       }`}
     >
-      <p className="text-[10px] font-medium uppercase tracking-wider text-muted">
+      <p className="text-[10px] font-medium uppercase tracking-wider text-steel">
         {label}
       </p>
       <p className={`text-sm font-medium ${colorClass}`}>
@@ -578,10 +578,10 @@ function Section({
 }) {
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-accent">
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-gold">
         {title}
       </h2>
-      <div className="rounded-lg border border-border bg-card p-4">
+      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4">
         {children}
       </div>
     </section>
@@ -615,7 +615,7 @@ function PillGroup({
 }) {
   return (
     <div>
-      <p className="mb-1.5 text-xs font-medium text-muted">{label}</p>
+      <p className="mb-1.5 text-xs font-medium text-steel">{label}</p>
       <div className="flex flex-wrap gap-1.5">
         {items.map((item) => (
           <span
@@ -651,23 +651,23 @@ function ChangelogEntryCard({ entry }: { entry: ChangelogEntry }) {
   }
 
   return (
-    <div className="rounded-md border border-border bg-card/50 p-3 space-y-2">
+    <div className="rounded-md border border-dimmer bg-surface/50 backdrop-blur-sm p-3 space-y-2">
       <div className="flex flex-wrap items-baseline gap-2">
-        <h4 className="text-sm font-semibold text-foreground">
+        <h4 className="text-sm font-semibold text-white">
           {stripBoldMarkers(entry.heading)}
         </h4>
         {entry.entry_date && (
-          <span className="text-[10px] text-muted">{entry.entry_date}</span>
+          <span className="text-[10px] text-steel">{entry.entry_date}</span>
         )}
       </div>
       {bullets.length > 0 ? (
-        <ul className="list-disc space-y-1 pl-5 text-xs text-muted">
+        <ul className="list-disc space-y-1 pl-5 text-xs text-steel">
           {bullets.map((b, i) => (
             <li key={i}>{stripBoldMarkers(b)}</li>
           ))}
         </ul>
       ) : entry.body_md ? (
-        <p className="text-xs text-muted whitespace-pre-line">
+        <p className="text-xs text-steel whitespace-pre-line">
           {stripBoldMarkers(entry.body_md)}
         </p>
       ) : null}
@@ -681,10 +681,10 @@ function LinkButton({ href, label }: { href: string; label: string }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+      className="inline-flex items-center gap-1.5 rounded-md border border-dimmer bg-surface/80 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white transition-colors hover:border-gold hover:text-gold"
     >
       {label}
-      <span className="text-muted">&nearr;</span>
+      <span className="text-steel">&nearr;</span>
     </a>
   );
 }

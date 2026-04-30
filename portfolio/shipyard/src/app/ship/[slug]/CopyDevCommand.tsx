@@ -25,7 +25,7 @@ export function CopyDevCommand({ slug, variant = 'pill' }: Props) {
     return (
       <button
         onClick={copy}
-        className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-gold hover:text-gold"
+        className="inline-flex items-center gap-1.5 rounded-md border border-dimmer bg-surface/80 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:border-gold hover:text-gold"
       >
         <span className={`inline-block h-2 w-2 rounded-full ${copied ? 'bg-success' : 'bg-gold'}`} />
         {copied ? 'Copied — paste in terminal' : 'Start local dev'}

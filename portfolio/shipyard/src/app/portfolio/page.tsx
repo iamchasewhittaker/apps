@@ -34,10 +34,10 @@ export default async function PortfolioPage() {
       </div>
 
       {fleet.length === 0 ? (
-        <div className="rounded-lg border border-border bg-card p-12 text-center">
-          <p className="text-lg font-medium text-muted">No active ships yet.</p>
-          <p className="mt-1 text-sm text-muted/70">
-            Run <code className="text-accent">npm run sync:projects</code> to pull the fleet from CLAUDE.md.
+        <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-12 text-center">
+          <p className="text-lg font-medium text-steel">No active ships yet.</p>
+          <p className="mt-1 text-sm text-steel/70">
+            Run <code className="text-gold">npm run sync:projects</code> to pull the fleet from CLAUDE.md.
           </p>
         </div>
       ) : (

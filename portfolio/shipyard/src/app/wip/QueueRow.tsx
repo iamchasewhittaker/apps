@@ -31,8 +31,8 @@ export function QueueRow({ ship, isActive, draggable }: Props) {
         ? 'text-warning'
         : 'text-danger';
 
-  const containerClass = `flex items-center gap-3 rounded-lg border p-4 transition-colors ${
-    isActive ? 'border-accent bg-accent/5' : 'border-border bg-card hover:border-accent/40'
+  const containerClass = `flex items-center gap-3 rounded-2xl border p-4 transition-colors ${
+    isActive ? 'border-gold bg-gold/5' : 'border-dimmer bg-surface/80 backdrop-blur-sm hover:border-gold/30'
   }`;
 
   return (
@@ -45,7 +45,7 @@ export function QueueRow({ ship, isActive, draggable }: Props) {
         <button
           {...sortable.attributes}
           {...sortable.listeners}
-          className="shrink-0 cursor-grab rounded px-1.5 py-1 text-muted hover:bg-dimmer/40 hover:text-accent active:cursor-grabbing"
+          className="shrink-0 cursor-grab rounded px-1.5 py-1 text-steel hover:bg-dimmer/40 hover:text-gold active:cursor-grabbing"
           aria-label={`Drag ${ship.name}`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -64,28 +64,28 @@ export function QueueRow({ ship, isActive, draggable }: Props) {
         className="min-w-0 flex-1 space-y-1"
       >
         <div className="flex items-center gap-2">
-          <h3 className="truncate text-sm font-semibold text-foreground">
+          <h3 className="truncate text-sm font-semibold text-white">
             {ship.name}
           </h3>
           {isActive && (
-            <span className="shrink-0 rounded-full border border-accent/40 bg-accent/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent">
+            <span className="shrink-0 rounded-full border border-gold/40 bg-gold/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold">
               Active Focus
             </span>
           )}
           {ship.category && (
-            <span className="shrink-0 rounded-full border border-border bg-card px-2 py-0.5 text-[10px] text-muted">
+            <span className="shrink-0 rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-0.5 text-[10px] text-steel">
               {ship.category}
             </span>
           )}
         </div>
 
         {ship.tagline && (
-          <p className="truncate text-xs text-muted/80">{ship.tagline}</p>
+          <p className="truncate text-xs text-steel/80">{ship.tagline}</p>
         )}
 
-        <div className="flex flex-wrap items-center gap-3 text-xs text-muted">
-          <span className="rounded border border-border px-1.5 py-0.5">{ship.type}</span>
-          <span className="rounded border border-border px-1.5 py-0.5">{stepLabel}</span>
+        <div className="flex flex-wrap items-center gap-3 text-xs text-steel">
+          <span className="rounded border border-dimmer px-1.5 py-0.5">{ship.type}</span>
+          <span className="rounded border border-dimmer px-1.5 py-0.5">{stepLabel}</span>
           <span>
             {daysSince !== null
               ? daysSince === 0

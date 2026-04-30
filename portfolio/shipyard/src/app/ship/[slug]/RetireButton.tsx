@@ -58,30 +58,30 @@ export function RetireButton({ slug, name, hasLinear }: Props) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
           onClick={(e) => e.target === e.currentTarget && close()}
         >
-          <div className="mx-4 w-full max-w-md rounded-xl border border-border bg-surface p-6 shadow-2xl space-y-4">
+          <div className="mx-4 w-full max-w-md rounded-xl border border-dimmer bg-surface p-6 shadow-2xl space-y-4">
             {!result ? (
               <>
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">
+                  <h2 className="text-base font-semibold text-white">
                     Decommission {name}?
                   </h2>
-                  <p className="mt-1 text-sm text-muted">
+                  <p className="mt-1 text-sm text-steel">
                     Marks the ship as archived in Supabase and cancels its Linear project if configured.
                   </p>
                 </div>
 
-                <div className="rounded-md border border-border bg-card px-4 py-3 space-y-1.5">
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted">What happens</p>
+                <div className="rounded-md border border-dimmer bg-surface/80 px-4 py-3 space-y-1.5">
+                  <p className="text-xs font-medium uppercase tracking-wider text-steel">What happens</p>
                   <ul className="space-y-1 text-sm">
-                    <li className="flex items-center gap-2 text-foreground">
+                    <li className="flex items-center gap-2 text-white">
                       <span className="text-success text-xs">✓</span>
                       Supabase status → archived, retired_at recorded
                     </li>
-                    <li className={`flex items-center gap-2 text-sm ${hasLinear ? 'text-foreground' : 'text-muted'}`}>
+                    <li className={`flex items-center gap-2 text-sm ${hasLinear ? 'text-white' : 'text-steel'}`}>
                       <span className={`text-xs ${hasLinear ? 'text-gold' : ''}`}>{hasLinear ? '→' : '–'}</span>
                       {hasLinear ? 'Linear project archived (requires LINEAR_API_KEY)' : 'No Linear project linked'}
                     </li>
-                    <li className="flex items-center gap-2 text-muted">
+                    <li className="flex items-center gap-2 text-steel">
                       <span className="text-xs">–</span>
                       Filesystem + docs: manual (git mv, CLAUDE.md, ROADMAP.md)
                     </li>
@@ -89,20 +89,20 @@ export function RetireButton({ slug, name, hasLinear }: Props) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-muted">Retire reason (optional)</label>
+                  <label className="text-xs font-medium text-steel">Retire reason (optional)</label>
                   <textarea
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     placeholder="e.g. Superseded by Spend Clarity"
                     rows={2}
-                    className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none resize-none"
+                    className="w-full rounded-md border border-dimmer bg-surface/80 px-3 py-2 text-sm text-white placeholder:text-steel focus:border-gold focus:outline-none resize-none"
                   />
                 </div>
 
                 <div className="flex justify-end gap-2 pt-1">
                   <button
                     onClick={close}
-                    className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground transition-colors"
+                    className="rounded-md border border-dimmer px-3 py-1.5 text-xs font-medium text-steel hover:text-white transition-colors"
                   >
                     Cancel
                   </button>
@@ -117,13 +117,13 @@ export function RetireButton({ slug, name, hasLinear }: Props) {
               </>
             ) : (
               <>
-                <h2 className="text-base font-semibold text-foreground">{name} decommissioned</h2>
+                <h2 className="text-base font-semibold text-white">{name} decommissioned</h2>
 
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2 text-success">
                     <span className="text-xs">✓</span> Supabase: archived
                   </li>
-                  <li className={`flex items-center gap-2 ${result.steps.linear.ok ? 'text-success' : 'text-muted'}`}>
+                  <li className={`flex items-center gap-2 ${result.steps.linear.ok ? 'text-success' : 'text-steel'}`}>
                     <span className="text-xs">{result.steps.linear.ok ? '✓' : '–'}</span>
                     {result.steps.linear.message}
                   </li>
@@ -131,7 +131,7 @@ export function RetireButton({ slug, name, hasLinear }: Props) {
 
                 <div className="rounded-md border border-gold/20 bg-gold/5 px-4 py-3 space-y-1.5">
                   <p className="text-xs font-medium uppercase tracking-wider text-gold">Manual steps</p>
-                  <ul className="space-y-1 text-xs text-muted font-mono">
+                  <ul className="space-y-1 text-xs text-steel font-mono">
                     <li>git mv portfolio/{slug} portfolio/archive/{slug}</li>
                     <li>Update root CLAUDE.md + ROADMAP.md</li>
                     {hasLinear && !result.steps.linear.ok && (
@@ -142,7 +142,7 @@ export function RetireButton({ slug, name, hasLinear }: Props) {
 
                 <button
                   onClick={close}
-                  className="w-full rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground transition-colors"
+                  className="w-full rounded-md border border-dimmer px-3 py-1.5 text-xs font-medium text-steel hover:text-white transition-colors"
                 >
                   Close
                 </button>

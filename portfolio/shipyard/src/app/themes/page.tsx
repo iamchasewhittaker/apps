@@ -146,13 +146,13 @@ function ThesisSection({ themes }: { themes: Theme[] }) {
   return (
     <div className="space-y-3">
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-steel">
           {meta.title}
         </h2>
-        <p className="text-xs text-muted/70">{meta.description}</p>
+        <p className="text-xs text-steel/70">{meta.description}</p>
       </div>
 
-      <div className="rounded-lg border border-accent/30 bg-accent/5 p-6">
+      <div className="rounded-2xl border border-gold/30 bg-gold/5 p-6">
         <ThesisEditor initialText={thesis?.description ?? null} />
       </div>
     </div>
@@ -171,15 +171,15 @@ function ThemeSection({
   return (
     <div className="space-y-3">
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-steel">
           {meta.title}
         </h2>
-        <p className="text-xs text-muted/70">{meta.description}</p>
+        <p className="text-xs text-steel/70">{meta.description}</p>
       </div>
 
       {themes.length === 0 ? (
-        <div className="rounded-lg border border-border bg-card p-6 text-center">
-          <p className="text-sm text-muted">
+        <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6 text-center">
+          <p className="text-sm text-steel">
             No {meta.title.toLowerCase()} defined yet.
           </p>
         </div>
@@ -196,11 +196,11 @@ function ThemeSection({
 
 function ThemeCard({ theme }: { theme: Theme }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+    <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4 space-y-3">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="text-sm font-semibold text-foreground">
+        <h3 className="text-sm font-semibold text-white">
           {theme.kind === 'glossary_term' ? (
-            <span className="font-mono text-foreground">{theme.title}</span>
+            <span className="font-mono text-white">{theme.title}</span>
           ) : (
             theme.title
           )}
@@ -217,7 +217,7 @@ function ThemeCard({ theme }: { theme: Theme }) {
         </div>
       </div>
 
-      <p className="text-sm text-muted leading-relaxed">{theme.description}</p>
+      <p className="text-sm text-steel leading-relaxed">{theme.description}</p>
 
       {theme.kind === 'common_input' && (
         <CommonInputDetail
@@ -293,19 +293,19 @@ function CommonInputDetail({
       <dl className="grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
         {auth_method && (
           <div>
-            <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted/70">Auth</dt>
-            <dd className="text-foreground/90">{auth_method}</dd>
+            <dt className="text-[10px] font-semibold uppercase tracking-wider text-steel/70">Auth</dt>
+            <dd className="text-white/90">{auth_method}</dd>
           </div>
         )}
         {cost_tier && (
           <div>
-            <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted/70">Cost</dt>
-            <dd className="text-foreground/90">{cost_tier}</dd>
+            <dt className="text-[10px] font-semibold uppercase tracking-wider text-steel/70">Cost</dt>
+            <dd className="text-white/90">{cost_tier}</dd>
           </div>
         )}
         {doc_url && (
           <div className="sm:col-span-2">
-            <dt className="text-[10px] font-semibold uppercase tracking-wider text-muted/70">Docs</dt>
+            <dt className="text-[10px] font-semibold uppercase tracking-wider text-steel/70">Docs</dt>
             <dd>
               <a
                 href={doc_url}
@@ -322,12 +322,12 @@ function CommonInputDetail({
 
       {env_vars && env_vars.length > 0 && (
         <div className="space-y-1">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/70">Env vars</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-steel/70">Env vars</p>
           <div className="flex flex-wrap gap-1.5">
             {env_vars.map((v) => (
               <span
                 key={v}
-                className="rounded border border-border/80 bg-bg/50 px-1.5 py-0.5 font-mono text-[10px] text-foreground/80"
+                className="rounded border border-dimmer bg-surface/50 px-1.5 py-0.5 font-mono text-[10px] text-white/80"
               >
                 {v}
               </span>
@@ -337,8 +337,8 @@ function CommonInputDetail({
       )}
 
       {projectSlugs.length > 0 && (
-        <div className="space-y-2 border-t border-border/60 pt-3">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted/70">
+        <div className="space-y-2 border-t border-dimmer pt-3">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-steel/70">
             Used by
           </p>
           <ul className="space-y-1.5">
@@ -353,9 +353,9 @@ function CommonInputDetail({
                     {slug}
                   </Link>
                   {note ? (
-                    <span className="text-xs text-muted leading-snug">{note}</span>
+                    <span className="text-xs text-steel leading-snug">{note}</span>
                   ) : (
-                    <span className="text-xs text-muted/50 italic">no usage note</span>
+                    <span className="text-xs text-steel/50 italic">no usage note</span>
                   )}
                 </li>
               );
@@ -372,10 +372,10 @@ function CommonPromptDetail({ metadata }: { metadata: CommonPromptMetadata | und
   return (
     <div className="space-y-2">
       {metadata.source_path && (
-        <p className="font-mono text-[10px] text-muted/70 break-all">{metadata.source_path}</p>
+        <p className="font-mono text-[10px] text-steel/70 break-all">{metadata.source_path}</p>
       )}
       {metadata.excerpt && (
-        <pre className="whitespace-pre-wrap break-words rounded-md border border-border/60 bg-bg/40 p-3 text-xs text-foreground/90 leading-relaxed line-clamp-6">
+        <pre className="whitespace-pre-wrap break-words rounded-md border border-dimmer bg-surface/40 p-3 text-xs text-white/90 leading-relaxed line-clamp-6">
           {metadata.excerpt}
         </pre>
       )}
