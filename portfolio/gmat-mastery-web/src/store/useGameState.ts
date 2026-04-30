@@ -3,6 +3,7 @@ import { useReducer, useEffect, createContext, useContext } from 'react';
 export type ScreenState = 'landing' | 'question' | 'explanation' | 'summary';
 export type GmatSection = 'Quantitative' | 'Verbal' | 'DataSufficiency' | 'RC_CR' | 'Shuffle';
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
+export type ConfidenceLevel = 'guessed' | 'knew' | null;
 
 export interface Question {
   question: string;
@@ -21,6 +22,8 @@ export interface GameState {
     questionsCorrect: number;
     xpEarned: number;
     streak: number;
+    guessCount: number;
+    knewCount: number;
   };
   player: {
     totalXP: number;
@@ -32,6 +35,7 @@ export interface GameState {
   currentQuestion: Question | null;
   nextQuestion: Question | null; // Eager load
   socraticExplanation: string[] | null;
+  expertTip: string | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -45,6 +49,8 @@ const initialState: GameState = {
     questionsCorrect: 0,
     xpEarned: 0,
     streak: 0,
+    guessCount: 0,
+    knewCount: 0,
   },
   player: {
     totalXP: 0,
@@ -62,6 +68,7 @@ const initialState: GameState = {
   currentQuestion: null,
   nextQuestion: null,
   socraticExplanation: null,
+  expertTip: null,
   isLoading: false,
   error: null,
 };
@@ -70,8 +77,8 @@ type Action =
   | { type: 'START_SESSION'; section: GmatSection; difficulty: Difficulty }
   | { type: 'SET_CURRENT_QUESTION'; question: Question }
   | { type: 'SET_NEXT_QUESTION'; question: Question }
-  | { type: 'ANSWER_SUBMITTED'; isCorrect: boolean; xpGained: number }
-  | { type: 'SET_EXPLANATION'; explanation: string[] }
+  | { type: 'ANSWER_SUBMITTED'; isCorrect: boolean; xpGained: number; confidence: ConfidenceLevel }
+  | { type: 'SET_EXPLANATION'; explanation: string[]; expertTip?: string }
   | { type: 'NEXT_PHASE' }
   | { type: 'END_SESSION' }
   | { type: 'SET_LOADING'; isLoading: boolean }
@@ -90,7 +97,17 @@ const calculateLevel = (xp: number) => {
 function gameReducer(state: GameState, action: Action): GameState {
   switch (action.type) {
     case 'LOAD_STATE':
-      return { ...action.state, screen: 'landing', currentQuestion: null, socraticExplanation: null };
+      return {
+        ...initialState,
+        ...action.state,
+        session: { ...initialState.session, ...action.state.session },
+        screen: 'landing',
+        currentQuestion: null,
+        socraticExplanation: null,
+        expertTip: null,
+        isLoading: false,
+        error: null,
+      };
     case 'START_SESSION':
       return {
         ...state,
@@ -99,6 +116,7 @@ function gameReducer(state: GameState, action: Action): GameState {
         currentQuestion: null,
         nextQuestion: null,
         socraticExplanation: null,
+        expertTip: null,
         error: null,
       };
     case 'SET_CURRENT_QUESTION':
@@ -117,6 +135,8 @@ function gameReducer(state: GameState, action: Action): GameState {
           questionsCorrect: state.session.questionsCorrect + (action.isCorrect ? 1 : 0),
           xpEarned: state.session.xpEarned + action.xpGained,
           streak: action.isCorrect ? state.session.streak + 1 : 0,
+          guessCount: state.session.guessCount + (action.confidence === 'guessed' ? 1 : 0),
+          knewCount: state.session.knewCount + (action.confidence === 'knew' ? 1 : 0),
         },
         player: { ...state.player, totalXP: newXp, ...newLevel },
         topicPerformance: {
@@ -128,7 +148,7 @@ function gameReducer(state: GameState, action: Action): GameState {
         },
       };
     case 'SET_EXPLANATION':
-      return { ...state, socraticExplanation: action.explanation, isLoading: false };
+      return { ...state, socraticExplanation: action.explanation, expertTip: action.expertTip ?? null, isLoading: false };
     case 'NEXT_PHASE':
       if (state.screen === 'explanation') {
         const nextQ = state.nextQuestion;
@@ -138,6 +158,7 @@ function gameReducer(state: GameState, action: Action): GameState {
           currentQuestion: nextQ,
           nextQuestion: null,
           socraticExplanation: null,
+          expertTip: null,
         };
       }
       return state;

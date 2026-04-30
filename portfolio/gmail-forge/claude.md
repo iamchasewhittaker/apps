@@ -20,7 +20,7 @@ A three-layer Gmail organization system: XML filters for instant sorting, an App
 - **Job search emails NEVER get archived** — Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn job alerts/InMail always stay in inbox
 - **Kassie's Gmail setup is paused** — Chase's inbox only
 - **Re-import XML only when filters change** — not daily
-- **Newsletters are labeled but NOT archived** — they stay in inbox (changed 2026-04-27)
+- **Newsletters are labeled AND archived** — find them under the Newsletter label (changed 2026-04-30)
 - Always check **"Also apply filter to matching conversations"** on import
 
 ---
@@ -130,7 +130,7 @@ When Chase identifies a new sender to filter:
 
 ## Current Filter Coverage (73 filters)
 
-**Last updated:** April 28, 2026
+**Last updated:** April 30, 2026
 
 | Category | Senders |
 |---|---|
@@ -148,7 +148,7 @@ When Chase identifies a new sender to filter:
 
 ### Job Search HQ integration
 
-The `JobSearch` Gmail label is what powers the InboxPanel in [job-search-hq](../job-search-hq/) — JSHQ queries the Gmail API with `labelIds=` (not `from:`), so the label must be applied for emails to appear. Run `healthCheck_jobSearch_()` in the Apps Script editor to verify trigger + label + thread count.
+The `JobSearch` Gmail label is what powers the InboxPanel in [job-search-hq](../job-search-hq/) — JSHQ queries the Gmail API with `labelIds=` (not `from:`), so the label must be applied for emails to appear. Run `healthCheck_jobSearch()` (no trailing underscore — Apps Script hides `_`-suffixed functions from the Run dropdown) in the Apps Script editor to verify trigger + label + thread count.
 
 ---
 
@@ -172,6 +172,8 @@ The `JobSearch` Gmail label is what powers the InboxPanel in [job-search-hq](../
 - **LinkedIn Messages** (`messages-noreply@linkedin.com`) are labeled Notification but NOT archived — stay in inbox during job search
 - The XML file is not in Google Drive — find it in this folder or rebuild from conversation history
 - When adding new filters, output a fresh `gmail-filters.xml` for reimport
+- **Newsletter archive flip (2026-04-30):** `auto-sort.gs` `shouldSkipArchive_()` no longer special-cases `Newsletter`; all 24 Newsletter XML entries gained `shouldArchive=true`. New newsletters now archive on first sweep — `shouldSkipArchive_()` only protects `JobSearch`, `Personal`, and addresses in `NEVER_ARCHIVE_ADDRESSES`.
+- **CLAUDE.md vs claude.md:** macOS HFS+ is case-insensitive — both names point to inode `61943887` (this file). Edit `claude.md` (lowercase, the canonical name); never create a separate `CLAUDE.md` or it will overwrite this one.
 
 ---
 
@@ -180,7 +182,7 @@ The `JobSearch` Gmail label is what powers the InboxPanel in [job-search-hq](../
 ### Apps Script Auto-Sorter
 - **Files:** `apps-script/auto-sort.gs` (engine) + `apps-script/rules.gs` (sender rules)
 - **Trigger:** 5-minute timer via `setupTrigger()`
-- **Flow:** Find unlabeled inbox emails → match against rules.gs → if no match, classify via Gemini (or skip in Rules-only mode) → apply label + archive → log new senders to Google Sheet
+- **Flow:** Find unlabeled inbox emails → match against rules.gs (3-pass: address → domain → subject) → if no match, classify via Gemini (or skip in Rules-only mode) → apply label + archive (unless label is `JobSearch` or `Personal`, or sender is in `NEVER_ARCHIVE_ADDRESSES`) → log new senders to Google Sheet
 - **Config:** Script Properties: `CLASSIFIER_MODE` (`GEMINI`/`RULES_ONLY`), `GEMINI_API_KEY` (for Gemini mode), `SHEET_ID` (optional), `NEWSLETTER_TO_ALIASES` (optional comma-separated **To:** addresses for iCloud newsletter aliases)
 - **Job search protection:** Greenhouse, Lever, Workday, ZipRecruiter, LinkedIn job addresses are whitelisted — never touched
 

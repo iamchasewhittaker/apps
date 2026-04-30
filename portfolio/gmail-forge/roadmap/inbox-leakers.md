@@ -8,13 +8,17 @@
 
 | Week ending (Sun) | New leakers noted | Promoted to XML/rules | Notes |
 |---|---|---|---|
-|  |  |  |  |
+| 2026-05-03 | 5 | 0 | Apr 30 daily report — capacities.io, hi.extra.email, updates.linear.app, toybook.com domain gap, GitHub CI mislabel (currently routed to Security via `github.com` domain). |
 
 ## Raw entries
 
 | Date | Sender / domain | Subject (optional) | Proposed label | Added to filters? |
 |---|---|---|---|---|
-|  |  |  |  | ⬜ |
+| 2026-04-30 | `capacities.io` | — | Notification | ⬜ |
+| 2026-04-30 | `hi.extra.email` | Extra app | Notification | ⬜ |
+| 2026-04-30 | `updates.linear.app` | Linear security alerts | Security | ⬜ |
+| 2026-04-30 | `james@toybook.com` → `toybook.com` | — | Newsletter (promote to domain rule) | ⬜ |
+| 2026-04-30 | GitHub CI | — | Notification (currently mislabeled Security) | ⬜ |
 
 ## How to close the loop
 

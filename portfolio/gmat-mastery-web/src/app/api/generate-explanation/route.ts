@@ -20,13 +20,13 @@ export async function POST(req: Request) {
       messages: [
         {
           role: 'user',
-          content: `GMAT question: "${question}"\nStudent answered: "${studentAnswer}"\nCorrect answer: "${correctAnswer}"\n\nExplain in 3 concise bullet points:\n1. Why the correct answer is right\n2. Why the student's answer is wrong (if different)\n3. The key concept to remember for next time\nKeep it encouraging and clear for a beginner.`,
+          content: `GMAT question: "${question}"\nStudent answered: "${studentAnswer}"\nCorrect answer: "${correctAnswer}"\n\nExplain in 3 concise bullet points:\n1. Why the correct answer is right\n2. Why the student's answer is wrong (if different)\n3. The key concept to remember for next time\n\nAlso provide one practical expert tip: a shortcut, trick, or heuristic that helps solve this type of GMAT problem quickly. Keep it concrete and actionable (e.g. "For ratio problems, set up the proportion first and cross-multiply").\n\nKeep it encouraging and clear for a beginner.`,
         },
       ],
       tools: [
         {
           name: 'provide_socratic_explanation',
-          description: 'Provide the 3-point explanation.',
+          description: 'Provide the 3-point explanation and an expert tip.',
           input_schema: {
             type: 'object',
             properties: {
@@ -37,8 +37,12 @@ export async function POST(req: Request) {
                 maxItems: 3,
                 description: 'The 3 concise bullet points.',
               },
+              expertTip: {
+                type: 'string',
+                description: 'A practical shortcut, trick, or heuristic for solving this type of GMAT problem. One sentence, actionable.',
+              },
             },
-            required: ['bullets'],
+            required: ['bullets', 'expertTip'],
           },
         },
       ],

@@ -1,7 +1,7 @@
 # Gmail Forge — Roadmap
 
 > **Owner:** Chase Whittaker  
-> **Last updated:** April 28, 2026  
+> **Last updated:** April 30, 2026  
 > **Approach:** Free Gmail XML filter system + daily Claude review
 
 ---
@@ -68,6 +68,18 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 
 ---
 
+## 🎯 Next Up — Inbox Leaker Triage (Apr 30, 2026)
+
+Identified during today's report; promote each into `apps-script/rules.gs` + `gmail-filters.xml`, then `clasp push --force` and re-import XML.
+
+| Sender / Domain | Proposed label | Notes |
+|---|---|---|
+| `capacities.io` | Notification | Capacities app updates |
+| `hi.extra.email` | Notification | Extra app emails |
+| `updates.linear.app` | Security | Linear security alerts (separate from generic Linear notifications) |
+| `toybook.com` | Newsletter | Promote `james@toybook.com` to domain rule |
+| GitHub CI (`notifications@github.com` filtered by subject?) | Notification | Currently hitting Security — needs sender-specific override or subject pattern |
+
 ## ⏸️ Paused / Out of Scope
 
 | Item | Reason |
@@ -94,6 +106,7 @@ A fully automated inbox where only emails requiring attention land in the inbox 
 
 | Date | Change |
 |---|---|
+| Apr 30, 2026 | **Newsletters archive again:** removed `Newsletter` from `shouldSkipArchive_()` in `auto-sort.gs`; added `shouldArchive` to all 24 Newsletter entries in `gmail-filters.xml`; flipped `claude.md` critical rule. Apps Script redeployed via clasp. Reversed the Apr 27 "keep newsletters in inbox" experiment after three days of inbox noise. |
 | Apr 20, 2026 | **Dashboard view:** added `apps-script/dashboard.gs` + `dashboard.html`; branched `doGet` on `?view=dashboard` (preserves Spend Radar trigger); shows live label counts (today/7d/30d), auto-sort today count, Review Queue size, recent activity, trigger health — single URL to verify filtering health |
 | Apr 13, 2026 | **Phase 3 kickoff:** Built Apps Script auto-sorter (`apps-script/auto-sort.gs` + `rules.gs`) with Gemini classification + Rules-only fallback + Google Sheets logging; built Chrome extension (`extension/`) with label tab bar, Sort button, settings popup, dark mode |
 | Apr 13, 2026 | Started Phase 2 mislabeled sender audit loop; created `roadmap/mislabel-audit.md`; baseline review found no new confirmed Newsletter vs Cold Email reclassifications |

@@ -72,14 +72,14 @@
 
   <!-- ═══════════════════════════════════════════
        NEWSLETTERS
-       Action: Keep in Inbox + Apply label "Newsletter"
-       (No shouldArchive — newsletters stay visible)
+       Action: Skip Inbox + Apply label "Newsletter"
   ═══════════════════════════════════════════ -->
 
   <entry>
     <category term='filter'></category>
     <title>Newsletter - All Substack (iCloud alias)</title>
     <apps:property name='to' value='ashen-35.packet@icloud.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -88,6 +88,7 @@
     <category term='filter'></category>
     <title>Newsletter - Daily Crossword Links (iCloud alias)</title>
     <apps:property name='to' value='crowds.olives2z@icloud.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -96,6 +97,7 @@
     <category term='filter'></category>
     <title>Newsletter - Daily Crossword Links (iCloud alias 2)</title>
     <apps:property name='to' value='pipe.evasive_9z@icloud.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -104,6 +106,7 @@
     <category term='filter'></category>
     <title>Newsletter - Substack domain catchall</title>
     <apps:property name='from' value='substack.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -112,6 +115,7 @@
     <category term='filter'></category>
     <title>Newsletter - Readwise</title>
     <apps:property name='from' value='hello@readwise.io'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -120,6 +124,7 @@
     <category term='filter'></category>
     <title>Newsletter - The Marginalian</title>
     <apps:property name='from' value='newsletter@themarginalian.org'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -128,6 +133,7 @@
     <category term='filter'></category>
     <title>Newsletter - The Hustle</title>
     <apps:property name='from' value='thehustle.co'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -136,6 +142,7 @@
     <category term='filter'></category>
     <title>Newsletter - Polymarket Polygraph</title>
     <apps:property name='from' value='polymarket.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -144,6 +151,7 @@
     <category term='filter'></category>
     <title>Newsletter - Product Hunt</title>
     <apps:property name='from' value='digest.producthunt.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -152,6 +160,7 @@
     <category term='filter'></category>
     <title>Newsletter - TLDR Suite</title>
     <apps:property name='from' value='dan@tldrnewsletter.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -160,6 +169,7 @@
     <category term='filter'></category>
     <title>Newsletter - Word Smarts</title>
     <apps:property name='from' value='hello@wordsmarts.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -168,6 +178,7 @@
     <category term='filter'></category>
     <title>Newsletter - The Athletic Golf</title>
     <apps:property name='from' value='e1.theathletic.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -176,6 +187,7 @@
     <category term='filter'></category>
     <title>Newsletter - The Masters</title>
     <apps:property name='from' value='email.masters.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -184,6 +196,7 @@
     <category term='filter'></category>
     <title>Newsletter - John Hilton III (BYU)</title>
     <apps:property name='from' value='johnhiltoniii@byu.edu'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -192,6 +205,7 @@
     <category term='filter'></category>
     <title>Newsletter - John Hilton III (personal)</title>
     <apps:property name='from' value='john@johnhiltoniii.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -200,6 +214,7 @@
     <category term='filter'></category>
     <title>Newsletter - Weekly Sporcle</title>
     <apps:property name='from' value='sporcle.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -208,6 +223,7 @@
     <category term='filter'></category>
     <title>Newsletter - The Twist Riddle</title>
     <apps:property name='from' value='thetwistriddle.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -216,6 +232,7 @@
     <category term='filter'></category>
     <title>Newsletter - Farnam Street (Shane Parrish)</title>
     <apps:property name='from' value='farnamstreetblog.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -224,6 +241,7 @@
     <category term='filter'></category>
     <title>Newsletter - Daily Stoic</title>
     <apps:property name='from' value='dailystoic.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -232,6 +250,7 @@
     <category term='filter'></category>
     <title>Newsletter - Puzzmo</title>
     <apps:property name='from' value='mailer.puzzmo.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -240,6 +259,7 @@
     <category term='filter'></category>
     <title>Newsletter - Superhuman / Zain Kahn</title>
     <apps:property name='from' value='mail.joinsuperhuman.ai'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -248,6 +268,7 @@
     <category term='filter'></category>
     <title>Newsletter - Church of Jesus Christ</title>
     <apps:property name='from' value='churchofjesuschrist.org'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -256,6 +277,7 @@
     <category term='filter'></category>
     <title>Newsletter - Missionary Updates</title>
     <apps:property name='from' value='missionary.org'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>
@@ -264,6 +286,7 @@
     <category term='filter'></category>
     <title>Newsletter - Natia Kurdadze</title>
     <apps:property name='from' value='natia@space-leads.com'/>
+    <apps:property name='shouldArchive' value='true'/>
     <apps:property name='shouldNeverSpam' value='true'/>
     <apps:property name='label' value='Newsletter'/>
   </entry>

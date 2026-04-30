@@ -1,4 +1,4 @@
-import { GameState } from '@/store/useGameState';
+import { GameState, ConfidenceLevel } from '@/store/useGameState';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, ShieldAlert } from 'lucide-react';
@@ -10,6 +10,7 @@ interface Props {
 
 export default function QuestionScreen({ state, dispatch }: Props) {
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+  const [confidence, setConfidence] = useState<ConfidenceLevel>(null);
   const [timeLeft, setTimeLeft] = useState(120);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function QuestionScreen({ state, dispatch }: Props) {
       if (state.session.streak >= 2) xp *= 2; // Streak bonus active on 3rd in a row (stored streak handles it, simplifying here to just > 2 means this makes it 3)
     }
 
-    dispatch({ type: 'ANSWER_SUBMITTED', isCorrect, xpGained: xp });
+    dispatch({ type: 'ANSWER_SUBMITTED', isCorrect, xpGained: xp, confidence });
     
     // Fetch Explanation
     try {
@@ -49,7 +50,7 @@ export default function QuestionScreen({ state, dispatch }: Props) {
       });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      dispatch({ type: 'SET_EXPLANATION', explanation: data.bullets });
+      dispatch({ type: 'SET_EXPLANATION', explanation: data.bullets, expertTip: data.expertTip });
       
       // Eager fetch NEXT question in background
       fetch('/api/generate-question', {
@@ -110,6 +111,37 @@ export default function QuestionScreen({ state, dispatch }: Props) {
           </button>
         ))}
       </div>
+
+      {selectedLetter && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex gap-3 mt-4"
+        >
+          <button
+            type="button"
+            onClick={() => setConfidence(confidence === 'guessed' ? null : 'guessed')}
+            className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all border ${
+              confidence === 'guessed'
+                ? 'bg-amber-500/20 border-amber-500 text-amber-400'
+                : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
+            }`}
+          >
+            I guessed
+          </button>
+          <button
+            type="button"
+            onClick={() => setConfidence(confidence === 'knew' ? null : 'knew')}
+            className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all border ${
+              confidence === 'knew'
+                ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
+                : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
+            }`}
+          >
+            I knew it
+          </button>
+        </motion.div>
+      )}
 
       <button
         title="Submit Answer"

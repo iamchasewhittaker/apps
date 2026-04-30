@@ -16,3 +16,4 @@ Purpose: Track confirmed Newsletter vs Cold Email misclassifications from daily 
 | 2026-04-12 | natia@space-leads.com | Cold Email | Newsletter | Confirmed recurring newsletter-style content | Updated in `gmail-filters.xml` (already applied) |
 | 2026-04-13 | Baseline review | Newsletter / Cold Email set | No change | No new confirmed mislabels in available records | No XML change required |
 | 2026-04-15 | Phase 2 ops | — | — | Leaker tracking template added (`roadmap/inbox-leakers.md`); daily report format updated in `claude.md` | Continue weekly rollup until retrospective |
+| 2026-04-30 | GitHub CI notifications | Security | Notification | CI workflow notifications (build pass/fail) are routine app-status updates, not security alerts | Pending — needs sender-specific override or subject pattern in `rules.gs` |

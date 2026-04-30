@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| **Focus** | Phase 3 live · **Apr 28 (cont)**: 3-pass match logic + LinkedIn social split — `matchRules_()` refactored address-before-domain; `messages-noreply/invitations/updates-noreply@linkedin.com` → Notification; `healthCheck_jobSearch` renamed (trailing _ hides from dropdown); `JobSearch` label created in Gmail; XML re-imported. System fully verified. |
-| **Last touch** | Apr 28, 2026 — `auto-sort.gs` `matchRules_()` 3-pass refactor; `rules.gs` Notification gains 3 LinkedIn social addresses; `healthCheck_jobSearch_` → `healthCheck_jobSearch`; JobSearch label created; XML re-imported. Deployed via `clasp push --force`. |
-| **Next** | Monitor: next job email from ATS/LinkedIn should auto-tag `JobSearch` within 5 min and appear in JSHQ InboxPanel. Triage Review Queue items (Vercel, Tailscale, Chipotle, MACU not yet in rules.gs). Enable Gemini when budget allows. |
+| **Focus** | Phase 3 live · **Apr 30**: Newsletters now archived (label + archive) instead of staying in inbox. `shouldSkipArchive_()` no longer protects Newsletter; XML gained 24 `shouldArchive` lines for all Newsletter entries. Apps Script redeployed via clasp. |
+| **Last touch** | Apr 30, 2026 — `auto-sort.gs` removed Newsletter skip-archive; `gmail-filters.xml` added `shouldArchive` to all 24 Newsletter entries; `claude.md` critical rule flipped. Deployed via `clasp push --force`. |
+| **Next** | Promote inbox leakers identified Apr 30 into `rules.gs`: `capacities.io` (Notification), `hi.extra.email` (Notification), `updates.linear.app` (Security), `toybook.com` domain rule (Newsletter), GitHub CI override → Notification. Then monitor JobSearch label, enable Gemini once billing active. |
 | **Script ID** | `1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI` |
 | **Editor URL** | https://script.google.com/d/1xCONJKIfWzFwdS29I4M_r5CuhebILiQAlFJHtfkjzYnjP-NKD_90jqQI/edit |
 | **Google Sheet** | https://docs.google.com/spreadsheets/d/1OT1Jtrp2jaVPVUCZGKnFwf8NwAK0h3PA447VZHYJP54/edit |

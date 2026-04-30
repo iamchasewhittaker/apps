@@ -1,5 +1,26 @@
 # Gmail Forge — Changelog
 
+## [Unreleased]
+
+### [Apr 30, 2026] — Newsletters now archived + leaker triage
+
+**What changed**
+- **`apps-script/auto-sort.gs`** — removed the `Newsletter` skip-archive line from `shouldSkipArchive_()`. The function now only protects `JobSearch`, `Personal`, and the `NEVER_ARCHIVE_ADDRESSES` list. Newsletters get labeled AND archived in the same sweep.
+- **`gmail-filters.xml`** — added `shouldArchive` to all 24 Newsletter entries (Substack, Readwise, Marginalian, Hustle, Polymarket, Product Hunt, TLDR, Word Smarts, Athletic, Masters, John Hilton III, Daily Crossword, Sporcle, Twist, Farnam Street, Daily Stoic, Puzzmo, Superhuman, Church of Jesus Christ, Missionary.org, Natia Kurdadze, plus the substack.com domain rule and the iCloud aliases). Total `shouldArchive` lines: 63.
+- **`claude.md`** — flipped the critical rule from "Newsletters are labeled but NOT archived" → "Newsletters are labeled AND archived (changed 2026-04-30)".
+- **Apps Script redeployed** via `cd apps-script && npx clasp push --force`.
+
+**Why**
+The "newsletters stay in inbox" rule (set 2026-04-27) created exactly the noise it was trying to avoid — Substacks, Daily Stoic, TLDR, etc. piled up in inbox and made the daily review noisy. Newsletters are recurring/digest content; they belong in the `Newsletter` label, archived. Job-search whitelist is still fully protected (different label, different code path).
+
+**Inbox leakers identified (next session)**
+Candidates for `rules.gs` updates from today's report:
+- `capacities.io` → Notification
+- `hi.extra.email` (Extra app) → Notification
+- `updates.linear.app` (Linear security alerts) → Security
+- `james@toybook.com` → promote to domain rule `toybook.com` (Newsletter)
+- GitHub CI notifications hitting `Security` instead of `Notification` — needs sender-specific override
+
 ## [Apr 28, 2026] — matchRules_ 3-pass refactor + LinkedIn social split
 
 ### What changed
@@ -101,7 +122,7 @@ Job Search HQ's InboxPanel queries Gmail via `labelIds=<JobSearch>` (not sender 
 - Added `📊 Total: X inbox / Y archived / X+Y received today` line at report bottom
 - Previously invisible: emails auto-archived by the 5-min Apps Script sweep never appeared in the report
 
-## [Unreleased]
+## [Apr 13, 2026] — healthCheck()
 
 - Added `healthCheck()` in `apps-script/auto-sort.gs` — logs classifier mode, key presence (length only), trigger count, and sheet access without calling Gemini
 

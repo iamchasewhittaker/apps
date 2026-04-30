@@ -4,6 +4,18 @@
 
 ---
 
+## Newsletter archive flip-flop: "keep in inbox" was the wrong call (Apr 30, 2026)
+
+**What happened:** On Apr 27 the rule was changed to "newsletters labeled but NOT archived" — the thinking was that some newsletters carry mid-week signal worth seeing. Three days later inbox was full of Substacks, Daily Stoic, TLDR, John Hilton III, etc. that all got skimmed-and-ignored. The whole point of a Newsletter label is "I'll read these when I want to, not when they show up."
+
+**Fix:** Removed `Newsletter` from `shouldSkipArchive_()` in `auto-sort.gs`. Added `<value>shouldArchive</value>` to every Newsletter entry in `gmail-filters.xml` (24 entries). Redeployed via clasp. The label still works — the Chrome extension's Newsletter tab + Gmail's `label:Newsletter` query both surface them on demand.
+
+**Two-side fix is mandatory:** XML and rules.gs are independent layers. The XML rule fires in Gmail server-side at delivery. The Apps Script rule fires on the 5-minute sweep for anything the XML missed. Both needed the archive flip — touching only one would leave half the senders in inbox.
+
+**Rule:** Default to "label + archive" for any recurring/automated content category (Newsletter, Notification, Marketing, Receipt). The exceptions are `JobSearch` and `Personal` — those need eyeballs immediately. If Chase says "but I want to see this newsletter" — that's an unsubscribe decision, not a filter decision.
+
+---
+
 ## Apps Script: trailing underscore = private function, hidden from Run dropdown (Apr 28, 2026)
 
 **What happened:** `healthCheck_jobSearch_()` (trailing `_`) didn't appear in the Apps Script editor's function dropdown. Apps Script treats any function ending in `_` as "private" — it runs fine if called programmatically but is invisible to the UI picker.

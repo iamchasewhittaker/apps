@@ -1,6 +1,6 @@
 import { GameState } from '@/store/useGameState';
 import { motion } from 'framer-motion';
-import { CheckCircle2, XCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Loader2, Lightbulb } from 'lucide-react';
 
 interface Props {
   state: GameState;
@@ -69,6 +69,21 @@ export default function ExplanationScreen({ state, dispatch }: Props) {
              </motion.li>
            ))}
         </ul>
+
+        {state.expertTip && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-6 p-4 rounded-xl border border-amber-500/30 bg-amber-500/5"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Lightbulb className="w-5 h-5 text-amber-400" />
+              <span className="text-sm font-bold uppercase tracking-wider text-amber-400">Pro Tip</span>
+            </div>
+            <p className="text-white/90 font-medium leading-relaxed">{state.expertTip}</p>
+          </motion.div>
+        )}
       </div>
 
       <button

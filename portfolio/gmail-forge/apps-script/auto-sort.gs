@@ -327,7 +327,6 @@ function shouldSkipArchive_(email, label) {
   if (NEVER_ARCHIVE_ADDRESSES.indexOf(email) !== -1) return true;
   if (label === 'JobSearch') return true;
   if (label === 'Personal') return true;
-  if (label === 'Newsletter') return true;
   return false;
 }
 
