@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased] — 2026-04-29 — Command Blue redesign mockup + HQ monogram logo
+
+### Design
+- **`design/mockup-focus.html`** — standalone HTML mockup showing the Focus tab with Command Blue treatment. Applies the same readability upgrades from Shipyard's redesign (glass cards, 14px text floor, 44px touch targets, `backdrop-blur` surfaces) while keeping JSHQ's blue `#3b82f6` accent instead of Shipyard's gold. Layout uses a 240px left sidebar matching Shipyard's nav pattern. Sections: urgency header (Day 438), Kassie card, Morning Launchpad (3 stages), Gmail Inbox + Action Queue split-hero, daily action counters, pipeline summary with stage pills.
+- **`design/logo-concepts.html`** — 6 SVG logo concepts at 3 sizes (sidebar icon, app icon blue bg, app icon dark bg) plus sidebar lockup preview: Crosshair, HQ Monogram, Compass Rose, Signal, Launchpad, Command Shield. **HQ Monogram selected** — bold typographic "HQ" filling the entire icon (DM Sans 800, `font-size: 38` in 48px viewport).
+- **Design direction documented in plan:** `~/.claude/plans/show-me-what-a-buzzing-flask.md` — Command Blue token mapping, mockup section breakdown, differences from Shipyard.
+
+### Notes
+- No code changes to the app — design evaluation only. Implementation would convert the `s` styles object in `constants.js` to match the mockup tokens.
+- Mockup uses Inter font (Google Fonts CDN); actual app uses DM Sans. Font choice would be finalized during implementation.
+
+---
+
 ## [Unreleased] — 2026-04-29 — Gmail OAuth activation complete ✅ (v8.18 live)
 
 Activation checkpoint: All four env vars configured on Vercel, OAuth flow validated end-to-end, InboxPanel pulling live Gmail data. Chase successfully connected to Gmail and saw 2 LinkedIn notifications in the inbox (Crunchbase hiring + Ameer Hamza opportunity).

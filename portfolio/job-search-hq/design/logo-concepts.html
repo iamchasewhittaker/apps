@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Search HQ — Logo Concepts (Command Blue)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-start: #0A1128;
+    --bg-end: #0E1A3E;
+    --glass: rgba(255,255,255,0.05);
+    --glass-strong: rgba(255,255,255,0.08);
+    --border: rgba(59,130,246,0.12);
+    --text: #FFFFFF;
+    --text-secondary: #A0AABF;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59,130,246,0.25);
+    --accent-soft: rgba(59,130,246,0.12);
+    --gold: #FFD700;
+    --gold-glow: rgba(255,215,0,0.25);
+    --success: #34D399;
+  }
+
+  body {
+    background: linear-gradient(150deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    padding: 48px;
+    min-height: 100vh;
+  }
+
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 15px; color: var(--text-secondary); margin-bottom: 48px; }
+
+  .concept-row {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    margin-bottom: 56px;
+    align-items: start;
+  }
+
+  .concept-info {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .concept-label {
+    font-size: 11px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .concept-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .concept-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  .concept-demos {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* Icon mark at sidebar size (38px) */
+  .icon-demo {
+    width: 52px; height: 52px;
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Icon mark at app-icon size (96px) */
+  .icon-large {
+    width: 96px; height: 96px;
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .icon-large.blue-bg { background: var(--accent); box-shadow: 0 0 32px var(--accent-glow); }
+  .icon-large.dark-bg { background: #0C1630; border: 1px solid var(--border); }
+  .icon-large.gradient-bg {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0A1128 100%);
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+
+  /* Full lockup */
+  .lockup {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 24px;
+  }
+  .lockup-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .lockup-text { font-weight: 700; font-size: 18px; }
+  .lockup-sub { font-size: 12px; color: var(--text-secondary); }
+
+  /* Sidebar preview */
+  .sidebar-preview {
+    width: 220px;
+    background: var(--glass);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 14px;
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 6px; margin-bottom: 20px;
+  }
+  .sidebar-logo-mark {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sidebar-title { font-weight: 700; font-size: 16px; }
+  .sidebar-sub { font-size: 11px; color: var(--text-secondary); }
+  .sidebar-nav {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .sidebar-nav-item {
+    padding: 10px 12px; border-radius: 8px;
+    font-size: 14px; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sidebar-nav-item.active {
+    background: var(--accent-soft); color: var(--accent); font-weight: 600;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Job Search HQ — Logo Concepts</h1>
+<p class="subtitle">Designed for the Command Blue glass theme. Each shown at sidebar icon size, app icon size, and in the sidebar lockup.</p>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CONCEPT A: CROSSHAIR / TARGET -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="concept-row">
+  <div class="concept-info">
+    <div class="concept-label">Concept A</div>
+    <div class="concept-name">Crosshair</div>
+    <div class="concept-desc">A targeting reticle. Represents precision, focus, and locking onto the right opportunity. Clean geometric lines work at any size.</div>
+  </div>
+  <div class="concept-demos">
+    <!-- Small icon -->
+    <div class="icon-demo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="9" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="4" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+        <line x1="14" y1="1" x2="14" y2="6" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="22" x2="14" y2="27" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="1" y1="14" x2="6" y2="14" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="27" y2="14" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14" cy="14" r="1.5" fill="#3b82f6"/>
+      </svg>
+    </div>
+
+    <!-- Large icon (blue bg) -->
+    <div class="icon-large blue-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="9" stroke="white" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="4" stroke="white" stroke-width="1.5" fill="none"/>
+        <line x1="14" y1="1" x2="14" y2="6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="22" x2="14" y2="27" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="1" y1="14" x2="6" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="27" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14" cy="14" r="1.5" fill="white"/>
+      </svg>
+    </div>
+
+    <!-- Large icon (dark bg) -->
+    <div class="icon-large dark-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="9" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="4" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+        <line x1="14" y1="1" x2="14" y2="6" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="22" x2="14" y2="27" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="1" y1="14" x2="6" y2="14" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="27" y2="14" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14" cy="14" r="1.5" fill="#3b82f6"/>
+      </svg>
+    </div>
+
+    <!-- Sidebar preview -->
+    <div class="sidebar-preview">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark" style="background:var(--accent); box-shadow: 0 0 12px var(--accent-glow);">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="9" stroke="white" stroke-width="2" fill="none"/>
+            <circle cx="14" cy="14" r="4" stroke="white" stroke-width="2" fill="none"/>
+            <line x1="14" y1="1" x2="14" y2="6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <line x1="14" y1="22" x2="14" y2="27" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <line x1="1" y1="14" x2="6" y2="14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <line x1="22" y1="14" x2="27" y2="14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="2" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">Job Search HQ</div>
+          <div class="sidebar-sub">Command Center</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item active">&#127919; Focus</div>
+        <div class="sidebar-nav-item">&#128203; Pipeline</div>
+        <div class="sidebar-nav-item">&#128101; Contacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CONCEPT B: HQ MONOGRAM -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="concept-row">
+  <div class="concept-info">
+    <div class="concept-label">Concept B</div>
+    <div class="concept-name">HQ Monogram</div>
+    <div class="concept-desc">Bold typographic mark. "HQ" is the identity. Strong at small sizes, instantly recognizable. The letters carry the brand without needing an icon.</div>
+  </div>
+  <div class="concept-demos">
+    <div class="icon-demo">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <text x="24" y="35" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="800" font-size="38" fill="#3b82f6">HQ</text>
+      </svg>
+    </div>
+
+    <div class="icon-large blue-bg">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <text x="40" y="56" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="800" font-size="54" fill="white">HQ</text>
+      </svg>
+    </div>
+
+    <div class="icon-large gradient-bg">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <text x="40" y="56" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="800" font-size="54" fill="#3b82f6">HQ</text>
+      </svg>
+    </div>
+
+    <div class="sidebar-preview">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark" style="background:var(--accent); box-shadow: 0 0 12px var(--accent-glow);">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <text x="18" y="27" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="800" font-size="28" fill="white">HQ</text>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">Job Search HQ</div>
+          <div class="sidebar-sub">Command Center</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item active">&#127919; Focus</div>
+        <div class="sidebar-nav-item">&#128203; Pipeline</div>
+        <div class="sidebar-nav-item">&#128101; Contacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CONCEPT C: COMPASS ROSE -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="concept-row">
+  <div class="concept-info">
+    <div class="concept-label">Concept C</div>
+    <div class="concept-name">Compass</div>
+    <div class="concept-desc">A compass rose with the needle pointing north. Represents direction, navigation, and finding your way. Ties into the portfolio's nautical language (Shipyard, fleet).</div>
+  </div>
+  <div class="concept-demos">
+    <div class="icon-demo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="1.2" fill="none"/>
+        <circle cx="14" cy="14" r="8.5" stroke="#3b82f6" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- N needle -->
+        <polygon points="14,3 11.5,14 14,12 16.5,14" fill="#3b82f6"/>
+        <!-- S needle -->
+        <polygon points="14,25 16.5,14 14,16 11.5,14" fill="#3b82f6" opacity="0.35"/>
+        <!-- Cardinal ticks -->
+        <line x1="14" y1="2" x2="14" y2="4.5" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="26" y1="14" x2="23.5" y2="14" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="2" y1="14" x2="4.5" y2="14" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="14" cy="14" r="1.5" fill="#3b82f6"/>
+      </svg>
+    </div>
+
+    <div class="icon-large blue-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="12" stroke="white" stroke-width="1.2" fill="none"/>
+        <circle cx="14" cy="14" r="8.5" stroke="white" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <polygon points="14,3 11.5,14 14,12 16.5,14" fill="white"/>
+        <polygon points="14,25 16.5,14 14,16 11.5,14" fill="white" opacity="0.35"/>
+        <line x1="14" y1="2" x2="14" y2="4.5" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="26" y1="14" x2="23.5" y2="14" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="2" y1="14" x2="4.5" y2="14" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="14" cy="14" r="1.5" fill="white"/>
+      </svg>
+    </div>
+
+    <div class="icon-large dark-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="1.2" fill="none"/>
+        <circle cx="14" cy="14" r="8.5" stroke="#3b82f6" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <polygon points="14,3 11.5,14 14,12 16.5,14" fill="#3b82f6"/>
+        <polygon points="14,25 16.5,14 14,16 11.5,14" fill="#3b82f6" opacity="0.35"/>
+        <line x1="14" y1="2" x2="14" y2="4.5" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="26" y1="14" x2="23.5" y2="14" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="2" y1="14" x2="4.5" y2="14" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="14" cy="14" r="1.5" fill="#3b82f6"/>
+      </svg>
+    </div>
+
+    <div class="sidebar-preview">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark" style="background:var(--accent); box-shadow: 0 0 12px var(--accent-glow);">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="12" stroke="white" stroke-width="1.5" fill="none"/>
+            <polygon points="14,3 11.5,14 14,12 16.5,14" fill="white"/>
+            <polygon points="14,25 16.5,14 14,16 11.5,14" fill="white" opacity="0.35"/>
+            <circle cx="14" cy="14" r="1.8" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">Job Search HQ</div>
+          <div class="sidebar-sub">Command Center</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item active">&#127919; Focus</div>
+        <div class="sidebar-nav-item">&#128203; Pipeline</div>
+        <div class="sidebar-nav-item">&#128101; Contacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CONCEPT D: SIGNAL / BROADCAST -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="concept-row">
+  <div class="concept-info">
+    <div class="concept-label">Concept D</div>
+    <div class="concept-name">Signal</div>
+    <div class="concept-desc">Broadcasting signal arcs radiating outward. Represents outreach, networking, and putting yourself out there. Active and dynamic.</div>
+  </div>
+  <div class="concept-demos">
+    <div class="icon-demo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="18" r="3" fill="#3b82f6"/>
+        <path d="M8 14 A8.5 8.5 0 0 1 20 14" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M5 11 A12 12 0 0 1 23 11" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+        <path d="M2 8 A15.5 15.5 0 0 1 26 8" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+      </svg>
+    </div>
+
+    <div class="icon-large blue-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="18" r="3" fill="white"/>
+        <path d="M8 14 A8.5 8.5 0 0 1 20 14" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M5 11 A12 12 0 0 1 23 11" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+        <path d="M2 8 A15.5 15.5 0 0 1 26 8" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+      </svg>
+    </div>
+
+    <div class="icon-large gradient-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="18" r="3" fill="#3b82f6"/>
+        <path d="M8 14 A8.5 8.5 0 0 1 20 14" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M5 11 A12 12 0 0 1 23 11" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+        <path d="M2 8 A15.5 15.5 0 0 1 26 8" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+      </svg>
+    </div>
+
+    <div class="sidebar-preview">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark" style="background:var(--accent); box-shadow: 0 0 12px var(--accent-glow);">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="18" r="3" fill="white"/>
+            <path d="M8 14 A8.5 8.5 0 0 1 20 14" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M5 11 A12 12 0 0 1 23 11" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <path d="M2 8 A15.5 15.5 0 0 1 26 8" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">Job Search HQ</div>
+          <div class="sidebar-sub">Command Center</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item active">&#127919; Focus</div>
+        <div class="sidebar-nav-item">&#128203; Pipeline</div>
+        <div class="sidebar-nav-item">&#128101; Contacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CONCEPT E: LAUNCHPAD / ROCKET -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="concept-row">
+  <div class="concept-info">
+    <div class="concept-label">Concept E</div>
+    <div class="concept-name">Launchpad</div>
+    <div class="concept-desc">An upward arrow/rocket. Represents momentum, career trajectory, and the daily launchpad flow. Forward motion, always up.</div>
+  </div>
+  <div class="concept-demos">
+    <div class="icon-demo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <!-- Arrow body -->
+        <path d="M14 4 L20 14 L17 14 L17 24 L11 24 L11 14 L8 14 Z" fill="#3b82f6"/>
+        <!-- Glow trail -->
+        <rect x="12" y="22" width="4" height="3" rx="1" fill="#3b82f6" opacity="0.4"/>
+        <rect x="12.5" y="24.5" width="3" height="2" rx="1" fill="#3b82f6" opacity="0.2"/>
+      </svg>
+    </div>
+
+    <div class="icon-large blue-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <path d="M14 4 L20 14 L17 14 L17 24 L11 24 L11 14 L8 14 Z" fill="white"/>
+        <rect x="12" y="22" width="4" height="3" rx="1" fill="white" opacity="0.4"/>
+        <rect x="12.5" y="24.5" width="3" height="2" rx="1" fill="white" opacity="0.2"/>
+      </svg>
+    </div>
+
+    <div class="icon-large dark-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <path d="M14 4 L20 14 L17 14 L17 24 L11 24 L11 14 L8 14 Z" fill="#3b82f6"/>
+        <rect x="12" y="22" width="4" height="3" rx="1" fill="#3b82f6" opacity="0.4"/>
+        <rect x="12.5" y="24.5" width="3" height="2" rx="1" fill="#3b82f6" opacity="0.2"/>
+      </svg>
+    </div>
+
+    <div class="sidebar-preview">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark" style="background:var(--accent); box-shadow: 0 0 12px var(--accent-glow);">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <path d="M14 4 L20 14 L17 14 L17 24 L11 24 L11 14 L8 14 Z" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">Job Search HQ</div>
+          <div class="sidebar-sub">Command Center</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item active">&#127919; Focus</div>
+        <div class="sidebar-nav-item">&#128203; Pipeline</div>
+        <div class="sidebar-nav-item">&#128101; Contacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CONCEPT F: SHIELD / COMMAND -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="concept-row">
+  <div class="concept-info">
+    <div class="concept-label">Concept F</div>
+    <div class="concept-name">Command Shield</div>
+    <div class="concept-desc">A shield with a chevron. Military command aesthetic. Represents headquarters, authority, and disciplined execution. Ties to "HQ" in the name.</div>
+  </div>
+  <div class="concept-demos">
+    <div class="icon-demo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <!-- Shield outline -->
+        <path d="M14 2 L24 7 L24 16 C24 21 20 25 14 27 C8 25 4 21 4 16 L4 7 Z" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+        <!-- Chevron -->
+        <polyline points="9,15 14,10 19,15" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="9,20 14,15 19,20" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="icon-large blue-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2 L24 7 L24 16 C24 21 20 25 14 27 C8 25 4 21 4 16 L4 7 Z" stroke="white" stroke-width="1.5" fill="none"/>
+        <polyline points="9,15 14,10 19,15" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="9,20 14,15 19,20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="icon-large gradient-bg">
+      <svg width="52" height="52" viewBox="0 0 28 28" fill="none">
+        <path d="M14 2 L24 7 L24 16 C24 21 20 25 14 27 C8 25 4 21 4 16 L4 7 Z" stroke="#3b82f6" stroke-width="1.5" fill="rgba(59,130,246,0.1)"/>
+        <polyline points="9,15 14,10 19,15" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="9,20 14,15 19,20" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="sidebar-preview">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark" style="background:var(--accent); box-shadow: 0 0 12px var(--accent-glow);">
+          <svg width="20" height="20" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2 L24 7 L24 16 C24 21 20 25 14 27 C8 25 4 21 4 16 L4 7 Z" stroke="white" stroke-width="2" fill="none"/>
+            <polyline points="9,15 14,10 19,15" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="9,20 14,15 19,20" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sidebar-title">Job Search HQ</div>
+          <div class="sidebar-sub">Command Center</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item active">&#127919; Focus</div>
+        <div class="sidebar-nav-item">&#128203; Pipeline</div>
+        <div class="sidebar-nav-item">&#128101; Contacts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed; bottom:24px; right:24px; background:var(--accent); color:white; font-size:13px; font-weight:600; padding:8px 16px; border-radius:8px; box-shadow:0 4px 16px var(--accent-glow);">
+  Logo Concepts — Command Blue
+</div>
+
+</body>
+</html>

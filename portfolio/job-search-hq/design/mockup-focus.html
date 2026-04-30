@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Search HQ — Focus Tab Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-start: #0A1128;
+    --bg-end: #0E1A3E;
+    --glass: rgba(255,255,255,0.05);
+    --glass-hover: rgba(255,255,255,0.09);
+    --glass-strong: rgba(255,255,255,0.08);
+    --border: rgba(59,130,246,0.12);
+    --border-hover: rgba(59,130,246,0.35);
+    --text: #FFFFFF;
+    --text-secondary: #A0AABF;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59,130,246,0.25);
+    --accent-soft: rgba(59,130,246,0.12);
+    --gold: #FFD700;
+    --gold-glow: rgba(255,215,0,0.25);
+    --gold-soft: rgba(255,215,0,0.12);
+    --success: #34D399;
+    --success-soft: rgba(52,211,153,0.12);
+    --warning: #FBBF24;
+    --warning-soft: rgba(251,191,36,0.12);
+    --danger: #F87171;
+    --danger-soft: rgba(248,113,113,0.12);
+    --purple: #a78bfa;
+    --purple-soft: rgba(167,139,250,0.12);
+  }
+
+  body {
+    background: linear-gradient(150deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ─── LAYOUT ─── */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: var(--glass);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid var(--border);
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
+    margin-bottom: 36px;
+  }
+  .logo-mark {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    box-shadow: 0 0 16px var(--accent-glow);
+    flex-shrink: 0;
+  }
+  .logo-text { font-weight: 700; font-size: 18px; color: var(--text); }
+  .logo-sub { font-size: 12px; color: var(--text-secondary); }
+
+  .nav-section { margin-bottom: 8px; }
+  .nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0 12px;
+    margin-bottom: 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+    min-height: 44px;
+  }
+  .nav-item:hover { background: var(--glass-hover); color: var(--text); }
+  .nav-item.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .nav-icon { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
+
+  /* ─── MAIN ─── */
+  .main { flex: 1; padding: 40px 48px; overflow-x: hidden; overflow-y: auto; }
+
+  /* ─── PAGE HEADER ─── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .page-header h1 {
+    font-weight: 700; font-size: 32px; color: var(--text); margin-bottom: 4px;
+  }
+  .page-header p { font-size: 16px; color: var(--text-secondary); }
+  .header-stats {
+    display: flex; gap: 20px; align-items: center;
+  }
+  .header-stat {
+    text-align: center;
+  }
+  .header-stat-value {
+    font-weight: 700; font-size: 24px; color: var(--text); display: block;
+  }
+  .header-stat-label { font-size: 13px; color: var(--text-secondary); }
+
+  /* ─── URGENCY HEADER ─── */
+  .urgency-card {
+    background: var(--glass-strong);
+    border: 1px solid var(--gold-soft);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .urgency-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--warning), transparent);
+    border-radius: 16px 16px 0 0;
+  }
+  .urgency-day {
+    font-weight: 700; font-size: 36px; color: var(--gold);
+    line-height: 1.1;
+    text-shadow: 0 0 32px var(--gold-glow);
+  }
+  .urgency-label {
+    font-size: 15px; color: var(--text-secondary); margin-top: 4px;
+  }
+  .urgency-minimums {
+    display: flex; gap: 24px; margin-top: 16px;
+  }
+  .minimum-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px;
+  }
+  .minimum-bar {
+    width: 120px; height: 6px; background: rgba(255,255,255,0.08);
+    border-radius: 4px; overflow: hidden;
+  }
+  .minimum-bar-fill { height: 100%; border-radius: 4px; }
+  .minimum-label { color: var(--text-secondary); }
+  .minimum-count { font-weight: 700; color: var(--text); }
+
+  /* ─── KASSIE CARD ─── */
+  .kassie-card {
+    background: var(--glass-strong);
+    border: 1px solid var(--gold-soft);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .kassie-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    border-radius: 14px 14px 0 0;
+  }
+  .kassie-label {
+    font-size: 12px; font-weight: 600; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .kassie-quote {
+    font-size: 15px; color: var(--text);
+    font-style: italic; line-height: 1.6;
+  }
+  .kassie-dismiss {
+    margin-top: 12px;
+    font-size: 13px; color: var(--text-secondary);
+    background: none; border: none; cursor: pointer;
+    padding: 6px 0;
+  }
+  .kassie-dismiss:hover { color: var(--text); }
+
+  /* ─── SECTION EYEBROW ─── */
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ─── MORNING LAUNCHPAD ─── */
+  .launchpad { margin-bottom: 20px; }
+  .launchpad-stages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .stage-card {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    transition: all 0.15s;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+  }
+  .stage-card:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .stage-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 0 1px rgba(59,130,246,0.1);
+  }
+  .stage-card.done { border-color: rgba(52,211,153,0.3); }
+  .stage-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .stage-name {
+    font-weight: 700; font-size: 16px; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .stage-emoji { font-size: 20px; }
+  .stage-time { font-size: 13px; color: var(--text-secondary); }
+  .stage-desc {
+    font-size: 14px; color: var(--text-secondary); margin-bottom: 14px;
+    flex: 1;
+  }
+  .stage-progress { display: flex; gap: 6px; }
+  .progress-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+  }
+  .progress-dot.filled { background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
+  .progress-dot.done-dot { background: var(--success); box-shadow: 0 0 6px rgba(52,211,153,0.5); }
+  .stage-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 6px; }
+  .badge-active { background: var(--accent-soft); color: var(--accent); }
+  .badge-done { background: var(--success-soft); color: var(--success); }
+  .badge-pending { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+
+  /* ─── SPLIT HERO ─── */
+  .split-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .hero-panel {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-panel::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .inbox-list { display: flex; flex-direction: column; gap: 10px; }
+  .inbox-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    transition: all 0.15s;
+    min-height: 56px;
+    gap: 12px;
+  }
+  .inbox-item:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .inbox-item-left {
+    display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
+  }
+  .inbox-kind-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .kind-recruiter { background: var(--purple-soft); }
+  .kind-ats { background: var(--accent-soft); }
+  .kind-interview { background: var(--success-soft); }
+  .kind-linkedin { background: var(--accent-soft); }
+  .inbox-item-text { min-width: 0; }
+  .inbox-item-sender { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .inbox-item-subject { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .inbox-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .inbox-action-btn {
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    color: var(--text-secondary);
+    cursor: pointer; min-height: 36px;
+    transition: all 0.15s;
+  }
+  .inbox-action-btn:hover { background: var(--glass-hover); color: var(--text); border-color: var(--border-hover); }
+  .inbox-action-btn.primary { background: var(--accent-soft); color: var(--accent); border-color: rgba(59,130,246,0.3); }
+  .inbox-action-btn.primary:hover { background: var(--accent); color: white; }
+
+  /* connected dot */
+  .connected-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.5; }
+  }
+
+  /* ─── ACTION QUEUE (right panel) ─── */
+  .queue-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .queue-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    min-height: 52px;
+    transition: all 0.15s;
+  }
+  .queue-item:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .queue-item-left { display: flex; align-items: center; gap: 10px; }
+  .queue-icon { font-size: 16px; width: 24px; text-align: center; }
+  .queue-text { font-size: 14px; color: var(--text); }
+  .queue-text-sub { font-size: 13px; color: var(--text-secondary); }
+  .queue-badge {
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+    white-space: nowrap;
+  }
+  .badge-overdue { background: var(--danger-soft); color: var(--danger); }
+  .badge-due { background: var(--warning-soft); color: var(--warning); }
+  .badge-ok { background: var(--success-soft); color: var(--success); }
+
+  /* ─── DAILY ACTION COUNTER ─── */
+  .daily-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .action-chip {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.15s;
+    cursor: pointer;
+    min-height: 56px;
+  }
+  .action-chip:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .action-chip-icon { font-size: 20px; }
+  .action-chip-count { font-weight: 700; font-size: 20px; color: var(--text); }
+  .action-chip-label { font-size: 13px; color: var(--text-secondary); }
+
+  /* ─── PIPELINE SUMMARY ─── */
+  .pipeline-summary {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .pipeline-stages {
+    display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .pipeline-pill {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 18px; border-radius: 10px;
+    font-size: 14px; font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    color: var(--text-secondary);
+    min-height: 44px;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .pipeline-pill:hover { background: var(--glass-hover); }
+  .pipeline-pill.highlight { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .pill-count { font-weight: 700; font-size: 16px; }
+  .recent-apps { display: flex; flex-direction: column; gap: 10px; }
+  .app-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    min-height: 56px;
+    transition: all 0.15s;
+  }
+  .app-row:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .app-company { font-weight: 600; font-size: 15px; color: var(--text); }
+  .app-role { font-size: 13px; color: var(--text-secondary); }
+  .stage-tag {
+    font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 8px;
+    white-space: nowrap;
+  }
+  .stage-interested { background: rgba(96,165,250,0.15); color: #60A5FA; }
+  .stage-applied { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .stage-interview { background: rgba(251,191,36,0.15); color: #FBBF24; }
+  .stage-offer { background: rgba(52,211,153,0.15); color: #34D399; }
+
+  /* badge */
+  .badge-label {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--accent); color: white;
+    font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+          <text x="18" y="27" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="800" font-size="28" fill="white">HQ</text>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text">Job Search HQ</div>
+        <div class="logo-sub">Command Center</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Daily</div>
+      <a class="nav-item active" href="#"><span class="nav-icon">&#127919;</span> Focus</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128203;</span> Pipeline</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128101;</span> Contacts</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Tools</div>
+      <a class="nav-item" href="#"><span class="nav-icon">&#10024;</span> Apply Tools</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128233;</span> Inbox</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128218;</span> Resources</a>
+    </div>
+
+    <div class="nav-section" style="margin-top: auto;">
+      <a class="nav-item" href="#"><span class="nav-icon">&#128100;</span> Profile</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#9881;</span> Settings</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <h1>Daily Focus</h1>
+        <p>23 active applications · 47 contacts</p>
+      </div>
+      <div class="header-stats">
+        <div class="header-stat">
+          <span class="header-stat-value">3/5</span>
+          <span class="header-stat-label">Apps Today</span>
+        </div>
+        <div class="header-stat">
+          <span class="header-stat-value">1/3</span>
+          <span class="header-stat-label">Outreach</span>
+        </div>
+        <div class="header-stat">
+          <span class="header-stat-value" style="color:var(--success);">8</span>
+          <span class="header-stat-label">Actions</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- URGENCY HEADER -->
+    <div class="urgency-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <div class="urgency-day">Day 438</div>
+          <div class="urgency-label">since Visa (Feb 15, 2025)</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:14px; color:var(--text-secondary);">For Reese. For Buzz.</div>
+          <div style="font-size:14px; color:var(--gold); font-weight:600;">Forward. No excuses.</div>
+        </div>
+      </div>
+      <div class="urgency-minimums">
+        <div class="minimum-item">
+          <span class="minimum-label">Apps</span>
+          <div class="minimum-bar">
+            <div class="minimum-bar-fill" style="width:60%; background:var(--accent);"></div>
+          </div>
+          <span class="minimum-count">3/5</span>
+        </div>
+        <div class="minimum-item">
+          <span class="minimum-label">Outreach</span>
+          <div class="minimum-bar">
+            <div class="minimum-bar-fill" style="width:33%; background:var(--warning);"></div>
+          </div>
+          <span class="minimum-count">1/3</span>
+        </div>
+        <div class="minimum-item">
+          <span class="minimum-label">Actions</span>
+          <div class="minimum-bar">
+            <div class="minimum-bar-fill" style="width:80%; background:var(--success);"></div>
+          </div>
+          <span class="minimum-count">8</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KASSIE CARD -->
+    <div class="kassie-card">
+      <div class="kassie-label">Operating Doctrine</div>
+      <div class="kassie-quote">"You are not allowed to coast. You are not allowed to check the box. The only option is to show up every single day like your family depends on it. Because they do."</div>
+      <button class="kassie-dismiss">Dismiss for today</button>
+    </div>
+
+    <!-- MORNING LAUNCHPAD -->
+    <div class="launchpad">
+      <div class="section-eyebrow">&#9728;&#65039; Morning Launchpad</div>
+      <div class="launchpad-stages">
+        <div class="stage-card done">
+          <div class="stage-header">
+            <div class="stage-name"><span class="stage-emoji">&#128269;</span> Discover</div>
+            <span class="stage-badge badge-done">&#10003; Done</span>
+          </div>
+          <div class="stage-desc">Find 5 new roles on target boards</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="stage-time">15 min</span>
+            <div class="stage-progress">
+              <div class="progress-dot done-dot"></div>
+              <div class="progress-dot done-dot"></div>
+              <div class="progress-dot done-dot"></div>
+              <div class="progress-dot done-dot"></div>
+              <div class="progress-dot done-dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-card active">
+          <div class="stage-header">
+            <div class="stage-name"><span class="stage-emoji">&#128196;</span> Apply</div>
+            <span class="stage-badge badge-active">In Progress</span>
+          </div>
+          <div class="stage-desc">Submit apps to today's queue</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="stage-time">50 min</span>
+            <div class="stage-progress">
+              <div class="progress-dot filled"></div>
+              <div class="progress-dot filled"></div>
+              <div class="progress-dot filled"></div>
+              <div class="progress-dot"></div>
+              <div class="progress-dot"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-name"><span class="stage-emoji">&#128172;</span> Outreach</div>
+            <span class="stage-badge badge-pending">Next</span>
+          </div>
+          <div class="stage-desc">Message top 3 priority contacts</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="stage-time">15 min</span>
+            <div class="stage-progress">
+              <div class="progress-dot"></div>
+              <div class="progress-dot"></div>
+              <div class="progress-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPLIT HERO: Inbox (left) + Action Queue (right) -->
+    <div class="split-hero">
+
+      <!-- Left: Gmail Inbox -->
+      <div class="hero-panel">
+        <div class="hero-eyebrow"><span class="connected-dot"></span> Gmail Inbox · 4 new</div>
+        <div class="inbox-list">
+          <div class="inbox-item">
+            <div class="inbox-item-left">
+              <div class="inbox-kind-icon kind-recruiter">&#128100;</div>
+              <div class="inbox-item-text">
+                <div class="inbox-item-sender">Sarah Chen, Stripe</div>
+                <div class="inbox-item-subject">Re: Implementation Consultant</div>
+              </div>
+            </div>
+            <div class="inbox-actions">
+              <button class="inbox-action-btn primary">Save</button>
+              <button class="inbox-action-btn">&#10005;</button>
+            </div>
+          </div>
+          <div class="inbox-item">
+            <div class="inbox-item-left">
+              <div class="inbox-kind-icon kind-ats">&#128196;</div>
+              <div class="inbox-item-text">
+                <div class="inbox-item-sender">Greenhouse</div>
+                <div class="inbox-item-subject">Application received: Adyen</div>
+              </div>
+            </div>
+            <div class="inbox-actions">
+              <button class="inbox-action-btn primary">Bump</button>
+              <button class="inbox-action-btn">&#10005;</button>
+            </div>
+          </div>
+          <div class="inbox-item">
+            <div class="inbox-item-left">
+              <div class="inbox-kind-icon kind-interview">&#128197;</div>
+              <div class="inbox-item-text">
+                <div class="inbox-item-sender">Calendly</div>
+                <div class="inbox-item-subject">Finix - Phone Screen</div>
+              </div>
+            </div>
+            <div class="inbox-actions">
+              <button class="inbox-action-btn primary">Set</button>
+              <button class="inbox-action-btn">&#128340;</button>
+            </div>
+          </div>
+          <div class="inbox-item">
+            <div class="inbox-item-left">
+              <div class="inbox-kind-icon kind-linkedin">&#128279;</div>
+              <div class="inbox-item-text">
+                <div class="inbox-item-sender">LinkedIn</div>
+                <div class="inbox-item-subject">Checkout.com hiring manager</div>
+              </div>
+            </div>
+            <div class="inbox-actions">
+              <button class="inbox-action-btn primary">Save</button>
+              <button class="inbox-action-btn">&#10005;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Action Queue -->
+      <div class="hero-panel">
+        <div class="hero-eyebrow">&#9889; Action Queue</div>
+        <div class="queue-list">
+          <div class="queue-item">
+            <div class="queue-item-left">
+              <span class="queue-icon">&#128197;</span>
+              <div>
+                <div class="queue-text">Stripe phone screen</div>
+                <div class="queue-text-sub">Tomorrow 2:00 PM</div>
+              </div>
+            </div>
+            <span class="queue-badge badge-overdue">Prep now</span>
+          </div>
+          <div class="queue-item">
+            <div class="queue-item-left">
+              <span class="queue-icon">&#128172;</span>
+              <div>
+                <div class="queue-text">Follow up: Marcus</div>
+                <div class="queue-text-sub">Checkout.com · 5d ago</div>
+              </div>
+            </div>
+            <span class="queue-badge badge-due">Overdue</span>
+          </div>
+          <div class="queue-item">
+            <div class="queue-item-left">
+              <span class="queue-icon">&#128196;</span>
+              <div>
+                <div class="queue-text">Finix thank-you note</div>
+                <div class="queue-text-sub">Interview yesterday</div>
+              </div>
+            </div>
+            <span class="queue-badge badge-due">Today</span>
+          </div>
+          <div class="queue-item">
+            <div class="queue-item-left">
+              <span class="queue-icon">&#128270;</span>
+              <div>
+                <div class="queue-text">Research Spreedly</div>
+                <div class="queue-text-sub">Interested · 3d ago</div>
+              </div>
+            </div>
+            <span class="queue-badge badge-ok">Next</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DAILY ACTION COUNTER -->
+    <div class="daily-actions">
+      <div class="action-chip">
+        <span class="action-chip-icon">&#128196;</span>
+        <div>
+          <div class="action-chip-count">3</div>
+          <div class="action-chip-label">Applications</div>
+        </div>
+      </div>
+      <div class="action-chip">
+        <span class="action-chip-icon">&#128231;</span>
+        <div>
+          <div class="action-chip-count">1</div>
+          <div class="action-chip-label">Outreach</div>
+        </div>
+      </div>
+      <div class="action-chip">
+        <span class="action-chip-icon">&#127908;</span>
+        <div>
+          <div class="action-chip-count">1</div>
+          <div class="action-chip-label">Interview</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE SUMMARY -->
+    <div class="pipeline-summary">
+      <div class="section-eyebrow">&#128203; Pipeline Snapshot</div>
+      <div class="pipeline-stages">
+        <div class="pipeline-pill highlight">
+          <span class="pill-count">8</span> Interested
+        </div>
+        <div class="pipeline-pill">
+          <span class="pill-count">12</span> Applied
+        </div>
+        <div class="pipeline-pill">
+          <span class="pill-count" style="color:var(--warning);">3</span> Interview
+        </div>
+        <div class="pipeline-pill">
+          <span class="pill-count" style="color:var(--success);">1</span> Offer
+        </div>
+        <div class="pipeline-pill">
+          <span class="pill-count" style="color:var(--danger);">5</span> Rejected
+        </div>
+      </div>
+      <div class="recent-apps">
+        <div class="app-row">
+          <div>
+            <div class="app-company">Stripe</div>
+            <div class="app-role">Implementation Consultant</div>
+          </div>
+          <span class="stage-tag stage-interview">Interview</span>
+        </div>
+        <div class="app-row">
+          <div>
+            <div class="app-company">Adyen</div>
+            <div class="app-role">Sales Engineer</div>
+          </div>
+          <span class="stage-tag stage-applied">Applied</span>
+        </div>
+        <div class="app-row">
+          <div>
+            <div class="app-company">Finix</div>
+            <div class="app-role">Solutions Engineer</div>
+          </div>
+          <span class="stage-tag stage-interview">Interview</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="badge-label">Job Search HQ — Focus Tab Redesign</div>
+</body>
+</html>

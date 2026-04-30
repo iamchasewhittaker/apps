@@ -18,6 +18,18 @@
 
 ## Entries
 
+### 2026-04-29 — Sidebar nav mockup beats header+tabs for accessibility-focused redesigns
+**What happened:** First mockup draft used a horizontal header + tab bar (matching JSHQ's current layout). Chase rejected it because it didn't match the Shipyard reference screenshot, which uses a left sidebar.
+**Root cause:** Horizontal tab bars work fine at standard sizes but waste vertical space and crowd labels at large font sizes. A 240px sidebar provides more room for nav labels, leaves the full viewport width for content, and matches the "command center" visual language Chase liked in Shipyard.
+**Fix / lesson:** When doing a readability-focused redesign, default to sidebar navigation. It scales better with large text, gives more breathing room for touch targets, and creates a stronger visual hierarchy. Only use horizontal tabs when the content genuinely needs full viewport width and nav items are few (3-4 max).
+**Tags:** design · accessibility · ux · mockup
+
+### 2026-04-29 — SVG text logos: font-size must nearly match viewBox to fill the icon
+**What happened:** First pass at the HQ Monogram logo had tiny text inside a large icon. Two rounds of "make it bigger" before Chase was satisfied. Final: `font-size: 38` in a `viewBox="0 0 48 48"` (79% fill ratio), `font-size: 54` in `viewBox="0 0 80 80"` (67.5%).
+**Root cause:** SVG text rendering anchors at the baseline, not the visual center. Small font-size in a large viewBox leaves huge margins. The `text-anchor="middle"` centers horizontally but vertical centering requires manually tuning the `y` attribute to account for ascenders/descenders.
+**Fix / lesson:** For typographic logos where the text IS the icon, start with font-size at 70-80% of the viewBox dimension. Adjust `y` by eye (roughly `viewBox.height * 0.73` for uppercase-only text in DM Sans 800). Test at small sizes (24px, 36px) to make sure it's still legible.
+**Tags:** design · svg · logo · accessibility
+
 ### 2026-04-29 — Env var whitespace in Vercel breaks silently
 **What happened:** After initial Vercel deployment, clicking "Connect Gmail" opened the OAuth popup, user approved, but nothing happened — no error, no connection, silent failure. Had been working locally.
 **Root cause:** `REACT_APP_GOOGLE_CLIENT_ID` on Vercel had a trailing newline, copied from a cloud UI form. CRA's DefinePlugin bakes the raw value into the bundle, so the bundled client ID was `"abc123...\n"` — Google rejected it silently. Trailing whitespace is invisible, and the error path didn't surface Google's actual rejection (just a generic "token exchange failed").

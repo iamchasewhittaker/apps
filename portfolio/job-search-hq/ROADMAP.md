@@ -93,6 +93,14 @@ All Wave 3 items shipped 2026-04-18. Wave 4 is next.
 - [x] **IC/SE mock interview scenarios + Strength Answer Hooks** — "Implementation Consultant — Payments" and "Sales Engineer — Dev Tools" (6 qs each); 1-sentence opener per strength.
 - [x] **Networking & Informational Interviews resource section** — script, target-company list, First Round Review reference, follow-up rhythm.
 
+## Command Blue Redesign — In Progress (2026-04-29)
+
+- [x] Design mockup: `design/mockup-focus.html` — Focus tab with glass cards, sidebar nav, 14px floor, 44px targets
+- [x] Logo concepts: `design/logo-concepts.html` — HQ Monogram selected (bold typographic "HQ" filling icon)
+- [ ] Implement redesign in app — convert `s` styles in `constants.js` to Command Blue tokens
+- [ ] Mockup other tabs (Pipeline, Contacts, Apply Tools) if needed before implementation
+- [ ] Generate app icon assets from HQ Monogram (logo.svg, favicon.svg, PWA icons, iOS brand assets)
+
 ## Deferred — next wave (captured 2026-04-21)
 
 Chase can greenlight any of these in a follow-up session.
