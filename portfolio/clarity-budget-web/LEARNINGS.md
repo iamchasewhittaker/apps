@@ -1,5 +1,17 @@
 # Clarity Budget Web — LEARNINGS
 
+## 2026-04-30 — Shipyard glass theme alignment
+
+**Two apps that look similar can share most of their CSS already.** Before changing anything, exploration revealed Budget and Shipyard already shared the same 3 fonts (Instrument_Sans, Big_Shoulders, DM_Mono), the same navy palette (`--bg: #0A1128`, `--surface: #0F1A3E`), and the same glass recipe (`bg-surface/80 backdrop-blur-sm`). The "matching" job turned out to be ~80% structural (layout width, card grid, heading style) and ~20% cosmetic (border radius normalization, hover effects). No CSS variable changes needed — `globals.css` was already correct.
+
+**`max-w-lg` was hiding the redesign.** A single line (`mx-auto max-w-lg`) was constraining the dashboard to 512px wide, making it feel mobile-sized on a desktop. Removing it instantly unlocked Shipyard's "fills the space" feel without any other change. Worth checking width constraints first when an app feels visually constrained — it's often one className.
+
+**Square stat cards beat one combined card with internal dividers.** The original `StsCard` packed 3 numbers into one `<section>` with `border-l border-dimmer` dividers between them. Shipyard uses 3 independent `<div>`s in a CSS grid. The grid version is better in every way: cards stack naturally on mobile, each gets its own hover state, no awkward `pl-4` to compensate for the divider, and the code reads as data (an array of stats) instead of nested layout markup.
+
+**Border radius drift is real.** Budget had 4 different rounded values across surface cards (`rounded-[20px]`, `rounded-2xl`, `rounded-xl`, `rounded-[14px]`) — none deliberate, all accumulated over sessions. Standardizing to `rounded-xl` took 5 one-line edits and made everything visually cohesive. Worth a periodic sweep when components stop looking like a system.
+
+**Keeping the brand accent (green) while matching the theme worked.** The user explicitly chose to keep green over switching to Shipyard's gold. The result still reads as "Shipyard family" because the structural language (glass cards, square grid, simplified heading, consistent radius, hover lift) carries the visual identity, not the accent hue. Hover went from `hover:border-gold/20` (Shipyard) → `hover:border-green/20` (Budget) — same pattern, different accent token.
+
 ## 2026-04-30 — Server-side auth simplification
 
 **Self-healing fallbacks are a symptom, not a fix.** `loadYnabCredentials` had a `readBudgetIdFromUserData` fallback because the same data lived in both `clarity_budget_credentials.default_budget_id` and `user_data.data.ynabBudgetId`. Two sources of truth required a reconciliation function. The fix was to delete one of the sources (the `user_data` path), not improve the reconciliation.

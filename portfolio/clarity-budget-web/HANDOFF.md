@@ -4,9 +4,9 @@
 
 | Field | Value |
 |---|---|
-| Focus | **Step 10 — smoke test on production** (server-side auth simplification done 2026-04-30) |
-| Status | tsc ✅ · vitest 49/49 ✅ · build ✅ · all new routes `ƒ` dynamic · unauth 401s confirmed. Push to `main` + deploy pending. |
-| Last touch | 2026-04-30 |
+| Focus | **Step 10 — smoke test on production** (Shipyard glass theme alignment + server-side auth simplification done 2026-04-30) |
+| Status | tsc ✅ · dev server clean ✅ · 8 files restyled to match Shipyard's glass theme (square stat grid, simplified header, `rounded-xl` consistency, hover effects). Pure visual change — no logic touched. |
+| Last touch | 2026-04-30 — Shipyard glass theme alignment |
 | URL | clarity-budget-web.vercel.app |
 | Branch | `main` |
 | Steps 1–7 | ✅ DONE + deployed |

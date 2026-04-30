@@ -13,7 +13,7 @@ export function ShortfallBanner({ shortfall }: ShortfallBannerProps) {
   if (shortfall == null || shortfall <= 0.01) return null;
 
   return (
-    <div className="flex gap-3 rounded-[14px] border border-warning/35 bg-surface/80 backdrop-blur-sm p-3.5">
+    <div className="flex gap-3 rounded-xl border border-warning/35 bg-surface/80 backdrop-blur-sm p-3.5">
       <svg
         className="mt-0.5 h-5 w-5 shrink-0 text-warning"
         viewBox="0 0 20 20"

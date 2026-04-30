@@ -62,7 +62,7 @@ export function SpendingBreakdown({ lines }: Props) {
         )}
       </div>
 
-      <div className="rounded-[20px] border border-dimmer bg-surface/80 backdrop-blur-sm p-5">
+      <div className="rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 transition-colors hover:border-green/20">
         <div className="flex items-baseline justify-between">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-wide text-muted">

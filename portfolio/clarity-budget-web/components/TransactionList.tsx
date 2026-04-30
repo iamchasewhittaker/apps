@@ -71,7 +71,7 @@ export function TransactionList({ lines }: Props) {
         </span>
       </div>
 
-      <div className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm">
+      <div className="rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm transition-colors hover:border-green/20">
         <div className="flex items-center justify-between border-b border-dimmer px-4 py-2">
           <label className="text-xs text-muted">
             Sort

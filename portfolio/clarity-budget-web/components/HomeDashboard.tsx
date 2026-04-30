@@ -38,7 +38,6 @@ import { StsCard } from "./dashboard/StsCard";
 import { ShortfallBanner } from "./dashboard/ShortfallBanner";
 import { LastUpdated } from "./dashboard/LastUpdated";
 import { EmptyState } from "./dashboard/EmptyState";
-import { PageHeader } from "./shell/PageHeader";
 
 const ROLE_OPTIONS: { value: RoleRaw; label: string }[] = [
   { value: "mortgage", label: "Mortgage / Housing" },
@@ -270,8 +269,11 @@ export function HomeDashboard() {
   const hasSpending = spendLines.length > 0;
 
   return (
-    <div className="mx-auto max-w-lg space-y-7">
-      <PageHeader title="Dashboard" subtitle="SAFE TO SPEND · YNAB" />
+    <div className="space-y-6">
+      <div className="mb-2">
+        <h1 className="text-3xl font-bold text-white leading-tight">Dashboard</h1>
+        <p className="text-base text-steel mt-1">Safe to Spend · YNAB</p>
+      </div>
 
         <StsCard safeM={safeM} safeW={safeW} safeD={safeD} loading={loading} />
         <ShortfallBanner shortfall={shortfall} />
@@ -314,8 +316,8 @@ export function HomeDashboard() {
         )}
 
         {ynabReady && (
-        <section className="space-y-3 rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4">
-          <h2 className="text-sm font-semibold">Category roles</h2>
+        <section className="space-y-3 rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm p-4 transition-colors hover:border-green/20">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">Category roles</h2>
           <p className="text-[11px] text-muted">
             Token and budget live in{" "}
             <a href="/settings" className="underline text-accent">

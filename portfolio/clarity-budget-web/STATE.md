@@ -1,6 +1,6 @@
 # State — Clarity Budget Web
 
-> Last updated: 2026-04-29
+> Last updated: 2026-04-30
 
 ## Current Phase
 v1 Redesign — Steps 1-8 done, Step 9 next
@@ -15,7 +15,7 @@ Step 8 (Privacy.com connector + card mapping) done locally, commit + push pendin
 None. `AI_GATEWAY_API_KEY` set in all 3 Vercel envs. Step 8 just needs push to deploy.
 
 ## Last Meaningful Activity
-2026-04-28 — Step 8 implementation done: `/settings` Privacy connector + card mapping. AI Gateway mode fix (`mode=json`). All tests passing, build clean.
+2026-04-30 — Shipyard glass theme alignment: dashboard now fills the page with 3 square stat cards, simplified heading, normalized `rounded-xl`, hover effects on glass cards. Accent stays green. 8 files modified, zero logic changes.
 
 ## Next Steps
 - Push Step 8 to main and deploy

@@ -80,7 +80,7 @@ export function TransactionFilters({ filters, onChange, lines }: Props) {
   };
 
   return (
-    <section className="rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm">
+    <section className="rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm">
       <button
         type="button"
         className="flex w-full items-center justify-between px-4 py-3"

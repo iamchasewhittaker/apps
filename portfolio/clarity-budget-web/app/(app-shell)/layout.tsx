@@ -12,7 +12,7 @@ export default async function AppShellLayout({ children }: { children: React.Rea
   return (
     <div className="min-h-screen flex">
       <Sidebar email={data.user.email ?? ""} />
-      <main className="ml-[240px] flex-1 p-10 overflow-y-auto min-h-screen">
+      <main className="ml-[240px] flex-1 p-8 overflow-y-auto min-h-screen">
         {children}
       </main>
     </div>

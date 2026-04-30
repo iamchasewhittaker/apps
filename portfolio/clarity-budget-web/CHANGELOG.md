@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Changed — 2026-04-30 — Shipyard glass theme alignment
+- **Dashboard layout** — `components/HomeDashboard.tsx`: removed `mx-auto max-w-lg` constraint (dashboard now fills the available space like Shipyard). Inlined a Shipyard-style heading (`text-3xl font-bold text-white leading-tight` + steel subtitle) in place of the display-font + green-rule `<PageHeader>`. Category roles section heading switched to Shipyard's `text-xs font-semibold uppercase tracking-wider text-steel` pattern. `space-y-7` → `space-y-6` to match Shipyard's vertical rhythm.
+- **STS card → square stat grid** — `components/dashboard/StsCard.tsx`: full rewrite. Replaced the single combined card (gradient top bar + 3-col internal grid with `border-l` dividers) with 3 independent glass `StatCard`s in `grid grid-cols-1 gap-4 sm:grid-cols-3`. Each card uses Shipyard's exact recipe: `rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm px-6 py-5 transition-colors hover:border-green/20`. Number standardized to `text-4xl font-bold tabular-nums` (was mixed `text-[2.2rem]` / `text-xl`); month gets `text-accent`, week/day get `text-white`. Loading skeleton now renders 3 individual card placeholders.
+- **Border radius normalization** — All 5 surface cards converted from mixed `rounded-[20px]` / `rounded-2xl` / `rounded-[14px]` to consistent `rounded-xl`: `SpendingBreakdown.tsx`, `TransactionList.tsx`, `TransactionFilters.tsx`, `dashboard/ShortfallBanner.tsx`, `dashboard/EmptyState.tsx`.
+- **Hover effects on glass cards** — Added `transition-colors hover:border-green/20` to `SpendingBreakdown` outer card, `TransactionList` outer card, and category roles section in `HomeDashboard`. Mirrors Shipyard's `hover:border-gold/20` pattern but keeps Budget's green accent identity.
+- **Layout padding** — `app/(app-shell)/layout.tsx`: main padding `p-10` → `p-8` to match Shipyard.
+- **Accent color stays green** — `--green: #3db77a` preserved as Budget's brand. Hover effects use `green/20` instead of Shipyard's `gold/20`. `PageHeader` (display font + green-rule) untouched and still used on `/settings`, `/flags`, `/categorize`, `/review`.
+
+**Verification:** tsc ✅ · dev server ✅ (no errors) · 8 files modified · zero behavior changes (pure visual). Plan: `~/.claude/plans/we-need-to-natch-sequential-fox.md`.
+
 ### Changed — 2026-04-30 — Server-side YNAB auth + Privacy Sync Now
 - **All YNAB API calls moved server-side.** Token no longer sits in localStorage or makes client-to-YNAB requests. Three new routes handle decryption and proxying: `app/api/ynab/month/route.ts`, `app/api/ynab/transactions/route.ts`, `app/api/ynab/categories/route.ts` — all use `loadYnabCredentials()` and follow the `/api/ynab/budgets` pattern.
 - **`components/HomeDashboard.tsx`**: removed `ynabToken` state and `localStorage.getItem(YNAB_TOKEN_KEY)` read. `refreshMetrics` and `refreshTransactions` now call `/api/ynab/*` routes. `ynabReady` simplified to `blob.ynabCategoryMappings.length > 0`. `showEmpty` simplified to `!loading && !hasMetrics`.

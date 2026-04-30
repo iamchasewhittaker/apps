@@ -86,10 +86,10 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Workspace**  | `~/Developer/chase`                                                                                                                                                                                                                                                        |
 | **Branch**     | `main`                                                                                                                                                                                                                                                                     |
 | **Linear**     | [Portfolio Governance & Report Infrastructure](https://linear.app/whittaker/project/portfolio-governance-and-report-infrastructure-28044a8f312b) (WHI-30 to WHI-51, 22 issues) · [Wellness Tracker](https://linear.app/whittaker/project/wellness-tracker-36f4fb10e0e7) · [Park Checklist / RollerTask (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) · [Job Search HQ (web + iOS umbrella)](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
-| **Focus**      | **Gmail Forge newsletter archiving + daily report (2026-04-30).** Newsletters now label + archive. Apps Script redeployed. 5 inbox leakers identified and logged. Re-import `gmail-filters.xml` to activate XML layer. |
-| **Next**       | 1. **Gmail Forge leaker triage** — promote `capacities.io`, `hi.extra.email`, `updates.linear.app`, `toybook.com` (domain), GitHub CI → Notification into `rules.gs` + `gmail-filters.xml`. 2. **clarity-budget-web Step 9** — split `HomeDashboard.tsx`. 3. **Fairway iOS Phase 3** — ET hybrid. 4. **Job Search HQ iOS Phase 2** — Supabase sync. |
+| **Focus**      | **Clarity Budget Web — Shipyard glass theme alignment (2026-04-30).** Dashboard restyled to match Shipyard's structural language. 8 files modified (square stat grid, simplified heading, `rounded-xl` consistency, hover effects). Accent stays green. Pure visual change, zero logic. |
+| **Next**       | 1. **clarity-budget-web Step 9** — split `HomeDashboard.tsx` (extract `LastUpdated`). 2. **Gmail Forge leaker triage** — promote `capacities.io`, `hi.extra.email`, `updates.linear.app`, `toybook.com` (domain), GitHub CI → Notification into `rules.gs` + `gmail-filters.xml`. 3. **Fairway iOS Phase 3** — ET hybrid. 4. **Job Search HQ iOS Phase 2** — Supabase sync. |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-30 — Gmail Forge: newsletter archive flip deployed, daily report run (66 emails), 5 leakers logged. |
+| **Last touch** | 2026-04-30 — Clarity Budget Web: Shipyard glass theme alignment shipped. 8 files modified, dev server clean. |
 
 
 ---
