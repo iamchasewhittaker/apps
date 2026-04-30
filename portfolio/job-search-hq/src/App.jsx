@@ -84,10 +84,10 @@ function LoginScreen() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'Instrument Sans', system-ui, sans-serif" }}>
       <div style={{ maxWidth: 360, width: "100%", background: T.card, backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: `1px solid ${T.border}` }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🎯</div>
-        <div style={{ fontSize: 20, fontWeight: 700, color: T.foreground, textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: T.foreground, textAlign: "center", marginBottom: 4, fontFamily: "'Big Shoulders Display', sans-serif" }}>Job Search HQ</div>
         <div style={{ fontSize: 13, color: T.muted, textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
         {resetSent ? (
           <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, textAlign: "center" }}>
@@ -96,7 +96,7 @@ function LoginScreen() {
           </div>
         ) : (
           <form onSubmit={handleLogin}>
-            <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email</label>
+            <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>Email</label>
             <input
               type="email"
               value={email}
@@ -105,7 +105,7 @@ function LoginScreen() {
               required
               style={authInputStyle}
             />
-            <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
+            <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>Password</label>
             <input
               type="password"
               value={password}
@@ -161,13 +161,13 @@ function SetPasswordScreen({ onDone }) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'Instrument Sans', system-ui, sans-serif" }}>
       <div style={{ maxWidth: 360, width: "100%", background: T.card, backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: `1px solid ${T.border}` }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🔐</div>
-        <div style={{ fontSize: 20, fontWeight: 700, color: T.foreground, textAlign: "center", marginBottom: 4 }}>Set new password</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: T.foreground, textAlign: "center", marginBottom: 4, fontFamily: "'Big Shoulders Display', sans-serif" }}>Set new password</div>
         <div style={{ fontSize: 13, color: T.muted, textAlign: "center", marginBottom: 28 }}>Choose a password for your account</div>
         <form onSubmit={handleSet}>
-          <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>New password</label>
+          <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>New password</label>
           <input
             type="password"
             value={password}
@@ -176,7 +176,7 @@ function SetPasswordScreen({ onDone }) {
             required
             style={authInputStyle}
           />
-          <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Confirm password</label>
+          <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>Confirm password</label>
           <input
             type="password"
             value={confirm}
@@ -236,13 +236,14 @@ const sidebarStyles = {
     display: "flex", alignItems: "center", justifyContent: "center",
     boxShadow: `0 0 16px ${T.accentRing}`, flexShrink: 0,
   },
-  logoText: { fontWeight: 700, fontSize: 18, color: T.foreground },
+  logoText: { fontWeight: 700, fontSize: 18, color: T.foreground, fontFamily: "'Big Shoulders Display', sans-serif" },
   logoSub: { fontSize: 14, color: T.muted },
   navSection: { marginBottom: 8 },
   navLabel: {
     fontSize: 11, fontWeight: 600, color: T.muted,
     textTransform: "uppercase", letterSpacing: "0.08em",
     padding: "0 12px", marginBottom: 6,
+    fontFamily: "'DM Mono', monospace",
   },
   navItem: {
     display: "flex", alignItems: "center", gap: 12,
@@ -260,7 +261,7 @@ const sidebarStyles = {
     display: "flex", alignItems: "flex-start", justifyContent: "space-between",
     marginBottom: 28, gap: 12, flexWrap: "wrap",
   },
-  pageTitle: { fontSize: 32, fontWeight: 700, color: T.foreground, margin: 0 },
+  pageTitle: { fontSize: 32, fontWeight: 700, color: T.foreground, margin: 0, fontFamily: "'Big Shoulders Display', sans-serif" },
   pageSub: { fontSize: 16, color: T.muted, marginTop: 4 },
   sidebarBottom: { marginTop: "auto", paddingTop: 16 },
   mobileTabBar: {
@@ -748,7 +749,7 @@ export default function JobSearchTracker() {
 
   // Auth gate — session=null means still checking, session=false means not logged in
   if (session === null) {
-    return <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
+    return <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontFamily: "'Instrument Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
   }
   if (recoveryMode) {
     return <SetPasswordScreen onDone={() => { setRecoveryMode(false); auth.getSession().then(({ data: d }) => setSession(d.session || false)); }} />;
@@ -776,7 +777,7 @@ export default function JobSearchTracker() {
           <div style={sidebarStyles.sidebarLogo}>
             <div style={sidebarStyles.logoMark}>
               <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
-                <text x="24" y="36" textAnchor="middle" fontFamily="DM Sans, sans-serif" fontWeight="800" fontSize="38" fill="white">HQ</text>
+                <text x="24" y="36" textAnchor="middle" fontFamily="Big Shoulders Display, sans-serif" fontWeight="800" fontSize="38" fill="white">HQ</text>
               </svg>
             </div>
             <div>

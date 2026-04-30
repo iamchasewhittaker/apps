@@ -2,6 +2,8 @@
 
 ## Shipped
 
+- [x] **Glass redesign (2026-04-30)** — 3-font system (Instrument Sans body / Big Shoulders Display display / DM Mono labels) + 80% surface opacity matching Shipyard. 4 token changes in tokens.js cascade to ~40+ card/border/surface usages; 11 files with targeted font-family edits. letterSpacing normalized to "0.08em" across all label styles.
+- [x] **Glass-card token sweep (2026-04-30)** — Zero raw hex/rgba outside `src/tokens.js`. All 21 files tokenized.
 - [x] **iOS companion (v0.1)** at `../job-search-hq-ios/` — local-first SwiftUI shell + brand tooling; device install path documented 2026-04-15 (shared Linear: [Job Search HQ](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d))
 - [x] Supabase sync + email OTP (v8.3)
 - [x] Vercel monorepo root directory fix (v8.3)

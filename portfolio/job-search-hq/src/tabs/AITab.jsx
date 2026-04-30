@@ -684,7 +684,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
         <textarea
           rows={10}
           placeholder={"From: Jane Recruiter <jane@acme.com>\nSubject: Exciting PM opportunity at Acme\n\nHi Chase,\n\nI came across your profile and wanted to reach out about a Senior Product Manager role at Acme...\n\nBest,\nJane"}
-          style={{ ...s.textarea, fontFamily: "monospace", fontSize: 12, width: "100%", boxSizing: "border-box" }}
+          style={{ ...s.textarea, fontFamily: "'DM Mono', monospace", fontSize: 12, width: "100%", boxSizing: "border-box" }}
           value={emailRaw}
           onChange={e => { setEmailRaw(e.target.value); setEmailParsed(null); }}
         />
@@ -753,7 +753,7 @@ function WeeklyReviewPanel({ data, showError }) {
 
   const statCard = (label, value, sub) => (
     <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 10, padding: "12px 16px", flex: "1 1 120px", minWidth: 100 }}>
-      <div style={{ fontSize: 24, fontWeight: 800, color: T.foreground }}>{value}</div>
+      <div style={{ fontSize: 24, fontWeight: 800, color: T.foreground, fontFamily: "'Big Shoulders Display', sans-serif" }}>{value}</div>
       <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>{label}</div>
       {sub && <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>{sub}</div>}
     </div>

@@ -80,7 +80,7 @@ export default function ProfileModal({ profile, baseResume, onSave, onClose }) {
               📋 Load PM Template (legacy)
             </button>
           </div>
-          <textarea style={{ ...s.textarea, minHeight: 260, fontFamily: "monospace", fontSize: 11 }} value={resume} onChange={e => setResume(e.target.value)} />
+          <textarea style={{ ...s.textarea, minHeight: 260, fontFamily: "'DM Mono', monospace", fontSize: 11 }} value={resume} onChange={e => setResume(e.target.value)} />
 
           <div style={s.profileSectionLabel}>Direction, Strengths & Feedback</div>
           <p style={{ color: T.muted, fontSize: 12, marginBottom: 8 }}>

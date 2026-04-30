@@ -12,10 +12,10 @@
 | **Branch** | `main` (consolidated 2026-04-27 — v8.16/v8.17/v8.18 all shipped) |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` (data) + Supabase `user_data` row `app_key='job-search:gmail'` (encrypted refresh token, server-only — never localStorage) |
-| **Focus** | **Glass-card token sweep shipped (2026-04-30):** zero raw hex/rgba outside `src/tokens.js`. All 21 files tokenized — `constants.js`, `App.jsx`, `ErrorBoundary.jsx`, 5 tabs, 10 components. `docs/BRANDING.md` updated to Command Blue actuals. Build clean, 186.87 kB gzipped. |
-| **Next** | iOS Phase 2 (Supabase sync + email OTP). Or: implement the Command Blue sidebar redesign from `design/mockup-focus.html` in the actual app — all color decisions are now trivially centralized in `src/tokens.js`. |
+| **Focus** | **Glass redesign shipped (2026-04-30):** 3-font system (Instrument Sans / Big Shoulders Display / DM Mono) + 80% surface glass matching Shipyard. 11 files with direct font edits; ~15 cascade automatically via token changes in `src/tokens.js`. `card` → `rgba(14,26,62,0.80)`, `border` → `#1A2A50`. |
+| **Next** | iOS Phase 2 (Supabase sync + email OTP). Or: implement the Command Blue sidebar redesign from `design/mockup-focus.html` in the actual app — all color + font decisions are now trivially centralized in `src/tokens.js` + `src/constants.js`. |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-30 — Glass-card token sweep: zero raw colors in src/ outside tokens.js. ErrorBoundary, App.jsx, constants.js, 5 tabs, 10 components all tokenized. Deployed to Vercel. — Prior: 2026-04-29 Command Blue redesign mockup + HQ Monogram. |
+| **Last touch** | 2026-04-30 — Glass redesign (3-font system + 80% surface opacity): tokens.js, constants.js, index.css, App.jsx, FocusTab, AITab, ContactsTab, OfferModal, OfferCompareView, OutreachTimeline, ProfileModal. Deployed to Vercel. — Prior: 2026-04-30 glass-card token sweep (zero raw colors). |
 
 ---
 

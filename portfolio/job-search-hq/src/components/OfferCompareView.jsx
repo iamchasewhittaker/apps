@@ -49,8 +49,8 @@ function SingleOfferCard({ row, onEdit }) {
         <button style={s.btnSecondary} onClick={onEdit}>Edit</button>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "8px 0", borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, marginBottom: 10 }}>
-        <div style={{ fontSize: 11, color: T.muted, textTransform: "uppercase", letterSpacing: 0.8 }}>Total comp</div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: row.total != null ? T.successBright : T.muted }}>
+        <div style={{ fontSize: 11, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>Total comp</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: row.total != null ? T.successBright : T.muted, fontFamily: "'Big Shoulders Display', sans-serif" }}>
           {formatCurrency(row.total)}
         </div>
       </div>
@@ -96,7 +96,8 @@ export default function OfferCompareView({ offerApps, onEdit }) {
     fontWeight: 700,
     color: T.muted,
     textTransform: "uppercase",
-    letterSpacing: 0.8,
+    letterSpacing: "0.08em",
+    fontFamily: "'DM Mono', monospace",
     textAlign: "left",
     background: T.cardSubtle,
     borderBottom: `1.5px solid ${T.border}`,
@@ -200,7 +201,7 @@ export default function OfferCompareView({ offerApps, onEdit }) {
             })}
           </tr>
           <tr>
-            <td style={{ ...TH_LABEL, background: "transparent", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.8, color: T.successBright, fontSize: 13, borderTop: `2px solid ${T.successBright}44` }}>Total comp</td>
+            <td style={{ ...TH_LABEL, background: "transparent", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace", color: T.successBright, fontSize: 13, borderTop: `2px solid ${T.successBright}44` }}>Total comp</td>
             {rows.map(row => {
               const isBest = row.total != null && bests.total != null && row.total === bests.total;
               return (
@@ -208,6 +209,7 @@ export default function OfferCompareView({ offerApps, onEdit }) {
                   padding: "14px 12px",
                   fontSize: 16,
                   fontWeight: 800,
+                  fontFamily: "'Big Shoulders Display', sans-serif",
                   color: row.total == null ? T.muted : T.successBright,
                   textAlign: "right",
                   background: isBest ? T.successBg : "transparent",

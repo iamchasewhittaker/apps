@@ -147,7 +147,7 @@ function KassieCard() {
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: T.kassieLabel, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: T.kassieLabel, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6, fontFamily: "'DM Mono', monospace" }}>
             From Kassie — who you're doing this for
           </div>
           <div style={{ fontSize: 13, color: T.kassieText, fontStyle: "italic", lineHeight: 1.5 }}>
@@ -492,7 +492,7 @@ function DiscoverySprint({ setAppModal }) {
         <div style={s.discoveryTitle}>
           <span>🔎</span>
           <span>Discovery sprint</span>
-          <span style={{ fontSize: 11, fontWeight: 500, color: T.muted, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <span style={{ fontSize: 11, fontWeight: 500, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>
             15 min
           </span>
         </div>
@@ -841,7 +841,7 @@ function OutreachDiscovery({ applications, contacts, setContactModal }) {
 
   return (
     <div style={{ marginTop: 12 }}>
-      <div style={{ fontSize: 12, fontWeight: 600, color: T.muted, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+      <div style={{ fontSize: 12, fontWeight: 600, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, fontFamily: "'DM Mono', monospace" }}>
         🧭 Find someone at a target company
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>

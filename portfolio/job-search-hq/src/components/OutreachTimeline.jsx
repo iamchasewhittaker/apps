@@ -14,7 +14,7 @@ function methodLabel(method) {
 
 const wrap = { marginTop: 8, padding: "8px 10px", background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 8 };
 const header = { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 };
-const headerLabel = { fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: T.muted, fontWeight: 600 };
+const headerLabel = { fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: T.muted, fontWeight: 600, fontFamily: "'DM Mono', monospace" };
 const toggleBtn = { background: "none", border: "none", color: T.highlight, cursor: "pointer", fontSize: 11, padding: 0, fontFamily: "inherit" };
 const row = { display: "flex", gap: 8, alignItems: "flex-start", padding: "3px 0" };
 const dot = (color) => ({ width: 8, height: 8, borderRadius: "50%", background: color, marginTop: 6, flexShrink: 0 });

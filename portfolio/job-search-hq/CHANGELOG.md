@@ -1,5 +1,27 @@
 # Changelog
 
+## [Unreleased] — 2026-04-30 — Glass redesign: 3-font system + 80% surface glass (v8.18 polish)
+
+Shipyard-parity visual upgrade. Cards go from nearly-invisible 5% white fills to 80% surface opacity frosted glass. Typography upgraded to a 3-font system matching Shipyard: Instrument Sans (body), Big Shoulders Display (page titles + stat numbers), DM Mono (uppercase labels + code blocks). Zero regressions — all changes flow through `tokens.js` + the `s` styles object.
+
+### Changed
+- **`src/tokens.js`** — 4 token changes: `card` `rgba(255,255,255,0.05)` → `rgba(14,26,62,0.80)`, `cardSubtle` `rgba(255,255,255,0.03)` → `rgba(14,26,62,0.50)`, `border` `rgba(59,130,246,0.12)` → `#1A2A50` (Shipyard dimmer), `modalBg` opacity 0.95 → 0.92. Cascades to ~40+ uses automatically.
+- **`src/constants.js`** — Google Fonts import switched from DM Sans to Instrument Sans + Big Shoulders Display + DM Mono (single combined URL). `s.root.fontFamily` → Instrument Sans. ~25 style keys updated: Big Shoulders Display added to `headerTitle`, `focusCountNum`, `statNum`; DM Mono added to all 12 uppercase label keys (`sectionLabel`, `aqLabel`, `urgencyBadge`, `zoneLabel`, `inboxKindBadge`, etc.) and all monospace keys (`resultText`, `baseResumePreview`). Letter-spacing normalized to `0.08em` on all label keys.
+- **`src/index.css`** — body font-family updated to Instrument Sans.
+- **`src/App.jsx`** — 4 `'DM Sans'` references → `'Instrument Sans'`. SVG HQ logomark `fontFamily` → Big Shoulders Display. `pageTitle` + `logoText` → Big Shoulders Display. `navLabel` → DM Mono. Auth screen titles → Big Shoulders Display; auth labels → DM Mono.
+- **`src/tabs/FocusTab.jsx`** — 3 inline label styles → DM Mono, letterSpacing normalized.
+- **`src/tabs/AITab.jsx`** — stat number → Big Shoulders Display; monospace textarea → DM Mono.
+- **`src/tabs/ContactsTab.jsx`** — bookmarklet label → DM Mono; code display → DM Mono.
+- **`src/components/OfferModal.jsx`** — 3 label styles → DM Mono; total comp number → Big Shoulders Display.
+- **`src/components/OfferCompareView.jsx`** — TH_LABEL `fontFamily` → DM Mono, `letterSpacing` px → em; total comp cells → Big Shoulders Display.
+- **`src/components/OutreachTimeline.jsx`** — `headerLabel` → DM Mono.
+- **`src/components/ProfileModal.jsx`** — resume textarea `"monospace"` → DM Mono.
+
+### Files cascading automatically (no edits needed)
+PipelineTab, ResourcesTab, AppCard, AppModal, ContactCard, ContactModal, InboxPanel, InboxItem, Field, AIResult, PrepModal, DebriefModal, ApplyWizardModal — all pick up glass + border changes via `T.card`/`T.border` tokens.
+
+---
+
 ## [Unreleased] — 2026-04-30 — Glass-card token sweep (v8.18 polish)
 
 Zero raw hex/rgba colors remain in `src/` outside of `src/tokens.js`. Mechanical refactor — no visual changes.

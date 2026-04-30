@@ -60,12 +60,12 @@ function SalesNavGuide() {
           {/* Bookmarklet code */}
           <div style={{ background: T.cardSubtle, border: `1px solid ${T.borderInput}`, borderRadius: 8, overflow: "hidden" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: `1px solid ${T.borderInput}` }}>
-              <span style={{ fontSize: 14, color: T.foreground, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>Bookmarklet code</span>
+              <span style={{ fontSize: 14, color: T.foreground, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Mono', monospace" }}>Bookmarklet code</span>
               <button onClick={copyBookmarklet} style={{ background: copied ? T.successBorder : T.borderInput, border: "none", color: copied ? T.successLight : T.foreground, borderRadius: 6, padding: "5px 14px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
                 {copied ? "✓ Copied!" : "Copy"}
               </button>
             </div>
-            <div style={{ padding: "12px 14px", fontSize: 14, color: T.muted, fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.6, maxHeight: 80, overflowY: "auto" }}>
+            <div style={{ padding: "12px 14px", fontSize: 14, color: T.muted, fontFamily: "'DM Mono', monospace", wordBreak: "break-all", lineHeight: 1.6, maxHeight: 80, overflowY: "auto" }}>
               {BOOKMARKLET}
             </div>
           </div>

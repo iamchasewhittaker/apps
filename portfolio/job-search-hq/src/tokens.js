@@ -12,14 +12,14 @@ export const T = {
   surface,
   foreground: "#FFFFFF",
   muted: "#A0AABF",
-  card: "rgba(255,255,255,0.05)",
-  cardSubtle: "rgba(255,255,255,0.03)",
-  border: "rgba(59,130,246,0.12)",
+  card: "rgba(14,26,62,0.80)",
+  cardSubtle: "rgba(14,26,62,0.50)",
+  border: "#1A2A50",
   borderInput: "rgba(59,130,246,0.2)",
   borderHover: "rgba(59,130,246,0.35)",
   borderFocus: "rgba(59,130,246,0.5)",
   overlay: "rgba(0,0,0,0.75)",
-  modalBg: "rgba(14,26,62,0.95)",
+  modalBg: "rgba(14,26,62,0.92)",
   bgGradient: `linear-gradient(150deg, ${bg} 0%, ${surface} 100%)`,
 
   // Accent (blue)

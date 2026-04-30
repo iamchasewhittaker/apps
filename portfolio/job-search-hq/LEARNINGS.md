@@ -18,6 +18,18 @@
 
 ## Entries
 
+### 2026-04-30 — 3-font system via token cascade: only 11 files need direct edits out of 40+
+**What happened:** Adding Instrument Sans / Big Shoulders Display / DM Mono across the entire app. Most card/border/surface changes cascaded automatically from 4 token changes in tokens.js (card, cardSubtle, border, modalBg). Font-family additions required 11 targeted file edits — only the places that needed a specific font role (display vs. label vs. body) needed direct style changes.
+**Root cause:** JHQ's inline-styles architecture is entirely driven by `T.*` token references and `s.*` style object references. Any style that already references a token or style key picks up the change for free. Only inline `fontFamily` overrides and newly-classified label/display elements needed individual edits.
+**Fix / lesson:** When doing a typography overhaul in a pure-JS-styles CRA app, identify which style keys map to each font role first (`s.headerTitle` → display, `s.sectionLabel` → label, etc.), then update those keys in constants.js. Components that use inline `fontFamily` strings that don't go through `s.*` are the ones that need individual edits — grep for `fontFamily:` to find them.
+**Tags:** refactor · fonts · tokens · inline-styles · cascade
+
+### 2026-04-30 — letterSpacing in inline styles: numeric values vs. string em values
+**What happened:** OfferModal and OfferCompareView had `letterSpacing: 0.8` (a numeric value, interpreted as 0.8px) while the rest of the design system used `"0.08em"` (string with unit). The two values look similar numerically but produce different results at different font sizes.
+**Root cause:** `0.8` without a unit in a CSS-in-JS inline style defaults to pixels. The intended value was `0.08em` (relative to the element's font-size). At 12px font size, `0.08em` = 0.96px — close but wrong, and non-scalable.
+**Fix / lesson:** Always use string em values for letterSpacing in the `s.*` object. During token sweeps, grep for `letterSpacing:` and look for bare numbers (no quotes, no "em"/"px") — those are always bugs. Normalize to `"0.08em"` for uppercase labels across the board.
+**Tags:** css-in-js · typography · gotcha · inline-styles
+
 ### 2026-04-30 — Compound border strings require template-literal conversion during token sweeps
 **What happened:** Most simple color swaps (`color: "#A0AABF"` → `color: T.muted`) handled cleanly via `replace_all`. But compound strings like `border: "1px solid rgba(59,130,246,0.12)"` survived — the color is embedded inside a larger string, so a hex-only pattern wouldn't match.
 **Root cause:** CRA inline styles use plain JS strings. CSS custom properties would make this transparent, but CRA has no CSS pipeline to inject them. Every compound border/shadow/gradient had to be individually converted from a plain string to a template literal: `` border: `1px solid ${T.border}` ``.
