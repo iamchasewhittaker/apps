@@ -1471,7 +1471,7 @@ export const s = {
   focusStepNum: { background: T.borderInput, color: T.muted, borderRadius: "50%", width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0, marginTop: 1 },
   focusStepText: { fontSize: 14, color: T.foreground, lineHeight: 1.55 },
   focusAdhdTip: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, borderRadius: 8, padding: "8px 12px", fontSize: 14, color: T.warning, marginTop: 12, lineHeight: 1.5 },
-  weeklyRhythm: { background: T.card, borderRadius: 12, padding: 16, backdropFilter: "blur(12px)" },
+  weeklyRhythm: { background: T.cardSubtle, borderRadius: 8, padding: "10px 14px" },
   weekRow: { display: "flex", gap: 12, padding: "8px 0", borderBottom: `1px solid ${T.border}`, alignItems: "flex-start" },
   weekDay: { fontSize: 14, fontWeight: 600, color: T.muted, minWidth: 36, paddingTop: 1 },
   weekTask: { fontSize: 14, color: T.muted, lineHeight: 1.5 },
@@ -1519,7 +1519,7 @@ export const s = {
   filterChip: { padding: "4px 12px", borderRadius: 20, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, minHeight: 44 },
   filterChipActive: { background: T.accentBg, borderColor: T.accent, color: T.highlight },
   // Company intel view
-  ciToggleRow: { display: "flex", gap: 6, marginBottom: 16 },
+  ciToggleRow: { display: "flex", gap: 6 },
   ciToggleBtn: { padding: "4px 12px", borderRadius: 20, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, fontWeight: 500, minHeight: 44 },
   ciToggleBtnActive: { background: T.accentBg, border: `1px solid ${T.accent}`, color: T.highlight },
   ciRow: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, marginBottom: 8, overflow: "hidden", backdropFilter: "blur(12px)" },
@@ -1591,7 +1591,7 @@ export const s = {
   errorToast: { position: "fixed", top: 16, left: "50%", transform: "translateX(-50%)", background: T.dangerBg, border: `1px solid ${T.dangerBorderDark}`, color: T.dangerLight, borderRadius: 10, padding: "12px 20px", zIndex: 200, fontSize: 14, display: "flex", gap: 12, alignItems: "center", boxShadow: `0 4px 12px ${T.overlay}`, maxWidth: "90vw", backdropFilter: "blur(12px)" },
   toastClose: { background: "none", border: "none", color: T.dangerLight, cursor: "pointer", fontSize: 16, lineHeight: 1, padding: 0, flexShrink: 0 },
   // Action queue
-  aqSection: { marginBottom: 20 },
+  aqSection: { background: T.card, border: `2px solid ${T.accent}`, borderRadius: 12, padding: "14px 16px", marginBottom: 20, backdropFilter: "blur(12px)", boxShadow: `0 0 20px ${T.accent}15` },
   aqHeader: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
   aqTitle: { fontSize: 15, fontWeight: 700, color: T.foreground },
   aqBadge: { fontSize: 11, fontWeight: 700, background: T.danger, color: T.foreground, borderRadius: 20, padding: "2px 8px" },
@@ -1665,7 +1665,7 @@ export const s = {
   wizCounter: { fontSize: 14, color: T.muted },
 
   // Morning Launchpad (Option E)
-  launchpad: { background: T.card, border: `1.5px solid ${T.borderInput}`, borderRadius: 14, padding: "14px 16px 6px", marginBottom: 18, backdropFilter: "blur(12px)" },
+  launchpad: { background: T.card, border: `2px solid ${T.accent}`, borderRadius: 14, padding: "14px 16px 6px", marginBottom: 18, backdropFilter: "blur(12px)", boxShadow: `0 0 20px ${T.accent}15` },
   launchpadHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12, flexWrap: "wrap" },
   launchpadTitleWrap: { display: "flex", flexDirection: "column", gap: 2 },
   launchpadTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, display: "flex", alignItems: "center", gap: 8 },
@@ -1719,6 +1719,12 @@ export const s = {
   inboxError: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, color: T.warning, borderRadius: 8, padding: "8px 12px", fontSize: 14, marginBottom: 10 },
   inboxSetupGuide: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 10, padding: "10px 14px", fontSize: 14, color: T.muted, lineHeight: 1.6, marginTop: 10 },
   inboxSetupTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, marginBottom: 6 },
+
+  zoneContainer: { marginBottom: 28, paddingTop: 8 },
+  zoneLabel: { fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", paddingBottom: 8, borderBottom: `1px solid ${T.border}`, marginBottom: 14 },
+  cardPrimary: { background: T.card, border: `2px solid ${T.accent}`, borderRadius: 12, padding: 16, display: "flex", flexDirection: "column", gap: 8, backdropFilter: "blur(12px)", boxShadow: `0 0 20px ${T.accent}15` },
+  cardCompact: { background: T.cardSubtle, borderRadius: 8, padding: "10px 14px" },
+  twoCol: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" },
 };
 
 export const css = `

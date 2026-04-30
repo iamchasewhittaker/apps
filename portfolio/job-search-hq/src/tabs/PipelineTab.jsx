@@ -79,45 +79,7 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
             );
           })}
         </div>
-        {offerApps.length > 0 && (
-          <details open={offerApps.length >= 2} style={{ ...s.outcomeSection, marginBottom: 16 }}>
-            <summary style={{ cursor: "pointer", listStyle: "none", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-              <div style={s.outcomeTitle}>💰 Offer comparison ({offerApps.length})</div>
-              <div style={s.outcomeMeta}>
-                {offerApps.length === 1 ? "1 offer on the table" : `${offerApps.length} offers side-by-side`}
-              </div>
-            </summary>
-            <OfferCompareView offerApps={offerApps} onEdit={openOfferFor} />
-          </details>
-        )}
-        <div style={s.outcomeSection}>
-          <div style={s.outcomeHeader}>
-            <div style={s.outcomeTitle}>Win/Loss Analytics</div>
-            <div style={s.outcomeMeta}>
-              {outcomes.total > 0
-                ? `${outcomes.total} closed applications`
-                : "No closed outcomes yet"}
-            </div>
-          </div>
-          {[
-            ["Offer", STAGE_COLORS.Offer],
-            ["Rejected", STAGE_COLORS.Rejected],
-            ["Withdrawn", STAGE_COLORS.Withdrawn],
-          ].map(([label, color]) => {
-            const count = outcomes.counts[label];
-            const rate = outcomes.rates[label];
-            return (
-              <div key={label} style={s.outcomeRow}>
-                <div style={s.outcomeLabel}>{label}</div>
-                <div style={s.outcomeTrack}>
-                  <div style={{ ...s.outcomeFill, width: `${rate}%`, background: color }} />
-                </div>
-                <div style={s.outcomeValue}>{count} ({rate}%)</div>
-              </div>
-            );
-          })}
-        </div>
-        {activeApps.length === 0 && <div style={s.empty}>No active applications yet. Add your first one — or use the Daily Focus tab to get started.</div>}
+        {activeApps.length === 0 && <div style={s.empty}>No active applications yet. Add your first one -- or use the Daily Focus tab to get started.</div>}
         <div style={s.cardGrid}>
           {activeApps
             .sort((a, b) => STAGES.indexOf(a.stage) - STAGES.indexOf(b.stage))
@@ -135,6 +97,54 @@ export default function PipelineTab({ activeApps, archivedApps, contacts, saveAp
               />
             ))}
         </div>
+
+        {/* Analytics zone -- below the pipeline cards */}
+        {(offerApps.length > 0 || outcomes.total > 0) && (
+          <div style={s.zoneContainer}>
+            <div style={s.zoneLabel}>Analytics</div>
+            <div style={s.twoCol}>
+              {offerApps.length > 0 && (
+                <div style={s.cardCompact}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                    <div style={s.outcomeTitle}>Offer comparison ({offerApps.length})</div>
+                    <div style={s.outcomeMeta}>
+                      {offerApps.length === 1 ? "1 offer on the table" : `${offerApps.length} offers side-by-side`}
+                    </div>
+                  </div>
+                  <OfferCompareView offerApps={offerApps} onEdit={openOfferFor} />
+                </div>
+              )}
+              <div style={s.cardCompact}>
+                <div style={s.outcomeHeader}>
+                  <div style={s.outcomeTitle}>Win/Loss</div>
+                  <div style={s.outcomeMeta}>
+                    {outcomes.total > 0
+                      ? `${outcomes.total} closed`
+                      : "No closed outcomes yet"}
+                  </div>
+                </div>
+                {[
+                  ["Offer", STAGE_COLORS.Offer],
+                  ["Rejected", STAGE_COLORS.Rejected],
+                  ["Withdrawn", STAGE_COLORS.Withdrawn],
+                ].map(([label, color]) => {
+                  const count = outcomes.counts[label];
+                  const rate = outcomes.rates[label];
+                  return (
+                    <div key={label} style={s.outcomeRow}>
+                      <div style={s.outcomeLabel}>{label}</div>
+                      <div style={s.outcomeTrack}>
+                        <div style={{ ...s.outcomeFill, width: `${rate}%`, background: color }} />
+                      </div>
+                      <div style={s.outcomeValue}>{count} ({rate}%)</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         {archivedApps.length > 0 && (
           <details style={s.archiveSection}>
             <summary style={s.archiveSummary}>Archived ({archivedApps.length})</summary>

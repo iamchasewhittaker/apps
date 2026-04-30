@@ -44,7 +44,7 @@ export default function AITab({
 
   const [jobQuery, setJobQuery] = useState("");
 
-  const [liTab, setLiTab] = useState("profile");
+  // liTab state removed — LinkedIn sub-tabs promoted to top-level resumeTab values (li-profile, li-keywords, li-connect, li-followup)
   const [currentHeadline, setCurrentHeadline] = useState("");
   const [currentAbout, setCurrentAbout] = useState("");
   const [liHeadlineResult, setLiHeadlineResult] = useState("");
@@ -69,8 +69,7 @@ export default function AITab({
 
   useEffect(() => {
     if (!draftContact) return;
-    setResumeTab("linkedin");
-    setLiTab("connect");
+    setResumeTab("li-connect");
     setConnectContact(draftContact);
     clearDraftContact();
   }, [draftContact]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -195,11 +194,35 @@ export default function AITab({
           ))}
         </div>
 
-        <div style={s.subTabs}>
-          {[["tailor","📄 Tailor Resume"],["cover","✉️ Cover Letter"],["kit","🚀 Apply Kit"],["jobs","🔍 Find Jobs"],["linkedin","💼 LinkedIn"],["stories","⭐ STAR Bank"],["mock","🎤 Mock Interview"],["weekly","📊 Weekly Review"],["email","📧 Email Parse"]].map(([key, label]) => (
-            <button key={key} style={{ ...s.subTabBtn, ...(resumeTab === key ? s.subTabBtnActive : {}) }} onClick={() => setResumeTab(key)}>{label}</button>
-          ))}
-        </div>
+        {/* Two-level navigation: 3 groups, then sub-tabs */}
+        {(() => {
+          const groups = [
+            { key: "apply", label: "Apply", tabs: [["kit","Apply Kit"],["tailor","Tailor Resume"],["cover","Cover Letter"],["jobs","Find Jobs"],["email","Email Parse"]] },
+            { key: "outreach", label: "Outreach", tabs: [["li-profile","LinkedIn Profile"],["li-keywords","Keywords"],["li-connect","Connection Request"],["li-followup","Follow-up"]] },
+            { key: "prep", label: "Prep", tabs: [["stories","STAR Bank"],["mock","Mock Interview"],["weekly","Weekly Review"]] },
+          ];
+          const activeGroup = groups.find(g => g.tabs.some(([k]) => k === resumeTab)) || groups[0];
+          return (
+            <>
+              <div style={s.subTabs}>
+                {groups.map(g => (
+                  <button
+                    key={g.key}
+                    style={{ ...s.subTabBtn, ...(activeGroup.key === g.key ? s.subTabBtnActive : {}) }}
+                    onClick={() => setResumeTab(g.tabs[0][0])}
+                  >
+                    {g.label}
+                  </button>
+                ))}
+              </div>
+              <div style={{ ...s.subTabs, marginTop: -4, marginBottom: 16 }}>
+                {activeGroup.tabs.map(([key, label]) => (
+                  <button key={key} style={{ ...s.liNavBtn, ...(resumeTab === key ? s.liNavBtnActive : {}) }} onClick={() => setResumeTab(key)}>{label}</button>
+                ))}
+              </div>
+            </>
+          );
+        })()}
 
         {resumeTab === "tailor" && (
           <div style={s.aiLayout}>
@@ -353,168 +376,158 @@ export default function AITab({
           </div>
         )}
 
-        {resumeTab === "linkedin" && (
-          <div style={s.liLayout}>
-            <div style={s.liSubNav}>
-              {[["profile","✍️ Headline & About"],["keywords","🔑 Keywords"],["connect","🤝 Connection Request"],["followup","💬 Follow-up"]].map(([key, label]) => (
-                <button key={key} style={{ ...s.liNavBtn, ...(liTab === key ? s.liNavBtnActive : {}) }} onClick={() => setLiTab(key)}>{label}</button>
-              ))}
+        {resumeTab === "li-profile" && (
+          <div style={s.aiLayout}>
+            <div style={s.aiLeft}>
+              <div style={s.sectionLabel}>Current Headline (optional)</div>
+              <input style={s.input} value={currentHeadline} onChange={e => setCurrentHeadline(e.target.value)} placeholder="Your current LinkedIn headline…" />
+              <div style={s.sectionLabel}>Current About Section (optional)</div>
+              <textarea style={s.textarea} rows={5} value={currentAbout} onChange={e => setCurrentAbout(e.target.value)} placeholder="Paste your current About section…" />
+              <button
+                style={{ ...s.btnPrimary, width: "100%", opacity: !data.baseResume ? 0.5 : 1 }}
+                disabled={!data.baseResume}
+                onClick={copyLinkedInPrompts}
+              >
+                Copy headline + About prompts
+              </button>
+              {!data.baseResume && <div style={s.warnSmall}>Add your base resume in Profile first.</div>}
+              {liHeadlineResult && (
+                <div>
+                  <AIResult label="New Headline" text={liHeadlineResult} />
+                  <div style={{ marginTop: 8 }}><AIResult label="New About Section" text={liAboutResult} /></div>
+                </div>
+              )}
             </div>
+            <div style={s.aiRight}>
+              <div style={s.sectionLabel}>Paste assistant output below (optional)</div>
+              <textarea style={s.textarea} placeholder="Headline…" value={liHeadlineResult} onChange={e => setLiHeadlineResult(e.target.value)} rows={2} />
+              <textarea style={s.textarea} placeholder="About…" value={liAboutResult} onChange={e => setLiAboutResult(e.target.value)} rows={8} />
+            </div>
+          </div>
+        )}
 
-            {liTab === "profile" && (
-              <div style={s.aiLayout}>
-                <div style={s.aiLeft}>
-                  <div style={s.sectionLabel}>Current Headline (optional)</div>
-                  <input style={s.input} value={currentHeadline} onChange={e => setCurrentHeadline(e.target.value)} placeholder="Your current LinkedIn headline…" />
-                  <div style={s.sectionLabel}>Current About Section (optional)</div>
-                  <textarea style={s.textarea} rows={5} value={currentAbout} onChange={e => setCurrentAbout(e.target.value)} placeholder="Paste your current About section…" />
-                  <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: !data.baseResume ? 0.5 : 1 }}
-                    disabled={!data.baseResume}
-                    onClick={copyLinkedInPrompts}
-                  >
-                    📋 Copy headline + About prompts
-                  </button>
-                  {!data.baseResume && <div style={s.warnSmall}>⚠️ Add your base resume in Profile first.</div>}
-                  {liHeadlineResult && (
-                    <div>
-                      <AIResult label="New Headline" text={liHeadlineResult} />
-                      <div style={{ marginTop: 8 }}><AIResult label="New About Section" text={liAboutResult} /></div>
-                    </div>
-                  )}
-                </div>
-                <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>Paste assistant output below (optional)</div>
-                  <textarea style={s.textarea} placeholder="Headline…" value={liHeadlineResult} onChange={e => setLiHeadlineResult(e.target.value)} rows={2} />
-                  <textarea style={s.textarea} placeholder="About…" value={liAboutResult} onChange={e => setLiAboutResult(e.target.value)} rows={8} />
-                </div>
+        {resumeTab === "li-keywords" && (
+          <div style={s.aiLayout}>
+            <div style={s.aiLeft}>
+              <div style={s.sectionLabel}>Paste your current LinkedIn profile text</div>
+              <textarea style={s.textarea} rows={10} value={keywordText} onChange={e => setKeywordText(e.target.value)} placeholder="Paste your headline + about + experience sections here." />
+              <button
+                style={{ ...s.btnPrimary, width: "100%", opacity: !keywordText.trim() ? 0.5 : 1 }}
+                disabled={!keywordText.trim()}
+                onClick={copyKeywordPrompt}
+              >
+                Copy keyword analysis prompt
+              </button>
+              <textarea style={s.textarea} placeholder="Paste analysis here…" value={keywordResult} onChange={e => setKeywordResult(e.target.value)} rows={10} />
+              {keywordResult && <AIResult label="Keyword Analysis" text={keywordResult} />}
+            </div>
+            <div style={s.aiRight}>
+              <div style={s.sectionLabel}>Key terms for your target roles</div>
+              <div style={s.tipBox}>
+                <p>Implementation, payments, Authorize.Net, merchant onboarding</p>
+                <p>Customer success, consultative selling, B2B fintech</p>
               </div>
-            )}
+            </div>
+          </div>
+        )}
 
-            {liTab === "keywords" && (
-              <div style={s.aiLayout}>
-                <div style={s.aiLeft}>
-                  <div style={s.sectionLabel}>Paste your current LinkedIn profile text</div>
-                  <textarea style={s.textarea} rows={10} value={keywordText} onChange={e => setKeywordText(e.target.value)} placeholder="Paste your headline + about + experience sections here." />
+        {resumeTab === "li-connect" && (
+          <div style={s.aiLayout}>
+            <div style={s.aiLeft}>
+              <div style={s.sectionLabel}>Who are you connecting with?</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+                {data.contacts.map(c => (
                   <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: !keywordText.trim() ? 0.5 : 1 }}
-                    disabled={!keywordText.trim()}
-                    onClick={copyKeywordPrompt}
+                    key={c.id}
+                    style={{ ...s.appToggleChip, ...(connectContact?.id === c.id ? s.appToggleChipActive : {}) }}
+                    onClick={() => { setConnectContact(c); }}
                   >
-                    📋 Copy keyword analysis prompt
+                    {c.name} · {c.company}
                   </button>
-                  <textarea style={s.textarea} placeholder="Paste analysis here…" value={keywordResult} onChange={e => setKeywordResult(e.target.value)} rows={10} />
-                  {keywordResult && <AIResult label="Keyword Analysis" text={keywordResult} />}
-                </div>
-                <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>Key terms for your target roles</div>
-                  <div style={s.tipBox}>
-                    <p>✓ Implementation, payments, Authorize.Net, merchant onboarding</p>
-                    <p>✓ Customer success, consultative selling, B2B fintech</p>
+                ))}
+              </div>
+              {data.contacts.length === 0 && <div style={s.warnSmall}>Add contacts first in the Contacts tab.</div>}
+              {connectContact && (
+                <div style={s.kitContext}>
+                  <div>
+                    <strong>{connectContact.name}</strong> · {connectContact.role}
+                    <div style={{ fontSize: 12, color: T.muted }}>{connectContact.company}</div>
                   </div>
                 </div>
+              )}
+              <div style={s.sectionLabel}>Scenario</div>
+              <div style={s.scenarioRow}>
+                {CONNECT_SCENARIOS.map(sc => (
+                  <button key={sc.label} style={{ ...s.scenarioChip, ...(connectContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setConnectContext(sc.text)}>{sc.label}</button>
+                ))}
               </div>
-            )}
+              <div style={s.sectionLabel}>Context / Why you&apos;re reaching out</div>
+              <textarea style={s.textarea} rows={2} value={connectContext} onChange={e => setConnectContext(e.target.value)} placeholder="e.g. Saw their post about payments trends…" />
+              <button
+                style={{ ...s.btnPrimary, width: "100%", opacity: !connectContact ? 0.5 : 1 }}
+                disabled={!connectContact}
+                onClick={copyConnectPrompt}
+              >
+                Copy connection prompt
+              </button>
+            </div>
+            <div style={s.aiRight}>
+              <div style={s.sectionLabel}>Tips</div>
+              <div style={s.tipBox}>
+                <p>Max 300 characters for the LinkedIn note</p>
+                <p>One specific reason you&apos;re connecting</p>
+              </div>
+            </div>
+          </div>
+        )}
 
-            {liTab === "connect" && (
-              <div style={s.aiLayout}>
-                <div style={s.aiLeft}>
-                  <div style={s.sectionLabel}>Who are you connecting with?</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-                    {data.contacts.map(c => (
-                      <button
-                        key={c.id}
-                        style={{ ...s.appToggleChip, ...(connectContact?.id === c.id ? s.appToggleChipActive : {}) }}
-                        onClick={() => { setConnectContact(c); }}
-                      >
-                        {c.name} · {c.company}
-                      </button>
-                    ))}
-                  </div>
-                  {data.contacts.length === 0 && <div style={s.warnSmall}>Add contacts first in the Contacts tab.</div>}
-                  {connectContact && (
-                    <div style={s.kitContext}>
-                      <div>
-                        <strong>{connectContact.name}</strong> · {connectContact.role}
-                        <div style={{ fontSize: 12, color: T.muted }}>{connectContact.company}</div>
-                      </div>
-                    </div>
-                  )}
-                  <div style={s.sectionLabel}>Scenario</div>
-                  <div style={s.scenarioRow}>
-                    {CONNECT_SCENARIOS.map(sc => (
-                      <button key={sc.label} style={{ ...s.scenarioChip, ...(connectContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setConnectContext(sc.text)}>{sc.label}</button>
-                    ))}
-                  </div>
-                  <div style={s.sectionLabel}>Context / Why you&apos;re reaching out</div>
-                  <textarea style={s.textarea} rows={2} value={connectContext} onChange={e => setConnectContext(e.target.value)} placeholder="e.g. Saw their post about payments trends…" />
+        {resumeTab === "li-followup" && (
+          <div style={s.aiLayout}>
+            <div style={s.aiLeft}>
+              <div style={s.sectionLabel}>Who are you following up with?</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+                {data.contacts.map(c => (
                   <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: !connectContact ? 0.5 : 1 }}
-                    disabled={!connectContact}
-                    onClick={copyConnectPrompt}
+                    key={c.id}
+                    style={{ ...s.appToggleChip, ...(followupContact?.id === c.id ? s.appToggleChipActive : {}) }}
+                    onClick={() => { setFollowupContact(c); }}
                   >
-                    📋 Copy connection prompt
+                    {c.name} · {c.company}
                   </button>
-                </div>
-                <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>Tips</div>
-                  <div style={s.tipBox}>
-                    <p>✓ Max 300 characters for the LinkedIn note</p>
-                    <p>✓ One specific reason you&apos;re connecting</p>
-                  </div>
-                </div>
+                ))}
               </div>
-            )}
-
-            {liTab === "followup" && (
-              <div style={s.aiLayout}>
-                <div style={s.aiLeft}>
-                  <div style={s.sectionLabel}>Who are you following up with?</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-                    {data.contacts.map(c => (
-                      <button
-                        key={c.id}
-                        style={{ ...s.appToggleChip, ...(followupContact?.id === c.id ? s.appToggleChipActive : {}) }}
-                        onClick={() => { setFollowupContact(c); }}
-                      >
-                        {c.name} · {c.company}
-                      </button>
-                    ))}
-                  </div>
-                  {data.contacts.length === 0 && <div style={s.warnSmall}>Add contacts first in the Contacts tab.</div>}
-                  {followupContact && (
-                    <div style={s.kitContext}>
-                      <div>
-                        <strong>{followupContact.name}</strong> · {followupContact.role}
-                        <div style={{ fontSize: 12, color: T.muted }}>{followupContact.company}</div>
-                      </div>
-                    </div>
-                  )}
-                  <div style={s.sectionLabel}>Scenario</div>
-                  <div style={s.scenarioRow}>
-                    {FOLLOWUP_SCENARIOS.map(sc => (
-                      <button key={sc.label} style={{ ...s.scenarioChip, ...(followupContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setFollowupContext(sc.text)}>{sc.label}</button>
-                    ))}
-                  </div>
-                  <div style={s.sectionLabel}>What did you discuss / when did you speak?</div>
-                  <textarea style={s.textarea} rows={2} value={followupContext} onChange={e => setFollowupContext(e.target.value)} placeholder="e.g. Had a 15-min call about their implementation team…" />
-                  <button
-                    style={{ ...s.btnPrimary, width: "100%", opacity: !followupContact ? 0.5 : 1 }}
-                    disabled={!followupContact}
-                    onClick={copyFollowupPrompt}
-                  >
-                    📋 Copy follow-up prompt
-                  </button>
-                </div>
-                <div style={s.aiRight}>
-                  <div style={s.sectionLabel}>Tips</div>
-                  <div style={s.tipBox}>
-                    <p>✓ Reference one specific thing from your conversation</p>
-                    <p>✓ 2–3 sentences max</p>
+              {data.contacts.length === 0 && <div style={s.warnSmall}>Add contacts first in the Contacts tab.</div>}
+              {followupContact && (
+                <div style={s.kitContext}>
+                  <div>
+                    <strong>{followupContact.name}</strong> · {followupContact.role}
+                    <div style={{ fontSize: 12, color: T.muted }}>{followupContact.company}</div>
                   </div>
                 </div>
+              )}
+              <div style={s.sectionLabel}>Scenario</div>
+              <div style={s.scenarioRow}>
+                {FOLLOWUP_SCENARIOS.map(sc => (
+                  <button key={sc.label} style={{ ...s.scenarioChip, ...(followupContext === sc.text ? s.scenarioChipActive : {}) }} onClick={() => setFollowupContext(sc.text)}>{sc.label}</button>
+                ))}
               </div>
-            )}
+              <div style={s.sectionLabel}>What did you discuss / when did you speak?</div>
+              <textarea style={s.textarea} rows={2} value={followupContext} onChange={e => setFollowupContext(e.target.value)} placeholder="e.g. Had a 15-min call about their implementation team…" />
+              <button
+                style={{ ...s.btnPrimary, width: "100%", opacity: !followupContact ? 0.5 : 1 }}
+                disabled={!followupContact}
+                onClick={copyFollowupPrompt}
+              >
+                Copy follow-up prompt
+              </button>
+            </div>
+            <div style={s.aiRight}>
+              <div style={s.sectionLabel}>Tips</div>
+              <div style={s.tipBox}>
+                <p>Reference one specific thing from your conversation</p>
+                <p>2-3 sentences max</p>
+              </div>
+            </div>
           </div>
         )}
 

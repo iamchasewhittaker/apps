@@ -181,7 +181,7 @@ function DirectionSplit({ applications }) {
   const totalApps = DIRECTION_TRACKS.reduce((sum, t) => sum + split[t.value].count, 0);
 
   return (
-    <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+    <div style={s.cardCompact}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>🧭</span>
@@ -234,7 +234,7 @@ function WinsLog({ wins, addWin, removeWin }) {
   }
 
   return (
-    <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+    <div style={s.cardCompact}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>🏆</span>
@@ -696,7 +696,7 @@ function TodaysQueue({ applications, dailyActions, setKitApp, setResumeTab, setT
 // Single-glance status for all DIRECTION.primaryCompanies.
 // Sort order from buildCompanyBoard: untouched → applied-no-contact → contacted-no-app → covered.
 function TargetCompanyBoard({ applications, contacts, setAppModal, setContactModal }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const board = buildCompanyBoard(applications, contacts);
   const covered = board.filter(r => r.app || r.contact).length;
 
@@ -713,10 +713,7 @@ function TargetCompanyBoard({ applications, contacts, setAppModal, setContactMod
   }
 
   return (
-    <div style={{
-      background: T.cardSubtle, border: `1.5px solid ${T.border}`,
-      borderRadius: 12, padding: "14px 16px", marginBottom: 16,
-    }}>
+    <div style={s.cardCompact}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: collapsed ? 0 : 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>🎯</span>
@@ -949,7 +946,7 @@ function VelocityDashboard({ applications, profile, saveProfile }) {
   }
 
   return (
-    <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+    <div style={s.cardCompact}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 16 }}>📈</span>
@@ -1290,209 +1287,221 @@ export default function FocusTab({
   return (
     <ErrorBoundary name="Daily Focus">
       <div style={s.content}>
+        {/* ── Zone 1: STATUS ─────────────────────────────── */}
         <UrgencyHeader />
-
         <DailyMinimums dailyActions={dailyActions} />
-
         <KassieCard />
 
-        <MorningLaunchpad
-          applications={applications}
-          contacts={contacts}
-          dailyActions={dailyActions}
-          addDailyAction={addDailyAction}
-          setAppModal={setAppModal}
-          setApplyWizard={setApplyWizard}
-          setContactModal={setContactModal}
-          setTab={setTab}
-          setKitApp={setKitApp}
-          setResumeTab={setResumeTab}
-          saveApp={saveApp}
-          showError={showError}
-        />
+        {/* ── Zone 2: MORNING ROUTINE ────────────────────── */}
+        <div style={s.zoneContainer}>
+          <div style={s.zoneLabel}>Morning routine</div>
 
-        {inboxHandlers && (
-          <InboxPanel
-            inbox={inbox}
-            applications={applications}
-            handlers={inboxHandlers}
-            showError={showError}
-          />
-        )}
-
-        <TargetCompanyBoard
-          applications={applications}
-          contacts={contacts}
-          setAppModal={setAppModal}
-          setContactModal={setContactModal}
-        />
-
-        <DailyActionCounter
-          dailyActions={dailyActions}
-          addDailyAction={addDailyAction}
-          removeDailyAction={removeDailyAction}
-        />
-
-        <DirectionSplit applications={applications} />
-
-        <WinsLog wins={wins} addWin={addWin} removeWin={removeWin} />
-
-        <VelocityDashboard
-          applications={applications}
-          profile={profile}
-          saveProfile={saveProfile}
-        />
-
-        <div style={s.focusHeader}>
-          <div>
-            <div style={s.focusTitle}>Tonight's focus</div>
-            <div style={s.focusSub}>Pick ONE block. Set a timer. Do it. That's a successful evening.</div>
-          </div>
-          <div style={s.focusCount}>
-            <div style={s.focusCountNum}>{todayDone}</div>
-            <div style={s.focusCountLabel}>done today</div>
-          </div>
-        </div>
-
-        {/* Action Queue */}
-        <div style={s.aqSection}>
-          <div style={s.aqHeader}>
-            <span style={s.aqTitle}>Action Queue</span>
-            {queue.length > 0 && <span style={s.aqBadge}>{queue.length}</span>}
-          </div>
-          {queue.length === 0 ? (
-            <div style={s.aqEmpty}>You're all caught up — no overdue tasks or pending follow-ups.</div>
-          ) : (
-            <div style={s.aqList}>
-              {queue.map((item, i) => (
-                <div key={i} style={{ ...s.aqItem, borderLeft: `3px solid ${item.urgency.color}` }}>
-                  <span style={{ ...s.aqLabel, background: item.urgency.bg, color: item.urgency.color }}>{item.urgency.label}</span>
-                  <div style={s.aqItemText}>
-                    <div style={s.aqItemTitle}>{item.title}</div>
-                    <div style={s.aqItemSub}>{item.sub}</div>
-                  </div>
-                  <button style={s.aqActionBtn} onClick={() => handleAction(item)}>{item.actionLabel}</button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Who to message today — existing contacts + discovery targets */}
-        <div style={s.outreachSection}>
-          <div style={s.outreachHeader}>
-            <span style={s.outreachTitle}>Who should I message today?</span>
-            {outreachList.length > 0 && <span style={s.outreachCountBadge}>{outreachList.length}</span>}
-          </div>
-
-          {/* Existing contacts queue */}
-          {outreachList.length === 0 ? (
-            <div style={s.outreachEmpty}>No priority outreach from your contacts yet. Add contacts or use the discovery targets below.</div>
-          ) : (
-            <div style={s.outreachList}>
-              {outreachList.map(item => (
-                <div key={item.id} style={{ ...s.outreachItem, borderLeft: `3px solid ${item.tone.color}` }}>
-                  <div style={s.outreachTop}>
-                    <div style={s.outreachName}>
-                      {item.contact.name || "Unnamed contact"}
-                      {item.contact.company ? ` - ${item.contact.company}` : ""}
-                    </div>
-                    <span style={{ ...s.aqLabel, background: item.tone.bg, color: item.tone.color }}>{item.tone.label}</span>
-                  </div>
-                  <div style={s.outreachReason}>{item.primaryReason}</div>
-                  {item.context && <div style={s.outreachContext}>{item.context}</div>}
-                  <div style={s.outreachActions}>
-                    <button style={s.outreachBtnPrimary} onClick={() => copyPrompt(item.draftPrompt)}>Copy Prompt</button>
-                    <button style={s.outreachBtnSecondary} onClick={() => setContactModal({ mode: "edit", contact: { ...item.contact } })}>Edit Contact</button>
-                    {item.linkedApp && (
-                      <button
-                        style={s.outreachBtnSecondary}
-                        onClick={() => {
-                          setTab("pipeline");
-                          setAppModal({ mode: "edit", app: { ...item.linkedApp } });
-                        }}
-                      >
-                        Open App
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Option D — Outreach Autopilot: discovery targets for companies with no contacts */}
-          <OutreachDiscovery
+          <MorningLaunchpad
             applications={applications}
             contacts={contacts}
+            dailyActions={dailyActions}
+            addDailyAction={addDailyAction}
+            setAppModal={setAppModal}
+            setApplyWizard={setApplyWizard}
             setContactModal={setContactModal}
+            setTab={setTab}
+            setKitApp={setKitApp}
+            setResumeTab={setResumeTab}
+            saveApp={saveApp}
+            showError={showError}
+          />
+
+          {inboxHandlers && (
+            <InboxPanel
+              inbox={inbox}
+              applications={applications}
+              handlers={inboxHandlers}
+              showError={showError}
+            />
+          )}
+
+          <DailyActionCounter
+            dailyActions={dailyActions}
+            addDailyAction={addDailyAction}
+            removeDailyAction={removeDailyAction}
           />
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-          {DAILY_BLOCKS.map(block => {
-            const isOpen = expandedBlock === block.id;
-            const isDone = completedBlocks[block.id];
-            return (
-              <div key={block.id} style={{ ...s.focusBlock, ...(isDone ? s.focusBlockDone : {}) }}>
-                <div style={s.focusBlockHeader} onClick={() => setExpandedBlock(isOpen ? null : block.id)}>
-                  <div style={s.focusBlockLeft}>
-                    <span style={{ fontSize: 18 }}>{block.emoji}</span>
-                    <div>
-                      <div style={s.focusBlockTitle}>{block.title}</div>
-                      <div style={s.focusBlockTime}>{block.time}</div>
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <span style={{ ...s.focusTag, background: block.tagColor + "22", color: block.tagColor }}>{block.tag}</span>
-                    <span style={{ color: T.muted, fontSize: 14 }}>{isOpen ? "▲" : "▼"}</span>
-                  </div>
-                </div>
-                {isOpen && (
-                  <div style={s.focusBlockBody}>
-                    <div style={s.focusSteps}>
-                      {block.steps.map((step, i) => (
-                        <div key={i} style={s.focusStep}>
-                          <span style={s.focusStepNum}>{i + 1}</span>
-                          <span style={s.focusStepText}>{step}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={s.focusAdhdTip}>
-                      <span style={{ color: T.resourceAmber }}>⚡ ADHD tip:</span> {block.adhd}
-                    </div>
-                    <button
-                      style={{ ...s.btnPrimary, ...(isDone ? { background: T.successBorder } : {}), marginTop: 12 }}
-                      onClick={() => {
-                        setCompletedBlocks(prev => ({ ...prev, [block.id]: !isDone }));
-                        if (!isDone) setExpandedBlock(null);
-                      }}
-                    >
-                      {isDone ? "✓ Completed — undo" : "Mark done"}
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        {/* ── Zone 3: SIGNALS (2-column grid) ────────────── */}
+        <div style={s.zoneContainer}>
+          <div style={s.zoneLabel}>Signals</div>
+          <div style={s.twoCol}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <VelocityDashboard
+                applications={applications}
+                profile={profile}
+                saveProfile={saveProfile}
+              />
+              <DirectionSplit applications={applications} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <WinsLog wins={wins} addWin={addWin} removeWin={removeWin} />
+              <TargetCompanyBoard
+                applications={applications}
+                contacts={contacts}
+                setAppModal={setAppModal}
+                setContactModal={setContactModal}
+              />
+            </div>
+          </div>
         </div>
 
-        <div style={s.weeklyRhythm}>
-          <div style={s.sectionLabel}>Weekly rhythm</div>
-          {[
-            ["Mon", "Research block — 1 company deep dive"],
-            ["Tue", "Application block — 1 tailored application"],
-            ["Wed", "Skill building — cert or course module"],
-            ["Thu", "Networking block — 2 LinkedIn connections"],
-            ["Fri", "Follow-up block — check pipeline, send follow-ups"],
-            ["Sat", "Optional — only if you have energy"],
-            ["Sun", "Weekly review — 15 min in Sunsama only"],
-          ].map(([day, task]) => (
-            <div key={day} style={s.weekRow}>
-              <span style={s.weekDay}>{day}</span>
-              <span style={s.weekTask}>{task}</span>
+        {/* ── Zone 4: TONIGHT'S PLAN ─────────────────────── */}
+        <div style={s.zoneContainer}>
+          <div style={s.zoneLabel}>Tonight's plan</div>
+
+          <div style={s.focusHeader}>
+            <div>
+              <div style={s.focusTitle}>Tonight's focus</div>
+              <div style={s.focusSub}>Pick ONE block. Set a timer. Do it. That's a successful evening.</div>
             </div>
-          ))}
+            <div style={s.focusCount}>
+              <div style={s.focusCountNum}>{todayDone}</div>
+              <div style={s.focusCountLabel}>done today</div>
+            </div>
+          </div>
+
+          <div style={s.aqSection}>
+            <div style={s.aqHeader}>
+              <span style={s.aqTitle}>Action Queue</span>
+              {queue.length > 0 && <span style={s.aqBadge}>{queue.length}</span>}
+            </div>
+            {queue.length === 0 ? (
+              <div style={s.aqEmpty}>You're all caught up -- no overdue tasks or pending follow-ups.</div>
+            ) : (
+              <div style={s.aqList}>
+                {queue.map((item, i) => (
+                  <div key={i} style={{ ...s.aqItem, borderLeft: `3px solid ${item.urgency.color}` }}>
+                    <span style={{ ...s.aqLabel, background: item.urgency.bg, color: item.urgency.color }}>{item.urgency.label}</span>
+                    <div style={s.aqItemText}>
+                      <div style={s.aqItemTitle}>{item.title}</div>
+                      <div style={s.aqItemSub}>{item.sub}</div>
+                    </div>
+                    <button style={s.aqActionBtn} onClick={() => handleAction(item)}>{item.actionLabel}</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div style={s.outreachSection}>
+            <div style={s.outreachHeader}>
+              <span style={s.outreachTitle}>Who should I message today?</span>
+              {outreachList.length > 0 && <span style={s.outreachCountBadge}>{outreachList.length}</span>}
+            </div>
+
+            {outreachList.length === 0 ? (
+              <div style={s.outreachEmpty}>No priority outreach from your contacts yet. Add contacts or use the discovery targets below.</div>
+            ) : (
+              <div style={s.outreachList}>
+                {outreachList.map(item => (
+                  <div key={item.id} style={{ ...s.outreachItem, borderLeft: `3px solid ${item.tone.color}` }}>
+                    <div style={s.outreachTop}>
+                      <div style={s.outreachName}>
+                        {item.contact.name || "Unnamed contact"}
+                        {item.contact.company ? ` - ${item.contact.company}` : ""}
+                      </div>
+                      <span style={{ ...s.aqLabel, background: item.tone.bg, color: item.tone.color }}>{item.tone.label}</span>
+                    </div>
+                    <div style={s.outreachReason}>{item.primaryReason}</div>
+                    {item.context && <div style={s.outreachContext}>{item.context}</div>}
+                    <div style={s.outreachActions}>
+                      <button style={s.outreachBtnPrimary} onClick={() => copyPrompt(item.draftPrompt)}>Copy Prompt</button>
+                      <button style={s.outreachBtnSecondary} onClick={() => setContactModal({ mode: "edit", contact: { ...item.contact } })}>Edit Contact</button>
+                      {item.linkedApp && (
+                        <button
+                          style={s.outreachBtnSecondary}
+                          onClick={() => {
+                            setTab("pipeline");
+                            setAppModal({ mode: "edit", app: { ...item.linkedApp } });
+                          }}
+                        >
+                          Open App
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <OutreachDiscovery
+              applications={applications}
+              contacts={contacts}
+              setContactModal={setContactModal}
+            />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+            {DAILY_BLOCKS.map(block => {
+              const isOpen = expandedBlock === block.id;
+              const isDone = completedBlocks[block.id];
+              return (
+                <div key={block.id} style={{ ...s.focusBlock, ...(isDone ? s.focusBlockDone : {}) }}>
+                  <div style={s.focusBlockHeader} onClick={() => setExpandedBlock(isOpen ? null : block.id)}>
+                    <div style={s.focusBlockLeft}>
+                      <span style={{ fontSize: 18 }}>{block.emoji}</span>
+                      <div>
+                        <div style={s.focusBlockTitle}>{block.title}</div>
+                        <div style={s.focusBlockTime}>{block.time}</div>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                      <span style={{ ...s.focusTag, background: block.tagColor + "22", color: block.tagColor }}>{block.tag}</span>
+                      <span style={{ color: T.muted, fontSize: 14 }}>{isOpen ? "▲" : "▼"}</span>
+                    </div>
+                  </div>
+                  {isOpen && (
+                    <div style={s.focusBlockBody}>
+                      <div style={s.focusSteps}>
+                        {block.steps.map((step, i) => (
+                          <div key={i} style={s.focusStep}>
+                            <span style={s.focusStepNum}>{i + 1}</span>
+                            <span style={s.focusStepText}>{step}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div style={s.focusAdhdTip}>
+                        <span style={{ color: T.resourceAmber }}>ADHD tip:</span> {block.adhd}
+                      </div>
+                      <button
+                        style={{ ...s.btnPrimary, ...(isDone ? { background: T.successBorder } : {}), marginTop: 12 }}
+                        onClick={() => {
+                          setCompletedBlocks(prev => ({ ...prev, [block.id]: !isDone }));
+                          if (!isDone) setExpandedBlock(null);
+                        }}
+                      >
+                        {isDone ? "Completed -- undo" : "Mark done"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={s.weeklyRhythm}>
+            <div style={s.sectionLabel}>Weekly rhythm</div>
+            {[
+              ["Mon", "Research block -- 1 company deep dive"],
+              ["Tue", "Application block -- 1 tailored application"],
+              ["Wed", "Skill building -- cert or course module"],
+              ["Thu", "Networking block -- 2 LinkedIn connections"],
+              ["Fri", "Follow-up block -- check pipeline, send follow-ups"],
+              ["Sat", "Optional -- only if you have energy"],
+              ["Sun", "Weekly review -- 15 min in Sunsama only"],
+            ].map(([day, task]) => (
+              <div key={day} style={s.weekRow}>
+                <span style={s.weekDay}>{day}</span>
+                <span style={s.weekTask}>{task}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </ErrorBoundary>

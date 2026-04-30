@@ -207,81 +207,65 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
     <ErrorBoundary name="Contacts">
       <div style={s.content}>
 
-        {/* Sales Navigator setup guide */}
-        <SalesNavGuide />
-
-        {/* Stats bar */}
+        {/* Inline stats summary */}
         {contacts.length > 0 && (
-          <div style={s.statsBar}>
-            <div style={s.statBox}>
-              <div style={s.statNum}>{stats.total}</div>
-              <div style={s.statLabel}>Total contacts</div>
-            </div>
-            <div style={s.statBox}>
-              <div style={s.statNum}>{stats.sent}</div>
-              <div style={s.statLabel}>Outreach sent</div>
-            </div>
-            <div style={s.statBox}>
-              <div style={{ ...s.statNum, color: stats.responseRate > 0 ? T.success : T.foreground }}>
-                {stats.responseRate}%
-              </div>
-              <div style={s.statLabel}>Response rate</div>
-            </div>
-            <div style={s.statBox}>
-              <div style={s.statNum}>{stats.recentActivity}</div>
-              <div style={s.statLabel}>Active (7 days)</div>
-            </div>
-            <div style={s.statBox}>
-              <div style={{ ...s.statNum, color: stats.meetings > 0 ? T.purple : T.foreground }}>
-                {stats.meetings}
-              </div>
-              <div style={s.statLabel}>Meetings</div>
-            </div>
+          <div style={{ fontSize: 13, color: T.muted, marginBottom: 12, display: "flex", flexWrap: "wrap", gap: 4 }}>
+            <span>{stats.total} contacts</span>
+            <span style={{ color: T.border }}>·</span>
+            <span>{stats.sent} sent</span>
+            <span style={{ color: T.border }}>·</span>
+            <span style={{ color: stats.responseRate > 0 ? T.success : T.muted }}>{stats.responseRate}% response</span>
+            <span style={{ color: T.border }}>·</span>
+            <span>{stats.recentActivity} active</span>
+            <span style={{ color: T.border }}>·</span>
+            <span style={{ color: stats.meetings > 0 ? T.purple : T.muted }}>{stats.meetings} meetings</span>
           </div>
         )}
 
-        {/* View toggle */}
-        <div style={s.ciToggleRow}>
-          <button
-            style={{ ...s.ciToggleBtn, ...(view === "list" ? s.ciToggleBtnActive : {}) }}
-            onClick={() => setView("list")}
-          >List</button>
-          <button
-            style={{ ...s.ciToggleBtn, ...(view === "company" ? s.ciToggleBtnActive : {}) }}
-            onClick={() => setView("company")}
-          >By Company</button>
+        {/* Controls: view toggle + filters in one row */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
+          <div style={s.ciToggleRow}>
+            <button
+              style={{ ...s.ciToggleBtn, ...(view === "list" ? s.ciToggleBtnActive : {}) }}
+              onClick={() => setView("list")}
+            >List</button>
+            <button
+              style={{ ...s.ciToggleBtn, ...(view === "company" ? s.ciToggleBtnActive : {}) }}
+              onClick={() => setView("company")}
+            >By Company</button>
+          </div>
+
+          {view === "list" && contacts.length > 0 && (
+            <>
+              <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+                <span style={s.filterLabel}>Type:</span>
+                <button style={{ ...s.filterChip, ...(typeFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setTypeFilter("all")}>All</button>
+                {CONTACT_TYPES.map(t => (
+                  <button key={t.value}
+                    style={{ ...s.filterChip, ...(typeFilter === t.value ? s.filterChipActive : {}) }}
+                    onClick={() => toggleType(t.value)}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+                <span style={s.filterLabel}>Status:</span>
+                <button style={{ ...s.filterChip, ...(statusFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setStatusFilter("all")}>All</button>
+                {OUTREACH_STATUSES.map(st => (
+                  <button key={st.value}
+                    style={{ ...s.filterChip, ...(statusFilter === st.value ? s.filterChipActive : {}) }}
+                    onClick={() => toggleStatus(st.value)}>
+                    {st.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* LIST VIEW */}
         {view === "list" && (
           <>
-            {/* Filters */}
-            {contacts.length > 0 && (
-              <>
-                <div style={s.filterRow}>
-                  <span style={s.filterLabel}>Type:</span>
-                  <button style={{ ...s.filterChip, ...(typeFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setTypeFilter("all")}>All</button>
-                  {CONTACT_TYPES.map(t => (
-                    <button key={t.value}
-                      style={{ ...s.filterChip, ...(typeFilter === t.value ? s.filterChipActive : {}) }}
-                      onClick={() => toggleType(t.value)}>
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
-                <div style={{ ...s.filterRow, marginBottom: 16 }}>
-                  <span style={s.filterLabel}>Status:</span>
-                  <button style={{ ...s.filterChip, ...(statusFilter === "all" ? s.filterChipActive : {}) }} onClick={() => setStatusFilter("all")}>All</button>
-                  {OUTREACH_STATUSES.map(st => (
-                    <button key={st.value}
-                      style={{ ...s.filterChip, ...(statusFilter === st.value ? s.filterChipActive : {}) }}
-                      onClick={() => toggleStatus(st.value)}>
-                      {st.label}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
 
             {/* Empty states */}
             {contacts.length === 0 && (
@@ -388,6 +372,11 @@ export default function ContactsTab({ contacts, applications, setContactModal, d
             ))}
           </div>
         )}
+
+        {/* Sales Navigator setup -- moved to bottom (one-time setup) */}
+        <div style={{ marginTop: 24 }}>
+          <SalesNavGuide />
+        </div>
       </div>
     </ErrorBoundary>
   );
