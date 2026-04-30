@@ -53,9 +53,9 @@ const navGroups: NavGroup[] = [
   {
     label: 'Fleet',
     items: [
-      { href: '/', labelKey: 'fleet', icon: '◼' },
-      { href: '/wip', labelKey: 'wip', icon: '▶' },
-      { href: '/portfolio', labelKey: 'showcase', icon: '★' },
+      { href: '/', labelKey: 'fleet', icon: '🚢' },
+      { href: '/wip', labelKey: 'wip', icon: '🔨' },
+      { href: '/portfolio', labelKey: 'showcase', icon: '🏆' },
     ],
   },
   {
