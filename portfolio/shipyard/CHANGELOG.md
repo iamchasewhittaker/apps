@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Changed — 2026-04-30 (Portfolio page visual alignment)
+
+- **Portfolio cards match Dashboard/WIP visual DNA.** `ShowcaseCard` restyled to match `ShipCard`: `rounded-xl` (was `rounded-2xl`), `p-6` (was `p-5`), `transition-all hover:-translate-y-0.5 hover:shadow-lg` lift effect, bold `text-lg` titles (was `text-sm font-semibold`), `relative overflow-hidden` wrapper.
+- **Colored type badges.** Portfolio type badges now use the same per-type color map as `ShipCard` (`web` → blue-300, `ios` → purple-300, `cli` → orange-300, etc.) replacing the previous gold/steel pill system.
+- **Page container aligned.** Removed `mx-auto max-w-5xl` width cap and changed `space-y-8` → `space-y-6` to match Dashboard and WIP page rhythm.
+- **"Fleet (N)" section subheading.** Added `text-xs font-semibold uppercase tracking-wider text-steel` heading above the card grid, matching "Recently Active" (Dashboard) and "Queue (N)" (WIP).
+- **Empty state padding.** `p-12` → `p-8` to match WIP empty state.
+
 ### Fixed — 2026-04-30 (Theme consistency audit)
 
 - **WIP page full-width.** Removed `max-w-4xl mx-auto` constraint — card grid now matches dashboard full-width layout. `space-y-8` → `space-y-6` to match dashboard spacing rhythm.

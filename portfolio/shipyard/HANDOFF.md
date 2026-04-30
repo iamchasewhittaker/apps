@@ -4,7 +4,7 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Theme consistency audit — WIP page now full-width, all section headings normalized; sidebar emojis + ShipCard grid shipped |
+| Focus      | Portfolio page aligned with Dashboard/WIP: glass cards, colored type badges, bold titles, section subheading, no width cap |
 | Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Linear Harbor Master sync |
 | Last touch | 2026-04-30                                                            |
 

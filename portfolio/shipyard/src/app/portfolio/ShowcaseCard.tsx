@@ -3,37 +3,26 @@
 import Link from 'next/link';
 import type { Project } from '@/lib/types';
 
-function typeBadge(type: string): { label: string; className: string } {
-  const base = 'rounded-full px-2 py-0.5 text-[10px] font-medium';
-  switch (type) {
-    case 'web':
-      return { label: 'web', className: `${base} border border-gold/40 bg-gold/10 text-gold` };
-    case 'ios':
-      return { label: 'iOS', className: `${base} border border-gold/40 bg-gold/10 text-gold` };
-    case 'library':
-      return { label: 'lib', className: `${base} border border-steel/40 bg-steel/10 text-steel` };
-    case 'cli':
-      return { label: 'cli', className: `${base} border border-dim/40 bg-dim/10 text-dim` };
-    case 'desktop':
-      return { label: 'desktop', className: `${base} border border-success/40 bg-success/10 text-success` };
-    default:
-      return { label: type, className: `${base} border border-dimmer bg-surface/80 backdrop-blur-sm text-steel` };
-  }
-}
+const TYPE_COLORS: Record<string, string> = {
+  web: 'bg-blue-500/15 text-blue-300',
+  ios: 'bg-purple-500/15 text-purple-300',
+  library: 'bg-teal-500/15 text-teal-300',
+  cli: 'bg-orange-500/15 text-orange-300',
+  desktop: 'bg-pink-500/15 text-pink-300',
+};
 
 export function ShowcaseCard({ ship }: { ship: Project }) {
-  const t = typeBadge(ship.type);
   const hasLive = Boolean(ship.live_url);
   const isIos = ship.type === 'ios';
 
   return (
     <Link
       href={`/portfolio/${ship.slug}`}
-      className="group flex flex-col gap-4 rounded-2xl border border-dimmer bg-surface/80 backdrop-blur-sm p-5 transition-colors hover:border-gold/30"
+      className="group relative overflow-hidden flex flex-col rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:border-gold/30"
     >
-      <div className="flex items-start justify-between gap-3">
+      <div className="mb-2 flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          <h3 className="truncate text-sm font-semibold text-white group-hover:text-gold">
+          <h3 className="font-bold text-lg text-white leading-snug group-hover:text-gold transition-colors truncate min-w-0">
             {ship.name}
           </h3>
           {ship.tagline && (
@@ -43,7 +32,9 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
           )}
         </div>
         <div className="flex shrink-0 flex-col items-end gap-1">
-          <span className={t.className}>{t.label}</span>
+          <span className={`shrink-0 rounded-lg px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${TYPE_COLORS[ship.type] ?? 'bg-dimmer text-steel'}`}>
+            {ship.type}
+          </span>
           {ship.category && (
             <span className="rounded-full border border-dimmer bg-surface/80 backdrop-blur-sm px-2 py-0.5 text-[10px] text-steel">
               {ship.category}
@@ -53,13 +44,13 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
       </div>
 
       {ship.jtbd_primary && (
-        <p className="text-xs text-steel/80 leading-relaxed line-clamp-2">
+        <p className="mb-4 text-xs text-steel/80 leading-relaxed line-clamp-2">
           {ship.jtbd_primary}
         </p>
       )}
 
       {ship.tech_stack && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="mb-4 flex flex-wrap gap-1.5">
           {ship.tech_stack
             .split(',')
             .map((t) => t.trim())
@@ -76,7 +67,7 @@ export function ShowcaseCard({ ship }: { ship: Project }) {
         </div>
       )}
 
-      <div className="mt-auto flex flex-wrap gap-2 pt-2">
+      <div className="mt-auto flex flex-wrap gap-2">
         {hasLive ? (
           <LinkChip
             href={ship.live_url!.startsWith('http') ? ship.live_url! : `https://${ship.live_url}`}

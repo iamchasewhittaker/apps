@@ -1,5 +1,13 @@
 # Learnings — Shipyard
 
+## 2026-04-30 (Portfolio page alignment)
+
+**Shared visual DNA requires shared class values, not just shared components.** `ShowcaseCard` and `ShipCard` both had `bg-surface/80 backdrop-blur-sm` but diverged on rounding, padding, title size, and hover behavior. The "glass" effect was already there — what was missing was the rest of the card contract (`rounded-xl`, `p-6`, `transition-all hover:-translate-y-0.5`). Consistency means matching all the load-bearing visual decisions, not just the most visible one.
+
+**Extract a shared constant when two components use the same mapping.** `TYPE_COLORS` is now duplicated in `ShipCard.tsx` and `ShowcaseCard.tsx`. That's fine for 5 lines, but if a third card component needs it, it belongs in `src/lib/type-colors.ts`.
+
+> **Chase:** —
+
 ## 2026-04-30 (Theme consistency audit)
 
 **Audit every page after any layout change, not just the ones you touched.** The WIP page had a `max-w-4xl` constraint from its old list-view days — invisible when rows filled the width, obvious once a 3-col card grid replaced them. The fix took 30 seconds; finding it required looking at every page.

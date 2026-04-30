@@ -31,6 +31,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-30 | Portfolio page aligned with Dashboard/WIP: ShowcaseCard restyled (rounded-xl, p-6, bold titles, colored type badges, lift hover), section subheading, max-width cap removed |
 | 2026-04-30 | Theme consistency audit: WIP page full-width (removed max-w-4xl), section heading sizes normalized; full page audit across all 8 routes |
 | 2026-04-30 | Sidebar emojis (🚢🔨🏆); WIP page rebuilt with 3-col ShipCard grid + sort; dashboard trimmed to summary + 3 Recently Active cards; ShipCard extracted to shared component |
 | 2026-04-30 | Sailboat logo on gold background + full page consistency pass (glass-card tokens across all 25 files, ModeHeading for Settings + Linear, display-font heading on ship detail) |
