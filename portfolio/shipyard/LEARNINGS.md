@@ -1,5 +1,15 @@
 # Learnings — Shipyard
 
+## 2026-04-30 (Sidebar emojis + WIP ShipCard grid)
+
+**Extracting a shared component mid-feature is the right call even when it costs a step.** `ShipCard` was inline in `page.tsx` — pulling it to `src/components/ShipCard.tsx` before wiring the WIP page added one step but eliminated a copy-paste. The `highlight` prop (gold border + eyebrow badge) extended the component cleanly without branching the layout.
+
+**Absolute-positioned action buttons inside `<Link>` cards are invalid HTML and look broken.** First attempt overlaid WipActions at `absolute top-5 right-20` — this covered the project name because the `<Link>` is an `<a>` element and there's no valid way to nest a `<button>` inside it. Fix: render the action as a flex sibling *below* the card wrapper, right-aligned. No z-index tricks, no event-propagation hacks.
+
+**Interview + mockup before plan for layout/UI tasks.** Asked 4 questions and drew ASCII mockups before writing a line of code. Surfaced key decision: "Cards, sort only" vs "Cards + drag grid" — user didn't know the difference until explained. The interview saved a dnd-kit refactor that would have been wrong.
+
+> **Chase:**
+
 ## 2026-04-30 (Sailboat logo + page consistency pass)
 
 **Design token migrations catch stragglers in components, not pages.** The bulk `sed` pass replaced tokens in every `app/**/*.tsx` file cleanly. The misses were in `components/` — `EditableField.tsx`, `ProjectPickerControls.tsx`, `RetireButton.tsx`. Rule: after any design-system token rename, always grep `components/` explicitly as a second pass.

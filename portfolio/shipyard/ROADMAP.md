@@ -31,6 +31,7 @@
 
 | Date | Change |
 |------|--------|
+| 2026-04-30 | Sidebar emojis (🚢🔨🏆); WIP page rebuilt with 3-col ShipCard grid + sort; dashboard trimmed to summary + 3 Recently Active cards; ShipCard extracted to shared component |
 | 2026-04-30 | Sailboat logo on gold background + full page consistency pass (glass-card tokens across all 25 files, ModeHeading for Settings + Linear, display-font heading on ship detail) |
 | 2026-04-26 | Analytics & Themes: heading fixed (mode-aware via `analyticsHeading` label), plain mode is now the default, scanner auto-populates Common Inputs + Cross-App Patterns (15 rows on first run), Portfolio Thesis inline editor |
 | 2026-04-21 | Decommission Ship workflow + editable detail fields + clipboard dev link (replaces dead localhost link from 04-20) |

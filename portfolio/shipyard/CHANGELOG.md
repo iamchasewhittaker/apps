@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Changed — 2026-04-30 (Sidebar emojis + WIP glass card grid)
+
+- **Sidebar nav emojis.** Replaced Unicode glyphs (`◼ ▶ ★`) on the Fleet group with real emojis (`🚢 🔨 🏆`) to match the Work group (`📋 📚 📊`). Edit in `src/app/layout.tsx`.
+- **`ShipCard` extracted to shared component.** Moved from inline in `page.tsx` to `src/components/ShipCard.tsx`. Accepts optional `highlight` prop that adds gold border + "Active Focus" eyebrow badge without crowding the header.
+- **Dashboard trimmed to summary view.** Removed `FilterBar` and full ShipCard grid from the Fleet dashboard. Replaced with a "Recently Active" section showing 3 glass ShipCards (most recently committed, excluding active ship). Scoreboard, Wins, and review chips remain below.
+- **WIP page rebuilt with ShipCard grid.** Flat `QueueRow` drag-list replaced with a 3-column `ShipCard` grid matching dashboard aesthetics. Sort controls (priority / last updated / money / MVP step / name) preserved. Drag-to-reorder removed. "Set as active focus" button sits below each card as a clean non-overlapping element.
+
+### Removed — 2026-04-30
+
+- `src/app/wip/QueueRow.tsx` — deleted; replaced by `ShipCard`
+- `dnd-kit` drag-and-drop logic from `QueueList.tsx` — no longer needed
+
 ### Changed — 2026-04-30 (Sailboat logo + full page consistency pass)
 
 - **Sailboat logo on gold background.** `src/components/LogoIcon.tsx` redesigned: gold rounded-rect (`rx="220"`) with dark navy sailboat icon (mast, mainsail, headsail, hull, keel, waterline wave). Replaces the original helm SVG. `src/app/icon.tsx` favicon updated to match at 32×32.
