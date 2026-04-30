@@ -8,14 +8,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Version** | v8.18 |
-| **Branch** | `main` (consolidated 2026-04-27 — v8.16/v8.17/v8.18 all shipped) |
+| **Version** | v8.19 |
+| **Branch** | `main` |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` (data) + Supabase `user_data` row `app_key='job-search:gmail'` (encrypted refresh token, server-only — never localStorage) |
-| **Focus** | **Glass redesign shipped (2026-04-30):** 3-font system (Instrument Sans / Big Shoulders Display / DM Mono) + 80% surface glass matching Shipyard. 11 files with direct font edits; ~15 cascade automatically via token changes in `src/tokens.js`. `card` → `rgba(14,26,62,0.80)`, `border` → `#1A2A50`. |
-| **Next** | iOS Phase 2 (Supabase sync + email OTP). Or: implement the Command Blue sidebar redesign from `design/mockup-focus.html` in the actual app — all color + font decisions are now trivially centralized in `src/tokens.js` + `src/constants.js`. |
+| **Focus** | **Dashboard tab shipped (2026-04-30):** Shipyard-style glass cockpit as the default landing page. Stats bar (day N, apps/outreach daily progress, active pipeline), Today's Progress + Pipeline Health featured panels, Kassie card, 2×2 lower grid (target companies, wins, inbox, action queue). Focus tab loses Status zone (UrgencyHeader/DailyMinimums/KassieCard) and starts at Morning Routine. |
+| **Next** | iOS Phase 2 (Supabase sync + email OTP). Dashboard polish: seed with real data after sign-in to validate all cards at scale. |
 | **Blockers** | None. |
-| **Last touch** | 2026-04-30 — Glass redesign (3-font system + 80% surface opacity): tokens.js, constants.js, index.css, App.jsx, FocusTab, AITab, ContactsTab, OfferModal, OfferCompareView, OutreachTimeline, ProfileModal. Deployed to Vercel. — Prior: 2026-04-30 glass-card token sweep (zero raw colors). |
+| **Last touch** | 2026-04-30 — Dashboard tab (v8.19): new DashboardTab.jsx, ~35 style tokens in constants.js, App.jsx routing + nav, FocusTab cleanup. Deployed to Vercel. |
 
 ---
 

@@ -1720,6 +1720,44 @@ export const s = {
   inboxSetupGuide: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 10, padding: "10px 14px", fontSize: 14, color: T.muted, lineHeight: 1.6, marginTop: 10 },
   inboxSetupTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, marginBottom: 6 },
 
+  // Dashboard (v8.19)
+  dashSection: { marginBottom: 24 },
+  dashStatsGrid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 24 },
+  dashStatCard: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" },
+  dashStatValue: { fontSize: 32, fontWeight: 700, color: T.foreground, fontFamily: "'Big Shoulders Display', sans-serif", lineHeight: 1 },
+  dashStatLabel: { fontSize: 11, color: T.muted, marginTop: 6, fontFamily: "'DM Mono', monospace", textTransform: "uppercase", letterSpacing: "0.08em" },
+  dashPanelRow: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24, alignItems: "start" },
+  dashPanelAccent: { background: T.card, border: `2px solid ${T.accent}`, borderRadius: 14, padding: "16px 18px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", boxShadow: `0 0 20px ${T.accent}15`, position: "relative", overflow: "hidden" },
+  dashPanelAccentStripe: { position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(to right, ${T.accent}, transparent)` },
+  dashPanel: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: "16px 18px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" },
+  dashPanelTitle: { fontSize: 12, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12, fontFamily: "'DM Mono', monospace" },
+  dashLowerGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 },
+  dashLowerCard: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "14px 16px", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" },
+  dashLowerTitle: { fontSize: 12, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10, fontFamily: "'DM Mono', monospace", display: "flex", justifyContent: "space-between", alignItems: "center" },
+  dashProgressRow: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
+  dashProgressLabel: { fontSize: 13, color: T.foreground, minWidth: 80, fontWeight: 500 },
+  dashProgressTrack: { flex: 1, height: 6, borderRadius: 3, background: T.cardSubtle, overflow: "hidden" },
+  dashProgressFill: { height: "100%", borderRadius: 3, transition: "width 0.3s" },
+  dashProgressMeta: { fontSize: 11, color: T.muted, minWidth: 60, textAlign: "right", fontVariantNumeric: "tabular-nums" },
+  dashFunnelRow: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
+  dashFunnelDot: { width: 10, height: 10, borderRadius: "50%", flexShrink: 0 },
+  dashFunnelLabel: { fontSize: 13, color: T.foreground, flex: 1 },
+  dashFunnelBar: { flex: 2, height: 8, borderRadius: 4, background: T.cardSubtle, overflow: "hidden" },
+  dashFunnelFill: { height: "100%", borderRadius: 4 },
+  dashFunnelCount: { fontSize: 13, fontWeight: 700, color: T.foreground, minWidth: 20, textAlign: "right", fontVariantNumeric: "tabular-nums" },
+  dashDot: { width: 10, height: 10, borderRadius: "50%", flexShrink: 0, display: "inline-block" },
+  dashCompanyGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 6 },
+  dashCompanyItem: { display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: T.muted, padding: "3px 0" },
+  dashWinItem: { display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: `1px solid ${T.border}` },
+  dashWinTitle: { fontSize: 13, color: T.foreground, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  dashWinDate: { fontSize: 11, color: T.muted, flexShrink: 0 },
+  dashWinBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", padding: "1px 6px", borderRadius: 4, flexShrink: 0, fontFamily: "'DM Mono', monospace" },
+  dashLink: { fontSize: 12, color: T.highlight, cursor: "pointer", background: "none", border: "none", fontFamily: "inherit", padding: 0 },
+  dashQueueRow: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6 },
+  dashQueueDot: { width: 8, height: 8, borderRadius: "50%", flexShrink: 0 },
+  dashQueueLabel: { fontSize: 13, color: T.foreground, flex: 1 },
+  dashQueueCount: { fontSize: 16, fontWeight: 700, fontFamily: "'Big Shoulders Display', sans-serif", minWidth: 20, textAlign: "right" },
+
   zoneContainer: { marginBottom: 28, paddingTop: 8 },
   zoneLabel: { fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", paddingBottom: 8, borderBottom: `1px solid ${T.border}`, marginBottom: 14, fontFamily: "'DM Mono', monospace" },
   cardPrimary: { background: T.card, border: `2px solid ${T.accent}`, borderRadius: 12, padding: 16, display: "flex", flexDirection: "column", gap: 8, backdropFilter: "blur(12px)", boxShadow: `0 0 20px ${T.accent}15` },
@@ -1735,8 +1773,12 @@ export const css = `
   select option { background: ${T.surface}; }
   textarea, input, select { outline: none; }
   textarea:focus, input:focus, select:focus { border-color: ${T.borderFocus} !important; }
+  @media (max-width: 900px) {
+    .dash-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
   @media (max-width: 700px) {
     div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+    .dash-stats-grid { grid-template-columns: 1fr !important; }
   }
   @media (max-width: 768px) {
     .jshq-sidebar { display: none !important; }

@@ -1,5 +1,19 @@
 # Changelog
 
+## [Unreleased] — 2026-04-30 — Dashboard tab (v8.19)
+
+New glanceable cockpit as the default landing tab, matching Shipyard's glass layout. Focus tab moves to second position and loses the three status components superseded by the dashboard.
+
+### Added
+- **`src/tabs/DashboardTab.jsx`** (new) — Shipyard-style dashboard with: 4-card stats bar (day since layoff, apps today/5, outreach today/3, active pipeline); two featured panels (Today's Progress compact launchpad + Pipeline Health funnel); Kassie card; 2×2 lower grid (Target Companies coverage dots, Recent Wins, Inbox Preview, Action Queue counts). Read-only — no save functions, `setTab` only for navigation.
+- **`src/constants.js`** — ~35 new dashboard style tokens (`dashStatsGrid`, `dashPanelAccent`, `dashPanelRow`, `dashLowerGrid`, `dashLowerCard`, `dashFunnelRow`, `dashProgressRow`, `dashDot`, etc.) + responsive CSS breakpoint (4-col → 2-col at 900px, 1-col at 700px) for `.dash-stats-grid`.
+
+### Changed
+- **`src/App.jsx`** — `DashboardTab` imported; `dashboard` added to `PAGE_TITLES` and `NAV_ITEMS` (first in DAILY section); default tab changed from `"focus"` to `"dashboard"`; `["dashboard","📊 Dash"]` added to mobile tab bar; `<DashboardTab>` rendered before focus block.
+- **`src/tabs/FocusTab.jsx`** — Removed `UrgencyHeader`, `DailyMinimums`, `KassieCard` component definitions and their render calls (Zone 1 STATUS section eliminated). `daysSinceLayoff` and `KASSIE_EXCERPTS` imports removed. `DAILY_MINIMUMS` kept (still used by `VelocityDashboard`). Morning Routine is now the first visible section.
+
+---
+
 ## [Unreleased] — 2026-04-30 — Glass redesign: 3-font system + 80% surface glass (v8.18 polish)
 
 Shipyard-parity visual upgrade. Cards go from nearly-invisible 5% white fills to 80% surface opacity frosted glass. Typography upgraded to a 3-font system matching Shipyard: Instrument Sans (body), Big Shoulders Display (page titles + stat numbers), DM Mono (uppercase labels + code blocks). Zero regressions — all changes flow through `tokens.js` + the `s` styles object.

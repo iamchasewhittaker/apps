@@ -15,6 +15,7 @@ import PrepModal from "./components/PrepModal";
 import DebriefModal from "./components/DebriefModal";
 import OfferModal from "./components/OfferModal";
 import ApplyWizardModal from "./components/ApplyWizardModal";
+import DashboardTab from "./tabs/DashboardTab";
 import FocusTab from "./tabs/FocusTab";
 import PipelineTab from "./tabs/PipelineTab";
 import ContactsTab from "./tabs/ContactsTab";
@@ -199,6 +200,7 @@ function SetPasswordScreen({ onDone }) {
 }
 
 const PAGE_TITLES = {
+  dashboard: "Dashboard",
   focus: "Daily Focus",
   pipeline: "Pipeline",
   contacts: "Contacts",
@@ -208,6 +210,7 @@ const PAGE_TITLES = {
 
 const NAV_ITEMS = [
   { section: "DAILY", items: [
+    { key: "dashboard", icon: "📊", label: "Dashboard" },
     { key: "focus", icon: "🎯", label: "Focus" },
     { key: "pipeline", icon: "📋", label: "Pipeline" },
     { key: "contacts", icon: "👥", label: "Contacts" },
@@ -278,7 +281,7 @@ const sidebarStyles = {
 
 export default function JobSearchTracker() {
   const [data, setData] = useState(defaultData);
-  const [tab, setTab] = useState("focus");
+  const [tab, setTab] = useState("dashboard");
   const hasLoaded = useRef(false);
   // ── Auth session ─────────────────────────────────────────────────────────
   // null = not yet checked, false = no session, object = logged in
@@ -829,7 +832,7 @@ export default function JobSearchTracker() {
         <main style={sidebarStyles.mainContent} className="jshq-main">
           {/* Mobile tab bar (hidden on desktop via CSS) */}
           <div style={sidebarStyles.mobileTabBar} className="jshq-mobile-tabs">
-            {[["focus","🎯 Focus"],["pipeline","📋 Pipeline"],["contacts","👥 Contacts"],["ai","✨ Tools"],["resources","📚 Resources"]].map(([key, label]) => (
+            {[["dashboard","📊 Dash"],["focus","🎯 Focus"],["pipeline","📋 Pipeline"],["contacts","👥 Contacts"],["ai","✨ Tools"],["resources","📚 Resources"]].map(([key, label]) => (
               <button key={key} style={{ ...sidebarStyles.mobileTabBtn, ...(tab === key ? sidebarStyles.mobileTabBtnActive : {}) }} onClick={() => setTab(key)}>{label}</button>
             ))}
           </div>
@@ -847,6 +850,16 @@ export default function JobSearchTracker() {
           </div>
 
           {/* Tab Content */}
+          {tab === "dashboard" && (
+            <DashboardTab
+              applications={data.applications}
+              contacts={data.contacts}
+              dailyActions={data.dailyActions || []}
+              wins={data.wins || []}
+              inbox={data.inbox || []}
+              setTab={setTab}
+            />
+          )}
           {tab === "focus" && (
             <FocusTab
               expandedBlock={expandedBlock} setExpandedBlock={setExpandedBlock}

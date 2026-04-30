@@ -10,9 +10,7 @@ import {
   buildCompanyBoard,
   prepSectionsHasContent,
   getWeeklyVelocityData,
-  daysSinceLayoff,
   DAILY_MINIMUMS,
-  KASSIE_EXCERPTS,
   DIRECTION_TRACKS,
   DIRECTION,
   getDirectionSplit,
@@ -26,154 +24,7 @@ import { JOB_SEARCH_EXTERNAL_LINKS } from "../applyPrompts";
 import ErrorBoundary from "../ErrorBoundary";
 import InboxPanel from "../components/InboxPanel";
 
-const KASSIE_DISMISS_KEY = "chase_js_kassie_dismiss_v1";
-
-// ── URGENCY HEADER — "Day N since Visa" ──────────────────────────────────────
-// Non-negotiable per Kassie's letter. No judgment, just the number.
-function UrgencyHeader() {
-  const day = daysSinceLayoff();
-  return (
-    <div style={{
-      background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 10,
-      padding: "8px 14px", marginBottom: 12, display: "flex",
-      justifyContent: "space-between", alignItems: "center", fontSize: 14, color: T.muted,
-    }}>
-      <span>
-        <strong style={{ color: T.foreground }}>Day {day}</strong> since Visa (2025-02-15)
-      </span>
-      <span style={{ fontSize: 11 }}>For Reese. For Buzz. Forward.</span>
-    </div>
-  );
-}
-
-// ── DAILY MINIMUMS — Applications, Outreach, Rest ───────────────────────────
-// Red until all three hit target. Kassie's floor, visible every time HQ opens.
-function DailyMinimums({ dailyActions }) {
-  const todayStr = today();
-  const todays = (dailyActions || []).filter(a => a.date === todayStr);
-  const apps = todays.filter(a => a.type === "application").length;
-  const outreach = todays.filter(a => a.type === "outreach").length;
-  const dayOfWeek = new Date().getDay(); // 0 = Sunday
-  const isSunday = dayOfWeek === 0;
-
-  const rows = [
-    { key: "applications", label: "Applications", have: apps, need: DAILY_MINIMUMS.applications, restOk: false },
-    { key: "outreach",     label: "Outreach",     have: outreach, need: DAILY_MINIMUMS.outreach, restOk: false },
-    { key: "rest",         label: "Rest day",     have: isSunday ? 1 : 0, need: 1, restOk: true, sundayOnly: true },
-  ];
-
-  const floorMet = rows.every(r => (r.sundayOnly ? isSunday : r.have >= r.need));
-  const headerColor = floorMet ? T.gold : T.danger;
-  const headerBg = floorMet ? T.goldBg : T.dangerBg;
-  const headerBorder = floorMet ? T.goldBorder : T.dangerBorderDeep;
-
-  return (
-    <div style={{
-      background: headerBg, border: `1.5px solid ${headerBorder}`, borderRadius: 12,
-      padding: "14px 18px", marginBottom: 16,
-    }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 18 }}>{floorMet ? "✅" : "🚨"}</span>
-          <div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: headerColor }}>
-              Daily floor {floorMet ? "— met" : "— not yet"}
-            </div>
-            <div style={{ fontSize: 14, color: T.muted, marginTop: 1 }}>
-              {isSunday
-                ? "Sunday: rest day. Read scripture, be with Reese and Buzz."
-                : `${DAILY_MINIMUMS.applications} applications + ${DAILY_MINIMUMS.outreach} outreach. Non-negotiable.`}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {rows.map(row => {
-        if (row.sundayOnly && !isSunday) return null;
-        const pct = row.sundayOnly ? (isSunday ? 100 : 0) : Math.min(row.have / row.need, 1) * 100;
-        const hit = row.sundayOnly ? isSunday : row.have >= row.need;
-        return (
-          <div key={row.key} style={{ marginBottom: 8 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
-              <span style={{ color: hit ? T.success : T.foreground }}>
-                {hit ? "✓" : "○"} {row.label}
-              </span>
-              <span style={{ color: hit ? T.success : T.muted, fontVariantNumeric: "tabular-nums" }}>
-                {row.have}/{row.need}
-              </span>
-            </div>
-            <div style={{ height: 6, borderRadius: 3, background: T.cardSubtle }}>
-              <div style={{
-                height: "100%", borderRadius: 3, width: `${pct}%`,
-                background: hit ? T.success : T.danger, transition: "width 0.3s",
-              }} />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ── KASSIE CARD — "Who you're doing this for" ────────────────────────────────
-// Rotating excerpt from kassie-notes.md, dismissible per-day (resets daily).
-function KassieCard() {
-  const todayStr = today();
-  const [dismissed, setDismissed] = useState(() => {
-    try { return localStorage.getItem(KASSIE_DISMISS_KEY) === todayStr; }
-    catch { return false; }
-  });
-  const [open, setOpen] = useState(false);
-
-  // Deterministic rotation: day-of-year modulo excerpt count.
-  const excerpt = useMemo(() => {
-    const start = new Date(new Date().getFullYear(), 0, 0);
-    const diff = new Date() - start;
-    const doy = Math.floor(diff / 86400000);
-    return KASSIE_EXCERPTS[doy % KASSIE_EXCERPTS.length];
-  }, []);
-
-  function dismiss() {
-    try { localStorage.setItem(KASSIE_DISMISS_KEY, todayStr); } catch {}
-    setDismissed(true);
-  }
-
-  if (dismissed) return null;
-
-  return (
-    <div style={{
-      background: T.kassieBg, border: `1px solid ${T.kassieBorder}`, borderRadius: 12,
-      padding: "14px 16px", marginBottom: 16,
-    }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: T.kassieLabel, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6, fontFamily: "'DM Mono', monospace" }}>
-            From Kassie — who you're doing this for
-          </div>
-          <div style={{ fontSize: 13, color: T.kassieText, fontStyle: "italic", lineHeight: 1.5 }}>
-            "{excerpt}"
-          </div>
-          {open && (
-            <div style={{ fontSize: 11, color: T.kassieSubtle, marginTop: 8, lineHeight: 1.55 }}>
-              Full letter lives at <code style={{ background: T.kassieCodeBg, padding: "1px 5px", borderRadius: 3 }}>chase/identity/kassie-notes.md</code>.
-              Read it when the urgency slips. Not guilt — signal.
-            </div>
-          )}
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <button
-            onClick={() => setOpen(o => !o)}
-            style={{ background: "none", border: "none", color: T.kassieSubtle, cursor: "pointer", fontSize: 11 }}
-          >{open ? "hide" : "more"}</button>
-          <button
-            onClick={dismiss}
-            style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 11 }}
-          >dismiss</button>
-        </div>
-      </div>
-    </div>
-  );
-}
+// UrgencyHeader, DailyMinimums, KassieCard moved to DashboardTab (v8.19)
 
 // ── DIRECTION SPLIT — IC/SE/AE/Other counts + response rates ────────────────
 function DirectionSplit({ applications }) {
@@ -1287,12 +1138,7 @@ export default function FocusTab({
   return (
     <ErrorBoundary name="Daily Focus">
       <div style={s.content}>
-        {/* ── Zone 1: STATUS ─────────────────────────────── */}
-        <UrgencyHeader />
-        <DailyMinimums dailyActions={dailyActions} />
-        <KassieCard />
-
-        {/* ── Zone 2: MORNING ROUTINE ────────────────────── */}
+        {/* ── Zone 1: MORNING ROUTINE ────────────────────── */}
         <div style={s.zoneContainer}>
           <div style={s.zoneLabel}>Morning routine</div>
 

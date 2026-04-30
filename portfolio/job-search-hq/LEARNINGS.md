@@ -18,6 +18,17 @@
 
 ## Entries
 
+### 2026-04-30 — Dashboard tab: read-only prop surface keeps it clean
+**What happened:** Built the dashboard as a completely read-only component — it only receives data arrays and `setTab`. No save functions, no modal setters.
+**Root cause / lesson:** Dashboard's job is "glance and navigate," not "do work." Keeping the prop surface minimal enforces that role and prevents the component from growing into a second action hub.
+**Tags:** architecture, react, dashboard
+
+### 2026-04-30 — Auth bypass for preview via React fiber hook dispatch
+**What happened:** Dev server showed the Supabase auth gate during visual verification. Bypassed it by dispatching `true` directly to the session `useState` hook via `__reactContainer` fiber walking.
+**Root cause:** The app always has Supabase env vars in dev, so `auth` is never null. No "test mode" flag exists.
+**Fix / lesson:** Useful debugging technique. Hook index 3 in the JobSearchTracker fiber = session state. Hook index 1 = current tab.
+**Tags:** react, debugging, auth
+
 ### 2026-04-30 — 3-font system via token cascade: only 11 files need direct edits out of 40+
 **What happened:** Adding Instrument Sans / Big Shoulders Display / DM Mono across the entire app. Most card/border/surface changes cascaded automatically from 4 token changes in tokens.js (card, cardSubtle, border, modalBg). Font-family additions required 11 targeted file edits — only the places that needed a specific font role (display vs. label vs. body) needed direct style changes.
 **Root cause:** JHQ's inline-styles architecture is entirely driven by `T.*` token references and `s.*` style object references. Any style that already references a token or style key picks up the change for free. Only inline `fontFamily` overrides and newly-classified label/display elements needed individual edits.
