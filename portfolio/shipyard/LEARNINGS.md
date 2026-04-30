@@ -8,7 +8,7 @@
 
 **Interview + mockup before plan for layout/UI tasks.** Asked 4 questions and drew ASCII mockups before writing a line of code. Surfaced key decision: "Cards, sort only" vs "Cards + drag grid" — user didn't know the difference until explained. The interview saved a dnd-kit refactor that would have been wrong.
 
-> **Chase:**
+> **Chase:** Make sure everything theme-wise is the same — after any UI change, audit every page for consistency before calling it done.
 
 ## 2026-04-30 (Sailboat logo + page consistency pass)
 

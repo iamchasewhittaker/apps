@@ -29,7 +29,7 @@ export default async function WipPage() {
   const decisions: WipDecision[] = recentDecisions ?? [];
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
+    <div className="space-y-6">
       <ModeHeading
         labelKey="wip"
         subtitle="All active ships. Pin the one you're focused on, rank the rest."
@@ -47,7 +47,7 @@ export default async function WipPage() {
 
       {decisions.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-steel">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-steel">
             Past Decisions
           </h2>
           <div className="overflow-x-auto rounded-2xl border border-dimmer">
