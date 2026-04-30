@@ -43,7 +43,7 @@ function loadGis() {
 }
 
 function getClientId() {
-  const id = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+  const id = (process.env.REACT_APP_GOOGLE_CLIENT_ID || "").trim();
   if (!id) throw new Error("REACT_APP_GOOGLE_CLIENT_ID not configured");
   return id;
 }

@@ -11,7 +11,7 @@ const IV_LEN = 12;
 const TAG_LEN = 16;
 
 function getKey() {
-  const raw = process.env.GMAIL_TOKEN_ENC_KEY || "";
+  const raw = (process.env.GMAIL_TOKEN_ENC_KEY || "").trim();
   if (!raw) throw new Error("GMAIL_TOKEN_ENC_KEY missing");
   const key = Buffer.from(raw, "base64");
   if (key.length !== 32) {

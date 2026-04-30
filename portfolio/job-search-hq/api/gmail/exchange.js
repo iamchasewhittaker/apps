@@ -35,8 +35,8 @@ module.exports = async function handler(req, res) {
       return;
     }
 
-    const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET || "";
+    const clientId = (process.env.REACT_APP_GOOGLE_CLIENT_ID || "").trim();
+    const clientSecret = (process.env.GOOGLE_CLIENT_SECRET || "").trim();
     if (!clientId || !clientSecret) {
       res.status(500).json({ error: "google_oauth_not_configured" });
       return;
