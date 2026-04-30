@@ -17,7 +17,7 @@ A raw Linear API key in an old checkpoint commit (`1c4400c`) blocked the entire 
 **Rotate any key that appears in a rebase-edited commit.**
 Even after rewriting history to `REDACTED`, the original value may be in GitHub's secret-scanning cache or in any local clones. Rotate the key at the provider (Linear) immediately after a push-protection-triggered rewrite.
 
-> **Chase:** *(clarifying question below)*
+> **Chase:** A little bit of both — RCT is genuinely useful for when I'm in that headspace, but part of the appeal was proving the theme system could hold a third mode without extra complexity.
 
 ## 2026-04-29 (Daily links — Vercel rootDirectory monorepo fix)
 
