@@ -1,33 +1,45 @@
-export type ThemeMode = 'nautical' | 'regular';
+export type ThemeMode = 'regular' | 'nautical' | 'rct';
 
 export const LABELS = {
-  fleet:    { nautical: 'Fleet',           regular: 'Dashboard' },
-  wip:      { nautical: 'Drydock Gate',    regular: 'In Progress' },
-  review:   { nautical: 'Review',          regular: 'Review' },
-  log:      { nautical: 'Log',             regular: 'Activity' },
-  charts:   { nautical: 'Charts',          regular: 'Analytics' },
-  showcase: { nautical: 'Fleet Showcase',  regular: 'Portfolio' },
-  harbor:   { nautical: 'Harbor',          regular: 'Linear' },
-  bridge:   { nautical: 'Bridge',          regular: 'Daily' },
-  manifest: { nautical: 'Manifest',        regular: 'Changelog & Roadmap' },
-  settings: { nautical: 'Settings',        regular: 'Settings' },
+  fleet:    { regular: 'Dashboard',           nautical: 'Fleet',           rct: 'Park Map' },
+  wip:      { regular: 'In Progress',         nautical: 'Drydock Gate',    rct: 'Workshop' },
+  review:   { regular: 'Review',              nautical: 'Review',          rct: 'Park Inspection' },
+  log:      { regular: 'Activity',            nautical: 'Log',             rct: 'Park Diary' },
+  charts:   { regular: 'Analytics',           nautical: 'Charts',          rct: 'Park Stats' },
+  showcase: { regular: 'Portfolio',           nautical: 'Fleet Showcase',  rct: 'Featured Rides' },
+  harbor:   { regular: 'Linear',              nautical: 'Harbor',          rct: 'Linear' },
+  bridge:   { regular: 'Daily',               nautical: 'Bridge',          rct: 'Daily Operations' },
+  manifest: { regular: 'Changelog & Roadmap', nautical: 'Manifest',        rct: 'Building Plans' },
+  settings: { regular: 'Settings',            nautical: 'Settings',        rct: 'Office' },
 
   // MVP steps
-  step1: { nautical: 'Blueprint',          regular: 'Step 1 — Definition' },
-  step2: { nautical: 'Charting',           regular: 'Step 2 — PRD' },
-  step3: { nautical: 'Drafting',           regular: 'Step 3 — UX Flow' },
-  step4: { nautical: 'Under Construction', regular: 'Step 4 — Build' },
-  step5: { nautical: 'Launched',           regular: 'Step 5 — Shipped' },
-  step6: { nautical: 'Fleet Active',       regular: 'Step 6 — Active' },
+  step1: { regular: 'Step 1 — Definition', nautical: 'Blueprint',          rct: 'Drafting' },
+  step2: { regular: 'Step 2 — PRD',        nautical: 'Charting',           rct: 'Planning' },
+  step3: { regular: 'Step 3 — UX Flow',    nautical: 'Drafting',           rct: 'Designing' },
+  step4: { regular: 'Step 4 — Build',      nautical: 'Under Construction', rct: 'Construction' },
+  step5: { regular: 'Step 5 — Shipped',    nautical: 'Launched',           rct: 'Open' },
+  step6: { regular: 'Step 6 — Active',     nautical: 'Fleet Active',       rct: 'Operating' },
 
   // Sublabels / tagline under logo
-  fleetCommand:      { nautical: 'FLEET COMMAND', regular: 'COMMAND CENTER' },
-  fleetDashboard:    { nautical: 'Fleet Dashboard', regular: 'Dashboard' },
-  shipsInBuild:      { nautical: 'Ships in Build',  regular: 'In Build' },
-  pickOneActiveShip: { nautical: 'Pick ONE active ship. Others move to drydock (paused).', regular: 'Pick ONE focus project. Others get paused.' },
+  fleetCommand:      { regular: 'COMMAND CENTER',                                nautical: 'FLEET COMMAND',                                  rct: 'PARK CENTRAL' },
+  fleetDashboard:    { regular: 'Dashboard',                                      nautical: 'Fleet Dashboard',                                rct: 'Park Map' },
+  shipsInBuild:      { regular: 'In Build',                                       nautical: 'Ships in Build',                                 rct: 'Rides Under Construction' },
+  pickOneActiveShip: { regular: 'Pick ONE focus project. Others get paused.',     nautical: 'Pick ONE active ship. Others move to drydock (paused).', rct: 'Open ONE star attraction. Others go to maintenance.' },
 
   // Page headings (longer than the nav label)
-  analyticsHeading:  { nautical: 'Charts & Constellations', regular: 'Analytics & Themes' },
+  analyticsHeading:  { regular: 'Analytics & Themes', nautical: 'Charts & Constellations', rct: 'Park Stats & Theme Areas' },
+
+  // Nouns used throughout the UI
+  ships:        { regular: 'projects',    nautical: 'ships',        rct: 'rides' },
+  shipsTitle:   { regular: 'Projects',    nautical: 'Ships',        rct: 'Rides' },
+  ship:         { regular: 'project',     nautical: 'ship',         rct: 'ride' },
+  shipTitle:    { regular: 'Project',     nautical: 'Ship',         rct: 'Ride' },
+  activeShip:   { regular: 'Active Project', nautical: 'Active Ship', rct: 'Star Attraction' },
+  reviewsDue:   { regular: 'Reviews Due', nautical: 'Reviews Due',  rct: 'Inspections Due' },
+  launched:     { regular: 'Launched',    nautical: 'Launched',     rct: 'Open' },
+  inProgressLabel: { regular: 'In Progress', nautical: 'In Build',  rct: 'Construction' },
+  totalShips:   { regular: 'Total Projects', nautical: 'Total Ships', rct: 'Total Rides' },
+  openShip:     { regular: 'Open Project',   nautical: 'Open Ship',   rct: 'Open Ride' },
 } as const;
 
 export type LabelKey = keyof typeof LABELS;

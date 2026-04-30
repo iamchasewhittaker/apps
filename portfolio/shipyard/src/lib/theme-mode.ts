@@ -5,11 +5,16 @@ import type { ThemeMode } from './labels';
 
 const STORAGE_KEY = 'shipyard_theme_mode';
 const DEFAULT_MODE: ThemeMode = 'regular';
+const VALID_MODES: ThemeMode[] = ['regular', 'nautical', 'rct'];
+
+function isValidMode(value: unknown): value is ThemeMode {
+  return typeof value === 'string' && (VALID_MODES as string[]).includes(value);
+}
 
 export function readMode(): ThemeMode {
   if (typeof window === 'undefined') return DEFAULT_MODE;
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === 'nautical' ? 'nautical' : 'regular';
+  return isValidMode(stored) ? stored : DEFAULT_MODE;
 }
 
 export function writeMode(mode: ThemeMode) {
@@ -25,7 +30,7 @@ export function useThemeMode(): [ThemeMode, (mode: ThemeMode) => void] {
     setModeState(readMode());
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<ThemeMode>).detail;
-      if (detail === 'nautical' || detail === 'regular') setModeState(detail);
+      if (isValidMode(detail)) setModeState(detail);
     };
     window.addEventListener('shipyard:theme-change', handler);
     return () => window.removeEventListener('shipyard:theme-change', handler);

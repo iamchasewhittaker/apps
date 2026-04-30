@@ -38,18 +38,37 @@ export const metadata: Metadata = {
   description: "Fleet command for your app portfolio",
 };
 
-const navItems: { href: string; labelKey: LabelKey }[] = [
-  { href: "/", labelKey: "fleet" },
-  { href: "/bridge", labelKey: "bridge" },
-  { href: "/wip", labelKey: "wip" },
-  { href: "/review", labelKey: "review" },
-  { href: "/learnings", labelKey: "log" },
-  { href: "/themes", labelKey: "charts" },
-  { href: "/manifest", labelKey: "manifest" },
-  { href: "/portfolio", labelKey: "showcase" },
-  { href: "/linear", labelKey: "harbor" },
-  { href: "/settings", labelKey: "settings" },
+interface NavGroupItem {
+  href: string;
+  labelKey: LabelKey;
+  icon: string;
+}
+
+interface NavGroup {
+  label: string;
+  items: NavGroupItem[];
+}
+
+const navGroups: NavGroup[] = [
+  {
+    label: 'Fleet',
+    items: [
+      { href: '/', labelKey: 'fleet', icon: '◼' },
+      { href: '/wip', labelKey: 'wip', icon: '▶' },
+      { href: '/portfolio', labelKey: 'showcase', icon: '★' },
+    ],
+  },
+  {
+    label: 'Work',
+    items: [
+      { href: '/review', labelKey: 'review', icon: '📋' },
+      { href: '/learnings', labelKey: 'log', icon: '📚' },
+      { href: '/themes', labelKey: 'charts', icon: '📊' },
+    ],
+  },
 ];
+
+const settingsItem: NavGroupItem = { href: '/settings', labelKey: 'settings', icon: '⚙' };
 
 export default async function RootLayout({
   children,
@@ -65,16 +84,38 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex">
         <ModeProvider>
-          <nav className="fixed left-0 top-0 bottom-0 w-[240px] bg-surface/80 backdrop-blur-sm border-r border-dimmer flex flex-col py-6 px-4 z-10">
-            <Link href="/" className="flex items-center gap-3 px-2 mb-10">
+          <nav className="fixed left-0 top-0 bottom-0 w-[240px] bg-surface/80 backdrop-blur-sm border-r border-dimmer flex flex-col py-7 px-4 z-10">
+            <Link href="/" className="flex items-center gap-3 px-2 mb-9">
               <LogoIcon size={36} />
               <LogoLabel />
             </Link>
 
-            <ul className="flex flex-col gap-1.5">
-              {navItems.map((item) => (
-                <NavItem key={item.href} href={item.href} labelKey={item.labelKey} />
+            <div className="flex-1 flex flex-col gap-6">
+              {navGroups.map((group) => (
+                <div key={group.label}>
+                  <p className="px-3 mb-1.5 text-xs font-semibold uppercase tracking-wider text-steel/60">
+                    {group.label}
+                  </p>
+                  <ul className="flex flex-col gap-1">
+                    {group.items.map((item) => (
+                      <NavItem
+                        key={item.href}
+                        href={item.href}
+                        labelKey={item.labelKey}
+                        icon={item.icon}
+                      />
+                    ))}
+                  </ul>
+                </div>
               ))}
+            </div>
+
+            <ul className="flex flex-col gap-1 pt-4 border-t border-dimmer/50">
+              <NavItem
+                href={settingsItem.href}
+                labelKey={settingsItem.labelKey}
+                icon={settingsItem.icon}
+              />
             </ul>
           </nav>
 

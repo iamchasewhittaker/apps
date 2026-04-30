@@ -241,8 +241,11 @@ export interface Decision {
 // Dashboard stats
 export interface FleetStats {
   total: number;
+  shipped: number;        // Launched (mvp_step_actual >= 5)
+  in_progress: number;    // mvp_step_actual in [1,4] && status='active'
+  reviews_due: number;    // count of review chips in amber|red state
+  // Retained for legacy callers (WipBanner, others)
   building: number;
-  shipped: number;
   drydock: number;
   archived: number;
   compliance_avg: number;

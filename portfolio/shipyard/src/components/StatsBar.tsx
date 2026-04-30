@@ -1,3 +1,6 @@
+'use client';
+
+import { useLabel } from '@/components/ModeProvider';
 import type { FleetStats } from '@/lib/types';
 
 interface Props {
@@ -5,19 +8,28 @@ interface Props {
 }
 
 export default function StatsBar({ stats }: Props) {
+  const totalLabel = useLabel('totalShips');
+  const launchedLabel = useLabel('launched');
+  const inProgressLabel = useLabel('inProgressLabel');
+  const reviewsLabel = useLabel('reviewsDue');
+
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-      <StatCard label="Total Ships" value={stats.total} />
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <StatCard label={totalLabel} value={stats.total} />
       <StatCard
-        label="Under Construction"
-        value={stats.building}
-        className={stats.building > 1 ? 'text-danger' : undefined}
+        label={launchedLabel}
+        value={stats.shipped}
+        valueClassName="text-success"
       />
-      <StatCard label="Launched" value={stats.shipped} className="text-gold" />
-      <StatCard label="In Drydock" value={stats.drydock} className="text-steel" />
       <StatCard
-        label="Compliance Avg"
-        value={`${Math.round(stats.compliance_avg)}%`}
+        label={inProgressLabel}
+        value={stats.in_progress}
+        valueClassName="text-gold"
+      />
+      <StatCard
+        label={reviewsLabel}
+        value={stats.reviews_due}
+        valueClassName={stats.reviews_due > 0 ? 'text-warning' : 'text-white'}
       />
     </div>
   );
@@ -26,15 +38,15 @@ export default function StatsBar({ stats }: Props) {
 function StatCard({
   label,
   value,
-  className,
+  valueClassName,
 }: {
   label: string;
   value: number | string;
-  className?: string;
+  valueClassName?: string;
 }) {
   return (
     <div className="rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm px-6 py-5 transition-colors hover:border-gold/20">
-      <p className={`font-display text-4xl font-bold ${className ?? 'text-white'}`}>
+      <p className={`text-4xl font-bold leading-none ${valueClassName ?? 'text-white'}`}>
         {value}
       </p>
       <p className="text-sm text-steel mt-2">{label}</p>

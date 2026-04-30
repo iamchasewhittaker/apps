@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipyard — Filter Bar Redesign (Before / After)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=DM+Mono:wght@400&family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A1128;
+    --surface: #0F1A3E;
+    --white: #FFFFFF;
+    --steel: #A0AABF;
+    --gold: #FFD700;
+    --dim: #A0AABF;
+    --dimmer: #1A2A50;
+    --ghost: #0C1630;
+    --success: #34D399;
+    --warning: #FBBF24;
+    --danger: #F87171;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 40px;
+  }
+
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1400px; margin: 0 auto; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--dimmer);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+  }
+
+  .panel-label {
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    padding: 4px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .panel-label.before { background: var(--danger); color: white; }
+  .panel-label.after { background: var(--success); color: white; }
+
+  /* ─── FONTS ─── */
+  .font-display {
+    font-family: 'Big Shoulders Display', system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .font-mono-label {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── HEADING ─── */
+  .heading-area { margin-bottom: 28px; }
+  .heading-area h1 {
+    font-weight: 700;
+    color: var(--white);
+    display: inline-block;
+    position: relative;
+    padding-bottom: 6px;
+  }
+  .heading-area h1::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  /* ─── STATS ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: rgba(15, 26, 62, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--dimmer);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .stat-value { font-weight: 700; font-size: 32px; line-height: 1; margin-bottom: 6px; }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--success); }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .filter-sep {
+    margin: 0 4px;
+  }
+
+  /* ─── SHIP CARDS ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .ship-card {
+    background: rgba(15, 26, 62, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--dimmer);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.15s;
+  }
+  .ship-card:hover { border-color: rgba(255, 215, 0, 0.3); transform: translateY(-2px); }
+  .ship-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; }
+  .ship-name { font-weight: 700; font-size: 18px; }
+  .status-badge { border-radius: 8px; border: 1px solid; padding: 4px 10px; font-size: 12px; font-weight: 600; }
+  .status-active { background: rgba(52,211,153,0.2); color: var(--success); border-color: rgba(52,211,153,0.3); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .type-chip { border-radius: 8px; border: 1px solid; padding: 4px 10px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .type-web { background: rgba(59,130,246,0.2); color: #60a5fa; border-color: rgba(59,130,246,0.3); }
+  .type-ios { background: rgba(168,85,247,0.2); color: #c084fc; border-color: rgba(168,85,247,0.3); }
+  .family-chip { border-radius: 8px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; font-weight: 500; color: var(--steel); }
+  .step-chip { border-radius: 6px; border: 1px solid rgba(255,215,0,0.2); background: rgba(255,215,0,0.1); padding: 4px 10px; font-size: 12px; font-weight: 500; color: var(--gold); }
+  .meta-row { display: flex; gap: 16px; align-items: center; font-size: 14px; color: var(--steel); margin-bottom: 16px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .live-dot.green { background: var(--success); box-shadow: 0 0 6px rgba(52,211,153,0.7); }
+  .live-dot.red { background: var(--danger); }
+  .compliance-bar { height: 8px; width: 100%; border-radius: 4px; background: var(--dimmer); overflow: hidden; }
+  .compliance-fill { height: 100%; border-radius: 4px; }
+  .compliance-fill.high { background: var(--success); }
+  .compliance-fill.mid { background: var(--warning); }
+  .compliance-fill.low { background: var(--danger); }
+  .compliance-label { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; }
+  .compliance-label .left { color: var(--steel); }
+  .compliance-label .right { color: var(--white); font-weight: 500; }
+
+  /* ─── CALLOUT ─── */
+  .callout {
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 32px;
+    font-size: 13px;
+    color: var(--steel);
+    line-height: 1.6;
+  }
+  .callout strong { color: var(--gold); }
+  .callout code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--white);
+  }
+
+  .issue-marker {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(248,113,113,0.15);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--danger);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<h2 style="font-family: 'Big Shoulders Display', sans-serif; font-size: 28px; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.02em;">Shipyard Filter & Heading Redesign</h2>
+<p style="color: var(--steel); margin-bottom: 32px; font-size: 14px;">Side-by-side: current (left) vs proposed (right). Red markers highlight readability issues.</p>
+
+<div class="comparison">
+
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <!-- BEFORE -->
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <div class="panel">
+    <span class="panel-label before">Current</span>
+
+    <!-- Heading -->
+    <div class="heading-area">
+      <p class="font-mono-label" style="font-size: 12px; color: var(--dim); margin-bottom: 4px;">
+        PORT INSPECTION <span class="issue-marker">12px</span>
+      </p>
+      <h1 class="font-display" style="font-size: 42px;">Fleet Dashboard</h1>
+    </div>
+
+    <!-- Stats (condensed) -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value">52</div><div style="font-size: 14px; color: var(--steel);">Total Ships</div></div>
+      <div class="stat-card"><div class="stat-value gold">18</div><div style="font-size: 14px; color: var(--steel);">Under Construction</div></div>
+      <div class="stat-card"><div class="stat-value green">9</div><div style="font-size: 14px; color: var(--steel);">Launched</div></div>
+    </div>
+
+    <!-- Filters — BEFORE (old tokens, text-xs, no min-height) -->
+    <div class="filter-bar" style="gap: 6px;">
+      <span class="font-mono-label" style="font-size: 12px; color: var(--dim); letter-spacing: 0.08em;">
+        FILTERS <span class="issue-marker">12px</span>
+      </span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none; transition: all 0.15s;">
+        cli <span class="issue-marker">12px</span>
+      </a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">ios</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">library</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">web</a>
+
+      <span style="color: var(--dimmer);">|</span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">clarity</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">standalone</a>
+
+      <span style="color: var(--dimmer);">|</span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">active</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 4px 10px; font-size: 12px; color: var(--dim); text-decoration: none;">archived</a>
+
+      <span style="color: var(--dimmer);">|</span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid rgba(52,211,153,0.3); background: rgba(52,211,153,0.2); padding: 4px 10px; font-size: 12px; color: var(--success); text-decoration: none;">Live</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid rgba(248,113,113,0.3); background: rgba(248,113,113,0.2); padding: 4px 10px; font-size: 12px; color: var(--danger); text-decoration: none;">No URL</a>
+    </div>
+
+    <!-- Ship cards -->
+    <div class="card-grid">
+      <div class="ship-card">
+        <div class="ship-header">
+          <div class="ship-name">Job Search HQ</div>
+          <span class="status-badge status-active">active</span>
+        </div>
+        <div class="chips">
+          <span class="type-chip type-web">web</span>
+          <span class="family-chip">standalone</span>
+          <span class="step-chip">Step 8 &middot; Gmail Inbox Feed</span>
+        </div>
+        <div class="meta-row">
+          <span>2d ago</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span class="live-dot green"></span> <span style="color: var(--success);">live</span></span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill high" style="width: 92%;"></div></div>
+        <div class="compliance-label"><span class="left">Compliance</span><span class="right">92%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="ship-header">
+          <div class="ship-name">Fairway</div>
+          <span class="status-badge status-active">active</span>
+        </div>
+        <div class="chips">
+          <span class="type-chip type-ios">ios</span>
+          <span class="family-chip">standalone</span>
+          <span class="step-chip">Step 6 &middot; Overview tab</span>
+        </div>
+        <div class="meta-row">
+          <span>3d ago</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span class="live-dot red"></span> <span>no url</span></span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill mid" style="width: 68%;"></div></div>
+        <div class="compliance-label"><span class="left">Compliance</span><span class="right">68%</span></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <strong>Issues:</strong> Filter pills are <code>12px / text-xs</code> with no min-height (bounding box ~16px). Heading label is <code>12px</code>. Old token names: <code>text-muted</code>, <code>border-border</code>, <code>text-accent</code>, <code>text-foreground</code>.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <!-- AFTER -->
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <div class="panel">
+    <span class="panel-label after">Proposed</span>
+
+    <!-- Heading -->
+    <div class="heading-area">
+      <p class="font-mono-label" style="font-size: 14px; color: var(--steel); margin-bottom: 4px;">
+        PORT INSPECTION
+      </p>
+      <h1 class="font-display" style="font-size: 42px;">Fleet Dashboard</h1>
+    </div>
+
+    <!-- Stats (condensed) -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value">52</div><div style="font-size: 14px; color: var(--steel);">Total Ships</div></div>
+      <div class="stat-card"><div class="stat-value gold">18</div><div style="font-size: 14px; color: var(--steel);">Under Construction</div></div>
+      <div class="stat-card"><div class="stat-value green">9</div><div style="font-size: 14px; color: var(--steel);">Launched</div></div>
+    </div>
+
+    <!-- Filters — AFTER (new tokens, text-sm, proper padding) -->
+    <div class="filter-bar" style="gap: 8px;">
+      <span style="font-size: 14px; font-weight: 500; color: var(--steel); text-transform: uppercase; letter-spacing: 0.08em;">
+        Filters
+      </span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none; transition: all 0.15s;">
+        cli
+      </a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none;">ios</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.2); padding: 8px 12px; font-size: 14px; font-weight: 600; color: var(--gold); text-decoration: none;">library</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none;">web</a>
+
+      <span style="color: var(--dimmer);">|</span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none;">clarity</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none;">standalone</a>
+
+      <span style="color: var(--dimmer);">|</span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none;">active</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid var(--dimmer); padding: 8px 12px; font-size: 14px; color: var(--steel); text-decoration: none;">archived</a>
+
+      <span style="color: var(--dimmer);">|</span>
+
+      <a href="#" style="border-radius: 6px; border: 1px solid rgba(52,211,153,0.3); background: rgba(52,211,153,0.2); padding: 8px 12px; font-size: 14px; color: var(--success); text-decoration: none;">Live</a>
+      <a href="#" style="border-radius: 6px; border: 1px solid rgba(248,113,113,0.3); background: rgba(248,113,113,0.2); padding: 8px 12px; font-size: 14px; color: var(--danger); text-decoration: none;">No URL</a>
+
+      <a href="#" style="margin-left: 8px; font-size: 14px; color: var(--steel); text-decoration: underline; text-underline-offset: 3px;">Clear all</a>
+    </div>
+
+    <!-- Ship cards -->
+    <div class="card-grid">
+      <div class="ship-card">
+        <div class="ship-header">
+          <div class="ship-name">Job Search HQ</div>
+          <span class="status-badge status-active">active</span>
+        </div>
+        <div class="chips">
+          <span class="type-chip type-web">web</span>
+          <span class="family-chip">standalone</span>
+          <span class="step-chip">Step 8 &middot; Gmail Inbox Feed</span>
+        </div>
+        <div class="meta-row">
+          <span>2d ago</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span class="live-dot green"></span> <span style="color: var(--success);">live</span></span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill high" style="width: 92%;"></div></div>
+        <div class="compliance-label"><span class="left">Compliance</span><span class="right">92%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="ship-header">
+          <div class="ship-name">Fairway</div>
+          <span class="status-badge status-active">active</span>
+        </div>
+        <div class="chips">
+          <span class="type-chip type-ios">ios</span>
+          <span class="family-chip">standalone</span>
+          <span class="step-chip">Step 6 &middot; Overview tab</span>
+        </div>
+        <div class="meta-row">
+          <span>3d ago</span>
+          <span style="display: flex; align-items: center; gap: 6px;"><span class="live-dot red"></span> <span>no url</span></span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill mid" style="width: 68%;"></div></div>
+        <div class="compliance-label"><span class="left">Compliance</span><span class="right">68%</span></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <strong>Changes:</strong> Heading label bumped to <code>14px / text-sm</code>. Filter pills <code>14px</code> with <code>8px 12px</code> padding (taller touch targets). Tokens switched to canonical: <code>text-steel</code>, <code>border-dimmer</code>, <code>text-gold</code>, <code>text-white</code>. Active filter uses gold instead of accent alias. "Clear all" link also <code>14px</code>.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
