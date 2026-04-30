@@ -4,7 +4,7 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Sidebar emojis (🚢🔨🏆) + WIP page rebuilt with ShipCard grid (3-col, sort controls, no drag); dashboard trimmed to summary + 3 Recently Active cards |
+| Focus      | Theme consistency audit — WIP page now full-width, all section headings normalized; sidebar emojis + ShipCard grid shipped |
 | Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Linear Harbor Master sync |
 | Last touch | 2026-04-30                                                            |
 

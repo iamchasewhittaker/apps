@@ -1,5 +1,13 @@
 # Learnings — Shipyard
 
+## 2026-04-30 (Theme consistency audit)
+
+**Audit every page after any layout change, not just the ones you touched.** The WIP page had a `max-w-4xl` constraint from its old list-view days — invisible when rows filled the width, obvious once a 3-col card grid replaced them. The fix took 30 seconds; finding it required looking at every page.
+
+**Max-width is a layout decision, not a style decision.** Text-heavy pages (Settings, Learnings, Themes, Linear) stay at `max-w-3xl` for reading comfort. Grid pages (Dashboard, WIP, Portfolio) run full-width so cards fill the available space. Mixing these silently breaks visual rhythm.
+
+> **Chase:** —
+
 ## 2026-04-30 (Sidebar emojis + WIP ShipCard grid)
 
 **Extracting a shared component mid-feature is the right call even when it costs a step.** `ShipCard` was inline in `page.tsx` — pulling it to `src/components/ShipCard.tsx` before wiring the WIP page added one step but eliminated a copy-paste. The `highlight` prop (gold border + eyebrow badge) extended the component cleanly without branching the layout.

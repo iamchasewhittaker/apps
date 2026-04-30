@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-04-30 (Theme consistency audit)
+
+- **WIP page full-width.** Removed `max-w-4xl mx-auto` constraint — card grid now matches dashboard full-width layout. `space-y-8` → `space-y-6` to match dashboard spacing rhythm.
+- **Section heading size normalized.** "Past Decisions" heading on WIP page was `text-sm`; corrected to `text-xs` to match all other section labels on the page (`ACTIVE FOCUS`, `QUEUE`).
+
 ### Changed — 2026-04-30 (Sidebar emojis + WIP glass card grid)
 
 - **Sidebar nav emojis.** Replaced Unicode glyphs (`◼ ▶ ★`) on the Fleet group with real emojis (`🚢 🔨 🏆`) to match the Work group (`📋 📚 📊`). Edit in `src/app/layout.tsx`.
