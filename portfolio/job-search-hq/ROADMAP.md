@@ -62,6 +62,10 @@ All Wave 3 items shipped 2026-04-18. Wave 4 is next.
 - Optional field `prepStageKey` on applications for last template choice.
 - iOS `JobApplication` includes `prepStageKey` for blob parity.
 
+## Polish — Shipped
+
+- [x] **Glass-card token sweep (2026-04-30)** — zero raw hex/rgba outside `src/tokens.js`; 21 files tokenized; `docs/BRANDING.md` updated to Command Blue actuals; verified via grep + build.
+
 ## Release readiness + dependencies
 
 - App status: **go** for v8.7 shipped scope.

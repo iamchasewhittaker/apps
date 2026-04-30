@@ -6,6 +6,7 @@ import {
   normalizeWins, blankWin, normalizeInboxItems, matchAppFromInboxItem,
   s, css, today, generateId,
 } from "./constants";
+import { T } from "./tokens";
 import { push, pull, auth, APP_KEY, emailRedirectTo } from "./sync";
 import AppModal from "./components/AppModal";
 import ContactModal from "./components/ContactModal";
@@ -34,14 +35,14 @@ function logAuth(message, payload) {
 // ── AUTH SCREENS ──────────────────────────────────────────────────────────
 
 const authInputStyle = {
-  width: "100%", padding: "10px 12px", borderRadius: 8, border: "1.5px solid rgba(59,130,246,0.2)",
-  background: "rgba(255,255,255,0.03)", color: "#FFFFFF", fontSize: 16, fontFamily: "inherit", marginBottom: 16,
+  width: "100%", padding: "10px 12px", borderRadius: 8, border: `1.5px solid ${T.borderInput}`,
+  background: T.cardSubtle, color: T.foreground, fontSize: 16, fontFamily: "inherit", marginBottom: 16,
   outline: "none", boxSizing: "border-box",
 };
 
 const authBtnStyle = {
   width: "100%", padding: "12px", borderRadius: 8, border: "none",
-  background: "#3b82f6", color: "#fff", fontSize: 14, fontWeight: 700,
+  background: T.accent, color: T.foreground, fontSize: 14, fontWeight: 700,
   fontFamily: "inherit", cursor: "pointer", minHeight: 44,
 };
 
@@ -83,19 +84,19 @@ function LoginScreen() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div style={{ maxWidth: 360, width: "100%", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: "1px solid rgba(59,130,246,0.12)" }}>
+    <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div style={{ maxWidth: 360, width: "100%", background: T.card, backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: `1px solid ${T.border}` }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🎯</div>
-        <div style={{ fontSize: 20, fontWeight: 700, color: "#FFFFFF", textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
-        <div style={{ fontSize: 13, color: "#A0AABF", textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: T.foreground, textAlign: "center", marginBottom: 4 }}>Job Search HQ</div>
+        <div style={{ fontSize: 13, color: T.muted, textAlign: "center", marginBottom: 28 }}>Sign in to sync your data across devices</div>
         {resetSent ? (
-          <div style={{ fontSize: 13, color: "#A0AABF", lineHeight: 1.6, textAlign: "center" }}>
-            Password reset email sent to <strong style={{ color: "#FFFFFF" }}>{email}</strong>.
+          <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, textAlign: "center" }}>
+            Password reset email sent to <strong style={{ color: T.foreground }}>{email}</strong>.
             Check your inbox and click the link to set a new password.
           </div>
         ) : (
           <form onSubmit={handleLogin}>
-            <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email</label>
+            <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email</label>
             <input
               type="email"
               value={email}
@@ -104,7 +105,7 @@ function LoginScreen() {
               required
               style={authInputStyle}
             />
-            <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
+            <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Password</label>
             <input
               type="password"
               value={password}
@@ -113,7 +114,7 @@ function LoginScreen() {
               required
               style={authInputStyle}
             />
-            {error && <div style={{ fontSize: 12, color: "#fbbf24", marginBottom: 12 }}>{error}</div>}
+            {error && <div style={{ fontSize: 12, color: T.warning, marginBottom: 12 }}>{error}</div>}
             <button type="submit" disabled={loading || !email.trim() || !password.trim()} style={{
               ...authBtnStyle, opacity: loading || !email.trim() || !password.trim() ? 0.6 : 1,
               cursor: loading ? "wait" : "pointer",
@@ -122,7 +123,7 @@ function LoginScreen() {
             </button>
             <div style={{ marginTop: 14, textAlign: "center" }}>
               <button type="button" onClick={handleReset} disabled={loading} style={{
-                background: "none", border: "none", color: "#3b82f6", cursor: "pointer",
+                background: "none", border: "none", color: T.accent, cursor: "pointer",
                 fontFamily: "inherit", fontSize: 12, padding: 0,
               }}>
                 Forgot password?
@@ -160,13 +161,13 @@ function SetPasswordScreen({ onDone }) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-      <div style={{ maxWidth: 360, width: "100%", background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: "1px solid rgba(59,130,246,0.12)" }}>
+    <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <div style={{ maxWidth: 360, width: "100%", background: T.card, backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 16, padding: 32, border: `1px solid ${T.border}` }}>
         <div style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>🔐</div>
-        <div style={{ fontSize: 20, fontWeight: 700, color: "#FFFFFF", textAlign: "center", marginBottom: 4 }}>Set new password</div>
-        <div style={{ fontSize: 13, color: "#A0AABF", textAlign: "center", marginBottom: 28 }}>Choose a password for your account</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: T.foreground, textAlign: "center", marginBottom: 4 }}>Set new password</div>
+        <div style={{ fontSize: 13, color: T.muted, textAlign: "center", marginBottom: 28 }}>Choose a password for your account</div>
         <form onSubmit={handleSet}>
-          <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>New password</label>
+          <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>New password</label>
           <input
             type="password"
             value={password}
@@ -175,7 +176,7 @@ function SetPasswordScreen({ onDone }) {
             required
             style={authInputStyle}
           />
-          <label style={{ fontSize: 12, color: "#A0AABF", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Confirm password</label>
+          <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>Confirm password</label>
           <input
             type="password"
             value={confirm}
@@ -184,7 +185,7 @@ function SetPasswordScreen({ onDone }) {
             required
             style={authInputStyle}
           />
-          {error && <div style={{ fontSize: 12, color: "#fbbf24", marginBottom: 12 }}>{error}</div>}
+          {error && <div style={{ fontSize: 12, color: T.warning, marginBottom: 12 }}>{error}</div>}
           <button type="submit" disabled={loading || !password || !confirm} style={{
             ...authBtnStyle, opacity: loading || !password || !confirm ? 0.6 : 1,
             cursor: loading ? "wait" : "pointer",
@@ -220,9 +221,9 @@ const NAV_ITEMS = [
 const sidebarStyles = {
   layout: { display: "flex", minHeight: "100vh" },
   sidebar: {
-    width: 240, minWidth: 240, background: "rgba(255,255,255,0.05)",
+    width: 240, minWidth: 240, background: T.card,
     backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-    borderRight: "1px solid rgba(59,130,246,0.12)",
+    borderRight: `1px solid ${T.border}`,
     padding: "28px 16px", display: "flex", flexDirection: "column",
     position: "sticky", top: 0, height: "100vh", overflowY: "auto",
   },
@@ -231,27 +232,27 @@ const sidebarStyles = {
     padding: "0 8px", marginBottom: 36,
   },
   logoMark: {
-    width: 38, height: 38, background: "#3b82f6", borderRadius: 10,
+    width: 38, height: 38, background: T.accent, borderRadius: 10,
     display: "flex", alignItems: "center", justifyContent: "center",
-    boxShadow: "0 0 16px rgba(59,130,246,0.25)", flexShrink: 0,
+    boxShadow: `0 0 16px ${T.accentRing}`, flexShrink: 0,
   },
-  logoText: { fontWeight: 700, fontSize: 18, color: "#FFFFFF" },
-  logoSub: { fontSize: 14, color: "#A0AABF" },
+  logoText: { fontWeight: 700, fontSize: 18, color: T.foreground },
+  logoSub: { fontSize: 14, color: T.muted },
   navSection: { marginBottom: 8 },
   navLabel: {
-    fontSize: 11, fontWeight: 600, color: "#A0AABF",
+    fontSize: 11, fontWeight: 600, color: T.muted,
     textTransform: "uppercase", letterSpacing: "0.08em",
     padding: "0 12px", marginBottom: 6,
   },
   navItem: {
     display: "flex", alignItems: "center", gap: 12,
     padding: "12px 14px", borderRadius: 10, fontSize: 15, fontWeight: 500,
-    color: "#A0AABF", background: "transparent", border: "none",
+    color: T.muted, background: "transparent", border: "none",
     cursor: "pointer", width: "100%", textAlign: "left",
     fontFamily: "inherit", minHeight: 44, transition: "all 0.15s",
   },
   navItemActive: {
-    background: "rgba(59,130,246,0.12)", color: "#3b82f6", fontWeight: 600,
+    background: T.border, color: T.accent, fontWeight: 600,
   },
   navIcon: { fontSize: 17, width: 22, textAlign: "center", flexShrink: 0 },
   mainContent: { flex: 1, padding: "40px 48px", overflowX: "hidden", overflowY: "auto" },
@@ -259,19 +260,19 @@ const sidebarStyles = {
     display: "flex", alignItems: "flex-start", justifyContent: "space-between",
     marginBottom: 28, gap: 12, flexWrap: "wrap",
   },
-  pageTitle: { fontSize: 32, fontWeight: 700, color: "#FFFFFF", margin: 0 },
-  pageSub: { fontSize: 16, color: "#A0AABF", marginTop: 4 },
+  pageTitle: { fontSize: 32, fontWeight: 700, color: T.foreground, margin: 0 },
+  pageSub: { fontSize: 16, color: T.muted, marginTop: 4 },
   sidebarBottom: { marginTop: "auto", paddingTop: 16 },
   mobileTabBar: {
-    display: "none", gap: 4, padding: "8px 16px", borderBottom: "1px solid rgba(59,130,246,0.12)",
-    flexWrap: "wrap", background: "rgba(255,255,255,0.03)",
+    display: "none", gap: 4, padding: "8px 16px", borderBottom: `1px solid ${T.border}`,
+    flexWrap: "wrap", background: T.cardSubtle,
   },
   mobileTabBtn: {
     padding: "8px 14px", borderRadius: 8, border: "none", background: "transparent",
-    color: "#A0AABF", cursor: "pointer", fontSize: 13, fontWeight: 500, minHeight: 44,
+    color: T.muted, cursor: "pointer", fontSize: 13, fontWeight: 500, minHeight: 44,
     fontFamily: "inherit",
   },
-  mobileTabBtnActive: { background: "rgba(59,130,246,0.12)", color: "#3b82f6", fontWeight: 600 },
+  mobileTabBtnActive: { background: T.border, color: T.accent, fontWeight: 600 },
 };
 
 export default function JobSearchTracker() {
@@ -747,7 +748,7 @@ export default function JobSearchTracker() {
 
   // Auth gate — session=null means still checking, session=false means not logged in
   if (session === null) {
-    return <div style={{ minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A0AABF", fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
+    return <div style={{ minHeight: "100vh", background: T.bgGradient, display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 14 }}>Loading…</div>;
   }
   if (recoveryMode) {
     return <SetPasswordScreen onDone={() => { setRecoveryMode(false); auth.getSession().then(({ data: d }) => setSession(d.session || false)); }} />;
@@ -805,7 +806,7 @@ export default function JobSearchTracker() {
           <div style={sidebarStyles.sidebarBottom}>
             {!profileComplete ? (
               <button
-                style={{ ...sidebarStyles.navItem, color: "#fbbf24" }}
+                style={{ ...sidebarStyles.navItem, color: T.warning }}
                 onClick={() => setProfileModal(true)}
               >
                 <span style={sidebarStyles.navIcon}>⚠️</span>

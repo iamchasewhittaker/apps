@@ -1,5 +1,6 @@
 import React from "react";
 import { s, STAGES, STAGE_COLORS, nextStepUrgency, prepSectionsHasContent, offerDetailsHasContent } from "../constants";
+import { T } from "../tokens";
 
 export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyKit, onPrep, onDebrief, onOffer, archived }) {
   const linked = contacts.filter(c => c.appIds?.includes(app.id));
@@ -11,7 +12,7 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
     <div style={{ ...s.card, opacity: archived ? 0.7 : 1 }} className="card-hover">
       <div style={s.cardTop}>
         <div>
-          <div style={s.cardCompany}>{app.company || <span style={{ color: "#A0AABF" }}>Untitled</span>}</div>
+          <div style={s.cardCompany}>{app.company || <span style={{ color: T.muted }}>Untitled</span>}</div>
           <div style={s.cardTitle}>{app.title}</div>
         </div>
         <div style={{ ...s.stageBadge, background: STAGE_COLORS[app.stage] + "22", color: STAGE_COLORS[app.stage] }}>
@@ -29,7 +30,7 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
         <div style={s.cardContacts}>{linked.map(c => <span key={c.id} style={s.contactChip}>{c.name}</span>)}</div>
       )}
       {prepSectionsHasContent(app.prepSections, app.prepNotes) && (
-        <div style={{ fontSize: 14, color: "#34D399", marginTop: 2 }}>✓ Interview prep saved</div>
+        <div style={{ fontSize: 14, color: T.success, marginTop: 2 }}>✓ Interview prep saved</div>
       )}
       <div style={s.cardActions}>
         <select style={s.stageSelect} value={app.stage} onChange={e => onStageChange(e.target.value)}>
@@ -43,12 +44,12 @@ export default function AppCard({ app, contacts, onEdit, onStageChange, onApplyK
           <button style={s.actionBtnPrep} onClick={onPrep}>🎯 Prep</button>
         )}
         {(showPrep || hasDebriefs) && (
-          <button style={{ ...s.actionBtnPrep, background: "#1a1608", borderColor: "#c8a84b44", color: "#c8a84b" }} onClick={onDebrief}>
+          <button style={{ ...s.actionBtnPrep, background: T.goldBg, borderColor: T.goldBorder, color: T.gold }} onClick={onDebrief}>
             {hasDebriefs ? `📋 ${(app.interviewLog || []).length}` : "📋 Debrief"}
           </button>
         )}
         {isOffer && onOffer && (
-          <button style={{ ...s.actionBtnPrep, background: "#0f2b1a", borderColor: "#22c55e44", color: "#22c55e" }} onClick={onOffer}>
+          <button style={{ ...s.actionBtnPrep, background: T.offerGreenDarkBg, borderColor: `${T.successBright}44`, color: T.successBright }} onClick={onOffer}>
             {hasOfferDetails ? "💰 Offer ●" : "💰 Offer"}
           </button>
         )}

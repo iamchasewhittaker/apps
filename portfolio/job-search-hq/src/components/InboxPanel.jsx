@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { s, isInboxPending } from "../constants";
+import { T } from "../tokens";
 import { connectGmail, disconnectGmail, ensureAccessToken, getCachedConnection } from "../inbox/oauth";
 import { runInboxSync } from "../inbox/syncInbox";
 import InboxItem from "./InboxItem";
@@ -197,7 +198,7 @@ export default function InboxPanel({ inbox, applications, handlers, showError })
             );
           })}
           {overflow > 0 && (
-            <div style={{ fontSize: 12, color: "#A0AABF", textAlign: "center", marginTop: 4 }}>
+            <div style={{ fontSize: 12, color: T.muted, textAlign: "center", marginTop: 4 }}>
               +{overflow} more pending — triage these {visible.length} first
             </div>
           )}
@@ -216,11 +217,11 @@ function SetupGuide() {
         style={{
           padding: 8,
           borderRadius: 6,
-          background: "#ecfdf5",
-          border: "1px solid #a7f3d0",
+          background: T.setupGuideBg,
+          border: `1px solid ${T.setupGuideBorder}`,
           marginBottom: 12,
           fontSize: 13,
-          color: "#065f46",
+          color: T.setupGuideText,
         }}
       >
         <strong>Using Gmail Forge?</strong> The <code>JobSearch</code> label is created

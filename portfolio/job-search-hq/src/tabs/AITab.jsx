@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { T } from "../tokens";
 import { s, CONNECT_SCENARIOS, FOLLOWUP_SCENARIOS, STAR_COMPETENCIES, blankStarStory, normalizeStarStories, parseRecruiterEmail, blankContact, blankApp } from "../constants";
 import { MOCK_INTERVIEW_SCENARIOS } from "../mockInterviewQuestions";
 import ErrorBoundary from "../ErrorBoundary";
@@ -223,7 +224,7 @@ export default function AITab({
                 {data.applications.filter(a => a.jobDescription).map(a => (
                   <button key={a.id} style={s.appToggleChip} onClick={() => setJd(a.jobDescription)}>{a.company} — {a.title}</button>
                 ))}
-                {data.applications.filter(a => a.jobDescription).length === 0 && <span style={{ color: "#A0AABF", fontSize: 14 }}>No saved JDs yet — paste them when adding applications.</span>}
+                {data.applications.filter(a => a.jobDescription).length === 0 && <span style={{ color: T.muted, fontSize: 14 }}>No saved JDs yet — paste them when adding applications.</span>}
               </div>
               <div style={{ marginTop: 16 }}>
                 <div style={s.sectionLabel}>PM vs AE prompts</div>
@@ -289,14 +290,14 @@ export default function AITab({
                 </button>
               ))}
               {data.applications.filter(a => a.jobDescription).length === 0 && (
-                <span style={{ color: "#A0AABF", fontSize: 14 }}>No applications with saved JDs yet. Add them in the pipeline.</span>
+                <span style={{ color: T.muted, fontSize: 14 }}>No applications with saved JDs yet. Add them in the pipeline.</span>
               )}
             </div>
             {kitApp && (
               <div style={s.kitContext}>
                 <div>
                   <strong>{kitApp.company}</strong> — {kitApp.title}
-                  <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>Stage: {kitApp.stage} · Resume type: {resumeType}</div>
+                  <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>Stage: {kitApp.stage} · Resume type: {resumeType}</div>
                 </div>
                 <button
                   style={{ ...s.btnPrimary, opacity: !data.baseResume ? 0.5 : 1 }}
@@ -435,7 +436,7 @@ export default function AITab({
                     <div style={s.kitContext}>
                       <div>
                         <strong>{connectContact.name}</strong> · {connectContact.role}
-                        <div style={{ fontSize: 12, color: "#A0AABF" }}>{connectContact.company}</div>
+                        <div style={{ fontSize: 12, color: T.muted }}>{connectContact.company}</div>
                       </div>
                     </div>
                   )}
@@ -485,7 +486,7 @@ export default function AITab({
                     <div style={s.kitContext}>
                       <div>
                         <strong>{followupContact.name}</strong> · {followupContact.role}
-                        <div style={{ fontSize: 12, color: "#A0AABF" }}>{followupContact.company}</div>
+                        <div style={{ fontSize: 12, color: T.muted }}>{followupContact.company}</div>
                       </div>
                     </div>
                   )}
@@ -577,8 +578,8 @@ export default function AITab({
                   <div key={story.id} style={{ ...s.card, padding: 12 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start" }}>
                       <div>
-                        <div style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>{story.title || "Untitled STAR story"}</div>
-                        {story.competency && <div style={{ fontSize: 11, color: "#60a5fa", marginTop: 2 }}>{story.competency}</div>}
+                        <div style={{ fontSize: 14, fontWeight: 700, color: T.foreground }}>{story.title || "Untitled STAR story"}</div>
+                        {story.competency && <div style={{ fontSize: 11, color: T.highlight, marginTop: 2 }}>{story.competency}</div>}
                       </div>
                       <div style={{ display: "flex", gap: 6 }}>
                         <button style={s.actionBtn} onClick={() => editStory(story)}>Edit</button>
@@ -664,7 +665,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
     <div style={s.aiLayout}>
       <div style={s.card}>
         <div style={{ fontWeight: 700, marginBottom: 8 }}>Paste recruiter email</div>
-        <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 10 }}>
+        <div style={{ fontSize: 14, color: T.muted, marginBottom: 10 }}>
           Paste the full email (headers + body). The parser extracts contact info and job details instantly — no AI call needed.
         </div>
         <textarea
@@ -684,7 +685,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
           <div style={{ fontWeight: 700, marginBottom: 12 }}>Extracted fields — review &amp; edit</div>
           {fields.map(({ key, label }) => (
             <div key={key} style={{ marginBottom: 10 }}>
-              <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: 14, color: T.muted, marginBottom: 3 }}>{label}</div>
               <input
                 style={{ ...s.input, width: "100%", boxSizing: "border-box" }}
                 value={emailParsed[key] || ""}
@@ -701,7 +702,7 @@ function EmailParsePanel({ emailRaw, setEmailRaw, emailParsed, setEmailParsed, s
               📋 Add Application
             </button>
           </div>
-          <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 8 }}>
+          <div style={{ fontSize: 14, color: T.muted, marginTop: 8 }}>
             You can save both — each button opens the edit modal so you can review before saving.
           </div>
         </div>
@@ -738,10 +739,10 @@ function WeeklyReviewPanel({ data, showError }) {
   }
 
   const statCard = (label, value, sub) => (
-    <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "12px 16px", flex: "1 1 120px", minWidth: 100 }}>
-      <div style={{ fontSize: 24, fontWeight: 800, color: "#FFFFFF" }}>{value}</div>
-      <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>{label}</div>
-      {sub && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>{sub}</div>}
+    <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 10, padding: "12px 16px", flex: "1 1 120px", minWidth: 100 }}>
+      <div style={{ fontSize: 24, fontWeight: 800, color: T.foreground }}>{value}</div>
+      <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>{label}</div>
+      {sub && <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>{sub}</div>}
     </div>
   );
 
@@ -761,9 +762,9 @@ function WeeklyReviewPanel({ data, showError }) {
           {Object.entries(stageCount).length === 0
             ? <div style={s.empty}>No applications yet.</div>
             : Object.entries(stageCount).map(([stage, n]) => (
-              <div key={stage} style={{ display: "flex", justifyContent: "space-between", background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "8px 12px" }}>
-                <span style={{ fontSize: 13, color: "#FFFFFF" }}>{stage}</span>
-                <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>{n}</span>
+              <div key={stage} style={{ display: "flex", justifyContent: "space-between", background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 8, padding: "8px 12px" }}>
+                <span style={{ fontSize: 13, color: T.foreground }}>{stage}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: T.foreground }}>{n}</span>
               </div>
             ))}
         </div>
@@ -782,10 +783,10 @@ function WeeklyReviewPanel({ data, showError }) {
             <div style={s.sectionLabel}>Active roles ({activeApps.length})</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
               {activeApps.map(a => (
-                <div key={a.id} style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "10px 12px" }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>{a.company}</div>
-                  <div style={{ fontSize: 12, color: "#A0AABF" }}>{a.title} · {a.stage}</div>
-                  {a.nextStep && <div style={{ fontSize: 11, color: "#A0AABF", marginTop: 4 }}>→ {a.nextStep}</div>}
+                <div key={a.id} style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 8, padding: "10px 12px" }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: T.foreground }}>{a.company}</div>
+                  <div style={{ fontSize: 12, color: T.muted }}>{a.title} · {a.stage}</div>
+                  {a.nextStep && <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>→ {a.nextStep}</div>}
                 </div>
               ))}
             </div>
@@ -796,12 +797,12 @@ function WeeklyReviewPanel({ data, showError }) {
             <div style={s.sectionLabel}>Debriefs this week ({interviewsThisWeek.length})</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {interviewsThisWeek.map((e, i) => {
-                const impColors = { positive: "#34D399", neutral: "#FBBF24", negative: "#F87171" };
-                const col = impColors[e.impression] || "#A0AABF";
+                const impColors = { positive: T.success, neutral: T.warning, negative: T.danger };
+                const col = impColors[e.impression] || T.muted;
                 return (
-                  <div key={i} style={{ background: "rgba(255,255,255,0.03)", border: `1.5px solid ${col}33`, borderRadius: 8, padding: "8px 12px" }}>
+                  <div key={i} style={{ background: T.cardSubtle, border: `1.5px solid ${col}33`, borderRadius: 8, padding: "8px 12px" }}>
                     <div style={{ fontSize: 12, color: col, fontWeight: 700 }}>{e.roundType} · {e.impression} · {e.confidence}/5</div>
-                    {e.gaps && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>△ {e.gaps.slice(0, 80)}{e.gaps.length > 80 ? "…" : ""}</div>}
+                    {e.gaps && <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>△ {e.gaps.slice(0, 80)}{e.gaps.length > 80 ? "…" : ""}</div>}
                   </div>
                 );
               })}
@@ -866,19 +867,19 @@ function MockInterviewPanel({ showError }) {
               style={{
                 padding: "6px 12px", borderRadius: 6, fontSize: 12, fontWeight: 600,
                 cursor: "pointer", fontFamily: "inherit",
-                background: scenarioKey === sc.key ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.05)",
-                border: `1.5px solid ${scenarioKey === sc.key ? "#3b82f6" : "rgba(59,130,246,0.12)"}`,
-                color: scenarioKey === sc.key ? "#3b82f6" : "#A0AABF",
+                background: scenarioKey === sc.key ? T.accentBg : T.card,
+                border: `1.5px solid ${scenarioKey === sc.key ? T.accent : T.border}`,
+                color: scenarioKey === sc.key ? T.accent : T.muted,
               }}
             >{sc.label}</button>
           ))}
         </div>
 
-        <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
-          <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 6 }}>
+        <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
+          <div style={{ fontSize: 14, color: T.muted, marginBottom: 6 }}>
             Question {qIndex + 1} of {scenario.questions.length}
           </div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: "#FFFFFF", lineHeight: 1.5 }}>{question}</div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: T.foreground, lineHeight: 1.5 }}>{question}</div>
         </div>
 
         <div style={s.sectionLabel}>Your answer</div>
@@ -911,14 +912,14 @@ function MockInterviewPanel({ showError }) {
       <div style={s.aiRight}>
         <div style={s.sectionLabel}>Session log ({sessionLog.length})</div>
         {sessionLog.length === 0 ? (
-          <div style={{ fontSize: 12, color: "#A0AABF" }}>Complete a question to see it here. Resets on reload.</div>
+          <div style={{ fontSize: 12, color: T.muted }}>Complete a question to see it here. Resets on reload.</div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {sessionLog.map((entry, i) => (
-              <div key={i} style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "10px 12px" }}>
-                <div style={{ fontSize: 14, color: "#A0AABF", marginBottom: 4 }}>{entry.scenario} · Q{i + 1}</div>
-                <div style={{ fontSize: 12, color: "#A0AABF", marginBottom: 6, fontStyle: "italic" }}>"{entry.question}"</div>
-                <div style={{ fontSize: 12, color: "#FFFFFF" }}>{entry.answer}</div>
+              <div key={i} style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 8, padding: "10px 12px" }}>
+                <div style={{ fontSize: 14, color: T.muted, marginBottom: 4 }}>{entry.scenario} · Q{i + 1}</div>
+                <div style={{ fontSize: 12, color: T.muted, marginBottom: 6, fontStyle: "italic" }}>"{entry.question}"</div>
+                <div style={{ fontSize: 12, color: T.foreground }}>{entry.answer}</div>
               </div>
             ))}
           </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { s, CONTACT_TYPES, OUTREACH_STATUSES, getOutreachCadenceNudge } from "../constants";
+import { T } from "../tokens";
 import OutreachTimeline from "./OutreachTimeline";
 
 export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusChange, onDraftMessage, showError }) {
@@ -43,7 +44,7 @@ export default function ContactCard({ contact, apps, onEdit, onDelete, onStatusC
         <div style={s.companyIntel}>
           {contact.industry && <span>🏢 {contact.industry}</span>}
           {contact.companySize && <span>👥 {contact.companySize}</span>}
-          {contact.isHiring && <span style={{ color: "#34D399" }}>✅ Hiring</span>}
+          {contact.isHiring && <span style={{ color: T.success }}>✅ Hiring</span>}
         </div>
       )}
 

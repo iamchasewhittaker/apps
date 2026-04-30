@@ -18,6 +18,12 @@
 
 ## Entries
 
+### 2026-04-30 — Compound border strings require template-literal conversion during token sweeps
+**What happened:** Most simple color swaps (`color: "#A0AABF"` → `color: T.muted`) handled cleanly via `replace_all`. But compound strings like `border: "1px solid rgba(59,130,246,0.12)"` survived — the color is embedded inside a larger string, so a hex-only pattern wouldn't match.
+**Root cause:** CRA inline styles use plain JS strings. CSS custom properties would make this transparent, but CRA has no CSS pipeline to inject them. Every compound border/shadow/gradient had to be individually converted from a plain string to a template literal: `` border: `1px solid ${T.border}` ``.
+**Fix / lesson:** Run the verification grep (`grep -rn 'rgba(' src/`) after bulk replacements to catch compound strings that slipped through. The pattern `1px solid rgba(...)` in a plain string is the most common survivor. Template literals are the only clean answer in a pure-JS-styles codebase.
+**Tags:** refactor · tokens · inline-styles · gotcha
+
 ### 2026-04-29 — Sidebar nav mockup beats header+tabs for accessibility-focused redesigns
 **What happened:** First mockup draft used a horizontal header + tab bar (matching JSHQ's current layout). Chase rejected it because it didn't match the Shipyard reference screenshot, which uses a left sidebar.
 **Root cause:** Horizontal tab bars work fine at standard sizes but waste vertical space and crowd labels at large font sizes. A 240px sidebar provides more room for nav labels, leaves the full viewport width for content, and matches the "command center" visual language Chase liked in Shipyard.

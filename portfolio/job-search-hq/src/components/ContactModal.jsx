@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { s, CONTACT_TYPES, OUTREACH_STATUSES, OUTREACH_EVENT_TYPES, OUTREACH_METHODS, blankOutreachEntry } from "../constants";
+import { T } from "../tokens";
 import Field from "./Field";
 
 export default function ContactModal({ modal, apps, onSave, onClose }) {
@@ -110,7 +111,7 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
 
           {/* Outreach log — Wave 4 #3 */}
           <div style={s.profileSectionLabel}>Outreach Log</div>
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: 12, marginBottom: 12 }}>
+          <div style={{ background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 8, padding: 12, marginBottom: 12 }}>
             <div style={{ display: "grid", gridTemplateColumns: "120px 1fr 1fr", gap: 8, marginBottom: 8 }}>
               <Field label="Date" type="date" value={draftEntry.date} onChange={v => setDraft("date", v)} />
               <div style={s.fieldGroup}>
@@ -140,7 +141,7 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
             </div>
 
             {sortedLog.length > 0 && (
-              <div style={{ marginTop: 12, borderTop: "1px solid rgba(59,130,246,0.12)", paddingTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+              <div style={{ marginTop: 12, borderTop: `1px solid ${T.border}`, paddingTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
                 {sortedLog.map(entry => {
                   const typeInfo = OUTREACH_EVENT_TYPES.find(t => t.value === entry.type) || OUTREACH_EVENT_TYPES[OUTREACH_EVENT_TYPES.length - 1];
                   const methodLabel = (OUTREACH_METHODS.find(m => m.value === entry.method) || {}).label || "";
@@ -149,11 +150,11 @@ export default function ContactModal({ modal, apps, onSave, onClose }) {
                       <span style={{ width: 8, height: 8, borderRadius: "50%", background: typeInfo.color, marginTop: 6, flexShrink: 0 }} />
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: "flex", gap: 6, alignItems: "baseline", flexWrap: "wrap" }}>
-                          <span style={{ color: "#A0AABF", fontVariantNumeric: "tabular-nums" }}>{entry.date}</span>
+                          <span style={{ color: T.muted, fontVariantNumeric: "tabular-nums" }}>{entry.date}</span>
                           <span style={{ color: typeInfo.color, fontWeight: 600 }}>{typeInfo.label}</span>
-                          {methodLabel && <span style={{ color: "#A0AABF" }}>· {methodLabel}</span>}
+                          {methodLabel && <span style={{ color: T.muted }}>· {methodLabel}</span>}
                         </div>
-                        {entry.notes && <div style={{ color: "#FFFFFF", marginTop: 1, lineHeight: 1.4, wordBreak: "break-word" }}>{entry.notes}</div>}
+                        {entry.notes && <div style={{ color: T.foreground, marginTop: 1, lineHeight: 1.4, wordBreak: "break-word" }}>{entry.notes}</div>}
                       </div>
                       <button style={s.actionBtnDanger} onClick={() => deleteEntry(entry.id)} aria-label="Delete entry">🗑</button>
                     </div>

@@ -26,20 +26,69 @@
 | DM Sans font via Google Fonts | ✅ |
 | Supabase auth gate (email OTP) | ✅ |
 
-### Color palette
+### Color palette — "Command Blue"
 
-| Token | Hex | Use |
-|-------|-----|-----|
-| Background | `#0f1117` | Page background |
-| Surface | `#1a1d27` | Cards, modals, panels |
-| Border | `#2a2d3a` | Card borders, dividers |
-| Text primary | `#e5e7eb` | Body text, headings |
-| Text muted | `#9ca3af` | Labels, metadata, placeholders |
-| Accent — blue | `#3b82f6` | Primary actions, active states, pipeline |
-| Accent — purple | `#8b5cf6` | AI features, drafting, suggestions |
-| Accent — green | `#10b981` | Success, offers, positive status |
-| Accent — amber | `#f59e0b` | Warnings, follow-up reminders |
-| Accent — red | `#ef4444` | Rejections, errors, destructive actions |
+> **Rule: no raw hex/rgba anywhere outside `src/tokens.js`.** All colors use `T.*` token references.
+> Aligned with Shipyard's nautical token vocabulary where possible.
+
+| Token (`T.*`) | Value | Use | Shipyard equiv |
+|---------------|-------|-----|----------------|
+| **Core** | | | |
+| `bg` | `#0A1128` | Page background | `--bg` |
+| `surface` | `#0E1A3E` | Cards, modals, panels | `--surface` |
+| `foreground` | `#FFFFFF` | Body text, headings | `--foreground` |
+| `muted` | `#A0AABF` | Labels, metadata, placeholders | `--muted` |
+| `card` | `rgba(255,255,255,0.05)` | Card fill | `bg-surface/80` |
+| `cardSubtle` | `rgba(255,255,255,0.03)` | Faint card fill | `bg-surface/50` |
+| `border` | `rgba(59,130,246,0.12)` | Card borders, dividers | `--border` |
+| `borderInput` | `rgba(59,130,246,0.2)` | Input borders | |
+| `borderHover` | `rgba(59,130,246,0.35)` | Hover border | |
+| `borderFocus` | `rgba(59,130,246,0.5)` | Focus ring | |
+| `overlay` | `rgba(0,0,0,0.75)` | Modal overlay | |
+| `modalBg` | `rgba(14,26,62,0.95)` | Modal backdrop | |
+| `bgGradient` | `linear-gradient(150deg, bg, surface)` | Page gradient | |
+| **Accent (blue)** | | | |
+| `accent` | `#3b82f6` | Primary actions, active states | `--accent` |
+| `accentBg` | `rgba(59,130,246,0.15)` | Accent fill | |
+| `accentRing` | `rgba(59,130,246,0.25)` | Accent outer ring | |
+| `accentShadow` | `rgba(59,130,246,0.18)` | Accent glow shadow | |
+| `highlight` | `#60a5fa` | Bright accent text | `--highlight` |
+| `highlightLight` | `#93c5fd` | Lighter accent text | |
+| `highlightFaint` | `#dbeafe` | Faintest accent | |
+| **Success (green)** | | | |
+| `success` | `#34D399` | Success states | `--success` |
+| `successMid` | `#4ade80` | Mid-green | |
+| `successBright` | `#22c55e` | Bright green | |
+| `successLight` | `#6ee7b7` | Light green text | |
+| `successTextLight` | `#d1fae5` | Very light green text | |
+| `successBg` | `rgba(52,211,153,0.08)` | Success fill | |
+| `successBorder` | `rgba(52,211,153,0.2)` | Success border | |
+| `successFaded` | `#34D39955` | Semi-transparent success | |
+| `meeting` | `#10b981` | Meeting/calendar green | |
+| **Warning (amber)** | | | |
+| `warning` | `#FBBF24` | Warning states | `--warning` |
+| `warningBg` | `rgba(251,191,36,0.08)` | Warning fill | |
+| `warningBorder` | `rgba(251,191,36,0.2)` | Warning border | |
+| **Danger (red)** | | | |
+| `danger` | `#F87171` | Errors, rejections | `--danger` |
+| `dangerBg` | `rgba(248,113,113,0.08)` | Danger fill | |
+| `dangerLight` | `#fca5a5` | Light danger text | |
+| `dangerBorderDark` | `#991b1b` | Dark danger border | |
+| `dangerBorderDeep` | `#7f1d1d` | Deepest danger border | |
+| **Purple** | | | |
+| `purple` | `#8b5cf6` | AI features, Kassie | |
+| `purpleLight` | `#a78bfa` | Light purple text | |
+| `purpleChipBg` | `#312e81` | Purple chip fill | |
+| `purpleChipText` | `#a5b4fc` | Purple chip text | |
+| **Gold** | | | |
+| `gold` | `#c8a84b` | Gold accents | `--gold` |
+| `goldBg` | `#1a1608` | Gold section fill | |
+| `goldBorder` | `#c8a84b55` | Gold section border | |
+| **Kassie card** | | | |
+| `kassieBg` | `#160a14` | Kassie card fill | |
+| `kassieBorder` | `#4a1d3a` | Kassie card border | |
+| `kassieLabel` | `#f0abfc` | Kassie label text | |
+| `kassieText` | `#e9d5ff` | Kassie body text | |
 
 ### Typography
 
@@ -52,12 +101,12 @@
 
 ### Component patterns
 
-- **Cards:** `background: #1a1d27`, `border: 1px solid #2a2d3a`, `borderRadius: 10px`, `padding: 16px 18px`
-- **Buttons (primary):** `background: #3b82f6`, white text, `borderRadius: 8px`, `padding: 8px 16px`
-- **Buttons (secondary):** transparent + border, text matches accent color
-- **Tab bar:** underline style, active tab `border-bottom: 2px solid #3b82f6`
-- **Modals:** full-screen overlay on mobile, centered panel on desktop
-- **Morning Launchpad (v8.17+):** soft-gated 3-stage daily flow, lives at the top of the Focus tab between `KassieCard` and `TargetCompanyBoard`. Container `border-color: #1e3a5f` (dimmer accent blue); active stage `border-color: #3b82f6` with a 1px outer ring; done stage `border-color: #14532d` with `background: #0a1108`. Stage badges use the same accent triad (muted / blue / green). All headers clickable for non-linear browsing — the launchpad recommends, never locks. Sunday returns a single rest card.
+- **Cards:** `background: T.card`, `border: 1px solid ${T.border}`, `borderRadius: 10px`, `padding: 16px 18px`
+- **Buttons (primary):** `background: T.accent`, `color: T.foreground`, `borderRadius: 8px`, `padding: 8px 16px`
+- **Buttons (secondary):** transparent + `border: 1px solid ${T.borderInput}`, text matches accent color
+- **Tab bar:** underline style, active tab `borderBottom: 2px solid ${T.accent}`
+- **Modals:** full-screen overlay on mobile, centered panel on desktop; backdrop `T.overlay`
+- **Morning Launchpad (v8.17+):** soft-gated 3-stage daily flow, lives at the top of the Focus tab between `KassieCard` and `TargetCompanyBoard`. Container `borderColor: T.urgencyBlueBg`; active stage `borderColor: T.accent` with `boxShadow: 0 0 0 1px ${T.accentRing}`; done stage `borderColor: T.successBorder` with `background: T.successBg`. Stage badges use the same accent triad (muted / accent / success). All headers clickable for non-linear browsing — the launchpad recommends, never locks. Sunday returns a single rest card.
 
 ---
 
@@ -78,3 +127,4 @@
 |------|--------|
 | 2026-04-14 | Initial `BRANDING.md` from template — WHI-37 |
 | 2026-04-26 | v8.17 — added Morning Launchpad component pattern (3-stage soft-gated daily flow on Focus tab) |
+| 2026-04-30 | Glass-card token sweep — all raw hex/rgba centralized into `src/tokens.js` (`T.*`); palette table updated to Command Blue actuals |

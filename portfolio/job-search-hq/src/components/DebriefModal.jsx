@@ -4,6 +4,7 @@ import {
   DEBRIEF_ROUND_TYPES, DEBRIEF_IMPRESSIONS,
   blankDebriefEntry, normalizeInterviewLog,
 } from "../constants";
+import { T } from "../tokens";
 
 function EntryForm({ entry, onChange, onSave, onCancel }) {
   return (
@@ -36,9 +37,9 @@ function EntryForm({ entry, onChange, onSave, onCancel }) {
                 style={{
                   flex: 1, padding: "6px 0", borderRadius: 6, fontSize: 12, fontWeight: 700,
                   cursor: "pointer", fontFamily: "inherit",
-                  background: entry.impression === imp.value ? imp.color + "33" : "rgba(255,255,255,0.03)",
-                  border: `1.5px solid ${entry.impression === imp.value ? imp.color : "rgba(59,130,246,0.12)"}`,
-                  color: entry.impression === imp.value ? imp.color : "#A0AABF",
+                  background: entry.impression === imp.value ? imp.color + "33" : T.cardSubtle,
+                  border: `1.5px solid ${entry.impression === imp.value ? imp.color : T.border}`,
+                  color: entry.impression === imp.value ? imp.color : T.muted,
                 }}
               >{imp.label}</button>
             ))}
@@ -54,9 +55,9 @@ function EntryForm({ entry, onChange, onSave, onCancel }) {
                 style={{
                   flex: 1, padding: "6px 0", borderRadius: 6, fontSize: 13, fontWeight: 700,
                   cursor: "pointer", fontFamily: "inherit",
-                  background: entry.confidence >= n ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.03)",
-                  border: `1.5px solid ${entry.confidence >= n ? "#3b82f6" : "rgba(59,130,246,0.12)"}`,
-                  color: entry.confidence >= n ? "#3b82f6" : "#A0AABF",
+                  background: entry.confidence >= n ? T.accentBg : T.cardSubtle,
+                  border: `1.5px solid ${entry.confidence >= n ? T.accent : T.border}`,
+                  color: entry.confidence >= n ? T.accent : T.muted,
                 }}
               >{n}</button>
             ))}
@@ -137,7 +138,7 @@ export default function DebriefModal({ app, onSave, onClose }) {
         <div style={s.modalHeader}>
           <div>
             <span>📋 Interview Debrief</span>
-            <div style={{ fontSize: 14, color: "#A0AABF", fontWeight: 400, marginTop: 2 }}>
+            <div style={{ fontSize: 14, color: T.muted, fontWeight: 400, marginTop: 2 }}>
               {app.company} — {app.title} · {app.stage}
             </div>
           </div>
@@ -158,42 +159,42 @@ export default function DebriefModal({ app, onSave, onClose }) {
               </button>
 
               {log.length === 0 && (
-                <div style={{ color: "#A0AABF", fontSize: 14, textAlign: "center", padding: "20px 0" }}>
+                <div style={{ color: T.muted, fontSize: 14, textAlign: "center", padding: "20px 0" }}>
                   No debrief entries yet. Add one after each interview round.
                 </div>
               )}
 
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {log.map(entry => {
-                  const impColor = IMPRESSION_COLOR[entry.impression] || "#A0AABF";
+                  const impColor = IMPRESSION_COLOR[entry.impression] || T.muted;
                   return (
-                    <div key={entry.id} style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "12px 14px" }}>
+                    <div key={entry.id} style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 10, padding: "12px 14px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                         <div>
                           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                            <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>
+                            <span style={{ fontSize: 14, fontWeight: 700, color: T.foreground }}>
                               {ROUND_LABEL[entry.roundType] || entry.roundType}
                             </span>
                             <span style={{ fontSize: 11, fontWeight: 700, color: impColor, background: impColor + "22", padding: "2px 8px", borderRadius: 99 }}>
                               {entry.impression}
                             </span>
-                            <span style={{ fontSize: 14, color: "#A0AABF" }}>
+                            <span style={{ fontSize: 14, color: T.muted }}>
                               Confidence: {entry.confidence}/5
                             </span>
                           </div>
-                          <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>
+                          <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>
                             {entry.date}{entry.interviewerName ? ` · ${entry.interviewerName}` : ""}
                           </div>
                         </div>
                         <div style={{ display: "flex", gap: 6 }}>
                           <button style={s.btnSecondary} onClick={() => startEdit(entry)}>Edit</button>
-                          <button style={{ ...s.btnSecondary, color: "#F87171", borderColor: "rgba(248,113,113,0.08)" }} onClick={() => deleteEntry(entry.id)}>✕</button>
+                          <button style={{ ...s.btnSecondary, color: T.danger, borderColor: T.dangerBg }} onClick={() => deleteEntry(entry.id)}>✕</button>
                         </div>
                       </div>
-                      {entry.strengths && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 4 }}><strong style={{ color: "#34D399" }}>✓ </strong>{entry.strengths}</div>}
-                      {entry.gaps && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}><strong style={{ color: "#FBBF24" }}>△ </strong>{entry.gaps}</div>}
-                      {entry.redFlags && <div style={{ fontSize: 14, color: "#F87171", marginTop: 2 }}>⚑ {entry.redFlags}</div>}
-                      {entry.notes && <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>{entry.notes}</div>}
+                      {entry.strengths && <div style={{ fontSize: 14, color: T.muted, marginTop: 4 }}><strong style={{ color: T.success }}>✓ </strong>{entry.strengths}</div>}
+                      {entry.gaps && <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}><strong style={{ color: T.warning }}>△ </strong>{entry.gaps}</div>}
+                      {entry.redFlags && <div style={{ fontSize: 14, color: T.danger, marginTop: 2 }}>⚑ {entry.redFlags}</div>}
+                      {entry.notes && <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>{entry.notes}</div>}
                     </div>
                   );
                 })}

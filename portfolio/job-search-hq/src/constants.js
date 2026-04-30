@@ -1,3 +1,5 @@
+import { T } from "./tokens";
+
 // ── STORAGE ─────────────────────────────────────────────────────────────────
 export const STORAGE_KEY = "chase_job_search_v1";
 export const BACKUP_FOLDER_KEY = "chase_job_search_backup_folder";
@@ -83,24 +85,24 @@ export const restoreData = () => {
 // ── PIPELINE ──────────────────────────────────────────────────────────────────
 export const STAGES = ["Interested", "Applied", "Phone Screen", "Interview", "Final Round", "Offer", "Rejected", "Withdrawn"];
 export const STAGE_COLORS = {
-  "Interested": "#A0AABF", "Applied": "#3b82f6", "Phone Screen": "#8b5cf6",
-  "Interview": "#FBBF24", "Final Round": "#34D399", "Offer": "#22c55e",
-  "Rejected": "#F87171", "Withdrawn": "#A0AABF",
+  "Interested": T.muted, "Applied": T.accent, "Phone Screen": T.purple,
+  "Interview": T.warning, "Final Round": T.success, "Offer": T.successBright,
+  "Rejected": T.danger, "Withdrawn": T.muted,
 };
 
 // ── CONTACT TYPES & OUTREACH STATUSES ────────────────────────────────────────
 export const CONTACT_TYPES = [
-  { value: "hiring_manager", label: "Hiring Manager", color: "#3b82f6" },
-  { value: "recruiter",      label: "Recruiter",       color: "#8b5cf6" },
-  { value: "alumni",         label: "Alumni",          color: "#34D399" },
-  { value: "other",          label: "Other",           color: "#A0AABF" },
+  { value: "hiring_manager", label: "Hiring Manager", color: T.accent },
+  { value: "recruiter",      label: "Recruiter",       color: T.purple },
+  { value: "alumni",         label: "Alumni",          color: T.success },
+  { value: "other",          label: "Other",           color: T.muted },
 ];
 export const OUTREACH_STATUSES = [
-  { value: "none",       label: "No Outreach", color: "#A0AABF" },
-  { value: "sent",       label: "Sent",        color: "#FBBF24" },
-  { value: "replied",    label: "Replied",     color: "#3b82f6" },
-  { value: "meeting",    label: "Meeting",     color: "#10b981" },
-  { value: "intro_made", label: "Intro Made",  color: "#8b5cf6" },
+  { value: "none",       label: "No Outreach", color: T.muted },
+  { value: "sent",       label: "Sent",        color: T.warning },
+  { value: "replied",    label: "Replied",     color: T.accent },
+  { value: "meeting",    label: "Meeting",     color: T.meeting },
+  { value: "intro_made", label: "Intro Made",  color: T.purple },
 ];
 
 export const NEXT_STEP_TYPES = [
@@ -252,10 +254,10 @@ export const DIRECTION = {
 
 // Direction track codes — filed per-application so the market tells us what's working.
 export const DIRECTION_TRACKS = [
-  { value: "IC", label: "Implementation / SE (payments-adjacent)", color: "#34D399" },
-  { value: "SE", label: "SE (dev-tools)",                         color: "#3b82f6" },
-  { value: "AE", label: "AE (payments-adjacent)",                 color: "#8b5cf6" },
-  { value: "Other", label: "Other",                               color: "#A0AABF" },
+  { value: "IC", label: "Implementation / SE (payments-adjacent)", color: T.success },
+  { value: "SE", label: "SE (dev-tools)",                         color: T.accent },
+  { value: "AE", label: "AE (payments-adjacent)",                 color: T.purple },
+  { value: "Other", label: "Other",                               color: T.muted },
 ];
 
 // ── STRENGTHS (CliftonStrengths Top 5) ───────────────────────────────────────
@@ -580,10 +582,10 @@ export function blankApp() {
 
 // ── WINS LOG (Kassie's urgency layer — visible evidence of forward motion) ──
 export const WIN_TYPES = [
-  { value: "response",     label: "Response",        color: "#3b82f6" },
-  { value: "progression",  label: "Stage progression", color: "#34D399" },
-  { value: "daily_target", label: "Daily target hit", color: "#FBBF24" },
-  { value: "manual",       label: "Manual",          color: "#8b5cf6" },
+  { value: "response",     label: "Response",        color: T.accent },
+  { value: "progression",  label: "Stage progression", color: T.success },
+  { value: "daily_target", label: "Daily target hit", color: T.warning },
+  { value: "manual",       label: "Manual",          color: T.purple },
 ];
 
 export function blankWin() {
@@ -638,9 +640,9 @@ export const DEBRIEF_ROUND_TYPES = [
 ];
 
 export const DEBRIEF_IMPRESSIONS = [
-  { value: "positive", label: "Positive", color: "#34D399" },
-  { value: "neutral",  label: "Neutral",  color: "#FBBF24" },
-  { value: "negative", label: "Negative", color: "#F87171" },
+  { value: "positive", label: "Positive", color: T.success },
+  { value: "neutral",  label: "Neutral",  color: T.warning },
+  { value: "negative", label: "Negative", color: T.danger },
 ];
 
 export function blankDebriefEntry() {
@@ -678,11 +680,11 @@ export function normalizeInterviewLog(log = []) {
 
 // ── OUTREACH LOG (Wave 4 #3) ──────────────────────────────────────────────────
 export const OUTREACH_EVENT_TYPES = [
-  { value: "sent",       label: "Sent",       color: "#FBBF24" },
-  { value: "replied",    label: "Replied",    color: "#3b82f6" },
-  { value: "meeting",    label: "Meeting",    color: "#34D399" },
-  { value: "intro_made", label: "Intro Made", color: "#8b5cf6" },
-  { value: "note",       label: "Note",       color: "#A0AABF" },
+  { value: "sent",       label: "Sent",       color: T.warning },
+  { value: "replied",    label: "Replied",    color: T.accent },
+  { value: "meeting",    label: "Meeting",    color: T.success },
+  { value: "intro_made", label: "Intro Made", color: T.purple },
+  { value: "note",       label: "Note",       color: T.muted },
 ];
 
 export const OUTREACH_METHODS = [
@@ -738,9 +740,9 @@ export function nextStepUrgency(nextStepDate) {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const due = new Date(nextStepDate + "T00:00:00");
   const diff = Math.round((due - today) / 86400000);
-  if (diff < 0) return { label: "Overdue", color: "#F87171", bg: "rgba(248,113,113,0.08)" };
-  if (diff === 0) return { label: "Due Today", color: "#FBBF24", bg: "rgba(251,191,36,0.08)" };
-  if (diff <= 3) return { label: `In ${diff}d`, color: "#60a5fa", bg: "#1e3a5f" };
+  if (diff < 0) return { label: "Overdue", color: T.danger, bg: T.dangerBg };
+  if (diff === 0) return { label: "Due Today", color: T.warning, bg: T.warningBg };
+  if (diff <= 3) return { label: `In ${diff}d`, color: T.highlight, bg: T.urgencyBlueBg };
   return null;
 }
 
@@ -761,9 +763,9 @@ function daysSinceDate(value, now = new Date()) {
 }
 
 function getPriorityTone(score) {
-  if (score >= 115) return { label: "High", color: "#F87171", bg: "rgba(248,113,113,0.08)" };
-  if (score >= 85) return { label: "Next", color: "#FBBF24", bg: "rgba(251,191,36,0.08)" };
-  return { label: "Queue", color: "#60a5fa", bg: "#1e3a5f" };
+  if (score >= 115) return { label: "High", color: T.danger, bg: T.dangerBg };
+  if (score >= 85) return { label: "Next", color: T.warning, bg: T.warningBg };
+  return { label: "Queue", color: T.highlight, bg: T.urgencyBlueBg };
 }
 
 export function buildOutreachPriorityList(contacts = [], applications = []) {
@@ -887,8 +889,8 @@ export function getOutreachCadenceNudge(contact, linkedApp = null) {
   if (days >= 7) {
     return {
       label: "Day 7 follow-up",
-      color: "#F87171",
-      bg: "rgba(248,113,113,0.08)",
+      color: T.danger,
+      bg: T.dangerBg,
       message: `No reply in ${days} days - send a stronger second follow-up today.`,
       prompt: `Draft a concise second LinkedIn follow-up message to ${personName}${appContext}. Tone: warm and confident. Mention this is a brief follow-up, reinforce relevant digital payments implementation experience, and end with one specific CTA. Keep it 2-4 sentences.`,
     };
@@ -896,8 +898,8 @@ export function getOutreachCadenceNudge(contact, linkedApp = null) {
 
   return {
     label: "Day 3 follow-up",
-    color: "#FBBF24",
-    bg: "rgba(251,191,36,0.08)",
+    color: T.warning,
+    bg: T.warningBg,
     message: `Sent ${days} days ago - send a gentle check-in follow-up now.`,
     prompt: `Draft a short first follow-up message to ${personName}${appContext}. Tone: polite and low-pressure. Reference the previous outreach briefly and ask one light next-step question. Keep it 2-3 sentences.`,
   };
@@ -1187,11 +1189,11 @@ export function blankContact() {
 // Supabase + iOS via existing sync. Tokens live in a separate Supabase row,
 // never in localStorage. Classification fed by src/inbox/classifier.js.
 export const INBOX_KINDS = [
-  { value: "recruiter",        label: "Recruiter",   color: "#a78bfa", bg: "#312e81" },
-  { value: "ats_update",       label: "ATS update",  color: "#60a5fa", bg: "#1e3a5f" },
-  { value: "interview_invite", label: "Interview",   color: "#34d399", bg: "#0c1a0c" },
-  { value: "linkedin",         label: "LinkedIn",    color: "#A0AABF", bg: "rgba(255,255,255,0.05)" },
-  { value: "other",            label: "Other",       color: "#A0AABF", bg: "rgba(255,255,255,0.03)" },
+  { value: "recruiter",        label: "Recruiter",   color: T.purpleLight, bg: T.purpleChipBg },
+  { value: "ats_update",       label: "ATS update",  color: T.highlight, bg: T.urgencyBlueBg },
+  { value: "interview_invite", label: "Interview",   color: T.success, bg: T.interviewBg },
+  { value: "linkedin",         label: "LinkedIn",    color: T.muted, bg: T.card },
+  { value: "other",            label: "Other",       color: T.muted, bg: T.cardSubtle },
 ];
 
 export const INBOX_STATUSES = ["pending", "actioned", "dismissed", "snoozed"];
@@ -1333,7 +1335,7 @@ export const DAILY_BLOCKS = [
     title: "Research block",
     time: "20 min",
     tag: "Any role",
-    tagColor: "#3b82f6",
+    tagColor: T.accent,
     steps: [
       "Pick 1 company from your pipeline (status: Interested)",
       "Read their careers page + 1 LinkedIn post about them (5 min)",
@@ -1348,7 +1350,7 @@ export const DAILY_BLOCKS = [
     title: "Application block",
     time: "30–45 min",
     tag: "High impact",
-    tagColor: "#34D399",
+    tagColor: T.success,
     steps: [
       "Open a job posting you've already researched",
       "Go to Apply Tools → Tailor Resume — paste the JD, copy the prompt into ChatGPT or Claude, paste the tailored resume into your template",
@@ -1363,7 +1365,7 @@ export const DAILY_BLOCKS = [
     title: "Networking block",
     time: "15–20 min",
     tag: "Highest ROI",
-    tagColor: "#8b5cf6",
+    tagColor: T.purple,
     steps: [
       "Search LinkedIn for 1 person at a target company in an Implementation, CS, or Sales role",
       "Go to Apply Tools → LinkedIn → Connection Request, select the contact, copy the prompt, paste the draft from your assistant",
@@ -1378,7 +1380,7 @@ export const DAILY_BLOCKS = [
     title: "Follow-up block",
     time: "15 min",
     tag: "Stay top of mind",
-    tagColor: "#FBBF24",
+    tagColor: T.warning,
     steps: [
       "Open Pipeline — look for any Applied applications older than 7 days",
       "Go to Apply Tools → LinkedIn → Follow-up, copy the prompt and draft a message in your assistant",
@@ -1393,7 +1395,7 @@ export const DAILY_BLOCKS = [
     title: "Skill building block",
     time: "20–30 min",
     tag: "PM track",
-    tagColor: "#A0AABF",
+    tagColor: T.muted,
     steps: [
       "Work on Google PM Certificate on Coursera (highest priority)",
       "OR complete one Asana Academy module (free, 15 min)",
@@ -1406,27 +1408,27 @@ export const DAILY_BLOCKS = [
 
 // ── RESOURCES ─────────────────────────────────────────────────────────────────
 export const RESOURCES = [
-  { category: "Networking & Informational Interviews", color: "#22d3ee", items: [
+  { category: "Networking & Informational Interviews", color: T.resourceCyan, items: [
     { title: "Informational interview script", desc: "Lead: \"I'd love 15 minutes to learn how you got to [role] — no pitch, no ask, just learning.\" End with: \"If anyone on your team is worth me meeting, I'd appreciate an intro.\" Short, no hype, zero pressure.", url: "" },
     { title: "Payments-adjacent target list", desc: "Primary IC/SE targets: Stripe, Adyen, Checkout.com, Finix, Rainforest Pay, Spreedly, Fiserv, FIS, Braintree, NMI, Worldpay, Global Payments. Secondary (dev-tools): Vercel, Supabase, Clerk, Neon, Retool, Anthropic.", url: "" },
     { title: "How to ask for an informational interview (First Round Review)", desc: "Reputable free read on framing the ask. Steal the structure, not the language — keep your voice warm and short.", url: "https://review.firstround.com/how-to-ace-an-informational-interview/" },
     { title: "Tactical follow-up rhythm", desc: "Day 0: thank-you note with one specific thing you learned. Day 7: share a link related to what they mentioned. Day 30: short update on your search. No desperation, just signal.", url: "" },
     { title: "Blogs / channels to curate", desc: "Placeholder — 5 slots for Chase to fill: (1) __, (2) __, (3) __, (4) __, (5) __. Lean toward payments infra, dev-tools GTM, or Implementation/SE craft.", url: "" },
   ]},
-  { category: "Do this week — free", color: "#f59e0b", items: [
+  { category: "Do this week — free", color: T.resourceAmber, items: [
     { title: "Asana Academy Certification", desc: "Free, 2–3 hrs. Gives you a LinkedIn badge immediately. Shows PM tool knowledge.", url: "https://academy.asana.com" },
     { title: "HubSpot Sales Software Cert", desc: "Free, ~4 hrs. Widely recognized for AE roles. Adds badge to LinkedIn.", url: "https://academy.hubspot.com/courses/sales-software" },
     { title: "Update LinkedIn headline", desc: "Change to: \"B2B Sales & Implementation Pro | Digital Payments | Authorize.Net | CyberSource | Open to New Opportunities\"", url: "https://linkedin.com" },
   ]},
-  { category: "This month — highest PM priority", color: "#3b82f6", items: [
+  { category: "This month — highest PM priority", color: T.accent, items: [
     { title: "Google Project Management Certificate", desc: "~6 months at your pace, ~$50/mo on Coursera. Single best ROI for getting a PM title without one on your resume.", url: "https://www.coursera.org/professional-certificates/google-project-management" },
     { title: "Jira Fundamentals Badge", desc: "Free, 90 min on Atlassian University. Required at most tech companies.", url: "https://university.atlassian.com" },
   ]},
-  { category: "Month 2 — AE track", color: "#8b5cf6", items: [
+  { category: "Month 2 — AE track", color: T.purple, items: [
     { title: "Salesforce Trailhead — Sales Trail", desc: "Free. Most AE roles require Salesforce. Complete the Sales trail for badges on your profile.", url: "https://trailhead.salesforce.com" },
     { title: "MEDDIC/MEDDPICC Framework", desc: "Free. Search YouTube. The sales qualification framework every AE interviewer expects you to know.", url: "https://www.youtube.com/results?search_query=MEDDIC+sales+framework" },
   ]},
-  { category: "LinkedIn quick wins", color: "#10b981", items: [
+  { category: "LinkedIn quick wins", color: T.meeting, items: [
     { title: "Turn on Open to Work", desc: "Set to Recruiters Only for privacy. Increases recruiter outreach with no downside.", url: "https://linkedin.com" },
     { title: "Update About section", desc: "Remove Visa-specific language. Add forward-looking statement about implementation/CS/AE roles. Add a CTA.", url: "https://linkedin.com" },
   ]},
@@ -1434,299 +1436,299 @@ export const RESOURCES = [
 
 // ── STYLES ────────────────────────────────────────────────────────────────────
 export const s = {
-  root: { minHeight: "100vh", background: "linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%)", color: "#FFFFFF", fontFamily: "'DM Sans', system-ui, sans-serif" },
+  root: { minHeight: "100vh", background: T.bgGradient, color: T.foreground, fontFamily: "'DM Sans', system-ui, sans-serif" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 24px 0", gap: 12, flexWrap: "wrap" },
-  headerTitle: { fontSize: 22, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.5px" },
-  headerSub: { fontSize: 14, color: "#A0AABF", marginTop: 2 },
+  headerTitle: { fontSize: 22, fontWeight: 700, color: T.foreground, letterSpacing: "-0.5px" },
+  headerSub: { fontSize: 14, color: T.muted, marginTop: 2 },
   headerActions: { display: "flex", gap: 8, flexWrap: "wrap" },
-  tabs: { display: "flex", gap: 4, padding: "16px 24px 0", borderBottom: "1px solid rgba(59,130,246,0.12)", flexWrap: "wrap" },
-  tabBtn: { padding: "8px 16px", borderRadius: "8px 8px 0 0", border: "none", background: "transparent", color: "#A0AABF", cursor: "pointer", fontSize: 14, fontWeight: 500, minHeight: 44 },
-  tabBtnActive: { background: "rgba(255,255,255,0.05)", color: "#FFFFFF" },
+  tabs: { display: "flex", gap: 4, padding: "16px 24px 0", borderBottom: `1px solid ${T.border}`, flexWrap: "wrap" },
+  tabBtn: { padding: "8px 16px", borderRadius: "8px 8px 0 0", border: "none", background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, fontWeight: 500, minHeight: 44 },
+  tabBtnActive: { background: T.card, color: T.foreground },
   subTabs: { display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" },
-  subTabBtn: { padding: "6px 14px", borderRadius: 20, border: "1px solid rgba(59,130,246,0.2)", background: "transparent", color: "#A0AABF", cursor: "pointer", fontSize: 14, minHeight: 44 },
-  subTabBtnActive: { background: "rgba(255,255,255,0.05)", color: "#FFFFFF", borderColor: "rgba(59,130,246,0.35)" },
+  subTabBtn: { padding: "6px 14px", borderRadius: 20, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, minHeight: 44 },
+  subTabBtnActive: { background: T.card, color: T.foreground, borderColor: T.borderHover },
   content: { padding: "20px 24px" },
   resumeTypeRow: { display: "flex", alignItems: "center", gap: 8, marginBottom: 14, flexWrap: "wrap" },
-  resumeTypeLabel: { fontSize: 14, color: "#A0AABF" },
-  resumeTypeBtn: { padding: "6px 14px", borderRadius: 20, border: "1px solid rgba(59,130,246,0.2)", background: "transparent", color: "#A0AABF", cursor: "pointer", fontSize: 14, minHeight: 44 },
-  resumeTypeBtnActive: { background: "rgba(59,130,246,0.15)", color: "#60a5fa", borderColor: "#3b82f6", fontWeight: 600 },
+  resumeTypeLabel: { fontSize: 14, color: T.muted },
+  resumeTypeBtn: { padding: "6px 14px", borderRadius: 20, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, minHeight: 44 },
+  resumeTypeBtnActive: { background: T.accentBg, color: T.highlight, borderColor: T.accent, fontWeight: 600 },
   focusHeader: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 },
-  focusTitle: { fontSize: 18, fontWeight: 700, color: "#FFFFFF" },
-  focusSub: { fontSize: 14, color: "#A0AABF", marginTop: 2 },
-  focusCount: { textAlign: "center", background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "8px 16px", minWidth: 64, backdropFilter: "blur(12px)" },
-  focusCountNum: { fontSize: 24, fontWeight: 700, color: "#34D399" },
-  focusCountLabel: { fontSize: 11, color: "#A0AABF" },
-  focusBlock: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12, overflow: "hidden", backdropFilter: "blur(12px)" },
-  focusBlockDone: { opacity: 0.6, borderColor: "rgba(52,211,153,0.2)" },
+  focusTitle: { fontSize: 18, fontWeight: 700, color: T.foreground },
+  focusSub: { fontSize: 14, color: T.muted, marginTop: 2 },
+  focusCount: { textAlign: "center", background: T.card, borderRadius: 10, padding: "8px 16px", minWidth: 64, backdropFilter: "blur(12px)" },
+  focusCountNum: { fontSize: 24, fontWeight: 700, color: T.success },
+  focusCountLabel: { fontSize: 11, color: T.muted },
+  focusBlock: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, overflow: "hidden", backdropFilter: "blur(12px)" },
+  focusBlockDone: { opacity: 0.6, borderColor: T.successBorder },
   focusBlockHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", cursor: "pointer" },
   focusBlockLeft: { display: "flex", alignItems: "center", gap: 12 },
-  focusBlockTitle: { fontSize: 15, fontWeight: 600, color: "#FFFFFF" },
-  focusBlockTime: { fontSize: 14, color: "#A0AABF", marginTop: 2 },
+  focusBlockTitle: { fontSize: 15, fontWeight: 600, color: T.foreground },
+  focusBlockTime: { fontSize: 14, color: T.muted, marginTop: 2 },
   focusTag: { fontSize: 11, padding: "3px 10px", borderRadius: 20, fontWeight: 500 },
-  focusBlockBody: { padding: "0 16px 16px", borderTop: "1px solid rgba(59,130,246,0.12)" },
+  focusBlockBody: { padding: "0 16px 16px", borderTop: `1px solid ${T.border}` },
   focusSteps: { display: "flex", flexDirection: "column", gap: 8, marginTop: 12 },
   focusStep: { display: "flex", gap: 10, alignItems: "flex-start" },
-  focusStepNum: { background: "rgba(59,130,246,0.2)", color: "#A0AABF", borderRadius: "50%", width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0, marginTop: 1 },
-  focusStepText: { fontSize: 14, color: "#FFFFFF", lineHeight: 1.55 },
-  focusAdhdTip: { background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 8, padding: "8px 12px", fontSize: 14, color: "#FBBF24", marginTop: 12, lineHeight: 1.5 },
-  weeklyRhythm: { background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: 16, backdropFilter: "blur(12px)" },
-  weekRow: { display: "flex", gap: 12, padding: "8px 0", borderBottom: "1px solid rgba(59,130,246,0.12)", alignItems: "flex-start" },
-  weekDay: { fontSize: 14, fontWeight: 600, color: "#A0AABF", minWidth: 36, paddingTop: 1 },
-  weekTask: { fontSize: 14, color: "#A0AABF", lineHeight: 1.5 },
+  focusStepNum: { background: T.borderInput, color: T.muted, borderRadius: "50%", width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, flexShrink: 0, marginTop: 1 },
+  focusStepText: { fontSize: 14, color: T.foreground, lineHeight: 1.55 },
+  focusAdhdTip: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, borderRadius: 8, padding: "8px 12px", fontSize: 14, color: T.warning, marginTop: 12, lineHeight: 1.5 },
+  weeklyRhythm: { background: T.card, borderRadius: 12, padding: 16, backdropFilter: "blur(12px)" },
+  weekRow: { display: "flex", gap: 12, padding: "8px 0", borderBottom: `1px solid ${T.border}`, alignItems: "flex-start" },
+  weekDay: { fontSize: 14, fontWeight: 600, color: T.muted, minWidth: 36, paddingTop: 1 },
+  weekTask: { fontSize: 14, color: T.muted, lineHeight: 1.5 },
   resourceGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 },
-  resourceCard: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: 14, backdropFilter: "blur(12px)" },
-  resourceTitle: { fontSize: 14, fontWeight: 600, color: "#FFFFFF", marginBottom: 5 },
-  resourceDesc: { fontSize: 14, color: "#A0AABF", lineHeight: 1.55 },
+  resourceCard: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, padding: 14, backdropFilter: "blur(12px)" },
+  resourceTitle: { fontSize: 14, fontWeight: 600, color: T.foreground, marginBottom: 5 },
+  resourceDesc: { fontSize: 14, color: T.muted, lineHeight: 1.55 },
   stageBar: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 },
-  stagePill: { display: "flex", alignItems: "center", gap: 5, background: "rgba(255,255,255,0.05)", borderRadius: 20, padding: "4px 12px", fontSize: 14 },
+  stagePill: { display: "flex", alignItems: "center", gap: 5, background: T.card, borderRadius: 20, padding: "4px 12px", fontSize: 14 },
   stageDot: { width: 8, height: 8, borderRadius: "50%", flexShrink: 0 },
-  stagePillLabel: { color: "#A0AABF" },
-  stagePillCount: { color: "#FFFFFF", fontWeight: 600, marginLeft: 2 },
+  stagePillLabel: { color: T.muted },
+  stagePillCount: { color: T.foreground, fontWeight: 600, marginLeft: 2 },
   stageBadge: { display: "flex", alignItems: "center", gap: 5, borderRadius: 20, padding: "3px 10px", fontSize: 14, fontWeight: 500, whiteSpace: "nowrap" },
   cardGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 },
-  card: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: 16, display: "flex", flexDirection: "column", gap: 8, backdropFilter: "blur(12px)" },
+  card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 16, display: "flex", flexDirection: "column", gap: 8, backdropFilter: "blur(12px)" },
   cardTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 },
-  cardCompany: { fontWeight: 700, fontSize: 15, color: "#FFFFFF" },
-  cardTitle: { fontSize: 14, color: "#A0AABF", marginTop: 2 },
-  cardMeta: { fontSize: 14, color: "#A0AABF" },
-  cardNextStep: { fontSize: 14, color: "#60a5fa", fontStyle: "italic" },
+  cardCompany: { fontWeight: 700, fontSize: 15, color: T.foreground },
+  cardTitle: { fontSize: 14, color: T.muted, marginTop: 2 },
+  cardMeta: { fontSize: 14, color: T.muted },
+  cardNextStep: { fontSize: 14, color: T.highlight, fontStyle: "italic" },
   cardContacts: { display: "flex", flexWrap: "wrap", gap: 4 },
-  contactChip: { background: "#312e81", color: "#a5b4fc", fontSize: 11, padding: "2px 8px", borderRadius: 10 },
-  appChip: { background: "rgba(59,130,246,0.15)", color: "#60a5fa", fontSize: 11, padding: "2px 8px", borderRadius: 10 },
+  contactChip: { background: T.purpleChipBg, color: T.purpleChipText, fontSize: 11, padding: "2px 8px", borderRadius: 10 },
+  appChip: { background: T.accentBg, color: T.highlight, fontSize: 11, padding: "2px 8px", borderRadius: 10 },
   cardActions: { display: "flex", gap: 6, alignItems: "center", marginTop: 4 },
-  stageSelect: { flex: 1, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 6, color: "#FFFFFF", fontSize: 14, padding: "4px 6px" },
-  actionBtn: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  actionBtnKit: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  actionBtnPrep: { background: "rgba(52,211,153,0.08)", border: "none", color: "#34D399", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  actionBtnDanger: { background: "rgba(248,113,113,0.08)", border: "none", color: "#F87171", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  stageSelect: { flex: 1, background: T.cardSubtle, border: `1px solid ${T.borderInput}`, borderRadius: 6, color: T.foreground, fontSize: 14, padding: "4px 6px" },
+  actionBtn: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  actionBtnKit: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  actionBtnPrep: { background: T.successBg, border: "none", color: T.success, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  actionBtnDanger: { background: T.dangerBg, border: "none", color: T.danger, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
   archiveSection: { marginTop: 24 },
-  archiveSummary: { color: "#A0AABF", fontSize: 14, cursor: "pointer", marginBottom: 12 },
-  empty: { color: "#A0AABF", textAlign: "center", padding: "40px 20px", fontSize: 14 },
+  archiveSummary: { color: T.muted, fontSize: 14, cursor: "pointer", marginBottom: 12 },
+  empty: { color: T.muted, textAlign: "center", padding: "40px 20px", fontSize: 14 },
   contactList: { display: "flex", flexDirection: "column", gap: 10 },
-  contactCard: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: 16, backdropFilter: "blur(12px)" },
+  contactCard: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 16, backdropFilter: "blur(12px)" },
   contactCardTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
-  contactNotes: { fontSize: 14, color: "#A0AABF", marginTop: 4 },
+  contactNotes: { fontSize: 14, color: T.muted, marginTop: 4 },
   // Networking stats bar
   statsBar: { display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" },
-  statBox: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "10px 14px", flex: "1 1 120px", minWidth: 100, backdropFilter: "blur(12px)" },
-  statNum: { fontSize: 20, fontWeight: 700, color: "#FFFFFF" },
-  statLabel: { fontSize: 11, color: "#A0AABF", marginTop: 2 },
+  statBox: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, padding: "10px 14px", flex: "1 1 120px", minWidth: 100, backdropFilter: "blur(12px)" },
+  statNum: { fontSize: 20, fontWeight: 700, color: T.foreground },
+  statLabel: { fontSize: 11, color: T.muted, marginTop: 2 },
   // Contact filters
   filterRow: { display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap", alignItems: "center" },
-  filterLabel: { fontSize: 14, color: "#A0AABF", fontWeight: 500, flexShrink: 0 },
-  filterChip: { padding: "4px 12px", borderRadius: 20, border: "1px solid rgba(59,130,246,0.2)", background: "transparent", color: "#A0AABF", cursor: "pointer", fontSize: 14, minHeight: 44 },
-  filterChipActive: { background: "rgba(59,130,246,0.15)", borderColor: "#3b82f6", color: "#60a5fa" },
+  filterLabel: { fontSize: 14, color: T.muted, fontWeight: 500, flexShrink: 0 },
+  filterChip: { padding: "4px 12px", borderRadius: 20, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, minHeight: 44 },
+  filterChipActive: { background: T.accentBg, borderColor: T.accent, color: T.highlight },
   // Company intel view
   ciToggleRow: { display: "flex", gap: 6, marginBottom: 16 },
-  ciToggleBtn: { padding: "4px 12px", borderRadius: 20, border: "1px solid rgba(59,130,246,0.2)", background: "transparent", color: "#A0AABF", cursor: "pointer", fontSize: 14, fontWeight: 500, minHeight: 44 },
-  ciToggleBtnActive: { background: "rgba(59,130,246,0.15)", border: "1px solid #3b82f6", color: "#60a5fa" },
-  ciRow: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12, marginBottom: 8, overflow: "hidden", backdropFilter: "blur(12px)" },
+  ciToggleBtn: { padding: "4px 12px", borderRadius: 20, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, fontWeight: 500, minHeight: 44 },
+  ciToggleBtnActive: { background: T.accentBg, border: `1px solid ${T.accent}`, color: T.highlight },
+  ciRow: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, marginBottom: 8, overflow: "hidden", backdropFilter: "blur(12px)" },
   ciRowHeader: { padding: "14px 16px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 },
-  ciCompanyName: { fontSize: 15, fontWeight: 700, color: "#FFFFFF" },
-  ciMeta: { fontSize: 14, color: "#A0AABF", marginTop: 2 },
+  ciCompanyName: { fontSize: 15, fontWeight: 700, color: T.foreground },
+  ciMeta: { fontSize: 14, color: T.muted, marginTop: 2 },
   ciStagePill: { fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500 },
-  ciWarmBadge: { background: "rgba(251,191,36,0.08)", color: "#FBBF24", fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500, cursor: "pointer", border: "none" },
-  ciGhostRow: { background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(59,130,246,0.2)", color: "#A0AABF", padding: "12px 16px", borderRadius: 10, marginBottom: 8, fontSize: 14, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8 },
+  ciWarmBadge: { background: T.warningBg, color: T.warning, fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500, cursor: "pointer", border: "none" },
+  ciGhostRow: { background: T.cardSubtle, border: `1px dashed ${T.borderInput}`, color: T.muted, padding: "12px 16px", borderRadius: 10, marginBottom: 8, fontSize: 14, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8 },
   ciCards: { padding: "0 16px 14px", display: "flex", flexDirection: "column", gap: 10 },
   // Contact card badges & intel
   contactTypeBadge: { fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500 },
   outreachBadge: { fontSize: 11, padding: "2px 8px", borderRadius: 10, fontWeight: 500 },
-  companyIntel: { fontSize: 14, color: "#A0AABF", display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 },
+  companyIntel: { fontSize: 14, color: T.muted, display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 },
   // Quick action row on contact cards
   quickActions: { display: "flex", gap: 6, marginTop: 8, alignItems: "center" },
-  quickActionDraft: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", flexShrink: 0, minHeight: 44 },
-  link: { color: "#60a5fa", textDecoration: "none" },
-  warnBanner: { background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 10, padding: "10px 16px", fontSize: 14, color: "#FBBF24", display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" },
-  warnBtn: { background: "rgba(251,191,36,0.2)", border: "none", color: "#FBBF24", borderRadius: 6, padding: "4px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  warnSmall: { background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 8, padding: "6px 10px", fontSize: 14, color: "#FBBF24" },
+  quickActionDraft: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", flexShrink: 0, minHeight: 44 },
+  link: { color: T.highlight, textDecoration: "none" },
+  warnBanner: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, borderRadius: 10, padding: "10px 16px", fontSize: 14, color: T.warning, display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" },
+  warnBtn: { background: T.warningBorder, border: "none", color: T.warning, borderRadius: 6, padding: "4px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  warnSmall: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, borderRadius: 8, padding: "6px 10px", fontSize: 14, color: T.warning },
   aiLayout: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "flex-start" },
   aiLeft: { display: "flex", flexDirection: "column", gap: 12 },
   aiRight: { display: "flex", flexDirection: "column", gap: 12 },
   kitLayout: { display: "flex", flexDirection: "column", gap: 12 },
-  kitContext: { background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" },
+  kitContext: { background: T.card, borderRadius: 10, padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" },
   kitResults: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 8 },
   kitResultCol: { display: "flex", flexDirection: "column", gap: 8 },
   jobsLayout: { display: "flex", flexDirection: "column", gap: 12 },
   jobSearchRow: { display: "flex", gap: 8 },
   quickSearches: { display: "flex", flexWrap: "wrap", gap: 6 },
-  quickChip: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#A0AABF", borderRadius: 20, padding: "4px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  quickChip: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.muted, borderRadius: 20, padding: "4px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
   jobResultsList: { display: "flex", flexDirection: "column", gap: 10 },
-  jobResultCard: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: 14, backdropFilter: "blur(12px)" },
+  jobResultCard: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, padding: 14, backdropFilter: "blur(12px)" },
   jobResultTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 6 },
-  jobResultTitle: { fontWeight: 600, fontSize: 14, color: "#FFFFFF" },
-  jobResultCompany: { fontSize: 14, color: "#A0AABF", marginTop: 2 },
-  jobResultSnippet: { fontSize: 14, color: "#A0AABF", lineHeight: 1.5 },
-  jobLink: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "4px 10px", fontSize: 14, textDecoration: "none", display: "inline-block" },
-  sectionLabel: { fontSize: 12, fontWeight: 600, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.05em" },
-  profileSectionLabel: { fontSize: 11, fontWeight: 700, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 8, paddingTop: 8, borderTop: "1px solid rgba(59,130,246,0.12)" },
-  tipBox: { background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: 12, display: "flex", flexDirection: "column", gap: 6, fontSize: 14, color: "#A0AABF" },
-  resultBox: { background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: 10, overflow: "hidden" },
-  resultHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", background: "rgba(52,211,153,0.08)", borderBottom: "1px solid rgba(52,211,153,0.2)", fontSize: 14, fontWeight: 600, color: "#6ee7b7" },
-  resultText: { padding: 12, fontSize: 14, color: "#d1fae5", whiteSpace: "pre-wrap", wordBreak: "break-word", maxHeight: 400, overflowY: "auto", margin: 0, fontFamily: "monospace" },
-  copyBtn: { background: "rgba(52,211,153,0.2)", border: "none", color: "#6ee7b7", borderRadius: 6, padding: "3px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  baseResumePreview: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: 12, fontSize: 14, color: "#A0AABF", whiteSpace: "pre-wrap", wordBreak: "break-word", maxHeight: 400, overflowY: "auto", margin: 0, fontFamily: "monospace" },
-  textarea: { width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, color: "#FFFFFF", fontSize: 14, padding: 10, resize: "vertical", boxSizing: "border-box", fontFamily: "inherit" },
-  overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 16 },
-  modal: { background: "rgba(14,26,62,0.95)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 16, width: "100%", maxWidth: 560, maxHeight: "90vh", display: "flex", flexDirection: "column", backdropFilter: "blur(12px)" },
-  modalHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "1px solid rgba(59,130,246,0.12)", fontWeight: 600, fontSize: 15 },
+  jobResultTitle: { fontWeight: 600, fontSize: 14, color: T.foreground },
+  jobResultCompany: { fontSize: 14, color: T.muted, marginTop: 2 },
+  jobResultSnippet: { fontSize: 14, color: T.muted, lineHeight: 1.5 },
+  jobLink: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "4px 10px", fontSize: 14, textDecoration: "none", display: "inline-block" },
+  sectionLabel: { fontSize: 12, fontWeight: 600, color: T.muted, textTransform: "uppercase", letterSpacing: "0.05em" },
+  profileSectionLabel: { fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 8, paddingTop: 8, borderTop: `1px solid ${T.border}` },
+  tipBox: { background: T.cardSubtle, borderRadius: 8, padding: 12, display: "flex", flexDirection: "column", gap: 6, fontSize: 14, color: T.muted },
+  resultBox: { background: T.successBg, border: `1px solid ${T.successBorder}`, borderRadius: 10, overflow: "hidden" },
+  resultHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", background: T.successBg, borderBottom: `1px solid ${T.successBorder}`, fontSize: 14, fontWeight: 600, color: T.successLight },
+  resultText: { padding: 12, fontSize: 14, color: T.successTextLight, whiteSpace: "pre-wrap", wordBreak: "break-word", maxHeight: 400, overflowY: "auto", margin: 0, fontFamily: "monospace" },
+  copyBtn: { background: T.successBorder, border: "none", color: T.successLight, borderRadius: 6, padding: "3px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  baseResumePreview: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 8, padding: 12, fontSize: 14, color: T.muted, whiteSpace: "pre-wrap", wordBreak: "break-word", maxHeight: 400, overflowY: "auto", margin: 0, fontFamily: "monospace" },
+  textarea: { width: "100%", background: T.card, border: `1px solid ${T.borderInput}`, borderRadius: 8, color: T.foreground, fontSize: 14, padding: 10, resize: "vertical", boxSizing: "border-box", fontFamily: "inherit" },
+  overlay: { position: "fixed", inset: 0, background: T.overlay, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 16 },
+  modal: { background: T.modalBg, border: `1px solid ${T.borderInput}`, borderRadius: 16, width: "100%", maxWidth: 560, maxHeight: "90vh", display: "flex", flexDirection: "column", backdropFilter: "blur(12px)" },
+  modalHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: `1px solid ${T.border}`, fontWeight: 600, fontSize: 15 },
   modalBody: { padding: "16px 20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 12 },
-  modalFooter: { display: "flex", gap: 8, padding: "12px 20px", borderTop: "1px solid rgba(59,130,246,0.12)", alignItems: "center" },
+  modalFooter: { display: "flex", gap: 8, padding: "12px 20px", borderTop: `1px solid ${T.border}`, alignItems: "center" },
   formRow: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 },
   fieldGroup: { display: "flex", flexDirection: "column", gap: 4 },
-  fieldLabel: { fontSize: 14, color: "#A0AABF", fontWeight: 500 },
-  input: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, color: "#FFFFFF", fontSize: 14, padding: "8px 10px", width: "100%", boxSizing: "border-box", fontFamily: "inherit" },
-  closeBtn: { background: "none", border: "none", color: "#A0AABF", cursor: "pointer", fontSize: 18, lineHeight: 1 },
-  btnPrimary: { background: "#3b82f6", border: "none", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 600, cursor: "pointer", minHeight: 44 },
-  btnSecondary: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  btnWarn: { background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", color: "#FBBF24", borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  btnDanger: { background: "rgba(248,113,113,0.08)", border: "none", color: "#F87171", borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  appToggleChip: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#A0AABF", borderRadius: 20, padding: "3px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  appToggleChipActive: { background: "rgba(59,130,246,0.15)", border: "1px solid #3b82f6", color: "#60a5fa" },
+  fieldLabel: { fontSize: 14, color: T.muted, fontWeight: 500 },
+  input: { background: T.card, border: `1px solid ${T.borderInput}`, borderRadius: 8, color: T.foreground, fontSize: 14, padding: "8px 10px", width: "100%", boxSizing: "border-box", fontFamily: "inherit" },
+  closeBtn: { background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 18, lineHeight: 1 },
+  btnPrimary: { background: T.accent, border: "none", color: T.foreground, borderRadius: 8, padding: "8px 16px", fontSize: 14, fontWeight: 600, cursor: "pointer", minHeight: 44 },
+  btnSecondary: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  btnWarn: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, color: T.warning, borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  btnDanger: { background: T.dangerBg, border: "none", color: T.danger, borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  appToggleChip: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.muted, borderRadius: 20, padding: "3px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  appToggleChipActive: { background: T.accentBg, border: `1px solid ${T.accent}`, color: T.highlight },
   liLayout: { display: "flex", flexDirection: "column", gap: 16 },
-  liSubNav: { display: "flex", flexWrap: "wrap", gap: 6, borderBottom: "1px solid rgba(59,130,246,0.12)", paddingBottom: 12 },
-  liNavBtn: { padding: "5px 14px", borderRadius: 8, border: "1px solid rgba(59,130,246,0.2)", background: "transparent", color: "#A0AABF", cursor: "pointer", fontSize: 14, minHeight: 44 },
-  liNavBtnActive: { background: "rgba(255,255,255,0.05)", color: "#FFFFFF", borderColor: "rgba(59,130,246,0.35)" },
-  errorToast: { position: "fixed", top: 16, left: "50%", transform: "translateX(-50%)", background: "rgba(248,113,113,0.08)", border: "1px solid #991b1b", color: "#fca5a5", borderRadius: 10, padding: "12px 20px", zIndex: 200, fontSize: 14, display: "flex", gap: 12, alignItems: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.6)", maxWidth: "90vw", backdropFilter: "blur(12px)" },
-  toastClose: { background: "none", border: "none", color: "#fca5a5", cursor: "pointer", fontSize: 16, lineHeight: 1, padding: 0, flexShrink: 0 },
+  liSubNav: { display: "flex", flexWrap: "wrap", gap: 6, borderBottom: `1px solid ${T.border}`, paddingBottom: 12 },
+  liNavBtn: { padding: "5px 14px", borderRadius: 8, border: `1px solid ${T.borderInput}`, background: "transparent", color: T.muted, cursor: "pointer", fontSize: 14, minHeight: 44 },
+  liNavBtnActive: { background: T.card, color: T.foreground, borderColor: T.borderHover },
+  errorToast: { position: "fixed", top: 16, left: "50%", transform: "translateX(-50%)", background: T.dangerBg, border: `1px solid ${T.dangerBorderDark}`, color: T.dangerLight, borderRadius: 10, padding: "12px 20px", zIndex: 200, fontSize: 14, display: "flex", gap: 12, alignItems: "center", boxShadow: `0 4px 12px ${T.overlay}`, maxWidth: "90vw", backdropFilter: "blur(12px)" },
+  toastClose: { background: "none", border: "none", color: T.dangerLight, cursor: "pointer", fontSize: 16, lineHeight: 1, padding: 0, flexShrink: 0 },
   // Action queue
   aqSection: { marginBottom: 20 },
   aqHeader: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
-  aqTitle: { fontSize: 15, fontWeight: 700, color: "#FFFFFF" },
-  aqBadge: { fontSize: 11, fontWeight: 700, background: "#F87171", color: "#fff", borderRadius: 20, padding: "2px 8px" },
-  aqEmpty: { background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: 10, padding: "12px 16px", fontSize: 14, color: "#6ee7b7", textAlign: "center" },
+  aqTitle: { fontSize: 15, fontWeight: 700, color: T.foreground },
+  aqBadge: { fontSize: 11, fontWeight: 700, background: T.danger, color: T.foreground, borderRadius: 20, padding: "2px 8px" },
+  aqEmpty: { background: T.successBg, border: `1px solid ${T.successBorder}`, borderRadius: 10, padding: "12px 16px", fontSize: 14, color: T.successLight, textAlign: "center" },
   aqList: { display: "flex", flexDirection: "column", gap: 6 },
-  aqItem: { display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px" },
+  aqItem: { display: "flex", alignItems: "center", gap: 10, background: T.card, borderRadius: 10, padding: "10px 14px" },
   aqItemText: { display: "flex", flexDirection: "column", flex: 1, minWidth: 0 },
-  aqItemTitle: { fontSize: 14, fontWeight: 600, color: "#FFFFFF", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-  aqItemSub: { fontSize: 11, color: "#A0AABF", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-  aqActionBtn: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0, minHeight: 44 },
+  aqItemTitle: { fontSize: 14, fontWeight: 600, color: T.foreground, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  aqItemSub: { fontSize: 11, color: T.muted, marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  aqActionBtn: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0, minHeight: 44 },
   aqLabel: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
   outreachSection: { marginBottom: 20 },
   outreachHeader: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
-  outreachTitle: { fontSize: 15, fontWeight: 700, color: "#FFFFFF" },
-  outreachCountBadge: { fontSize: 11, fontWeight: 700, background: "#3b82f6", color: "#dbeafe", borderRadius: 20, padding: "2px 8px" },
-  outreachEmpty: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "12px 16px", fontSize: 14, color: "#A0AABF", textAlign: "center" },
+  outreachTitle: { fontSize: 15, fontWeight: 700, color: T.foreground },
+  outreachCountBadge: { fontSize: 11, fontWeight: 700, background: T.accent, color: T.highlightFaint, borderRadius: 20, padding: "2px 8px" },
+  outreachEmpty: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 10, padding: "12px 16px", fontSize: 14, color: T.muted, textAlign: "center" },
   outreachList: { display: "flex", flexDirection: "column", gap: 8 },
-  outreachItem: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 8, backdropFilter: "blur(12px)" },
+  outreachItem: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 8, backdropFilter: "blur(12px)" },
   outreachTop: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" },
-  outreachName: { fontSize: 14, fontWeight: 600, color: "#FFFFFF" },
-  outreachReason: { fontSize: 14, color: "#FFFFFF" },
-  outreachContext: { fontSize: 11, color: "#A0AABF" },
+  outreachName: { fontSize: 14, fontWeight: 600, color: T.foreground },
+  outreachReason: { fontSize: 14, color: T.foreground },
+  outreachContext: { fontSize: 11, color: T.muted },
   outreachActions: { display: "flex", gap: 6, flexWrap: "wrap" },
-  outreachBtnPrimary: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  outreachBtnSecondary: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  outreachBtnPrimary: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  outreachBtnSecondary: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 6, padding: "4px 10px", fontSize: 14, cursor: "pointer", minHeight: 44 },
   // Scenario chips
   scenarioRow: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 },
-  scenarioChip: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#A0AABF", borderRadius: 20, padding: "4px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
-  scenarioChipActive: { background: "rgba(59,130,246,0.15)", border: "1px solid #3b82f6", color: "#60a5fa" },
+  scenarioChip: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.muted, borderRadius: 20, padding: "4px 12px", fontSize: 14, cursor: "pointer", minHeight: 44 },
+  scenarioChipActive: { background: T.accentBg, border: `1px solid ${T.accent}`, color: T.highlight },
   // URL paste bar
   urlPasteBar: { display: "flex", gap: 8, marginBottom: 16 },
-  urlPasteInput: { flex: 1, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 8, color: "#FFFFFF", fontSize: 14, padding: "8px 12px", fontFamily: "inherit" },
+  urlPasteInput: { flex: 1, background: T.card, border: `1px solid ${T.borderInput}`, borderRadius: 8, color: T.foreground, fontSize: 14, padding: "8px 12px", fontFamily: "inherit" },
   // Win/loss analytics
-  outcomeSection: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: 14, marginBottom: 16, backdropFilter: "blur(12px)" },
+  outcomeSection: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 14, marginBottom: 16, backdropFilter: "blur(12px)" },
   outcomeHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" },
-  outcomeTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF" },
-  outcomeMeta: { fontSize: 14, color: "#A0AABF" },
+  outcomeTitle: { fontSize: 14, fontWeight: 700, color: T.foreground },
+  outcomeMeta: { fontSize: 14, color: T.muted },
   outcomeRow: { display: "grid", gridTemplateColumns: "90px 1fr 52px", gap: 10, alignItems: "center", marginBottom: 8 },
-  outcomeLabel: { fontSize: 14, color: "#FFFFFF" },
-  outcomeTrack: { height: 10, borderRadius: 999, background: "rgba(255,255,255,0.03)", overflow: "hidden" },
+  outcomeLabel: { fontSize: 14, color: T.foreground },
+  outcomeTrack: { height: 10, borderRadius: 999, background: T.cardSubtle, overflow: "hidden" },
   outcomeFill: { height: "100%", borderRadius: 999 },
-  outcomeValue: { fontSize: 14, color: "#A0AABF", textAlign: "right" },
+  outcomeValue: { fontSize: 14, color: T.muted, textAlign: "right" },
   // Next step urgency badge on cards
   urgencyBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
   // Discovery Sprint (Option B)
-  discoverySprint: { background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 12, padding: "14px 16px", marginBottom: 16, backdropFilter: "blur(12px)" },
+  discoverySprint: { background: T.card, border: `1.5px solid ${T.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 16, backdropFilter: "blur(12px)" },
   discoveryHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 },
-  discoveryTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF", display: "flex", alignItems: "center", gap: 8 },
-  discoveryQueryBox: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 8, padding: "10px 12px", marginBottom: 10 },
-  discoveryQueryLabel: { fontSize: 10, fontWeight: 700, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 },
-  discoveryQueryText: { fontSize: 14, color: "#FFFFFF", fontWeight: 600 },
+  discoveryTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, display: "flex", alignItems: "center", gap: 8 },
+  discoveryQueryBox: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 8, padding: "10px 12px", marginBottom: 10 },
+  discoveryQueryLabel: { fontSize: 10, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 },
+  discoveryQueryText: { fontSize: 14, color: T.foreground, fontWeight: 600 },
   discoveryActions: { display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" },
-  discoveryOpenAll: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "6px 12px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  discoverySkipBtn: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", color: "#A0AABF", borderRadius: 6, padding: "6px 12px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  discoveryCaptureLabel: { fontSize: 11, fontWeight: 600, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 },
+  discoveryOpenAll: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "6px 12px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  discoverySkipBtn: { background: T.card, border: `1px solid ${T.border}`, color: T.muted, borderRadius: 6, padding: "6px 12px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  discoveryCaptureLabel: { fontSize: 11, fontWeight: 600, color: T.muted, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 },
   discoveryCaptureGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 },
-  discoveryCaptureInput: { background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 6, color: "#FFFFFF", fontSize: 14, padding: "7px 10px", fontFamily: "inherit", outline: "none" },
-  discoveryCaptureSave: { background: "#3b82f6", border: "none", color: "#fff", borderRadius: 6, padding: "7px 14px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", minHeight: 44 },
+  discoveryCaptureInput: { background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 6, color: T.foreground, fontSize: 14, padding: "7px 10px", fontFamily: "inherit", outline: "none" },
+  discoveryCaptureSave: { background: T.accent, border: "none", color: T.foreground, borderRadius: 6, padding: "7px 14px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", minHeight: 44 },
   // Apply Wizard (Option C)
-  wizModal: { background: "rgba(14,26,62,0.95)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 16, width: "100%", maxWidth: 640, maxHeight: "90vh", display: "flex", flexDirection: "column", backdropFilter: "blur(12px)" },
-  wizProgressTrack: { height: 4, background: "rgba(255,255,255,0.05)", margin: "0 20px", borderRadius: 2, marginTop: 4, marginBottom: 4 },
-  wizProgressFill: { height: "100%", background: "#3b82f6", borderRadius: 2, transition: "width 0.25s" },
-  wizStepLabel: { fontSize: 11, fontWeight: 700, color: "#A0AABF", textTransform: "uppercase", letterSpacing: "0.06em", padding: "0 20px 6px" },
+  wizModal: { background: T.modalBg, border: `1px solid ${T.borderInput}`, borderRadius: 16, width: "100%", maxWidth: 640, maxHeight: "90vh", display: "flex", flexDirection: "column", backdropFilter: "blur(12px)" },
+  wizProgressTrack: { height: 4, background: T.card, margin: "0 20px", borderRadius: 2, marginTop: 4, marginBottom: 4 },
+  wizProgressFill: { height: "100%", background: T.accent, borderRadius: 2, transition: "width 0.25s" },
+  wizStepLabel: { fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.06em", padding: "0 20px 6px" },
   wizBody: { padding: "16px 20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 12, flex: 1 },
-  wizPrompt: { fontSize: 14, color: "#A0AABF", lineHeight: 1.55 },
-  wizCta: { background: "#3b82f6", border: "none", color: "#fff", borderRadius: 8, padding: "10px 16px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  wizCtaCopied: { background: "rgba(52,211,153,0.2)", border: "none", color: "#6ee7b7", borderRadius: 8, padding: "10px 16px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  wizFooter: { display: "flex", justifyContent: "space-between", gap: 8, padding: "12px 20px", borderTop: "1px solid rgba(59,130,246,0.12)" },
-  wizSecondary: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  wizDoneBadge: { background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", color: "#6ee7b7", borderRadius: 8, padding: "10px 14px", fontSize: 14, lineHeight: 1.5 },
-  wizCounter: { fontSize: 14, color: "#A0AABF" },
+  wizPrompt: { fontSize: 14, color: T.muted, lineHeight: 1.55 },
+  wizCta: { background: T.accent, border: "none", color: T.foreground, borderRadius: 8, padding: "10px 16px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  wizCtaCopied: { background: T.successBorder, border: "none", color: T.successLight, borderRadius: 8, padding: "10px 16px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  wizFooter: { display: "flex", justifyContent: "space-between", gap: 8, padding: "12px 20px", borderTop: `1px solid ${T.border}` },
+  wizSecondary: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 8, padding: "8px 16px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  wizDoneBadge: { background: T.successBg, border: `1px solid ${T.successBorder}`, color: T.successLight, borderRadius: 8, padding: "10px 14px", fontSize: 14, lineHeight: 1.5 },
+  wizCounter: { fontSize: 14, color: T.muted },
 
   // Morning Launchpad (Option E)
-  launchpad: { background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(59,130,246,0.2)", borderRadius: 14, padding: "14px 16px 6px", marginBottom: 18, backdropFilter: "blur(12px)" },
+  launchpad: { background: T.card, border: `1.5px solid ${T.borderInput}`, borderRadius: 14, padding: "14px 16px 6px", marginBottom: 18, backdropFilter: "blur(12px)" },
   launchpadHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12, flexWrap: "wrap" },
   launchpadTitleWrap: { display: "flex", flexDirection: "column", gap: 2 },
-  launchpadTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF", display: "flex", alignItems: "center", gap: 8 },
-  launchpadSub: { fontSize: 11, color: "#A0AABF", letterSpacing: "0.04em" },
+  launchpadTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, display: "flex", alignItems: "center", gap: 8 },
+  launchpadSub: { fontSize: 11, color: T.muted, letterSpacing: "0.04em" },
   launchpadStripe: { display: "flex", gap: 6, alignItems: "center" },
-  launchpadDot: { width: 10, height: 10, borderRadius: 999, background: "rgba(255,255,255,0.05)" },
-  launchpadDotActive: { background: "#3b82f6", boxShadow: "0 0 0 3px rgba(59,130,246,0.18)" },
-  launchpadDotDone: { background: "#34D399" },
-  launchpadCleared: { background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", color: "#6ee7b7", borderRadius: 999, padding: "4px 10px", fontSize: 11, fontWeight: 700 },
-  launchpadStage: { background: "rgba(255,255,255,0.03)", borderWidth: 1, borderStyle: "solid", borderColor: "rgba(59,130,246,0.12)", borderRadius: 10, marginBottom: 10, overflow: "hidden" },
-  launchpadStageActive: { borderColor: "#3b82f6", boxShadow: "0 0 0 1px rgba(59,130,246,0.25)" },
-  launchpadStageDone: { borderColor: "rgba(52,211,153,0.2)", background: "rgba(52,211,153,0.08)" },
+  launchpadDot: { width: 10, height: 10, borderRadius: 999, background: T.card },
+  launchpadDotActive: { background: T.accent, boxShadow: `0 0 0 3px ${T.accentShadow}` },
+  launchpadDotDone: { background: T.success },
+  launchpadCleared: { background: T.successBg, border: `1px solid ${T.successBorder}`, color: T.successLight, borderRadius: 999, padding: "4px 10px", fontSize: 11, fontWeight: 700 },
+  launchpadStage: { background: T.cardSubtle, borderWidth: 1, borderStyle: "solid", borderColor: T.border, borderRadius: 10, marginBottom: 10, overflow: "hidden" },
+  launchpadStageActive: { borderColor: T.accent, boxShadow: `0 0 0 1px ${T.accentRing}` },
+  launchpadStageDone: { borderColor: T.successBorder, background: T.successBg },
   launchpadStageHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", cursor: "pointer", gap: 10 },
   launchpadStageLeft: { display: "flex", alignItems: "center", gap: 10 },
-  launchpadStageBadge: { fontSize: 12, fontWeight: 700, color: "#A0AABF", background: "rgba(255,255,255,0.05)", borderRadius: 999, padding: "2px 8px", letterSpacing: "0.05em" },
-  launchpadStageBadgeActive: { color: "#60a5fa", background: "rgba(59,130,246,0.15)" },
-  launchpadStageBadgeDone: { color: "#6ee7b7", background: "rgba(52,211,153,0.08)" },
-  launchpadStageTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF", display: "flex", alignItems: "center", gap: 6 },
-  launchpadStageMeta: { fontSize: 11, color: "#A0AABF" },
-  launchpadStageMetaDone: { color: "#6ee7b7" },
+  launchpadStageBadge: { fontSize: 12, fontWeight: 700, color: T.muted, background: T.card, borderRadius: 999, padding: "2px 8px", letterSpacing: "0.05em" },
+  launchpadStageBadgeActive: { color: T.highlight, background: T.accentBg },
+  launchpadStageBadgeDone: { color: T.successLight, background: T.successBg },
+  launchpadStageTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, display: "flex", alignItems: "center", gap: 6 },
+  launchpadStageMeta: { fontSize: 11, color: T.muted },
+  launchpadStageMetaDone: { color: T.successLight },
   launchpadStageBody: { padding: "0 8px 10px" },
-  launchpadRest: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "16px 18px", fontSize: 14, color: "#FFFFFF", lineHeight: 1.5 },
-  launchpadRestTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF", marginBottom: 6 },
+  launchpadRest: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 10, padding: "16px 18px", fontSize: 14, color: T.foreground, lineHeight: 1.5 },
+  launchpadRestTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, marginBottom: 6 },
   outreachSentRow: { opacity: 0.55, transition: "opacity 0.2s" },
-  outreachBtnSent: { background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", color: "#6ee7b7", borderRadius: 6, padding: "6px 12px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  outreachBtnSent: { background: T.successBg, border: `1px solid ${T.successBorder}`, color: T.successLight, borderRadius: 6, padding: "6px 12px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
 
   // Inbox (v8.18 — Gmail-derived notification feed)
-  inboxPanel: { background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 14, padding: "14px 16px", marginBottom: 18, backdropFilter: "blur(12px)" },
+  inboxPanel: { background: T.card, border: `1.5px solid ${T.border}`, borderRadius: 14, padding: "14px 16px", marginBottom: 18, backdropFilter: "blur(12px)" },
   inboxHeader: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10, flexWrap: "wrap" },
   inboxTitleWrap: { display: "flex", flexDirection: "column", gap: 2 },
-  inboxTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF", display: "flex", alignItems: "center", gap: 8 },
-  inboxSub: { fontSize: 11, color: "#A0AABF", letterSpacing: "0.04em" },
+  inboxTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, display: "flex", alignItems: "center", gap: 8 },
+  inboxSub: { fontSize: 11, color: T.muted, letterSpacing: "0.04em" },
   inboxActions: { display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" },
-  inboxRefreshBtn: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  inboxRefreshBtnSpin: { background: "rgba(59,130,246,0.15)", border: "1px solid #3b82f6", color: "#60a5fa", borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "wait", fontFamily: "inherit", minHeight: 44 },
-  inboxConnectBtn: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "6px 12px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  inboxDisconnect: { background: "transparent", border: "none", color: "#A0AABF", cursor: "pointer", fontSize: 11, padding: 0, fontFamily: "inherit", textDecoration: "underline" },
-  inboxEmpty: { background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: 10, padding: "12px 16px", fontSize: 14, color: "#6ee7b7", textAlign: "center" },
-  inboxIntro: { fontSize: 14, color: "#A0AABF", lineHeight: 1.5, marginBottom: 10 },
-  inboxItem: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 6, backdropFilter: "blur(12px)" },
+  inboxRefreshBtn: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  inboxRefreshBtnSpin: { background: T.accentBg, border: `1px solid ${T.accent}`, color: T.highlight, borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "wait", fontFamily: "inherit", minHeight: 44 },
+  inboxConnectBtn: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "6px 12px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  inboxDisconnect: { background: "transparent", border: "none", color: T.muted, cursor: "pointer", fontSize: 11, padding: 0, fontFamily: "inherit", textDecoration: "underline" },
+  inboxEmpty: { background: T.successBg, border: `1px solid ${T.successBorder}`, borderRadius: 10, padding: "12px 16px", fontSize: 14, color: T.successLight, textAlign: "center" },
+  inboxIntro: { fontSize: 14, color: T.muted, lineHeight: 1.5, marginBottom: 10 },
+  inboxItem: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 6, backdropFilter: "blur(12px)" },
   inboxItemTop: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" },
-  inboxItemTitle: { fontSize: 14, fontWeight: 600, color: "#FFFFFF", flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-  inboxItemTime: { fontSize: 11, color: "#A0AABF", flexShrink: 0 },
-  inboxItemSubject: { fontSize: 14, color: "#FFFFFF", lineHeight: 1.4 },
-  inboxItemSnippet: { fontSize: 11, color: "#A0AABF", lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  inboxItemTitle: { fontSize: 14, fontWeight: 600, color: T.foreground, flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  inboxItemTime: { fontSize: 11, color: T.muted, flexShrink: 0 },
+  inboxItemSubject: { fontSize: 14, color: T.foreground, lineHeight: 1.4 },
+  inboxItemSnippet: { fontSize: 11, color: T.muted, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   inboxKindBadge: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", padding: "2px 7px", borderRadius: 6, whiteSpace: "nowrap", flexShrink: 0 },
   inboxItemActions: { display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 },
-  inboxBtnPrimary: { background: "rgba(59,130,246,0.15)", border: "none", color: "#60a5fa", borderRadius: 6, padding: "5px 10px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  inboxBtnSecondary: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(59,130,246,0.2)", color: "#FFFFFF", borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  inboxBtnDismiss: { background: "transparent", border: "1px solid rgba(59,130,246,0.2)", color: "#A0AABF", borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
-  inboxError: { background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", color: "#FBBF24", borderRadius: 8, padding: "8px 12px", fontSize: 14, marginBottom: 10 },
-  inboxSetupGuide: { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "10px 14px", fontSize: 14, color: "#A0AABF", lineHeight: 1.6, marginTop: 10 },
-  inboxSetupTitle: { fontSize: 14, fontWeight: 700, color: "#FFFFFF", marginBottom: 6 },
+  inboxBtnPrimary: { background: T.accentBg, border: "none", color: T.highlight, borderRadius: 6, padding: "5px 10px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  inboxBtnSecondary: { background: T.card, border: `1px solid ${T.borderInput}`, color: T.foreground, borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  inboxBtnDismiss: { background: "transparent", border: `1px solid ${T.borderInput}`, color: T.muted, borderRadius: 6, padding: "5px 10px", fontSize: 14, cursor: "pointer", fontFamily: "inherit", minHeight: 44 },
+  inboxError: { background: T.warningBg, border: `1px solid ${T.warningBorder}`, color: T.warning, borderRadius: 8, padding: "8px 12px", fontSize: 14, marginBottom: 10 },
+  inboxSetupGuide: { background: T.cardSubtle, border: `1px solid ${T.border}`, borderRadius: 10, padding: "10px 14px", fontSize: 14, color: T.muted, lineHeight: 1.6, marginTop: 10 },
+  inboxSetupTitle: { fontSize: 14, fontWeight: 700, color: T.foreground, marginBottom: 6 },
 };
 
 export const css = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: linear-gradient(150deg, #0A1128 0%, #0E1A3E 100%); min-height: 100vh; }
-  .card-hover:hover { border-color: rgba(59,130,246,0.35) !important; }
-  select option { background: #0E1A3E; }
+  body { background: ${T.bgGradient}; min-height: 100vh; }
+  .card-hover:hover { border-color: ${T.borderHover} !important; }
+  select option { background: ${T.surface}; }
   textarea, input, select { outline: none; }
-  textarea:focus, input:focus, select:focus { border-color: rgba(59,130,246,0.5) !important; }
+  textarea:focus, input:focus, select:focus { border-color: ${T.borderFocus} !important; }
   @media (max-width: 700px) {
     div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
   }

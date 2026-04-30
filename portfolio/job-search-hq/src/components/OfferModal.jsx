@@ -3,6 +3,7 @@ import {
   s,
   blankOfferDetails, normalizeOfferDetails, computeOfferTotal, formatCurrency,
 } from "../constants";
+import { T } from "../tokens";
 
 const BONUS_TYPES = [
   { value: "target",        label: "Target" },
@@ -13,7 +14,7 @@ const BONUS_TYPES = [
 function Currency({ value, onChange, placeholder }) {
   return (
     <div style={{ position: "relative" }}>
-      <span style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#A0AABF", fontSize: 13 }}>$</span>
+      <span style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: T.muted, fontSize: 13 }}>$</span>
       <input
         style={{ ...s.input, paddingLeft: 22 }}
         type="text"
@@ -46,7 +47,7 @@ export default function OfferModal({ app, onSave, onClose }) {
         <div style={s.modalHeader}>
           <div>
             <span>💰 Offer details</span>
-            <div style={{ fontSize: 14, color: "#A0AABF", fontWeight: 400, marginTop: 2 }}>
+            <div style={{ fontSize: 14, color: T.muted, fontWeight: 400, marginTop: 2 }}>
               {app.company} — {app.title}
             </div>
           </div>
@@ -56,7 +57,7 @@ export default function OfferModal({ app, onSave, onClose }) {
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
             <div>
-              <div style={{ ...s.fieldLabel, color: "#22c55e", textTransform: "uppercase", letterSpacing: 0.8 }}>Compensation</div>
+              <div style={{ ...s.fieldLabel, color: T.successBright, textTransform: "uppercase", letterSpacing: 0.8 }}>Compensation</div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10, marginTop: 6 }}>
                 <div>
                   <div style={s.fieldLabel}>Base salary (annual)</div>
@@ -87,18 +88,18 @@ export default function OfferModal({ app, onSave, onClose }) {
               </div>
             </div>
 
-            <div style={{ background: "rgba(255,255,255,0.03)", border: "1.5px solid rgba(59,130,246,0.12)", borderRadius: 10, padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ background: T.cardSubtle, border: `1.5px solid ${T.border}`, borderRadius: 10, padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <div style={{ fontSize: 14, color: "#A0AABF", textTransform: "uppercase", letterSpacing: 0.8 }}>Total comp estimate</div>
-                <div style={{ fontSize: 14, color: "#A0AABF", marginTop: 2 }}>base + bonus + equity/yr + sign-on/4</div>
+                <div style={{ fontSize: 14, color: T.muted, textTransform: "uppercase", letterSpacing: 0.8 }}>Total comp estimate</div>
+                <div style={{ fontSize: 14, color: T.muted, marginTop: 2 }}>base + bonus + equity/yr + sign-on/4</div>
               </div>
-              <div style={{ fontSize: 22, fontWeight: 800, color: previewTotal != null ? "#22c55e" : "#A0AABF" }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: previewTotal != null ? T.successBright : T.muted }}>
                 {formatCurrency(previewTotal)}
               </div>
             </div>
 
             <div>
-              <div style={{ ...s.fieldLabel, color: "#22c55e", textTransform: "uppercase", letterSpacing: 0.8 }}>Offer terms</div>
+              <div style={{ ...s.fieldLabel, color: T.successBright, textTransform: "uppercase", letterSpacing: 0.8 }}>Offer terms</div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10, marginTop: 6 }}>
                 <div>
                   <div style={s.fieldLabel}>Offer received</div>

@@ -12,10 +12,10 @@
 | **Branch** | `main` (consolidated 2026-04-27 — v8.16/v8.17/v8.18 all shipped) |
 | **URL** | job-search-hq.vercel.app |
 | **Storage key** | `chase_job_search_v1` (data) + Supabase `user_data` row `app_key='job-search:gmail'` (encrypted refresh token, server-only — never localStorage) |
-| **Focus** | Command Blue redesign exploration. Created `design/mockup-focus.html` (Focus tab with glass cards, 14px text floor, 44px targets, 240px sidebar nav matching Shipyard's layout) and `design/logo-concepts.html` (6 SVG logo concepts — HQ Monogram selected). Gmail Inbox Feed remains LIVE (v8.18). |
-| **Next** | Decide whether to implement the Command Blue redesign in the actual app (would convert `s` styles in `constants.js`). Other options: mockup other tabs (Pipeline, Contacts), generate app icon assets from the HQ monogram, or continue with iOS Phase 2. |
-| **Blockers** | None. Design mockups are evaluation-only — no code changes to the running app. |
-| **Last touch** | 2026-04-29 — Command Blue redesign mockup + HQ Monogram logo concepts created. Mockup shows Focus tab with Shipyard-style readability upgrades (glass cards, sidebar nav, improved contrast) adapted to JSHQ's blue accent. HQ Monogram chosen as logo direction. — Prior: 2026-04-29 Gmail OAuth activation. — Prior: 2026-04-28 Gmail Forge × JSHQ verified. |
+| **Focus** | **Glass-card token sweep shipped (2026-04-30):** zero raw hex/rgba outside `src/tokens.js`. All 21 files tokenized — `constants.js`, `App.jsx`, `ErrorBoundary.jsx`, 5 tabs, 10 components. `docs/BRANDING.md` updated to Command Blue actuals. Build clean, 186.87 kB gzipped. |
+| **Next** | iOS Phase 2 (Supabase sync + email OTP). Or: implement the Command Blue sidebar redesign from `design/mockup-focus.html` in the actual app — all color decisions are now trivially centralized in `src/tokens.js`. |
+| **Blockers** | None. |
+| **Last touch** | 2026-04-30 — Glass-card token sweep: zero raw colors in src/ outside tokens.js. ErrorBoundary, App.jsx, constants.js, 5 tabs, 10 components all tokenized. Deployed to Vercel. — Prior: 2026-04-29 Command Blue redesign mockup + HQ Monogram. |
 
 ---
 

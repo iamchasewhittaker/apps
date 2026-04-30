@@ -1,5 +1,30 @@
 # Changelog
 
+## [Unreleased] — 2026-04-30 — Glass-card token sweep (v8.18 polish)
+
+Zero raw hex/rgba colors remain in `src/` outside of `src/tokens.js`. Mechanical refactor — no visual changes.
+
+### Changed
+- **`src/tokens.js`** (created) — single source of truth for every color in the app. ~60 named tokens organized by role (core, accent, success, warning, danger, purple, gold, kassie, area-specific, computed). Aligned with Shipyard's nautical token vocabulary where possible.
+- **`src/constants.js`** — `import { T } from "./tokens"`. All raw colors in data arrays (`STAGE_COLORS`, `CONTACT_TYPES`, `OUTREACH_STATUSES`, `DIRECTION_TRACKS`, `WIN_TYPES`, `DEBRIEF_IMPRESSIONS`, `OUTREACH_EVENT_TYPES`, `INBOX_KINDS`, `FOCUS_BLOCKS[].tagColor`, `RESOURCES[].color`), helper functions (`nextStepUrgency`, `getPriorityTone`, `getOutreachCadenceNudge`), the entire `s` styles object (~280 lines), and the `css` template literal all replaced with `T.*` references. Compound border strings converted to template literals.
+- **`src/App.jsx`** — auth screens (`authInputStyle`, `authBtnStyle`, `LoginScreen`, `SetPasswordScreen`), `sidebarStyles`, and loading screen all tokenized. Loading screen gradient switched from raw hex to `T.bgGradient`.
+- **`src/ErrorBoundary.jsx`** — added `import { T }` and replaced 3 raw colors.
+- **`src/tabs/FocusTab.jsx`** — ~90 replacements: Kassie card purple cluster, urgency ternaries, DirectionSplit, WinsLog, DailyActionCounter, MorningLaunchpad stages.
+- **`src/tabs/AITab.jsx`** — ~40 replacements: mock interview, scenario chips, stat boxes, STAR bank.
+- **`src/tabs/ContactsTab.jsx`** — ~30 replacements: SalesNavGuide, stats bar, company intel.
+- **`src/tabs/ResourcesTab.jsx`** — ~12 replacements: Chrome extension guide, backup section.
+- **`src/components/OfferCompareView.jsx`** — removed local `GREEN`/`GREEN_BG` constants; ~30 replacements.
+- **`src/components/ProfileModal.jsx`**, **`DebriefModal.jsx`**, **`ApplyWizardModal.jsx`**, **`AppCard.jsx`**, **`OfferModal.jsx`**, **`ContactModal.jsx`**, **`InboxPanel.jsx`**, **`PrepModal.jsx`**, **`ContactCard.jsx`**, **`OutreachTimeline.jsx`** — fully tokenized.
+- **`docs/BRANDING.md`** — palette table updated to actual Command Blue + token sweep values; "Command Blue" heading; token-name column added; Shipyard alignment column; rule added: no raw hex/rgba outside `src/tokens.js`.
+- Build: clean, 186.87 kB gzipped (unchanged — refactor only).
+
+### Verified clean
+- `grep -rn '#[0-9a-fA-F]\{3,8\}' src/ --include='*.js' --include='*.jsx' | grep -v tokens.js` → empty
+- `grep -rn 'rgba(' src/ --include='*.js' --include='*.jsx' | grep -v tokens.js` → empty
+- `src/shared/ui.jsx` intentionally untouched (app-agnostic defaults, separate palette intent)
+
+---
+
 ## [Unreleased] — 2026-04-29 — Command Blue redesign mockup + HQ monogram logo
 
 ### Design
