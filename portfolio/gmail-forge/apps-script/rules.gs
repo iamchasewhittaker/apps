@@ -121,6 +121,8 @@ var RULES = {
       'laura@lauravanderkam.com',
       'jason@jasonfeifer.com',
       'brendanmcdonald@financialguide.com',
+      'jd@toybook.com',
+      'theteam@thetoyinsider.com',
     ],
     // Optional static aliases; prefer Script Property NEWSLETTER_TO_ALIASES (see apps-script/README.md)
     toAliases: [

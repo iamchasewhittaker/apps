@@ -191,6 +191,18 @@ Now `messages-noreply@linkedin.com` in Notification's `addresses` wins in pass 1
 
 ---
 
+## Bulk rules audit: 35 sender rules added in a single session (Apr 29, 2026)
+
+**What happened:** 43 inbox threads from Apr 28-29 had no labels. The Gmail MCP API has no `label_thread` tool, so we couldn't apply labels programmatically. Pivoted to updating `rules.gs` with every missing sender — the auto-sorter caught them all on its next 5-minute run.
+
+**Senders added:** indeed.com (JobSearch); 13 Newsletter domains + 3 Newsletter addresses + 2 corrected from Cold Email (ToyBook, Toy Insider); 5 Notification domains + 4 Notification addresses; mail.instagram.com (Security); tc.rocketmortgage.com + em.citizensbank.com (Receipt); 9 Marketing domains.
+
+**Session reflection:** "I can customize and do hard things."
+
+**Rule:** When the Gmail MCP can't apply labels directly, update `rules.gs` + redeploy. The 5-minute auto-sorter sweep is the label application path. Gmail Forge is fully customizable — you own the rule set end-to-end.
+
+---
+
 ## Google-side setup steps (reference for future sessions)
 
 Complete sequence for a fresh Apps Script deployment:

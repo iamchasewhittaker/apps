@@ -18,6 +18,18 @@
 
 ## Entries
 
+### 2026-04-29 — Env var whitespace in Vercel breaks silently
+**What happened:** After initial Vercel deployment, clicking "Connect Gmail" opened the OAuth popup, user approved, but nothing happened — no error, no connection, silent failure. Had been working locally.
+**Root cause:** `REACT_APP_GOOGLE_CLIENT_ID` on Vercel had a trailing newline, copied from a cloud UI form. CRA's DefinePlugin bakes the raw value into the bundle, so the bundled client ID was `"abc123...\n"` — Google rejected it silently. Trailing whitespace is invisible, and the error path didn't surface Google's actual rejection (just a generic "token exchange failed").
+**Fix / lesson:** Added `.trim()` to all environment variable reads across 5 files (`src/inbox/oauth.js`, `api/gmail/exchange.js`, `api/gmail/refresh.js`, `api/_lib/crypto.js`, `api/_lib/supabase.js`). Also improved error messaging to surface Google's rejection reason so future debugging is easier. **Check:** when pushing env vars to Vercel, paste from a clean source (e.g., GCP console) and verify no trailing space/newlines. Better yet, have the `REACT_APP_*` read trim() itself in code.
+**Tags:** deploy · vercel · oauth · gotcha
+
+### 2026-04-29 — OAuth popup flow doesn't use PKCE — don't send `code_verifier`
+**What happened:** After fixing the env var whitespace, OAuth popup succeeded, exchange endpoint was called, but it rejected with "token_exchange_failed". The error detail wasn't being surfaced, so it took investigation to see Google was rejecting the request.
+**Root cause:** v8.18 implementation included a bogus `codeVerifier: "unused-popup-flow"` in the exchange request body. The popup flow (via `initCodeClient` with `ux_mode: popup`) doesn't use PKCE, so Google rejected the unknown parameter silently.
+**Fix / lesson:** Removed `codeVerifier` from the request body. Made it optional in the server-side exchange params — if future code switches to an auth-code-with-PKCE flow, the flow will still work. Also added `.error` and `.error_description` extraction from Google's response so future token errors surface the root cause (e.g., `redirect_uri_mismatch`), not just a generic message.
+**Tags:** oauth · google-apis · popup-auth
+
 ### 2026-04-28 — Gmail Forge supplies the `JobSearch` label automatically — onboarding text was misleading
 **What happened:** `SetupGuide()` told users to set up Gmail filters by hand. Chase already runs Gmail Forge, which auto-applies the `JobSearch` label. Users following the manual steps would have a redundant filter in front of an automated one, and could be confused into thinking JSHQ requires the manual setup.
 **Root cause:** v8.18 was implemented before the cross-app Gmail Forge integration was nailed down. The setup guide reflected the lowest-common-denominator path (no Gmail Forge user) but didn't mention the existence of an automated path.
@@ -47,6 +59,7 @@
 **Root cause:** That blob round-trips through localStorage → Supabase → localStorage on every save. Tokens would be backed up alongside non-sensitive data, exported during backups, and visible to anyone with localStorage access (XSS scope).
 **Fix / lesson:** Tokens live in a separate `user_data` row with `app_key='job-search:gmail'` — same RLS gate, same table, but never spread into the data blob. Server endpoints read/write that row only. Browser sees the access token in memory and the gmail email address (returned in API responses); never the encrypted refresh token. Same pattern works for any future per-user OAuth (Slack, Calendar, etc.).
 **Tags:** security · architecture · supabase
+> **Chase:** Encryption key rotation — if `GMAIL_TOKEN_ENC_KEY` needs to rotate (compromise, compliance audit), there's no in-app mechanism to re-encrypt existing refresh tokens. They'd be locked until manual intervention.
 
 ### 2026-04-26 — Morning Launchpad: derive stage state from existing data, don't persist a new schema
 **What happened:** Option E needed a 3-stage daily flow (Discover → Apply → Outreach) that resets each day. First instinct was a `launchpadStage` field on `data` with date stamping, manual reset on day rollover, etc.

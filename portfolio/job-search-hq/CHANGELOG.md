@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased] — 2026-04-29 — Gmail OAuth activation complete ✅ (v8.18 live)
+
+Activation checkpoint: All four env vars configured on Vercel, OAuth flow validated end-to-end, InboxPanel pulling live Gmail data. Chase successfully connected to Gmail and saw 2 LinkedIn notifications in the inbox (Crunchbase hiring + Ameer Hamza opportunity).
+
+- **Fixed OAuth flow:** removed bogus `codeVerifier` from browser request body (popup mode doesn't use PKCE); made it optional in server code so future PKCE-based flows can coexist
+- **Fixed env var whitespace:** added `.trim()` to all environment variable reads in `src/inbox/oauth.js`, `api/gmail/exchange.js`, `api/gmail/refresh.js`, `api/_lib/crypto.js`, and `api/_lib/supabase.js` to prevent silent failures from trailing newlines on Vercel
+- **Improved error messaging:** error detail extraction now surfaces Google's actual rejection reason (e.g., `redirect_uri_mismatch`) instead of generic `token_exchange_failed`
+- **Vercel deployment:** all four env vars (`REACT_APP_GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GMAIL_TOKEN_ENC_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) added to production + preview scopes; production-only secrets correctly scoped
+- **Testing:** live OAuth popup → authorization code → server-side token exchange → encrypted Supabase storage → auto-refresh on expiry ✓; InboxPanel connected state ✓; Gmail inbox sync running ✓
+
 ## [Unreleased] — 2026-04-28 — Inbox setup polish + Gmail Forge end-to-end verified
 
 - **`src/components/InboxPanel.jsx`** — `SetupGuide()` callout updated: references `healthCheck_jobSearch` (no trailing underscore — renamed in Gmail Forge so it shows in the Apps Script Run dropdown). Manual filter steps stay in place for non-Forge users.
