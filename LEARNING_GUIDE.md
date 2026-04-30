@@ -258,6 +258,18 @@ Claude rotates through questions based on session context:
 - "What made this approach click vs. times it didn't?"
 - "How would you teach this technique to another Claude user?"
 
+**Handoffs:**
+- "What would a new agent need to know to pick this up cold?"
+- "What context did you wish you had at the start of this session?"
+
+**Claude mastery:**
+- "What prompt technique saved the most time today?"
+- "What would you do differently if the context window were half the size?"
+
+**Architecture:**
+- "If this app had 100x users tomorrow, what breaks first?"
+- "What's the simplest thing you could remove without anyone noticing?"
+
 **General (if multiple types or unclear):**
 - "What's the one thing from this session you want to remember in 6 months?"
 

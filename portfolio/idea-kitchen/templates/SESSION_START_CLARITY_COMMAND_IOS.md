@@ -1,82 +1,61 @@
-# SESSION_START — Clarity Command iOS Retroactive Foundation Docs
+# Session Start — Clarity Command iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Command iOS is a functional v0.1 SwiftUI app.
-**App:** Clarity Command iOS
-**Slug:** clarity-command-ios
-**One-liner:** Mission + Scoreboard + Settings — the command center for the Clarity iOS suite; aggregates data from all 5 Clarity apps via Supabase and presents a daily accountability dashboard.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 6 is done; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-command-ios`
-2. **BRANDING.md** — gold accent `#c8a84b`, command/authority aesthetic, deep navy background
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.1 shipped scope; Phase 7 = live data feeds from all 5 Clarity apps
-5. **APP_FLOW.md** — document the Mission → Scoreboard (live feeds) → Settings 3-tab flow
-6. **SESSION_START_clarity-command-ios.md** — stub only
-
-Output paths: `portfolio/clarity-command-ios/docs/`
+- **2026-04-14** — v0.1 shipped: CommandBlob + CommandStore with target tracking, streak calculation, daily scoring; 3-tab layout (Mission/Scoreboard/Settings); morning commit flow (conviction panel, scripture card, target list, counter banner); evening reflection; scoreboard (week grid, month calendar, area streaks, stats); gold accent via CommandPalette (#c8a84b); 26 source files; CommandBlobTests passing
+- **2026-04-14** — Programmatic ClarityCommand.xcodeproj generated (CD* PBX IDs) with ClarityUI linked as local SPM; AppIcon (interim programmatic shell + gold chevron)
+- **2026-04-14** — v0.2 Supabase sync slice: CommandCloudSync + CommandSupabaseConfig (app_key = command, same project as web); OTP auth + REST push/pull; debounced push on save; CommandSyncSection in Settings; docs/DEVICE_QA.md created
+- **2026-04-27** — Cross-app reads shipped: pull job-search-daily + wellness-daily rows from Supabase in parallel; CrossAppDaily.swift models; LiveAppDataView on Scoreboard tab (Job Search count + Wellness icons); auto-pull on app launch via .task modifier
+- **2026-04-28** — Removed nonisolated from CommandStore.init() fixing 10 Swift 6 concurrency warnings; build is now warning-clean
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** SwiftUI + @Observable + UserDefaults + Supabase (sync wired)
-**Storage key:** `chase_command_ios_v1`
-**Bundle ID:** `com.chasewhittaker.ClarityCommand`
-**Xcodeproj prefix:** `CD*`
-**URL:** local Xcode
-**Tests:** 14/14 passing
-
-**What this app is:**
-The command center for the Clarity iOS suite. Three tabs: Mission (today's focus, scripture quote, purpose statement), Scoreboard (aggregated metrics from all 5 Clarity apps — check-in, capacity, time sessions, growth streaks, budget STS), and Settings (name, family photo, motivation phrase). Supabase sync is wired — when Phase 7 lands, it will pull live data from all five Clarity apps.
-
-**Architecture:**
-- `@Observable` state management
-- UserDefaults for local state (`chase_command_ios_v1`)
-- Supabase sync wired (reads from shared Supabase project `unqtnnxlltiadzbqpyhh`)
-- Currently reads stub data — live data feeds come in Phase 7
-- CD* prefix for all xcodeproj identifiers
-- 14/14 SwiftUI tests passing
-
-**Clarity iOS suite position:**
-- This is the capstone app — all other Clarity apps feed data INTO Command
-- Aggregation order: Check-in → Triage → Time → Budget → Growth → Command
-
-**Brand system:**
-- Gold accent: `#c8a84b` — command/authority, "gold standard"
-- Background: deep navy `#0a0f1e`
-- Text logo: `CLARITY` (gold) / `COMMAND` (white bold)
-- Voice: direct, mission-driven — "you said you'd do this. did you?"
-- Faith anchors: LDS (Book of Mormon, D&C) + KJV Bible scripture in Mission tab
-- Family urgency: "For Reese. For Buzz." in purpose statement
-- `docs/BRANDING.md` + AppIcon exist in-repo
+- End-to-end run on physical iPhone 12 Pro Max not yet verified (DEVELOPMENT_TEAM: 9XVT527KP3)
+- LIVE APP DATA section needs verification with real Supabase data on device
+- App icon: replace interim programmatic PNG with final chevron-in-shield mark
+- docs/DEVICE_QA.md checklist not yet completed
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Command state at a glance
 
-**Version:** v0.1
-**Focus:** Phase 6 complete. 3 tabs functional with stub data. Supabase sync wired. 14/14 tests pass.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.2 (v0.3 cross-app reads in [Unreleased]) |
+| URL | local Xcode |
+| Bundle ID | `com.chasewhittaker.ClarityCommand` |
+| Storage key | `chase_command_ios_v1` |
+| Stack | SwiftUI + @Observable + ClarityUI + UserDefaults + supabase-swift |
+| PBX prefix | CD |
+| DEVELOPMENT_TEAM | 9XVT527KP3 |
+| Linear | [Clarity Command iOS](https://linear.app/whittaker/project/clarity-command-ios-95893cfe530c) |
+| Last touch | 2026-04-28 |
 
-**Next (Phase 7 — live data feeds):**
-- Pull live check-in data from `chase_checkin_ios_v1` via Supabase
-- Pull live capacity/wins from `chase_triage_ios_v1`
-- Pull live session totals from `chase_time_ios_v1`
-- Pull live STS from `chase_budget_ios_v1`
-- Pull live growth streaks from `chase_growth_ios_v1`
-- Once live data is in: all 6 Clarity iOS apps are unified in Command
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-command-ios/CLAUDE.md | App-level instructions |
+| portfolio/clarity-command-ios/HANDOFF.md | Session state + notes |
+| ClarityCommand/Services/CommandStore.swift | @Observable store: targets, streaks, scoring, cross-app data |
+| ClarityCommand/Models/CommandBlob.swift | CommandBlob, DayEntry, MorningCommit, EveningReflection, Target |
+| ClarityCommand/Services/CommandCloudSync.swift | OTP auth + REST push/pull for command + cross-app reads |
+| ClarityCommand/Views/Mission/MissionTabView.swift | Morning commit + evening reflection flow container |
+| ClarityCommand/Views/Scoreboard/ScoreboardTabView.swift | Streaks, stats, calendar, LiveAppDataView |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Deploy to physical device and complete docs/DEVICE_QA.md checklist
+2. Add pull-to-refresh on Scoreboard tab for manual cross-app refresh
+3. Replace interim app icon with final chevron-in-shield glyph per docs/BRANDING.md

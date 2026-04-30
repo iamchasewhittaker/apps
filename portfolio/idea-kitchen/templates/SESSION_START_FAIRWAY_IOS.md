@@ -1,87 +1,67 @@
-# SESSION_START — Fairway (iOS) Phase 2
+# Session Start — Fairway iOS (2026-04-29)
 
-> Paste into a new Claude Code session in `~/Developer/chase`. App is already built and on-device. This is a Phase 2 session — validation + edit flows, not a scaffold.
-
----
-
-**Instructions for the agent**
-
-1. Read `portfolio/fairway-ios/CLAUDE.md` and `portfolio/fairway-ios/HANDOFF.md` first.
-2. Read root `CLAUDE.md` for monorepo conventions.
-3. Run `cd ~/Developer/chase && git status -sb && git log -3 --oneline`.
-4. Run `checkpoint` before any edits.
-
-**Workspace:** `~/Developer/chase`
-**App path:** `portfolio/fairway-ios/`
-**Remote:** `github.com/iamchasewhittaker/apps`
-**Linear:** —
-**Xcode project prefix:** FW
-**Bundle ID:** `com.chasewhittaker.Fairway`
-**Storage key:** `chase_fairway_ios_v1`
-
-**Goal:** [Fill in before pasting — e.g. "Add edit flow for heads" or "Correct seeded fertilizer dates"]
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-**In scope (V1 shipped — do not regress):**
-- 5-tab structure: Zones, Lawn, Soil, Maintenance, More
-- ZoneDetailView with Heads / Problems / Schedule / Beds (Zone 1)
-- FertilizerView + SpreaderCalcView + ShrubBedView
-- SoilTestView (13 nutrients, April 2026 data)
-- MaintenanceView + MowLogView
-- InventoryView
-- FairwayStore + seedIfNeeded + single UserDefaults JSON blob
+## Journey so far
 
-**Not in scope:**
-- iCloud or Supabase sync
-- Rachio API integration
-- Push notifications
-- Photo attachments
-- Multi-property support
-- App Store submission
+- **2026-04-18** — v0.1 initial scaffold: all data models, FairwayBlob, FairwayStore, 5-tab layout, Augusta green palette, spreader calc, soil test, shrub beds, fertilizer plan, mow log
+- **2026-04-24** — Phase 0 data entry: IFA over-application logging, Z2-S1..S6 head catalog, mixed-precip ProblemArea, 9 recovery tasks, `applyPhase0MigrationIfNeeded()`
+- **2026-04-24** — Rachio v1 read-only API integration: Keychain token, fetch person/device/zones/events, zone-link picker, "Rachio says" mirror card, watering history view, 7 decode tests
+- **2026-04-24** — KML sprinkler head ingestion: `import-kml.py` written, 23-pin manifest + photos downloaded, park-strip provisional matching, Z2-S5 nozzle correction from photo evidence
+- **2026-04-25** — KML reimport: Zone 3 expanded 5 to 11 heads, Zone 4 "Back Yard" seeded with 12 heads, `Z*-S*` label standardization, `rewrite-kml-labels.py`, Phase 1 zone migration in FairwayStore
+- **2026-04-25** — Pre-Season Audit view + photo audit data for all 41 heads, `HeadAuditSheet` with pre-filled estimates
+- **2026-04-25** — Zone-menu refinements: actions on problems, shopping list, Z2 sub-grouping, schedule explainers, map zone-hull polygons
+- **2026-04-25** — Verification session: 40/40 tests, 3 production bugs fixed (PropertySettingsView @MainActor, HeadData decoder, FairwayBlob decoder), device install on iPhone 12 Pro Max
+- **2026-04-27** — Overview tab (v0.2): Open-Meteo weather + soil-temp chart + alerts + audit progress + Rachio status + schedule sanity + mow streak + quick-log row, 58 tests
+- **2026-04-28** — Phase 2 shipped: GrassSubZone model, Z2 seeded with Main + Park strip sub-zones, sub-zone filter chips in ZoneDetailView, runtime card in ScheduleView, 62 tests, device install verified
 
 ---
 
-## End-of-session checklist
+## Still needs action
 
-```
- 1. checkpoint
- 2. Update CHANGELOG.md under ## [Unreleased]            # MANDATORY
- 3. Update portfolio/fairway-ios/ROADMAP.md
- 4. Update root ROADMAP.md Change Log row
- 5. Update portfolio/fairway-ios/HANDOFF.md — State, Focus, Next, Last touch
- 6. Update portfolio/fairway-ios/LEARNINGS.md            # MANDATORY — always at least one line
- 6.5. If user-visible state changed: update docs/SHOWCASE.md
- 7. Linear — heartbeat comment + move completed issues to Done
- 8. If root CLAUDE.md portfolio table changed:
-       cd portfolio/shipyard && npm run sync:projects
- 8.5. Update brain/02-Projects/fairway-ios/README.md — bump frontmatter (status / shipped date if v1 cut), add a one-line dated log entry if user-visible state changed. Index only; don't mirror repo docs.
- 9. git add <paths>
-10. git commit -m "<type>(fairway-ios): <summary>"        # conventional commits
-11. git push
-12. Report: what shipped / what's next / any blockers.
-```
+- Z4-S1 dig-out (buried head blocking full Zone 4 confidence) -- highest real-world priority
+- Google Earth re-import: confirm all 41 pins show `Z*-S*` labels in Google Earth web
+- Docs-sweep: COVERAGE_ANALYSIS.md, PROPERTY_PLACEMENT.md still pending
+- Chase field-confirm provisional Z2-MATCH matching (especially Z2-S5 empty nozzle slot)
+- Once Z2 matching confirmed: `git mv docs/heads/Z2-MATCH-Nth/` to `docs/heads/Z2-S{1..6}/`
 
-## Security checklist
+---
 
-```
-- Public repo. Never commit secrets, real financial figures, or real names tied to private data.
-- .env gitignored. .env.example template only.
-- No dangerouslySetInnerHTML (N/A — SwiftUI). No user-controlled redirects.
-- If a secret is committed: rotate immediately, then purge history.
-- AI keys server-side only (N/A for this app). Prompt-injection resistance on any tool-use path.
-- Run /secure before first push.
-```
+## Fairway state at a glance
 
-## Best-practices checklist
+| Field | Value |
+|-------|-------|
+| Version | v0.2 |
+| URL | local Xcode |
+| Storage key | `chase_fairway_ios_v1` (UserDefaults) + Keychain `com.chasewhittaker.Fairway` (Rachio token) |
+| Stack | SwiftUI + iOS 17 + @Observable + UserDefaults + Codable + Open-Meteo + Rachio v1 API |
+| Xcode prefix | FW* |
+| Bundle ID | com.chasewhittaker.Fairway |
+| Linear | [Fairway iOS](https://linear.app/whittaker/project/fairway-ios-967c8e495407) |
+| Last touch | 2026-04-28 |
 
-```
-1. xcodebuild clean build before claiming done.
-2. Verify on device, not just simulator.
-3. Small diffs. Conventional commits.
-4. Empty + error states on every new screen.
-5. Accessibility from day one. Chase has low vision — 44pt targets, VoiceOver labels, Dynamic Type, 4.5:1 contrast.
-6. Honor the Phase 2 rule: no new features until Phase 1 validation is complete (Chase has used the app for a full spring setup).
-7. HANDOFF.md = resume context. Git = shipped truth.
-8. 15-minute stuck rule: change approach or ask.
-```
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/fairway-ios/CLAUDE.md | App-level instructions |
+| portfolio/fairway-ios/HANDOFF.md | Session state + notes |
+| Fairway/FairwayStore.swift | @Observable @MainActor store -- load/save/seed/migrations |
+| Fairway/FairwayBlob.swift | Root Codable struct (all app data) |
+| Fairway/Models/ZoneData.swift | Zone model with heads, problems, schedule, subZones |
+| Fairway/Models/HeadData.swift | Sprinkler head model with audit fields |
+| Fairway/Views/OverviewView.swift | Overview tab -- weather, alerts, audit progress, quick-log |
+| Fairway/PreviewData.swift | Mock data with all 4 zones pre-seeded |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Phase 3 -- ET calculator + schedule hybrid override (WeatherKit/Open-Meteo, Hargreaves ET0, Kc KBG)
+2. Phase 4 -- Problem auto-detection (7 rules in ProblemDetector service)
+3. Docs-sweep: generate COVERAGE_ANALYSIS.md and PROPERTY_PLACEMENT.md from sprinklers.json

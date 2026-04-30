@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added (2026-04-29) — Cross-app daily blob pushes
+- **Daily summary blobs for Clarity Command:** App.jsx now pushes `clarity-time-daily`, `clarity-budget-daily`, and `clarity-growth-daily` blobs to Supabase on every state change. Consumed by Clarity Command's Scoreboard LiveAppData section.
+- **sync.js exports:** `pushTimeDaily`, `pushBudgetDaily`, `pushGrowthDaily` wrappers added
+
 ### Added (2026-04-14)
 - **Cross-app navigation (WHI-40):** `AppNav` bar above tab row links to Wellness, Job Search, YNAB, Tasks — uses shared `resolveAppUrl` for canonical-origin URL resolution; replaces inline `EXTERNAL_LINKS` in `NavTabs`
 - **Shared UI component:** added `src/shared/ui.jsx` (copy of `portfolio/shared/ui.jsx`) — `Card`, `NavTabs`, `AppNav`, `resolveAppUrl`

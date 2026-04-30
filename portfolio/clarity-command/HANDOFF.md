@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Phase 2 cross-app reads — web fully wired (verified via Supabase); iOS twin shipped same day. |
-| **Next** | Verify on physical iPhone that the new `LIVE APP DATA` section on Scoreboard renders correctly when signed in. |
-| **Last touch** | 2026-04-27 — Local `.env` added; iOS Command now pulls + renders `job-search-daily` + `wellness-daily` |
-| **Status** | ✅ Live · cross-app pipeline active in production (Job Search HQ pushed `job-search-daily` 2026-04-27) |
+| **Focus** | Phase 3 cross-app reads — Scoreboard now pulls from 5 apps (Job Search, Wellness, Time, Budget, Growth). |
+| **Next** | Verify Wellness E2E on physical iPhone. Remove archived `roller-task-tycoon` Vercel project to free git connect slot. |
+| **Last touch** | 2026-04-29 — Redeployed to Vercel; added Time/Budget/Growth blob pulls from Clarity Hub; fixed `today()` import bug |
+| **Status** | ✅ Live at clarity-command.vercel.app · 5-app Scoreboard · CI enabled |
 
 ## Phase Roadmap
 
@@ -17,14 +17,14 @@
 |-------|--------|-------------|
 | 1 — Web app | ✅ Done | Morning mission + evening reflection + scoreboard + settings |
 | 2 — Job Search HQ integration | ✅ Done | Daily action counter + summary blob (`job-search-daily`) consumed by web Scoreboard `LiveAppData` and iOS `LiveAppDataView` |
-| 3 — Wellness Tracker integration | ⏳ Active | `wellness-daily` blob produced by Wellness Tracker; web + iOS render it. Awaiting first per-user push for verification on iOS. |
-| 4 — iOS app integrations | ⏳ Later | Clarity Time, Budget, Growth |
+| 3 — Wellness Tracker integration | ✅ Done (web) | `wellness-daily` blob produced by Wellness Tracker; web renders it. iOS awaiting E2E verification on physical device. |
+| 4 — Clarity Hub integrations | ✅ Done (web) | `clarity-time-daily`, `clarity-budget-daily`, `clarity-growth-daily` blobs pushed by Clarity Hub; web Scoreboard renders all three. iOS not yet updated. |
 | 5 — iOS native | ✅ Done | `portfolio/clarity-command-ios` ships v0.2 with cross-app reads |
 
 ## Deploy Checklist
 - [x] `npm install` — done
 - [x] `npm run build` passes
-- [x] Deployed → Vercel project removed 2026-04-20; runs locally via npm start
+- [x] Deployed → https://clarity-command.vercel.app (redeployed 2026-04-29; git connect pending — Vercel 10-project limit on apps.git)
 - [x] Added to root CLAUDE.md portfolio table
 - [x] Added to CI workflow (`.github/workflows/portfolio-web-build.yml`)
 - [x] **Supabase env vars set** — `REACT_APP_SUPABASE_URL` + `REACT_APP_SUPABASE_ANON_KEY` on Production. App redeployed with sync active.

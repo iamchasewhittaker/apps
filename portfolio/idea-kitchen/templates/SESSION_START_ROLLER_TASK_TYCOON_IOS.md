@@ -1,76 +1,62 @@
-# SESSION_START — RollerTask Tycoon iOS Retroactive Foundation Docs
+# Session Start — RollerTask Tycoon iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — RollerTask Tycoon iOS is a stable v1.0 SwiftUI app.
-**App:** RollerTask Tycoon iOS
-**Slug:** roller-task-tycoon-ios
-**One-liner:** Park-themed tycoon task tracker for iOS — complete tasks to earn park cash, track totals in a gamified ledger; built with SwiftUI + SwiftData, local-first.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. v1.0 is stable; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/roller-task-tycoon-ios`
-2. **BRANDING.md** — ROLLER amber / TASK white bold text logo, park-tycoon gamification aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v1.0 shipped scope; V2 = Supabase sync to match web companion
-5. **APP_FLOW.md** — document the task list → complete → earn park cash → ledger flow
-6. **SESSION_START_roller-task-tycoon-ios.md** — stub only
-
-Output paths: `portfolio/roller-task-tycoon-ios/docs/`
+- **2026-04-12** — Initial Park Checklist: SwiftUI + SwiftData, task list with gamification (park cash, rating, toasts, haptics)
+- **2026-04-12** — Park Operations Console: 5-tab shell, attractions with Open/Testing/Broken Down/Closed lifecycle, profit ledger, backup schema v2
+- **2026-04-12** — V1 simplification: reduced to 3 tabs (Overview/Attractions/Finances), in-app Park Guide, zone + staff filter chips, backup in Settings
+- **2026-04-12** — Rebrand to RollerTask Tycoon (bundle ID com.chasewhittaker.ParkChecklist unchanged for continuity)
+- **2026-04-14** — App icon: portfolio-standard text logo, installed on physical iPhone 12 Pro Max
+- **2026-04-14** — Phase 2 Supabase sync plan added (docs/SYNC_PHASE2.md)
+- **2026-04-15** — Ship polish: brighter app icon, empty state copy, overdue due-date red styling
+- **2026-04-28** — V2 Game Feel shipped: subtasks (SubtaskItem SwiftData model, auto-advance Open to Testing), 24 pre-built templates across 6 zones, haptic feedback on transitions, coin burst animation on close, smarter park rating (zone balance + streak bonuses), drag-to-reorder with sortOrder, backup schema v3
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v1.0
-**Stack:** SwiftUI + SwiftData + `UserDefaults` (`AppStorage`)
-**Storage:** SwiftData (persistent model store) + `chase_roller_task_tycoon_ios_*` UserDefaults keys
-**Bundle ID:** `com.chasewhittaker.ParkChecklist` (legacy bundle ID — kept stable)
-**URL:** local Xcode
-**Linear:** [RollerTask Tycoon](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e)
-
-**What this app is:**
-The native iOS companion to RollerTask Tycoon Web. Complete tasks to earn "park cash" (points). Track totals in a gamified ledger. Park-themed tycoon aesthetic — tasks are "attractions," points are "park cash." Uses SwiftData for task persistence and UserDefaults for settings/totals.
-
-**Note on bundle ID:**
-Bundle ID is `com.chasewhittaker.ParkChecklist` (the original name before the rebrand to RollerTask Tycoon). Kept stable to avoid App Store complications.
-
-**Web companion:**
-- `portfolio/rollertask-tycoon-web/` — v1.0, CRA, `chase_hub_rollertask_v1`
-- Web and iOS share the same Supabase project (`unqtnnxlltiadzbqpyhh`) via `app_key = 'rollertask'`
-- iOS does NOT yet have Supabase sync wired (V2 goal)
-
-**Architecture:**
-- SwiftUI + SwiftData (`@Model` task entities)
-- `AppStorage` / UserDefaults for settings + running totals
-- Local-first — no cloud sync yet
-
-**Brand system:**
-- Text logo: `ROLLER` (amber label) / `TASK` (white bold) — park/tycoon aesthetic
-- Park-themed gamification: tasks = "attractions," points = "park cash"
-- Fun but grounded — not cartoonish
+- Install V2 on iPhone 12 Pro Max and walk the golden path (subtasks + templates + haptics)
+- Import merge mode (by task id) still deferred to V3
 
 ---
 
-## App context — HANDOFF.md
+## RollerTask Tycoon state at a glance
 
-**Version:** v1.0
-**Focus:** Stable. Local-first task completion + park cash ledger fully functional.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v2.0 |
+| URL | local Xcode |
+| Storage key | SwiftData + UserDefaults (`chase_roller_task_tycoon_ios_cash`, `chase_roller_task_tycoon_ios_readable`) |
+| Stack | SwiftUI + SwiftData + @AppStorage + UserDefaults |
+| Xcode prefix | -- (standard Xcode) |
+| Bundle ID | com.chasewhittaker.ParkChecklist |
+| Linear | [Park Checklist (iOS)](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| Last touch | 2026-04-28 |
 
-**Next (V2 candidates):**
-- Wire Supabase sync (`app_key = 'rollertask'`) — sync with web companion
-- Task categories filter
-- Ledger pagination
-- Task metadata (due date, ride type / task category)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/roller-task-tycoon-ios/CLAUDE.md | App-level instructions |
+| portfolio/roller-task-tycoon-ios/HANDOFF.md | Session state + notes |
+| RollerTaskTycoon/Models/ChecklistTaskItem.swift | @Model: attraction with status, zone, staff role, subtasks |
+| RollerTaskTycoon/Models/SubtaskItem.swift | @Model: subtask with cascade-delete relationship |
+| RollerTaskTycoon/Data/ParkStatusTransitions.swift | Status lifecycle + haptic feedback |
+| RollerTaskTycoon/Data/TemplateLibrary.swift | 24 pre-built templates across 6 zones |
+| RollerTaskTycoon/Views/OverviewConsoleView.swift | Dashboard: rating, profit, guest thoughts, alerts |
+| RollerTaskTycoon/ContentView.swift | TabView (Overview / Attractions / Finances) |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Install V2 on iPhone 12 Pro Max and verify golden path (subtasks + templates + haptics + coin burst)
+2. V3 Ecosystem: recurring attractions (daily/weekly/monthly)
+3. Supabase sync (see docs/SYNC_PHASE2.md)

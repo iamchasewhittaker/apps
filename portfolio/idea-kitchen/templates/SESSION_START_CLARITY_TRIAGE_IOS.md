@@ -1,74 +1,56 @@
-# SESSION_START — Clarity Triage iOS Retroactive Foundation Docs
+# Session Start — Clarity Triage iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Triage iOS is a functional v0.1 SwiftUI app.
-**App:** Clarity Triage iOS
-**Slug:** clarity-triage-ios
-**One-liner:** Daily triage for capacity, ideas, and wins — energy-based capacity slots let you decide what you can actually take on today before the day runs away.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 2 is done; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-triage-ios`
-2. **BRANDING.md** — Clarity palette (emerald green), triage/priority aesthetic, nested chevron icon
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.1 shipped scope; Phase 3 = Supabase sync + Command data feed
-5. **APP_FLOW.md** — document the capacity set → item triage → wins log flow
-6. **SESSION_START_clarity-triage-ios.md** — stub only
-
-Output paths: `portfolio/clarity-triage-ios/docs/`
+- **2026-04-12** — v0.1 Phase 2 MVP shipped: TriageBlob + TriageStore with daily capacity reset, size-weighted slot usage, tasks/ideas/wins CRUD, TabView (Tasks/Ideas/Wins), capacity picker, quote banner, ideas pipeline (3 stages), win logger
+- **2026-04-12** — Programmatic ClarityTriage.xcodeproj generated (CT* PBX IDs) with ClarityUI linked as local SPM; xcodebuild build + test verified on iPhone 15 / iOS 17.2
+- **2026-04-13** — AppIcon 1024x1024 (nested chevron mark) added; docs/BRANDING.md filled; wide + explore mockups in docs/design/
+- **2026-04-26** — ClarityPalette BASE tokens updated via clarity-ui package (bg #0f1117, surface #161b27, etc.)
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** SwiftUI + @Observable + UserDefaults
-**Storage key:** `chase_triage_ios_v1`
-**Bundle ID:** `com.chasewhittaker.ClarityTriage`
-**Xcodeproj prefix:** `CT*`
-**URL:** local Xcode
-
-**What this app is:**
-A daily triage tool for the Clarity iOS suite. Three sections: Capacity (pick energy level → see how many slots you have today), Ideas (capture and tag incoming ideas before they crowd your day), and Wins (log what you actually accomplished). Energy-based capacity prevents overcommitting — if you're at 40% energy, you get 2 slots, not 10.
-
-**Architecture:**
-- `@Observable` state management
-- UserDefaults for persistence (`chase_triage_ios_v1`)
-- CT* prefix for all xcodeproj identifiers
-- No Supabase yet
-
-**Clarity iOS suite position:**
-- Energy and capacity data feeds into Command iOS scoreboard (Phase 3)
-- All apps import `ClarityUI` package
-
-**Brand system:**
-- Emerald green primary (`#34d399`) — Clarity Triage's lane color
-- Priority / sorting aesthetic — chevron arrows, triage language
-- AppIcon: nested chevron on emerald background
-- `docs/BRANDING.md` + AppIcon exist in-repo
+- Re-run xcodebuild test on iPhone 16 simulator when that runtime is installed (current tests verified on iPhone 15 / iOS 17.2 only)
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Triage state at a glance
 
-**Version:** v0.1
-**Focus:** Phase 2 complete. Capacity slots + ideas + wins all functional.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 |
+| URL | local Xcode |
+| Bundle ID | `com.chasewhittaker.ClarityTriage` |
+| Storage key | `chase_triage_ios_v1` |
+| Stack | SwiftUI + @Observable + ClarityUI + UserDefaults |
+| PBX prefix | CT |
+| Linear | [Clarity Triage iOS](https://linear.app/whittaker/project/clarity-triage-ios-f9092666e165) |
+| Last touch | 2026-04-13 |
 
-**Next (Phase 3):**
-- Supabase sync (`chase_triage_ios_v1` → shared project)
-- Feed capacity + wins data to Clarity Command iOS
-- Add "triage history" — see past days' capacity decisions
-- Add idea → task promotion (elevate idea to today's active triage)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-triage-ios/CLAUDE.md | App-level instructions |
+| portfolio/clarity-triage-ios/HANDOFF.md | Session state + notes |
+| ClarityTriage/Services/TriageStore.swift | @Observable store: capacity, tasks, ideas, wins, slot math |
+| ClarityTriage/Models/TriageBlob.swift | TriageBlob, TriageTask, TriageIdea, TriageWin |
+| ClarityTriage/Views/ContentView.swift | Root TabView (Tasks, Ideas, Wins) |
+| ClarityTriage/Services/TriageConfig.swift | Store key, categories, sizes, capacity-to-slots table |
+| ClarityTriage/Views/Tasks/TaskListView.swift | Task list with capacity filter |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Add swipe actions on tasks and ideas (polish)
+2. Add haptics on task complete and idea stage advance
+3. Run accessibility pass with Accessibility Inspector

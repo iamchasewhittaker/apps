@@ -1,78 +1,60 @@
-# SESSION_START — Clarity Hub Retroactive Foundation Docs
+# Session Start — Clarity Hub (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Hub is a stable v0.2 app in maintenance mode.
-**App:** Clarity Hub
-**Slug:** clarity-hub
-**One-liner:** Unified 5-tab hub (Check-in / Triage / Time / Budget / Growth) — web companion to the five Clarity iOS apps; now in maintenance mode as individual apps take over.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is stable; all major decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-hub`
-2. **BRANDING.md** — Clarity palette, multi-tab hub aesthetic, sky blue primary accent
-3. **PRODUCT_BRIEF.md** — distill from context below; note the hub-to-dedicated-apps migration story
-4. **PRD.md** — reflect v0.2 shipped scope; V3 = maintenance only, tabs being superseded
-5. **APP_FLOW.md** — document the 5-tab structure and how each maps to a dedicated Clarity iOS app
-6. **SESSION_START_clarity-hub.md** — stub only
-
-Output paths: `portfolio/clarity-hub/docs/`
+- **2026-04-13 (v0.1)** — CRA scaffold with 7-blob state management, email OTP auth gate, 8 placeholder tabs, shared sync wired for 7 Supabase app_keys
+- **2026-04-13** — YNAB tab shipped: 4-step setup flow, dashboard (safe-to-spend, health bar, bills planner, income gap, cash flow timeline, spending summary), fund category write-back with confirmation
+- **2026-04-13** — Time tab (focus timer + manual sessions + scripture streak) and Budget tab (dual scenarios + wants tracker) scaffolded
+- **2026-04-13 (v0.2)** — YNAB + RollerTask split out to standalone apps (funded-web, rollertask-tycoon-web); hub reduced to 5-blob shell with external links to split-out apps
+- **2026-04-13** — Logo standardization: CLARITY indigo / HUB white text logo; favicon, PWA PNGs generated
+- **2026-04-14** — Cross-app navigation bar (AppNav) linking Wellness, Job Search, YNAB, Tasks; shared auth bootstrap; canonical-host redirect; auth diagnostics flag
+- **2026-04-14** — Favicon white-corner fix; shared sync.js comment-only drift fix
+- **2026-04-15** — Governance decision: Hub = canonical web companion for the five Clarity iOS app_key blobs; Wellness Tracker = separate unified wellness web surface
+- **2026-04-20** — Vercel project removed; app runs locally only
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.2
-**Stack:** React CRA + inline styles + localStorage + Supabase sync (live)
-**Storage keys (5):**
-- `chase_hub_checkin_v1` — Check-in tab
-- `chase_hub_triage_v1` — Triage tab
-- `chase_hub_time_v1` — Time tab
-- `chase_hub_ynab_v1` — Budget tab (now split out as Funded Web)
-- `chase_hub_rollertask_v1` — RollerTask tab (now split out as RollerTask Tycoon Web)
-**URL:** local only
-
-**What this app is:**
-A unified 5-tab daily operating hub that was the original home for all Clarity functionality on the web. Tabs: Check-in (morning/evening wizard), Triage (capacity + ideas), Time (focus sessions), Budget (YNAB integration), Growth (7 growth areas + streaks). The Budget and RollerTask tabs were split into standalone apps (`funded-web`, `rollertask-tycoon-web`).
-
-**Status:**
-Maintenance mode. Each tab is gradually being superseded by a dedicated app. The hub still works; it's kept alive for continuity and as a reference implementation.
-
-**Architecture:**
-- Multi-blob: each tab owns its own localStorage key
-- Tabs receive `blob` + `setBlob` props — dumb components
-- `App.jsx` owns auth gate (email OTP via Supabase) + tab routing
-
-**Brand system:**
-- Clarity palette: sky blue primary (`#38bdf8`), midnight background (`#0a0f1e`)
-- Tab icons + color coding per tab
+- Maintenance mode only: bugfixes and small parity with iOS blobs
+- No new tabs planned; individual Clarity iOS apps are the primary surface
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Hub state at a glance
 
-**Version:** v0.2
-**Focus:** Maintenance mode. No new features — individual Clarity apps are the future.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.2 |
+| URL | local only (Vercel project removed 2026-04-20) |
+| Storage key | `chase_hub_checkin_v1` (+ triage, time, budget, growth) |
+| Stack | React CRA + inline styles + Supabase sync (5 app_keys) |
+| Linear | [Clarity Hub](https://linear.app/whittaker/project/clarity-hub-3c085a0dd7a2) |
+| Last touch | 2026-04-15 |
 
-**Migration status:**
-- Budget tab → `portfolio/funded-web/` (standalone)
-- RollerTask tab → `portfolio/rollertask-tycoon-web/` (standalone)
-- Check-in tab → `portfolio/clarity-checkin-ios/` (iOS primary)
-- Triage tab → `portfolio/clarity-triage-ios/` (iOS primary)
-- Time tab → `portfolio/clarity-time-ios/` (iOS primary)
-- Growth tab → `portfolio/clarity-growth-ios/` (iOS primary)
+---
 
-**Next:**
-No active development planned. If hub is ever deprecated, archive at `portfolio/archive/clarity-hub/`.
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-hub/CLAUDE.md | App-level instructions |
+| portfolio/clarity-hub/HANDOFF.md | Session state + notes |
+| portfolio/clarity-hub/src/App.jsx | Shell: auth gate, 5-blob state, nav, save/push effects |
+| portfolio/clarity-hub/src/theme.js | T colors, loadBlob/saveBlob, defaults, fmtCents/fmtDuration |
+| portfolio/clarity-hub/src/sync.js | Push/pull wrappers for 5 app_keys + auth |
+| portfolio/clarity-hub/src/tabs/CheckinTab.jsx | Morning/evening forms, pulse checks, history |
+| portfolio/clarity-hub/src/tabs/SettingsTab.jsx | Sign out, data export, links to standalone apps |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Fix any iOS blob parity drift in CheckinTab or TriageTab
+2. Add offline indicator when Supabase push fails
+3. Cross-tab summary dashboard (homepage view before selecting a tab)

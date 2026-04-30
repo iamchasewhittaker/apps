@@ -23,4 +23,8 @@ export const pullBudget = (local, ts) => pull('budget', local, ts);
 export const pushGrowth = (data) => push('growth', data);
 export const pullGrowth = (local, ts) => pull('growth', local, ts);
 
+export const pushTimeDaily = (data) => push('clarity-time-daily', data);
+export const pushBudgetDaily = (data) => push('clarity-budget-daily', data);
+export const pushGrowthDaily = (data) => push('clarity-growth-daily', data);
+
 export { auth, emailRedirectTo };

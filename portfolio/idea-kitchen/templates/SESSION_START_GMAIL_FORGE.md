@@ -1,77 +1,63 @@
-# SESSION_START — Gmail Forge Retroactive Foundation Docs
+# Session Start — Gmail Forge (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Gmail Forge is a live v0.3 three-layer automation system.
-**App:** Gmail Forge
-**Slug:** gmail-forge
-**One-liner:** Three-layer Gmail automation — 69 XML filters (instant sort), Google Apps Script auto-sorter (5-min trigger), and a Chrome MV3 extension — Phase 3 live with Gemini-powered classification.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 3 is live; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/gmail-forge`
-2. **BRANDING.md** — forge/automation aesthetic, workflow-tool palette
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.3 Phase 3 scope; V4 = triage the 83 in Review Queue
-5. **APP_FLOW.md** — document the 3-layer flow: XML filters → Apps Script → Chrome extension
-6. **SESSION_START_gmail-forge.md** — stub only
-
-Output paths: `portfolio/gmail-forge/docs/`
+- **2026-01-22** — Defined Gmail label taxonomy (11 labels)
+- **2026-01-28** — Built gmail-filters.xml with 31 filters and imported into Gmail
+- **2026-04-01** — Added TLDR suite, Product Hunt, Polymarket, The Hustle, Puzzmo, Superhuman, Church of Jesus Christ, LinkedIn invitations/messages
+- **2026-04-12** — Session 1: 11 new filters (total 47). Session 2: 8 Receipt filters for Spend Clarity, Security label, ZipRecruiter domain upgrade, LinkedIn Messages stays in inbox. Total 60 filters. Created CLAUDE.md, organized into portfolio/
+- **2026-04-13** — Phase 2 mislabel audit. Phase 3 automation: Apps Script auto-sorter (auto-sort.gs + rules.gs), Gemini classification, Chrome MV3 extension with label tabs + Sort button + Settings popup
+- **2026-04-16** — Renamed Inbox Zero to Gmail Forge (~130 text replacements). Phase 3 go-live: Script Properties set, 5-min trigger confirmed, healthCheck all green, hit Gemini free-tier quota, switched to RULES_ONLY mode. Review Queue feature added. Subscriptions tab added. Chrome extension loaded
+- **2026-04-18** — Sort button wired end-to-end (doPost handler). Guide button + overlay inside Gmail. Standalone guide.html minisite. Extension context invalidation fix
+- **2026-04-20** — Dashboard view deployed (Version 1 web app). TRIGGER_TOKEN set. NEWSLETTER_TO_ALIASES fixed. Apps Script project renamed to Gmail Forge
+- **2026-04-28** — Job Search HQ alignment: subject-keyword matching (5 recruiter regexes), ashbyhq.com + linkedin.com domain filters, filter count 73. Then matchRules_ 3-pass refactor (address then domain then subject), LinkedIn social split (3 addresses to Notification), healthCheck renamed, JobSearch label created
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.3
-**Stack:** Three-layer system:
-1. **69 Gmail XML filters** — applied once at the Gmail level (instant, zero-latency)
-2. **Google Apps Script** — auto-sorter running on a 5-minute trigger; Gemini-powered classification; `CLASSIFIER_MODE`, `GEMINI_API_KEY`, `SHEET_ID`, `NEWSLETTER_TO_ALIASES`, `TRIGGER_TOKEN` in Script Properties
-3. **Chrome MV3 extension** — manual override UI in Gmail sidebar
-
-**Script Properties:**
-- `CLASSIFIER_MODE` — `RULES_ONLY` (default, no Gemini) or `GEMINI` (AI-powered)
-- `GEMINI_API_KEY` — Gemini Flash API key
-- `SHEET_ID` — linked Google Sheet ID for Review Queue + audit log
-- `NEWSLETTER_TO_ALIASES` — comma-separated list of Hide My Email aliases for newsletters
-- `TRIGGER_TOKEN` — shared token for cross-app `UrlFetchApp` calls (Spend Radar integration)
-
-**What this app is:**
-A three-layer Gmail automation stack that eliminates manual inbox triage. Layer 1 (XML filters) handles 80% of sorting instantly. Layer 2 (Apps Script) catches the remaining 20% with rule-based or Gemini classification. Layer 3 (Chrome extension) provides a manual override UI. Together they maintain a near-zero inbox.
-
-**Review Queue:**
-- 83 emails awaiting triage (as of last touch)
-- Emails that didn't match any rule land here for manual classification
-- Each manual classification feeds back into the rules (RULES_ONLY mode)
-
-**Cross-app integration:**
-- Spend Radar calls Gmail Forge's `refreshAll` via `UrlFetchApp` + `TRIGGER_TOKEN`
-- Gmail Forge can trigger Spend Radar's `autoSort()` in return
-
-**Brand system:**
-- Forge/workshop metaphor — shaping raw email into organized signal
-- Automation-tool aesthetic — workflow arrows, processing states
+- Monitor: first real job email should auto-tag JobSearch within 5 min and appear in JSHQ InboxPanel
+- Triage Review Queue items (Vercel, Tailscale, Chipotle, MACU not yet in rules.gs)
+- Enable Gemini when budget allows (currently RULES_ONLY)
+- Spend Radar Script Properties: rename INBOX_ZERO_* keys to GMAIL_FORGE_*
+- Rename Asana project "Inbox Zero Build" to "Gmail Forge Build"
 
 ---
 
-## App context — HANDOFF.md
+## Gmail Forge state at a glance
 
-**Version:** v0.3
-**Focus:** Phase 3 live. 83 emails in Review Queue needing triage.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.3 |
+| URL | Apps Script |
+| Storage key | n/a (Script Properties: CLASSIFIER_MODE, GEMINI_API_KEY, SHEET_ID, NEWSLETTER_TO_ALIASES, TRIGGER_TOKEN) |
+| Stack | Apps Script + Chrome MV3 extension + Gmail XML filters |
+| Linear | [Gmail Forge](https://linear.app/whittaker/project/gmail-forge-110c46ff126d) |
+| Last touch | 2026-04-28 |
 
-**Next:**
-1. Triage the 83 in Review Queue — classify each, update RULES_ONLY patterns
-2. Review queue should reach zero; then monitor for new additions
-3. Phase 4 candidate: auto-unsubscribe from newsletters not opened in 90 days
-4. Phase 4 candidate: daily digest email summarizing what was sorted
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/gmail-forge/CLAUDE.md | App-level instructions |
+| portfolio/gmail-forge/HANDOFF.md | Session state + notes |
+| apps-script/auto-sort.gs | Engine: 5-min trigger, matchRules_ 3-pass, doGet/doPost, Review Queue logging |
+| apps-script/rules.gs | 73 sender rules (address + domain + subjectPatterns) organized by label |
+| gmail-filters.xml | 73 XML filters imported into Gmail (server-side instant sort) |
+| extension/src/content.js | Chrome extension: toolbar, tab bar, Sort button, Guide overlay |
+| apps-script/dashboardData.gs | Dashboard data: label counts, auto-sort stats, review queue info |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Triage Review Queue: classify remaining unknown senders, add to rules.gs + gmail-filters.xml
+2. Enable Gemini classification (set CLASSIFIER_MODE=GEMINI once billing enabled)
+3. Expand SENDER_RULES coverage by processing Audit tab unknowns

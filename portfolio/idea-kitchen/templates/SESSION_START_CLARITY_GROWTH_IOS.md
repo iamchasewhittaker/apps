@@ -1,79 +1,56 @@
-# SESSION_START — Clarity Growth iOS Retroactive Foundation Docs
+# Session Start — Clarity Growth iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Growth iOS is a functional v0.1 SwiftUI app.
-**App:** Clarity Growth iOS
-**Slug:** clarity-growth-ios
-**One-liner:** Seven growth areas with streaks — track daily progress across physical, spiritual, mental, relational, financial, professional, and creative dimensions; fifth app in the Clarity iOS suite.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 5 is done; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-growth-ios`
-2. **BRANDING.md** — Clarity palette (emerald/growth accent), sprout AppIcon, growth/progress aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.1 shipped scope; Phase 6 = Supabase sync + Command data feed
-5. **APP_FLOW.md** — document the 7-area daily check → streak update → history view flow
-6. **SESSION_START_clarity-growth-ios.md** — stub only
-
-Output paths: `portfolio/clarity-growth-ios/docs/`
+- **2026-04-14** — v0.1 Phase 5 MVP shipped: GrowthBlob + GrowthStore with 7 growth areas (gmat, job, ai, pm, claude, bom, cfm), streak-aware session logging, dashboard (quote, sessions/hours/streaks, week bars, area tiles), log session flow, history with area filter + delete, GrowthBlobTests
+- **2026-04-14** — Programmatic ClarityGrowth.xcodeproj generated (CG* PBX IDs) with ClarityUI linked as local SPM; xcodebuild build verified on iPhone 15 / iOS 17.2
+- **2026-04-14** — AppIcon 1024x1024 initially with ascending steps mark; refreshed to sprout glyph same session; docs/BRANDING.md filled; explore variants (steps, sprout, nodes, arc) in docs/design/
+- **2026-04-26** — ClarityPalette BASE tokens updated via clarity-ui package (bg #0f1117, surface #161b27, etc.)
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** SwiftUI + @Observable + UserDefaults
-**Storage key:** `chase_growth_ios_v1`
-**Bundle ID:** `com.chasewhittaker.ClarityGrowth`
-**Xcodeproj prefix:** `CG*`
-**URL:** local Xcode
-
-**What this app is:**
-A daily growth tracker across 7 fixed dimensions. Each day, mark each area as done (or skip). Streaks track consecutive days of engagement per area. Designed as the iOS native replacement for the GrowthTab in Wellness Tracker (now merged there, but this app provides a dedicated focused view).
-
-**The 7 growth areas (fixed — never changes):**
-1. Physical — exercise, movement, sleep quality
-2. Spiritual — scripture, prayer, faith practice
-3. Mental — learning, reading, journaling
-4. Relational — family, friends, community
-5. Financial — YNAB review, saving, debt progress
-6. Professional — job search, GMAT, building, career development
-7. Creative — building apps, design, expression
-
-**Architecture:**
-- `@Observable` state management
-- UserDefaults for persistence (`chase_growth_ios_v1`)
-- CG* prefix for all xcodeproj identifiers
-- No Supabase yet
-
-**Brand system:**
-- Emerald green primary (`#34d399`) — growth/vitality accent
-- AppIcon: sprout symbol on dark Clarity background
-- Progress-forward aesthetic — streaks, check marks, daily habit cadence
-- `docs/BRANDING.md` + AppIcon exist in-repo
+- xcodebuild test can hang when Simulator services are unhealthy; retry locally in Xcode or terminal if CLI hangs
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Growth state at a glance
 
-**Version:** v0.1
-**Focus:** Phase 5 complete. All 7 areas + streaks functional.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 |
+| URL | local Xcode |
+| Bundle ID | `com.chasewhittaker.ClarityGrowth` |
+| Storage key | `chase_growth_ios_v1` |
+| Stack | SwiftUI + @Observable + ClarityUI + UserDefaults |
+| PBX prefix | CG |
+| Linear | [Clarity Growth iOS](https://linear.app/whittaker/project/clarity-growth-ios-390ab290b06d) |
+| Last touch | 2026-04-14 |
 
-**Next (Phase 6):**
-- Supabase sync (`chase_growth_ios_v1` → shared project)
-- Feed streak data to Clarity Command iOS scoreboard
-- Add 7-day history grid per area (color coded: done / skipped / missed)
-- Add weekly growth score (% of areas touched that week)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-growth-ios/CLAUDE.md | App-level instructions |
+| portfolio/clarity-growth-ios/HANDOFF.md | Session state + product/data model reference |
+| ClarityGrowth/Services/GrowthStore.swift | @Observable store: sessions, streaks, persistence |
+| ClarityGrowth/Models/GrowthBlob.swift | GrowthBlob, GrowthSessionEntry, streak + aggregation helpers |
+| ClarityGrowth/Constants/GrowthDefinitions.swift | 7 area IDs, milestones, background options |
+| ClarityGrowth/Views/GrowthDashboardView.swift | Dashboard: stats, week bars, area tiles |
+| ClarityGrowth/Views/GrowthHistoryView.swift | History list with area filter + delete |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Build monthly trend view (minutes and sessions by area)
+2. Add area-level goals (target sessions/minutes per week)
+3. Add calendar heatmap for streak visibility

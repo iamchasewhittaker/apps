@@ -150,6 +150,9 @@ export default function App() {
   // ── Cross-app live data (read-only pulls from other apps) ──
   const [jobSearchDaily, setJobSearchDaily] = useState(null);
   const [wellnessDaily, setWellnessDaily] = useState(null);
+  const [timeDaily, setTimeDaily] = useState(null);
+  const [budgetDaily, setBudgetDaily] = useState(null);
+  const [growthDaily, setGrowthDaily] = useState(null);
 
   // ── Auth gate (same pattern as Wellness) ──
   useEffect(() => {
@@ -198,6 +201,9 @@ export default function App() {
     // Pull cross-app daily summaries (read-only; timestamp 0 = always get remote)
     pull('job-search-daily', {}, 0).then(d => { if (d && d.date) setJobSearchDaily(d); });
     pull('wellness-daily', {}, 0).then(d => { if (d && d.date) setWellnessDaily(d); });
+    pull('clarity-time-daily', {}, 0).then(d => { if (d && d.date) setTimeDaily(d); });
+    pull('clarity-budget-daily', {}, 0).then(d => { if (d && d.date) setBudgetDaily(d); });
+    pull('clarity-growth-daily', {}, 0).then(d => { if (d && d.date) setGrowthDaily(d); });
     hasLoaded.current = true;
   }, []); // run once on mount
 
@@ -262,7 +268,7 @@ export default function App() {
           {tab === "mission" && <MissionTab {...sharedProps} />}
         </ErrorBoundary>
         <ErrorBoundary name="Scoreboard">
-          {tab === "scoreboard" && <ScoreboardTab dailyLogs={dailyLogs} layoffDate={layoffDate} targets={targets} jobSearchDaily={jobSearchDaily} wellnessDaily={wellnessDaily} />}
+          {tab === "scoreboard" && <ScoreboardTab dailyLogs={dailyLogs} layoffDate={layoffDate} targets={targets} jobSearchDaily={jobSearchDaily} wellnessDaily={wellnessDaily} timeDaily={timeDaily} budgetDaily={budgetDaily} growthDaily={growthDaily} />}
         </ErrorBoundary>
         <ErrorBoundary name="Settings">
           {tab === "settings" && <SettingsTab {...sharedProps} />}

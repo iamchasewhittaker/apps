@@ -31,7 +31,7 @@ Paths are relative to `~/Developer/chase/` unless noted.
 
 ## Pre-filled app templates (upload when running retroactive docs for that app)
 
-These are ready-to-paste session starts for specific apps. Upload the one you need before starting a retroactive session, then remove it when done (reduces noise).
+These are ready-to-paste session-resumption templates for specific apps. Each captures the app's full journey, current state, blockers, key files, and prioritized next actions. Upload the one you need before starting a session, then remove it when done (reduces noise).
 
 **Web apps:**
 - `portfolio/idea-kitchen/templates/SESSION_START_JOB_SEARCH_HQ.md`
@@ -50,6 +50,7 @@ These are ready-to-paste session starts for specific apps. Upload the one you ne
 - `portfolio/idea-kitchen/templates/SESSION_START_AI_DEV_MASTERY.md`
 - `portfolio/idea-kitchen/templates/SESSION_START_ALIAS_LEDGER.md`
 - `portfolio/idea-kitchen/templates/SESSION_START_ASH_READER.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_FRESH_TRACK.md`
 
 **CLI / desktop / other:**
 - `portfolio/idea-kitchen/templates/SESSION_START_SPEND_CLARITY.md`
@@ -58,6 +59,7 @@ These are ready-to-paste session starts for specific apps. Upload the one you ne
 - `portfolio/idea-kitchen/templates/SESSION_START_CLAUDE_USAGE_TOOL.md`
 - `portfolio/idea-kitchen/templates/SESSION_START_SHORTCUT_REFERENCE.md`
 - `portfolio/idea-kitchen/templates/SESSION_START_CLARITY_UI.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_DRIVEMIND.md`
 
 **iOS apps:**
 - `portfolio/idea-kitchen/templates/SESSION_START_FAIRWAY_IOS.md`
@@ -74,6 +76,7 @@ These are ready-to-paste session starts for specific apps. Upload the one you ne
 - `portfolio/idea-kitchen/templates/SESSION_START_SHIPYARD_IOS.md`
 - `portfolio/idea-kitchen/templates/SESSION_START_ASH_READER_IOS.md`
 - `portfolio/idea-kitchen/templates/SESSION_START_UNNAMED_IOS.md`
+- `portfolio/idea-kitchen/templates/SESSION_START_KEEP_IOS.md`
 
 **Archived apps (use when documenting history):**
 - `portfolio/idea-kitchen/templates/SESSION_START_ROLLER_TASK_TYCOON_VITE.md`

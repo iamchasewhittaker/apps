@@ -1,79 +1,59 @@
-# SESSION_START — Spend Clarity Retroactive Foundation Docs
+# Session Start — Spend Clarity (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Spend Clarity is a functional v0.2.2 Python CLI.
-**App:** Spend Clarity
-**Slug:** spend-clarity
-**One-liner:** Python CLI that enriches YNAB transactions from Gmail receipts and Privacy.com — reads raw bank imports, matches receipts, and patches YNAB with cleaned merchant names and categories.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The CLI is functional; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/spend-clarity`
-2. **BRANDING.md** — developer-tool aesthetic, CLI/terminal framing, precision voice
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.2.2 shipped scope; next = LIVE_RUN on real transactions + Privacy.com
-5. **APP_FLOW.md** — document the YNAB fetch → Gmail match → Privacy.com lookup → PATCH flow
-6. **SESSION_START_spend-clarity.md** — stub only
-
-Output paths: `portfolio/spend-clarity/docs/`
+- **2026-03-30** — v0.1.0: Initial scaffold. Gmail OAuth + receipt parsing (Amazon, Apple, DoorDash, Netflix, Walmart, Target, Costco). YNAB API read + bulk PATCH. Exact/fuzzy/split matching. Memo formatter with 200-char limit. Keyword-based categorizer. 28 tests
+- **2026-03-30** — v0.1.1: OAuth setup gotchas documented (test user, macOS python alias, credentials path)
+- **2026-03-30** — v0.1.2: Privacy.com API client. Audible parser. Matcher split/dedup fixes. Match rate improved 4 to 50 transactions
+- **2026-04-12** — v0.2.0: payee_formatter.py (50+ merchant map, bank noise stripping). category_overrides.yaml. Three-tier Categorizer (overrides then payee rules then keywords). Step 4.5: categorize ALL blank-memo transactions by payee. All 9 category IDs fixed to correct budget. 57 new tests
+- **2026-04-13** — v0.2.1: Startup category-ID validation against live YNAB. Launchd scheduler install flow. Richer unmatched diagnostics
+- **2026-04-16** — v0.2.2: Conditional Gmail init (Privacy-only runs skip OAuth). PRIVACY_API_KEY placeholder strip. 90 tests passing
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.2.2
-**Stack:** Python 3 CLI — no React, no localStorage, no Supabase
-**Storage:** none (YNAB token in `.env`; Gmail OAuth tokens in `config/` — gitignored)
-**URL:** local Python (`python src/main.py`)
-**Dependencies:** `python-dotenv`, `google-auth-oauthlib`, `requests`
-
-**What this app is:**
-A Python CLI that enriches YNAB transactions. Data flow:
-1. Fetches unenriched YNAB transactions (last N days) via YNAB API
-2. Matches each transaction to a Gmail receipt in `label:Receipt` (last 180 days)
-3. Optionally looks up the charge in Privacy.com for merchant name clarification
-4. Patches YNAB via API with enriched memo, merchant name, and category
-
-**Key design decisions:**
-- `DRY_RUN=true` by default — never writes to YNAB without explicit opt-in
-- Category rules defined in `config/category_rules.yaml`
-- Gmail OAuth tokens cached in `config/` (gitignored) — not re-auth on every run
-- Intentionally separate from Spend Radar (different data source: bank transactions vs. receipts)
-
-**6-module layout:**
-- `src/main.py` — CLI entry, orchestration
-- `src/gmail_client.py` — Gmail OAuth, thread fetch, receipt filtering
-- `src/receipt_parser.py` — extract merchant, amount, date from email body
-- `src/matcher.py` — fuzzy match YNAB tx to Gmail receipt
-- `src/ynab_client.py` — YNAB API fetch + PATCH
-- `src/privacy_client.py` — Privacy.com charge lookup (optional)
-
-**Brand system:**
-- Developer-tool aesthetic — terminal output, clear flags, dry-run safety
-- Voice: precise and direct — "matched 14 of 23 transactions"
+- Add real PRIVACY_API_KEY to .env (https://privacy.com/developer), then test with `--merchants privacy`
+- First live run with DRY_RUN=false on real YNAB budget (start narrow: LOOKBACK_DAYS=30, AUTO_CATEGORIZE=false)
+- category_overrides.yaml auto-suggest (print "add this override?" on pattern failures)
+- Amazon Fresh sub-categorization (currently all Amazon goes to default)
 
 ---
 
-## App context — HANDOFF.md
+## Spend Clarity state at a glance
 
-**Version:** v0.2.2
-**Focus:** DRY_RUN mode works end-to-end. LIVE_RUN not yet tested on real YNAB budget.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.2.2 |
+| URL | local Python |
+| Storage key | n/a |
+| Stack | Python 3.11+ CLI (python-dotenv, google-auth-oauthlib, requests) |
+| Linear | [Spend Clarity](https://linear.app/whittaker/project/spend-clarity-4352a4e7f1c5) |
+| Last touch | 2026-04-16 |
 
-**Next:**
-1. Run in LIVE_RUN on a real YNAB budget (start with one week of transactions)
-2. Wire Privacy.com integration (API key in `.env`)
-3. Add pytest coverage for `matcher.py` edge cases
-4. Consider a simple web UI (read-only review screen before patching)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/spend-clarity/CLAUDE.md | App-level instructions |
+| portfolio/spend-clarity/HANDOFF.md | Session state + notes |
+| src/main.py | CLI orchestrator: YNAB fetch, receipt match, memo format, categorize, PATCH |
+| src/matcher.py | Receipt-to-YNAB transaction matching (exact, fuzzy, split) |
+| src/categorizer.py | Three-tier categorizer: overrides then payee rules then keywords |
+| src/privacy_client.py | Privacy.com API client (replaces Gmail for virtual-card charges) |
+| config/category_rules.yaml | Keyword rules + payee rules (12 groups, correct budget IDs) |
+
+---
+
+## Suggested next actions (pick one)
+
+1. First live YNAB write: DRY_RUN=false, LOOKBACK_DAYS=30, AUTO_CATEGORIZE=false for a narrow memo-only pass
+2. Add category_overrides.yaml auto-suggest prompt for unmatched patterns
+3. Add summary stats at end of run (X categorized, Y memos enriched, Z skipped)

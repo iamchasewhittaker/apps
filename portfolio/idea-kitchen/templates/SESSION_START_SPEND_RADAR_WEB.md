@@ -1,76 +1,52 @@
-# SESSION_START — Spend Radar Web Retroactive Foundation Docs
+# Session Start — Spend Radar Web (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Spend Radar Web is a functional v0.1 CRA scaffold, not yet deployed.
-**App:** Spend Radar Web
-**Slug:** spend-radar-web
-**One-liner:** Read-only CRA dashboard that reads the Spend Radar Google Sheet's published CSV and visualizes monthly/yearly subscription totals and cancel candidates.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The scaffold exists; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/spend-radar-web`
-2. **BRANDING.md** — teal/cyan palette (matches Spend Radar backend), radar/scan metaphor
-3. **PRODUCT_BRIEF.md** — distill from context below; note read-only, no write-back to Sheet
-4. **PRD.md** — reflect v0.1 scaffold scope; V2 = deploy after CSV URLs are set
-5. **APP_FLOW.md** — document the Sheet CSV fetch → subscription list → totals → cancel candidates flow
-6. **SESSION_START_spend-radar-web.md** — stub only
-
-Output paths: `portfolio/spend-radar-web/docs/`
+- **2026-04-16** — v0.1 scaffold complete: CRA + React 18 + lucide-react, dark palette (`#0b1220` base, teal/cyan accents), header with refresh + sync timestamp, monthly/yearly/active/lapsed metrics row, subscriptions-by-category card grid, cancel candidates section (lapsed + irregular), recent receipts (30d) table, localStorage cache with `_syncAt`, tiny CSV parser
+- **2026-04-16** — All docs created: CLAUDE.md, HANDOFF.md, LEARNINGS.md, ROADMAP.md, docs/BRANDING.md (pointer to spend-radar shared branding)
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** React CRA (Create React App) + localStorage
-**Storage key:** `chase_spend_radar_web_v1`
-**URL:** not deployed (local only; pending CSV URL setup)
-**Entry:** `src/App.jsx`
-
-**What this app is:**
-A read-only companion dashboard for Spend Radar (the Google Apps Script backend). Reads the Spend Radar Google Sheet's published CSV endpoints and renders: monthly/yearly subscription totals, a list of active subscriptions with amounts, and a "cancel candidates" view (subscriptions not used recently or above a threshold).
-
-**Data source:**
-- Google Sheet published as CSV (two tabs: Subscriptions + Receipts)
-- CSV URLs must be pasted into `src/constants.js` before deploy (not committed — sheet is private)
-- No write-back to Sheet — read-only
-
-**Relationship to Spend Radar:**
-- `portfolio/spend-radar/` is the Apps Script backend (Gmail → Sheet)
-- This app (`spend-radar-web`) is the visualization layer — reads the Sheet output
-
-**Brand system:**
-- Teal/cyan accent (`#06b6d4`) — matches Spend Radar backend branding
-- Radar / scan metaphor: precision, signal-vs-noise
-- Voice: analytical and direct — "here's what you're paying, here's what to cut"
+- **Blocked on user setup:** CSV_URLS in `src/constants.js` are empty. Must publish Sheet tabs to CSV (File > Share > Publish to web), paste URLs into constants, then deploy.
+- Not yet deployed to Vercel. Deploy steps in CLAUDE.md and HANDOFF.md.
+- No `npm install` or local verification done yet.
 
 ---
 
-## App context — HANDOFF.md
+## Spend Radar Web state at a glance
 
-**Version:** v0.1
-**Focus:** Scaffold complete. Blocked on Spend Radar backend one-time setup (Sheet CSV URLs).
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 |
+| URL | not yet deployed |
+| Storage key | `chase_spend_radar_web_v1` |
+| Stack | React (CRA), inline styles (`s` object in constants.js), localStorage cache, no auth, no Supabase |
+| Linear | -- |
+| Last touch | 2026-04-16 |
 
-**Deployment blocker:**
-1. Complete Spend Radar one-time setup (create Sheet, set `SHEET_ID`, deploy Apps Script web app)
-2. Grab the two published CSV URLs from the Sheet (File → Share → Publish to Web → CSV)
-3. Paste URLs into `src/constants.js`
-4. `npm run build` → `vercel --prod`
+---
 
-**Next after deploy:**
-- Add date-range filter (last 30 / 90 / 180 days)
-- Add per-merchant sparkline (months active)
-- Link to Gmail Forge Review Queue for receipts that didn't match
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/spend-radar-web/CLAUDE.md | App-level instructions, setup steps, constraints |
+| portfolio/spend-radar-web/HANDOFF.md | Session state + user setup checklist |
+| portfolio/spend-radar-web/src/App.jsx | Full UI: header, metrics, category grids, cancel candidates, receipts table |
+| portfolio/spend-radar-web/src/constants.js | CSV_URLS (empty), palette (C), style tokens (s), CSV parser, cache helpers |
+| portfolio/spend-radar-web/src/ErrorBoundary.jsx | Standard portfolio error boundary |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Publish Sheet tabs to CSV, paste URLs into `src/constants.js`, verify locally with `npm install && npm start`
+2. Deploy to Vercel (`vercel project add spend-radar-web` + `vercel link` + `vercel git connect` + `vercel --prod`)
+3. Add date-range filter for the Receipts table (last 30 / 90 / 180 days)

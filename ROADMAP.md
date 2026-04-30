@@ -9,7 +9,7 @@
 |-----|---------|-----|-------------|--------|
 | Wellness Tracker | v15.10 | local | chase_wellness_v1 | ✅ Active |
 | Wellness Tracker (iOS) | Phase 1 | — | `chase_wellness_ios_*` (local-only) | 🟡 Local · [`portfolio/wellness-tracker-ios`](portfolio/wellness-tracker-ios) |
-| Job Search HQ | v8.12 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
+| Job Search HQ | v8.18 | https://job-search-hq.vercel.app | chase_job_search_v1 | ✅ Active |
 | Job Search HQ (iOS) | v0.1 | — | `chase_job_search_ios_v1` | 🟡 Local · [`portfolio/job-search-hq-ios`](portfolio/job-search-hq-ios) · [Linear](https://linear.app/whittaker/project/job-search-hq-3695b3336b7d) |
 | App Forge | v8.1 | local | chase_forge_v1 | ✅ Active · [`portfolio/app-forge`](portfolio/app-forge) |
 | Clarity Hub | v0.2 | local | `chase_hub_checkin_v1` (+ 4 more) | ✅ Active · 5 tabs · YNAB+Tasks split out · [`portfolio/clarity-hub`](portfolio/clarity-hub) |
@@ -18,22 +18,22 @@
 | Funded (iOS) | v0.3 | local Xcode | SwiftData + `chase_ynab_clarity_ios_*`; token in Keychain | 🟡 Local · [`portfolio/funded-ios`](portfolio/funded-ios) |
 | Clarity Growth (iOS) | v0.1 | local Xcode | `chase_growth_ios_v1` | ✅ Local · [`portfolio/clarity-growth-ios`](portfolio/clarity-growth-ios) |
 | Clarity Command (iOS) | v0.1 | local Xcode | `chase_command_ios_v1` | ✅ Local · 14/14 tests · all 6 apps on iPhone · [`portfolio/clarity-command-ios`](portfolio/clarity-command-ios) |
-| Growth Tracker | v6 | local | chase_growth_v1 | ✅ Active · [`portfolio/growth-tracker`](portfolio/growth-tracker) |
-| RollerTask Tycoon (iOS) | v1.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ Shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
-| RollerTask Tycoon (web PWA) | v1.0 | local | `chase_roller_task_v1` | ✅ Active · Vite PWA · [`portfolio/roller-task-tycoon`](portfolio/roller-task-tycoon) |
-| Money | v0.1 | local | `chase_money_v1` | ✅ Active · Transaction Enricher + Budget Dashboard · [`portfolio/money`](portfolio/money) |
-| Unnamed (web) | v0.1 | local | `unnamed_v1` | ✅ Active · Daily OS for ADHD brains · [`portfolio/unnamed`](portfolio/unnamed) |
+| Growth Tracker | v6 | local | chase_growth_v1 | Archived 2026-04-20 · merged into Wellness GrowthTab |
+| RollerTask Tycoon (iOS) | v2.0 | local Xcode | SwiftData + `chase_roller_task_tycoon_ios_*` | ✅ V2 Game Feel shipped · [Linear](https://linear.app/whittaker/project/park-checklist-ios-b0d5872be46e) |
+| RollerTask Tycoon (web PWA) | v1.0 | local | `chase_roller_task_v1` | 🟡 Retired · Vercel removed 2026-04-25 · [`portfolio/roller-task-tycoon`](portfolio/roller-task-tycoon) |
+| Money | v0.1 | local | `chase_money_v1` | Archived 2026-04-20 · superseded by Spend Clarity |
+| Unnamed (web) | v0.1 | https://unnamed-gold.vercel.app | `unnamed_v1` | ✅ Active · Deployed 2026-04-25 · Daily OS for ADHD brains · [`portfolio/unnamed`](portfolio/unnamed) |
 | Unnamed (iOS) | v0.1 | local Xcode | `unnamed_ios_v1` | 🟡 On-device · SwiftUI + @Observable · 10/10 tests · [`portfolio/unnamed-ios`](portfolio/unnamed-ios) |
 | Alias Ledger | v1.0 | https://alias-ledger.vercel.app | `hme_alias_tracker_v1` | ✅ Active · Hide My Email tracker · [`portfolio/alias-ledger`](portfolio/alias-ledger) |
 | Knowledge Base | v2.1.1 | https://knowledge-base-hazel-iota.vercel.app | `chase_knowledge_base_v1` | ✅ Active · Bookmark manager · [`portfolio/knowledge-base`](portfolio/knowledge-base) |
 | Shipyard | v0.1 | https://shipyard-sandy-seven.vercel.app | n/a | ✅ Active · Fleet command center · Phase 2 (RLS + auth) + Phase 3 (auto-scan cron) live · [`portfolio/shipyard`](portfolio/shipyard) |
 | Shipyard (iOS) | v0.1 | local Xcode | `chase_shipyard_ios_v1` | 🟡 Local · [`portfolio/shipyard-ios`](portfolio/shipyard-ios) |
 | Ash Reader | v1.0 | https://ash-reader.vercel.app | `ash_reader_` prefix | ✅ Active · Mobile chunker for Ash · [`portfolio/ash-reader`](portfolio/ash-reader) |
-| Ash Reader (iOS) | v0.3 | local Xcode | `ash_reader_ios_` prefix | 🟡 Local · [`portfolio/ash-reader-ios`](portfolio/ash-reader-ios) |
-| Clarity Budget (web) | v0.4 | local | `chase_budget_web_v1` + `chase_budget_web_tx_v1` | ✅ Active · Next.js STS + URL-filtered spending breakdown + sortable tx list · [`portfolio/clarity-budget-web`](portfolio/clarity-budget-web) |
+| Ash Reader (iOS) | v0.4 | local Xcode | `ash_reader_ios_` prefix | 🟡 Local · Phases 5-7 done · 41/41 tests · [`portfolio/ash-reader-ios`](portfolio/ash-reader-ios) |
+| Clarity Budget (web) | v0.4 | https://clarity-budget-web.vercel.app | `chase_budget_web_v1` + `chase_budget_web_tx_v1` | ✅ Active · Steps 1-8 done · Deployed · [`portfolio/clarity-budget-web`](portfolio/clarity-budget-web) |
 | Fairway (iOS) | v0.2 | local Xcode | `chase_fairway_ios_v1` | 🟡 Local · Lawn OS · Overview tab + GrassSubZone model · 62 tests · [`portfolio/fairway-ios`](portfolio/fairway-ios) |
 | App Hub | — | local only | — | 🔧 Utility |
-| AI Dev Mastery | v1.0.1 | local (port 3004) | not yet deployed | ✅ Active · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
+| AI Dev Mastery | v1.1.0 | https://ai-dev-mastery.vercel.app | none | ✅ Active · Deployed on Vercel · [`portfolio/ai-dev-mastery`](portfolio/ai-dev-mastery) |
 | Shortcut Reference | v0.1.0 | local Xcode | — | ✅ Active · macOS Swift · [`portfolio/shortcut-reference`](portfolio/shortcut-reference) |
 | Claude Usage Tool | v0.10.0 | local Electron | — | ✅ Active · Electron menu bar · [Linear](https://linear.app/whittaker/project/claude-usage-tool-a002c92c1688) · [`portfolio/claude-usage-tool`](portfolio/claude-usage-tool) |
 
@@ -246,6 +246,7 @@ This would eliminate the duplicated code across apps and give each app a consist
 
 | Date | App | Version | Change Summary | Notes |
 |------|-----|---------|----------------|-------|
+| 2026-04-29 | Portfolio-wide | — | **Full portfolio update sweep.** STATUS_REPORT_2026-04-29.md generated. STATE.md created for all 43 projects (was 0). README.md created for 20 projects that were missing them. GMAT Mastery Web docs bootstrapped (HANDOFF, CHANGELOG, ROADMAP, LEARNINGS — all were missing). Root CLAUDE.md metadata table updated with 23 Linear URLs (was ~6). ROADMAP.md: 9 stale entries fixed (Growth Tracker/Money archived, RTT web retired, AI Dev Mastery/Unnamed/Clarity Budget Web URLs + versions updated). Linear: GMAT Mastery Web project created, 2 shipped issues marked Done (Clarity Budget Step 8 + Unnamed Vercel deploy). DriveMind gained CHANGELOG + ROADMAP. ClarityUI gained HANDOFF + ROADMAP. Fresh Track docs created. | 78+ files created/updated across portfolio |
 | 2026-04-29 | Portfolio-wide | — | **Learning documentation system.** Added `PATTERNS.md` (root, 20 seeded recipes), `AI_PLAYBOOK.md` (root, prompting strategies), `docs/GLOSSARY.md` expanded (AI/ML + Dev Architecture + DevOps + PM vocab), `docs/templates/DECISIONS_TEMPLATE.md`, `docs/DECISIONS_HIGHLIGHTS.md` (15-entry interview greatest hits). `DECISIONS.md` backfilled for 5 apps (fairway-ios, clarity-budget-web, job-search-hq, unnamed-ios, clarity-command). `CLAUDE.md` session-end ritual gains step 6b (decisions/patterns/vocabulary + reflection question). `scripts/new-app` scaffolds `DECISIONS.md` for new apps. Future: full audit trail across all 40+ apps (see ROADMAP later). | `PATTERNS.md` · `AI_PLAYBOOK.md` · `docs/GLOSSARY.md` · 5× `DECISIONS.md` · `CLAUDE.md` step 6b · `scripts/new-app` |
 | 2026-04-28 | Clarity Budget (web) | v0.4 | **Step 8 — `/settings` Privacy connector + card mapping (local).** New `components/settings/{PrivacyConnectorCard,CardMappingTable}.tsx` (mirrors YnabConnectorCard's stored/replacing/new modes; card row with payee `<select>` + optimistic update / rollback). New `app/api/settings/cards/{route,[token]/route}.ts` (GET user's cards + PATCH `linked_payee_id` with audit log `card_payee_linked`). New `app/api/ynab/payees/route.ts` (server proxy via `loadYnabCredentials` + new `fetchPayees` in `lib/ynab.ts`). `settings/page.tsx` probes both `ynab_token_ciphertext` + `privacy_token_ciphertext`; conditional `<CardMappingTable />`. tsc ✅ · lint ✅ (touched files) · vitest 49/49 ✅ · build ✅ (3 new `ƒ` routes) · unauth probes 401/401/401/307 ✅. **No new migration** — `linked_payee_id` column + `privacy_token` API support already shipped in Step 1. | `portfolio/clarity-budget-web/` · CHANGELOG + ROADMAP + HANDOFF + LEARNINGS updated · Step 9 next: split `HomeDashboard.tsx` |
 | 2026-04-28 | Clarity Budget (web) | v0.4 | **Step 7 — `/flags` UI shipped.** Weirdness flags inbox: `app/(app-shell)/flags/page.tsx` (server component, queries `clarity_budget_flags` status=open), `components/flags/{FlagList,FlagRow}.tsx` (client list + per-type row with severity chip + contextual details), `app/api/flags/[id]/route.ts` (PATCH; writes `status='acknowledged'`, `acknowledged_at`, audit log `flag_dismissed`). Flags nav link added to NavBar. tsc ✅ · lint ✅ · build ✅ · unauth 307/401 ✅ · commit `2861907` deployed. | `portfolio/clarity-budget-web/` · CHANGELOG + ROADMAP + HANDOFF + LEARNINGS updated · Step 8 next: Privacy connector + card mapping |

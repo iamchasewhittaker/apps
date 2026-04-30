@@ -113,4 +113,60 @@ For Reese. For Buzz. Forward.
 
 ---
 
+## Handoff Best Practices
+
+### When to hand off
+
+- **~20 conversation turns** — context quality drops; start fresh
+- **Switching tools** — Claude Code to Cursor, Cursor to Codex, etc.
+- **Switching apps** — one app per session is the default
+- **End of day** — always `/handoff` + `checkpoint` before closing
+- **Before destructive ops** — migrations, schema changes, large refactors
+- **Model starts forgetting constraints** — repeating itself, ignoring anti-features, suggesting things you already rejected
+
+### 5-field minimum
+
+Every handoff must update these fields in the app's `HANDOFF.md`:
+
+| Field | What goes there |
+|-------|----------------|
+| **Focus** | What you were actively working on (1 sentence) |
+| **Next** | The immediate next step (not the backlog) |
+| **Last touch** | Date + last commit hash or description |
+| **Blockers** | Anything preventing progress, or "None" |
+| **State table row** | The above 4 fields in the State table |
+
+### Common mistakes
+
+| Mistake | Why it hurts | Fix |
+|---------|-------------|-----|
+| Pasting the whole conversation | Too long, agent skims or ignores | Use State table (under 30 lines) |
+| Skipping LEARNINGS.md | Gotchas repeat next session | Mandatory append — even one line |
+| No checkpoint before switching | Lose rollback point | Always `checkpoint` first |
+| Free-form handoff | Next agent wastes turns parsing | Use the template structure |
+| Stale HANDOFF.md | Next agent works from wrong state | Update Focus/Next/Last touch every time |
+
+### Tool-specific handoff tips
+
+| Tool | Auto-loads | First action |
+|------|-----------|-------------|
+| **Claude Code** | `CLAUDE.md` automatically | Read `HANDOFF.md` |
+| **Cursor** | `.cursor/rules/session-handoff.mdc` | Open project folder |
+| **Codex** | `AGENTS.md` (paste manually) | Paste `AGENTS.md` + State table |
+| **Windsurf** | `.windsurfrules` | Open project folder |
+| **Copilot Chat** | `.github/copilot-instructions.md` | Open repo root |
+
+### Anti-patterns
+
+- **Handoff as conversation dump** — max 30 lines. If it's longer, you're repeating context that belongs in `CLAUDE.md` or `LEARNINGS.md`.
+- **Relying on context alone** — context windows compress and compact. Write it down or it's gone.
+- **Skipping checkpoint before tool switch** — the new tool can't roll back to where you were.
+- **"Just read the code"** — code shows *what*, not *why* or *what's next*. The handoff fills the gap.
+
+### Reflection
+
+> "What context did you wish you had at the start of this session that a better handoff would have given you?"
+
+---
+
 *"For Reese. For Buzz. Forward — no excuses."*

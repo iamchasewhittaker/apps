@@ -1,75 +1,60 @@
-# SESSION_START — Clarity Command Retroactive Foundation Docs
+# Session Start — Clarity Command (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Command is a stable v1.0 app.
-**App:** Clarity Command
-**Slug:** clarity-command
-**One-liner:** Daily accountability hub — Mission tab, Scoreboard tab, and Settings tab — built on LDS faith and family urgency, with a gold accent and live Supabase sync.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is at v1.0; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-command`
-2. **BRANDING.md** — gold accent `#c8a84b`, LDS faith framing, "For Reese. For Buzz." urgency voice
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v1.0 shipped scope; V2 = real Wellness/Job Search data via Supabase
-5. **APP_FLOW.md** — document the Mission → Scoreboard → Settings 3-tab flow
-6. **SESSION_START_clarity-command.md** — stub only
-
-Output paths: `portfolio/clarity-command/docs/`
+- **2026-04-13 (v1.0)** — Initial build: morning mission + evening reflection + scoreboard + settings, 15 LDS scriptures, 15 wife's words, Supabase sync adapter (APP_KEY 'command'), email OTP auth gate, PWA manifest
+- **2026-04-13 (Phase 2)** — Cross-app reads wired: pulls job-search-daily and wellness-daily from Supabase; MissionTab shows live job count; ScoreboardTab gains LiveAppData section
+- **2026-04-13** — Logo: shield + compass SVG shipped, then replaced same day with portfolio-standard text logo (CLARITY gold / COMMAND white on #0f1117)
+- **2026-04-14** — Favicon white-corner fix; shared auth bootstrap (canonical-host redirect, session key consolidation); refactored sync with emailRedirectTo; auth diagnostics flag
+- **2026-04-14** — Mission + Wellness merge banner: shows "Apply Wellness to mission" when wellness-daily diverges from areas.wellness; re-fetches on tab open
+- **2026-04-20** — Vercel project removed; app runs locally only via npm start
+- **2026-04-27** — Phase 2 verified end-to-end: confirmed Job Search HQ pushes job-search-daily rows in production; local .env files added to clarity-command + job-search-hq + wellness-tracker; iOS twin shipped same day with LiveAppDataView parity
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v1.0
-**Stack:** React CRA + inline styles + localStorage + Supabase sync (live)
-**Storage key:** `chase_command_v1`
-**URL:** local only (not deployed to Vercel)
-**Entry:** `src/App.jsx`
-
-**What this app is:**
-A daily accountability hub. Three tabs: Mission (today's priorities, scripture, purpose statement), Scoreboard (daily wins and streaks), and Settings (name, family photo, motivation phrase). Built on LDS faith anchors and family urgency — "For Reese. For Buzz. Forward — no excuses." Gold accent `#c8a84b` throughout.
-
-**Architecture:**
-- Single-blob: `App.jsx` owns `chase_command_v1` state
-- Tabs receive `blob` + `setBlob` as props — dumb components
-- `theme.js` — `T` (colors, gold accent), `loadBlob`/`saveBlob`
-- Supabase sync is live but feeds stub data (not yet connected to real Wellness/Job Search blobs)
-
-**Brand system:**
-- Gold accent: `#c8a84b`
-- Background: deep navy `#0a0f1e`
-- Text logo: `CLARITY` (gold label) / `COMMAND` (white bold)
-- Voice: direct, mission-driven — "you said you'd do this. did you?"
-- Faith context: Book of Mormon, D&C, KJV Bible — scripture quotes in Mission tab
-
-**Relationship to other Clarity apps:**
-- Web companion to Clarity Command iOS (`portfolio/clarity-command-ios/`)
-- Both apps read from the same Supabase project (`unqtnnxlltiadzbqpyhh`)
-- Phase 2: pull live data from Wellness (`chase_wellness_v1`) and Job Search (`chase_job_search_v1`) via Supabase
+- Verify on physical iPhone that LiveAppData Scoreboard section renders when signed in
+- Wellness Tracker: awaiting first per-user wellness-daily push to verify iOS rendering
+- Redeploy web to Vercel deferred (npm start sufficient for daily use)
+- Set layoff date in Settings (local dev)
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Command state at a glance
 
-**Version:** v1.0
-**Focus:** Stable. Supabase sync is wired but feeding stub data.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v1.0 |
+| URL | local only (Vercel project removed 2026-04-20) |
+| Storage key | `chase_command_v1` |
+| Stack | React CRA + inline styles + Supabase sync |
+| Linear | [Clarity Command](https://linear.app/whittaker/project/clarity-command-ab0bbd71be7c) |
+| Last touch | 2026-04-27 |
 
-**Next (V2 candidates):**
-- Connect Mission tab to real Wellness Tracker data (today's check-in score)
-- Connect Scoreboard to real Job Search HQ data (applications, interviews)
-- Add weekly review summary view
-- Deploy to Vercel once real data is wired
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-command/CLAUDE.md | App-level instructions |
+| portfolio/clarity-command/HANDOFF.md | Session state + notes |
+| portfolio/clarity-command/src/App.jsx | Shell: state, auth gate, nav tabs, load/save/push/pull |
+| portfolio/clarity-command/src/theme.js | T colors, load/save, today(), daysSince(), computeStreak(), DEFAULT_STATE |
+| portfolio/clarity-command/src/tabs/MissionTab.jsx | Morning briefing + target tracking + evening reflection |
+| portfolio/clarity-command/src/tabs/ScoreboardTab.jsx | Week grid, area streaks, monthly calendar, LiveAppData, stats |
+| portfolio/clarity-command/src/data/scriptures.js | LDS scripture bank (15 entries) + getTodayScripture() |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Verify wellness-daily rendering on iOS after first per-user push
+2. Wire Wellness Tracker morning/evening accountability prompts into TrackerTab
+3. Integrate Clarity Time productive hours into Scoreboard (Phase 3)

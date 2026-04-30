@@ -1,79 +1,53 @@
-# SESSION_START — ClarityUI Retroactive Foundation Docs
+# Session Start — ClarityUI Swift Package (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — ClarityUI is a functional v0.1 shared Swift package.
-**App:** ClarityUI
-**Slug:** clarity-ui
-**One-liner:** Shared Swift package providing ClarityPalette, FlowLayout, and reusable SwiftUI components for all Clarity iOS apps — imported via Swift Package Manager.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The package is in use across the iOS suite; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-ui`
-2. **BRANDING.md** — developer-library aesthetic, component system framing
-3. **PRODUCT_BRIEF.md** — distill from context below; note it's a package not a user-facing app
-4. **PRD.md** — reflect v0.1 shipped scope; V2 = expand component library as Clarity apps grow
-5. **APP_FLOW.md** — document the import → use pattern (how apps consume the package)
-6. **SESSION_START_clarity-ui.md** — stub only
-
-Output paths: `portfolio/clarity-ui/docs/`
+- **2026-04-12** — v0.1 shipped: full color token set (ClarityPalette), semantic Dynamic Type fonts (ClarityTypography), spacing constants (ClarityMetrics), 9 reusable components (ClarityCard, ClarityChoiceButton, ClarityRating, ClarityMultiChip, ClarityTriToggle, ClaritySectionLabel, ClarityEmptyState, ClarityProgressBar, QuoteBanner), utilities (DateHelpers, StorageHelpers), 3 test suites
+- **2026-04-12** — Swift package builds clean; FlowLayout made public; all 5 Clarity iOS apps wired as consumers via local SPM (../clarity-ui)
+- **2026-04-26** — ClarityPalette BASE tokens updated to portfolio standard: bg #0f1117, surface #161b27, border #1f2937, text #f3f4f6, muted #6b7280; change propagates automatically to all consumer apps
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** Swift package (Swift 5.9+, SwiftUI) — no build system beyond `swift build`
-**Storage:** n/a (shared package — no persistence)
-**URL:** n/a (local package reference; not deployed)
-**Build:** `swift build` (runs clean in all Clarity iOS apps)
-
-**What this app is:**
-A shared Swift package that provides design tokens and reusable components for all six Clarity iOS apps. Rather than copy-pasting palette definitions and common UI components across projects, each Clarity app imports `clarity-ui` via Swift Package Manager (local path reference).
-
-**Key exports:**
-- `ClarityPalette` — design tokens: brand colors (sky, emerald, violet, amber, gold, midnight), semantic tokens (primary, background, surface, text)
-- `FlowLayout` — public SwiftUI layout for wrapping chips/tags in flowing rows
-- Shared utility extensions and view modifiers (reused across Clarity apps)
-
-**Consumer apps (all import clarity-ui):**
-- `clarity-checkin-ios`
-- `clarity-triage-ios`
-- `clarity-time-ios`
-- `clarity-budget-ios`
-- `clarity-growth-ios`
-- `clarity-command-ios`
-- `job-search-hq-ios` (also imports ClarityUI for brand consistency)
-
-**Local path reference:**
-Each app's `Package.swift` or Xcode project references `clarity-ui` via local path: `../../clarity-ui` (relative to the app folder within the monorepo).
-
-**Brand system:**
-- The package IS the brand system — it's not a user-facing app
-- Clarity palette: sky (`#38bdf8`), emerald (`#34d399`), violet (`#a78bfa`), amber (`#f59e0b`), gold (`#c8a84b`)
-- Background: midnight (`#0a0f1e`)
+None -- clear to build. Add new components as Clarity iOS apps evolve.
 
 ---
 
-## App context — HANDOFF.md
+## ClarityUI state at a glance
 
-**Version:** v0.1
-**Focus:** Stable. In active use across all 6 Clarity iOS apps + Job Search HQ iOS.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 |
+| URL | n/a (shared package, not standalone app) |
+| Storage key | n/a (consumed by apps; each app owns its own storage key) |
+| Stack | Swift Package (SwiftUI components + utilities) |
+| Linear | [ClarityUI](https://linear.app/whittaker/project/clarityui-24503a4b3258) |
+| Last touch | 2026-04-26 |
 
-**Next (V2 candidates — as Clarity apps grow):**
-- Add more shared view components (Modal, Sheet, PrimaryButton)
-- Add accessibility modifiers (Dynamic Type scaling, high contrast tokens)
-- Add animation presets (consistent transition curves across apps)
-- Consider publishing as a GitHub package for reuse outside the monorepo
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-ui/CLAUDE.md | Package-level instructions |
+| portfolio/clarity-ui/HANDOFF.md | Session state |
+| Sources/ClarityUI/Theme/ClarityPalette.swift | Color tokens (bg, surface, border, text, muted, accents) |
+| Sources/ClarityUI/Theme/ClarityTypography.swift | Semantic Dynamic Type fonts |
+| Sources/ClarityUI/Theme/ClarityMetrics.swift | Spacing, sizing, minTapTarget (44pt) |
+| Sources/ClarityUI/Components/QuoteBanner.swift | Daily rotating quote card (used by all consumer apps) |
+| Sources/ClarityUI/Utilities/StorageHelpers.swift | Generic Codable UserDefaults load/save/remove |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Add a new shared component needed by a Clarity iOS app (follow accessibility rules in CLAUDE.md)
+2. Audit existing components against latest SwiftUI 17 best practices
+3. Add integration tests for component rendering (if SwiftUI testing improves)

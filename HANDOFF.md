@@ -89,7 +89,7 @@ Do **not** duplicate `CLAUDE.md` or long architecture here — link to issues an
 | **Focus**      | **Learning documentation system shipped (2026-04-29):** `PATTERNS.md` (20 seeded recipes), `AI_PLAYBOOK.md`, `docs/GLOSSARY.md` expanded (AI/ML + Dev Architecture + DevOps + PM), `docs/DECISIONS_HIGHLIGHTS.md` (15 interview entries), `DECISIONS.md` backfilled for 5 apps, `CLAUDE.md` step 6b, `scripts/new-app` updated. |
 | **Next**       | 1. **Push clarity-budget-web Step 8** to deploy + signed-in smoke (Privacy token → cron backfill → card mapping). 2. **clarity-budget-web Step 9** — split `HomeDashboard.tsx`. 3. **Fairway iOS Phase 3** — Schedule ET hybrid (`ETCalculator`, Hargreaves ET₀, Kc KBG, "Why this number?" card). 4. **Fairway iOS:** field walk audit (Z4-S1 dig-out, Z2-S5 cap color, park strip width). 5. **Shipyard:** Narrative Threads section. |
 | **Blockers**   | None. |
-| **Last touch** | 2026-04-29 — Learning documentation system shipped; PATTERNS.md + AI_PLAYBOOK.md + expanded GLOSSARY + 5× DECISIONS.md backfilled + CLAUDE.md step 6b. |
+| **Last touch** | 2026-04-29 — Full portfolio update sweep: STATUS_REPORT generated, STATE.md for all 43 projects, README for 20 projects, 23 Linear URLs added to metadata table, ROADMAP 9 stale entries fixed, GMAT Mastery Web docs bootstrapped + Linear project created, 2 shipped issues marked Done. |
 
 
 ---

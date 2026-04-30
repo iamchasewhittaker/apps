@@ -39,4 +39,6 @@ Copy everything below into a **new** chat, fill the brackets, then send.
 
 ---
 
+> Handoff guide: [`docs/templates/HANDOFF_SKILL.md`](HANDOFF_SKILL.md)
+
 After the session: update app **`CHANGELOG.md`** under `## [Unreleased]`, root **`ROADMAP.md`** Change Log if required, **[HANDOFF.md](../../HANDOFF.md)**, and Linear.

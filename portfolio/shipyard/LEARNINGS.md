@@ -1,5 +1,12 @@
 # Learnings — Shipyard
 
+## 2026-04-29 (Daily links — Vercel rootDirectory monorepo fix)
+
+**Monorepo CRA/Next.js apps on Vercel need an explicit redeploy from the subdirectory to fix rootDirectory.**
+GMAT Mastery and Ash Reader were returning Vercel 404 ("The page could not be found") because Vercel was building from the repo root instead of `portfolio/<app>`. Both projects were linked to their respective Vercel projects but the rootDirectory configuration wasn't set. Deploying via `vercel --prod --yes` from inside each app's subdirectory automatically detects the app structure and updates the project settings. The fix is immediate and visible: builds change from 2-second empty builds ("Build Completed in /vercel/output [2s], no files prepared") to actual Next.js builds ("Running npm run build", successful page generation). **Lesson: if a Vercel app built from a monorepo returns 404, the rootDirectory is probably wrong — redeploy from the app's subdirectory, not from the repo root.**
+
+> **Chase:** —
+
 ## 2026-04-26 (Analytics & Themes — heading fix + plain default + auto-populate)
 
 **The nav label key and the page heading key are different things — don't reuse one for the other.**

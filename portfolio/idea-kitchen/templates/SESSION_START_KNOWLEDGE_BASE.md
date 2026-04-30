@@ -1,74 +1,60 @@
-# SESSION_START — Knowledge Base Retroactive Foundation Docs
+# Session Start — Knowledge Base (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Knowledge Base is a live deployed v2.1.1 app.
-**App:** Knowledge Base
-**Slug:** knowledge-base
-**One-liner:** Personal bookmark and notes hub with an ARC-style sidebar, import/export, and organized folders for Git, Vercel, and Supabase references — deployed and auto-syncing via GitHub.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is in production; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/knowledge-base`
-2. **BRANDING.md** — clean knowledge/reference aesthetic, ARC-style sidebar, muted palette
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v2.1.1 shipped scope; V3 = Next.js migration candidate
-5. **APP_FLOW.md** — document the bookmark → folder → search → export flow
-6. **SESSION_START_knowledge-base.md** — stub only
-
-Output paths: `portfolio/knowledge-base/docs/`
+- **v1.0 (2026-04-11)** — CRA scaffold; localStorage persistence; inline styles via s object; ErrorBoundary; 48 seed bookmarks across 12 categories; deployed to Vercel
+- **v1.1 (2026-04-12)** — Grouped collapsible category sections; pinned bookmarks; per-bookmark detail panel (status, progress, notes, visits); click tracking; seed expanded to 169 bookmarks across 21 categories
+- **v1.2 (2026-04-13)** — Seed expanded 169 to 260 bookmarks across 29 categories (Scripting, Python, Blogs, Reddit, Low Vision & RP, Making Money, Gospel Study, Idea Generation)
+- **v1.3 (2026-04-13)** — Category organization panel (reorder, rename, merge, delete); importance ranking (High/Med/Low); Important filter pill; storage migration to { bookmarks, categoryOrder }
+- **v2.0 (2026-04-13)** — ARC-style sidebar + Chrome nested folder redesign: two-panel layout, collapsible 280px sidebar, nested folder hierarchy (8 parents + 29 leaf), folder CRUD, favorites shelf, smart folders (Important + Recent), home view, search with breadcrumbs, keyboard shortcuts, mobile overlay, 6-component extraction
+- **2026-04-13** — Theme alignment: portfolio BASE token sweep; DM Sans font; logo standardization
+- **2026-04-13** — My Projects refresh: added Clarity Command, Clarity Hub, YNAB Clarity Web, RollerTask Tycoon Web; added sub-folders (Daily Prompts, Theme & Colors, Development Details); operational prompt library
+- **2026-04-14** — Favicon white-corner fix; Portfolio App Logo Template bookmark added
+- **v2.1 (2026-04-19)** — Favicons on all bookmark rows via Google favicon CDN; export JSON (dated backup); import JSON (merge without duplicating)
+- **v2.1.1 (2026-04-20)** — My Projects URL fixes (Shipyard, RollerTask, Knowledge Base); Summit Push renamed to Unnamed; Git folder (4 links); Vercel folder (8 links); Supabase folder (8 links); Alias Ledger + Clarity Budget Web added; SEED_VERSION 11
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v2.1.1
-**Stack:** React CRA + inline styles + localStorage + Vercel
-**Storage key:** `chase_knowledge_base_v1`
-**URL:** knowledge-base-hazel-iota.vercel.app
-**GitHub:** connected to `iamchasewhittaker/apps` for auto-deploy
-
-**What this app is:**
-A personal bookmark and notes hub. ARC-inspired sidebar navigation with folder grouping. Supports importing/exporting bookmarks as JSON, adding favicons, and organizing references into pre-built folders (Git, Vercel, Supabase, etc.). Used daily as a quick-access reference panel.
-
-**Key features (v2.1.1):**
-- ARC-style collapsible sidebar with folder groups
-- Favicons auto-fetched from bookmark URLs
-- Import / export as JSON (full data portability)
-- Pre-populated folders: Git, Vercel, Supabase, Tools, Reference
-- Search across all bookmarks (title + URL + tags)
-
-**Architecture:**
-- Single-blob: `chase_knowledge_base_v1` in localStorage
-- No Supabase sync (intentional — local reference tool)
-- No auth gate
-- Vercel + GitHub auto-deploy connected
-
-**Brand system:**
-- Clean, muted palette — knowledge-forward, nothing competing with content
-- Sidebar-first layout: folders on left, content on right
+None -- clear to build.
 
 ---
 
-## App context — HANDOFF.md
+## Knowledge Base state at a glance
 
-**Version:** v2.1.1
-**Focus:** Stable. Production-ready; used daily.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v2.1.1 |
+| URL | https://knowledge-base-hazel-iota.vercel.app |
+| Storage key | `chase_knowledge_base_v1` |
+| Stack | React CRA + inline styles + localStorage + lucide-react icons |
+| Linear | [Knowledge Base](https://linear.app/whittaker/project/knowledge-base-65f42b7a8807) |
+| Last touch | 2026-04-20 |
 
-**Next (V3 candidates):**
-- Migrate to Next.js (App Router) for better routing and SSR
-- Add tag-based filtering alongside folder grouping
-- Add Supabase sync for cross-device access
-- Add a "recently visited" section at the top
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/knowledge-base/CLAUDE.md | App-level instructions |
+| portfolio/knowledge-base/HANDOFF.md | Session state + critical gotchas |
+| portfolio/knowledge-base/src/App.jsx | Layout shell: state, CRUD, folder actions, modals |
+| portfolio/knowledge-base/src/constants.js | SEED (274 bookmarks), SEED_FOLDERS, s styles, css string, storage helpers |
+| portfolio/knowledge-base/src/Sidebar.jsx | Search, smart folders, favorites, folder tree, new buttons |
+| portfolio/knowledge-base/src/FolderTree.jsx | Recursive folder tree renderer |
+| portfolio/knowledge-base/src/BookmarkRow.jsx | Single bookmark row + expandable detail panel |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Drag-and-drop reordering within a folder and between folders
+2. Tags (multiple per bookmark, cross-folder filtering)
+3. Sort options within folder view (alphabetical / most visited / date added)

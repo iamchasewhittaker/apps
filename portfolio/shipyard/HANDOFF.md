@@ -4,9 +4,9 @@
 
 | Field      | Value                                                                 |
 | ---------- | --------------------------------------------------------------------- |
-| Focus      | Analytics & Themes page — heading fix, plain default, auto-populated Common Inputs + Cross-App Patterns, Portfolio Thesis inline editor |
-| Next       | Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Narrative Threads (manual or structured CLAUDE.md format) · Linear Harbor Master sync |
-| Last touch | 2026-04-26                                                            |
+| Focus      | Daily page links fixed (GMAT Mastery 200 OK); Ash Reader 401 auth issue deferred |
+| Next       | Investigate Ash Reader 401 Unauthorized · Apply `supabase/migrations/0003_add_retirement.sql` manually in SQL Editor · fix `learnings` unique constraint → enable LEARNINGS.md ingestion · Narrative Threads (manual or structured CLAUDE.md format) · Linear Harbor Master sync |
+| Last touch | 2026-04-29                                                            |
 
 ## Production URL
 

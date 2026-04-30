@@ -1,75 +1,58 @@
-# SESSION_START — Clarity Check-in iOS Retroactive Foundation Docs
+# Session Start — Clarity Check-in iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Check-in iOS is a functional v0.1 SwiftUI app.
-**App:** Clarity Check-in iOS
-**Slug:** clarity-checkin-ios
-**One-liner:** Morning check-in wizard and evening review — meds tracker, mood capture, and daily reflection; first app in the Clarity iOS suite.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 1 is done; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-checkin-ios`
-2. **BRANDING.md** — Clarity palette (sky blue), morning/check-in aesthetic, soft sunrise framing
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.1 shipped scope; Phase 2 = streaks + Supabase sync
-5. **APP_FLOW.md** — document the morning wizard → meds → mood → evening review flow
-6. **SESSION_START_clarity-checkin-ios.md** — stub only
-
-Output paths: `portfolio/clarity-checkin-ios/docs/`
+- **2026-04-12** — v0.1 shipped: models (CheckinBlob, DraftBlob, PulseCheck), CheckinStore with draft autosave + same-day merge, morning/evening wizard (5 sections), pulse check sheet, meds editor, daily quote banner, past days list, 4/4 unit tests passing
+- **2026-04-12** — Programmatic ClarityCheckin.xcodeproj generated with ClarityUI linked as local SPM package
+- **2026-04-13** — AppIcon 1024x1024 added to Assets.xcassets; docs/BRANDING.md filled from portfolio template
+- **2026-04-14** — Doc sync across Clarity iOS suite branding; cross-links to SESSION_START_CLARITY_IOS_LOGOS.md
+- **2026-04-26** — ClarityPalette BASE tokens updated via clarity-ui package (bg #0f1117, surface #161b27, etc.)
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** SwiftUI + @Observable + UserDefaults
-**Storage key:** `chase_checkin_ios_v1` (+ draft key, + meds key)
-**Bundle ID:** `com.chasewhittaker.ClarityCheckin`
-**URL:** local Xcode
-**Tests:** 4/4 passing
-
-**What this app is:**
-The first app in the Clarity iOS suite. A morning/evening check-in wizard covering: meds reminder, sleep quality (1–5), mood (1–5), energy (1–5), one intention for the day, and an evening reflection (did you follow through?). Stores check-ins in UserDefaults, with a draft save so partial check-ins are never lost.
-
-**Architecture:**
-- `@Observable` state management — single source of truth
-- UserDefaults for persistence (no Supabase yet)
-- Draft save: partial check-ins persist between app launches
-- 4/4 SwiftUI tests passing
-
-**Clarity iOS suite position:**
-- Part of 6-app suite (Check-in, Triage, Time, Budget, Growth, Command)
-- All apps import `ClarityUI` (shared palette + FlowLayout)
-- Command iOS coordinates data across all 5 apps via Supabase
-
-**Brand system:**
-- Sky blue primary (`#38bdf8`) — Clarity Check-in's lane color
-- Morning sunrise / soft start aesthetic
-- AppIcon: 1024×1024, sky blue background, check mark symbol
-- `docs/BRANDING.md` + AppIcon exist in-repo
+- End-to-end simulator run not yet verified (manual Xcode step)
+- Reinstall after icon change (SpringBoard caches icons)
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Check-in state at a glance
 
-**Version:** v0.1
-**Focus:** Phase 1 complete. Meds + mood + sleep + intention + evening review all functional.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 |
+| URL | local Xcode |
+| Bundle ID | `com.chasewhittaker.ClarityCheckin` |
+| Storage key | `chase_checkin_ios_v1` (main), `chase_checkin_ios_draft_v1` (draft), `chase_checkin_ios_meds_v1` (meds) |
+| Stack | SwiftUI + @Observable + ClarityUI + UserDefaults |
+| PBX prefix | CC |
+| Linear | [Clarity Check-in iOS](https://linear.app/whittaker/project/clarity-check-in-ios-a22a5a1b0e6c) |
+| Last touch | 2026-04-14 |
 
-**Next (Phase 2):**
-- Add check-in streaks (days in a row)
-- Supabase sync (`chase_checkin_ios_v1` → shared project)
-- Share check-in data with Clarity Command iOS (scoreboard feed)
-- Add meds adherence history chart (7-day view)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-checkin-ios/CLAUDE.md | App-level instructions |
+| portfolio/clarity-checkin-ios/HANDOFF.md | Session state + notes |
+| ClarityCheckin/Services/CheckinStore.swift | @Observable store: load, save, draft, commit, pulse, meds |
+| ClarityCheckin/Models/CheckinBlob.swift | CheckinBlob, CheckinEntry, MorningData, EveningData, PulseCheck |
+| ClarityCheckin/Views/CheckinFlow/CheckinFlowView.swift | Morning/evening wizard with section navigator |
+| ClarityCheckin/Views/ContentView.swift | Root: quote banner, today status card, past days |
+| ClarityCheckin/Services/CheckinConfig.swift | UserDefaults keys enum + defaults |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Verify end-to-end on simulator (open Xcode, Cmd+R on iPhone 16)
+2. Build Doctor Prep view (screenshot-ready prescriber summary with meds + effects)
+3. Add 14-day patterns chart (mood, sleep, focus bar charts)

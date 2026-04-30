@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Focus** | Stable — 5 remaining tabs (Check-in, Triage, Time, Budget, Growth) |
-| **Next** | **Maintenance mode** — bugfixes and small parity with iOS blobs only; no new tabs. Web role vs Wellness Tracker is documented in [`docs/governance/PRODUCT_LINES.md`](../../docs/governance/PRODUCT_LINES.md) (canonical surface for the five Clarity iOS `app_key` blobs). |
-| **Last touch** | 2026-04-15 — governance: Hub = companion to split Clarity iOS suite; Wellness = unified wellness web |
-| **Status** | ✅ Deployed · v0.2 · 5 tabs + external links to YNAB + Tasks |
+| **Focus** | Stable + cross-app daily blob producer for Clarity Command Scoreboard |
+| **Next** | **Maintenance mode** — bugfixes, small parity with iOS blobs, cross-app blob push maintenance. |
+| **Last touch** | 2026-04-29 — Added `clarity-time-daily`, `clarity-budget-daily`, `clarity-growth-daily` push effects |
+| **Status** | ✅ Deployed · v0.2 · 5 tabs · cross-app daily blobs active |
 
 ## What's Built
 

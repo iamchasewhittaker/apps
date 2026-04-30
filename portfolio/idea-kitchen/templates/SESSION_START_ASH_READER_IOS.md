@@ -1,74 +1,58 @@
-# SESSION_START — Ash Reader iOS Retroactive Foundation Docs
+# Session Start — Ash Reader iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Ash Reader iOS is a functional v0.3 SwiftUI app.
-**App:** Ash Reader iOS
-**Slug:** ash-reader-ios
-**One-liner:** Native iOS companion to Ash Reader — 4 tabs (Reader, Themes, Actions, Settings), P6 yellow AppIcon, 138k words baked in, full parity with web v1.1; 26/26 tests passing.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. v0.3 is stable with full web parity; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/ash-reader-ios`
-2. **BRANDING.md** — P6 yellow accent, reading/text metaphor, 4-tab structure
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.3 shipped scope; V1.0 = custom source loading
-5. **APP_FLOW.md** — document the Reader → Themes → Actions → Settings 4-tab flow
-6. **SESSION_START_ash-reader-ios.md** — stub only
-
-Output paths: `portfolio/ash-reader-ios/docs/`
+- **2026-04-17** — v0.1: initial SwiftUI app -- paste input, smart Q&A chunker, chunk reader with copy + mark sent + progress bar, UserDefaults persistence, deployed to iPhone 12 Pro Max
+- **2026-04-17** — v0.2: baked doc.txt (138k words) into bundle -- no paste required, app opens directly to reader, recursive refineSegments() to prevent oversized chunks, settings sheet with size picker
+- **2026-04-17** — v0.3: full web v1.1 parity -- Themes tab (12 accordion cards with per-theme ChunkReader), AI summary picker (1k/1.5k/2k via summary.json), Actions tab (~190 items with filter bar + progress), Settings tab (prompt prefix, export/import, reset), stripMarkdown pipeline on all copies, haptic feedback, P6 "AR" yellow AppIcon, 26/26 tests
+- **2026-04-29** — Phases 5-7 shipped: iCloud Key-Value sync (SyncedStore wrapping NSUbiquitousKeyValueStore with UserDefaults fallback + one-time migration), local reading reminders (NotificationManager with weekday calendar triggers), share sheet + streak tracking (StreakStore with current/longest streak), 41/41 tests passing
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.3
-**Stack:** SwiftUI + @Observable + UserDefaults
-**Storage:** `ash_reader_ios_` prefix (UserDefaults, multiple keys)
-**Bundle ID:** `com.chasewhittaker.AshReader`
-**URL:** local Xcode
-**Tests:** 26/26 passing
-
-**What this app is:**
-The native iOS companion to Ash Reader web. Loads the 138k-word capture-system conversation (baked in at build time), chunks it into navigable pages, and provides 4 tabs:
-1. **Reader** — paginated text with swipe navigation
-2. **Themes** — light, dark, sepia, high contrast, custom font size
-3. **Actions** — copy chunk, open Ash URL scheme, share sheet
-4. **Settings** — chunk size, chunk overlap, display preferences
-
-Full feature parity with web v1.1 achieved at v0.3. 26/26 SwiftUI tests pass.
-
-**Web companion:**
-- `portfolio/ash-reader/` — v1.1, ash-reader.vercel.app, Next.js 16
-- Both apps carry the same 138k-word source (baked in at build time)
-
-**Brand system:**
-- P6 yellow accent (`#eab308`) — distinct from Clarity suite
-- Reading / text metaphor — pages, chapters, navigation
-- 4-tab structure matches web layout
-- AppIcon: P6 yellow background, book/reader symbol
+- Device testing: verify iCloud sync, reminders, and share sheet on physical iPhone 12 Pro Max
+- Xcode UI step required: Target > Signing & Capabilities > + Capability > iCloud > check "Key-Value storage"
 
 ---
 
-## App context — HANDOFF.md
+## Ash Reader iOS state at a glance
 
-**Version:** v0.3
-**Focus:** Full web parity. Stable. 26/26 tests passing.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.4-dev (Phases 5-7 complete) |
+| URL | local Xcode |
+| Storage key | `ash_reader_ios_` prefix (UserDefaults + NSUbiquitousKeyValueStore) |
+| Stack | SwiftUI + iOS 17 + UserDefaults + iCloud KVS + UNUserNotificationCenter |
+| Xcode prefix | -- (standard Xcode) |
+| Bundle ID | com.chasewhittaker.AshReader |
+| Linear | -- |
+| Last touch | 2026-04-29 |
 
-**Next (V1.0 candidates):**
-- Load custom conversation from URL or paste (not baked-in only)
-- iCloud sync of reading position across devices
-- Add "send all chunks" batch action for Ash
-- Consider TestFlight distribution for use on any iOS device
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/ash-reader-ios/CLAUDE.md | App-level instructions |
+| portfolio/ash-reader-ios/HANDOFF.md | Session state + notes |
+| AshReader/Chunker.swift | Q&A-aware smart chunker + stripMarkdown helper |
+| AshReader/ChunkReaderView.swift | Chunk cards, copy, mark-sent, progress bar, share button |
+| AshReader/SyncedStore.swift | iCloud KVS wrapper with UserDefaults fallback + migration |
+| AshReader/StreakStore.swift | Current/longest reading streak tracking |
+| AshReader/NotificationManager.swift | Weekday reading reminders via UNCalendarNotificationTrigger |
+| AshReader/ProgressStore.swift | Per-tab UserDefaults persistence with key isolation |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Device testing: build + install on iPhone 12 Pro Max, verify iCloud sync + reminders + share sheet
+2. App Store prep: review metadata, screenshots, privacy policy
+3. Spotlight search over theme titles and action items

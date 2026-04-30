@@ -1,75 +1,56 @@
-# SESSION_START — Clarity Time iOS Retroactive Foundation Docs
+# Session Start — Clarity Time iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Clarity Time iOS is a functional v0.1 SwiftUI app.
-**App:** Clarity Time iOS
-**Slug:** clarity-time-ios
-**One-liner:** Focus timer and scripture streak tracker — time your deep work sessions and maintain a daily scripture study habit; third app in the Clarity iOS suite.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 3 is done; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/clarity-time-ios`
-2. **BRANDING.md** — Clarity palette (sky blue time/clock accent), clock+arc AppIcon, focus aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.1 shipped scope; Phase 4 = Supabase sync + Command feed
-5. **APP_FLOW.md** — document the start session → timer → log → scripture check flow
-6. **SESSION_START_clarity-time-ios.md** — stub only
-
-Output paths: `portfolio/clarity-time-ios/docs/`
+- **2026-04-12** — v0.1 Phase 3 MVP shipped: TimeBlob + TimeStore with timer (start/pause/resume/stop), manual duration sessions, scripture day completion + streak logic, session history with delete
+- **2026-04-12** — Programmatic ClarityTime.xcodeproj generated (CX* PBX IDs) with ClarityUI linked as local SPM; xcodebuild build + test verified on iPhone 15 / iOS 17.2
+- **2026-04-13** — AppIcon 1024x1024 (user-selected clock + ring progress arc + check badge) added; docs/BRANDING.md filled; wide + source PNGs in docs/design/
+- **2026-04-26** — ClarityPalette BASE tokens updated via clarity-ui package (bg #0f1117, surface #161b27, etc.)
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** SwiftUI + @Observable + UserDefaults
-**Storage key:** `chase_time_ios_v1`
-**Bundle ID:** `com.chasewhittaker.ClarityTime`
-**Xcodeproj prefix:** `CX*`
-**URL:** local Xcode
-
-**What this app is:**
-A focus session timer paired with a scripture streak tracker. Start a named focus session (e.g., "Job Search — resume"), run a timer, log completion. Separately, track daily scripture study (Book of Mormon, D&C, KJV Bible) with a streak counter. Combines focused work + faith practice in one lightweight tab view.
-
-**Architecture:**
-- `@Observable` state management
-- UserDefaults for persistence (`chase_time_ios_v1`)
-- CX* prefix for all xcodeproj identifiers
-- No Supabase yet
-
-**Clarity iOS suite position:**
-- Time session data feeds into Command iOS scoreboard (Phase 4)
-- All apps import `ClarityUI` package
-
-**Brand system:**
-- Sky blue primary with clock/time accent — distinct from Check-in (same base color, different metaphor)
-- AppIcon: clock with arc overlay on dark background
-- Focus / deep work aesthetic — minimal UI so the timer is front and center
-- Faith context: scripture streak tracks consistency with Book of Mormon, D&C, and KJV Bible study
-- `docs/BRANDING.md` + AppIcon exist in-repo
+None -- clear to build.
 
 ---
 
-## App context — HANDOFF.md
+## Clarity Time state at a glance
 
-**Version:** v0.1
-**Focus:** Phase 3 complete. Focus sessions + scripture streak both functional.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 |
+| URL | local Xcode |
+| Bundle ID | `com.chasewhittaker.ClarityTime` |
+| Storage key | `chase_time_ios_v1` |
+| Stack | SwiftUI + @Observable + ClarityUI + UserDefaults |
+| PBX prefix | CX |
+| Linear | [Clarity Time iOS](https://linear.app/whittaker/project/clarity-time-ios-1ac861a8b710) |
+| Last touch | 2026-04-13 |
 
-**Next (Phase 4):**
-- Supabase sync (`chase_time_ios_v1` → shared project)
-- Feed session totals to Clarity Command iOS scoreboard
-- Add session history chart (7-day time-on-task view)
-- Add scripture streak to Command iOS scorecard
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/clarity-time-ios/CLAUDE.md | App-level instructions |
+| portfolio/clarity-time-ios/HANDOFF.md | Session state + notes |
+| ClarityTime/Services/TimeStore.swift | @Observable store: timer, manual sessions, scripture upsert |
+| ClarityTime/Models/TimeBlob.swift | TimeBlob, TimeSession, ActiveTimerState, ScriptureDayEntry, streak helper |
+| ClarityTime/Views/ContentView.swift | Root TabView (Time, Scripture) |
+| ClarityTime/Views/TimeSessionsView.swift | Timer + manual log + session list |
+| ClarityTime/Views/ScriptureStreakView.swift | Streak display + today toggle + optional reference |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Build weekly/monthly time summary by category
+2. Add export sessions (JSON or plain text share sheet)
+3. Add optional reading plan template beyond free-form scripture reference

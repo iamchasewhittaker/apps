@@ -1,67 +1,60 @@
-# SESSION_START — App Forge Retroactive Foundation Docs
+# Session Start — App Forge (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — App Forge is a stable v8.1 app.
-**App:** App Forge
-**Slug:** app-forge
-**One-liner:** Web workbench for building and auditing new portfolio apps — the predecessor to Shipyard; still in use for rapid app scaffolding and review.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is stable; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/app-forge`
-2. **BRANDING.md** — forge/workshop metaphor, portfolio tooling aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below; note the Shipyard succession story
-4. **PRD.md** — reflect v8.1 shipped scope; note App Forge's role vs. Shipyard going forward
-5. **APP_FLOW.md** — document the app scaffolding and audit workflow
-6. **SESSION_START_app-forge.md** — stub only
-
-Output paths: `portfolio/app-forge/docs/`
+- **v1** — Initial build: Audit, Lessons, Learn, Ideas tabs; dark mode; localStorage key chase_forge_v1
+- **v2** — Fixed duplicate CSS borderBottom; vercel.json check changed to always-pass reminder; pre-deploy.sh false positive fixes
+- **v3** — Added audit.sh (terminal framework checks, auto-copies to clipboard)
+- **v4** — Audit detection order fix (App Forge checked first); confirm() false positive in audit.sh fixed
+- **v5** — Apps tab: one card per app tracking version, changelog summary, live URL, storage key, local folder, notes
+- **v6** — Fixed white border around app edges (global margin/padding reset)
+- **v7** — Fixed Job Search HQ audit detection (removed stale marker, added CHASE_CONTEXT)
+- **v8** — APP_META comment parsing replaces brittle substring detection; detectApp() reads metadata first, falls back to marker scoring
+- **v8.1** — Updated APP_SNAPSHOT_DEFAULTS: Wellness v15.9, Growth v6 retired, Job Search v8.2; added Supabase notes
+- **2026-04-13** — Theme alignment: C tokens updated to portfolio BASE set; DM Sans font added; theme-color meta updated
+- **2026-04-14** — Favicon white-corner fix (solid #0f1117 fill); CI docs added
+- **2026-04-20** — Vercel URL retired; app runs locally only
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v8.1
-**Stack:** React CRA + inline styles + localStorage
-**Storage key:** `chase_forge_v1`
-**URL:** local only (not deployed)
-**Entry:** `src/App.jsx` (monolith — not yet refactored)
-
-**What this app is:**
-A portfolio audit and build workbench. Used before Shipyard existed to track app status, scaffolding decisions, and build progress across the portfolio. Still useful for rapid prototyping and app-level decision tracking.
-
-**Architecture:**
-- Monolith: `App.jsx` is a single large file (not yet split into tabs/components)
-- `chase_forge_v1` localStorage blob holds all state
-- No Supabase sync
-- No auth gate
-
-**Relationship to Shipyard:**
-App Forge was the manual predecessor. Shipyard (`portfolio/shipyard/`) is the automated fleet command center with Supabase-backed project data, Vercel integrations, and a polished UI. App Forge is kept as a local scratchpad.
-
-**Brand system:**
-- Forge / workshop metaphor — building tools for building tools
-- Minimal branding; utility-first aesthetic
+- Split App.jsx monolith (~1100 lines) into separate tab files
+- Wire Supabase sync (Phase 3 of rollout, shared project pattern)
 
 ---
 
-## App context — HANDOFF.md
+## App Forge state at a glance
 
-**Version:** v8.1
-**Focus:** Stable. Used locally as a scratchpad; Shipyard is now the canonical portfolio view.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v8.1 |
+| URL | local only (Vercel URL retired 2026-04-20) |
+| Storage key | `chase_forge_v1` |
+| Stack | React CRA + inline styles + localStorage (no Supabase yet) |
+| Linear | [App Forge](https://linear.app/whittaker/project/app-forge-64221811d236) |
+| Last touch | 2026-04-13 |
 
-**Next:**
-No active development planned. May be archived once Shipyard covers all App Forge use cases. If archived, move to `portfolio/archive/app-forge/`.
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/app-forge/CLAUDE.md | App-level instructions |
+| portfolio/app-forge/HANDOFF.md | Session state + design tokens reference |
+| portfolio/app-forge/src/App.jsx | Full monolith: all tabs, components, audit engine, data, styles (~1100 lines) |
+| portfolio/app-forge/public/index.html | Font loading, PWA meta |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Split App.jsx monolith into separate tab files (Audit, Lessons, Ideas, Apps)
+2. Wire Supabase sync (APP_KEY 'app-forge', shared project pattern)
+3. Update APP_SNAPSHOT_DEFAULTS to reflect latest portfolio versions

@@ -54,6 +54,12 @@
       "runtimeExecutable": "env",
       "runtimeArgs": ["PORT=3008", "npm", "--prefix", "/Users/chase/Developer/chase/portfolio/knowledge-base", "start"],
       "port": 3008
+    },
+    {
+      "name": "fresh-track",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "/Users/chase/Developer/chase/portfolio/fresh-track", "dev", "--", "-p", "3009"],
+      "port": 3009
     }
   ]
 }

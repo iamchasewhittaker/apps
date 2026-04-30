@@ -87,6 +87,9 @@ templates/
   SESSION_START_SHIPYARD_IOS.md          <- pre-filled: Shipyard iOS
   SESSION_START_ASH_READER_IOS.md        <- pre-filled: Ash Reader iOS
   SESSION_START_UNNAMED_IOS.md           <- pre-filled: Unnamed iOS
+  SESSION_START_DRIVEMIND.md             <- pre-filled: DriveMind (macOS)
+  SESSION_START_FRESH_TRACK.md           <- pre-filled: Fresh Track (web)
+  SESSION_START_KEEP_IOS.md              <- pre-filled: Keep iOS
   SESSION_START_ROLLER_TASK_TYCOON_VITE.md <- pre-filled: RollerTask Tycoon Vite (archived)
   SESSION_START_GROWTH_TRACKER_ARCHIVED.md <- pre-filled: Growth Tracker (archived)
   SESSION_START_MONEY_ARCHIVED.md        <- pre-filled: Money (archived)

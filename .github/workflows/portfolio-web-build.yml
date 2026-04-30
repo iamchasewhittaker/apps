@@ -9,6 +9,9 @@ on:
       - "portfolio/job-search-hq/**"
       - "portfolio/app-forge/**"
       - "portfolio/knowledge-base/**"
+      - "portfolio/fresh-track/**"
+      - "portfolio/clarity-command/**"
+      - "portfolio/clarity-hub/**"
       - ".github/workflows/portfolio-web-build.yml"
   pull_request:
     paths:
@@ -16,6 +19,9 @@ on:
       - "portfolio/job-search-hq/**"
       - "portfolio/app-forge/**"
       - "portfolio/knowledge-base/**"
+      - "portfolio/fresh-track/**"
+      - "portfolio/clarity-command/**"
+      - "portfolio/clarity-hub/**"
       - ".github/workflows/portfolio-web-build.yml"
 
 jobs:
@@ -76,5 +82,35 @@ jobs:
           node-version: "20"
           cache: npm
           cache-dependency-path: portfolio/app-forge/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  clarity-command:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portfolio/clarity-command
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: portfolio/clarity-command/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  clarity-hub:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: portfolio/clarity-hub
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: portfolio/clarity-hub/package-lock.json
       - run: npm ci
       - run: npm run build

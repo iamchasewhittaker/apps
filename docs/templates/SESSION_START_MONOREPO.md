@@ -33,4 +33,6 @@ Copy everything below into a **new** chat (Cursor, Claude Code, Codex, etc.), fi
 
 ---
 
+> Handoff guide: [`docs/templates/HANDOFF_SKILL.md`](HANDOFF_SKILL.md)
+
 After the session, the human will update **[HANDOFF.md](../../HANDOFF.md)** (State + Notes) and Linear.

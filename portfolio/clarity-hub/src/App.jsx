@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { T, loadBlob, saveBlob, DEFAULT_CHECKIN, DEFAULT_TRIAGE, DEFAULT_TIME, DEFAULT_BUDGET, DEFAULT_GROWTH } from "./theme";
-import { pullCheckin, pushCheckin, pullTriage, pushTriage, pullTime, pushTime, pullBudget, pushBudget, pullGrowth, pushGrowth, auth, emailRedirectTo } from "./sync";
+import { T, loadBlob, saveBlob, today, DEFAULT_CHECKIN, DEFAULT_TRIAGE, DEFAULT_TIME, DEFAULT_BUDGET, DEFAULT_GROWTH } from "./theme";
+import { pullCheckin, pushCheckin, pullTriage, pushTriage, pullTime, pushTime, pullBudget, pushBudget, pullGrowth, pushGrowth, pushTimeDaily, pushBudgetDaily, pushGrowthDaily, auth, emailRedirectTo } from "./sync";
 import CheckinTab from "./tabs/CheckinTab";
 import TriageTab from "./tabs/TriageTab";
 import TimeTab from "./tabs/TimeTab";
@@ -190,6 +190,33 @@ export default function App() {
   useEffect(() => { if (hasLoaded.current) { saveBlob("time", time); pushTime(time); } }, [time]); // eslint-disable-line
   useEffect(() => { if (hasLoaded.current) { saveBlob("budget", budget); pushBudget(budget); } }, [budget]); // eslint-disable-line
   useEffect(() => { if (hasLoaded.current) { saveBlob("growth", growth); pushGrowth(growth); } }, [growth]); // eslint-disable-line
+
+  // ── Cross-app daily summaries (consumed by Clarity Command Scoreboard) ──
+  useEffect(() => {
+    if (!hasLoaded.current) return;
+    const todayStr = today();
+    const todaySessions = (time.sessions || []).filter(s => s.date === todayStr);
+    const sessionMinutes = Math.round(todaySessions.reduce((sum, s) => sum + (s.durationSeconds || 0), 0) / 60);
+    const scriptureDone = (time.scriptureDays || []).some(d => d.date === todayStr && d.completed);
+    pushTimeDaily({ date: todayStr, sessionMinutes, sessionCount: todaySessions.length, scriptureDone, met: sessionMinutes >= 120, _syncAt: Date.now() });
+  }, [time]); // eslint-disable-line
+
+  useEffect(() => {
+    if (!hasLoaded.current) return;
+    const todayStr = today();
+    const b = budget.baseline || {};
+    const wantsRemainingCents = (b.wantsBudgetCents || 0) - (b.wantsSpentCents || 0);
+    pushBudgetDaily({ date: todayStr, wantsSpentCents: b.wantsSpentCents || 0, wantsRemainingCents, met: wantsRemainingCents >= 0, _syncAt: Date.now() });
+  }, [budget]); // eslint-disable-line
+
+  useEffect(() => {
+    if (!hasLoaded.current) return;
+    const todayStr = today();
+    const todaySessions = (growth.sessions || []).filter(s => s.date === todayStr);
+    const growthMinutes = todaySessions.reduce((sum, s) => sum + (s.mins || 0), 0);
+    const areas = [...new Set(todaySessions.map(s => s.area).filter(Boolean))];
+    pushGrowthDaily({ date: todayStr, growthMinutes, sessionCount: todaySessions.length, areas, met: growthMinutes >= 30, _syncAt: Date.now() });
+  }, [growth]); // eslint-disable-line
 
   if (session === undefined) {
     return <div style={{ minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>

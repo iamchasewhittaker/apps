@@ -1,75 +1,58 @@
-# SESSION_START — Shipyard iOS Retroactive Foundation Docs
+# Session Start — Shipyard iOS (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Shipyard iOS is a functional v0.1 SwiftUI app.
-**App:** Shipyard iOS
-**Slug:** shipyard-ios
-**One-liner:** Mobile companion to Shipyard — read-only fleet view of the portfolio; fetches real `projects` from Supabase, email/password auth, SY monogram AppIcon.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. Phase 2 is complete; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/shipyard-ios`
-2. **BRANDING.md** — nautical palette (#07101E bg, #D7AA3A gold), Big Shoulders Display spirit, SY monogram
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect Phase 2 scope; Phase 3 = editable fields + push status updates
-5. **APP_FLOW.md** — document the auth → projects list → project detail → status flow
-6. **SESSION_START_shipyard-ios.md** — stub only
-
-Output paths: `portfolio/shipyard-ios/docs/`
+- **2026-04-17** — Phase 1 scaffold: Shipyard.xcodeproj (SY* prefix), SwiftUI shell, Ship Codable model, mock fleet, FleetListView grouped by status, ShipRowView with nautical MVP-step label, compass-rose AppIcon, FleetStoreTests
+- **2026-04-19** — Phase 2 complete: supabase-swift v2 SPM, real projects fetch from Supabase, email/password auth, session bootstrap + authStateChanges listener, UserDefaults cache for offline, SignInView wired, toolbar reload + sign-out
+- **2026-04-20** — Phase 2 bug fixes (found on first device install): .initialSession false-positive (nil session check), sign-out not sticking (belt-and-suspenders handleSignedOut), error banner in FleetListView
+- **2026-04-20** — Nautical rebrand: 8-token Palette.swift (bg/surface/steel/gold/dim/dimmer/ghost/white), Font+Shipyard.swift (BigShoulders/DM Mono/Instrument Sans), HelmMark.swift (8-spoke ship's helm), LaunchScreenView, OnboardingView (3-page), all views restyled, AppIcon regenerated from helm SVG, installed on iPhone 12 Pro Max
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1
-**Stack:** SwiftUI + @Observable + supabase-swift v2 + UserDefaults
-**Storage key:** `chase_shipyard_ios_v1`
-**Bundle ID:** `com.chasewhittaker.Shipyard`
-**Xcodeproj prefix:** `SY*`
-**URL:** local Xcode
-
-**What this app is:**
-The native iOS companion to Shipyard (the web fleet command center). Phase 2 features: fetches real `projects` rows from Supabase (RLS-secured), email/password auth, UserDefaults cache for offline viewing. Currently read-only — the iOS app shows portfolio project status without allowing edits.
-
-**Web companion:**
-- `portfolio/shipyard/` — v0.1, Next.js, shipyard-sandy-seven.vercel.app
-- Shared Supabase project (`unqtnnxlltiadzbqpyhh`) — same `projects` table
-- RLS: authenticated users can read all projects; write requires owner claim
-
-**Architecture:**
-- `@Observable` state management
-- supabase-swift v2 for auth + data fetch
-- UserDefaults cache: `chase_shipyard_ios_v1` (last-fetched projects list)
-- SY* prefix for all xcodeproj identifiers
-
-**Brand system:**
-- Nautical palette: `#07101E` deep navy background, `#D7AA3A` gold accent
-- SY monogram AppIcon (navy background, gold SY lettermark)
-- Big Shoulders Display type spirit (matches web Shipyard)
-- Voice: fleet-commander confidence — "all ships accounted for"
+- Supabase fetch not yet smoke-tested end-to-end on device (sign-in works; need to verify real data vs. mock fallback)
+- No ClarityUI dependency yet (deferred to keep pbxproj minimal)
 
 ---
 
-## App context — HANDOFF.md
+## Shipyard iOS state at a glance
 
-**Version:** v0.1
-**Focus:** Phase 2 complete. Real projects fetch + auth + UserDefaults cache all working.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1 (Phase 2 complete) |
+| URL | local Xcode |
+| Storage key | `chase_shipyard_ios_v1` (UserDefaults cache of last fleet fetch) |
+| Stack | SwiftUI + iOS 17 + @Observable + supabase-swift v2 + UserDefaults |
+| Xcode prefix | SY* |
+| Bundle ID | com.chasewhittaker.Shipyard |
+| Linear | -- |
+| Last touch | 2026-04-20 |
 
-**Next (Phase 3):**
-- Enable project status updates from iOS (read-write)
-- Add editable `status`, `last_touch`, and `notes` fields
-- Add push notification when a project status changes
-- Ship detail view: show recent git activity + Linear issue count
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/shipyard-ios/CLAUDE.md | App-level instructions |
+| portfolio/shipyard-ios/HANDOFF.md | Session state + notes |
+| Shipyard/Services/FleetStore.swift | @Observable @MainActor -- Supabase fetch + auth listener + cache fallback |
+| Shipyard/Services/SupabaseService.swift | Shared SupabaseClient singleton |
+| Shipyard/Models/Ship.swift | Codable struct mirroring web Project type |
+| Shipyard/Views/Fleet/FleetListView.swift | Grouped list by status with error banner + toolbar |
+| Shipyard/Constants/Palette.swift | 8 nautical color tokens (bg, surface, steel, gold, dim, dimmer, ghost, white) |
+| Shipyard/Views/HelmMark.swift | Reusable ship's helm SwiftUI view |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Phase 2.5 -- Magic-link auth (deep-link scheme `shipyard://auth/confirm`, .onOpenURL, exchangeCodeForSession)
+2. Phase 3 -- WIP-of-1 gate mirror (read-only), review countdown chips, Captain's Log viewer
+3. Phase 4 -- Widgets (small: active ship; medium: fleet stats)

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { T, daysSince, computeStreak } from "../theme";
+import { T, daysSince, computeStreak, today } from "../theme";
 
 // Returns "met" | "partial" | "missed" | "future" for a given log entry
 function getDayStatus(log, targets) {
@@ -220,43 +220,45 @@ function StatsRow({ dailyLogs, targets, layoffDate }) {
 }
 
 // ── LIVE APP DATA ─────────────────────────────────────────────────────────
-function LiveAppData({ jobSearchDaily, wellnessDaily }) {
+function LiveAppData({ jobSearchDaily, wellnessDaily, timeDaily, budgetDaily, growthDaily }) {
   const todayStr = today();
-  const jsToday = jobSearchDaily?.date === todayStr;
-  const wlToday = wellnessDaily?.date === todayStr;
-  const hasAny = jsToday || wlToday || jobSearchDaily || wellnessDaily;
+  const hasAny = jobSearchDaily || wellnessDaily || timeDaily || budgetDaily || growthDaily;
   if (!hasAny) return null;
+
+  const rowStyle = (isLast) => ({
+    display: "flex", alignItems: "center", justifyContent: "space-between",
+    padding: "10px 0",
+    borderBottom: isLast ? "none" : `1px solid ${T.border}`,
+  });
+
+  const isToday = (d) => d?.date === todayStr;
 
   return (
     <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12, padding: "14px 16px" }}>
       <div style={{ fontSize: 12, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>
-        📡 Live App Data
+        Live App Data
       </div>
       {/* Job Search HQ */}
       {jobSearchDaily && (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: `1px solid ${T.border}` }}>
+        <div style={rowStyle(false)}>
           <div>
             <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Job Search HQ</div>
-            <div style={{ fontSize: 11, color: T.muted }}>{jsToday ? "Today" : jobSearchDaily.date}</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{isToday(jobSearchDaily) ? "Today" : jobSearchDaily.date}</div>
           </div>
           <div style={{ textAlign: "right" }}>
-            <span style={{
-              fontSize: 13, fontWeight: 700,
-              color: jobSearchDaily.met ? T.green : T.accent,
-            }}>
-              {jobSearchDaily.count}/{5} actions
-              {jobSearchDaily.met ? " ✓" : ""}
+            <span style={{ fontSize: 13, fontWeight: 700, color: jobSearchDaily.met ? T.green : T.accent }}>
+              {jobSearchDaily.count}/{5} actions{jobSearchDaily.met ? " ✓" : ""}
             </span>
-            {!jsToday && <div style={{ fontSize: 10, color: T.muted }}>last sync</div>}
+            {!isToday(jobSearchDaily) && <div style={{ fontSize: 10, color: T.muted }}>last sync</div>}
           </div>
         </div>
       )}
       {/* Wellness Tracker */}
       {wellnessDaily && (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
+        <div style={rowStyle(false)}>
           <div>
             <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Wellness Tracker</div>
-            <div style={{ fontSize: 11, color: T.muted }}>{wlToday ? "Today" : wellnessDaily.date}</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{isToday(wellnessDaily) ? "Today" : wellnessDaily.date}</div>
           </div>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
             <span style={{ fontSize: 16 }} title="Morning check-in">{wellnessDaily.morningDone ? "☀️" : "⬜"}</span>
@@ -266,12 +268,66 @@ function LiveAppData({ jobSearchDaily, wellnessDaily }) {
           </div>
         </div>
       )}
+      {/* Clarity Time */}
+      {timeDaily && (
+        <div style={rowStyle(false)}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Clarity Time</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{isToday(timeDaily) ? "Today" : timeDaily.date}</div>
+          </div>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: timeDaily.met ? T.green : T.accent }}>
+              {timeDaily.sessionMinutes}m
+            </span>
+            <span style={{ fontSize: 11, color: T.muted }}>
+              {timeDaily.sessionCount} session{timeDaily.sessionCount !== 1 ? "s" : ""}
+            </span>
+            {timeDaily.scriptureDone && <span style={{ fontSize: 13 }} title="Scripture done">{"📖"}</span>}
+            {!isToday(timeDaily) && <span style={{ fontSize: 10, color: T.muted }}>last sync</span>}
+          </div>
+        </div>
+      )}
+      {/* Clarity Budget */}
+      {budgetDaily && (
+        <div style={rowStyle(false)}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Clarity Budget</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{isToday(budgetDaily) ? "Today" : budgetDaily.date}</div>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: budgetDaily.met ? T.green : T.red }}>
+              ${(Math.abs(budgetDaily.wantsRemainingCents) / 100).toFixed(0)} {budgetDaily.met ? "left" : "over"}
+            </span>
+            {!isToday(budgetDaily) && <div style={{ fontSize: 10, color: T.muted }}>last sync</div>}
+          </div>
+        </div>
+      )}
+      {/* Clarity Growth */}
+      {growthDaily && (
+        <div style={rowStyle(true)}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: T.text }}>Clarity Growth</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{isToday(growthDaily) ? "Today" : growthDaily.date}</div>
+          </div>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: growthDaily.met ? T.green : T.accent }}>
+              {growthDaily.growthMinutes}m
+            </span>
+            {growthDaily.areas.length > 0 && (
+              <span style={{ fontSize: 11, color: T.muted }}>
+                {growthDaily.areas.length} area{growthDaily.areas.length !== 1 ? "s" : ""}
+              </span>
+            )}
+            {!isToday(growthDaily) && <span style={{ fontSize: 10, color: T.muted }}>last sync</span>}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 // ── MAIN SCOREBOARD TAB ────────────────────────────────────────────────────
-export default function ScoreboardTab({ dailyLogs, layoffDate, targets, jobSearchDaily, wellnessDaily }) {
+export default function ScoreboardTab({ dailyLogs, layoffDate, targets, jobSearchDaily, wellnessDaily, timeDaily, budgetDaily, growthDaily }) {
   return (
     <div style={{ padding: "20px 16px", display: "flex", flexDirection: "column", gap: 20 }}>
       <div>
@@ -279,7 +335,7 @@ export default function ScoreboardTab({ dailyLogs, layoffDate, targets, jobSearc
         <div style={{ fontSize: 12, color: T.muted }}>Your consistency. Your accountability. No hiding.</div>
       </div>
 
-      <LiveAppData jobSearchDaily={jobSearchDaily} wellnessDaily={wellnessDaily} />
+      <LiveAppData jobSearchDaily={jobSearchDaily} wellnessDaily={wellnessDaily} timeDaily={timeDaily} budgetDaily={budgetDaily} growthDaily={growthDaily} />
 
       <StatsRow dailyLogs={dailyLogs} targets={targets} layoffDate={layoffDate} />
 

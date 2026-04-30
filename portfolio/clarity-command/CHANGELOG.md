@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added (2026-04-29) — Phase 3 cross-app Scoreboard + Vercel redeploy
+- **5-app Scoreboard:** LiveAppData now pulls and renders daily summaries from Clarity Time, Clarity Budget, and Clarity Growth (via Clarity Hub) alongside existing Job Search HQ and Wellness Tracker rows
+- **Vercel redeployed:** clarity-command.vercel.app live with Supabase env vars; git connect pending (10-project limit)
+- **CI enabled:** added `clarity-command` and `clarity-hub` jobs to `.github/workflows/portfolio-web-build.yml`
+
+### Fixed (2026-04-29)
+- **Missing `today` import:** `ScoreboardTab.jsx` called `today()` without importing it from theme — caused ReferenceError when LiveAppData rendered with real cross-app data
+
 ### Added (2026-04-27) — Phase 2 verification + iOS parity
 - **Cross-app web pipeline verified:** confirmed via direct Supabase query that Job Search HQ writes `job-search-daily` rows in production (latest 2026-04-27). The `LiveAppData` panel in `ScoreboardTab.jsx` is fully wired to render this data.
 - **Local dev sync activated:** `.env` files added to `clarity-command`, `job-search-hq`, and `wellness-tracker` so the local web apps now participate in cross-app sync (root `.gitignore` already covers `.env`).

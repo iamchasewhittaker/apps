@@ -1,73 +1,62 @@
-# SESSION_START — Shortcut Reference Retroactive Foundation Docs
+# Session Start — Shortcut Reference (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Shortcut Reference is a functional v0.1.0 macOS app.
-**App:** Shortcut Reference
-**Slug:** shortcut-reference
-**One-liner:** macOS menu-bar app that shows keyboard shortcuts for the active app using Accessibility APIs — no manual shortcut lists required, reads directly from the OS.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is functional; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/shortcut-reference`
-2. **BRANDING.md** — macOS-native aesthetic, developer-tool palette, keyboard/shortcut metaphor
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v0.1.0 shipped scope; V2 = shortcut search, favorites, clipboard copy
-5. **APP_FLOW.md** — document the AX API poll → parse → menu bar render → search flow
-6. **SESSION_START_shortcut-reference.md** — stub only
-
-Output paths: `portfolio/shortcut-reference/docs/`
+- **2026-04-14** — Initial documentation scaffold: README, CLAUDE, AGENTS, ADR template, roadmap, changelog, license, gitignore
+- **2026-04-14** — Swift Package with SwiftUI: active-app observer (NSWorkspace), menu-bar traversal (AXUIElement), shortcut list UI
+- **2026-04-14** — ShortcutReference.xcodeproj created with MacApp/ @main, Info.plist, entitlements (no App Sandbox)
+- **2026-04-14** — scripts/build-app.sh for Xcode build + copy to dist/
+- **2026-04-14** — Fixed: skip AX scans for Electron apps (Cursor, VS Code) that hang the AX stack; added AX call budget, max depth, cycle detection
+- **2026-04-14** — Fixed: run menu extraction on main actor (AX APIs off main thread deadlock); macOS 13 deployment target
+- **2026-04-14** — Accessibility onboarding: plain-English guidance, executable path display, Copy steps button, Xcode-specific instructions
+- **2026-04-14** — Single-column layout fix (was hidden behind collapsed NavigationSplitView second column)
+- **2026-04-14** — Promoted from projects/ to portfolio/; HANDOFF, LEARNINGS, BRANDING created
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v0.1.0
-**Stack:** Swift 5.9+ / SwiftUI + AppKit — macOS 13+ (Ventura and later)
-**Storage:** n/a (macOS native — no localStorage, no Supabase)
-**URL:** local Xcode
-**Bundle ID:** `dev.chase.shortcut-reference`
-**Build:** Xcode or `swift run ShortcutReference`
-
-**What this app is:**
-A macOS menu-bar app that reads keyboard shortcuts for the currently active application using the Accessibility (AX) APIs. Instead of manually maintaining shortcut lists per app, it queries the OS directly for menu items and their key equivalents, then renders them in a searchable panel attached to the menu bar icon.
-
-**Architecture:**
-- `Sources/ShortcutReferenceLibrary/` — SwiftUI + AX logic (library)
-- `MacApp/` — `@main` entry point for the `.app` bundle
-- AX API: `AXUIElementCreateSystemWide()` → focused app → menu bar → menu items + key equivalents
-- Renders as a `NSPopover` attached to menu bar `NSStatusItem`
-
-**Key constraint:**
-Requires Accessibility permissions (`Privacy & Security → Accessibility`). User must grant on first launch.
-
-**Brand system:**
-- macOS-native — follows system light/dark, SF Symbols icons
-- Keyboard / shortcut metaphor — modifier key symbols (⌘ ⌥ ⇧ ⌃)
-- Voice: minimal utility — "Xcode: ⌘B Build"
+- Define V1 MoSCoW scope and triage ROADMAP milestones with dates
+- Add branding/logo per portfolio standard
+- Consider App Store distribution (requires Accessibility entitlement review)
+- Scraper may need to handle apps with empty AX metadata (manual overrides file)
 
 ---
 
-## App context — HANDOFF.md
+## Shortcut Reference state at a glance
 
-**Version:** v0.1.0
-**Focus:** Functional. AX shortcut reading works for most macOS apps.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v0.1.0 |
+| URL | local Xcode |
+| Storage key | n/a |
+| Stack | Swift 5.9+ / SwiftUI + AppKit, macOS 13+ |
+| Linear | [Shortcut Reference](https://linear.app/whittaker/project/shortcut-reference-5b5280d7288b) |
+| Last touch | 2026-04-14 |
 
-**Next (V2 candidates):**
-- Add shortcut search (filter by key combination or action name)
-- Add favorites / pin frequently used shortcuts
-- Add one-click copy of shortcut combo to clipboard
-- Handle apps that don't expose full menu bar (some Electron apps, games)
-- Submit to Mac App Store (requires Accessibility entitlement review)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/shortcut-reference/CLAUDE.md | App-level instructions |
+| portfolio/shortcut-reference/HANDOFF.md | Session state + notes |
+| Sources/ShortcutReferenceLibrary/MenuShortcutExtractor.swift | AXUIElement menu-bar traversal engine |
+| Sources/ShortcutReferenceLibrary/ActiveAppObserver.swift | NSWorkspace frontmost-app observer + debounce |
+| Sources/ShortcutReferenceLibrary/ContentView.swift | Main UI: shortcut list, search, refresh |
+| MacApp/DriveMindApp.swift | @main entry point for .app bundle |
+| Sources/ShortcutReferenceLibrary/AccessibilityIntrospectionPolicy.swift | Electron skip-list + AX call budget |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Define V1 MoSCoW scope — decide which ROADMAP items ship in v1.0 vs later
+2. Add compact/minimized strip mode (ROADMAP Later)
+3. Build manual overrides file for apps with bad AX metadata

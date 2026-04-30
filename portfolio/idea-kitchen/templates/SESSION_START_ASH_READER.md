@@ -1,72 +1,54 @@
-# SESSION_START — Ash Reader Retroactive Foundation Docs
+# Session Start — Ash Reader (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — Ash Reader is a live deployed v1.1 app.
-**App:** Ash Reader
-**Slug:** ash-reader
-**One-liner:** Mobile chunker for sending long capture-system conversations (138k+ words) to Ash — splits the text into page-sized chunks with navigation, themes, and action shortcuts.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is at v1.1 and live; decisions are made.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/ash-reader`
-2. **BRANDING.md** — P6 yellow accent, reading/text metaphor, minimal mobile aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect v1.1 shipped scope; V2 = full parity with iOS v0.3
-5. **APP_FLOW.md** — document the load → chunk → read → navigate → send-to-Ash flow
-6. **SESSION_START_ash-reader.md** — stub only
-
-Output paths: `portfolio/ash-reader/docs/`
+- **2026-04-17** — v1.0 shipped: Reader (full 138k-word doc chunked at 1k/1.5k/2k words), Themes (14 sections + summaries at 3 word counts), Actions (190 items grouped by theme), Settings (export/import progress, Ash prompt prefix)
+- **2026-04-17** — Deployed to ash-reader.vercel.app (Next.js 16 + React 19 + TypeScript + Tailwind 4)
+- **2026-04-17** — v1.1 shipped: smart Q&A chunker (`chunkSmart`) breaking at exchange boundaries, paste-in mode on Reader tab, graceful missing-file handling
+- **2026-04-17** — iOS companion (ash-reader-ios) scaffolded: SwiftUI PasteInputView + ChunkReaderView + Swift port of Q&A chunker, built + deployed to iPhone 12 Pro Max
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v1.1
-**Stack:** Next.js 16 (App Router) + TypeScript + Tailwind CSS + localStorage + Vercel
-**Storage:** `ash_reader_` prefix (multiple localStorage keys)
-**URL:** ash-reader.vercel.app
-**GitHub:** connected to `iamchasewhittaker/apps` for auto-deploy
-
-**What this app is:**
-A mobile-optimized reader for sending Chase's 138k-word capture-system conversation to Ash (his AI reflection model). The conversation is too long to paste into Claude directly, so Ash Reader chunks it into navigable pages and provides one-tap actions for sending sections. A companion tool to the capture/reflection workflow.
-
-**Key features (v1.1):**
-- Loads the full 138k-word conversation from a baked-in source
-- Chunks into configurable page sizes (default ~2k words)
-- Swipe / tap navigation between chunks
-- Themes (light, dark, sepia, high contrast)
-- Action shortcuts (copy chunk, open Ash with chunk pre-filled)
-- Full parity between web v1.1 and iOS v0.3
-
-**iOS companion:** `portfolio/ash-reader-ios/` — SwiftUI, 4 tabs (Reader/Themes/Actions/Settings), 26/26 tests, P6 yellow icon
-
-**Brand system:**
-- P6 yellow accent (`#eab308`) — distinct from other portfolio apps
-- Reading/text metaphor — pages, chapters, navigation
-- Voice: minimal — the content IS the product
+- Deploy web v1.1 to Vercel (`vercel --prod`) to push smart chunker + paste UI live
+- Data files (`doc.txt`, `themes.md`, `summary.json`) are gitignored and local-only; deploy requires `vercel --prod` (not GitHub auto-deploy)
 
 ---
 
-## App context — HANDOFF.md
+## Ash Reader state at a glance
 
-**Version:** v1.1
-**Focus:** Stable and live. Full parity with iOS v0.3 achieved.
-**Last touch:** 2026-04-21
+| Field | Value |
+|-------|-------|
+| Version | v1.1 |
+| URL | ash-reader.vercel.app |
+| Storage key | `ash_reader_` prefix (multiple localStorage keys) |
+| Stack | Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + pnpm, no backend |
+| Linear | [Linear](https://linear.app/whittaker/project/ash-reader-c2d6692cd906) |
+| Last touch | 2026-04-17 |
 
-**Next (V2 candidates):**
-- Add ability to load a custom conversation (paste instead of baked-in)
-- Add "send all remaining chunks" batch action for Ash
-- Add reading progress indicator (chunk N of M, estimated read time)
-- Consider converting baked-in source to a URL parameter for flexibility
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/ash-reader/CLAUDE.md | App-level instructions + stack + key files |
+| portfolio/ash-reader/HANDOFF.md | Session state + deploy instructions |
+| portfolio/ash-reader/lib/chunker.ts | Word chunking + Q&A-aware smart splitting |
+| portfolio/ash-reader/lib/progress.ts | localStorage helpers (chunks, actions, prefix, export/import) |
+| portfolio/ash-reader/components/ChunkReader.tsx | Reusable chunker UI component |
+| portfolio/ash-reader/app/page.tsx | Main reader page |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Deploy v1.1 to Vercel (`vercel --prod`) to push smart chunker + paste UI live
+2. Add chunk-jump feature (tap chunk number to jump directly to any chunk)
+3. Add session notes (freetext field per chunk to jot what Ash said about it)

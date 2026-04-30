@@ -1,78 +1,55 @@
-# SESSION_START — RollerTask Tycoon Web Retroactive Foundation Docs
+# Session Start — RollerTask Tycoon Web (2026-04-29)
 
-> Pre-filled. Paste directly into the Idea Kitchen Claude Project. No brackets to fill in.
-
----
-
-**Mode:** Retroactive documentation — RollerTask Tycoon Web is a stable v1.0 app.
-**App:** RollerTask Tycoon Web
-**Slug:** rollertask-tycoon-web
-**One-liner:** Standalone points-based task and motivation tracker — complete tasks to earn points and park cash, track totals in a gamified ledger; web companion to RollerTask Tycoon iOS with shared Supabase sync.
+> Paste this at the start of any new Claude Code chat to resume with full context.
+> Say: "Read CLAUDE.md and HANDOFF.md first, then this prompt."
 
 ---
 
-## What to skip
+## Journey so far
 
-Do not run STEP 0, STEP 1.5, or STEP 2. The app is at v1.0 and stable.
-
----
-
-## What to produce
-
-All six STEP 6 artifacts (downloadable panels, not code blocks in chat). Priority:
-1. **SHOWCASE.md** — Shipyard needs this at `/ship/rollertask-tycoon-web`
-2. **BRANDING.md** — ROLLER amber / TASK white bold text logo, park-tycoon gamification aesthetic
-3. **PRODUCT_BRIEF.md** — distill from context below
-4. **PRD.md** — reflect V1 shipped scope; next items go in V2
-5. **APP_FLOW.md** — document the task → complete → earn points → ledger flow
-6. **SESSION_START_rollertask-tycoon-web.md** — stub only
-
-Output paths: `portfolio/rollertask-tycoon-web/docs/`
+- **2026-04-13** — v0.1 scaffold created via `scripts/new-app`
+- **2026-04-13** — v1.0 launched: full app split from clarity-hub with single-blob state, gamified task tracker (task list, points, park cash, profit ledger), auth gate (email OTP), Supabase sync (`app_key: rollertask`), CI job added
+- **2026-04-13** — Logo standardization: `logo.svg` (ROLLER amber / TASK white), favicon, PNGs, manifest
+- **2026-04-14** — Shared auth bootstrap, refactored sync, auth diagnostics, favicon white-corner fix
+- **2026-04-14** — Portfolio-standard text logo applied (ROLLER amber `#f59e0b` + TASK white bold), PNGs regenerated, redeployed
+- **2026-04-20** — Vercel project removed (local-only; runs via `npm start`)
 
 ---
 
-## App context — CLAUDE.md
+## Still needs action
 
-**Version:** v1.0
-**Storage key:** `chase_hub_rollertask_v1` (localStorage — must never change; shared with clarity-hub for continuity)
-**Supabase `app_key`:** `rollertask` (must never change — iOS sync depends on it)
-**URL:** local only (Vercel project removed 2026-04-20; runs via `npm start`)
-**Entry:** `src/App.jsx`
-**Stack:** React CRA + inline styles + localStorage + Supabase sync (live)
-
-**What this app is:**
-A standalone points-based task and motivation tracker split out from Clarity Hub. Complete tasks to earn points, track totals, and stay accountable. Web companion to RollerTask Tycoon iOS, sharing the same Supabase blob via `app_key = rollertask`.
-
-**Single-tab structure:**
-- `RollerTaskTab.jsx` — task list, points earned, park cash balance, profit ledger
-- Settings accessible via gear icon (modal, not a tab)
-- Auth gate: email OTP via Supabase
-
-**Architecture:**
-- Single-blob app: `App.jsx` owns one `rollertask` state object
-- `RollerTaskTab` receives `blob` + `setBlob` as props — dumb component
-- `theme.js` — T (colors), `loadBlob`/`saveBlob`, `DEFAULT_ROLLERTASK`
-- `sync.js` — `pushRollertask`/`pullRollertask` with `app_key = 'rollertask'`
-- Supabase project: `unqtnnxlltiadzbqpyhh` (shared portfolio project)
-
-**Brand system:**
-- Text logo: `ROLLER` (amber label) / `TASK` (white bold) — park/tycoon aesthetic
-- Park-themed gamification: points = "park cash", tasks = "attractions"
-- Fun but grounded — not cartoonish
-- Logo assets: `logo.svg`, `favicon.svg`, `logo192.png`, `logo512.png`
-
-**iOS companion:** `portfolio/roller-task-tycoon-ios/` — SwiftUI + SwiftData; local-first, no Supabase yet.
+- Vercel project removed 2026-04-20; app runs locally via `npm start`. To redeploy: `vercel link` + `scripts/vercel-add-env` + `vercel --prod`
+- Phase 1-3 docs (Product Brief, PRD, App Flow) are still stubs from scaffold
 
 ---
 
-## App context — HANDOFF.md
+## RollerTask Tycoon Web state at a glance
 
-**Version:** v1.0
-**Focus:** Stable. Portfolio-standard text logo added (ROLLER amber / TASK white bold), redeployed 2026-04-14.
-**Last touch:** 2026-04-14
-**Status:** Local only (Vercel removed 2026-04-20)
+| Field | Value |
+|-------|-------|
+| Version | v1.0 |
+| URL | local only (Vercel project removed 2026-04-20) |
+| Storage key | `chase_hub_rollertask_v1` |
+| Stack | React (CRA), inline styles, localStorage + Supabase blob sync (`app_key: rollertask`) |
+| Linear | [Linear](https://linear.app/whittaker/project/rollertask-tycoon-web-53da1d06226e) |
+| Last touch | 2026-04-14 |
 
-**Next (V2 candidates):**
-- Task categories filter
-- Ledger pagination
-- Task metadata (due date, ride type)
+---
+
+## Key files for this session
+
+| File | Purpose |
+|------|---------|
+| portfolio/rollertask-tycoon-web/CLAUDE.md | App-level instructions, blob shape, constraints |
+| portfolio/rollertask-tycoon-web/HANDOFF.md | Session state + quick-start prompt |
+| portfolio/rollertask-tycoon-web/src/App.jsx | Shell: auth gate, single-blob state, settings modal |
+| portfolio/rollertask-tycoon-web/src/tabs/RollerTaskTab.jsx | Full gamified task tracker: task list, points, park cash, profit ledger |
+| portfolio/rollertask-tycoon-web/src/theme.js | T palette, loadBlob/saveBlob, DEFAULT_ROLLERTASK |
+
+---
+
+## Suggested next actions (pick one)
+
+1. Add task categories filter to RollerTaskTab
+2. Add ledger pagination (currently shows all entries)
+3. Add task metadata fields (due date, ride type)
