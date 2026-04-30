@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipyard — Layout Patterns (Option D+)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-start: #0A1128;
+    --bg-end: #0E1A3E;
+    --glass: rgba(255,255,255,0.05);
+    --glass-hover: rgba(255,255,255,0.09);
+    --glass-strong: rgba(255,255,255,0.08);
+    --border: rgba(255,215,0,0.12);
+    --border-hover: rgba(255,215,0,0.35);
+    --text: #FFFFFF;
+    --text-secondary: #A0AABF;
+    --accent: #FFD700;
+    --accent-glow: rgba(255,215,0,0.25);
+    --accent-soft: rgba(255,215,0,0.12);
+    --success: #34D399;
+    --success-soft: rgba(52,211,153,0.12);
+    --warning: #FBBF24;
+    --warning-soft: rgba(251,191,36,0.12);
+    --danger: #F87171;
+    --danger-soft: rgba(248,113,113,0.12);
+  }
+
+  body {
+    background: linear-gradient(150deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ─── LAYOUT ─── */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: var(--glass);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid var(--border);
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
+    margin-bottom: 36px;
+  }
+  .logo-mark {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: white;
+    box-shadow: 0 0 16px var(--accent-glow);
+    flex-shrink: 0;
+  }
+  .logo-text { font-weight: 700; font-size: 20px; color: var(--text); }
+  .logo-sub { font-size: 12px; color: var(--text-secondary); }
+
+  /* Z-pattern nav: icon anchors left, label scans right */
+  .nav-section { margin-bottom: 8px; }
+  .nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0 12px;
+    margin-bottom: 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+    min-height: 44px; /* touch target */
+  }
+  .nav-item:hover { background: var(--glass-hover); color: var(--text); }
+  .nav-item.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .nav-icon { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
+
+  /* ─── MAIN ─── */
+  .main { flex: 1; padding: 40px 48px; overflow-x: hidden; }
+
+  /* ═══ F-PATTERN ZONE 1: Top bar — full-width horizontal scan ═══ */
+  .top-bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+  .top-bar-left h1 {
+    font-weight: 700; font-size: 32px; color: var(--text); margin-bottom: 4px;
+  }
+  .top-bar-left p { font-size: 16px; color: var(--text-secondary); }
+
+  /* ═══ F-PATTERN ZONE 2: Stats — left-to-right scan ═══ */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    transition: all 0.15s;
+  }
+  .stat-card:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .stat-value {
+    font-weight: 700; font-size: 40px; line-height: 1; color: var(--text); margin-bottom: 6px;
+  }
+  .stat-value.sky { color: var(--accent); }
+  .stat-value.green { color: var(--success); }
+  .stat-value.yellow { color: var(--warning); }
+  .stat-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+
+  /* ═══ SPLIT SCREEN: WIP hero ═══ */
+  .split-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .hero-panel {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-panel::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  }
+  .hero-panel.featured { border-color: rgba(14,165,233,0.3); }
+  .hero-panel.featured::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    border-radius: 16px 16px 0 0;
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.5; }
+  }
+  .hero-name {
+    font-weight: 700; font-size: 26px; color: var(--text); margin-bottom: 8px; line-height: 1.2;
+  }
+  .hero-step {
+    font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;
+  }
+  .hero-bar-wrap { margin-bottom: 8px; }
+  .hero-bar {
+    height: 8px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden;
+  }
+  .hero-bar-fill {
+    height: 100%; border-radius: 6px;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+  .hero-bar-label {
+    display: flex; justify-content: space-between; margin-top: 8px;
+    font-size: 14px; font-weight: 500;
+  }
+  .hero-bar-label span:first-child { color: var(--text-secondary); }
+  .hero-bar-label span:last-child { color: var(--text); }
+  .hero-meta {
+    display: flex; gap: 16px; margin-top: 20px;
+    font-size: 14px; color: var(--text-secondary);
+  }
+  .hero-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 10px;
+    background: var(--accent); color: white;
+    font-size: 14px; font-weight: 600;
+    border: none; cursor: pointer;
+    min-height: 44px;
+    box-shadow: 0 4px 16px var(--accent-glow);
+    transition: all 0.15s;
+    margin-top: 20px;
+  }
+  .hero-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
+
+  /* secondary hero panel — review queue */
+  .review-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .review-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-radius: 10px;
+    background: var(--glass); border: 1px solid var(--border);
+    transition: all 0.15s; min-height: 56px;
+  }
+  .review-item:hover { background: var(--glass-hover); border-color: var(--border-hover); }
+  .review-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .review-days { font-size: 13px; color: var(--text-secondary); }
+  .review-badge {
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+    white-space: nowrap;
+  }
+  .badge-overdue { background: var(--danger-soft); color: var(--danger); }
+  .badge-due { background: var(--warning-soft); color: var(--warning); }
+  .badge-ok { background: var(--success-soft); color: var(--success); }
+
+  /* ═══ F-PATTERN ZONE 3: Filter bar ═══ */
+  .filter-bar {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 10px 18px; border-radius: 10px;
+    font-size: 14px; font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    color: var(--text-secondary);
+    cursor: pointer; min-height: 44px;
+    display: flex; align-items: center; gap: 6px;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover { background: var(--glass-hover); color: var(--text); border-color: var(--border-hover); }
+  .filter-chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .filter-chip .count {
+    background: rgba(255,255,255,0.1); border-radius: 5px;
+    padding: 1px 7px; font-size: 12px;
+  }
+  .filter-chip.active .count { background: var(--accent); color: white; }
+  .filter-select {
+    padding: 10px 36px 10px 16px; border-radius: 10px;
+    font-size: 14px; font-weight: 500;
+    border: 1px solid var(--border); background: var(--glass);
+    backdrop-filter: blur(8px);
+    color: var(--text); min-height: 44px; cursor: pointer;
+    appearance: none; margin-left: auto;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+
+  /* ═══ CARD GRID — modular blocks ═══ */
+  /* F-pattern: first card top-left gets most attention, scan right, then down */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .ship-card {
+    background: var(--glass-strong);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .ship-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+  .ship-card:hover {
+    border-color: var(--border-hover);
+    background: var(--glass-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  }
+
+  /* F-pattern within card: name top-left, type badge top-right, meta below */
+  .card-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 10px;
+  }
+  .card-name { font-weight: 700; font-size: 18px; color: var(--text); line-height: 1.2; }
+  .card-type {
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 8px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .type-web { background: rgba(96,165,250,0.15); color: #60A5FA; }
+  .type-ios { background: rgba(192,132,252,0.15); color: #C084FC; }
+  .type-cli { background: rgba(251,146,60,0.15); color: #FB923C; }
+  .type-desktop { background: rgba(244,114,182,0.15); color: #F472B6; }
+
+  .card-step { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+
+  /* F-pattern: status dots are left-anchored for fast scanning */
+  .card-meta {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    font-size: 14px; color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+  .meta-item { display: flex; align-items: center; gap: 6px; }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .status-dot.live { background: var(--success); box-shadow: 0 0 6px var(--success); }
+  .status-dot.local { background: var(--warning); box-shadow: 0 0 6px var(--warning); }
+  .status-dot.no-url { background: var(--danger); }
+
+  .card-bar { height: 5px; background: rgba(255,255,255,0.07); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+  .card-bar-fill { height: 100%; border-radius: 4px; }
+  .fill-high { background: var(--success); box-shadow: 0 0 8px rgba(52,211,153,0.3); }
+  .fill-mid { background: var(--warning); box-shadow: 0 0 8px rgba(251,191,36,0.3); }
+  .fill-low { background: var(--danger); box-shadow: 0 0 8px rgba(248,113,113,0.3); }
+  .card-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  }
+
+  /* badge */
+  .badge-label {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--accent); color: white;
+    font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px;
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR — Z-pattern: icon left-anchored, label scans right -->
+  <nav class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">&#9875;</div>
+      <div>
+        <div class="logo-text">Shipyard</div>
+        <div class="logo-sub">Fleet Command</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Fleet</div>
+      <a class="nav-item active" href="#"><span class="nav-icon">&#9632;</span> Dashboard</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#9654;</span> Drydock</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#9733;</span> Portfolio</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Work</div>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128203;</span> Reviews</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128218;</span> Learnings</a>
+      <a class="nav-item" href="#"><span class="nav-icon">&#128200;</span> Themes</a>
+    </div>
+
+    <div class="nav-section" style="margin-top: auto;">
+      <a class="nav-item" href="#"><span class="nav-icon">&#9881;</span> Settings</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- F-PATTERN ROW 1: Heading — eye lands top-left first -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1>Fleet Dashboard</h1>
+        <p>48 ships · last synced 2 minutes ago</p>
+      </div>
+    </div>
+
+    <!-- F-PATTERN ROW 2: Stats — scan left to right -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">48</div>
+        <div class="stat-label">Total Ships</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value green">22</div>
+        <div class="stat-label">Launched</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value sky">12</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value yellow">7</div>
+        <div class="stat-label">Reviews Due</div>
+      </div>
+    </div>
+
+    <!-- SPLIT SCREEN: WIP focus (left) + Review queue (right) -->
+    <div class="split-hero">
+
+      <!-- Left panel: active ship spotlight -->
+      <div class="hero-panel featured">
+        <div class="hero-eyebrow"><span class="live-dot"></span> Active Ship</div>
+        <div class="hero-name">Clarity Budget Web</div>
+        <div class="hero-step">Step 9 · Privacy connector + card mapping</div>
+
+        <div class="hero-bar-wrap">
+          <div class="hero-bar">
+            <div class="hero-bar-fill" style="width:85%"></div>
+          </div>
+          <div class="hero-bar-label">
+            <span>Compliance</span>
+            <span>85%</span>
+          </div>
+        </div>
+
+        <div class="hero-meta">
+          <span>Updated 1d ago</span>
+          <span>·</span>
+          <span style="color:var(--success)">&#10003; Live</span>
+          <span>·</span>
+          <span>Linear</span>
+        </div>
+
+        <button class="hero-btn">Open Ship &#8594;</button>
+      </div>
+
+      <!-- Right panel: review queue -->
+      <div class="hero-panel">
+        <div class="hero-eyebrow">&#128203; Reviews Due</div>
+
+        <div class="review-list">
+          <div class="review-item">
+            <div>
+              <div class="review-name">Job Search HQ</div>
+              <div class="review-days">14d since review</div>
+            </div>
+            <div class="review-badge badge-overdue">Overdue</div>
+          </div>
+          <div class="review-item">
+            <div>
+              <div class="review-name">Wellness Tracker</div>
+              <div class="review-days">12d since review</div>
+            </div>
+            <div class="review-badge badge-overdue">Overdue</div>
+          </div>
+          <div class="review-item">
+            <div>
+              <div class="review-name">Fairway iOS</div>
+              <div class="review-days">6d since review</div>
+            </div>
+            <div class="review-badge badge-due">Due soon</div>
+          </div>
+          <div class="review-item">
+            <div>
+              <div class="review-name">Ash Reader</div>
+              <div class="review-days">2d since review</div>
+            </div>
+            <div class="review-badge badge-ok">OK</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- F-PATTERN ROW 3: Filter bar — full-width scan -->
+    <div class="filter-bar">
+      <button class="filter-chip active">All <span class="count">48</span></button>
+      <button class="filter-chip">Web <span class="count">18</span></button>
+      <button class="filter-chip">iOS <span class="count">14</span></button>
+      <button class="filter-chip">CLI <span class="count">4</span></button>
+      <button class="filter-chip">Desktop <span class="count">3</span></button>
+      <select class="filter-select">
+        <option>Sort: Recent</option>
+        <option>Sort: Name</option>
+        <option>Sort: Compliance</option>
+      </select>
+    </div>
+
+    <!-- CARD GRID — modular 3-col, F-pattern scan left→right then down -->
+    <div class="card-grid">
+
+      <div class="ship-card">
+        <div class="card-top">
+          <span class="card-name">Job Search HQ</span>
+          <span class="card-type type-web">web</span>
+        </div>
+        <div class="card-step">Step 8 · Gmail Inbox Feed</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="status-dot live"></span> Live</span>
+          <span class="meta-item">2d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="card-bar"><div class="card-bar-fill fill-high" style="width:92%"></div></div>
+        <div class="card-bar-label"><span>Compliance</span><span>92%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-top">
+          <span class="card-name">Clarity Budget</span>
+          <span class="card-type type-web">web</span>
+        </div>
+        <div class="card-step">Step 9 · Privacy connector</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="status-dot live"></span> Live</span>
+          <span class="meta-item">1d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="card-bar"><div class="card-bar-fill fill-high" style="width:85%"></div></div>
+        <div class="card-bar-label"><span>Compliance</span><span>85%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-top">
+          <span class="card-name">Fairway</span>
+          <span class="card-type type-ios">ios</span>
+        </div>
+        <div class="card-step">Step 6 · Overview tab</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="status-dot local"></span> Local</span>
+          <span class="meta-item">3d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="card-bar"><div class="card-bar-fill fill-mid" style="width:68%"></div></div>
+        <div class="card-bar-label"><span>Compliance</span><span>68%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-top">
+          <span class="card-name">Wellness Tracker</span>
+          <span class="card-type type-web">web</span>
+        </div>
+        <div class="card-step">Step 8 · Shipped</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="status-dot live"></span> Live</span>
+          <span class="meta-item">5d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="card-bar"><div class="card-bar-fill fill-high" style="width:88%"></div></div>
+        <div class="card-bar-label"><span>Compliance</span><span>88%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-top">
+          <span class="card-name">DriveMind</span>
+          <span class="card-type type-desktop">desktop</span>
+        </div>
+        <div class="card-step">Step 3 · Scaffolding</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="status-dot no-url"></span> No URL</span>
+          <span class="meta-item">12d ago</span>
+        </div>
+        <div class="card-bar"><div class="card-bar-fill fill-low" style="width:35%"></div></div>
+        <div class="card-bar-label"><span>Compliance</span><span>35%</span></div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-top">
+          <span class="card-name">Spend Clarity</span>
+          <span class="card-type type-cli">cli</span>
+        </div>
+        <div class="card-step">Step 5 · Building</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="status-dot local"></span> Local</span>
+          <span class="meta-item">8d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="card-bar"><div class="card-bar-fill fill-mid" style="width:52%"></div></div>
+        <div class="card-bar-label"><span>Compliance</span><span>52%</span></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="badge-label">Option D+ — Layout Patterns</div>
+</body>
+</html>

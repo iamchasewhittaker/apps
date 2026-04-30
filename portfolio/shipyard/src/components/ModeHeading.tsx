@@ -13,10 +13,10 @@ export function ModeHeading({ labelKey, subtitle, className }: Props) {
   const label = useLabel(labelKey);
   return (
     <div className="space-y-3">
-      <h1 className={className ?? 'font-display text-4xl text-white gold-rule inline-block'}>
+      <h1 className={className ?? 'font-display font-bold text-4xl text-white gold-rule inline-block'}>
         {label}
       </h1>
-      {subtitle && <p className="text-base text-muted">{subtitle}</p>}
+      {subtitle && <p className="text-base text-steel">{subtitle}</p>}
     </div>
   );
 }

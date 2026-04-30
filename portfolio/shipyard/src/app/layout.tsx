@@ -65,26 +65,20 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex">
         <ModeProvider>
-          <nav className="fixed left-0 top-0 bottom-0 w-[220px] bg-surface border-r border-dimmer flex flex-col py-6 px-4 z-10">
+          <nav className="fixed left-0 top-0 bottom-0 w-[240px] bg-surface/80 backdrop-blur-sm border-r border-dimmer flex flex-col py-6 px-4 z-10">
             <Link href="/" className="flex items-center gap-3 px-2 mb-10">
               <LogoIcon size={36} />
               <LogoLabel />
             </Link>
 
-            <ul className="flex flex-col gap-1">
+            <ul className="flex flex-col gap-1.5">
               {navItems.map((item) => (
                 <NavItem key={item.href} href={item.href} labelKey={item.labelKey} />
               ))}
             </ul>
-
-            <div className="mt-auto px-2 pt-6 border-t border-dimmer/60">
-              <span className="font-mono-label text-[11px] text-dim">
-                44°22&apos;N / 68°12&apos;W
-              </span>
-            </div>
           </nav>
 
-          <main className="ml-[220px] flex-1 p-8 overflow-y-auto min-h-screen">
+          <main className="ml-[240px] flex-1 p-8 overflow-y-auto min-h-screen">
             {children}
           </main>
 

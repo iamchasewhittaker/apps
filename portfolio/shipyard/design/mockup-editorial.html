@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipyard — Editorial Redesign (Option C)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A1128;
+    --surface: #0F1A3E;
+    --surface-hover: #14204A;
+    --border: rgba(255,215,0,0.15);
+    --text: #FFFFFF;
+    --text-secondary: #A0AABF;
+    --gold: #FFD700;
+    --gold-dim: #C9A800;
+    --success: #4ADE80;
+    --danger: #F87171;
+    --warning: #FBBF24;
+    --accent: #FFD700;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .logo {
+    font-family: 'Big Shoulders Display', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    line-height: 1;
+  }
+  .logo small {
+    display: block;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav-item:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+  .nav-item.active {
+    background: var(--surface-hover);
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .nav-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .main {
+    flex: 1;
+    padding: 48px 56px;
+    max-width: 1200px;
+  }
+
+  /* ─── EDITORIAL HEADING ─── */
+  .page-heading {
+    font-family: 'Big Shoulders Display', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 96px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .page-subheading {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 48px;
+    font-weight: 400;
+  }
+
+  /* ─── STATS ROW ─── */
+  .stats-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 28px;
+    min-width: 140px;
+  }
+  .stat-value {
+    font-family: 'Big Shoulders Display', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--text);
+  }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--success); }
+  .stat-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── FILTERS ─── */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-chip {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover {
+    border-color: var(--text-secondary);
+    color: var(--text);
+  }
+  .filter-chip.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg);
+    font-weight: 600;
+  }
+  .filter-select {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    min-height: 44px;
+    cursor: pointer;
+    appearance: none;
+    padding-right: 36px;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23A0A0A0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+
+  /* ─── CARD GRID ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  .ship-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .ship-card:hover {
+    border-color: var(--gold-dim);
+    background: var(--surface-hover);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .card-name {
+    font-family: 'Big Shoulders Display', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+  .card-type {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .type-web { background: #1D4ED8; color: #93C5FD; }
+  .type-ios { background: #7E22CE; color: #D8B4FE; }
+  .type-cli { background: #C2410C; color: #FDBA74; }
+  .type-desktop { background: #BE185D; color: #F9A8D4; }
+
+  .card-step {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding: 6px 12px;
+    background: rgba(215, 170, 58, 0.1);
+    border: 1px solid rgba(215, 170, 58, 0.25);
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meta-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .meta-dot.green { background: var(--success); }
+  .meta-dot.red { background: var(--danger); }
+  .meta-dot.yellow { background: var(--warning); }
+
+  .compliance-bar {
+    height: 6px;
+    width: 100%;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .compliance-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .compliance-fill.high { background: var(--success); }
+  .compliance-fill.mid { background: var(--warning); }
+  .compliance-fill.low { background: var(--danger); }
+  .compliance-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: right;
+  }
+
+  /* ─── BADGE ─── */
+  .badge-label {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--gold);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="logo">
+      Shipyard
+      <small>Fleet Command</small>
+    </div>
+    <a class="nav-item active" href="#">
+      <span class="nav-icon">&#9632;</span> Fleet
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#9654;</span> Drydock
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#9733;</span> Portfolio
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#128203;</span> Reviews
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#128218;</span> Learnings
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#9881;</span> Settings
+    </a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="page-heading">Fleet</h1>
+    <p class="page-subheading">48 ships across your portfolio</p>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">48</div>
+        <div class="stat-label">Total Ships</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value green">22</div>
+        <div class="stat-label">Launched</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value gold">12</div>
+        <div class="stat-label">Building</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">14</div>
+        <div class="stat-label">Local Only</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <button class="filter-chip active">All</button>
+      <button class="filter-chip">Web</button>
+      <button class="filter-chip">iOS</button>
+      <button class="filter-chip">CLI</button>
+      <button class="filter-chip">Desktop</button>
+      <select class="filter-select">
+        <option>Sort: Recent</option>
+        <option>Sort: Name</option>
+        <option>Sort: Compliance</option>
+      </select>
+    </div>
+
+    <!-- Card Grid -->
+    <div class="card-grid">
+
+      <div class="ship-card">
+        <div class="card-header">
+          <span class="card-name">Job Search HQ</span>
+          <span class="card-type type-web">web</span>
+        </div>
+        <span class="card-step">Step 8 &middot; Shipped</span>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-dot green"></span> Live</span>
+          <span class="meta-item">2d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill high" style="width:92%"></div></div>
+        <div class="compliance-label">92%</div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-header">
+          <span class="card-name">Clarity Budget</span>
+          <span class="card-type type-web">web</span>
+        </div>
+        <span class="card-step">Step 7 &middot; Polishing</span>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-dot green"></span> Live</span>
+          <span class="meta-item">1d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill high" style="width:85%"></div></div>
+        <div class="compliance-label">85%</div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-header">
+          <span class="card-name">Fairway</span>
+          <span class="card-type type-ios">ios</span>
+        </div>
+        <span class="card-step">Step 6 &middot; Testing</span>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-dot yellow"></span> Local</span>
+          <span class="meta-item">3d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill mid" style="width:68%"></div></div>
+        <div class="compliance-label">68%</div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-header">
+          <span class="card-name">Wellness Tracker</span>
+          <span class="card-type type-web">web</span>
+        </div>
+        <span class="card-step">Step 8 &middot; Shipped</span>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-dot green"></span> Live</span>
+          <span class="meta-item">5d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill high" style="width:88%"></div></div>
+        <div class="compliance-label">88%</div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-header">
+          <span class="card-name">DriveMind</span>
+          <span class="card-type type-desktop">desktop</span>
+        </div>
+        <span class="card-step">Step 3 &middot; Scaffolding</span>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-dot red"></span> No URL</span>
+          <span class="meta-item">12d ago</span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill low" style="width:35%"></div></div>
+        <div class="compliance-label">35%</div>
+      </div>
+
+      <div class="ship-card">
+        <div class="card-header">
+          <span class="card-name">Spend Clarity</span>
+          <span class="card-type type-cli">cli</span>
+        </div>
+        <span class="card-step">Step 5 &middot; Building</span>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-dot yellow"></span> Local</span>
+          <span class="meta-item">8d ago</span>
+          <span class="meta-item">Linear</span>
+        </div>
+        <div class="compliance-bar"><div class="compliance-fill mid" style="width:52%"></div></div>
+        <div class="compliance-label">52%</div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="badge-label">Option C — Editorial</div>
+</body>
+</html>

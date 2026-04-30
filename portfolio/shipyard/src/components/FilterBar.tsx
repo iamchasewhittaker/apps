@@ -28,7 +28,7 @@ export default function FilterBar() {
   const current = (key: string) => searchParams.get(key) ?? 'all';
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center gap-4">
       <FilterSelect
         label="Type"
         value={current('type')}
@@ -69,12 +69,12 @@ function FilterSelect({
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="flex items-center gap-1.5 font-mono-label text-[10px] text-dim">
+    <label className="flex items-center gap-2 text-sm text-steel">
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded border border-dimmer bg-surface px-2 py-1 text-xs text-white outline-none focus:border-steel/60"
+        className="rounded-lg border border-dimmer bg-surface/80 px-3 py-2.5 text-sm text-white outline-none focus:border-gold/50 min-h-[44px] transition-colors"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>

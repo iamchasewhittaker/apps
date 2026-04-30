@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase';
 import { computeChipState, chipColor, chipLabel } from '@/lib/review-cadence';
-import { STEP_LABELS, STEP_NAUTICAL } from '@/lib/mvp-step';
+import { STEP_LABELS } from '@/lib/mvp-step';
 import StatsBar from '@/components/StatsBar';
 import WipBanner from '@/components/WipBanner';
 import DailyScoreboard from '@/components/DailyScoreboard';
@@ -240,10 +240,10 @@ function FilterBar({
 /* ── Ship Card ──────────────────────────────────────────────── */
 
 const STATUS_COLORS: Record<string, string> = {
-  active: 'bg-steel/20 text-steel border-steel/30',
-  stalled: 'bg-gold/20 text-gold border-gold/30',
-  frozen: 'bg-dim/20 text-dim border-dim/30',
-  archived: 'bg-ghost/60 text-dim border-dimmer/60',
+  active: 'bg-success/20 text-success border-success/30',
+  stalled: 'bg-warning/20 text-warning border-warning/30',
+  frozen: 'bg-steel/20 text-steel border-steel/30',
+  archived: 'bg-dimmer/60 text-steel border-dimmer/60',
 };
 
 const TYPE_COLORS: Record<string, string> = {
@@ -254,81 +254,97 @@ const TYPE_COLORS: Record<string, string> = {
   desktop: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
 };
 
+function scoreColor(score: number): string {
+  if (score >= 80) return 'bg-success';
+  if (score >= 50) return 'bg-warning';
+  return 'bg-danger';
+}
+
 function ShipCard({ project }: { project: Project }) {
   const step = project.mvp_step_actual ?? project.mvp_step ?? 0;
-  const stepLabel = STEP_LABELS[step] ?? `Step ${step}`;
-  const nautical = STEP_NAUTICAL[step] ?? '';
+  const stepName = STEP_LABELS[step];
+  const stepLabel = stepName ? `Step ${step} · ${stepName}` : `Step ${step}`;
 
   return (
     <Link
       href={`/ship/${project.slug}`}
-      className="group flex flex-col rounded-lg border border-border bg-card p-4 transition-colors hover:border-accent/50"
+      className="group flex flex-col rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm p-6 transition-all hover:border-gold/30 hover:-translate-y-0.5 hover:shadow-lg"
     >
-      <div className="mb-3 flex items-start justify-between gap-2">
-        <h3 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
+      {/* Header */}
+      <div className="mb-2 flex items-start justify-between gap-3">
+        <h3 className="font-bold text-lg text-white leading-snug group-hover:text-gold transition-colors">
           {project.name}
         </h3>
         <span
-          className={`shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[project.status] ?? ''}`}
+          className={`shrink-0 rounded-lg border px-2.5 py-1 text-xs font-semibold ${STATUS_COLORS[project.status] ?? ''}`}
         >
           {project.status}
         </span>
       </div>
 
-      <div className="mb-3 flex flex-wrap gap-1.5">
+      {/* Type + family + step chips */}
+      <div className="mb-4 flex flex-wrap gap-1.5">
         <span
-          className={`rounded-full border px-2 py-0.5 text-xs font-medium ${TYPE_COLORS[project.type] ?? ''}`}
+          className={`rounded-lg border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${TYPE_COLORS[project.type] ?? ''}`}
         >
           {project.type}
         </span>
-        <span className="rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted">
+        <span className="rounded-lg border border-dimmer px-2.5 py-1 text-xs font-medium text-steel">
           {project.family}
         </span>
-        <span className="rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-          {stepLabel} &middot; {nautical}
+        <span className="rounded-md border border-gold/20 bg-gold/10 px-2.5 py-1 text-xs font-medium text-gold">
+          {stepLabel}
         </span>
       </div>
 
-      <div className="mt-auto space-y-1.5">
-        <div className="flex items-center justify-between text-sm text-muted">
+      {/* Meta: commit age + live status */}
+      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-steel">
+        {project.days_since_commit !== null && (
           <span>
-            Compliance:{' '}
-            <span
-              className={
-                project.compliance_score >= 80
-                  ? 'text-success'
-                  : project.compliance_score >= 50
-                    ? 'text-warning'
-                    : 'text-danger'
-              }
-            >
-              {Math.round(project.compliance_score)}%
-            </span>
+            {project.days_since_commit === 0 ? 'Today' : `${project.days_since_commit}d ago`}
           </span>
-          {project.days_since_commit !== null && (
+        )}
+        <span className="flex items-center gap-1.5">
+          {project.has_live_url ? (
+            <>
+              <span className="inline-block w-2 h-2 rounded-full bg-success shadow-[0_0_6px_rgba(52,211,153,0.7)]" />
+              <span className="text-success">live</span>
+            </>
+          ) : (
+            <>
+              <span className="inline-block w-2 h-2 rounded-full bg-danger" />
+              <span className="text-steel">no url</span>
+            </>
+          )}
+        </span>
+      </div>
+
+      {/* Build / deploy line */}
+      {project.days_since_opened !== null &&
+        project.days_since_opened !== project.days_since_commit && (
+          <div className="mb-4 flex items-center gap-x-2 text-sm text-steel">
             <span>
-              {project.days_since_commit === 0
-                ? 'Today'
-                : `${project.days_since_commit}d ago`}
+              {project.type === 'ios' ? 'built' : 'deployed'}:{' '}
+              {project.days_since_opened === 0 ? 'today' : `${project.days_since_opened}d ago`}
             </span>
-          )}
+            {project.type === 'ios' && project.last_device_deploy_at && (
+              <span className="text-purple-400" title="Device build">&#9679;</span>
+            )}
+          </div>
+        )}
+
+      {/* Compliance bar */}
+      <div className="mt-auto">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-dimmer">
+          <div
+            className={`h-full rounded-full transition-all ${scoreColor(project.compliance_score)}`}
+            style={{ width: `${Math.min(project.compliance_score, 100)}%` }}
+          />
         </div>
-        {project.days_since_opened !== null &&
-          project.days_since_opened !== project.days_since_commit && (
-            <div className="flex items-center justify-between text-[10px] font-mono text-muted/70">
-              <span>
-                {project.type === 'ios' ? 'built' : 'deployed'}:{' '}
-                {project.days_since_opened === 0
-                  ? 'today'
-                  : `${project.days_since_opened}d ago`}
-              </span>
-              {project.type === 'ios' && project.last_device_deploy_at && (
-                <span className="text-purple-400" title="Device build">
-                  &#9679;
-                </span>
-              )}
-            </div>
-          )}
+        <div className="mt-1.5 flex justify-between">
+          <span className="text-xs text-steel">Compliance</span>
+          <span className="text-xs font-medium text-white">{Math.round(project.compliance_score)}%</span>
+        </div>
       </div>
     </Link>
   );

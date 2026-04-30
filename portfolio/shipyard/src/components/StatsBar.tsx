@@ -6,7 +6,7 @@ interface Props {
 
 export default function StatsBar({ stats }: Props) {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
       <StatCard label="Total Ships" value={stats.total} />
       <StatCard
         label="Under Construction"
@@ -33,11 +33,11 @@ function StatCard({
   className?: string;
 }) {
   return (
-    <div className="rounded-lg border border-dimmer bg-surface px-4 py-3">
-      <p className={`font-display text-4xl ${className ?? 'text-white'}`}>
+    <div className="rounded-xl border border-dimmer bg-surface/80 backdrop-blur-sm px-6 py-5 transition-colors hover:border-gold/20">
+      <p className={`font-display text-4xl font-bold ${className ?? 'text-white'}`}>
         {value}
       </p>
-      <p className="font-mono-label text-xs text-dim mt-1">{label}</p>
+      <p className="text-sm text-steel mt-2">{label}</p>
     </div>
   );
 }
